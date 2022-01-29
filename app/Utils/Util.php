@@ -132,7 +132,7 @@ class Util
             'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
         ]);
 
-        // Add supplier Ledger
+        // Add Customer Ledger
         $this->customerUtil->addCustomerLedger(
             voucher_type_id: 0,
             customer_id: $addCustomer->id,

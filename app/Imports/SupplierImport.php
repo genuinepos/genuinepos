@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 class SupplierImport implements ToCollection
 {
     protected $supplierUtil;
+    protected $invoiceVoucherRefIdUtil;
     /**
      * @param Collection $collection
      */

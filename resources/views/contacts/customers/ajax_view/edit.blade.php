@@ -72,8 +72,8 @@
                 <div class="col-md-7">
                     <select name="pay_term" class="form-control">
                         <option value="">Select term</option>
-                        <option {{ $customer->pay_term == 1 ? 'SELECTED' : ''  }} value="1">Days </option>
-                        <option {{ $customer->pay_term == 2 ? 'SELECTED' : ''  }} value="2">Months</option>
+                        <option {{ $customer->pay_term == 1 ? 'SELECTED' : '' }} value="1">Days</option>
+                        <option {{ $customer->pay_term == 2 ? 'SELECTED' : '' }} value="2">Months</option>
                     </select>
                 </div>
             </div>

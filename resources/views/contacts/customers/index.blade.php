@@ -173,13 +173,18 @@
                                 <label><strong>Pay Term :</strong> </label>
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <input type="text" name="pay_term_number"
-                                            class="form-control w-50" />
-                                        <select name="pay_term" class="form-control w-50">
-                                            <option value="1">Select term</option>
-                                            <option value="2">Days </option>
-                                            <option value="3">Months</option>
-                                        </select>
+                                        <div class="col-md-5">
+                                            <input type="text" name="pay_term_number"
+                                            class="form-control" placeholder="Number"/>
+                                        </div>
+
+                                        <div class="col-md-7">
+                                            <select name="pay_term" class="form-control">
+                                                <option value="1">Select term</option>
+                                                <option value="2">Days </option>
+                                                <option value="3">Months</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

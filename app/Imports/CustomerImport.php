@@ -12,15 +12,12 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 class CustomerImport implements ToCollection
 {
     protected $invoiceVoucherRefIdUtil;
-    public function __construct(InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
-    {
-        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-    }
     /**
      * @param Collection $collection
      */
     public function collection(Collection $collection)
     {
+        $this->invoiceVoucherRefIdUtil = new InvoiceVoucherRefIdUtil;
         //dd($collection);
         $index = 0;
         $generalSettings = DB::table('general_settings')->first('prefix');
@@ -47,7 +44,7 @@ class CustomerImport implements ToCollection
                         'shipping_address' => $c[15],
                         'pay_term_number' => (float)$c[16],
                         'pay_term' => (float)$c[17],
-                        //'credit_limit' => $c[18],
+                        'credit_limit' => (float)$c[18],
                         'total_sale_due' => (float)$c[9] ? (float)$c[9] : 0,
                     ]);
 

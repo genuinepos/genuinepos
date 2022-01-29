@@ -137,6 +137,7 @@
     $(document).on('submit', '#add_customer_form', function(e){
         e.preventDefault();
         $('.loading_button').show();
+        $('.submit_button').prop('button');
         var url = $(this).attr('action');
         var request = $(this).serialize();
         var inputs = $('.c_add_input');
@@ -154,6 +155,7 @@
 
         if(countErrorField > 0){
             $('.loading_button').hide();
+            $('.submit_button').prop('submit');
             return;
         }
 
@@ -162,8 +164,10 @@
             type:'post',
             data: request,
             success:function(data){
+        
                 toastr.success('Customer added successfully.');
                 $('.loading_button').hide();
+                $('.submit_button').prop('submit');
                 $('#addCustomerModal').modal('hide');
                 $('#customer_id').append('<option value="'+data.id+'">'+ data.name +' ('+data.phone+')'+'</option>');
                 $('#customer_id').val(data.id);

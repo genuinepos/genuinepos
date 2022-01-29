@@ -44,6 +44,7 @@
         var supplier = suppliersArray.filter(function (supplier) {
             return supplier.id == id;
         });
+
         if (supplier[0].pay_term != null && supplier[0].pay_term_number != null) {
             $('#pay_term').val(supplier[0].pay_term);
             $('#pay_term_number').val(supplier[0].pay_term_number);
@@ -51,12 +52,15 @@
             $('#pay_term').val('');
             $('#pay_term_number').val('');
         }
+
     });
 
     $('#addSupplier').on('click', function () {
         $.get("{{route('purchases.add.quick.supplier.modal')}}", function(data) {
+
             $('#add_supplier_modal_body').html(data);
             $('#addSupplierModal').modal('show');
+
         });
     });
 
@@ -81,10 +85,12 @@
             url:"{{route('purchases.get.all.taxes')}}",
             async:false,
             success:function(taxes){
+
                 taxArray = taxes;
                 $.each(taxes, function(key, val){
                     $('#purchase_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
                 });
+
             }
         });
     }
@@ -95,10 +101,12 @@
         var line_totals = document.querySelectorAll('#line_total');
         var total_item = 0;
         var total_qty = 0;
+
         quantities.forEach(function(qty){
-                total_item += 1;
-                total_qty += parseFloat(qty.value)
+            total_item += 1;
+            total_qty += parseFloat(qty.value);
         });
+
         $('#total_qty').val(parseFloat(total_qty));
         $('#total_item').val(parseFloat(total_item));
 
@@ -995,56 +1003,6 @@
     setInterval(function(){
         $('#search_product').removeClass('is-valid');
     }, 1000);
-
-    // Add supplier by ajax
-    $(document).on('submit', '#add_supplier_form', function(e){
-        e.preventDefault();
-        $('.loading_button').show();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
-        var inputs = $('.s_add_input');
-            $('.error').html('');  
-            var countErrorField = 0;  
-        $.each(inputs, function(key, val){
-            var inputId = $(val).attr('id');
-            var idValue = $('#'+inputId).val();
-            if(idValue == ''){
-                countErrorField += 1;
-                var fieldName = $('#'+inputId).data('name');
-                $('.error_'+inputId).html(fieldName+' is required.');
-            }
-        });
-
-        if(countErrorField > 0){
-            $('.loading_button').hide();
-            return;
-        }
-        $('.submit_button').prop('type', 'button');
-        $.ajax({
-            url:url,
-            type:'post',
-            data: request,
-            success:function(data){
-                $('.submit_button').prop('type', 'submit');
-                toastr.success('Supplier Added Successfully.');
-                $('#add_supplier_form')[0].reset();
-                $('.loading_button').hide();
-                $('#addSupplierModal').modal('hide');
-                $('#supplier_id').append('<option value="'+data.id+'">'+ data.name +' ('+data.phone+')'+'</option>');
-                $('#supplier_id').val(data.id);
-                document.getElementById('search_product').focus();
-            },error: function(err) {
-                $('.submit_button').prop('type', 'sumbit');
-                $('.loading_button').hide();
-                $('.error').html('');
-                if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
-                }else{
-                    toastr.error('Server error please contact to the support.');
-                }
-            }
-        });
-    });
 
     // Show add product modal with data
     $('#add_product').on('click', function () {

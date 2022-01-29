@@ -171,6 +171,7 @@
                 $('#addCustomerModal').modal('hide');
                 $('#customer_id').append('<option value="'+data.id+'">'+ data.name +' ('+data.phone+')'+'</option>');
                 $('#customer_id').val(data.id);
+                $('#display_pre_due').val(parseFloat(data.total_sale_due).toFixed(2));
                 $('#previous_due').val(parseFloat(data.total_sale_due).toFixed(2));
                 calculateTotalAmount();
             }

@@ -157,14 +157,16 @@
             return;
         }
 
+        $('.submit_button').prop('type', 'button');
         $.ajax({
             url:url,
             type:'post',
             data: request,
             success:function(data){
+                $('#addCustomerModal').modal('hide');
+                $('.submit_button').prop('type', 'submit');
                 toastr.success('Customer added successfully.');
                 $('.loading_button').hide();
-                $('#addCustomerModal').modal('hide');
                 $('#customer_id').append('<option value="'+data.id+'">'+ data.name +' ('+data.phone+')'+'</option>');
                 $('#customer_id').val(data.id);
                 $('#previous_due').val(parseFloat(data.total_sale_due).toFixed(2));

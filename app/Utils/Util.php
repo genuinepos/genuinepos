@@ -15,10 +15,16 @@ use App\Utils\InvoiceVoucherRefIdUtil;
 class Util
 {
     protected $invoiceVoucherRefIdUtil;
+    protected $supplierUtil;
+    protected $customerUtil;
     public function __construct(
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
+        SupplierUtil $supplierUtil,
+        CustomerUtil $customerUtil
     ) {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->supplierUtil = $supplierUtil;
+        $this->customerUtil = $customerUtil;
     }
 
     public function addQuickProductFromAddSale($request)
@@ -145,6 +151,7 @@ class Util
         $generalSettings = DB::table('general_settings')->first('prefix');
         $subIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
         $firstLetterOfSupplier = str_split($request->name)[0];
+
         $addSupplier = Supplier::create([
             'contact_id' => $request->contact_id ? $request->contact_id : $subIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
@@ -168,14 +175,14 @@ class Util
             'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
         ]);
 
-        if ($request->opening_balance && $request->opening_balance >= 0) {
-            $addSupplierLedger = new SupplierLedger();
-            $addSupplierLedger->supplier_id = $addSupplier->id;
-            $addSupplierLedger->row_type = 3;
-            $addSupplierLedger->report_date = date('Y-m-d');
-            $addSupplierLedger->amount = $request->opening_balance;
-            $addSupplierLedger->save();
-        }
+        // Add supplier Ledger
+        $this->supplierUtil->addSupplierLedger(
+            voucher_type_id: 0,
+            supplier_id: $addSupplier->id,
+            date: date('Y-m-d H:i:s'),
+            trans_id: NULL,
+            amount: $request->opening_balance ? $request->opening_balance : 0
+        );
 
         return response()->json($addSupplier);
     }
@@ -287,11 +294,10 @@ class Util
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             return $data;
-        }else {
-           $filteredType =  array_filter($data, function ($val, $key)
-           {
-               return $key != 2;
-           }, ARRAY_FILTER_USE_BOTH);
+        } else {
+            $filteredType =  array_filter($data, function ($val, $key) {
+                return $key != 2;
+            }, ARRAY_FILTER_USE_BOTH);
         }
     }
 }

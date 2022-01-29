@@ -84,12 +84,14 @@ class SupplierController extends Controller
             'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
         ]);
 
-        $addSupplierLedger = new SupplierLedger();
-        $addSupplierLedger->supplier_id = $addSupplier->id;
-        $addSupplierLedger->row_type = 3;
-        $addSupplierLedger->report_date = date('Y-m-d');
-        $addSupplierLedger->amount = $request->opening_balance ? $request->opening_balance : 0;
-        $addSupplierLedger->save();
+         // Add supplier Ledger
+         $this->supplierUtil->addSupplierLedger(
+            voucher_type_id: 0,
+            supplier_id: $addSupplier->id,
+            date: date('Y-m-d H:i:s'),
+            trans_id: NULL,
+            amount: $request->opening_balance ? $request->opening_balance : 0
+        );
 
         return response()->json('Supplier created successfully');
     }

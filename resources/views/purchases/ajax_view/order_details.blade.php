@@ -316,7 +316,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h1 class="bill_name">Purchase Order Bill</h1>
+                            <h3 class="bill_name">Purchase Order Bill</h3>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">

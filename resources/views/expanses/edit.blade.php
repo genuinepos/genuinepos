@@ -35,9 +35,9 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Reference No :</b> </label>
+                                                    <label for="inputEmail3" class="col-4"><b>Voucher No :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" value="{{ $expense->invoice_id }}" autofocus>
+                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" value="{{ $expense->invoice_id }}" autofocus>
                                                         <input type="hidden" name="description_ids" id="description_id" class="form-control" placeholder="Ex Reference No" value="{{ $expense->invoice_id }}" autofocus>
                                                     </div>
                                                 </div>

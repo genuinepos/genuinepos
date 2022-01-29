@@ -79,19 +79,29 @@
                                                 </div>
                                             </div>
 
-                                            @if (json_decode($generalSettings->purchase, true)['is_enable_status'] == '1')
-                                                <div class="input-group mt-1">
+                                            @if ($purchase->purchase_status == 3)
+                                                <div class="input-group">
                                                     <label for="inputEmail3" class=" col-4"><b>Status :</b></label>
                                                     <div class="col-8">
-                                                        <select class="form-control changeable" name="purchase_status" id="purchase_status">
-                                                            <option value="1">Received</option>
-                                                            <option value="2">Pending</option>
-                                                            <option value="3">Ordered</option>
-                                                        </select>
+                                                        <input readonly type="text" value="Ordered" class="form-control">
+                                                        <input type="hidden" name="purchase_status" id="purchase_status" value="3">
                                                     </div>
                                                 </div>
-                                            @else
-                                                <input type="hidden" name="purchase_status" id="purchase_status" value="1">
+                                            @else 
+                                                @if (json_decode($generalSettings->purchase, true)['is_enable_status'] == '1')
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Status :</b></label>
+                                                        <div class="col-8">
+                                                            <select class="form-control changeable" name="purchase_status" id="purchase_status">
+                                                                <option value="1">Purchased</option>
+                                                                <option value="2">Pending</option>
+                                                                <option value="3">Ordered</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <input type="hidden" name="purchase_status" id="purchase_status" value="1">
+                                                @endif  
                                             @endif
                                         </div>
 
@@ -151,7 +161,7 @@
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
                                                         </div>
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code">
-                                                        <@if (auth()->user()->permission->product['product_add'] == '1')
+                                                        @if (auth()->user()->permission->product['product_add'] == '1')
                                                             <div class="input-group-prepend">
                                                                 <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>

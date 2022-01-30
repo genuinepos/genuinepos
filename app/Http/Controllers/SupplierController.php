@@ -423,19 +423,19 @@ class SupplierController extends Controller
         if (count($dueInvoices) > 0) {
             $index = 0;
             foreach ($dueInvoices as $dueInvoice) {
-                if ($dueInvoice->due > $request->amount) {
-                    if ($request->amount > 0) {
+                if ($dueInvoice->due > $request->paying_amount) {
+                    if ($request->paying_amount > 0) {
                         $addPurchasePayment = new PurchasePayment();
                         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
-                        $addPurchasePayment->paid_amount = $request->amount;
+                        $addPurchasePayment->paid_amount = $request->paying_amount;
                         $addPurchasePayment->date = $request->date;
                         $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
-                        $addPurchasePayment->pay_mode = $request->payment_method;
+                        $addPurchasePayment->payment_method_id = $request->payment_method_id;
                         $addPurchasePayment->admin_id = auth()->user()->id;
                         $addPurchasePayment->payment_on = 1;
                         $addPurchasePayment->save();
@@ -444,26 +444,26 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
                         $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
                         $addSupplierPaymentInvoice->purchase_id = $dueInvoice->id;
-                        $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                        $addSupplierPaymentInvoice->paid_amount = $request->paying_amount;
                         $addSupplierPaymentInvoice->save();
 
                         //$dueAmounts -= $dueAmounts; 
-                        $request->amount -= $request->amount;
+                        $request->paying_amount -= $request->paying_amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
-                } elseif ($dueInvoice->due == $request->amount) {
-                    if ($request->amount > 0) {
+                } elseif ($dueInvoice->due == $request->paying_amount) {
+                    if ($request->paying_amount > 0) {
                         $addPurchasePayment = new PurchasePayment();
                         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
-                        $addPurchasePayment->paid_amount = $request->amount;
+                        $addPurchasePayment->paid_amount = $request->paying_amount;
                         $addPurchasePayment->date = $request->date;
                         $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
-                        $addPurchasePayment->pay_mode = $request->payment_method;
+                        $addPurchasePayment->payment_method_id = $request->payment_method_id;
 
                         $addPurchasePayment->admin_id = auth()->user()->id;
                         $addPurchasePayment->payment_on = 1;
@@ -473,24 +473,24 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
                         $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
                         $addSupplierPaymentInvoice->purchase_id = $dueInvoice->id;
-                        $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                        $addSupplierPaymentInvoice->paid_amount = $request->paying_amount;
                         $addSupplierPaymentInvoice->save();
-                        $request->amount -= $request->amount;
+                        $request->paying_amount -= $request->paying_amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
-                } elseif ($dueInvoice->due < $request->amount) {
+                } elseif ($dueInvoice->due < $request->paying_amount) {
                     if ($dueInvoice->due > 0) {
                         $addPurchasePayment = new PurchasePayment();
                         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
+                        $addPurchasePayment->payment_method_id = $request->payment_method_id;
                         $addPurchasePayment->paid_amount = $dueInvoice->due;
                         $addPurchasePayment->date = $request->date;
                         $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
-                        $addPurchasePayment->pay_mode = $request->payment_method;
                         $addPurchasePayment->admin_id = auth()->user()->id;
                         $addPurchasePayment->payment_on = 1;
                         $addPurchasePayment->save();
@@ -503,7 +503,7 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice->save();
 
                         // Calculate next payment amount
-                        $request->amount -= $dueInvoice->due;
+                        $request->paying_amount -= $dueInvoice->due;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
                 }
@@ -546,7 +546,7 @@ class SupplierController extends Controller
         $supplierPayment->branch_id = auth()->user()->branch_id;
         $supplierPayment->supplier_id = $supplierId;
         $supplierPayment->account_id = $request->account_id;
-        $supplierPayment->paid_amount = $request->amount;
+        $supplierPayment->paid_amount = $request->paying_amount;
         $supplierPayment->type = 2;
         $supplierPayment->payment_method_id = $request->payment_method_id;
         $supplierPayment->date = $request->date;
@@ -588,8 +588,8 @@ class SupplierController extends Controller
         if (count($returnPurchases) > 0) {
             $index = 0;
             foreach ($returnPurchases as $returnPurchase) {
-                if ($returnPurchase->purchase_return_due > $request->amount) {
-                    if ($request->amount > 0) {
+                if ($returnPurchase->purchase_return_due > $request->paying_amount) {
+                    if ($request->paying_amount > 0) {
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
                         $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
@@ -597,8 +597,8 @@ class SupplierController extends Controller
                         $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
-                        $addPurchasePayment->pay_mode = $request->payment_method;
-                        $addPurchasePayment->paid_amount = $request->amount;
+                        $addPurchasePayment->payment_method_id = $request->payment_method_id;
+                        $addPurchasePayment->paid_amount = $request->paying_amount;
                         $addPurchasePayment->payment_type = 2;
                         $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
                         $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
@@ -613,21 +613,21 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
                         $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
                         $addSupplierPaymentInvoice->purchase_id = $returnPurchase->id;
-                        $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                        $addSupplierPaymentInvoice->paid_amount = $request->paying_amount;
                         $addSupplierPaymentInvoice->type = 2;
                         $addSupplierPaymentInvoice->save();
 
                         if ($returnPurchase->purchase_return) {
-                            $returnPurchase->purchase_return->total_return_due -= $request->amount;
-                            $returnPurchase->purchase_return->total_return_due_received += $request->amount;
+                            $returnPurchase->purchase_return->total_return_due -= $request->paying_amount;
+                            $returnPurchase->purchase_return->total_return_due_received += $request->paying_amount;
                             $returnPurchase->purchase_return->save();
                         }
 
-                        $request->amount -= $request->amount;
+                        $request->paying_amount -= $request->paying_amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($returnPurchase);
                     }
-                } elseif ($returnPurchase->purchase_return_due == $request->amount) {
-                    if ($request->amount > 0) {
+                } elseif ($returnPurchase->purchase_return_due == $request->paying_amount) {
+                    if ($request->paying_amount > 0) {
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
                         $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
@@ -635,8 +635,8 @@ class SupplierController extends Controller
                         $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
-                        $addPurchasePayment->pay_mode = $request->payment_method;
-                        $addPurchasePayment->paid_amount = $request->amount;
+                        $addPurchasePayment->payment_method_id = $request->payment_method_id;
+                        $addPurchasePayment->paid_amount = $request->paying_amount;
                         $addPurchasePayment->payment_type = 2;
                         $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
                         $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
@@ -651,20 +651,20 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
                         $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
                         $addSupplierPaymentInvoice->purchase_id = $returnPurchase->id;
-                        $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                        $addSupplierPaymentInvoice->paid_amount = $request->paying_amount;
                         $addSupplierPaymentInvoice->type = 2;
                         $addSupplierPaymentInvoice->save();
 
                         if ($returnPurchase->purchase_return) {
-                            $returnPurchase->purchase_return->total_return_due -= $request->amount;
-                            $returnPurchase->purchase_return->total_return_due_received += $request->amount;
+                            $returnPurchase->purchase_return->total_return_due -= $request->paying_amount;
+                            $returnPurchase->purchase_return->total_return_due_received += $request->paying_amount;
                             $returnPurchase->purchase_return->save();
                         }
-                        $request->amount -= $request->amount;
+                        $request->paying_amount -= $request->paying_amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($returnPurchase);
                     }
-                } elseif ($returnPurchase->purchase_return_due < $request->amount) {
-                    if ($request->amount > 0) {
+                } elseif ($returnPurchase->purchase_return_due < $request->paying_amount) {
+                    if ($request->paying_amount > 0) {
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
                         $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
@@ -672,7 +672,7 @@ class SupplierController extends Controller
                         $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
-                        $addPurchasePayment->pay_mode = $request->payment_method;
+                        $addPurchasePayment->payment_method_id = $request->payment_method_id;
                         $addPurchasePayment->paid_amount = $returnPurchase->purchase_return_due;
                         $addPurchasePayment->payment_type = 2;
                         $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
@@ -698,7 +698,7 @@ class SupplierController extends Controller
                             $returnPurchase->purchase_return->save();
                         }
 
-                        $request->amount -= $returnPurchase->purchase_return_due;
+                        $request->paying_amount -= $returnPurchase->purchase_return_due;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($returnPurchase);
                     }
                 }
@@ -706,7 +706,7 @@ class SupplierController extends Controller
             }
         }
 
-        if ($request->amount > 0) {
+        if ($request->paying_amount > 0) {
             $dueSupplierReturnInvoices = PurchaseReturn::where('supplier_id', $supplierId)
                 ->where('total_return_due', '>', 0)
                 ->where('purchase_id', NULL)
@@ -714,10 +714,10 @@ class SupplierController extends Controller
             if (count($dueSupplierReturnInvoices) > 0) {
                 $index = 0;
                 foreach ($dueSupplierReturnInvoices as $dueSupplierReturnInvoice) {
-                    if ($dueSupplierReturnInvoice->total_return_due > $request->amount) {
-                        if ($request->amount > 0) {
-                            $dueSupplierReturnInvoice->total_return_due -= $request->amount;
-                            $dueSupplierReturnInvoice->total_return_due_received += $request->amount;
+                    if ($dueSupplierReturnInvoice->total_return_due > $request->paying_amount) {
+                        if ($request->paying_amount > 0) {
+                            $dueSupplierReturnInvoice->total_return_due -= $request->paying_amount;
+                            $dueSupplierReturnInvoice->total_return_due_received += $request->paying_amount;
                             $dueSupplierReturnInvoice->save();
 
                             // Add purchase payment
@@ -727,8 +727,8 @@ class SupplierController extends Controller
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                             $addPurchasePayment->supplier_return_id = $dueSupplierReturnInvoice->id;
                             $addPurchasePayment->account_id = $request->account_id;
-                            $addPurchasePayment->pay_mode = $request->payment_method;
-                            $addPurchasePayment->paid_amount = $request->amount;
+                            $addPurchasePayment->payment_method_id = $request->payment_method_id;
+                            $addPurchasePayment->paid_amount = $request->paying_amount;
                             $addPurchasePayment->payment_type = 2;
                             $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
                             $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
@@ -743,15 +743,15 @@ class SupplierController extends Controller
                             $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
                             $addSupplierPaymentInvoice->supplier_payment_id = $addPurchasePayment->id;
                             $addSupplierPaymentInvoice->supplier_return_id = $dueSupplierReturnInvoice->id;
-                            $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                            $addSupplierPaymentInvoice->paid_amount = $request->paying_amount;
                             $addSupplierPaymentInvoice->type = 2;
                             $addSupplierPaymentInvoice->save();
-                            $request->amount -= $request->amount;
+                            $request->paying_amount -= $request->paying_amount;
                         }
-                    } elseif ($dueSupplierReturnInvoice->total_return_due == $request->amount) {
-                        if ($request->amount > 0) {
-                            $dueSupplierReturnInvoice->total_return_due -= $request->amount;
-                            $dueSupplierReturnInvoice->total_return_due_received += $request->amount;
+                    } elseif ($dueSupplierReturnInvoice->total_return_due == $request->paying_amount) {
+                        if ($request->paying_amount > 0) {
+                            $dueSupplierReturnInvoice->total_return_due -= $request->paying_amount;
+                            $dueSupplierReturnInvoice->total_return_due_received += $request->paying_amount;
                             $dueSupplierReturnInvoice->save();
                             // Add purchase payment
                             $addPurchasePayment = new PurchasePayment();
@@ -760,8 +760,8 @@ class SupplierController extends Controller
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                             $addPurchasePayment->supplier_return_id = $dueSupplierReturnInvoice->id;
                             $addPurchasePayment->account_id = $request->account_id;
-                            $addPurchasePayment->pay_mode = $request->payment_method;
-                            $addPurchasePayment->paid_amount = $request->amount;
+                            $addPurchasePayment->payment_method_id = $request->payment_method_id;
+                            $addPurchasePayment->paid_amount = $request->paying_amount;
                             $addPurchasePayment->payment_type = 2;
                             $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
                             $addPurchasePayment->report_date = date('Y-m-d', strtotime($request->date));
@@ -776,13 +776,13 @@ class SupplierController extends Controller
                             $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
                             $addSupplierPaymentInvoice->supplier_payment_id = $addPurchasePayment->id;
                             $addSupplierPaymentInvoice->supplier_return_id = $dueSupplierReturnInvoice->id;
-                            $addSupplierPaymentInvoice->paid_amount = $request->amount;
+                            $addSupplierPaymentInvoice->paid_amount = $request->paying_amount;
                             $addSupplierPaymentInvoice->type = 2;
                             $addSupplierPaymentInvoice->save();
-                            $request->amount -= $request->amount;
+                            $request->paying_amount -= $request->paying_amount;
                         }
-                    } elseif ($dueSupplierReturnInvoice->total_return_due < $request->amount) {
-                        if ($request->amount > 0) {
+                    } elseif ($dueSupplierReturnInvoice->total_return_due < $request->paying_amount) {
+                        if ($request->paying_amount > 0) {
                             $dueSupplierReturnInvoice->total_return_due -=  $dueSupplierReturnInvoice->total_return_due;
                             $dueSupplierReturnInvoice->total_return_due_received +=  $dueSupplierReturnInvoice->total_return_due;
                             $dueSupplierReturnInvoice->save();
@@ -793,7 +793,7 @@ class SupplierController extends Controller
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                             $addPurchasePayment->supplier_return_id = $dueSupplierReturnInvoice->id;
                             $addPurchasePayment->account_id = $request->account_id;
-                            $addPurchasePayment->pay_mode = $request->payment_method;
+                            $addPurchasePayment->payment_method_id = $request->payment_method_id;
                             $addPurchasePayment->paid_amount = $dueSupplierReturnInvoice->total_return_due;
                             $addPurchasePayment->payment_type = 2;
                             $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
@@ -812,7 +812,7 @@ class SupplierController extends Controller
                             $addSupplierPaymentInvoice->paid_amount = $dueSupplierReturnInvoice->total_return_due;
                             $addSupplierPaymentInvoice->type = 2;
                             $addSupplierPaymentInvoice->save();
-                            $request->amount -= $dueSupplierReturnInvoice->total_return_due;
+                            $request->paying_amount -= $dueSupplierReturnInvoice->total_return_due;
                         }
                     }
                     $index++;
@@ -829,7 +829,13 @@ class SupplierController extends Controller
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
         $supplier_payments = DB::table('supplier_payments')
             ->leftJoin('accounts', 'supplier_payments.account_id', 'accounts.id')
-            ->select('supplier_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
+            ->leftJoin('payment_methods', 'supplier_payments.payment_method_id', 'payment_methods.id')
+            ->select(
+                'supplier_payments.*',
+                'accounts.name as ac_name',
+                'accounts.account_number as ac_no',
+                'payment_methods.name as payment_method'
+            )
             ->where('supplier_payments.supplier_id', $supplier->id)
             ->orderBy('supplier_payments.report_date', 'desc')->get();
         return view('contacts.suppliers.ajax_view.view_payment_list', compact('supplier', 'supplier_payments'));
@@ -843,7 +849,8 @@ class SupplierController extends Controller
             'supplier',
             'account',
             'supplier_payment_invoices',
-            'supplier_payment_invoices.purchase:id,invoice_id,date'
+            'supplier_payment_invoices.purchase:id,invoice_id,date',
+            'paymentMethod:id,name'
         )->where('id', $paymentId)->first();
         return view('contacts.suppliers.ajax_view.payment_details', compact('supplierPayment'));
     }

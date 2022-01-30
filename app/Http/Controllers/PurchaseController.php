@@ -686,10 +686,11 @@ class PurchaseController extends Controller
     public function delete(Request $request, $purchaseId)
     {
         // get deleting purchase row
-        $deletePurchase = purchase::with('supplier', 'purchase_products')->where('id', $purchaseId)->first();
+        $deletePurchase = Purchase::with('supplier', 'purchase_products', 'purchase_return')->where('id', $purchaseId)->first();
         $supplier = DB::table('suppliers')->where('id', $deletePurchase->supplier_id)->first();
         //purchase payments
         $storedWarehouseId = $deletePurchase->warehouse_id;
+        $storedPurchaseReturnAccountId = $deletePurchase->purchase_return ? $deletePurchase->purchase_return->purchase_return_account_id : NULL;
         $storedBranchId = $deletePurchase->branch_id;
         $storedPayments = $deletePurchase->purchase_payments;
         $storedPurchaseAccountId = $deletePurchase->purchase_account_id;
@@ -712,6 +713,10 @@ class PurchaseController extends Controller
             $this->accountUtil->adjustAccountBalance('debit', $storedPurchaseAccountId);
         }
 
+        if ($storedPurchaseReturnAccountId) {
+            $this->accountUtil->adjustAccountBalance('credit', $storedPurchaseReturnAccountId);
+        }
+        
         foreach ($storePurchaseProducts as $purchase_product) {
             $variant_id = $purchase_product->product_variant_id ? $purchase_product->product_variant_id : NULL;
             $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $variant_id);

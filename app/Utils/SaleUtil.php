@@ -417,10 +417,12 @@ class SaleUtil
             'sale_products.product',
             'sale_products.variant',
             'sale_products.product.comboProducts',
+            'sale_return',
         ])->where('id', $saleId)->first();
 
         $storedCustomerId = $deleteSale->customer_id;
         $storedSaleAccountId = $deleteSale->sale_account_id;
+        $storedSaleReturnAccountId = $deleteSale->sale_return ? $deleteSale->sale_return->sale_return_account_id : NULL;
         $storedBranchId = $deleteSale->branch_id;
         $storedPayments = $deleteSale->sale_payments;
         $storedSaleProducts = $deleteSale->sale_products;
@@ -432,6 +434,14 @@ class SaleUtil
             $this->accountUtil->adjustAccountBalance(
                 balanceType: 'credit',
                 account_id: $storedSaleAccountId
+            );
+        }
+
+        if ($storedSaleReturnAccountId) {
+            // Adjust sale account balance
+            $this->accountUtil->adjustAccountBalance(
+                balanceType : 'debit',
+                account_id : $storedSaleReturnAccountId
             );
         }
 

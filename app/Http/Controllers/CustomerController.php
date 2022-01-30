@@ -386,6 +386,13 @@ class CustomerController extends Controller
 
     public function paymentAdd(Request $request, $customerId)
     {
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ]);
+
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
 
@@ -431,7 +438,6 @@ class CustomerController extends Controller
             amount: $request->paying_amount,
             balance_type: 'debit'
         );
-
 
         $dueInvoices = Sale::where('customer_id', $customerId)->where('due', '>', 0)->get();
         if (count($dueInvoices) > 0) {

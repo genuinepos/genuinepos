@@ -596,7 +596,7 @@
                         $('#payment_modal_body').html(data);
                         $('#paymentModal').modal('show');
                         $('.data_preloader').hide();
-                        document.getElementById('p_amount').focus();
+                        document.getElementById('p_paying_amount').focus();
                     }
                 });
             });
@@ -623,6 +623,7 @@
                 $('.loading_button').show();
                 var available_amount = $('#p_available_amount').val();
                 var paying_amount = $('#p_paying_amount').val();
+                
                 if (parseFloat(paying_amount) > parseFloat(available_amount)) {
                     $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
                     $('.loading_button').hide();
@@ -631,12 +632,6 @@
 
                 var url = $(this).attr('action');
              
-                if (countErrorField > 0) {
-                    toastr.error('Please chack all form fields', 'SOMETHING WANG WRONG');
-                    $('.loading_button').hide();
-                    return;
-                }
-
                 $.ajax({
                     url: url,
                     type: 'post',

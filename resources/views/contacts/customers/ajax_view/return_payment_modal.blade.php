@@ -60,7 +60,7 @@
                     <span class="input-group-text" id="basic-addon1"><i
                             class="fas fa-calendar-week text-dark input_i"></i></span>
                 </div>
-                <input type="text" name="date" class="form-control form-control-sm p_input"
+                <input type="text" name="date" class="form-control p_input"
                     autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}"/>
             </div>
             <span class="error error_p_date"></span>
@@ -72,38 +72,42 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
                 </div>
-                <select name="payment_method_id" class="form-control" id="payment_method_id">
-                    <option value="Cash">Cash</option>
-                    <option value="Advanced">Advanced</option>
-                    <option value="Card">Card</option>
-                    <option value="Cheque">Cheque</option>
-                    <option value="Bank-Transfer">Bank-Transfer</option>
-                    <option value="Other">Other</option>
-                    <option value="Custom">Custom Field</option>
+                <select name="payment_method_id" class="form-control" id="p_payment_method_id">
+                    @foreach ($methods as $method)
+                        <option value="{{ $method->id }}">
+                            {{ $method->name }}
+                        </option>
+                    @endforeach
                 </select>
+                <span class="error error_p_payment_method_id"></span>
             </div>
         </div>
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-7">
-            <label><strong>Payment Account :</strong> </label>
+        <div class="col-md-4">
+            <label><strong>Debit Account :</strong> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i
                             class="fas fa-money-check-alt text-dark input_i"></i></span>
                 </div>
                 <select name="account_id" class="form-control" id="p_account_id">
-                    <option value="">None</option>
                     @foreach ($accounts as $account)
-                        <option value="{{ $account->id }}">{{ $account->name }} (A/C:
-                            {{ $account->account_number }}) (Balance: {{ $account->balance }})</option>
+                        <option value="{{ $account->id }}">
+                            @php
+                                $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                $balance = ' BL : '.$account->balance;
+                            @endphp
+                            {{ $account->name.$accountType.$balance}}
+                        </option>
                     @endforeach
                 </select>
+                <span class="error error_p_account_id"></span>
             </div>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-4">
             <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
             <input type="file" name="attachment" class="form-control" id="attachment">
         </div>

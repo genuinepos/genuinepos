@@ -59,7 +59,7 @@ class SupplierImport implements ToCollection
                     $this->supplierUtil->addSupplierLedger(
                         voucher_type_id: 0,
                         supplier_id: $addSupplier->id,
-                        date: date('Y-m-d H:i:s'),
+                        date: date('Y-m-d'),
                         trans_id: NULL,
                         amount: (float)$c[9] ? (float)$c[9] : 0
                     );

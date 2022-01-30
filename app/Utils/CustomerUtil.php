@@ -177,6 +177,7 @@ class CustomerUtil
         $addCustomerLedger->report_date = date('Y-m-d', strtotime($date.date(' H:i:s')));
         $addCustomerLedger->{$voucher_type['id']} = $trans_id;
         $addCustomerLedger->{$voucher_type['amt']} = $amount;
+        $addCustomerLedger->amount = $amount;
         $addCustomerLedger->amount_type = $voucher_type['amt'];
         $addCustomerLedger->voucher_type = $voucher_type_id;
         $addCustomerLedger->running_balance = $this->adjustCustomerAmountForSalePaymentDue($customer_id);
@@ -190,6 +191,7 @@ class CustomerUtil
         //$updateCustomerLedger->customer_id = $customer_id;
         $updateCustomerLedger->report_date = date('Y-m-d', strtotime($date.date(' H:i:s')));
         $updateCustomerLedger->{$voucher_type['amt']} = $amount;
+        $updateCustomerLedger->amount = $amount;
         $updateCustomerLedger->running_balance = $this->adjustCustomerAmountForSalePaymentDue($customer_id);
         $updateCustomerLedger->save();
     }

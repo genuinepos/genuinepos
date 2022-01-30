@@ -57,7 +57,7 @@ class CustomerImport implements ToCollection
                     $this->customerUtil->addCustomerLedger(
                         voucher_type_id: 0,
                         customer_id: $addCustomer->id,
-                        date: date('Y-m-d H:i:s'),
+                        date: date('Y-m-d'),
                         trans_id: NULL,
                         amount: (float)$c[9] ? (float)$c[9] : 0
                     );

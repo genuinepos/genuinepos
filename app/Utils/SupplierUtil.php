@@ -121,6 +121,7 @@ class SupplierUtil
         $addSupplierLedger->report_date = date('Y-m-d', strtotime($date.date(' H:i:s')));
         $addSupplierLedger->{$voucher_type['id']} = $trans_id;
         $addSupplierLedger->{$voucher_type['amt']} = $amount;
+        $addSupplierLedger->amount = $amount;
         $addSupplierLedger->amount_type = $voucher_type['amt'];
         $addSupplierLedger->voucher_type = $voucher_type_id;
         $addSupplierLedger->running_balance = $this->adjustSupplierForSalePaymentDue($supplier_id);
@@ -134,6 +135,7 @@ class SupplierUtil
         //$updateSupplierLedger->supplier_id = $supplier_id;
         $updateSupplierLedger->report_date = date('Y-m-d', strtotime($date.date(' H:i:s')));
         $updateSupplierLedger->{$voucher_type['amt']} = $amount;
+        $updateSupplierLedger->amount = $amount;
         $updateSupplierLedger->running_balance = $this->adjustSupplierForSalePaymentDue($supplier_id);
         $updateSupplierLedger->save();
     }

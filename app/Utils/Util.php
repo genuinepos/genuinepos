@@ -136,7 +136,7 @@ class Util
         $this->customerUtil->addCustomerLedger(
             voucher_type_id: 0,
             customer_id: $addCustomer->id,
-            date: date('Y-m-d H:i:s'),
+            date: date('Y-m-d'),
             trans_id: NULL,
             amount: $request->opening_balance ? $request->opening_balance : 0
         );
@@ -182,7 +182,7 @@ class Util
         $this->supplierUtil->addSupplierLedger(
             voucher_type_id: 0,
             supplier_id: $addSupplier->id,
-            date: date('Y-m-d H:i:s'),
+            date: date('Y-m-d'),
             trans_id: NULL,
             amount: $request->opening_balance ? $request->opening_balance : 0
         );

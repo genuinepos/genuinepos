@@ -325,9 +325,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="money_receipt_modal">
-                    <!--begin::Form-->
-                </div>
+                <div class="modal-body" id="money_receipt_modal"></div>
             </div>
         </div>
     </div>

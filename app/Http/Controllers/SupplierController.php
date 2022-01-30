@@ -88,7 +88,7 @@ class SupplierController extends Controller
         $this->supplierUtil->addSupplierLedger(
             voucher_type_id: 0,
             supplier_id: $addSupplier->id,
-            date: date('Y-m-d H:i:s'),
+            date: date('Y-m-d'),
             trans_id: NULL,
             amount: $request->opening_balance ? $request->opening_balance : 0
         );
@@ -413,7 +413,7 @@ class SupplierController extends Controller
             account_id: $request->account_id,
             trans_id: $supplierPayment->id,
             amount: $request->paying_amount,
-            balance_type: 'credit'
+            balance_type: 'debit'
         );
 
         $dueInvoices = Purchase::where('supplier_id', $supplierId)
@@ -533,6 +533,13 @@ class SupplierController extends Controller
 
     public function returnPaymentAdd(Request $request, $supplierId)
     {
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ]);
+
         // Add Supplier Payment Record
         $supplierPayment = new SupplierPayment();
         $supplierPayment->voucher_no = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('supplier_payments');
@@ -541,7 +548,7 @@ class SupplierController extends Controller
         $supplierPayment->account_id = $request->account_id;
         $supplierPayment->paid_amount = $request->amount;
         $supplierPayment->type = 2;
-        $supplierPayment->pay_mode = $request->payment_method;
+        $supplierPayment->payment_method_id = $request->payment_method_id;
         $supplierPayment->date = $request->date;
         $supplierPayment->report_date = date('Y-m-d', strtotime($request->date));
         $supplierPayment->time = date('h:i:s a');
@@ -574,7 +581,7 @@ class SupplierController extends Controller
             account_id: $request->account_id,
             trans_id: $supplierPayment->id,
             amount: $request->paying_amount,
-            balance_type: 'credit'
+            balance_type: 'debit'
         );
 
         $returnPurchases = Purchase::with(['purchase_return'])->where('purchase_return_due', '>', 0)->get();
@@ -883,7 +890,7 @@ class SupplierController extends Controller
         }
 
         if ($storedAccountId) {
-            $this->accountUtil->adjustAccountBalance($storedAccountId);
+            $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
         }
 
         $this->supplierUtil->adjustSupplierForSalePaymentDue($deleteSupplierPayment->supplier_id);

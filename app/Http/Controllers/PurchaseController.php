@@ -299,7 +299,7 @@ class PurchaseController extends Controller
             date: $request->date,
             account_id: $request->purchase_account_id,
             trans_id: $addPurchase->id,
-            amount: $request->paying_amount,
+            amount: $request->total_purchase_amount,
             balance_type: 'debit'
         );
 
@@ -309,7 +309,7 @@ class PurchaseController extends Controller
             supplier_id: $request->supplier_id,
             date: $request->date,
             trans_id: $addPurchase->id,
-            amount: $request->paying_amount,
+            amount: $request->total_purchase_amount,
         );
 
         if ($request->paying_amount > 0) {

@@ -118,7 +118,7 @@ class CustomerController extends Controller
         if (auth()->user()->permission->contact['customer_edit'] == '0') {
             return response()->json('Access Denied');
         }
-        
+
         $this->validate($request, [
             'name' => 'required',
             'phone' => 'required',
@@ -365,8 +365,23 @@ class CustomerController extends Controller
     public function payment($customerId)
     {
         $customer = DB::table('customers')->where('id', $customerId)->first();
-        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        return view('contacts.customers.ajax_view.payment_modal', compact('customer', 'accounts'));
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get([
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance'
+            ]);
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
+        return view('contacts.customers.ajax_view.payment_modal', compact('customer', 'accounts', 'methods'));
     }
 
     public function paymentAdd(Request $request, $customerId)
@@ -376,33 +391,17 @@ class CustomerController extends Controller
 
         // Add Customer Payment Record
         $customerPayment = new CustomerPayment();
-        $customerPayment->voucher_no = 'CPV' . date('my') . $this->invoiceVoucherRefIdUtil->customerPaymentVoucherNo();
+        $customerPayment->voucher_no = 'CPV' . $this->invoiceVoucherRefIdUtil->getLastId('customer_payments');
         $customerPayment->branch_id = auth()->user()->branch_id;
         $customerPayment->customer_id = $customerId;
         $customerPayment->account_id = $request->account_id;
-        $customerPayment->paid_amount = $request->amount;
+        $customerPayment->paid_amount = $request->paying_amount;
         $customerPayment->payment_method_id = $request->payment_method_id;
         $customerPayment->report_date = date('Y-m-d', strtotime($request->date));
         $customerPayment->date = $request->date;
         $customerPayment->time = date('h:i:s a');
         $customerPayment->month = date('F');
         $customerPayment->year = date('Y');
-
-        if ($request->payment_method == 'Card') {
-            $customerPayment->card_no = $request->card_no;
-            $customerPayment->card_holder = $request->card_holder_name;
-            $customerPayment->card_transaction_no = $request->card_transaction_no;
-            $customerPayment->card_type = $request->card_type;
-            $customerPayment->card_month = $request->month;
-            $customerPayment->card_year = $request->year;
-            $customerPayment->card_secure_code = $request->secure_code;
-        } elseif ($request->payment_method == 'Cheque') {
-            $customerPayment->cheque_no = $request->cheque_no;
-        } elseif ($request->payment_method == 'Bank-Transfer') {
-            $customerPayment->account_no = $request->account_no;
-        } elseif ($request->payment_method == 'Custom') {
-            $customerPayment->transaction_no = $request->transaction_no;
-        }
 
         if ($request->hasFile('attachment')) {
             $PaymentAttachment = $request->file('attachment');
@@ -414,51 +413,45 @@ class CustomerController extends Controller
         $customerPayment->note = $request->note;
         $customerPayment->save();
 
-        // if ($request->account_id) {
-        //     // Add cash flow
-        //     $addCashFlow = new CashFlow();
-        //     $addCashFlow->account_id = $request->account_id;
-        //     $addCashFlow->credit = $request->amount;
-        //     $addCashFlow->customer_payment_id = $customerPayment->id;
-        //     $addCashFlow->transaction_type = 13;
-        //     $addCashFlow->cash_type = 2;
-        //     $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-        //     $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-        //     $addCashFlow->month = date('F');
-        //     $addCashFlow->year = date('Y');
-        //     $addCashFlow->admin_id = auth()->user()->id;
-        //     $addCashFlow->save();
-        //     $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-        //     $addCashFlow->save();
-        // }
+        // Add supplier Ledger
+        $this->customerUtil->addCustomerLedger(
+            voucher_type_id: 5,
+            customer_id: $customerId,
+            date: $request->date,
+            trans_id: $customerPayment->id,
+            amount: $request->paying_amount
+        );
 
-        // Add customer payment for direct payment
-        $addCustomerLedger = new CustomerLedger();
-        $addCustomerLedger->customer_id = $customerId;
-        $addCustomerLedger->row_type = 5;
-        $addCustomerLedger->customer_payment_id = $customerPayment->id;
-        $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
-        $addCustomerLedger->save();
+        // Add Bank/Cash-in-hand A/C Ledger
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 18,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $customerPayment->id,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
+
 
         $dueInvoices = Sale::where('customer_id', $customerId)->where('due', '>', 0)->get();
         if (count($dueInvoices) > 0) {
             $index = 0;
             foreach ($dueInvoices as $dueInvoice) {
-                if ($dueInvoice->due > $request->amount) {
-                    if ($request->amount > 0) {
+                if ($dueInvoice->due > $request->paying_amount) {
+                    if ($request->paying_amount > 0) {
                         $addSalePayment = new SalePayment();
                         $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
                         $addSalePayment->sale_id = $dueInvoice->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->account_id = $request->account_id;
                         $addSalePayment->customer_payment_id = $customerPayment->id;
-                        $addSalePayment->paid_amount = $request->amount;
+                        $addSalePayment->paid_amount = $request->paying_amount;
                         $addSalePayment->date = date('d-m-Y', strtotime($request->date));
                         $addSalePayment->time = date('h:i:s a');
                         $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
-                        $addSalePayment->pay_mode = $request->payment_method;
+                        $addSalePayment->payment_method_id = $request->payment_method_id;
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->payment_on = 1;
                         $addSalePayment->save();
@@ -467,43 +460,26 @@ class CustomerController extends Controller
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
                         $addCustomerPaymentInvoice->sale_id = $dueInvoice->id;
-                        $addCustomerPaymentInvoice->paid_amount = $request->amount;
+                        $addCustomerPaymentInvoice->paid_amount = $request->paying_amount;
                         $addCustomerPaymentInvoice->save();
                         $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
-                        $request->amount -= $request->amount;
+                        $request->paying_amount -= $request->paying_amount;
                     }
-                } elseif ($dueInvoice->due == $request->amount) {
-                    if ($request->amount > 0) {
+                } elseif ($dueInvoice->due == $request->paying_amount) {
+                    if ($request->paying_amount > 0) {
                         $addSalePayment = new SalePayment();
                         $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
                         $addSalePayment->sale_id = $dueInvoice->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->account_id = $request->account_id;
                         $addSalePayment->customer_payment_id = $customerPayment->id;
-                        $addSalePayment->paid_amount = $request->amount;
+                        $addSalePayment->paid_amount = $request->paying_amount;
                         $addSalePayment->date = date('d-m-Y', strtotime($request->date));
                         $addSalePayment->time = date('h:i:s a');
                         $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
-                        $addSalePayment->pay_mode = $request->payment_method;
-
-                        if ($request->payment_method == 'Card') {
-                            $addSalePayment->card_no = $request->card_no;
-                            $addSalePayment->card_holder = $request->card_holder_name;
-                            $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                            $addSalePayment->card_type = $request->card_type;
-                            $addSalePayment->card_month = $request->month;
-                            $addSalePayment->card_year = $request->year;
-                            $addSalePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addSalePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addSalePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addSalePayment->transaction_no = $request->transaction_no;
-                        }
-
+                        $addSalePayment->payment_method_id = $request->payment_method_id;
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->payment_on = 1;
                         $addSalePayment->save();
@@ -512,12 +488,12 @@ class CustomerController extends Controller
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
                         $addCustomerPaymentInvoice->sale_id = $dueInvoice->id;
-                        $addCustomerPaymentInvoice->paid_amount = $request->amount;
+                        $addCustomerPaymentInvoice->paid_amount = $request->paying_amount;
                         $addCustomerPaymentInvoice->save();
                         $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
-                        $request->amount -= $request->amount;
+                        $request->paying_amount -= $request->paying_amount;
                     }
-                } elseif ($dueInvoice->due < $request->amount) {
+                } elseif ($dueInvoice->due < $request->paying_amount) {
                     if ($dueInvoice->due > 0) {
                         $addSalePayment = new SalePayment();
                         $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
@@ -531,23 +507,7 @@ class CustomerController extends Controller
                         $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
-                        $addSalePayment->pay_mode = $request->payment_method;
-
-                        if ($request->payment_method == 'Card') {
-                            $addSalePayment->card_no = $request->card_no;
-                            $addSalePayment->card_holder = $request->card_holder_name;
-                            $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                            $addSalePayment->card_type = $request->card_type;
-                            $addSalePayment->card_month = $request->month;
-                            $addSalePayment->card_year = $request->year;
-                            $addSalePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addSalePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addSalePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addSalePayment->transaction_no = $request->transaction_no;
-                        }
+                        $addSalePayment->payment_method_id = $request->payment_method_id;
 
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->payment_on = 1;
@@ -560,7 +520,7 @@ class CustomerController extends Controller
                         $addCustomerPaymentInvoice->paid_amount = $dueInvoice->due;
                         $addCustomerPaymentInvoice->save();
 
-                        $request->amount -= $dueInvoice->due;
+                        $request->paying_amount -= $dueInvoice->due;
                         $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                     }
                 }
@@ -575,8 +535,23 @@ class CustomerController extends Controller
     public function returnPayment($customerId)
     {
         $customer = DB::table('customers')->where('id', $customerId)->first();
-        $accounts = Account::orderBy('id', 'DESC')->where('status', 1)->get();
-        return view('contacts.customers.ajax_view.return_payment_modal', compact('customer', 'accounts'));
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get([
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance'
+            ]);
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
+        return view('contacts.customers.ajax_view.return_payment_modal', compact('customer', 'accounts', 'methods'));
     }
 
     public function returnPaymentAdd(Request $request, $customerId)
@@ -587,30 +562,14 @@ class CustomerController extends Controller
         $customerPayment->branch_id = auth()->user()->branch_id;
         $customerPayment->customer_id = $customerId;
         $customerPayment->account_id = $request->account_id;
-        $customerPayment->paid_amount = $request->amount;
+        $customerPayment->paid_amount = $request->paying_amount;
         $customerPayment->type = 2;
-        $customerPayment->pay_mode = $request->payment_method;
+        $customerPayment->payment_method_id = $request->payment_method_id;
         $customerPayment->date = $request->date;
         $customerPayment->report_date = date('Y-m-d', strtotime($request->date));
         $customerPayment->time = date('h:i:s a');
         $customerPayment->month = date('F');
         $customerPayment->year = date('Y');
-
-        if ($request->payment_method == 'Card') {
-            $customerPayment->card_no = $request->card_no;
-            $customerPayment->card_holder = $request->card_holder_name;
-            $customerPayment->card_transaction_no = $request->card_transaction_no;
-            $customerPayment->card_type = $request->card_type;
-            $customerPayment->card_month = $request->month;
-            $customerPayment->card_year = $request->year;
-            $customerPayment->card_secure_code = $request->secure_code;
-        } elseif ($request->payment_method == 'Cheque') {
-            $customerPayment->cheque_no = $request->cheque_no;
-        } elseif ($request->payment_method == 'Bank-Transfer') {
-            $customerPayment->account_no = $request->account_no;
-        } elseif ($request->payment_method == 'Custom') {
-            $customerPayment->transaction_no = $request->transaction_no;
-        }
 
         if ($request->hasFile('attachment')) {
             $PaymentAttachment = $request->file('attachment');
@@ -622,38 +581,31 @@ class CustomerController extends Controller
         $customerPayment->note = $request->note;
         $customerPayment->save();
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->debit = $request->amount;
-            $addCashFlow->customer_payment_id = $customerPayment->id;
-            $addCashFlow->transaction_type = 13;
-            $addCashFlow->cash_type = 1;
-            $addCashFlow->date = date('d-m-y', strtotime($request->date));
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->user()->id;
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
-        }
+        // Add supplier Ledger
+        $this->customerUtil->addCustomerLedger(
+            voucher_type_id: 6,
+            customer_id: $customerId,
+            date: $request->date,
+            trans_id: $customerPayment->id,
+            amount: $request->paying_amount
+        );
 
-        // Add Customer payment for direct payment
-        $addCustomerLedger = new CustomerLedger();
-        $addCustomerLedger->customer_id = $customerId;
-        $addCustomerLedger->row_type = 5;
-        $addCustomerLedger->customer_payment_id = $customerPayment->id;
-        $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
-        $addCustomerLedger->save();
+        // Add Bank/Cash-in-hand A/C Ledger
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 20,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $customerPayment->id,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
 
         $returnSales = Sale::with(['sale_return'])->where('sale_return_due', '>', 0)->get();
         if (count($returnSales) > 0) {
             $index = 0;
             foreach ($returnSales as $returnSale) {
-                if ($returnSale->sale_return_due > $request->amount) {
-                    if ($request->amount > 0) {
+                if ($returnSale->sale_return_due > $request->paying_amount) {
+                    if ($request->paying_amount > 0) {
                         // Add sale payment
                         $addSalePayment = new SalePayment();
                         $addSalePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
@@ -661,8 +613,8 @@ class CustomerController extends Controller
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->customer_payment_id = $customerPayment->id;
                         $addSalePayment->account_id = $request->account_id;
-                        $addSalePayment->pay_mode = $request->payment_method;
-                        $addSalePayment->paid_amount = $request->amount;
+                        $addSalePayment->payment_method_id = $request->payment_method_id;
+                        $addSalePayment->paid_amount = $request->paying_amount;
                         $addSalePayment->payment_type = 2;
                         $addSalePayment->date = date('d-m-y', strtotime($request->date));
                         $addSalePayment->time = date('h:i:s a');
@@ -670,22 +622,6 @@ class CustomerController extends Controller
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->note = $request->note;
-
-                        if ($request->payment_method == 'Card') {
-                            $addSalePayment->card_no = $request->card_no;
-                            $addSalePayment->card_holder = $request->card_holder_name;
-                            $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                            $addSalePayment->card_type = $request->card_type;
-                            $addSalePayment->card_month = $request->month;
-                            $addSalePayment->card_year = $request->year;
-                            $addSalePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addSalePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addSalePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addSalePayment->transaction_no = $request->transaction_no;
-                        }
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->save();
 
@@ -693,30 +629,30 @@ class CustomerController extends Controller
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
                         $addCustomerPaymentInvoice->sale_id = $returnSale->id;
-                        $addCustomerPaymentInvoice->paid_amount = $request->amount;
+                        $addCustomerPaymentInvoice->paid_amount = $request->paying_amount;
                         $addCustomerPaymentInvoice->type = 2;
                         $addCustomerPaymentInvoice->save();
 
                         if ($returnSale->sale_return) {
-                            $returnSale->sale_return->total_return_due -= $request->amount;
-                            $returnSale->sale_return->total_return_due_pay += $request->amount;
+                            $returnSale->sale_return->total_return_due -= $request->paying_amount;
+                            $returnSale->sale_return->total_return_due_pay += $request->paying_amount;
                             $returnSale->sale_return->save();
                         }
 
-                        $request->amount -= $request->amount;
+                        $request->paying_amount -= $request->paying_amount;
                         $this->saleUtil->adjustSaleInvoiceAmounts($returnSale);
                     }
-                } elseif ($returnSale->sale_return_due == $request->amount) {
-                    if ($request->amount > 0) {
+                } elseif ($returnSale->sale_return_due == $request->paying_amount) {
+                    if ($request->paying_amount > 0) {
                         // Add sale payment
                         $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
+                        $addSalePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
                         $addSalePayment->sale_id = $returnSale->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->customer_payment_id = $customerPayment->id;
                         $addSalePayment->account_id = $request->account_id;
-                        $addSalePayment->pay_mode = $request->payment_method;
-                        $addSalePayment->paid_amount = $request->amount;
+                        $addSalePayment->payment_method_id = $request->payment_method_id;
+                        $addSalePayment->paid_amount = $request->paying_amount;
                         $addSalePayment->payment_type = 2;
                         $addSalePayment->date = date('d-m-y', strtotime($request->date));
                         $addSalePayment->time = date('h:i:s a');
@@ -724,22 +660,6 @@ class CustomerController extends Controller
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->note = $request->note;
-
-                        if ($request->payment_method == 'Card') {
-                            $addSalePayment->card_no = $request->card_no;
-                            $addSalePayment->card_holder = $request->card_holder_name;
-                            $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                            $addSalePayment->card_type = $request->card_type;
-                            $addSalePayment->card_month = $request->month;
-                            $addSalePayment->card_year = $request->year;
-                            $addSalePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addSalePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addSalePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addSalePayment->transaction_no = $request->transaction_no;
-                        }
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->save();
 
@@ -747,20 +667,20 @@ class CustomerController extends Controller
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
                         $addCustomerPaymentInvoice->sale_id = $returnSale->id;
-                        $addCustomerPaymentInvoice->paid_amount = $request->amount;
+                        $addCustomerPaymentInvoice->paid_amount = $request->paying_amount;
                         $addCustomerPaymentInvoice->type = 2;
                         $addCustomerPaymentInvoice->save();
 
                         if ($returnSale->sale_return) {
-                            $returnSale->sale_return->total_return_due -= $request->amount;
-                            $returnSale->sale_return->total_return_due_pay += $request->amount;
+                            $returnSale->sale_return->total_return_due -= $request->paying_amount;
+                            $returnSale->sale_return->total_return_due_pay += $request->paying_amount;
                             $returnSale->sale_return->save();
                         }
-                        $request->amount -= $request->amount;
+                        $request->paying_amount -= $request->paying_amount;
                         $this->saleUtil->adjustSaleInvoiceAmounts($returnSale);
                     }
-                } elseif ($returnSale->sale_return_due < $request->amount) {
-                    if ($request->amount > 0) {
+                } elseif ($returnSale->sale_return_due < $request->paying_amount) {
+                    if ($request->paying_amount > 0) {
                         // Add sale payment
                         $addSalePayment = new SalePayment();
                         $addSalePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
@@ -768,7 +688,7 @@ class CustomerController extends Controller
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->customer_payment_id = $customerPayment->id;
                         $addSalePayment->account_id = $request->account_id;
-                        $addSalePayment->pay_mode = $request->payment_method;
+                        $addSalePayment->payment_method_id = $request->payment_method_id;
                         $addSalePayment->paid_amount = $returnSale->sale_return_due;
                         $addSalePayment->payment_type = 2;
                         $addSalePayment->date = date('d-m-y', strtotime($request->date));
@@ -777,22 +697,6 @@ class CustomerController extends Controller
                         $addSalePayment->month = date('F');
                         $addSalePayment->year = date('Y');
                         $addSalePayment->note = $request->note;
-
-                        if ($request->payment_method == 'Card') {
-                            $addSalePayment->card_no = $request->card_no;
-                            $addSalePayment->card_holder = $request->card_holder_name;
-                            $addSalePayment->card_transaction_no = $request->card_transaction_no;
-                            $addSalePayment->card_type = $request->card_type;
-                            $addSalePayment->card_month = $request->month;
-                            $addSalePayment->card_year = $request->year;
-                            $addSalePayment->card_secure_code = $request->secure_code;
-                        } elseif ($request->payment_method == 'Cheque') {
-                            $addSalePayment->cheque_no = $request->cheque_no;
-                        } elseif ($request->payment_method == 'Bank-Transfer') {
-                            $addSalePayment->account_no = $request->account_no;
-                        } elseif ($request->payment_method == 'Custom') {
-                            $addSalePayment->transaction_no = $request->transaction_no;
-                        }
                         $addSalePayment->admin_id = auth()->user()->id;
                         $addSalePayment->save();
 
@@ -810,7 +714,7 @@ class CustomerController extends Controller
                             $returnSale->sale_return->save();
                         }
 
-                        $request->amount -= $returnSale->sale_return_due;
+                        $request->paying_amount -= $returnSale->sale_return_due;
                         $this->saleUtil->adjustSaleInvoiceAmounts($returnSale);
                     }
                 }
@@ -825,11 +729,20 @@ class CustomerController extends Controller
     public function viewPayment($customerId)
     {
         $customer = DB::table('customers')->where('id', $customerId)->first();
+
         $customer_payments = DB::table('customer_payments')
             ->leftJoin('accounts', 'customer_payments.account_id', 'accounts.id')
-            ->select('customer_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
+            ->leftJoin('payment_methods', 'customer_payments.payment_method_id', 'payment_methods.id')
             ->where('customer_payments.customer_id', $customerId)
+            ->select(
+                'customer_payments.*',
+                'accounts.name as ac_name',
+                'accounts.account_number as ac_no',
+                'payment_methods.name as payment_method'
+            )
+
             ->orderBy('customer_payments.report_date', 'desc')->get();
+
         return view('contacts.customers.ajax_view.view_payment_list', compact('customer', 'customer_payments'));
     }
 
@@ -841,7 +754,8 @@ class CustomerController extends Controller
             'customer',
             'account',
             'customer_payment_invoices',
-            'customer_payment_invoices.sale:id,invoice_id,date'
+            'customer_payment_invoices.sale:id,invoice_id,date',
+            'paymentMethod:id,name'
         )->where('id', $paymentId)->first();
         return view('contacts.customers.ajax_view.payment_details', compact('customerPayment'));
     }
@@ -879,7 +793,7 @@ class CustomerController extends Controller
         }
 
         if ($storedAccountId) {
-            $this->accountUtil->adjustAccountBalance($storedAccountId);
+            $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
         }
 
         //Update customer info

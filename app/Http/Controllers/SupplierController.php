@@ -524,7 +524,13 @@ class SupplierController extends Controller
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->get([
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance'
+            ]);
 
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
 
@@ -643,7 +649,6 @@ class SupplierController extends Controller
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->note = $request->note;
-
                         $addPurchasePayment->admin_id = auth()->user()->id;
                         $addPurchasePayment->save();
 
@@ -680,7 +685,6 @@ class SupplierController extends Controller
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->note = $request->note;
-
                         $addPurchasePayment->admin_id = auth()->user()->id;
                         $addPurchasePayment->save();
 
@@ -735,7 +739,6 @@ class SupplierController extends Controller
                             $addPurchasePayment->month = date('F');
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;
-
                             $addPurchasePayment->admin_id = auth()->user()->id;
                             $addPurchasePayment->save();
 
@@ -768,7 +771,6 @@ class SupplierController extends Controller
                             $addPurchasePayment->month = date('F');
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;
-
                             $addPurchasePayment->admin_id = auth()->user()->id;
                             $addPurchasePayment->save();
 
@@ -801,7 +803,6 @@ class SupplierController extends Controller
                             $addPurchasePayment->month = date('F');
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;
-
                             $addPurchasePayment->admin_id = auth()->user()->id;
                             $addPurchasePayment->save();
 

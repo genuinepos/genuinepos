@@ -32,4 +32,9 @@ class CustomerPayment extends Model
     {
         return $this->belongsTo(Branch::class, 'branch_id');
     }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
+    }
 }

@@ -87,12 +87,14 @@ class CustomerController extends Controller
             'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
         ]);
 
-        $addCustomerLedger = new CustomerLedger();
-        $addCustomerLedger->customer_id = $addCustomer->id;
-        $addCustomerLedger->row_type = 3;
-        $addCustomerLedger->report_date = date('Y-m-d');
-        $addCustomerLedger->amount = $request->opening_balance ? $request->opening_balance : 0.00;
-        $addCustomerLedger->save();
+        // Add Customer Ledger
+        $this->customerUtil->addCustomerLedger(
+            voucher_type_id: 0,
+            customer_id: $addCustomer->id,
+            date: date('Y-m-d'),
+            trans_id: NULL,
+            amount: $request->opening_balance ? $request->opening_balance : 0.00
+        );
 
         return response()->json('Customer created successfully');
     }

@@ -117,11 +117,13 @@ class StockAdjustmentController extends Controller
                 ->editColumn('type',  function ($row) {
                     return $row->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>';
                 })
+
                 ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . $this->converter->format_in_bdt($row->net_total_amount) . '</span>')
+
                 ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="' . $row->recovered_amount . '">' . $this->converter->format_in_bdt($row->recovered_amount) . '</span>')
-                ->editColumn('created_by', function ($row) {
-                    return $row->prefix . ' ' . $row->name . ' ' . $row->last_name;
-                })
+
+                ->editColumn('created_by', fn ($row) => $row->prefix . ' ' . $row->name . ' ' . $row->last_name)
+
                 ->rawColumns(['action', 'date', 'invoice_id', 'business_location', 'adjustment_location', 'type', 'net_total_amount', 'recovered_amount', 'created_by'])
                 ->make(true);
         }

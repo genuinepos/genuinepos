@@ -453,7 +453,7 @@ class SaleController extends Controller
 
         $saleAccounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->where('account_branches.branch_id', $branch_id)
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->where('accounts.account_type', 5)
             ->get(['accounts.id', 'accounts.name']);
 

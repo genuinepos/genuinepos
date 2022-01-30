@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Models\Branch;
 use App\Models\AdminAndUser;
 use App\Models\StockAdjustmentProduct;
+use App\Models\StockAdjustmentRecover;
 use Illuminate\Database\Eloquent\Model;
 
 class StockAdjustment extends Model
@@ -29,5 +30,10 @@ class StockAdjustment extends Model
     public function adjustment_products()
     {
         return $this->hasMany(StockAdjustmentProduct::class);
+    }
+
+    public function recover()
+    {
+        return $this->hasOne(StockAdjustmentRecover::class);
     }
 }

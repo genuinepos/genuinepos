@@ -24,7 +24,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Add Stock Adjustment <small>(From Branch)</small></h5>
+                                            <h5>Add Stock Adjustment <small>(From Business Location.)</small></h5>
                                         </div>
 
                                         <div class="col-6">
@@ -37,7 +37,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>B. Location :</b> </label>
+                                                <label class="col-4"><b>B. Location :</b> </label>
                                                 <div class="col-8">
                                                     <input readonly type="text" class="form-control"
                                                         value="{{ 
@@ -47,35 +47,52 @@
                                                         }}">
                                                 </div>
                                             </div>
+
+                                            <div class="input-group mt-1">
+                                                <label class="col-4"><b>Adjust. A/C : <span
+                                                    class="text-danger">*</span></b></label>
+                                                <div class="col-8">
+                                                    <select name="adjustment_account_id" class="form-control add_input"
+                                                        id="adjustment_account_id" data-name="Stock Adjustiment A/C">
+                                                        @foreach ($stockAdjustmentAccounts as $stockAdjustmentAccount)
+                                                            <option value="{{ $stockAdjustmentAccount->id }}">
+                                                                {{ $stockAdjustmentAccount->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_adjustiment_account_id"></span>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Ref. ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                <label class=" col-4"><b>Voucher No :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id"
-                                                        class="form-control" placeholder="Reference ID">
+                                                        class="form-control" placeholder="Reference ID" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Date :</b> <span
+                                                <label class=" col-4"><b>Adjust. Date :</b> <span
                                                     class="text-danger">*</span> </label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control datepicker changeable"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                                    <input type="text" name="date" class="form-control datepicker changeable"
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker" autocomplete="off">
+                                                    <span class="error error_date"></span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Type :</b> <span
+                                                <label class=" col-4"><b>Type :</b> <span
                                                     class="text-danger">*</span>  <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
-                                                    <select required name="type" class="form-control add_input">
+                                                    <select name="type" class="form-control add_input">
                                                         <option value="">Select Type</option>
                                                         <option value="1">Normal</option>
                                                         <option value="2">Abnormal</option>
@@ -110,12 +127,9 @@
                                                             class="form-control scanable" autocomplete="off"
                                                             id="search_product"
                                                             placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                                        
                                                     </div>
                                                     <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                           
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div>
                                             </div>
@@ -137,9 +151,7 @@
                                                                     <th><i class="fas fa-trash-alt text-danger"></i></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="product_list">
-
-                                                            </tbody>
+                                                            <tbody id="product_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -153,47 +165,98 @@
                 </section>
 
                 <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form_element">
                                 <div class="element-body">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Total Item :</b></label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" step="any" name="total_item" class="form-control"
-                                                        id="total_item" value="0.00">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Total Item :</b></label>
+                                                            <div class="col-8">
+                                                                <input readonly type="number" step="any" name="total_item" class="form-control"
+                                                                    id="total_item" value="0.00">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                               
+                                                    <div class="input-group mt-1">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class=" col-4"><b>Net Total Amount :</b> </label>
+                                                            <div class="col-8">
+                                                                <input readonly type="number" class="form-control" step="any" step="any"
+                                                                    name="net_total_amount" id="net_total_amount" value="0.00">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Reason :</b></label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="reason" class="form-control"
+                                                                autocomplete="off" placeholder="Reason">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Net Total :</b> </label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" class="form-control" step="any" step="any"
-                                                        name="net_total_amount" id="net_total_amount" value="0.00">
-                                                </div>
-                                            </div>
-                                        </div>
+                        <div class="col-md-6">
+                            <div class="form_element">
+                                <div class="element-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <label class="col-4"><b>Recovered Amount : </b> <strong>>></strong></label>
+                                                        <div class="col-8">
+                                                            <input type="number" step="any" name="total_recovered_amount"
+                                                                id="total_recovered_amount" class="form-control" value="0.00">
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Payment Method : <span
+                                                            class="text-danger">*</span></b> </label>
+                                                        <div class="col-8">
+                                                            <select name="payment_method_id" class="form-control" id="payment_method_id">
+                                                                @foreach ($methods as $method)
+                                                                    <option value="{{ $method->id }}" 
+                                                                        data-account="{{ $method->account_id }}">
+                                                                        {{ $method->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="error error_payment_method_id"></span>
+                                                        </div>
+                                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Recovered :</b></label>
-                                                <div class="col-8">
-                                                    <input type="number" step="any" name="total_recodered_amount"
-                                                        id="total_recodered_amount" class="form-control" value="0.00">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-3"><b>Reason :</b></label>
-                                                <div class="col-9">
-                                                    <input type="text" name="reason" class="form-control"
-                                                        autocomplete="off" placeholder="Reason">
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Debit A/C : <span
+                                                            class="text-danger">*</span></b> </label>
+                                                        <div class="col-8">
+                                                            <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
+                                                                @foreach ($accounts as $account)
+                                                                    <option value="{{ $account->id }}">
+                                                                        @php
+                                                                            $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                                            $balance = ' BL : '.$account->balance;
+                                                                        @endphp
+                                                                        {{ $account->name.$accountType.$balance}}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="error error_account_id"></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -204,7 +267,7 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area py-2">
+                <div class="submit_button_area">
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -216,6 +279,7 @@
         </div>
     </div>
     <!--Add Product Modal End-->
+
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
@@ -749,6 +813,7 @@
                  type:'post',
                  data: request,
                  success:function(data){
+                    $('.submit_button').prop('type', 'submit');
                      if (!$.isEmptyObject(data.errorMsg)) {
                          toastr.error(data.errorMsg); 
                      }else{
@@ -756,7 +821,22 @@
                          $('.loading_button').hide();
                          window.location = "{{ route('stock.adjustments.index') }}";
                      }
-                 }
+                 },error: function(err) {
+                    $('.submit_button').prop('type', 'sumbit');
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        return;
+                    }
+
+                    toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_' + key + '').html(error[0]);
+                    });
+                }
              });
          });
  

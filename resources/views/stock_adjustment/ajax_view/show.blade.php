@@ -1,4 +1,4 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
  <!-- Details Modal -->
  <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog col-80-modal">
@@ -14,7 +14,7 @@
                         <li>
                             <strong>Business Location : </strong> 
                             {{ 
-                                $adjustment->branch ? $adjustment->branch->name.'/'.$adjustment->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (Head Office)' 
+                                $adjustment->branch ? $adjustment->branch->name.'/'.$adjustment->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' 
                             }}
                         </li>
 
@@ -94,7 +94,44 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6 offset-md-6">
+                <div class="col-md-6">
+                    <div class="payment_table">
+                        <div class="table-responsive">
+                           <table class="table modal-table table-striped table-sm">
+                               <thead>
+                                   <tr class="bg-primary text-white">
+                                       <th>Date</th>
+                                       <th>Voucher No</th>
+                                       <th>Method</th>
+                                       <th>Account</th>
+                                       <th>
+                                           Recovered Amount({{ json_decode($generalSettings->business, true)['currency'] }})
+                                       </th>
+                                   </tr>
+                               </thead>
+                               <tbody id="p_details_payment_list">
+                                  @if ($adjustment->recover)
+                                    <tr>
+                                        <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->recover->report_date)) }}</td>
+                                        <td>{{ $adjustment->recover->voucher_no }}</td>
+                                        <td>{{ $adjustment->recover->paymentMethod ? $adjustment->recover->paymentMethod->name : '' }}</td>
+                                        <td>
+                                            {{ $adjustment->recover->account ? $adjustment->recover->account->name : 'N/A' }}
+                                        </td>
+                                        <td>{{ App\Utils\Converter::format_in_bdt($adjustment->recover->recovered_amount) }}</td>
+                                    </tr>
+                                  @else   
+                                      <tr>
+                                          <td colspan="7" class="text-center">No Data Found</td>
+                                      </tr>  
+                                  @endif
+                               </tbody>
+                           </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
                     <div class="table-responsive">
                         <table class="table modal-table table-sm">
                             <tr>

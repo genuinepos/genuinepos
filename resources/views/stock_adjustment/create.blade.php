@@ -24,7 +24,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Add Stock Adjustment <small>(From Branch)</small></h5>
+                                            <h5>Add Stock Adjustment <small>(From Business Location.)</small></h5>
                                         </div>
 
                                         <div class="col-6">

@@ -146,6 +146,7 @@
                                                 <th>Customer</th>
                                                 <th>Stock In By</th>
                                                 <th>Stock In Date</th>
+                                                <th>Lot No</th>
                                                 {{-- <th>Stock In Qty</th> --}}
                                                 <th>Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
@@ -160,6 +161,7 @@
                                                 <th class="text-white text-start">---</th>
                                                 {{-- <th id="stock_in_qty" class="text-white text-end"></th> --}}
                                                 <th class="text-white text-start">---</th>
+                                                <th class="text-white text-end">---</th>
                                                 <th class="text-white text-end">---</th>
                                             </tr>
                                         </tfoot>
@@ -211,6 +213,7 @@
             {data: 'stock_in_by', name: 'purchases.invoice_id'},
             {data: 'stock_in_date', name: 'purchase_products.created_at'},
             // {data: 'stock_in_qty', name: 'purchase_products.quantity', className: 'text-end'},
+             {data: 'lot_no', name: 'purchase_products.lot_no', className: 'text-end'},
             {data: 'net_unit_cost', name: 'purchase_products.net_unit_cost', className: 'text-end'},
         ],fnDrawCallback: function() {
             var sold_qty = sum_table_col($('.data_tbl'), 'sold_qty');

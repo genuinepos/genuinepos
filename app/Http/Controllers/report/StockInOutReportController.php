@@ -85,6 +85,7 @@ class StockInOutReportController extends Controller
                 'purchase_products.net_unit_cost',
                 'purchase_products.quantity as stock_in_qty',
                 'purchase_products.created_at as stock_in_date',
+                'purchase_products.lot_no',
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {

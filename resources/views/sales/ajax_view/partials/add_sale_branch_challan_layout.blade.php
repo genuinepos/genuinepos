@@ -62,7 +62,7 @@
         
         @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
             @for ($i = 0; $i < $sale->branch->add_sale_invoice_layout->gap_from_top; $i++)
-                </br>
+                <br/>
             @endfor
         @endif
 

@@ -73,15 +73,14 @@
                             <tr>
                                 <th>S/L</th>
                                 <th>Name</th>
-                                <th>Pay loan amount</th>
+                                <th>Total Loan&Advance</th>
                                 <th>Total Receive</th>
-                                <th>Get Loan Amount</th>
+                                <th>Total Loan&Liabilities</th>
                                 <th>Total Pay</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                     <form id="delete_companies_form" action="" method="post">
                         @method('DELETE')

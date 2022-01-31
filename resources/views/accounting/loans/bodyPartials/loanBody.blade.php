@@ -20,6 +20,7 @@
                         <div class="col-md-6">
                             <label><b>Loan A/C :</b> <span class="text-danger">*</span></label>
                             <select required name="loan_account_id" class="form-control" id="loan_account_id">
+                                <option value="">Select Loan Account</option>
                                 @foreach ($loanAccounts as $loanAc)
                                     <option value="{{ $loanAc->id }}">
                                         {{ $loanAc->name.' ('.App\Utils\Util::accountType($loanAc->account_type).')' }}

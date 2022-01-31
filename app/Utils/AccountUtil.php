@@ -135,8 +135,8 @@ class AccountUtil
             10 => ['name' => 'Receive Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'debit'],
             11 => ['name' => 'Purchase Payment', 'voucher_no' => 'pur_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'credit'],
             12 => ['name' => 'Sale Return Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'credit'],
-            13 => ['name' => 'Loan&Liabilities', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit'],
-            14 => ['name' => 'Loan&Advance', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit'],
+            13 => ['name' => 'Loan&Liabilities', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit'],
+            14 => ['name' => 'Loan&Advance', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit'],
             15 => ['name' => 'Loan Ins. Payment', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'credit'],
             16 => ['name' => 'Loan Ins. Receive', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'debit'],
             17 => ['name' => 'Receive Return Amt.', 'voucher_no' => 'purchase_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'debit'],
@@ -146,6 +146,8 @@ class AccountUtil
             21 => ['name' => 'Received From Supplier', 'voucher_no' => 'supplier_return_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'debit'],
             22 => ['name' => 'Production', 'voucher_no' => 'production_voucher', 'id' => 'production_id', 'amt' => 'debit'],
             23 => ['name' => 'Payroll Payment', 'voucher_no' => 'payroll_pay_voucher', 'id' => 'payroll_payment_id', 'amt' => 'credit'],
+            24 => ['name' => 'Loan&Liabilities-money-trans', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit'],
+            25 => ['name' => 'Loan&Advance-money-trans', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit'],
         ];
 
         return $data[$voucher_type_id];

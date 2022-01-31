@@ -280,7 +280,7 @@
     <!-- Customer payment Modal-->
     <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Receive Payment</h6>
@@ -296,7 +296,7 @@
     <!-- Money Receipt list Modal-->
     <div class="modal fade" id="moneyReceiptListModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Payment Receipt Voucher List</h6>
@@ -312,7 +312,7 @@
     <!--add money receipt Modal-->
     <div class="modal fade" id="MoneyReciptModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Generate Money Receipt Voucher</h6>
@@ -333,7 +333,7 @@
 
     <!-- Customer payment view Modal-->
     <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>

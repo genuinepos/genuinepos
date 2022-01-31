@@ -46,55 +46,8 @@
 
                         <tr>
                             <th width="50%" class="text-start">Payment Method :</th>
-                            <td width="50%" class="text-start">{{ $payment->pay_mode }}</td>
+                            <td width="50%" class="text-start">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                         </tr>
-
-                        @if ($payment->pay_mode == 'Card')
-                            <tr>
-                                <th width="50%" class="text-start">Card Number :</th>
-                                <td width="50%" class="text-start">{{ $payment->card_no }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Card Holder :</th>
-                                <td width="50%" class="text-start">{{ $payment->card_holder }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Card Type :</th>
-                                <td width="50%" class="text-start">{{ $payment->card_type }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%" class="text-start">{{ $payment->card_transaction_no }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Month :</th>
-                                <td width="50%" class="text-start">{{ $payment->card_month }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Year :</th>
-                                <td width="50%" class="text-start">{{ $payment->card_year }}</td>
-                            </tr>
-                        @elseif($payment->pay_mode == 'Chaque')
-                            <tr>
-                                <th width="50%" class="text-start">Chaque No :</th>
-                                <td width="50%" class="text-start">{{ $payment->cheque_no }}</td>
-                            </tr>
-                        @elseif($payment->pay_mode == 'Band-Transter')
-                            <tr>
-                                <th width="50%" class="text-start">Account No :</th>
-                                <td width="50%" class="text-start">{{ $payment->account_no }}</td>
-                            </tr>
-                        @elseif($payment->pay_mode == 'Custom')
-                            <tr>
-                                <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%" class="text-start">{{ $payment->transaction_no }}</td>
-                            </tr>
-                        @endif
                     </tbody>
                 </table>
             </div>

@@ -84,20 +84,20 @@
                         <i class="fas fa-money-check text-dark input_i"></i>
                     </span>
                 </div>
-                <select name="payment_method_id" class="form-control" id="payment_method_id">
+                <select name="payment_method_id" class="form-control" id="p_payment_method_id">
                     @foreach ($methods as $method)
                         <option {{ $method->id == $payment->payment_method_id ? 'SELECTED' : '' }} value="{{ $method->id }}">
                             {{ $method->name }}
                         </option>
                     @endforeach
                 </select>
-                <span class="error error_p_payment_method"></span>
+                <span class="error error_p_payment_method_id"></span>
             </div>
         </div>
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-7">
+        <div class="col-md-4">
             <label><strong>Debit Account :</strong> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
@@ -116,10 +116,11 @@
                         </option>
                     @endforeach
                 </select>
+                <span class="error error_p_account_id"></span>
             </div>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-4">
             <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
             <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
         </div>

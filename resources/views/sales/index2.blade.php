@@ -67,7 +67,7 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="from_date" id="datepicker"
                                                             class="form-control from_date date"
@@ -80,7 +80,7 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                                     </div>
@@ -245,9 +245,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="send-natification-modal-body">
-
-                </div>
+                <div class="modal-body" id="send-natification-modal-body"></div>
             </div>
         </div>
     </div>
@@ -414,60 +412,6 @@
                 $('#paymentDetailsModal').modal('show');
             });
         });
-
-        // //Add sale payment request by ajax
-        // $(document).on('submit', '#sale_payment_form', function(e){
-        //     e.preventDefault();
-        //     $('.loading_button').show();
-        //     var available_amount = $('#available_amount').val();
-        //     var paying_amount = $('#p_amount').val();
-        //     if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
-        //         $('.error_p_amount').html('Paying amount must not be greater then due amount.');
-        //         $('.loading_button').hide();
-        //         return;
-        //     }
-
-        //     var url = $(this).attr('action');
-        //     var inputs = $('.p_input');
-        //         $('.error').html('');
-        //         var countErrorField = 0;
-        //     $.each(inputs, function(key, val){
-        //         var inputId = $(val).attr('id');
-        //         var idValue = $('#'+inputId).val();
-        //         if(idValue == ''){
-        //             countErrorField += 1;
-        //             var fieldName = $('#'+inputId).data('name');
-        //             $('.error_'+inputId).html(fieldName+' is required.');
-        //         }
-        //     });
-
-        //     if(countErrorField > 0){
-        //         $('.loading_button').hide();
-        //         toastr.error('Please check again all form fields.','Some thing want wrong.');
-        //         return;
-        //     }
-
-        //     $.ajax({
-        //         url:url,
-        //         type:'post',
-        //         data: new FormData(this),
-        //         contentType: false,
-        //         cache: false,
-        //         processData: false,
-        //         success:function(data){
-        //             if(!$.isEmptyObject(data.errorMsg)){
-        //                 toastr.error(data.errorMsg,'ERROR');
-        //                 $('.loading_button').hide();
-        //             } else {
-        //                 $('.loading_button').hide();
-        //                 $('#paymentModal').modal('hide');
-        //                 $('#paymentViewModal').modal('hide');
-        //                 sales_table.ajax.reload();
-        //                 toastr.success(data);
-        //             }
-        //         }
-        //     });
-        // });
 
         // Get Edit Shipment Modal form
         $(document).on('click', '#edit_shipment', function (e) {
@@ -691,12 +635,6 @@
                 return totalDays - 1;
             },
             format: 'DD-MM-YYYY',
-        });
-
-        $(document).on('change', '#payment_method', function () {
-            var value = $(this).val();
-            $('.payment_method').hide();
-            $('#'+value).show();
         });
 
         //Show payment view modal with data

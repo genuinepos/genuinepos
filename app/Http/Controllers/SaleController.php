@@ -178,6 +178,7 @@ class SaleController extends Controller
         $customers = DB::table('customers')
             ->where('status', 1)->select('id', 'name', 'phone')
             ->orderBy('id', 'desc')->get();
+            
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
 
         $invoice_schemas = DB::table('invoice_schemas')->get(['format', 'prefix', 'start_from']);

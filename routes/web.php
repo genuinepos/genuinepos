@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Models\Purchase;
 
-
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
 Route::get('dashboard/stock/alert', 'App\Http\Controllers\DashboardController@stockAlert')->name('dashboard.stock.alert');

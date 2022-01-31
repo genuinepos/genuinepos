@@ -97,6 +97,7 @@ class AccountUtil
     public static function voucherTypes()
     {
         return [
+            0 => 'Opening balance',
             1 => 'Sales',
             2 => 'Sale Return',
             3 => 'Purchase',
@@ -121,7 +122,7 @@ class AccountUtil
     public function voucherType($voucher_type_id)
     {
         $data =  [
-            0 => ['name' => 'Opening_balance', 'voucher_no' => null, 'id' => null, 'amt' => 'debit/credit'],
+            0 => ['name' => 'Opening balance', 'voucher_no' => null, 'id' => null, 'amt' => 'debit/credit'],
             1 => ['name' => 'Sales', 'voucher_no' => 'sale_inv_id', 'id' => 'sale_id', 'amt' => 'credit'],
             2 => ['name' => 'Sale Return', 'voucher_no' => 'sale_return_inv', 'id' => 'sale_return_id', 'amt' => 'debit'],
             3 => ['name' => 'Purchase', 'voucher_no' => 'purchase_inv_id', 'id' => 'purchase_id', 'amt' => 'debit'],
@@ -143,6 +144,8 @@ class AccountUtil
             19 => ['name' => 'Paid To Supplier', 'voucher_no' => 'supplier_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'credit'],
             20 => ['name' => 'Paid To Customer', 'voucher_no' => 'customer_return_payment_voucher', 'id' => 'customer_payment_id', 'amt' => 'credit'],
             21 => ['name' => 'Received From Supplier', 'voucher_no' => 'supplier_return_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'debit'],
+            22 => ['name' => 'Production', 'voucher_no' => 'production_voucher', 'id' => 'production_id', 'amt' => 'debit'],
+            23 => ['name' => 'Payroll Payment', 'voucher_no' => 'payroll_pay_voucher', 'id' => 'payroll_payment_id', 'amt' => 'credit'],
         ];
 
         return $data[$voucher_type_id];

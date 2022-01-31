@@ -104,9 +104,23 @@ class LoanController extends Controller
                     }
                 })->rawColumns(['report_date', 'branch', 'type', 'loan_by', 'loan_amount', 'due', 'total_paid', 'action'])->smart(true)->make(true);
         }
+
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
-        return view('accounting.loans.index', compact('branches', 'accounts'));
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
+        $loanAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->whereIn('account_type', [13, 14])
+            ->get(['accounts.id', 'accounts.name', 'account_type']);
+
+        return view('accounting.loans.index', compact('branches', 'accounts', 'loanAccounts'));
     }
 
     public function store(Request $request)
@@ -129,9 +143,10 @@ class LoanController extends Controller
             $refId = ++$lastLoan->id;
         }
 
-        $prefix = $request->type == 1 ? 'LP' : 'LG';
+        $prefix = $request->type == 1 ? 'LA' : 'LL';
         $addLoan = new Loan();
-        $addLoan->reference_no = $prefix . date('my') . $refId;
+        $addLoan->reference_no = $prefix . $refId;
+        $addLoan->loan_account_id = $request->loan_account_id;
         $addLoan->branch_id = auth()->user()->branch_id;
         $addLoan->loan_company_id = $request->company_id;
         $addLoan->type = $request->type;
@@ -145,34 +160,34 @@ class LoanController extends Controller
         $addLoan->save();
 
         if ($request->type == 1) {
-            $this->loanUtil->adjustCompanyPayLoanAmount($request->company_id);
+            $this->loanUtil->adjustCompanyLoanAdvanceAmount($request->company_id);
         } else {
             $this->loanUtil->adjustCompanyReceiveLoanAmount($request->company_id);
         }
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            if ($request->type == 1) {
-                $addCashFlow->debit = $request->loan_amount;
-                $addCashFlow->cash_type = 1;
-            } else {
-                $addCashFlow->credit = $request->loan_amount;
-                $addCashFlow->cash_type = 2;
-            }
+        // if ($request->account_id) {
+        //     // Add cash flow
+        //     $addCashFlow = new CashFlow();
+        //     $addCashFlow->account_id = $request->account_id;
+        //     if ($request->type == 1) {
+        //         $addCashFlow->debit = $request->loan_amount;
+        //         $addCashFlow->cash_type = 1;
+        //     } else {
+        //         $addCashFlow->credit = $request->loan_amount;
+        //         $addCashFlow->cash_type = 2;
+        //     }
 
-            $addCashFlow->loan_id = $addLoan->id;
-            $addCashFlow->transaction_type = 10;
-            $addCashFlow->date = $request->date;
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->id();
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
-        }
+        //     $addCashFlow->loan_id = $addLoan->id;
+        //     $addCashFlow->transaction_type = 10;
+        //     $addCashFlow->date = $request->date;
+        //     $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
+        //     $addCashFlow->month = date('F');
+        //     $addCashFlow->year = date('Y');
+        //     $addCashFlow->admin_id = auth()->id();
+        //     $addCashFlow->save();
+        //     $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+        //     $addCashFlow->save();
+        // }
 
         return response()->json('Loan created Successfully');
     }
@@ -269,7 +284,9 @@ class LoanController extends Controller
 
     public function allCompaniesForForm()
     {
-        return DB::table('loan_companies')->select('id', 'name')->get();
+        return DB::table('loan_companies')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->select('id', 'name')->get();
     }
 
     public function show($loanId)

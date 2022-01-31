@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class LoanUtil
 {
-    public function adjustCompanyPayLoanAmount($companyId)
+    public function adjustCompanyLoanAdvanceAmount($companyId)
     {
         $payLoan = DB::table('loans')->where('loan_company_id', $companyId)
         ->where('loans.type', 1)

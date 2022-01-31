@@ -77,7 +77,7 @@ class ExpanseController extends Controller
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->whereIn('account_type', [7, 8, 9, 10, 15])
-            ->get(['accounts.id', 'accounts.name']);
+            ->get(['accounts.id', 'accounts.name', 'account_type']);
 
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
         return view('expanses.create', compact('expenseAccounts', 'accounts', 'methods'));
@@ -220,7 +220,7 @@ class ExpanseController extends Controller
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->whereIn('account_type', [7, 8, 9, 10, 15])
-            ->get(['accounts.id', 'accounts.name']);
+            ->get(['accounts.id', 'accounts.name', 'account_type']);
 
         return view('expanses.edit', compact('expense', 'categories', 'users', 'taxes', 'expenseAccounts'));
     }

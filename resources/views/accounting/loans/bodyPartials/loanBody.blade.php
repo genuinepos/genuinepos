@@ -16,6 +16,17 @@
                             <input type="text" name="date" class="form-control" id="date" value="{{ str_replace('/', '-', date(json_decode($generalSettings->business, true)['date_format'])) }}">
                             <span class="error error_date"></span>
                         </div>
+
+                        <div class="col-md-6">
+                            <label><b>Loan A/C :</b> <span class="text-danger">*</span></label>
+                            <select required name="loan_account_id" class="form-control" id="loan_account_id">
+                                @foreach ($loanAccounts as $loanAc)
+                                    <option value="{{ $loanAc->id }}">
+                                        {{ $loanAc->name.' ('.App\Utils\Util::accountType($loanAc->account_type).')' }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-group row">
@@ -31,8 +42,8 @@
                             <label><b>Type :</b> <span class="text-danger">*</span></label>
                             <select name="type" class="form-control" id="type">
                                 <option value="">Select Type</option>
-                                <option value="1">Pay Loan</option>
-                                <option value="2">Get Loan</option>
+                                <option value="1">Loan & Advance</option>
+                                <option value="2">Loan & Liabilities</option>
                             </select>
                             <span class="error error_type"></span>
                         </div>
@@ -46,11 +57,15 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label><b>Account :</b> <span class="text-danger">*</span></label>
+                            <label><b>Debit/Credit Account :</b> <span class="text-danger">*</span></label>
                             <select name="account_id" class="form-control" id="account_id">
                                 <option value="">Select Account</option>
                                 @foreach ($accounts as $account)
-                                    <option value="{{ $account->id }}">{{ $account->name.' (A/C: '.$account->account_number.')' }}</option>
+                                    @php
+                                        $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                        $balance = ' BL : '.$account->balance;
+                                    @endphp
+                                    <option value="{{ $account->id }}">{{ $account->name.$accountType.$balance}}</option>
                                 @endforeach
                             </select>
                             <span class="error error_account_id"></span>
@@ -115,8 +130,8 @@
                             <label><strong>Loan Type :</strong></label>
                             <select name="type_id" class="form-control submit_able" id="type_id">
                                 <option value="">All</option>
-                                <option value="1">Pay Loan</option>
-                                <option value="2">Get Loan</option>
+                                <option value="1">Loan & Advance</option>
+                                <option value="2">Loan & Liabilities</option>
                             </select>
                         </div>
 

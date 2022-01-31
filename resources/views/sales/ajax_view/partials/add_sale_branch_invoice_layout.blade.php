@@ -238,7 +238,7 @@
                         $sale->branch->add_sale_invoice_layout->bank_name || 
                         $sale->branch->add_sale_invoice_layout->bank_branch  
                     )
-                        <br>
+    
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px; margin-top:13px;">
                             @if ($sale->branch->add_sale_invoice_layout->account_name)
                                 <p>Account Name : {{ $sale->branch->add_sale_invoice_layout->account_name }}</p>

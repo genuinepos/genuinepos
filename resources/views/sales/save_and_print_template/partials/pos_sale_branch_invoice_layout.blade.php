@@ -214,24 +214,32 @@
                     @if ($sale->branch->pos_sale_invoice_layout->show_total_in_word == 1)
                         <p style="text-transform: uppercase;"><b>In Word : </b> <span id="inword"></span> ONLY.</p>
                     @endif
-                    <br>
-                    <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
-                        @if ($sale->branch->pos_sale_invoice_layout->account_name)
-                            <p>Account Name : {{ $sale->branch->pos_sale_invoice_layout->account_name }}</p>
-                        @endif
 
-                        @if ($sale->branch->pos_sale_invoice_layout->account_no)
-                            <p>Account No : {{ $sale->branch->pos_sale_invoice_layout->account_no }}</p>
-                        @endif
+                    @if (
+                        $sale->branch->pos_sale_invoice_layout->account_name ||
+                        $sale->branch->pos_sale_invoice_layout->account_no ||
+                        $sale->branch->pos_sale_invoice_layout->bank_name ||
+                        $sale->branch->pos_sale_invoice_layout->bank_branch 
+                    )
+                        <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
+                            @if ($sale->branch->pos_sale_invoice_layout->account_name)
+                                <p>Account Name : {{ $sale->branch->pos_sale_invoice_layout->account_name }}</p>
+                            @endif
 
-                        @if ($sale->branch->pos_sale_invoice_layout->bank_name)
-                            <p>Bank : {{ $sale->branch->pos_sale_invoice_layout->bank_name }}</p>
-                        @endif
+                            @if ($sale->branch->pos_sale_invoice_layout->account_no)
+                                <p>Account No : {{ $sale->branch->pos_sale_invoice_layout->account_no }}</p>
+                            @endif
 
-                        @if ($sale->branch->pos_sale_invoice_layout->bank_branch)
-                            <p>Branch : {{ $sale->branch->pos_sale_invoice_layout->bank_branch }}</p>
-                        @endif
-                    </div>
+                            @if ($sale->branch->pos_sale_invoice_layout->bank_name)
+                                <p>Bank : {{ $sale->branch->pos_sale_invoice_layout->bank_name }}</p>
+                            @endif
+
+                            @if ($sale->branch->pos_sale_invoice_layout->bank_branch)
+                                <p>Branch : {{ $sale->branch->pos_sale_invoice_layout->bank_branch }}</p>
+                            @endif
+                        </div>
+                    @endif
+                    
                 </div>
                 <div class="col-md-6">
                     <table class="table modal-table table-sm">

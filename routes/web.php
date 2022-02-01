@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Sale;
+use App\Models\Expanse;
+use App\Utils\Converter;
 use App\Models\SaleProduct;
 use App\Utils\PurchaseUtil;
 use App\Models\AdminAndUser;
@@ -12,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\PurchaseSaleProductChain;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Utils\Converter;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -889,6 +890,19 @@ Route::get('/test', function () {
     // }
     
     //return array_merge($arr1, $arr2, $arr3);
+
+    
+   $expenses = Expanse::with('expense_descriptions')->get();
+
+   foreach ($expenses as $ex) {
+       $cate_ids = '';
+       foreach ($ex->expense_descriptions as $key => $expense_description) {
+            $cate_ids .= $expense_description.', ';
+       }
+
+       $ex->category_ids = $cate_ids;
+       $ex->save();
+   }
 });
 
 // All authenticated routes

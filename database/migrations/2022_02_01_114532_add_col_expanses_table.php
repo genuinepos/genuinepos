@@ -14,7 +14,7 @@ class AddColExpansesTable extends Migration
     public function up()
     {
         Schema::table('expanses', function (Blueprint $table) {
-            $table->unsignedBigInteger('category_ids')->after('note')->nullable();
+            $table->mediumText('category_ids')->after('note')->nullable();
         });
     }
 

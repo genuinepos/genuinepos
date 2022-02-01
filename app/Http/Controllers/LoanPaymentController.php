@@ -28,45 +28,45 @@ class LoanPaymentController extends Controller
         $this->middleware('auth:admin_and_user');
     }
 
-    public function dueReceiveModal($company_id)
+    public function loanAdvanceReceiveModal($company_id)
     {
-        $accounts = DB::table('accounts')->select('id', 'name', 'account_number', 'balance')->get();
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
         $company = DB::table('loan_companies')->where('id', $company_id)->first();
-        return view('accounting.loans.ajax_view.loan_due_receive_modal', compact('accounts', 'company'));
+
+        return view('accounting.loans.ajax_view.loan_advance_receive_modal', compact('accounts', 'company', 'methods'));
     }
 
-    public function dueReceiveStore(Request $request, $company_id)
+    public function loanAdvanceReceiveStore(Request $request, $company_id)
     {
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'PLDR'.date('my').$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
+        $loanPayment->voucher_no = 'LAR'.$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 1;
         $loanPayment->branch_id = auth()->user()->branch_id;
         $loanPayment->account_id = $request->account_id;
         $loanPayment->user_id = auth()->user()->id;
-        $loanPayment->paid_amount = $request->amount;
-        $loanPayment->pay_mode = $request->pay_mode;
+        $loanPayment->paid_amount = $request->paying_amount;
+        $loanPayment->payment_method_id = $request->payment_method_id;
         $loanPayment->date = $request->date;
         $loanPayment->report_date = date('Y-m-d', strtotime($request->date));
         $loanPayment->save();
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->credit = $request->amount;
-            $addCashFlow->cash_type = 2;
-            $addCashFlow->loan_payment_id = $loanPayment->id;
-            $addCashFlow->transaction_type = 11;
-            $addCashFlow->date = $request->date;
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->id();
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
-        }
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 15,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $loanPayment->id,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
 
         $dueLoans = Loan::where('type', 1)->where('due', '>', 0)->get();
         foreach ($dueLoans as $dueLoan) {
@@ -97,49 +97,48 @@ class LoanPaymentController extends Controller
             }
         }
 
-        $this->loanUtil->adjustCompanyPayLoanAmount($company_id);
-        return response()->json('Pay Loan due received Successfully');
+        return response()->json('Loan&Advance received Successfully');
     }
 
-    public function duePayModal($company_id)
+    public function loaLiabilityPaymentModal($company_id)
     {
-        $accounts = DB::table('accounts')->select('id', 'name', 'account_number', 'balance')->get();
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
         $company = DB::table('loan_companies')->where('id', $company_id)->first();
-        return view('accounting.loans.ajax_view.loan_due_pay_modal', compact('accounts', 'company'));
+
+        return view('accounting.loans.ajax_view.loan_liability_pay_modal', compact('accounts', 'company', 'methods'));
     }
 
-    public function duePayStore(Request $request, $company_id)
+    public function loanLiabilityPaymentStore(Request $request, $company_id)
     {
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'GLDR'.date('my').$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
+        $loanPayment->voucher_no = 'LLP'.$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 2;
         $loanPayment->branch_id = auth()->user()->branch_id;
         $loanPayment->account_id = $request->account_id;
         $loanPayment->user_id = auth()->user()->id;
-        $loanPayment->paid_amount = $request->amount;
-        $loanPayment->pay_mode = $request->pay_mode;
+        $loanPayment->paid_amount = $request->paying_amount;
+        $loanPayment->payment_method_id = $request->payment_method_id;
         $loanPayment->date = $request->date;
         $loanPayment->report_date = date('Y-m-d', strtotime($request->date));
         $loanPayment->save();
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->debit = $request->amount;
-            $addCashFlow->cash_type = 1;
-            $addCashFlow->loan_payment_id = $loanPayment->id;
-            $addCashFlow->transaction_type = 11;
-            $addCashFlow->date = $request->date;
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->id();
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
-        }
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 16,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $loanPayment->id,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
 
         $dueLoans = Loan::where('type', 2)->where('due', '>', 0)->get();
         foreach ($dueLoans as $dueLoan) {
@@ -170,7 +169,6 @@ class LoanPaymentController extends Controller
             }
         }
 
-        $this->loanUtil->adjustCompanyReceiveLoanAmount($company_id);
         return response()->json('Get Loan due paid Successfully');
     }
 

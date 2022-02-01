@@ -113,8 +113,8 @@ class AccountUtil
             12 => 'Sale Return Payment',
             13 => 'Loan Get',
             14 => 'Loan Pay',
-            15 => 'Loan Ins. Payment',
-            16 => 'Loan Ins. Receive',
+            15 => 'Loan Liability Payment',
+            16 => 'Loan&Advance Receive',
             17 => 'Purchase Return Receive',
         ];
     }
@@ -137,8 +137,8 @@ class AccountUtil
             12 => ['name' => 'Sale Return Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'credit'],
             13 => ['name' => 'Loan&Liabilities', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit'],
             14 => ['name' => 'Loan&Advance', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit'],
-            15 => ['name' => 'Loan Ins. Payment', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'credit'],
-            16 => ['name' => 'Loan Ins. Receive', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'debit'],
+            15 => ['name' => 'Loan Liability Payment', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'credit'],
+            16 => ['name' => 'Loan&Advance Receive', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'debit'],
             17 => ['name' => 'Receive Return Amt.', 'voucher_no' => 'purchase_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'debit'],
             18 => ['name' => 'Received From Customer', 'voucher_no' => 'customer_payment_voucher', 'id' => 'customer_payment_id', 'amt' => 'debit'],
             19 => ['name' => 'Paid To Supplier', 'voucher_no' => 'supplier_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'credit'],

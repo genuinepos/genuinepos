@@ -129,6 +129,7 @@ class LoanController extends Controller
 
     public function store(Request $request)
     {
+        //return $request->all();
         $this->validate($request, [
             'company_id' => 'required',
             'type' => 'required',
@@ -182,6 +183,7 @@ class LoanController extends Controller
                 amount: $request->loan_amount,
                 balance_type: 'debit'
             );
+
         } else {
             $this->loanUtil->adjustCompanyLoanLiabilityAmount($request->company_id);
             // Add Loan A/C ledger
@@ -203,6 +205,7 @@ class LoanController extends Controller
                 amount: $request->loan_amount,
                 balance_type: 'debit'
             );
+
         }
 
         return response()->json('Loan created Successfully');
@@ -234,6 +237,7 @@ class LoanController extends Controller
 
     public function update(Request $request, $loanId)
     {
+        //return $request->all();
         $this->validate($request, [
             'company_id' => 'required',
             'type' => 'required',
@@ -281,6 +285,7 @@ class LoanController extends Controller
                 amount: $request->loan_amount,
                 balance_type: 'debit'
             );
+
         } else {
             $this->loanUtil->adjustCompanyLoanLiabilityAmount($request->company_id);
             // Update loan A/C Ledger
@@ -290,7 +295,7 @@ class LoanController extends Controller
                 account_id: $request->loan_account_id,
                 trans_id: $updateLoan->id,
                 amount: $request->loan_amount,
-                balance_type: 'debit'
+                balance_type: 'credit'
             );
 
             // Update Bank/Cash-In-Hand A/C Ledger
@@ -302,6 +307,8 @@ class LoanController extends Controller
                 amount: $request->loan_amount,
                 balance_type: 'debit'
             );
+
+            return 'Type 2';
         }
 
         return response()->json('Loan updated Successfully');
@@ -311,6 +318,7 @@ class LoanController extends Controller
     {
         $loan = Loan::where('id', $loanId)->first();
         $storeAccountId = $loan->account_id;
+        $storeLoanAccountId = $loan->loan_account_id;
         $storedType = $loan->type;
         $storedCompanyId = $loan->loan_company_id;
         if ($loan->total_paid > 0) {
@@ -319,12 +327,15 @@ class LoanController extends Controller
 
         $loan->delete();
         if ($storedType == 1) {
-            $this->loanUtil->adjustCompanyPayLoanAmount($storedCompanyId);
+            $this->loanUtil->adjustCompanyLoanAdvanceAmount($storedCompanyId);
+            $this->accountUtil->adjustAccountBalance('debit', $storeLoanAccountId);
+            $this->accountUtil->adjustAccountBalance('debit', $storeAccountId);
         } else {
-            $this->loanUtil->adjustCompanyReceiveLoanAmount($storedCompanyId);
+            $this->loanUtil->adjustCompanyLoanLiabilityAmount($storedCompanyId);
+            $this->accountUtil->adjustAccountBalance('credit', $storeLoanAccountId);
+            $this->accountUtil->adjustAccountBalance('debit', $storeAccountId);
         }
 
-        $this->accountUtil->adjustAccountBalance($storeAccountId);
         return response()->json('Loan deleted Successfully');
     }
 

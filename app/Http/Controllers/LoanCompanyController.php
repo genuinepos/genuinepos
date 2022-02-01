@@ -31,11 +31,11 @@ class LoanCompanyController extends Controller
                     $html .= '<a class="dropdown-item" href="' . route('accounting.loan.payment.list', [$row->id]) . '" id="view_payments"><i class="far fa-edit text-primary"></i> View Payments</a>';
 
                     if ($row->pay_loan_due > 0) {
-                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.payment.due.receive.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Due Amount</a>';
+                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.advance.receive.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Loan & Advance Receive Amt.</a>';
                     }
 
                     if ($row->get_loan_due > 0) {
-                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.payment.due.pay.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Due Amount</a>';
+                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.liability.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Due Amount</a>';
                     }
 
                     $html .= '<a class="dropdown-item" id="delete_company" href="' . route('accounting.loan.companies.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';

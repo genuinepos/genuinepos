@@ -586,10 +586,10 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         });
 
         Route::group(['prefix' => 'payments'], function () {
-            Route::get('due/receive/modal/{company_id}', 'LoanPaymentController@dueReceiveModal')->name('accounting.loan.payment.due.receive.modal');
-            Route::post('due/receive/store/{company_id}', 'LoanPaymentController@dueReceiveStore')->name('accounting.loan.payment.due.receive.store');
-            Route::get('due/pay/modal/{company_id}', 'LoanPaymentController@duePayModal')->name('accounting.loan.payment.due.pay.modal');
-            Route::post('due/pay/store/{company_id}', 'LoanPaymentController@duePayStore')->name('accounting.loan.payment.due.pay.store');
+            Route::get('due/receive/modal/{company_id}', 'LoanPaymentController@loanAdvanceReceiveModal')->name('accounting.loan.advance.receive.modal');
+            Route::post('due/receive/store/{company_id}', 'LoanPaymentController@dueReceiveStore')->name('accounting.loan.advance.receive.store');
+            Route::get('due/pay/modal/{company_id}', 'LoanPaymentController@loaLiabilityPaymentModal')->name('accounting.loan.liability.payment.modal');
+            Route::post('due/pay/store/{company_id}', 'LoanPaymentController@loanLiabilityPaymentStore')->name('accounting.loan.liability.payment.store');
             Route::get('payment/list/{company_id}', 'LoanPaymentController@paymentList')->name('accounting.loan.payment.list');
             Route::delete('delete/{payment_id}', 'LoanPaymentController@delete')->name('accounting.loan.payment.delete');
         });
@@ -858,7 +858,7 @@ Route::get('maintenance/mode', function () {
 
 Route::get('add-user', function () {
     $addAdmin = new AdminAndUser();
-    $addAdmin->prefix = 'Mr.'; 
+    $addAdmin->prefix = 'Mr.';
     $addAdmin->name = 'Super';
     $addAdmin->last_name = 'Admin';
     $addAdmin->email = 'superadmin@gmail.com';
@@ -883,14 +883,6 @@ Route::get('/test', function () {
     //     $p->save();
     // }
     // $testQuery = DB::table('accounts')->first();
-
-    $totalExpensePaid = DB::table('expanse_payments')
-    ->where('expanse_payments.expanse_id', 73)
-    ->select(DB::raw('sum(paid_amount) as total_paid'))
-    ->groupBy('expanse_payments.expanse_id')
-    ->get();
-
-    return $totalExpensePaid->sum('total_paid');
 });
 
 // All authenticated routes

@@ -71,7 +71,6 @@
                                                     </div>
                                                 </div>
 
-
                                                 <div class="col-md-4">
                                                     <div class="row">
                                                         <div class="col-md-6">
@@ -239,7 +238,7 @@
                     d.to_date = $('.to_date').val();
                 }
             },
-            columnDefs: [{"targets": [0, 3, 6],"orderable": false,"searchable": false}],
+            columnDefs: [{"targets": [0, 3, 4, 6],"orderable": false,"searchable": false}],
             columns: [
                 { data: 'action', },
                 { data: 'date', name: 'date' },

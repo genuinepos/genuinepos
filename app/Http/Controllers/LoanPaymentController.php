@@ -212,7 +212,7 @@ class LoanPaymentController extends Controller
         }
 
         if ($storedAccountId) {
-            $this->accountUtil->adjustAccountBalance('debit',$storedAccountId);
+            $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
         }
 
         return response()->json('Loan payment deleted Successfully');

@@ -897,7 +897,7 @@ Route::get('/test', function () {
    foreach ($expenses as $ex) {
        $cate_ids = '';
        foreach ($ex->expense_descriptions as $key => $expense_description) {
-            $cate_ids .= $expense_description.', ';
+            $cate_ids .= $expense_description->expense_category_id.', ';
        }
 
        $ex->category_ids = $cate_ids;

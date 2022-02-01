@@ -6,7 +6,7 @@
     .payment_list_table {position: relative;}
     .payment_details_contant{background: azure!important;}
 </style>
-<div class="modal-dialog four-col-modal" role="document">
+<div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h6 class="modal-title" id="exampleModalLabel">Loan Liability Payment</h6>

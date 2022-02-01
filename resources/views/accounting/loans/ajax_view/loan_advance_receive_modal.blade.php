@@ -6,7 +6,7 @@
     .payment_list_table {position: relative;}
     .payment_details_contant{background: azure!important;}
 </style>
-<div class="modal-dialog four-col-modal" role="document">
+<div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h6 class="modal-title" id="exampleModalLabel">Loan Advance Receive</h6>
@@ -30,20 +30,21 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Loan Pay : </strong>
+                                <li><strong>Total Loan&Advance : </strong>
                                     <span class="card_text invoice_no">
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                        <b>{{ App\Utils\Converter::format_in_bdt($company->pay_loan_amount) }}</b> 
                                     </span>
                                 </li>
 
-                                <li><strong>Total Due Receive : </strong>
+                                <li><strong>Total Received : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->total_receive) }}</b> 
                                     </span>
                                 </li>
-                                <li><strong>Total Payment Due : </strong>
+
+                                <li><strong>Total Due : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-danger">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->pay_loan_due) }}</b> 
@@ -135,9 +136,8 @@
             
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button name="action" value="save" type="submit" class="c-btn btn_blue float-end" id="add_payment">Save</button>
-                        <button name="action" value="save_and_print" type="submit" class="c-btn btn_blue float-end" id="add_payment">Save & Print</button>
+                        <button type="button" class="btn loading_button_p loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                        <button name="action" value="save" type="submit" class="c-btn btn_blue float-end submit_button" id="add_payment">Save</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                     </div>
                 </div>
@@ -145,6 +145,62 @@
         </div>
     </div>
 </div>
+
+<script>
+    //Add sale payment request by ajax
+    $('#loan_payment_form').on('submit',function(e){
+        e.preventDefault();
+        $('.loading_button_p').show();
+        var available_amount = $('#p_available_amount').val();
+        var paying_amount = $('#p_paying_amount').val();
+        if (parseFloat(paying_amount) > parseFloat(available_amount)) {
+            $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
+            $('.loading_button_p').hide();
+            return;
+        }
+
+        if (parseFloat(paying_amount) <= 0) {
+            $('.error_p_amount').html('Amount must be greater then 0.');
+            $('.loading_button_p').hide();
+            return;
+        }
+
+        var url = $(this).attr('action');
+        $('#submit_button').prop('type', 'button');
+        $.ajax({
+            url:url,
+            type:'post',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success:function(data){
+                $('#submit_button').prop('type', 'submit');
+                $('.loading_button_p').hide();
+                $('#loanPymentModal').modal('hide');
+                toastr.success(data);
+                companies_table.ajax.reload();
+                loans_table.ajax.reload();
+            },error: function(err) {
+                $('#submit_button').prop('type', 'submit');
+                $('.loading_button_p').hide();
+                $('.error').html('');
+
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }else if (err.status == 500) {
+                    toastr.error('Server error. Please contact the support team.'); 
+                    return;
+                }
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_p_' + key + '').html(error[0]);
+                });
+            }
+        });
+    });
+</script>
 
 <script>
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";

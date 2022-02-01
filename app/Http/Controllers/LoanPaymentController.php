@@ -46,8 +46,18 @@ class LoanPaymentController extends Controller
 
     public function loanAdvanceReceiveStore(Request $request, $company_id)
     {
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'payment_method_id|required' => 'Please select a payment method.',
+            'account_id|required' => 'Please select debit account.',
+        ]);
+
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'LAR'.$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
+        $loanPayment->voucher_no = 'LAR' . $this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 1;
         $loanPayment->branch_id = auth()->user()->branch_id;
@@ -119,7 +129,7 @@ class LoanPaymentController extends Controller
     public function loanLiabilityPaymentStore(Request $request, $company_id)
     {
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'LLP'.$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
+        $loanPayment->voucher_no = 'LLP' . $this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 2;
         $loanPayment->branch_id = auth()->user()->branch_id;
@@ -176,9 +186,9 @@ class LoanPaymentController extends Controller
     {
         $company = DB::table('loan_companies')->where('id', $company_id)->first();
         $loan_payments = DB::table('loan_payments')
-        ->leftJoin('accounts', 'loan_payments.account_id', 'accounts.id')
-        ->select('loan_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
-        ->orderBy('loan_payments.report_date', 'desc')->get();
+            ->leftJoin('accounts', 'loan_payments.account_id', 'accounts.id')
+            ->select('loan_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
+            ->orderBy('loan_payments.report_date', 'desc')->get();
         return view('accounting.loans.ajax_view.payment_list', compact('company', 'loan_payments'));
     }
 
@@ -196,13 +206,13 @@ class LoanPaymentController extends Controller
         }
 
         if ($storedPaymentType == 1) {
-            $this->loanUtil->adjustCompanyPayLoanAmount($storedCompanyId);
+            $this->loanUtil->adjustCompanyLoanAdvanceAmount($storedCompanyId);
         } else {
-            $this->loanUtil->adjustCompanyReceiveLoanAmount($storedCompanyId);
+            $this->loanUtil->adjustCompanyLoanLiabilityAmount($storedCompanyId);
         }
 
         if ($storedAccountId) {
-            $this->accountUtil->adjustAccountBalance($storedAccountId);
+            $this->accountUtil->adjustAccountBalance('debit',$storedAccountId);
         }
 
         return response()->json('Loan payment deleted Successfully');

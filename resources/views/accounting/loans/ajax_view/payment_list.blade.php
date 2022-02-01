@@ -22,24 +22,24 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li> 
-                        <h6>
-                            Total Get Loan : {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            <b class="text-success">{{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}</b> 
-                        </h6>
+                        <p>
+                            <b >Total Loan & Advance : </b> {{ json_decode($generalSettings->business, true)['currency'] }} 
+                            {{ App\Utils\Converter::format_in_bdt($company->pay_loan_amount) }} 
+                        </p>
                     </li>
 
                     <li>
-                        <h6>
-                            Total Due Paid : {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($company->total_pay) }}</b> 
-                        </h6>
+                        <p>
+                            <b class="text-success">Total Received : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ App\Utils\Converter::format_in_bdt($company->total_receive) }}
+                        </p>
                     </li>
 
                     <li>
-                        <h6>
-                            Total Payment Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <b class="text-danger"> {{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}</b> 
-                        </h6>
+                        <p>
+                            <b class="text-danger">Total Due : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}
+                             {{ App\Utils\Converter::format_in_bdt($company->pay_loan_due) }}
+                        </p>
                     </li>
                 </ul>
             </div>
@@ -49,28 +49,30 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li> 
-                        <h6>
-                            Total Pay Loan : {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            <b class="text-success">{{ App\Utils\Converter::format_in_bdt($company->pay_loan_amount) }}</b> 
-                        </h6>
+                        <p>
+                            <b>Total Loan Liability  : </b> {{ json_decode($generalSettings->business, true)['currency'] }} 
+                            {{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}
+                        </p>
                     </li>
 
                     <li>
-                        <h6>
-                            Total Due Paid : {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($company->total_receive) }}</b> 
-                        </h6>
+                        <p>
+                            <b class="text-success">Total Paid : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ App\Utils\Converter::format_in_bdt($company->total_pay) }}
+                        </p>
                     </li>
 
                     <li>
-                        <h6>
-                            Total Payment Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <b class="text-danger"> {{ App\Utils\Converter::format_in_bdt($company->pay_loan_due) }}</b> 
-                        </h6>
+                        <p>
+                            <b class="text-danger">Total Due : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}
+                             {{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}
+                        </p>
                     </li>
                 </ul>
             </div>
         </div>
+
+        
     </div>
 </div>
 

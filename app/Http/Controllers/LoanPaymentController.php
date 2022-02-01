@@ -70,7 +70,7 @@ class LoanPaymentController extends Controller
         $loanPayment->save();
 
         $this->accountUtil->addAccountLedger(
-            voucher_type_id: 15,
+            voucher_type_id: 16,
             date: $request->date,
             account_id: $request->account_id,
             trans_id: $loanPayment->id,
@@ -80,32 +80,34 @@ class LoanPaymentController extends Controller
 
         $dueLoans = Loan::where('type', 1)->where('due', '>', 0)->get();
         foreach ($dueLoans as $dueLoan) {
-            if ($dueLoan->due > $request->amount) {
-                if ($request->amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->amount, 1);
+            if ($dueLoan->due > $request->paying_amount) {
+                if ($request->paying_amount > 0) {
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->paying_amount, 1);
+                    $request->paying_amount -= $request->paying_amount;
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $request->amount;
                 } else {
-                    return;
+                    break;
                 }
-            } elseif ($dueLoan->due == $request->amount) {
-                if ($request->amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->amount, 1);
+            } elseif ($dueLoan->due == $request->paying_amount) {
+                if ($request->paying_amount > 0) {
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->paying_amount, 1);
+                    $request->paying_amount -= $request->paying_amount;
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $request->amount;
                 } else {
-                    return;
+                    break;
                 }
-            } elseif ($dueLoan->due < $request->amount) {
-                if ($request->amount > 0) {
+            } elseif ($dueLoan->due < $request->paying_amount) {
+                if ($request->paying_amount > 0) {
                     $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $dueLoan->due, 1);
+                    $request->paying_amount -= $dueLoan->due;
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $dueLoan->due;
                 } else {
-                    return;
+                    break;
                 }
             }
         }
+
+        $this->loanUtil->adjustCompanyLoanAdvanceAmount($company_id);
 
         return response()->json('Loan&Advance received Successfully');
     }
@@ -142,7 +144,7 @@ class LoanPaymentController extends Controller
         $loanPayment->save();
 
         $this->accountUtil->addAccountLedger(
-            voucher_type_id: 16,
+            voucher_type_id: 15,
             date: $request->date,
             account_id: $request->account_id,
             trans_id: $loanPayment->id,
@@ -152,33 +154,34 @@ class LoanPaymentController extends Controller
 
         $dueLoans = Loan::where('type', 2)->where('due', '>', 0)->get();
         foreach ($dueLoans as $dueLoan) {
-            if ($dueLoan->due > $request->amount) {
-                if ($request->amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->amount, 2);
+            if ($dueLoan->due > $request->paying_amount) {
+                if ($request->paying_amount > 0) {
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->paying_amount, 2);
+                    $request->paying_amount -= $request->paying_amount;
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $request->amount;
                 } else {
-                    return;
+                    break;
                 }
-            } elseif ($dueLoan->due == $request->amount) {
-                if ($request->amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->amount, 2);
+            } elseif ($dueLoan->due == $request->paying_amount) {
+                if ($request->paying_amount > 0) {
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->paying_amount, 2);
+                    $request->paying_amount -= $request->paying_amount;
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $request->amount;
                 } else {
-                    return;
+                    break;
                 }
-            } elseif ($dueLoan->due < $request->amount) {
-                if ($request->amount > 0) {
+            } elseif ($dueLoan->due < $request->paying_amount) {
+                if ($request->paying_amount > 0) {
                     $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $dueLoan->due, 2);
+                    $request->paying_amount -= $dueLoan->due;
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $request->amount -= $dueLoan->due;
                 } else {
-                    return;
+                    break;
                 }
             }
         }
 
+        $this->loanUtil->adjustCompanyLoanAdvanceAmount($company_id);
         return response()->json('Get Loan due paid Successfully');
     }
 

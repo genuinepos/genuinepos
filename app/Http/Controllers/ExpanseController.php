@@ -580,7 +580,7 @@ class ExpanseController extends Controller
 
         // Add Expanse payment
         $addExpansePayment = new ExpansePayment();
-        $addExpansePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'EPI') . date('ymd') . $invoiceId;
+        $addExpansePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'EPI') . $invoiceId;
         $addExpansePayment->expanse_id = $expanse->id;
         $addExpansePayment->account_id = $request->account_id;
         $addExpansePayment->pay_mode = $request->payment_method;

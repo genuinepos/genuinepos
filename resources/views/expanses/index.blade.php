@@ -48,6 +48,16 @@
                                                 </div>
 
                                                 <div class="col-md-2">
+                                                    <label><strong>Category :</strong></label>
+                                                    <select name="cate_id" class="form-control submit_able" id="cate_id" >
+                                                        <option value="">All</option>
+                                                        @foreach ($ex_cates as $cate)
+                                                            <option value="{{ $cate->id }}">{{ $cate->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -71,7 +81,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-2">
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <label><strong></strong></label>
@@ -234,6 +244,7 @@
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
                     d.admin_id = $('#admin_id').val();
+                    d.cate_id = $('#cate_id').val();
                     d.from_date = $('.from_date').val();
                     d.to_date = $('.to_date').val();
                 }

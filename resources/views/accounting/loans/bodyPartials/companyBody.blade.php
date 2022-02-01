@@ -49,9 +49,7 @@
                 </div>
             </div>
 
-            <div class="form-area px-3 pb-2" id="edit_com_form_body">
-
-            </div>
+            <div class="form-area px-3 pb-2" id="edit_com_form_body"></div>
         </div>
     </div>
 
@@ -80,8 +78,7 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                     <form id="delete_companies_form" action="" method="post">
                         @method('DELETE')

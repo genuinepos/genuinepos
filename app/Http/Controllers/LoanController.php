@@ -271,7 +271,7 @@ class LoanController extends Controller
 
     public function allCompaniesForForm()
     {
-        return DB::table('loan_companies')->select('id', 'name')->get();
+        return DB::table('loan_companies')->select('id', 'name')->where('branch_id', auth()->user()->branch_id)->get();
     }
 
     public function show($loanId)

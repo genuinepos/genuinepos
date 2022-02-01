@@ -63,6 +63,10 @@ class ExpanseController extends Controller
                 $query->where('expanses.admin_id', $request->admin_id);
             }
 
+            if ($request->cate_id) {
+                $query->where('expanses.category_ids', 'LIKE',  '%'. $request->cate_id . '%');
+            }
+
             if ($request->from_date) {
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
@@ -123,7 +127,7 @@ class ExpanseController extends Controller
                         )->get();
                     $html = '';
                     foreach ($expenseDescriptions as $exDescription) {
-                        $html .= '<b>' . $exDescription->name . '(' . $exDescription->code . '):</b> ' . $exDescription->amount . '</br>';
+                        $html .= '<b>' . $exDescription->name . ':</b> ' . $exDescription->amount . '</br>';
                     }
                     return $html;
                 })
@@ -160,8 +164,10 @@ class ExpanseController extends Controller
                 ->make(true);
         }
 
+        $ex_cates = DB::table('expanse_categories')->get();
+
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        return view('expanses.index', compact('branches'));
+        return view('expanses.index', compact('branches', 'ex_cates'));
     }
 
     public function categoryWiseExpense(Request $request)
@@ -198,7 +204,6 @@ class ExpanseController extends Controller
             if ($request->from_date) {
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
                 $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
                 $query->whereBetween('expanses.report_date', $date_range); // Final
             }
@@ -244,6 +249,8 @@ class ExpanseController extends Controller
                 ->rawColumns(['date', 'from', 'category_name', 'user_name', 'amount'])
                 ->make(true);
         }
+
+
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         return view('expanses.category_wise_expense_list', compact('branches'));
@@ -297,6 +304,14 @@ class ExpanseController extends Controller
         $addExpanse->month = date('F');
         $addExpanse->year = date('Y');
         $addExpanse->admin_id = $request->admin_id;
+        $addExpanse->category_ids = $request->admin_id;
+
+        $category_ids = '';
+        foreach ($request->category_ids as $category_id) {
+            $category_ids .= $category_id.', ';
+        }
+
+        $addExpanse->category_ids = $category_ids;
 
         if ($request->hasFile('attachment')) {
             $expanseAttachment = $request->file('attachment');
@@ -307,15 +322,12 @@ class ExpanseController extends Controller
 
         $addExpanse->save();
 
-        $category_ids = $request->category_ids;
-        $amounts = $request->amounts;
-
         $index = 0;
-        foreach ($category_ids as $category_id) {
+        foreach ($request->category_ids as $category_id) {
             $addExDescription = new ExpenseDescription();
             $addExDescription->expense_id = $addExpanse->id;
             $addExDescription->expense_category_id = $category_id;
-            $addExDescription->amount = $amounts[$index];
+            $addExDescription->amount = $request->amounts[$index];
             $addExDescription->save();
             $index++;
         }
@@ -475,6 +487,13 @@ class ExpanseController extends Controller
             $updateExpanse->attachment = $expanseAttachmentName;
         }
 
+        $category_ids = '';
+        foreach ($request->category_ids as $category_id) {
+            $category_ids .= $category_id.', ';
+        }
+
+        $updateExpanse->category_ids = $category_ids;
+
         $updateExpanse->save();
 
         $exDescriptions = ExpenseDescription::where('expense_id', $updateExpanse->id)->get();
@@ -483,23 +502,19 @@ class ExpanseController extends Controller
             $exDescription->save();
         }
 
-        $category_ids = $request->category_ids;
-        $amounts = $request->amounts;
-        $description_ids = $request->description_ids;
-
         $index = 0;
-        foreach ($category_ids as $category_id) {
-            $description = ExpenseDescription::where('id', $description_ids[$index])->first();
+        foreach ($request->category_ids as $category_id) {
+            $description = ExpenseDescription::where('id', $request->description_ids[$index])->first();
             if ($description) {
                 $description->expense_category_id = $category_id;
-                $description->amount = $amounts[$index];
+                $description->amount = $request->amounts[$index];
                 $description->is_delete_in_update = 0;
                 $description->save();
             } else {
                 $addExDescription = new ExpenseDescription();
                 $addExDescription->expense_id = $updateExpanse->id;
                 $addExDescription->expense_category_id = $category_id;
-                $addExDescription->amount = $amounts[$index];
+                $addExDescription->amount = $request->amounts[$index];
                 $addExDescription->save();
             }
 
@@ -565,7 +580,7 @@ class ExpanseController extends Controller
 
         // Add Expanse payment
         $addExpansePayment = new ExpansePayment();
-        $addExpansePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'EPI') . date('ymd') . $invoiceId;
+        $addExpansePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'EPI') . $invoiceId;
         $addExpansePayment->expanse_id = $expanse->id;
         $addExpansePayment->account_id = $request->account_id;
         $addExpansePayment->pay_mode = $request->payment_method;

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Loan;
+use App\Models\LoanPayment;
 use Illuminate\Database\Eloquent\Model;
 
 class LoanCompany extends Model
@@ -13,5 +14,10 @@ class LoanCompany extends Model
     public function loan()
     {
         return $this->hasMany(Loan::class);
+    }
+
+    public function loanPayments()
+    {
+        return $this->belongsTo(LoanPayment::class);
     }
 }

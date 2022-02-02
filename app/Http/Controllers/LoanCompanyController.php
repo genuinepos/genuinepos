@@ -95,9 +95,40 @@ class LoanCompanyController extends Controller
 
     public function delete(Request $request, $companyId)
     {
-        $deleteCompany = LoanCompany::find($companyId);
+        $deleteCompany = LoanCompany::with(['loans', 'loanPayments'])->first($companyId);
+        $storedCompanyLoans = $deleteCompany->loans;
+        $storedCompanyLoanPayments = $deleteCompany->loanPayments;
         if (!is_null($deleteCompany)) {
             $deleteCompany->delete();
+
+            foreach ($$storedCompanyLoanPayments as $companyLoanPayments) {
+                // Adjust Bank/Cash-In-Hand A/C balance
+                $this->accountUtil->adjustAccountBalance('debit', $companyLoanPayments->account_id);
+            }
+
+            foreach ($storedCompanyLoans as $companyLoan) {
+                if ($companyLoan->type == 1) {
+                    if ($storedCompanyLoan->loan_account_id) {
+                        // Adjust Loan A/C balance
+                        $this->accountUtil->adjustAccountBalance('debit', $storedCompanyLoan->loan_account_id);
+                    }
+
+                    if ($companyLoan->account_id) {
+                        // Adjust Bank/Cash-In-Hand A/C balance
+                        $this->accountUtil->adjustAccountBalance('debit', $storedCompanyLoan->account_id);
+                    }
+                }else {
+                    if ($companyLoan->loan_account_id) {
+                        // Adjust Loan A/C balance
+                        $this->accountUtil->adjustAccountBalance('credit', $storedCompanyLoan->loan_account_id);
+                    }
+
+                    if ($companyLoan->account_id) {
+                        // Adjust Bank/Cash-In-Hand A/C balance
+                        $this->accountUtil->adjustAccountBalance('debit', $storedCompanyLoan->account_id);
+                    }
+                }
+            }
         }
 
         return response()->json('Company deleted Successfully');

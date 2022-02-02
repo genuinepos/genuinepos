@@ -57,14 +57,14 @@
 
                     <li>
                         <p>
-                            <b class="text-success">Total Paid : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-success">Total Paid : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->total_pay) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-danger">Total Due : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-danger">Total Due : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
                              {{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}
                         </p>
                     </li>
@@ -102,8 +102,14 @@
                                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
                             </td>
                             <td class="text-start">{{ $payment->voucher_no }}</td>
-                            <td class="text-start">{{ $payment->payment_type == 1 ? 'Pay Loan Due Receive' : 'Get Loan Due Paid' }}</td>
-                            <td class="text-start">{{ $payment->pay_mode }}</td>
+                            <td class="text-start">
+                                @if ($payment->payment_type == 1)
+                                    <span class="text-success"><b>Loan & Advance Due Receive</b></span>
+                                @else
+                                    <span class="text-danger"><b> Loan Liability Due Payment</b></span>
+                                @endif
+                            </td>
+                            <td class="text-start">{{ $payment->payment_method ? $payment->payment_method : $payment->pay_mode }}</td>
                             <td class="text-start">{{ $payment->ac_name ? $payment->ac_name.' (A/C: '.$payment->ac_no.')' : 'N/A' }}</td>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}

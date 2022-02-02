@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Loan;
 use App\Models\Branch;
+use App\Models\PaymentMethod;
 use App\Models\LoanPaymentDistribution;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,6 +26,11 @@ class LoanPayment extends Model
     public function company()
     {
         return $this->belongsTo(LoanCompany::class, 'company_id');
+    }
+
+    public function PaymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }
 
     public function loan_payment_distributions()

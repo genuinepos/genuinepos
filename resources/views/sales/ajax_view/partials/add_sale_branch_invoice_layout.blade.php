@@ -44,16 +44,13 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="heading text-end">
                                 @if ($sale->branch)
-                                    <h6 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+                                    <h6 class="company_name" style="text-transform: uppercase;">{{ $sale->branch->name }}</h6>
+
                                     <p class="company_address">
-                                        <b>
-                                            {{ $sale->branch->name . '/' . $sale->branch->branch_code }} <br>
-                                            {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
-                                            {{ $sale->branch->add_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
-                                            {{ $sale->branch->add_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
-                                            {{ $sale->branch->add_sale_invoice_layout->branch_country == 1 ? $sale->branch->country : '' }}.
-                                        </b>
+                                        {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
+                                        {{ $sale->branch->add_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
+                                        {{ $sale->branch->add_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
+                                        {{ $sale->branch->add_sale_invoice_layout->branch_country == 1 ? $sale->branch->country : '' }}.
                                     </p>
 
                                     @if ($sale->branch->add_sale_invoice_layout->branch_phone)
@@ -64,8 +61,8 @@
                                         <p><b>Email</b> : {{ $sale->branch->email }}</p>
                                     @endif
                                 @else 
-                                    <h5 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+                                    <h6 class="company_name" style="text-transform: uppercase;">
+                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
                                     <p class="company_address">
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }},<br>
                                     </p>

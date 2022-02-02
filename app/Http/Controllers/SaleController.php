@@ -213,10 +213,10 @@ class SaleController extends Controller
             $invoicePrefix = $request->invoice_schema;
         } else {
             if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
-                $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from . date('ymd');
+                $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from;
             } else {
                 $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
-                $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from . date('ymd');
+                $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from;
             }
         }
 
@@ -232,8 +232,10 @@ class SaleController extends Controller
             'status' => 'required',
         ]);
 
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
+
         $addSale = new Sale();
-        $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . $this->invoiceVoucherRefIdUtil->getLastId('sales');
+        $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . $invoiceId;
         $addSale->admin_id = auth()->user()->id;
         $addSale->branch_id = auth()->user()->branch_id;
 

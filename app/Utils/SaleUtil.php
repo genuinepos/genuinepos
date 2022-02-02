@@ -54,7 +54,7 @@ class SaleUtil
                     // Add bank/cash-in-hand A/C ledger
                     $this->accountUtil->addAccountLedger(
                         voucher_type_id : 10,
-                        date : $request->date,
+                        date : $request->date ?? date('Y-m-d'),
                         account_id : $request->account_id,
                         trans_id : $addPaymentGetId,
                         amount : $request->total_invoice_payable,
@@ -66,7 +66,7 @@ class SaleUtil
                         $this->customerUtil->addCustomerLedger(
                             voucher_type_id : 3,
                             customer_id : $request->customer_id,
-                            date : $request->date,
+                            date : $request->date ?? date('Y-m-d'),
                             trans_id : $addPaymentGetId,
                             amount : $request->total_invoice_payable
                         );
@@ -86,7 +86,7 @@ class SaleUtil
                                         // add sale payment
                                         $addPaymentGetId = $this->addPaymentGetId(
                                             invoicePrefix: $paymentInvoicePrefix,
-                                            request: $request,
+                                            request: $request->date ?? date('Y-m-d'),
                                             payingAmount: $dueAmounts,
                                             invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
                                             saleId: $dueInvoice->id,
@@ -96,7 +96,7 @@ class SaleUtil
                                         // Add bank/cash-in-hand A/C ledger
                                         $this->accountUtil->addAccountLedger(
                                             voucher_type_id: 10,
-                                            date: $request->date,
+                                            date: $request->date ?? date('Y-m-d'),
                                             account_id: $request->account_id,
                                             trans_id: $addPaymentGetId,
                                             amount: $dueAmounts,
@@ -108,7 +108,7 @@ class SaleUtil
                                             $this->customerUtil->addCustomerLedger(
                                                 voucher_type_id: 3,
                                                 customer_id: $request->customer_id,
-                                                date: $request->date,
+                                                date: $request->date ?? date('Y-m-d'),
                                                 trans_id: $addPaymentGetId,
                                                 amount: $dueAmounts
                                             );
@@ -131,7 +131,7 @@ class SaleUtil
                                         // Add bank/cash-in-hand A/C Ledger
                                         $this->accountUtil->addAccountLedger(
                                             voucher_type_id: 10,
-                                            date: $request->date,
+                                            date: $request->date ?? date('Y-m-d'),
                                             account_id: $request->account_id,
                                             trans_id: $addPaymentGetId,
                                             amount: $dueAmounts,
@@ -143,7 +143,7 @@ class SaleUtil
                                             $this->customerUtil->addCustomerLedger(
                                                 voucher_type_id: 3,
                                                 customer_id: $request->customer_id,
-                                                date: $request->date,
+                                                date: $request->date ?? date('Y-m-d'),
                                                 trans_id: $addPaymentGetId,
                                                 amount: $dueAmounts
                                             );
@@ -167,7 +167,7 @@ class SaleUtil
                                         // Add bank/cash-in-hand A/C Ledger
                                         $this->accountUtil->addAccountLedger(
                                             voucher_type_id: 10,
-                                            date: $request->date,
+                                            date: $request->date ?? date('Y-m-d'),
                                             account_id: $request->account_id,
                                             trans_id: $addPaymentGetId,
                                             amount: $dueInvoice->due,
@@ -179,7 +179,7 @@ class SaleUtil
                                             $this->customerUtil->addCustomerLedger(
                                                 voucher_type_id: 3,
                                                 customer_id: $request->customer_id,
-                                                date: $request->date,
+                                                date: $request->date ?? date('Y-m-d'),
                                                 trans_id: $addPaymentGetId,
                                                 amount: $dueInvoice->due
                                             );
@@ -214,7 +214,7 @@ class SaleUtil
                             // Add bank/cash-in-hand A/C Ledger
                             $this->accountUtil->addAccountLedger(
                                 voucher_type_id: 10,
-                                date: $request->date,
+                                date: $request->date ?? date('Y-m-d'),
                                 account_id: $request->account_id,
                                 trans_id: $customerPayment->id,
                                 amount: $dueAmounts,
@@ -225,7 +225,7 @@ class SaleUtil
                             $this->customerUtil->addCustomerLedger(
                                 voucher_type_id: 5,
                                 customer_id: $request->customer_id,
-                                date: $request->date,
+                                date: $request->date ?? date('Y-m-d'),
                                 trans_id: $customerPayment->id,
                                 amount: $dueAmounts
                             );
@@ -244,7 +244,7 @@ class SaleUtil
                     // Add bank account Ledger
                     $this->accountUtil->addAccountLedger(
                         voucher_type_id: 10,
-                        date: $request->date,
+                        date: $request->date ?? date('Y-m-d'),
                         account_id: $request->account_id,
                         trans_id: $addPaymentGetId,
                         amount: $paidAmount,
@@ -255,7 +255,7 @@ class SaleUtil
                         $this->customerUtil->addCustomerLedger(
                             voucher_type_id: 3,
                             customer_id: $request->customer_id,
-                            date: $request->date,
+                            date: $request->date ?? date('Y-m-d'),
                             trans_id: $addPaymentGetId,
                             amount: $paidAmount
                         );
@@ -274,7 +274,7 @@ class SaleUtil
                 // Add bank/cash-in-hand A/C ledger
                 $this->accountUtil->addAccountLedger(
                     voucher_type_id: 10,
-                    date: $request->date,
+                    date: $request->date ?? date('Y-m-d'),
                     account_id: $request->account_id,
                     trans_id: $addPaymentGetId,
                     amount: $paidAmount,
@@ -285,7 +285,7 @@ class SaleUtil
                     $this->customerUtil->addCustomerLedger(
                         voucher_type_id: 3,
                         customer_id: $request->customer_id,
-                        date: $request->date,
+                        date: $request->date ?? date('Y-m-d'),
                         trans_id: $addPaymentGetId,
                         amount: $paidAmount
                     );
@@ -297,6 +297,13 @@ class SaleUtil
     // Add sale add payment util method
     public function addPaymentGetId($invoicePrefix, $request, $payingAmount, $invoiceId, $saleId, $customerPaymentId)
     {
+        $__report_date = '';
+        if (isset($request->date)) {
+            $__report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        }else {
+            $__report_date = date('Y-m-d H:i:s');
+        }
+
         $__invoiceId = str_pad($invoiceId, 5, "0", STR_PAD_LEFT);
         $sale = DB::table('sales')->where('id', $saleId)->select('customer_id')->first();
         $addSalePayment = new SalePayment();
@@ -309,7 +316,7 @@ class SaleUtil
         $addSalePayment->paid_amount = $payingAmount;
         $addSalePayment->date = $request->date ?? date('d-m-Y');
         $addSalePayment->time = date('h:i:s a');
-        $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
+        $addSalePayment->report_date = $__report_date;
         $addSalePayment->month = date('F');
         $addSalePayment->year = date('Y');
         $addSalePayment->note = $request->payment_note;

@@ -230,7 +230,7 @@ class POSController extends Controller
                 $this->customerUtil->addCustomerLedger(
                     voucher_type_id: 1,
                     customer_id: $request->customer_id,
-                    date: $request->date,
+                    date: date('Y-m-d'),
                     trans_id: $addSale->id,
                     amount: $invoicePayable
                 );

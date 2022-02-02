@@ -4,7 +4,7 @@
 @endphp 
 <!-- Sale print templete-->
 @if ($sale->branch && $sale->branch->pos_sale_invoice_layout)
-    @include('sales.save_and_print_template.partials.pos_sale_branch_lnvoice_layout')
+    @include('sales.save_and_print_template.partials.pos_sale_branch_invoice_layout')
 @else
     @include('sales.save_and_print_template.partials.pos_sale_default_invoice_layout')
 @endif

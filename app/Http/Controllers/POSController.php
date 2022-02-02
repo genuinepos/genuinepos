@@ -175,10 +175,13 @@ class POSController extends Controller
         $paidAmount = $request->paying_amount - $changedAmount;
         //
         $customer = Customer::where('id', $request->customer_id)->first();
+        $invoicePayable = 0;
         if ($request->action == 1) {
             $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
             $paidAmount = $request->paying_amount - $changedAmount;
-            if ($request->previous_due > 0) {
+
+            if ($request->previous_due != 0) {
+                $invoicePayable = $request->total_invoice_payable;
                 $addSale->total_payable_amount = $request->total_invoice_payable;
                 if ($paidAmount >= $request->total_invoice_payable) {
                     $addSale->paid = $request->total_invoice_payable;
@@ -190,11 +193,13 @@ class POSController extends Controller
                     $addSale->due = $calcDue;
                 }
             } else {
+                $invoicePayable = $request->total_payable_amount;
                 $addSale->total_payable_amount = $request->total_payable_amount;
                 $addSale->paid = $request->paying_amount - $changedAmount;
                 $addSale->change_amount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
                 $addSale->due = $request->total_due >= 0 ? $request->total_due : 0.00;
             }
+
             $addSale->save();
 
             if ($customer) {
@@ -207,17 +212,28 @@ class POSController extends Controller
                     $customer->save();
                 }
 
-                $addCustomerLedger = new CustomerLedger();
-                $addCustomerLedger->customer_id = $request->customer_id;
-                $addCustomerLedger->sale_id = $addSale->id;
-                $addCustomerLedger->report_date = date('Y-m-d');
-                $addCustomerLedger->save();
+                // $addCustomerLedger = new CustomerLedger();
+                // $addCustomerLedger->customer_id = $request->customer_id;
+                // $addCustomerLedger->sale_id = $addSale->id;
+                // $addCustomerLedger->report_date = date('Y-m-d');
+                // $addCustomerLedger->save();
+
+                // Add customer ledger
+                $this->customerUtil->addCustomerLedger(
+                    voucher_type_id: 1,
+                    customer_id: $request->customer_id,
+                    date: $request->date,
+                    trans_id: $addSale->id,
+                    amount: $invoicePayable
+                );
             }
         } else {
             $addSale->total_payable_amount = $request->total_invoice_payable;
             $addSale->save();
         }
         $addSale->save();
+
+
 
         // update product quantity
         $quantities = $request->quantities;

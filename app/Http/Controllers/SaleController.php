@@ -320,6 +320,7 @@ class SaleController extends Controller
             );
 
             if ($request->customer_id) {
+                // Add customer ledger
                 $this->customerUtil->addCustomerLedger(
                     voucher_type_id: 1,
                     customer_id: $request->customer_id,

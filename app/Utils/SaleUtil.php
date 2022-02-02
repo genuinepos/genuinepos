@@ -60,20 +60,47 @@ class SaleUtil
                             foreach ($dueInvoices as $dueInvoice) {
                                 if ($dueInvoice->due > $dueAmounts) {
                                     if ($dueAmounts > 0) {
-                                        $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), $dueInvoice->id);
+
+                                        $this->addPayment(
+                                            $paymentInvoicePrefix,
+                                            $request,
+                                            $dueAmounts,
+                                            $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                                            $dueInvoice->id
+                                        );
+
                                         $dueAmounts -= $dueAmounts;
+
                                         $this->adjustSaleInvoiceAmounts($dueInvoice);
                                     }
                                 } elseif ($dueInvoice->due == $dueAmounts) {
                                     if ($dueAmounts > 0) {
-                                        $this->addPayment($paymentInvoicePrefix, $request, $dueAmounts, $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), $dueInvoice->id);
+
+                                        $this->addPayment(
+                                            $paymentInvoicePrefix,
+                                            $request,
+                                            $dueAmounts,
+                                            $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                                            $dueInvoice->id
+                                        );
+
                                         $dueAmounts -= $dueAmounts;
+
                                         $this->adjustSaleInvoiceAmounts($dueInvoice);
                                     }
                                 } elseif ($dueInvoice->due < $dueAmounts) {
                                     if ($dueInvoice->due > 0) {
-                                        $this->addPayment($paymentInvoicePrefix, $request, $dueInvoice->due, $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), $dueInvoice->id);
+
+                                        $this->addPayment(
+                                            $paymentInvoicePrefix,
+                                            $request,
+                                            $dueInvoice->due,
+                                            $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                                            $dueInvoice->id
+                                        );
+
                                         $dueAmounts -= $dueInvoice->due;
+
                                         $this->adjustSaleInvoiceAmounts($dueInvoice);
                                     }
                                 }
@@ -86,7 +113,9 @@ class SaleUtil
                         if ($dueAmounts > 0) {
                             // Add Customer Payment Record
                             $customerPayment = new CustomerPayment();
-                            $customerPayment->voucher_no = 'CPV' . $this->invoiceVoucherRefIdUtil->getLastId('customer_payments');
+
+                            $customerPayment->voucher_no = 'CPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
+
                             $customerPayment->branch_id = auth()->user()->branch_id;
                             $customerPayment->customer_id = $addSale->customer_id;
                             $customerPayment->account_id = $request->account_id;
@@ -140,7 +169,7 @@ class SaleUtil
     {
         $sale = DB::table('sales')->where('id', $saleId)->select('customer_id')->first();
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV') . date('my') . $invoiceId;
+        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV') . str_pad($invoiceId, 5, "0", STR_PAD_LEFT);
         $addSalePayment->sale_id = $saleId;
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
         $addSalePayment->account_id = $request->account_id;
@@ -316,7 +345,7 @@ class SaleUtil
                 $html .= '</div>';
                 return $html;
             })
-            ->editColumn('date', function  ($row) use ($generalSettings) {
+            ->editColumn('date', function ($row) use ($generalSettings) {
                 $__date_format = str_replace('-', '/', json_decode($generalSettings->business, true)['date_format']);
                 return date($__date_format, strtotime($row->date));
             })
@@ -889,6 +918,11 @@ class SaleUtil
     {
         foreach ($sale->sale_products as $sale_product) {
             $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
+
+            if ($sale_product) {
+                # code...
+            }
+
 
             $purchaseProducts = '';
             if ($stockAccountingMethod == '1') {

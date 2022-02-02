@@ -237,7 +237,7 @@
               <div class="row" style="margin-top: -23px!important;">
                   <div class="col-md-6">
                       @if ($defaultLayout->show_total_in_word)
-                          <p style="text-transform: uppercase;"><b>In Word : </b> <span id="inword"></span>Only</p>
+                          <p style="text-transform: uppercase;"><b>In Word : </b> <span id="inword"></span> ONLY.</p>
                       @endif
 
                       @if (
@@ -248,7 +248,7 @@
                       )
                           <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
                               @if ($defaultLayout->account_name)
-                                  <p>Account Name : {{ $defaultLayout->account_name  }}</p>
+                                  <p>Account Name : {{ $defaultLayout->account_name }}</p>
                               @endif
     
                               @if ($defaultLayout->account_no)

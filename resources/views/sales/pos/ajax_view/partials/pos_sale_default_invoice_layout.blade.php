@@ -239,7 +239,7 @@
                 <div class="col-md-6">
                     @if ($defaultLayout->show_total_in_word)
                         <p style="text-transform: uppercase;">
-                            <b>In Word : </b> <span id="inword"></span>
+                            <b>In Word : </b> <span id="inword"> ONLY.</span>
                         </p>
                     @endif
 
@@ -567,7 +567,6 @@
                                     </span>
                                 </th>
                             </tr>
-
 
                             <tr>
                                 <th class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></th>

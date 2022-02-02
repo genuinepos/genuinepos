@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoanCompany;
+use App\Utils\AccountUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class LoanCompanyController extends Controller
 {
-    public function __construct()
+    protected $accountUtil;
+
+    public function __construct(AccountUtil $accountUtil)
     {
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -18,7 +22,7 @@ class LoanCompanyController extends Controller
     {
         if ($request->ajax()) {
             $companies = DB::table('loan_companies')->orderBy('id', 'DESC')
-            ->where('branch_id', auth()->user()->branch_id)->get();
+                ->where('branch_id', auth()->user()->branch_id)->get();
             $generalSettings = DB::table('general_settings')->first();
             return DataTables::of($companies)
                 ->addIndexColumn()
@@ -95,37 +99,39 @@ class LoanCompanyController extends Controller
 
     public function delete(Request $request, $companyId)
     {
-        $deleteCompany = LoanCompany::with(['loans', 'loanPayments'])->first($companyId);
+        $deleteCompany = LoanCompany::with(['loans', 'loanPayments'])->where('id', $companyId)->first();
         $storedCompanyLoans = $deleteCompany->loans;
         $storedCompanyLoanPayments = $deleteCompany->loanPayments;
         if (!is_null($deleteCompany)) {
             $deleteCompany->delete();
 
-            foreach ($$storedCompanyLoanPayments as $companyLoanPayments) {
+            foreach ($storedCompanyLoanPayments as $companyLoanPayment) {
                 // Adjust Bank/Cash-In-Hand A/C balance
-                $this->accountUtil->adjustAccountBalance('debit', $companyLoanPayments->account_id);
+                $this->accountUtil->adjustAccountBalance('debit', $companyLoanPayment->account_id);
             }
 
             foreach ($storedCompanyLoans as $companyLoan) {
                 if ($companyLoan->type == 1) {
-                    if ($storedCompanyLoan->loan_account_id) {
-                        // Adjust Loan A/C balance
-                        $this->accountUtil->adjustAccountBalance('debit', $storedCompanyLoan->loan_account_id);
-                    }
 
-                    if ($companyLoan->account_id) {
-                        // Adjust Bank/Cash-In-Hand A/C balance
-                        $this->accountUtil->adjustAccountBalance('debit', $storedCompanyLoan->account_id);
-                    }
-                }else {
                     if ($companyLoan->loan_account_id) {
                         // Adjust Loan A/C balance
-                        $this->accountUtil->adjustAccountBalance('credit', $storedCompanyLoan->loan_account_id);
+                        $this->accountUtil->adjustAccountBalance('debit', $companyLoan->loan_account_id);
                     }
 
                     if ($companyLoan->account_id) {
                         // Adjust Bank/Cash-In-Hand A/C balance
-                        $this->accountUtil->adjustAccountBalance('debit', $storedCompanyLoan->account_id);
+                        $this->accountUtil->adjustAccountBalance('debit', $companyLoan->account_id);
+                    }
+                } else {
+
+                    if ($companyLoan->loan_account_id) {
+                        // Adjust Loan A/C balance
+                        $this->accountUtil->adjustAccountBalance('credit', $companyLoan->loan_account_id);
+                    }
+
+                    if ($companyLoan->account_id) {
+                        // Adjust Bank/Cash-In-Hand A/C balance
+                        $this->accountUtil->adjustAccountBalance('debit', $companyLoan->account_id);
                     }
                 }
             }

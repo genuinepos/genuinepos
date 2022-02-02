@@ -73,7 +73,8 @@ class LoanController extends Controller
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item" id="view" href="' . route('accounting.loan.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
-                    $html .= '<a class="dropdown-item" href="' . route('accounting.loan.edit', [$row->id]) . '" id="edit_loan"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    // $html .= '<a class="dropdown-item" href="' . route('accounting.loan.edit', [$row->id]) . '" id="edit_loan"><i class="far fa-edit text-primary"></i> Edit</a>';
+
                     $html .= '<a class="dropdown-item" id="delete_loan" href="' . route('accounting.loan.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
@@ -122,6 +123,7 @@ class LoanController extends Controller
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->whereIn('account_type', [13, 14])
+            ->orderBy('account_type', 'desc')
             ->get(['accounts.id', 'accounts.name', 'account_type']);
 
         return view('accounting.loans.index', compact('branches', 'accounts', 'loanAccounts'));
@@ -230,6 +232,7 @@ class LoanController extends Controller
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->whereIn('account_type', [13, 14])
+            ->orderBy('accounts.account_type', 'desc')
             ->get(['accounts.id', 'accounts.name', 'account_type']);
 
         return view('accounting.loans.ajax_view.editLoan', compact('loan', 'companies', 'accounts', 'loanAccounts'));

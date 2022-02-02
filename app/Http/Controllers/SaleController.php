@@ -178,7 +178,7 @@ class SaleController extends Controller
         $customers = DB::table('customers')
             ->where('status', 1)->select('id', 'name', 'phone')
             ->orderBy('id', 'desc')->get();
-            
+
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
 
         $invoice_schemas = DB::table('invoice_schemas')->get(['format', 'prefix', 'start_from']);
@@ -290,6 +290,7 @@ class SaleController extends Controller
             $paidAmount = $request->paying_amount - $changedAmount;
 
             if ($request->previous_due != 0) {
+
                 $invoicePayable = $request->total_invoice_payable;
                 $addSale->total_payable_amount = $request->total_invoice_payable;
                 if ($paidAmount >= $request->total_invoice_payable) {
@@ -301,12 +302,16 @@ class SaleController extends Controller
                     $addSale->due = $calcDue;
                 }
             } else {
+
                 $invoicePayable = $request->total_payable_amount;
+
                 $addSale->total_payable_amount = $request->total_payable_amount;
-                $addSale->paid = $request->change_amount > 0 ? $request->total_invoice_payable : $request->paying_amount;
+                // $addSale->paid = $request->change_amount > 0 ? $request->total_invoice_payable : $request->paying_amount;
+                $addSale->paid = $paidAmount;
                 $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
                 $addSale->due = $request->total_due > 0 ? $request->total_due : 0.00;
             }
+
             $addSale->save();
 
             // Add sales A/C ledger
@@ -1345,7 +1350,7 @@ class SaleController extends Controller
             ->orderBy('id', 'desc')
             ->limit(10)
             ->get();
-            
+
         return view('sales.ajax_view.recent_sale_list', compact('sales'));
     }
 

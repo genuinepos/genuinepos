@@ -85,12 +85,12 @@ class POSController extends Controller
     // Store pos sale
     public function store(Request $request)
     {
-        $prefixSettings = DB::table('general_settings')
+        $settings = DB::table('general_settings')
             ->select(['id', 'prefix', 'reward_poing_settings', 'send_es_settings'])
             ->first();
 
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+        $invoicePrefix = json_decode($settings->prefix, true)['sale_invoice'];
+        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
         $branchInvoiceSchema = DB::table('branches')
             ->leftJoin('invoice_schemas', 'branches.invoice_schema_id', 'invoice_schemas.id')
             ->where('branches.id', auth()->user()->branch_id)
@@ -104,10 +104,10 @@ class POSController extends Controller
 
         $invoicePrefix = '';
         if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
-            $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from . date('ymd');
+            $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from;
         } else {
             $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
-            $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from . date('ymd');
+            $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from;
         }
 
         if ($request->product_ids == null) {
@@ -131,14 +131,9 @@ class POSController extends Controller
         }
 
         // generate invoice ID
-        $invoiceId = 1;
-        $lastSale = DB::table('sales')->orderBy('id', 'desc')->first();
-        if ($lastSale) {
-            $invoiceId = ++$lastSale->id;
-        }
-
+ 
         $addSale = new Sale();
-        $addSale->invoice_id = $invoicePrefix . $invoiceId;
+        $addSale->invoice_id = $invoicePrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), '0', 5);
         $addSale->admin_id = auth()->user()->id;
 
         $addSale->branch_id = auth()->user()->branch_id;
@@ -175,24 +170,29 @@ class POSController extends Controller
         $paidAmount = $request->paying_amount - $changedAmount;
         //
         $customer = Customer::where('id', $request->customer_id)->first();
+
         $invoicePayable = 0;
+
         if ($request->action == 1) {
             $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
             $paidAmount = $request->paying_amount - $changedAmount;
 
             if ($request->previous_due != 0) {
+
                 $invoicePayable = $request->total_invoice_payable;
                 $addSale->total_payable_amount = $request->total_invoice_payable;
                 if ($paidAmount >= $request->total_invoice_payable) {
+
                     $addSale->paid = $request->total_invoice_payable;
                     $addSale->due = 0.00;
-                    $payingPreviousDue = $paidAmount - $request->total_invoice_payable; // Comming Soon;
                 } elseif ($paidAmount < $request->total_invoice_payable) {
+
                     $addSale->paid = $request->paying_amount;
                     $calcDue = $request->total_invoice_payable - $request->paying_amount;
                     $addSale->due = $calcDue;
                 }
             } else {
+
                 $invoicePayable = $request->total_payable_amount;
                 $addSale->total_payable_amount = $request->total_payable_amount;
                 $addSale->paid = $request->paying_amount - $changedAmount;
@@ -212,11 +212,15 @@ class POSController extends Controller
                     $customer->save();
                 }
 
-                // $addCustomerLedger = new CustomerLedger();
-                // $addCustomerLedger->customer_id = $request->customer_id;
-                // $addCustomerLedger->sale_id = $addSale->id;
-                // $addCustomerLedger->report_date = date('Y-m-d');
-                // $addCustomerLedger->save();
+                // Add sales A/C ledger
+                $this->accountUtil->addAccountLedger(
+                    voucher_type_id: 1,
+                    date: $request->date,
+                    account_id: $request->sale_account_id,
+                    trans_id: $addSale->id,
+                    amount: $invoicePayable,
+                    balance_type: 'credit'
+                );
 
                 // Add customer ledger
                 $this->customerUtil->addCustomerLedger(
@@ -233,45 +237,29 @@ class POSController extends Controller
         }
         $addSale->save();
 
-
-
-        // update product quantity
-        $quantities = $request->quantities;
-        $units = $request->units;
-        $descriptions = $request->descriptions;
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-        $unit_discount_types = $request->unit_discount_types;
-        $unit_discounts = $request->unit_discounts;
-        $unit_discount_amounts = $request->unit_discount_amounts;
-        $unit_tax_percents = $request->unit_tax_percents;
-        $unit_tax_amounts = $request->unit_tax_amounts;
-        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
-        $unit_prices_exc_tax = $request->unit_prices_exc_tax;
-        $unit_prices_inc_tax = $request->unit_prices_inc_tax;
-        $subtotals = $request->subtotals;
-
         // update product quantity and add sale product
         $branch_id = auth()->user()->branch_id;
 
         $__index = 0;
         foreach ($product_ids as $product_id) {
+
+            $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
             $addSaleProduct = new SaleProduct();
             $addSaleProduct->sale_id = $addSale->id;
             $addSaleProduct->product_id = $product_id;
-            $addSaleProduct->product_variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
-            $addSaleProduct->quantity = $quantities[$__index];
-            $addSaleProduct->unit_discount_type = $unit_discount_types[$__index];
-            $addSaleProduct->unit_discount = $unit_discounts[$__index];
-            $addSaleProduct->unit_discount_amount = $unit_discount_amounts[$__index];
-            $addSaleProduct->unit_tax_percent = $unit_tax_percents[$__index];
-            $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$__index];
-            $addSaleProduct->unit = $units[$__index];
-            $addSaleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$__index];
+            $addSaleProduct->product_variant_id = $variant_id;
+            $addSaleProduct->quantity = $request->quantities[$__index];
+            $addSaleProduct->unit_discount_type = $request->unit_discount_types[$__index];
+            $addSaleProduct->unit_discount = $request->unit_discounts[$__index];
+            $addSaleProduct->unit_discount_amount = $request->unit_discount_amounts[$__index];
+            $addSaleProduct->unit_tax_percent = $request->unit_tax_percents[$__index];
+            $addSaleProduct->unit_tax_amount = $request->unit_tax_amounts[$__index];
+            $addSaleProduct->unit = $request->units[$__index];
+            $addSaleProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$__index];
             $addSaleProduct->unit_price_exc_tax = $unit_prices_exc_tax[$__index];
-            $addSaleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$__index];
-            $addSaleProduct->description = $descriptions[$__index] ? $descriptions[$__index] : NULL;
-            $addSaleProduct->subtotal = $subtotals[$__index];
+            $addSaleProduct->unit_price_inc_tax = $request->unit_prices_inc_tax[$__index];
+            $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : NULL;
+            $addSaleProduct->subtotal = $request->subtotals[$__index];
             $addSaleProduct->save();
             $__index++;
         }
@@ -294,9 +282,9 @@ class POSController extends Controller
 
         if ($request->action == 1) {
             $this->salePayment($request, $addSale, $paymentInvoicePrefix, $invoiceId);
-            if ($customer) {
-                $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
-            }
+            // if ($customer) {
+            //     $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
+            // }
         }
 
         // Add cash register transaction

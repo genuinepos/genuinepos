@@ -110,10 +110,10 @@ class POSController extends Controller
 
         $invoicePrefix = '';
         if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
-            $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from . date('ymd');
+            $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from;
         } else {
             $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
-            $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from . date('ymd');
+            $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from;
         }
 
         if ($request->product_ids == null) {
@@ -137,11 +137,7 @@ class POSController extends Controller
         }
 
         // generate invoice ID
-        $invoiceId = 1;
-        $lastSale = DB::table('sales')->orderBy('id', 'desc')->first();
-        if ($lastSale) {
-            $invoiceId = ++$lastSale->id;
-        }
+        $invoiceId =  $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
 
         $addSale = new Sale();
         $addSale->invoice_id = $invoicePrefix . $invoiceId;

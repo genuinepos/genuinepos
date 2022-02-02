@@ -55,9 +55,9 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="heading text-end">
                                 @if ($sale->branch)
-                                    <h6 class="company_name">
-                                        {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
-                                    </h6>
+                                    <p class="company_name" style="text-transform: uppercase;">
+                                        <strong>{{ $sale->branch->name }}</strong> 
+                                    </p>
 
                                     <p class="company_address">
                                         {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -74,9 +74,9 @@
                                         <p><strong>Email :</strong> {{ $sale->branch->email }}</p>
                                     @endif 
                                 @else
-                                    <h6 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                    </h6>
+                                    <p class="company_name" style="text-transform: uppercase;">
+                                        <strong>{{ json_decode($generalSettings->business, true)['shop_name'] }}</strong>
+                                    </p>
 
                                     <p class="company_address">
                                         {{ json_decode($generalSettings->business, true)['address'] }}
@@ -86,7 +86,7 @@
                                         <p><strong>Phone :</strong> {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                                     @endif
 
-                                    @if ($defaultLayout->branch_email)
+                                    @if ($defaultLayout->branch_email && json_decode($generalSettings->business, true)['email'])
                                         <p><strong>Email :</strong> {{ json_decode($generalSettings->business, true)['email'] }}</p>
                                     @endif
                                 @endif

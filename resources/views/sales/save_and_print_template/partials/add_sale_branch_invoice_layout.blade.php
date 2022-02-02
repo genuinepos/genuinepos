@@ -43,9 +43,7 @@
                         </div>
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="heading text-end">
-                                <h6 class="company_name">
-                                    {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
-                                </h6>
+                                <p class="company_name" style="text-transform: uppercase;"><strong>{{ $sale->branch->name }}</strong></p>
                                 
                                 <p class="company_address">
                                     {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -69,7 +67,7 @@
             
             @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
                 @for ($i = 0; $i < $sale->branch->add_sale_invoice_layout->gap_from_top; $i++)
-                    </br>
+                    <br/>
                 @endfor
             @endif
 
@@ -248,7 +246,7 @@
                             </tr> 
                             
                             <tr>
-                                <td class="text-end"><strong> Order Discount : </strong></td>
+                                <td class="text-end"><strong> Order Discount : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
                                 <td class="order_discount text-end">
                                     <b> 
                                         @if ($sale->order_discount_type == 1)
@@ -341,7 +339,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="invoice_notice">
-                        <p>{!! $sale->branch->add_sale_invoice_layout->invoice_notice ? '<b>Attention : <b>' . $sale->branch->add_sale_invoice_layout->invoice_notice : '' !!}</p>
+                        <p>{!! $sale->branch->add_sale_invoice_layout->invoice_notice ? '<strong>Attention : </strong>' . $sale->branch->add_sale_invoice_layout->invoice_notice : '' !!}</p>
                     </div>
                 </div>
             </div>

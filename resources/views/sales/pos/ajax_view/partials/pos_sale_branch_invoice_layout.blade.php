@@ -13,13 +13,14 @@
                             </div>
                         </div>
                     </div>
+              
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             @if ($sale->branch->pos_sale_invoice_layout->show_shop_logo == 1)
-                                @if ($sale->branch)
+                                @if ($sale->branch->logo != 'default.png')
                                     <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                 @else 
-                                    <img style="height: 60px; width:200px;" src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                                    <span style="font-family: 'Anton', sans-serif;font-size:17px;color:black;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                                 @endif
                             @endif
                         </div>
@@ -44,41 +45,23 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="heading text-end">
                                 @if ($sale->branch)
-                                    <h6 class="company_name">
-                                        {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
-                                    </h6>
+                                    <p class="company_name" style="text-transform: uppercase;">
+                                       <strong>{{ $sale->branch->name }}</strong> 
+                                    </p>
 
                                     <p class="company_address">
-                                        <b>
-                                            {{ $sale->branch->pos_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
-                                            {{ $sale->branch->pos_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
-                                            {{ $sale->branch->pos_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
-                                            {{ $sale->branch->pos_sale_invoice_layout->branch_country == 1 ? $sale->branch->country : '' }}.
-                                        </b>
+                                        {{ $sale->branch->pos_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
+                                        {{ $sale->branch->pos_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
+                                        {{ $sale->branch->pos_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
+                                        {{ $sale->branch->pos_sale_invoice_layout->branch_country == 1 ? $sale->branch->country : '' }}.
                                     </p>
 
                                     @if ($sale->branch->pos_sale_invoice_layout->branch_phone)
                                         <p><b>Phone</b> : {{ $sale->branch->phone }}</p>
                                     @endif
 
-                                    @if ($sale->branch->pos_sale_invoice_layout->branch_email)
+                                    @if ($sale->branch->pos_sale_invoice_layout->branch_email && $sale->branch->email)
                                         <p><b>Email</b> : {{ $sale->branch->email }}</p>
-                                    @endif
-                                @else 
-                                    <h6 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                    </h6>
-
-                                    <p class="company_address">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }},<br>
-                                    </p>
-
-                                    @if ($sale->branch->pos_sale_invoice_layout->branch_phone)
-                                        <p>Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
-                                    @endif
-
-                                    @if ($sale->branch->pos_sale_invoice_layout->branch_email)
-                                        <p>Email : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                                     @endif
                                 @endif
                             </div>
@@ -233,7 +216,7 @@
             <div class="row">
                 <div class="col-md-6">
                     @if ($sale->branch->pos_sale_invoice_layout->show_total_in_word)
-                        <p><b>In Word : </b> <span id="inword"></span></p>
+                        <p style="text-transform: uppercase;"><b>In Word : </b> <span id="inword"></span> ONLY</p>
                     @endif
 
                     @if (
@@ -266,11 +249,9 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><strong>Net Total Amount :</strong></td>
+                                <td class="text-end"><strong>Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
                                 <td class="text-end">
-                                    <b>
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                        {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}</b>
+                                    {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                 </td>
                             </tr>
 
@@ -328,7 +309,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Customer's signature</b>  </p>
+                        <p class="borderTop"><b>Customer's Signature</b>  </p>
                     </div>
                 </div>
 
@@ -354,7 +335,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="invoice_notice">
-                        <p>{!! $sale->branch->pos_sale_invoice_layout->invoice_notice ? '<b>Attention : <b>' . $sale->branch->pos_sale_invoice_layout->invoice_notice : '' !!}</p>
+                        <p>{!! $sale->branch->pos_sale_invoice_layout->invoice_notice ? '<strong>Attention : </strong>' . $sale->branch->pos_sale_invoice_layout->invoice_notice : '' !!}</p>
                     </div>
                 </div>
             </div>

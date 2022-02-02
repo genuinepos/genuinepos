@@ -55,9 +55,9 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="heading text-end">
                                 @if ($sale->branch)
-                                    <h6 class="company_name">
-                                        {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
-                                    </h6>
+                                    <p class="company_name" style="text-transform: uppercase;">
+                                        <strong>{{ $sale->branch->name }}</strong>
+                                    </p>
 
                                     <p class="company_address">
                                         {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -74,9 +74,9 @@
                                         <p><b>Email :</b> {{ $sale->branch->email }}</p>
                                     @endif 
                                 @else
-                                    <h6 class="company_name">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                    </h6>
+                                    <p class="company_name" style="text-transform: uppercase;">
+                                        <strong>{{ json_decode($generalSettings->business, true)['shop_name'] }}</strong>
+                                    </p>
 
                                     <p class="company_address">
                                         {{ json_decode($generalSettings->business, true)['address'] }}
@@ -86,7 +86,7 @@
                                         <p><strong>Phone :</strong> {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                                     @endif
 
-                                    @if ($defaultLayout->branch_email)
+                                    @if ($defaultLayout->branch_email && json_decode($generalSettings->business, true)['email'])
                                         <p><strong>Email :</strong> {{ json_decode($generalSettings->business, true)['email'] }}</p>
                                     @endif
                                 @endif
@@ -98,7 +98,7 @@
             
             @if ($defaultLayout->is_header_less == 1)
                 @for ($i = 0; $i < $defaultLayout->gap_from_top; $i++)
-                    </br>
+                    <br/>
                 @endfor
             @endif
 
@@ -459,13 +459,13 @@
                                             @if ($sale->branch->logo != 'default.png')
                                                 <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                             @else 
-                                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black; font-weight: 600;">{{ $sale->branch->name }}</span>
+                                                <span style="font-family: 'Anton', sans-serif; font-size:15px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $sale->branch->name }}</span>
                                             @endif
                                         @else 
                                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                                 <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                                             @else 
-                                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                                <span style="font-family: 'Anton', sans-serif; font-size:15px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                                             @endif
                                         @endif
                                     @endif

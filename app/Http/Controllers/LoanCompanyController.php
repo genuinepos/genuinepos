@@ -35,7 +35,7 @@ class LoanCompanyController extends Controller
                     }
 
                     if ($row->get_loan_due > 0) {
-                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.liability.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Due Amount</a>';
+                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.liability.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Loan Liability Due Payment</a>';
                     }
 
                     $html .= '<a class="dropdown-item" id="delete_company" href="' . route('accounting.loan.companies.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';

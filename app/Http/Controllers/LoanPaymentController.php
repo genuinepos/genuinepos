@@ -130,6 +130,16 @@ class LoanPaymentController extends Controller
 
     public function loanLiabilityPaymentStore(Request $request, $company_id)
     {
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'payment_method_id|required' => 'Please select a payment method.',
+            'account_id|required' => 'Please select debit account.',
+        ]);
+        
         $loanPayment = new LoanPayment();
         $loanPayment->voucher_no = 'LLP' . $this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
         $loanPayment->company_id = $company_id;

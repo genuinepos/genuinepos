@@ -148,6 +148,62 @@
 </div>
 
 <script>
+    //Add loan payment request by ajax
+    $('#loan_payment_form').on('submit',function(e){
+        e.preventDefault();
+        $('.loading_button_p').show();
+        var available_amount = $('#p_available_amount').val();
+        var paying_amount = $('#p_paying_amount').val();
+        if (parseFloat(paying_amount) > parseFloat(available_amount)) {
+            $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
+            $('.loading_button_p').hide();
+            return;
+        }
+
+        if (parseFloat(paying_amount) <= 0) {
+            $('.error_p_amount').html('Amount must be greater then 0.');
+            $('.loading_button_p').hide();
+            return;
+        }
+
+        var url = $(this).attr('action');
+        $('#submit_button').prop('type', 'button');
+        $.ajax({
+            url:url,
+            type:'post',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success:function(data){
+                $('#submit_button').prop('type', 'submit');
+                $('.loading_button_p').hide();
+                $('#loanPymentModal').modal('hide');
+                toastr.success(data);
+                companies_table.ajax.reload();
+                loans_table.ajax.reload();
+            },error: function(err) {
+                $('#submit_button').prop('type', 'submit');
+                $('.loading_button_p').hide();
+                $('.error').html('');
+
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }else if (err.status == 500) {
+                    toastr.error('Server error. Please contact the support team.'); 
+                    return;
+                }
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_p_' + key + '').html(error[0]);
+                });
+            }
+        });
+    });
+</script>
+
+<script>
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');

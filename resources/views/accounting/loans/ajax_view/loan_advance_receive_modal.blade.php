@@ -147,7 +147,7 @@
 </div>
 
 <script>
-    //Add sale payment request by ajax
+    //Add loan payment request by ajax
     $('#loan_payment_form').on('submit',function(e){
         e.preventDefault();
         $('.loading_button_p').show();

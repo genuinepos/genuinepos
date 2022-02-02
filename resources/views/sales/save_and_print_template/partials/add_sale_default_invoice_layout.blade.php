@@ -98,7 +98,7 @@
             
             @if ($defaultLayout->is_header_less == 1)
                 @for ($i = 0; $i < $defaultLayout->gap_from_top; $i++)
-                    </br>
+                    <br/>
                 @endfor
             @endif
 

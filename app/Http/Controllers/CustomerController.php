@@ -377,7 +377,7 @@ class CustomerController extends Controller
 
         // Add Customer Payment Record
         $customerPayment = new CustomerPayment();
-        $customerPayment->voucher_no = 'CPV' . date('my') . $this->invoiceVoucherRefIdUtil->customerPaymentVoucherNo();
+        $customerPayment->voucher_no = 'CPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
         $customerPayment->branch_id = auth()->user()->branch_id;
         $customerPayment->customer_id = $customerId;
         $customerPayment->account_id = $request->account_id;
@@ -448,7 +448,7 @@ class CustomerController extends Controller
                 if ($dueInvoice->due > $request->amount) {
                     if ($request->amount > 0) {
                         $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
+                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
                         $addSalePayment->sale_id = $dueInvoice->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->account_id = $request->account_id;
@@ -493,7 +493,7 @@ class CustomerController extends Controller
                 } elseif ($dueInvoice->due == $request->amount) {
                     if ($request->amount > 0) {
                         $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
+                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
                         $addSalePayment->sale_id = $dueInvoice->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->account_id = $request->account_id;
@@ -538,7 +538,7 @@ class CustomerController extends Controller
                 } elseif ($dueInvoice->due < $request->amount) {
                     if ($dueInvoice->due > 0) {
                         $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
+                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
                         $addSalePayment->sale_id = $dueInvoice->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->account_id = $request->account_id;
@@ -601,7 +601,7 @@ class CustomerController extends Controller
     {
         // Add Customer Payment Record
         $customerPayment = new CustomerPayment();
-        $customerPayment->voucher_no = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->customerPaymentVoucherNo();
+        $customerPayment->voucher_no = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
         $customerPayment->branch_id = auth()->user()->branch_id;
         $customerPayment->customer_id = $customerId;
         $customerPayment->account_id = $request->account_id;
@@ -674,7 +674,7 @@ class CustomerController extends Controller
                     if ($request->amount > 0) {
                         // Add sale payment
                         $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
+                        $addSalePayment->invoice_id = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
                         $addSalePayment->sale_id = $returnSale->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->customer_payment_id = $customerPayment->id;
@@ -728,7 +728,7 @@ class CustomerController extends Controller
                     if ($request->amount > 0) {
                         // Add sale payment
                         $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
+                        $addSalePayment->invoice_id = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
                         $addSalePayment->sale_id = $returnSale->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->customer_payment_id = $customerPayment->id;
@@ -781,7 +781,7 @@ class CustomerController extends Controller
                     if ($request->amount > 0) {
                         // Add sale payment
                         $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->salePaymentVoucherNo();
+                        $addSalePayment->invoice_id = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
                         $addSalePayment->sale_id = $returnSale->id;
                         $addSalePayment->customer_id = $customerId;
                         $addSalePayment->customer_payment_id = $customerPayment->id;

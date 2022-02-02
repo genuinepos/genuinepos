@@ -357,7 +357,7 @@ class SupplierController extends Controller
 
         // Add Supplier Payment Record
         $supplierPayment = new SupplierPayment();
-        $supplierPayment->voucher_no = 'SPV' . date('my') . $this->invoiceVoucherRefIdUtil->supplierPaymentVoucherNo();
+        $supplierPayment->voucher_no = 'SPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('supplier_payments'), 5, "0", STR_PAD_LEFT);
         $supplierPayment->branch_id = auth()->user()->branch_id;
         $supplierPayment->supplier_id = $supplierId;
         $supplierPayment->account_id = $request->account_id;
@@ -430,7 +430,7 @@ class SupplierController extends Controller
                 if ($dueInvoice->due > $request->amount) {
                     if ($request->amount > 0) {
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->purchasePaymentVoucherNo();
+                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
@@ -475,7 +475,7 @@ class SupplierController extends Controller
                 } elseif ($dueInvoice->due == $request->amount) {
                     if ($request->amount > 0) {
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->purchasePaymentVoucherNo();
+                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);;
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
@@ -518,7 +518,9 @@ class SupplierController extends Controller
                 } elseif ($dueInvoice->due < $request->amount) {
                     if ($dueInvoice->due > 0) {
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('my') . $this->invoiceVoucherRefIdUtil->purchasePaymentVoucherNo();
+
+                        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);
+
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                         $addPurchasePayment->account_id = $request->account_id;
@@ -580,7 +582,7 @@ class SupplierController extends Controller
     {
         // Add Supplier Payment Record
         $supplierPayment = new SupplierPayment();
-        $supplierPayment->voucher_no = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('supplier_payments');
+        $supplierPayment->voucher_no = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('supplier_payments'), 5, "0", STR_PAD_LEFT);
         $supplierPayment->branch_id = auth()->user()->branch_id;
         $supplierPayment->supplier_id = $supplierId;
         $supplierPayment->account_id = $request->account_id;
@@ -653,7 +655,9 @@ class SupplierController extends Controller
                     if ($request->amount > 0) {
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+
+                        $addPurchasePayment->invoice_id = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);
+
                         $addPurchasePayment->purchase_id = $returnPurchase->id;
                         $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
@@ -706,7 +710,9 @@ class SupplierController extends Controller
                     if ($request->amount > 0) {
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+
+                        $addPurchasePayment->invoice_id = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);
+
                         $addPurchasePayment->purchase_id = $returnPurchase->id;;
                         $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
@@ -758,7 +764,9 @@ class SupplierController extends Controller
                     if ($request->amount > 0) {
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
-                        $addPurchasePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+
+                        $addPurchasePayment->invoice_id = 'RPV'. $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+
                         $addPurchasePayment->purchase_id = $returnPurchase->id;
                         $addPurchasePayment->supplier_id = $supplierId;
                         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
@@ -828,7 +836,9 @@ class SupplierController extends Controller
 
                             // Add purchase payment
                             $addPurchasePayment = new PurchasePayment();
-                            $addPurchasePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->purchasePaymentVoucherNo();
+
+                            $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+
                             $addPurchasePayment->supplier_id = $supplierId;
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                             $addPurchasePayment->supplier_return_id = $dueSupplierReturnInvoice->id;
@@ -876,7 +886,9 @@ class SupplierController extends Controller
                             $dueSupplierReturnInvoice->save();
                             // Add purchase payment
                             $addPurchasePayment = new PurchasePayment();
-                            $addPurchasePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+
+                            $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+
                             $addPurchasePayment->supplier_id = $supplierId;
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                             $addPurchasePayment->supplier_return_id = $dueSupplierReturnInvoice->id;
@@ -924,7 +936,9 @@ class SupplierController extends Controller
                             $dueSupplierReturnInvoice->save();
                             // Add purchase payment
                             $addPurchasePayment = new PurchasePayment();
-                            $addPurchasePayment->invoice_id = 'RPV' . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+
+                            $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+                            
                             $addPurchasePayment->supplier_id = $supplierId;
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                             $addPurchasePayment->supplier_return_id = $dueSupplierReturnInvoice->id;

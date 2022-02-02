@@ -148,6 +148,7 @@
                             <th class="text-end">SubTotal</th>
                         </tr>
                     </thead>
+
                     <tbody class="sale_print_product_list">
                         @foreach ($sale->sale_products as $sale_product)
                             <tr>
@@ -241,8 +242,12 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-end"><strong>Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                <td class="net_total text-end">{{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}</td>
+                                <td class="text-end">
+                                    <strong>Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                </td>
+                                <td class="net_total text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
+                                </td>
                             </tr> 
                             
                             <tr>

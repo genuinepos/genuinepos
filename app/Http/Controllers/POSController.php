@@ -90,7 +90,9 @@ class POSController extends Controller
             ->first();
 
         $invoicePrefix = json_decode($settings->prefix, true)['sale_invoice'];
+
         $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+
         $branchInvoiceSchema = DB::table('branches')
             ->leftJoin('invoice_schemas', 'branches.invoice_schema_id', 'invoice_schemas.id')
             ->where('branches.id', auth()->user()->branch_id)
@@ -131,9 +133,10 @@ class POSController extends Controller
         }
 
         // generate invoice ID
- 
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
+
         $addSale = new Sale();
-        $addSale->invoice_id = $invoicePrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), '0', 5);
+        $addSale->invoice_id = $invoicePrefix . $invoiceId;
         $addSale->admin_id = auth()->user()->id;
 
         $addSale->branch_id = auth()->user()->branch_id;
@@ -152,8 +155,9 @@ class POSController extends Controller
         }
 
         $addSale->date = date('d-m-Y');
+        //$addSale->sale_account_id = $request->sale_account_id;
         $addSale->time = date('h:i:s a');
-        $addSale->report_date = date('Y-m-d');
+        $addSale->report_date = date('Y-m-d H:i:s');
         $addSale->month = date('F');
         $addSale->year = date('Y');
         $addSale->total_item = $request->total_item;
@@ -172,7 +176,6 @@ class POSController extends Controller
         $customer = Customer::where('id', $request->customer_id)->first();
 
         $invoicePayable = 0;
-
         if ($request->action == 1) {
             $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
             $paidAmount = $request->paying_amount - $changedAmount;
@@ -204,23 +207,24 @@ class POSController extends Controller
 
             if ($customer) {
                 if (
-                    json_decode($prefixSettings->reward_poing_settings, true)['enable_cus_point'] ==
+                    json_decode($settings->reward_poing_settings, true)['enable_cus_point'] ==
                     '1'
                 ) {
+
                     $customer->point = $customer->point - $request->pre_redeemed;
-                    $customer->point = $customer->point + $this->calculateCustomerPoint($prefixSettings, $request->total_invoice_payable);
+                    $customer->point = $customer->point + $this->calculateCustomerPoint($settings, $request->total_invoice_payable);
                     $customer->save();
                 }
 
-                // Add sales A/C ledger
-                $this->accountUtil->addAccountLedger(
-                    voucher_type_id: 1,
-                    date: $request->date,
-                    account_id: $request->sale_account_id,
-                    trans_id: $addSale->id,
-                    amount: $invoicePayable,
-                    balance_type: 'credit'
-                );
+                // // Add sales A/C ledger
+                // $this->accountUtil->addAccountLedger(
+                //     voucher_type_id: 1,
+                //     date: $request->date,
+                //     account_id: $request->sale_account_id,
+                //     trans_id: $addSale->id,
+                //     amount: $invoicePayable,
+                //     balance_type: 'credit'
+                // );
 
                 // Add customer ledger
                 $this->customerUtil->addCustomerLedger(
@@ -241,7 +245,7 @@ class POSController extends Controller
         $branch_id = auth()->user()->branch_id;
 
         $__index = 0;
-        foreach ($product_ids as $product_id) {
+        foreach ($request->product_ids as $product_id) {
 
             $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
             $addSaleProduct = new SaleProduct();
@@ -256,7 +260,7 @@ class POSController extends Controller
             $addSaleProduct->unit_tax_amount = $request->unit_tax_amounts[$__index];
             $addSaleProduct->unit = $request->units[$__index];
             $addSaleProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$__index];
-            $addSaleProduct->unit_price_exc_tax = $unit_prices_exc_tax[$__index];
+            $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$__index];
             $addSaleProduct->unit_price_inc_tax = $request->unit_prices_inc_tax[$__index];
             $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : NULL;
             $addSaleProduct->subtotal = $request->subtotals[$__index];
@@ -265,26 +269,30 @@ class POSController extends Controller
         }
 
         if ($request->action == 1) {
+
             $__index = 0;
-            foreach ($product_ids as $product_id) {
-                $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+            foreach ($request->product_ids as $product_id) {
+
+                $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
                 $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
                 $__index++;
             }
         }
 
-        $invoiceId = 1;
-        $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
-        if ($lastSale) {
-            $invoiceId = ++$lastSalePayment->id;
-        }
+        // $invoiceId = 1;
+        // $lastSalePayment = DB::table('sale_payments')->orderBy('id', 'desc')->first();
+        // if ($lastSale) {
+
+        //     $invoiceId = ++$lastSalePayment->id;
+        // }
 
         if ($request->action == 1) {
-            $this->salePayment($request, $addSale, $paymentInvoicePrefix, $invoiceId);
+            // $this->salePayment($request, $addSale, $paymentInvoicePrefix, $invoiceId);
             // if ($customer) {
             //     $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
             // }
+            $this->saleUtil->__getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix);
         }
 
         // Add cash register transaction
@@ -314,7 +322,7 @@ class POSController extends Controller
 
         if (
             env('MAIL_ACTIVE') == 'true' &&
-            json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email'] == '1'
+            json_decode($settings->send_es_settings, true)['send_inv_via_email'] == '1'
         ) {
             if ($customer && $customer->email) {
                 dispatch(new SaleMailJob($customer->email, $sale));
@@ -323,7 +331,7 @@ class POSController extends Controller
 
         if (
             env('SMS_ACTIVE') == 'true' &&
-            json_decode($prefixSettings->send_es_settings, true)['send_notice_via_sms'] == '1'
+            json_decode($settings->send_es_settings, true)['send_notice_via_sms'] == '1'
         ) {
             if ($customer && $customer->phone) {
                 $this->smsUtil->singleSms($sale);
@@ -398,8 +406,8 @@ class POSController extends Controller
     // update pos sale
     public function update(Request $request)
     {
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+        $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
         $updateSale = Sale::with(['sale_payments', 'sale_products', 'sale_products.product', 'sale_products.variant', 'sale_products.product.comboProducts'])->where('id', $request->sale_id)->first();
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'product table is empty']);
@@ -1457,8 +1465,8 @@ class POSController extends Controller
             $index++;
         }
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+        $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
 
         $i = 5;
         $a = 0;

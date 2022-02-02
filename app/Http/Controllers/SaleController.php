@@ -213,10 +213,11 @@ class SaleController extends Controller
             'account_id.required' => 'Debit A/C is required',
         ]);
 
-        $prefixSettings = DB::table('general_settings')
+        $settings = DB::table('general_settings')
             ->select(['id', 'prefix', 'send_es_settings'])
             ->first();
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+            
+        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
 
         $branchInvoiceSchema = DB::table('branches')
             ->leftJoin('invoice_schemas', 'branches.invoice_schema_id', 'invoice_schemas.id')
@@ -234,10 +235,10 @@ class SaleController extends Controller
             $invoicePrefix = $request->invoice_schema;
         } else {
             if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
-                $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from . date('ymd');
+                $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from;
             } else {
                 $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
-                $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from . date('ymd');
+                $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from;
             }
         }
 
@@ -249,8 +250,10 @@ class SaleController extends Controller
             return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
         }
 
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
+
         $addSale = new Sale();
-        $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . $this->invoiceVoucherRefIdUtil->getLastId('sales');
+        $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . $invoiceId;
         $addSale->admin_id = auth()->user()->id;
         $addSale->sale_account_id = $request->sale_account_id;
         $addSale->branch_id = auth()->user()->branch_id;
@@ -380,8 +383,7 @@ class SaleController extends Controller
             $this->saleUtil->__getSalePaymentForAddSaleStore(
                 $request,
                 $sale,
-                $paymentInvoicePrefix,
-                $this->invoiceVoucherRefIdUtil->getLastId('sale_payments')
+                $paymentInvoicePrefix
             );
 
             $__index = 0;
@@ -401,7 +403,7 @@ class SaleController extends Controller
 
         if (
             env('MAIL_ACTIVE') == 'true' &&
-            json_decode($prefixSettings->send_es_settings, true)['send_inv_via_email'] == '1'
+            json_decode($settings->send_es_settings, true)['send_inv_via_email'] == '1'
         ) {
             if ($sale->customer && $sale->customer->email) {
                 SaleMailJob::dispatch($sale->customer->email, $sale)
@@ -411,7 +413,7 @@ class SaleController extends Controller
 
         if (
             env('SMS_ACTIVE') == 'true' &&
-            json_decode($prefixSettings->send_es_settings, true)['send_notice_via_sms'] == '1'
+            json_decode($settings->send_es_settings, true)['send_notice_via_sms'] == '1'
         ) {
             if ($sale->customer && $sale->customer->phone) {
                 $this->smsUtil->singleSms($sale);
@@ -518,8 +520,8 @@ class SaleController extends Controller
             'sale_account_id.required' => 'Sale A/C is required',
         ]);
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_invoice'];
+        $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+        $invoicePrefix = json_decode($settings->prefix, true)['sale_invoice'];
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'product table is empty']);
         }
@@ -927,8 +929,8 @@ class SaleController extends Controller
         ]);
 
         if ($request->paying_amount > 0) {
-            $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-            $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+            $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+            $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
             $sale = Sale::where('id', $saleId)->first();
 
             // Add sale payment

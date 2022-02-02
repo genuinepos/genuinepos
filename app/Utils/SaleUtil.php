@@ -34,7 +34,7 @@ class SaleUtil
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
     }
 
-    public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix, $invoiceId)
+    public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix)
     {
         if ($request->paying_amount > 0) {
             $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0.00;
@@ -46,7 +46,7 @@ class SaleUtil
                         invoicePrefix : $paymentInvoicePrefix,
                         request : $request,
                         payingAmount : $request->total_invoice_payable,
-                        invoiceId : $invoiceId,
+                        invoiceId : $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
                         saleId : $addSale->id,
                         customerPaymentId : NULL
                     );
@@ -194,9 +194,11 @@ class SaleUtil
                         }
 
                         if ($dueAmounts > 0) {
+
                             // Add Customer Payment Record
+                            $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
                             $customerPayment = new CustomerPayment();
-                            $customerPayment->voucher_no = 'CPV' . $this->invoiceVoucherRefIdUtil->getLastId('customer_payments');
+                            $customerPayment->voucher_no = 'CPV' . $voucher_no;
                             $customerPayment->branch_id = auth()->user()->branch_id;
                             $customerPayment->customer_id = $addSale->customer_id;
                             $customerPayment->account_id = $request->account_id;
@@ -234,7 +236,7 @@ class SaleUtil
                         invoicePrefix: $paymentInvoicePrefix,
                         request: $request,
                         payingAmount: $paidAmount,
-                        invoiceId: $invoiceId,
+                        invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
                         saleId: $addSale->id,
                         customerPaymentId: NULL
                     );
@@ -264,7 +266,7 @@ class SaleUtil
                     invoicePrefix: $paymentInvoicePrefix,
                     request: $request,
                     payingAmount: $paidAmount,
-                    invoiceId: $invoiceId,
+                    invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
                     saleId: $addSale->id,
                     customerPaymentId: NULL
                 );
@@ -295,16 +297,17 @@ class SaleUtil
     // Add sale add payment util method
     public function addPaymentGetId($invoicePrefix, $request, $payingAmount, $invoiceId, $saleId, $customerPaymentId)
     {
+        $__invoiceId = str_pad($invoiceId, 5, "0", STR_PAD_LEFT);
         $sale = DB::table('sales')->where('id', $saleId)->select('customer_id')->first();
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV'). $invoiceId;
+        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV'). $__invoiceId;
         $addSalePayment->sale_id = $saleId;
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
         $addSalePayment->account_id = $request->account_id;
         $addSalePayment->payment_method_id = $request->payment_method_id;
         $addSalePayment->customer_payment_id = $customerPaymentId;
         $addSalePayment->paid_amount = $payingAmount;
-        $addSalePayment->date = $request->date;
+        $addSalePayment->date = $request->date ?? date('d-m-Y');
         $addSalePayment->time = date('h:i:s a');
         $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
         $addSalePayment->month = date('F');

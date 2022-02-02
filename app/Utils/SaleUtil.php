@@ -919,11 +919,6 @@ class SaleUtil
         foreach ($sale->sale_products as $sale_product) {
             $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
 
-            if ($sale_product) {
-                # code...
-            }
-
-
             $purchaseProducts = '';
             if ($stockAccountingMethod == '1') {
                 $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')

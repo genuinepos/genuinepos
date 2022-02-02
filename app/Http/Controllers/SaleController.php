@@ -289,7 +289,7 @@ class SaleController extends Controller
             $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0;
             $paidAmount = $request->paying_amount - $changedAmount;
 
-            if ($request->previous_due > 0) {
+            if ($request->previous_due != 0) {
                 $invoicePayable = $request->total_invoice_payable;
                 $addSale->total_payable_amount = $request->total_invoice_payable;
                 if ($paidAmount >= $request->total_invoice_payable) {

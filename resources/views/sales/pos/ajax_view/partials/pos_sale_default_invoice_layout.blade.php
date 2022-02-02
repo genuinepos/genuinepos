@@ -568,7 +568,6 @@
                                 </th>
                             </tr>
 
-
                             <tr>
                                 <th class="text-end"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></th>
                                 <th class="text-end">

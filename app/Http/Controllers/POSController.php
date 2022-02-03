@@ -892,6 +892,10 @@ class POSController extends Controller
             ]);
         }
 
+        if ($request->total_due > 0 && $request->button_type != 0 && $request->paying_amount == 0) {
+            return response()->json(['errorMsg' => 'If you want to sale in full credit, so click credit sale button.']);
+        }
+
         $change = $request->change_amount > 0 ? $request->change_amount : 0;
         $updateSale->net_total_amount = $updateSale->net_total_amount + $request->net_total_amount;
         $updateSale->total_payable_amount = $updateSale->total_payable_amount + $request->total_payable_amount;

@@ -195,6 +195,13 @@ class SaleUtil
 
                         if ($dueAmounts > 0) {
 
+                            $__report_date = '';
+                            if (isset($request->date)) {
+                                $__report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+                            }else {
+                                $__report_date = date('Y-m-d H:i:s');
+                            }
+
                             // Add Customer Payment Record
                             $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
                             $customerPayment = new CustomerPayment();
@@ -204,8 +211,9 @@ class SaleUtil
                             $customerPayment->account_id = $request->account_id;
                             $customerPayment->paid_amount = $dueAmounts;
                             $customerPayment->payment_method_id = $request->payment_method_id;
-                            $customerPayment->date = $request->date;
+                            $customerPayment->date = $request->date ?? date('d-m-Y');
                             $customerPayment->time = date('h:i:s a');
+                            $customerPayment->report_date = $__report_date;
                             $customerPayment->month = date('F');
                             $customerPayment->year = date('Y');
                             $customerPayment->note = $request->note;
@@ -213,7 +221,7 @@ class SaleUtil
 
                             // Add bank/cash-in-hand A/C Ledger
                             $this->accountUtil->addAccountLedger(
-                                voucher_type_id: 10,
+                                voucher_type_id: 18,
                                 date: $request->date ?? date('Y-m-d'),
                                 account_id: $request->account_id,
                                 trans_id: $customerPayment->id,

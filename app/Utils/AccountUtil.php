@@ -173,16 +173,20 @@ class AccountUtil
     {
         $voucherType = $this->voucherType($voucher_type_id);
         $update = AccountLedger::where($voucherType['id'], $trans_id)->first();
-        $previousAccountId = $update->account_id;
-        $update->date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
-        $update->account_id = $account_id;
-        $update->{$voucherType['amt']} = $amount;
-        $update->save();
-        $update->running_balance = $this->adjustAccountBalance($balance_type, $account_id);
-        $update->save();
+        if ($update) {
+            $previousAccountId = $update->account_id;
+            $update->date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+            $update->account_id = $account_id;
+            $update->{$voucherType['amt']} = $amount;
+            $update->save();
+            $update->running_balance = $this->adjustAccountBalance($balance_type, $account_id);
+            $update->save();
 
-        if ($previousAccountId != $account_id) {
-            $this->adjustAccountBalance($balance_type, $account_id);
+            if ($previousAccountId != $account_id) {
+                $this->adjustAccountBalance($balance_type, $account_id);
+            }
+        }else {
+            $this->addAccountLedger($voucher_type_id, $date, $account_id, $trans_id, $amount, $balance_type);
         }
     }
 

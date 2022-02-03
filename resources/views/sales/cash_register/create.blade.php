@@ -13,7 +13,7 @@
                 <section class="mt-5">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 <div class="form_element">
                                     <div class="section-header">
                                         <div class="col-md-12">
@@ -33,7 +33,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><span class="text-danger">*</span> <b>Cash In Hand :</b> </label>
+                                                    <label class="col-4"> <b>Cash In Hand :</b> <span class="text-danger">*</span> </label>
                                                     <div class="col-8">
                                                         <input required type="number" step="any" name="cash_in_hand" class="form-control" placeholder="Enter Amount" value="0.00">
                                                         <span class="error">{{ $errors->first('cash_in_hand') }}</span>
@@ -45,12 +45,15 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>Cash Counter :</b> </label>
                                                     <div class="col-8">
-                                                        <select name="counter_id" class="form-control">
+                                                        <select required name="counter_id" class="form-control">
                                                             <option value="">Select Cash Counter</option>
                                                             @foreach ($cashCounters as $cc)
-                                                                <option value="{{ $cc->id }}">{{ $cc->counter_name.' ('.$cc->short_name.')' }}</option>
+                                                                <option {{ old('counter_id') == $cc->id ? 'SELECTED' : '' }} 
+                                                                    value="{{ $cc->id }}">{{ $cc->counter_name.' ('.$cc->short_name.')' }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="error">{{ $errors->first('counter_id') }}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -59,34 +62,31 @@
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>B.Location :</b></label>
+                                                    <label class="col-4"><b>Business Location :</b></label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label class="col-4"><b>Default Account :</b> </label>
-                                                        <div class="col-8">
-                                                        <select name="account_id" class="form-control">
-                                                            <option value="">None</option>
-                                                            @foreach ($accounts as $account)
-                                                                <option value="{{ $account->id }}">
-                                                                    {{ $account->name }} 
-                                                                    (A/C: {{ $account->account_number }}) 
-                                                                    (Balance: {{ $account->balance }})
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>Sale Account :</b> </label>
+                                                    <div class="col-8">
+                                                        <select required name="sale_account_id" class="form-control add_input"
+                                                        id="sale_account_id" data-name="Sale A/C">
+                                                            @foreach ($saleAccounts as $saleAccount)
+                                                                <option value="{{ $saleAccount->id }}">
+                                                                    {{ $saleAccount->name }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
-                                                        </div>
+                                                        <span class="error">{{ $errors->first('sale_account_id') }}</span>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            </div>
                                         </div>
-                                        
+
                                         <div class="submitBtn">
                                             <div class="row justify-content-center">
                                                 <div class="col-12 text-end">

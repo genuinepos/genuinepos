@@ -69,38 +69,28 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
-                                    <select name="payment_method" class="form-control"  id="payment_method">
-                                        <option value="Cash">Cash</option>
-                                        <option value="Card">Card</option>
-                                        <option value="Bkash">Bkash</option>
-                                        <option value="Rocket">Rocket</option>
-                                        <option value="Nagad">Nagad</option>
-                                        <option value="Cheque">Cheque</option>
-                                        <option value="Advanced">Advanced</option>
-                                        <option value="Bank-Transfer">Bank-Transfer</option>
-                                        <option value="Other">Other</option>
-                                        <option value="Custom">Custom Field</option>
+                                    <select name="payment_method_id" class="form-control"  id="payment_method_id">
+                                        @foreach ($methods as $method)
+                                            <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong>Payment Account :</strong> </label>
+                                <label><strong>Debit Account :</strong> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
-                                    <select name="account_id" class="form-control"  id="account_id">
-                                        <option value="">Select Accout</option>
+                                    <select name="account_id" class="form-control" id="account_id">
                                         @foreach ($accounts as $account)
-                                            <option 
-                                                @if (auth()->user()->branch_id)
-                                                    {{ auth()->user()->branch->default_account_id ? 'SELECTED' : '' }}
-                                                @else
-                                                    {{ $openedCashRegister->account_id ? 'SELECTED' : ''}}
-                                                @endif
-                                            value="{{ $account->id }}">
-                                                {{ $account->name.' (A/C: '.$account->account_number.')'.' (Balance: '.$account->balance.')' }}
+                                            <option value="{{ $account->id }}">
+                                                @php
+                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                    $balance = ' BL : '.$account->balance;
+                                                @endphp
+                                                {{ $account->name.$accountType.$balance}}
                                             </option>
                                         @endforeach
                                     </select>
@@ -559,6 +549,7 @@
         @csrf
     </form>
     <!--Data delete form end-->
+    
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script src="{{ asset('public/backend/asset/js/pos.js') }}"></script>
     <script src="{{ asset('public/backend/asset/js/pos-amount-calculation.js') }}"></script>

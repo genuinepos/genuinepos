@@ -216,7 +216,7 @@ class SaleController extends Controller
         $settings = DB::table('general_settings')
             ->select(['id', 'prefix', 'send_es_settings'])
             ->first();
-            
+
         $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
 
         $branchInvoiceSchema = DB::table('branches')
@@ -347,6 +347,7 @@ class SaleController extends Controller
 
         $__index = 0;
         foreach ($request->product_ids as $product_id) {
+
             $addSaleProduct = new SaleProduct();
             $addSaleProduct->sale_id = $addSale->id;
             $addSaleProduct->product_id = $product_id;
@@ -522,6 +523,7 @@ class SaleController extends Controller
 
         $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($settings->prefix, true)['sale_invoice'];
+
         if ($request->product_ids == null) {
             return response()->json(['errorMsg' => 'product table is empty']);
         }
@@ -538,13 +540,23 @@ class SaleController extends Controller
             'sale_products.product.comboProducts'
         ])->where('id', $saleId)->first();
 
+        if ($updateSale->status == 1 && $request->action != 1) {
+
+            return response()->json(['errorMsg' => 'Final sale you can not update to quotation, draft.']);
+        }
+
         foreach ($updateSale->sale_products as $sale_product) {
+
             $sale_product->delete_in_update = 1;
             $sale_product->save();
         }
 
-        $updateSale->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . date('my') . $this->invoiceVoucherRefIdUtil->getLastId('sales');
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
+
+        $updateSale->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
+
         $updateSale->status = $request->status;
+        $updateSale->sale_account_id = $request->sale_account_id;
         $updateSale->pay_term = $request->pay_term;
         $updateSale->date = $request->date;
         $updateSale->pay_term_number = $request->pay_term_number;
@@ -565,82 +577,73 @@ class SaleController extends Controller
         $updateSale->report_date = date('Y-m-d', strtotime($request->date));
         $updateSale->save();
 
-        // Update Sales A/C Ledger
-        $this->accountUtil->updateAccountLedger(
-            voucher_type_id: 1,
-            date: $request->date,
-            account_id: $request->sale_account_id,
-            trans_id: $updateSale->id,
-            amount: $request->total_payable_amount,
-            balance_type: 'credit'
-        );
+        if ($updateSale->status == 1) {
 
-        if ($updateSale->status == 1 && $updateSale->customer_id) {
-            // Update customer ledger
-            $this->customerUtil->updateCustomerLedger(
+            // Update Sales A/C Ledger
+            $this->accountUtil->updateAccountLedger(
                 voucher_type_id: 1,
-                customer_id: $updateSale->customer_id,
                 date: $request->date,
+                account_id: $request->sale_account_id,
                 trans_id: $updateSale->id,
-                amount: $request->total_payable_amount
+                amount: $request->total_payable_amount,
+                balance_type: 'credit'
             );
-        }
 
-        // update product quantity
-        $quantities = $request->quantities;
-        $units = $request->units;
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-        $unit_discount_types = $request->unit_discount_types;
-        $unit_discounts = $request->unit_discounts;
-        $unit_discount_amounts = $request->unit_discount_amounts;
-        $unit_tax_percents = $request->unit_tax_percents;
-        $unit_tax_amounts = $request->unit_tax_amounts;
-        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
-        $unit_prices_exc_tax = $request->unit_prices_exc_tax;
-        $unit_prices = $request->unit_prices;
-        $subtotals = $request->subtotals;
-        $descriptions = $request->descriptions;
+            if ($updateSale->customer_id) {
+
+                // Update customer ledger
+                $this->customerUtil->updateCustomerLedger(
+                    voucher_type_id: 1,
+                    customer_id: $updateSale->customer_id,
+                    date: $request->date,
+                    trans_id: $updateSale->id,
+                    amount: $request->total_payable_amount
+                );
+            }
+        }
 
         // Update sale product rows
         $__index = 0;
-        foreach ($product_ids as $product_id) {
-            $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
+        foreach ($request->product_ids as $product_id) {
+
+            $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
             $saleProduct = SaleProduct::where('sale_id', $updateSale->id)->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
 
             if ($saleProduct) {
-                $saleProduct->quantity = $quantities[$__index];
-                $saleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$__index];
-                $saleProduct->unit_price_exc_tax = $unit_prices_exc_tax[$__index];
-                $saleProduct->unit_price_inc_tax = $unit_prices[$__index];
-                $saleProduct->unit_discount_type = $unit_discount_types[$__index];
-                $saleProduct->unit_discount = $unit_discounts[$__index];
-                $saleProduct->unit_discount_amount = $unit_discount_amounts[$__index];
-                $saleProduct->unit_tax_percent = $unit_tax_percents[$__index];
-                $saleProduct->unit_tax_amount = $unit_tax_amounts[$__index];
-                $saleProduct->unit = $units[$__index];
-                $saleProduct->subtotal = $subtotals[$__index];
-                $saleProduct->description = $descriptions[$__index] ? $descriptions[$__index] : NULL;
+
+                $saleProduct->quantity = $request->quantities[$__index];
+                $saleProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$__index];
+                $saleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$__index];
+                $saleProduct->unit_price_inc_tax = $request->unit_prices[$__index];
+                $saleProduct->unit_discount_type = $request->unit_discount_types[$__index];
+                $saleProduct->unit_discount = $request->unit_discounts[$__index];
+                $saleProduct->unit_discount_amount = $request->unit_discount_amounts[$__index];
+                $saleProduct->unit_tax_percent = $request->unit_tax_percents[$__index];
+                $saleProduct->unit_tax_amount = $request->unit_tax_amounts[$__index];
+                $saleProduct->unit = $request->units[$__index];
+                $saleProduct->subtotal = $request->subtotals[$__index];
+                $saleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : NULL;
                 $saleProduct->delete_in_update = 0;
                 $saleProduct->save();
             } else {
+
                 $addSaleProduct = new SaleProduct();
                 $addSaleProduct->sale_id = $updateSale->id;
                 $addSaleProduct->product_id = $product_id;
-                $addSaleProduct->product_variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
-                $addSaleProduct->quantity = $quantities[$__index];
-                $addSaleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$__index];
-                $addSaleProduct->unit_price_exc_tax = $unit_prices_exc_tax[$__index];
-                $addSaleProduct->unit_price_inc_tax = $unit_prices[$__index];
-                $addSaleProduct->unit_discount_type = $unit_discount_types[$__index];
-                $addSaleProduct->unit_discount = $unit_discounts[$__index];
-                $addSaleProduct->unit_discount_amount = $unit_discount_amounts[$__index];
-                $addSaleProduct->unit_tax_percent = $unit_tax_percents[$__index];
-                $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$__index];
-                $addSaleProduct->unit = $units[$__index];
-                $addSaleProduct->subtotal = $subtotals[$__index];
-                $addSaleProduct->description = $descriptions[$__index] ? $descriptions[$__index] : NULL;
+                $addSaleProduct->product_variant_id = $variant_id;
+                $addSaleProduct->quantity = $request->quantities[$__index];
+                $addSaleProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$__index];
+                $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$__index];
+                $addSaleProduct->unit_price_inc_tax = $request->unit_prices[$__index];
+                $addSaleProduct->unit_discount_type = $request->unit_discount_types[$__index];
+                $addSaleProduct->unit_discount = $request->unit_discounts[$__index];
+                $addSaleProduct->unit_discount_amount = $request->unit_discount_amounts[$__index];
+                $addSaleProduct->unit_tax_percent = $request->unit_tax_percents[$__index];
+                $addSaleProduct->unit_tax_amount = $request->unit_tax_amounts[$__index];
+                $addSaleProduct->unit = $request->units[$__index];
+                $addSaleProduct->subtotal = $request->subtotals[$__index];
+                $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : NULL;
                 $addSaleProduct->save();
             }
             $__index++;
@@ -648,7 +651,9 @@ class SaleController extends Controller
 
         $deleteNotFoundSaleProducts = SaleProduct::where('sale_id', $updateSale->id)
             ->where('delete_in_update', 1)->get();
+
         foreach ($deleteNotFoundSaleProducts as $deleteNotFoundSaleProduct) {
+
             $storedProductId = $deleteNotFoundSaleProduct->product_id;
             $storedVariantId = $deleteNotFoundSaleProduct->product_variant_id ? $deleteNotFoundSaleProduct->product_variant_id : NULL;
             $deleteNotFoundSaleProduct->delete();
@@ -657,14 +662,17 @@ class SaleController extends Controller
         }
 
         if ($request->status == 1) {
+
             $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
             $customer = Customer::where('id', $updateSale->customer_id)->first();
             if ($customer) {
+
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
             }
 
             $sale_products = DB::table('sale_products')->where('sale_id', $updateSale->id)->get();
             foreach ($sale_products as $saleProduct) {
+
                 $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
                 $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, auth()->user()->branch_id);
@@ -672,12 +680,15 @@ class SaleController extends Controller
         }
 
         if ($request->status == 1) {
+
             session()->flash('successMsg', 'Sale updated successfully');
             return response()->json(['successMsg' => 'Sale updated successfully']);
         } elseif ($request->status == 2) {
+
             session()->flash('successMsg', 'Sale draft updated successfully');
             return response()->json(['successMsg' => 'Sale draft updated successfully']);
         } elseif ($request->status == 4) {
+
             session()->flash('successMsg', 'Sale quotation updated successfully');
             return response()->json(['successMsg' => 'Sale quotation updated successfully']);
         }

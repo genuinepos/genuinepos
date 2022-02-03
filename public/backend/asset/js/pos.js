@@ -98,7 +98,6 @@ $(document).on('click', '#cancel_pay_mathod', function (e) {
     console.log('cancel_pay_mathod');
     $('#payment_method').val('Cash');
     $('.payment_method').hide();
-    $('#account_id').val(defaultAccount);
     $('#otherPaymentMethod').modal('hide');
 });
 
@@ -169,7 +168,6 @@ function afterSubmitForm() {
     $('#product_list').empty();
     calculateTotalAmount();
     $('.submit_preloader').hide();
-    $('#account_id').val(defaultAccount);
     var store_url = $('#store_url').val();
     $('#pos_submit_form').attr('action', store_url);
     activeSelectedItems();

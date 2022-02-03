@@ -17,22 +17,23 @@ class CashRegisterController extends Controller
 
     // Create cash register
     public function create()
-    {   
-        $accounts = '';
+    {
         $cashCounters = DB::table('cash_counters')
-        ->where('branch_id', auth()->user()->branch_id)
-        ->get(['id', 'counter_name', 'short_name']);
+            ->where('branch_id', auth()->user()->branch_id)
+            ->get(['id', 'counter_name', 'short_name']);
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $accounts = DB::table('accounts')->get(['id', 'name', 'account_number', 'balance']);
-        }
+        $saleAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 5)
+            ->get(['accounts.id', 'accounts.name']);
 
         $openedCashRegister = CashRegister::with('branch', 'admin', 'admin.role')
-        ->where('admin_id', auth()->user()->id)->where('status', 1)
-        ->first();
+            ->where('admin_id', auth()->user()->id)->where('status', 1)
+            ->first();
 
         if (!$openedCashRegister) {
-            return view('sales.cash_register.create', compact('accounts', 'cashCounters'));
+            return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts'));
         } else {
             return redirect()->route('sales.pos.create');
         }
@@ -41,6 +42,14 @@ class CashRegisterController extends Controller
     // Store cash register
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'counter_id' => 'required',
+            'cash_in_hand' => 'required',
+            'sale_account_id' => 'required',
+        ], [
+            'sale_account_id.required' => 'Sale A/C is required',
+        ]);
+
         $addCashRegister = new CashRegister();
         $this->validate($request, [
             'cash_in_hand' => 'required',
@@ -48,9 +57,10 @@ class CashRegisterController extends Controller
 
         $addCashRegister->admin_id = auth()->user()->id;
         $addCashRegister->cash_counter_id = $request->counter_id;
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $addCashRegister->account_id = $request->account_id;
-        }
+
+    
+        $addCashRegister->sale_account_id = $request->sale_account_id;
+        
 
         $addCashRegister->branch_id = auth()->user()->branch_id;
         $addCashRegister->save();

@@ -18,7 +18,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="sec-name mt-1">
                                     <div class="col-md-12">
                                         <table class="table modal-table table-sm">
@@ -53,13 +53,13 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-8">
+                            <div class="col-md-9">
                                 <div class="sec-name mt-1 t">
                                     <div class="col-md-12">
                                         <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
                                         <form id="filter_account_cash_flow" action="{{ route('accounting.accounts.account.cash.flow.filter', $account->id) }}" method="get" class="px-2">
                                             <div class="form-group row mt-4">
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Transaction Type :</strong></label>
                                                     <select name="transaction_type" class="form-control submit_able" id="transaction_type" autofocus>
                                                         <option value=""><strong>All</strong></option> 
@@ -68,12 +68,22 @@
                                                     </select>
                                                 </div>
 
+                                                <div class="col-md-2">
+                                                    <label><strong>Voucher Type :</strong></label>
+                                                    <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
+                                                        <option value="">All</option> 
+                                                        @foreach (App\Utils\AccountUtil::voucherTypes() as $key => $type)
+                                                            <option value="{{ $key }}">{{ $type }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
                                                 <div class="col-md-3">
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="from_date" id="datepicker"
                                                             class="form-control from_date date"
@@ -86,22 +96,22 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="row">
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-7">
                                                             <label><strong></strong></label>
                                                             <div class="input-group">
                                                                 <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                             </div>
                                                         </div>
             
-                                                        <div class="col-md-6 mt-3">
+                                                        <div class="col-md-5 mt-3">
                                                             <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
                                                         </div>
                                                     </div>
@@ -131,7 +141,7 @@
                                             <tr>
                                                 <th class="text-start">Date</th>
                                                 <th class="text-start">Perticulars</th>
-                                                <th class="text-start">Voucher/INV No</th>
+                                                <th class="text-start">Voucher/Invoice No</th>
                                                 <th class="text-start">Debit</th>
                                                 <th class="text-start">Credit</th>
                                                 <th class="text-start">Running Balance</th>
@@ -171,8 +181,8 @@
         "ajax": {
             "url": "{{ route('accounting.accounts.book', $account->id) }}",
             "data": function(d) {
-                //d.branch_id = $('#branch_id').val();
-                //d.user_id = $('#user_id').val();
+                d.voucher_type = $('#voucher_type').val();
+                d.transaction_type = $('#transaction_type').val();
                 d.from_date = $('.from_date').val();
                 d.to_date = $('.to_date').val();
             }
@@ -199,24 +209,24 @@
         }
     });
 
-        function sum_table_col(table, class_name) {
-            var sum = 0;
-            table.find('tbody').find('tr').each(function() {
-                if (parseFloat($(this).find('.' + class_name).data('value'))) {
-                    sum += parseFloat(
-                        $(this).find('.' + class_name).data('value')
-                    );
-                }
-            });
-            return sum;
-        }
-
-        //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-            sales_table.ajax.reload();
+    function sum_table_col(table, class_name) {
+        var sum = 0;
+        table.find('tbody').find('tr').each(function() {
+            if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                sum += parseFloat(
+                    $(this).find('.' + class_name).data('value')
+                );
+            }
         });
+        return sum;
+    }
+
+    //Submit filter form by select input changing
+    $(document).on('submit', '#filter_account_cash_flow', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        account_ledger_table.ajax.reload();
+    });
 
     // Setup ajax for csrf token.
     // $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});

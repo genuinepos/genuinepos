@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Utils\Util;
 use App\Models\Bank;
 use App\Models\Account;
@@ -113,7 +114,7 @@ class AccountController extends Controller
         }
 
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $settings = DB::table('general_settings')->first();
 
             $accountUtil = $this->accountUtil;
 
@@ -121,7 +122,7 @@ class AccountController extends Controller
 
             $query = DB::table('account_ledgers')->where('account_ledgers.account_id', $accountId)
                 ->leftJoin('expanses', 'account_ledgers.expense_id', 'expanses.id')
-                ->leftJoin('expense_payments', 'account_ledgers.expense_payment_id', 'expanses.id')
+                ->leftJoin('expanse_payments', 'account_ledgers.expense_payment_id', 'expanses.id')
                 ->leftJoin('sales', 'account_ledgers.sale_id', 'sales.id')
                 ->leftJoin('sale_payments', 'account_ledgers.sale_payment_id', 'sale_payments.id')
                 ->leftJoin('supplier_payments', 'account_ledgers.supplier_payment_id', 'supplier_payments.id')
@@ -144,8 +145,9 @@ class AccountController extends Controller
                     'account_ledgers.credit',
                     'account_ledgers.running_balance',
                     'expanses.invoice_id as exp_voucher_no',
-                    'expanses.note as ex_particular',
-                    'expense_payments.note as ex_particular',
+                    'expanses.note as ex_pur',
+                    'expanse_payments.invoice_id as exp_payment_voucher',
+                    'expanse_payments.note as expense_payment_pur',
                     'sales.invoice_id as sale_inv_id',
                     'sales.sale_note as sale_pur',
                     'sale_payments.invoice_id as sale_payment_voucher',
@@ -170,25 +172,38 @@ class AccountController extends Controller
                     'hrm_payroll_payments.note as payroll_payment_pur',
                     'productions.reference_no as production_voucher',
                     'loans.reference_no as loan_voucher_no',
+                    'loans.loan_reason as loan_pur',
                     'loan_payments.voucher_no as loan_payment_voucher',
-                );
+                    'loan_payments.date as loan_pay_pur',
+                )->orderBy('account_ledgers.date', 'asc');
+
+            if ($request->transaction_type) {
+                $query->where('account_ledgers.amount_type', $request->transaction_type); // Final
+            }
+
+            if ($request->voucher_type) {
+                $query->where('account_ledgers.voucher_type', $request->voucher_type); // Final
+            }
 
             if ($request->from_date) {
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
-                $query->whereBetween('account_ledgers.report_date', $date_range); // Final
+                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+                $query->whereBetween('account_ledgers.date', $date_range); // Final
             }
 
-            return DataTables::of($query)
-                ->editColumn('date', function ($row) {
+            $ledgers = $query;
+
+            return DataTables::of($ledgers)
+                ->editColumn('date', function ($row) use ($settings) {
                     $dateFormat = json_decode($settings->business, true)['date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->date));
                 })
                 ->editColumn('particulars', function ($row) use ($accountUtil) {
                     $type = $accountUtil->voucherType($row->voucher_type);
-                    return '<b>' . $type['name'] . '</b>' . ($row->{$type['pur']} ? '/' . $row->{$type['pur']} : '');
+                    return '<b>' . $type['name'] . '</b>' . ($row->{$type['pur']} ? ' : ' . $row->{$type['pur']} : '');
+                    //return '<b>' . $type['name'].'</b>';
                 })
                 ->editColumn('voucher_no',  function ($row) use ($accountUtil) {
                     $type = $accountUtil->voucherType($row->voucher_type);
@@ -200,7 +215,6 @@ class AccountController extends Controller
                 ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
                 ->make(true);
         }
-
 
         $account = Account::with(['bank', 'cash_flows'])->where('id', $accountId)->first();
         return view('accounting.accounts.account_book', compact('account'));

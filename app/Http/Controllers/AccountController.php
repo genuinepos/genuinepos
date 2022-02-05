@@ -36,6 +36,7 @@ class AccountController extends Controller
         }
 
         if ($request->ajax()) {
+
             $generalSettings = DB::table('general_settings')->first();
             $accounts = '';
             $query = DB::table('account_branches')
@@ -105,11 +106,75 @@ class AccountController extends Controller
     }
 
     //Get account book
-    public function accountBook($accountId)
+    public function accountBook(Request $request, $accountId)
     {
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
+
+        if ($request->ajax()) {
+            $ledgers = '';
+
+            $query = DB::table('account_ledgers')->where('account_ledgers.account_id', $accountId)
+                ->leftJoin('expanses', 'account_ledgers.expense_id', 'expanses.id')
+                ->leftJoin('expense_payments', 'account_ledgers.expense_payment_id', 'expanses.id')
+                ->leftJoin('sales', 'account_ledgers.sale_id', 'sales.id')
+                ->leftJoin('sale_payments', 'account_ledgers.sale_payment_id', 'sale_payments.id')
+                ->leftJoin('supplier_payments', 'account_ledgers.supplier_payment_id', 'supplier_payments.id')
+                ->leftJoin('sale_returns', 'account_ledgers.sale_return_id', 'sale_returns.id')
+                ->leftJoin('purchases', 'account_ledgers.purchase_id', 'purchases.id')
+                ->leftJoin('purchase_payments', 'account_ledgers.purchase_payment_id', 'purchase_payments.id')
+                ->leftJoin('customer_payments', 'account_ledgers.customer_payment_id', 'customer_payments.id')
+                ->leftJoin('purchase_returns', 'account_ledgers.purchase_return_id', 'purchase_returns.id')
+                ->leftJoin('stock_adjustments', 'account_ledgers.adjustment_id', 'stock_adjustments.id')
+                ->leftJoin('stock_adjustment_recovers', 'account_ledgers.stock_adjustment_recover_id', 'stock_adjustment_recovers.id')
+                ->leftJoin('payrolls', 'account_ledgers.payroll_id', 'payrolls.id')
+                ->leftJoin('payroll_payments', 'account_ledgers.payroll_payment_id', 'payroll_payments.id')
+                ->leftJoin('productions', 'account_ledgers.production_id', 'productions.id')
+                ->leftJoin('loans', 'account_ledgers.loan_id', 'loans.id')
+                ->leftJoin('loan_payments', 'account_ledgers.loan_payment_id', 'loan_payments.id')
+                ->leftJoin('loan_payments', 'account_ledgers.loan_payment_id', 'loan_payments.id')
+                ->select('account_ledgers.date')
+                ;
+
+            return DataTables::of($sales)
+                ->editColumn('date', function ($row)
+                {
+                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                })
+                ->editColumn('invoice_id', function ($row) {
+                    $html = '';
+                    $html .= $row->invoice_id;
+                    $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
+                    return $html;
+                })
+                ->editColumn('from',  function ($row) use ($generalSettings) {
+                    if ($row->branch_name) {
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                    } else {
+                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                    }
+                })
+                ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
+                ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
+                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+                ->editColumn('due', fn ($row) =>  '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
+                ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . $row->sale_return_amount . '">' . $this->converter->format_in_bdt($row->sale_return_amount) . '</span>')
+                ->editColumn('sale_return_due', fn ($row) => '<span class="sale_return_due text-danger" data-value="' . $row->sale_return_due . '">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
+                ->editColumn('paid_status', function ($row) {
+                    $payable = $row->total_payable_amount - $row->sale_return_amount;
+                    if ($row->due <= 0) {
+                        return '<span class="text-success"><b>Paid</b></span>';
+                    } elseif ($row->due > 0 && $row->due < $payable) {
+                        return '<span class="text-primary"><b>Partial</b></span>';
+                    } elseif ($payable == $row->due) {
+                        return '<span class="text-danger"><b>Due</b></span>';
+                    }
+                })
+                ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status'])
+                ->make(true);
+        }
+
 
         $account = Account::with(['bank', 'cash_flows'])->where('id', $accountId)->first();
         return view('accounting.accounts.account_book', compact('account'));
@@ -339,31 +404,31 @@ class AccountController extends Controller
     //     return response()->json('Successfully account deposit is created.');
     // }
 
-    public function accountCashflows($accountId)
-    {
-        $accountCashFlows = CashFlow::with([
-            'sender_account',
-            'receiver_account',
-            'sale_payment',
-            'sale_payment.customer',
-            'sale_payment.sale',
-            'purchase_payment',
-            'purchase_payment.supplier',
-            'purchase_payment.purchase',
-            'expanse_payment',
-            'expanse_payment.expense',
-            'money_receipt',
-            'money_receipt.customer',
-            'payroll',
-            'payroll_payment',
-            'loan',
-            'loan_payment',
-            'loan_payment.branch',
-            'loan_payment.company',
-            'loan.company',
-        ])->where('account_id', $accountId)->orderBy('id', 'desc')->get();
-        return view('accounting.accounts.ajax_view.account_cash_flow_list', compact('accountCashFlows'));
-    }
+    // public function accountCashflows($accountId)
+    // {
+    //     $accountCashFlows = CashFlow::with([
+    //         'sender_account',
+    //         'receiver_account',
+    //         'sale_payment',
+    //         'sale_payment.customer',
+    //         'sale_payment.sale',
+    //         'purchase_payment',
+    //         'purchase_payment.supplier',
+    //         'purchase_payment.purchase',
+    //         'expanse_payment',
+    //         'expanse_payment.expense',
+    //         'money_receipt',
+    //         'money_receipt.customer',
+    //         'payroll',
+    //         'payroll_payment',
+    //         'loan',
+    //         'loan_payment',
+    //         'loan_payment.branch',
+    //         'loan_payment.company',
+    //         'loan.company',
+    //     ])->where('account_id', $accountId)->orderBy('id', 'desc')->get();
+    //     return view('accounting.accounts.ajax_view.account_cash_flow_list', compact('accountCashFlows'));
+    // }
 
     public function accountCashflowFilter(Request $request, $accountId)
     {

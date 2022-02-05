@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-book"></span>
-                                <h5>Accounts</h5>
+                                <h5>Account Book</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
@@ -25,7 +25,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="text-start"> <strong>Bank :</strong> </td>
-                                                    <td class="bank_name text-start">{{ $account->bank->name .' ('.$account->bank->branch_name.')' }}</td>
+                                                    <td class="bank_name text-start">{{ $account->bank ? $account->bank->name .' ('.$account->bank->branch_name.')' : '' }}</td>
                                                 </tr>
 
                                                 <tr>
@@ -63,8 +63,8 @@
                                                     <label><strong>Transaction Type :</strong></label>
                                                     <select name="transaction_type" class="form-control submit_able" id="transaction_type" autofocus>
                                                         <option value=""><strong>All</strong></option> 
-                                                        <option value="1"><strong>Debit</strong></option>  
-                                                        <option value="2">Credit</option>
+                                                        <option value="debit"><strong>Debit</strong></option>  
+                                                        <option value="credit">Credit</option>
                                                     </select>
                                                 </div>
 
@@ -118,7 +118,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Transactions</h6>
+                                    <h6>Account Ledgers</h6>
                                 </div>
                             </div>
                             <div class="widget_content">
@@ -130,17 +130,14 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-start">Date</th>
-                                                <th class="text-start">Description</th>
-                                                <th class="text-start">Created By</th>
+                                                <th class="text-start">Perticulars</th>
+                                                <th class="text-start">Voucher/INV No</th>
                                                 <th class="text-start">Debit</th>
                                                 <th class="text-start">Credit</th>
-                                                <th class="text-start">Balance</th>
-                                                <th class="text-start text-center">Action</th>
+                                                <th class="text-start">Running Balance</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -160,68 +157,71 @@
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+
+
+
     // Setup ajax for csrf token.
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-    function getCashFlow() {
-        $('.data_preloader').show();
-        $.ajax({
-            url:"{{route('accounting.accounts.account.cash.flows', $account->id)}}",
-            type:'get',
-            success:function(data){
-                $('#data-list').html(data);
-                $('.data_preloader').hide();
-            }
-        });
-    }
-    getCashFlow();
+    // $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+    // function getCashFlow() {
+    //     $('.data_preloader').show();
+    //     $.ajax({
+    //         url:"{{route('accounting.accounts.account.cash.flows', $account->id)}}",
+    //         type:'get',
+    //         success:function(data){
+    //             $('#data-list').html(data);
+    //             $('.data_preloader').hide();
+    //         }
+    //     });
+    // }
+    // getCashFlow();
 
-    $(document).on('click', '#delete',function(e){
-        e.preventDefault();
-        var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);           
-        $.confirm({
-            'title': 'Delete Confirmation',
-            'message': 'Are you sure?',
-            'buttons': {
-                'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
-                'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
-            }
-        });
-    });
+    // $(document).on('click', '#delete',function(e){
+    //     e.preventDefault();
+    //     var url = $(this).attr('href');
+    //     $('#deleted_form').attr('action', url);           
+    //     $.confirm({
+    //         'title': 'Delete Confirmation',
+    //         'message': 'Are you sure?',
+    //         'buttons': {
+    //             'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+    //             'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
+    //         }
+    //     });
+    // });
        
-   //data delete by ajax
-   $(document).on('submit', '#deleted_form',function(e){
-       e.preventDefault();
-       var url = $(this).attr('action');
-       var request = $(this).serialize();
-       $.ajax({
-           url:url,
-           type:'post',
-           data:request,
-           success:function(data){
-               getCashFlow();
-               toastr.error(data);
-               $('#deleted_form')[0].reset();
-           }
-       });
-   });
+//    //data delete by ajax
+//    $(document).on('submit', '#deleted_form',function(e){
+//        e.preventDefault();
+//        var url = $(this).attr('action');
+//        var request = $(this).serialize();
+//        $.ajax({
+//            url:url,
+//            type:'post',
+//            data:request,
+//            success:function(data){
+//                getCashFlow();
+//                toastr.error(data);
+//                $('#deleted_form')[0].reset();
+//            }
+//        });
+//    });
 
-   //Send account filter request
-   $('#filter_account_cash_flow').on('submit', function (e) {
-       e.preventDefault();
-       $('.data_preloader').show();
-       var url = $(this).attr('action');
-       var request = $(this).serialize();
-       $.ajax({
-           url:url,
-           type:'get',
-           data: request,
-           success:function(data){
-               $('#data-list').html(data);
-               $('.data_preloader').hide();
-           }
-       }); 
-   });
+//    //Send account filter request
+//    $('#filter_account_cash_flow').on('submit', function (e) {
+//        e.preventDefault();
+//        $('.data_preloader').show();
+//        var url = $(this).attr('action');
+//        var request = $(this).serialize();
+//        $.ajax({
+//            url:url,
+//            type:'get',
+//            data: request,
+//            success:function(data){
+//                $('#data-list').html(data);
+//                $('.data_preloader').hide();
+//            }
+//        }); 
+//    });
 </script>
 
 <script type="text/javascript">

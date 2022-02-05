@@ -419,15 +419,20 @@ class POSController extends Controller
     {
         $invoiceProducts = SaleProduct::with(['sale', 'product', 'variant'])->where('sale_id', $saleId)->get();
         $qty_limits = [];
+        
         foreach ($invoiceProducts as $sale_product) {
+
             if ($sale_product->product->is_manage_stock == 0) {
                 $qty_limits[] = PHP_INT_MAX;
             } else {
+
                 $productBranch = DB::table('product_branches')->where('branch_id', $sale_product->sale->branch_id)
                     ->where('product_id', $sale_product->product_id)->first();
                 if ($sale_product->product->type == 2) {
+
                     $qty_limits[] = 500000;
                 } elseif ($sale_product->product_variant_id) {
+
                     $productBranchVariant = DB::table('product_branch_variant')
                         ->where('product_branch_id', $productBranch->id)
                         ->where('product_id', $sale_product->product_id)
@@ -435,6 +440,7 @@ class POSController extends Controller
                         ->first();
                     $qty_limits[] = $productBranchVariant->variant_quantity;
                 } else {
+
                     $qty_limits[] = $productBranch->product_quantity;
                 }
             }
@@ -504,6 +510,7 @@ class POSController extends Controller
             );
 
             if ($updateSale->customer_id) {
+
                 // Update Customer Ledger
                 $this->customerUtil->updateCustomerLedger(
                     voucher_type_id: 1,

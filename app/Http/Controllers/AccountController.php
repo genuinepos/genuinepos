@@ -113,6 +113,9 @@ class AccountController extends Controller
         }
 
         if ($request->ajax()) {
+            $generalSettings = DB::table('general_settings')->first();
+
+
             $ledgers = '';
 
             $query = DB::table('account_ledgers')->where('account_ledgers.account_id', $accountId)
@@ -134,15 +137,25 @@ class AccountController extends Controller
                 ->leftJoin('loans', 'account_ledgers.loan_id', 'loans.id')
                 ->leftJoin('loan_payments', 'account_ledgers.loan_payment_id', 'loan_payments.id')
                 ->leftJoin('loan_payments', 'account_ledgers.loan_payment_id', 'loan_payments.id')
-                ->select('account_ledgers.date')
-                ;
+                ->select(
+                    'account_ledgers.date',
+                    'account_ledgers.voucher_type',
+                    'account_ledgers.debit',
+                    'account_ledgers.credit',
+                    'account_ledgers.running_balance',
+                    'expanses.invoice_id as exp_voucher_no',
+                    'expanses.note as ex_particular',
+                    'expense_payments.note as ex_particular',
+                );
 
             return DataTables::of($sales)
-                ->editColumn('date', function ($row)
-                {
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                ->editColumn('date', function ($row) {
+
+                    $dateFormat = json_decode($settings->business, true)['date_format'];
+                    $__date_format = str_replace('-', '/', $dateFormat);
+                    return date($__date_format, strtotime($row->date));
                 })
-                ->editColumn('invoice_id', function ($row) {
+                ->editColumn('particulars', function ($row) {
                     $html = '';
                     $html .= $row->invoice_id;
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';

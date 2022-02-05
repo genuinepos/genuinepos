@@ -145,9 +145,9 @@ class AccountUtil
             20 => ['name' => 'Paid To Customer', 'voucher_no' => 'customer_return_payment_voucher', 'id' => 'customer_payment_id', 'amt' => 'credit', 'pur' => 'customer_payment_pur'],
             21 => ['name' => 'Received From Supplier', 'voucher_no' => 'supplier_return_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'debit', 'pur' => 'supplier_payment_pur'],
             22 => ['name' => 'Production', 'voucher_no' => 'production_voucher', 'id' => 'production_id', 'amt' => 'debit', 'pur' => 'production_pur'],
-            23 => ['name' => 'Payroll Payment', 'voucher_no' => 'payroll_pay_voucher', 'id' => 'payroll_payment_id', 'amt' => 'credit', 'pur' => 'payroll_pur'],
-            24 => ['name' => 'Loan&Liabilities-money-trans', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit'],
-            25 => ['name' => 'Loan&Advance-money-trans', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit'],
+            23 => ['name' => 'Payroll Payment', 'voucher_no' => 'payroll_pay_voucher', 'id' => 'payroll_payment_id', 'amt' => 'credit', 'pur' => 'payroll_payment_pur'],
+            24 => ['name' => 'Loan&Liabilities-money-trans', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit', 'pur' => 'loan_pur'],
+            25 => ['name' => 'Loan&Advance-money-trans', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit', 'pur' => 'loan_pur'],
         ];
 
         return $data[$voucher_type_id];

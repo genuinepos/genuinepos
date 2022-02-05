@@ -115,6 +115,7 @@ class AccountController extends Controller
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
 
+            $accountUtil = $this->accountUtil;
 
             $ledgers = '';
 
@@ -131,11 +132,10 @@ class AccountController extends Controller
                 ->leftJoin('purchase_returns', 'account_ledgers.purchase_return_id', 'purchase_returns.id')
                 ->leftJoin('stock_adjustments', 'account_ledgers.adjustment_id', 'stock_adjustments.id')
                 ->leftJoin('stock_adjustment_recovers', 'account_ledgers.stock_adjustment_recover_id', 'stock_adjustment_recovers.id')
-                ->leftJoin('payrolls', 'account_ledgers.payroll_id', 'payrolls.id')
-                ->leftJoin('payroll_payments', 'account_ledgers.payroll_payment_id', 'payroll_payments.id')
+                // ->leftJoin('hrm_payrolls', 'account_ledgers.payroll_id', 'hrm_payrolls.id')
+                ->leftJoin('hrm_payroll_payments', 'account_ledgers.payroll_payment_id', 'hrm_payroll_payments.id')
                 ->leftJoin('productions', 'account_ledgers.production_id', 'productions.id')
                 ->leftJoin('loans', 'account_ledgers.loan_id', 'loans.id')
-                ->leftJoin('loan_payments', 'account_ledgers.loan_payment_id', 'loan_payments.id')
                 ->leftJoin('loan_payments', 'account_ledgers.loan_payment_id', 'loan_payments.id')
                 ->select(
                     'account_ledgers.date',
@@ -146,45 +146,58 @@ class AccountController extends Controller
                     'expanses.invoice_id as exp_voucher_no',
                     'expanses.note as ex_particular',
                     'expense_payments.note as ex_particular',
+                    'sales.invoice_id as sale_inv_id',
+                    'sales.sale_note as sale_pur',
+                    'sale_payments.invoice_id as sale_payment_voucher',
+                    'sale_payments.note as sale_payment_pur',
+                    'supplier_payments.voucher_no as supplier_payment_voucher',
+                    'supplier_payments.note as supplier_payment_pur',
+                    'sale_returns.invoice_id as sale_return_inv',
+                    'sale_returns.date as sale_return_pur',
+                    'purchases.invoice_id as purchase_inv_id',
+                    'purchases.purchase_note as purchase_pur',
+                    'purchase_payments.invoice_id as pur_payment_voucher',
+                    'purchase_payments.note as purchase_payment_pur',
+                    'customer_payments.voucher_no as customer_payment_voucher',
+                    'customer_payments.note as customer_payment_pur',
+                    'purchase_returns.invoice_id as pur_return_invoice',
+                    'purchase_returns.date as purchase_return_pur',
+                    'stock_adjustments.invoice_id as sa_voucher',
+                    'stock_adjustments.reason as adjustment_pur',
+                    'stock_adjustment_recovers.voucher_no as sar_amt_voucher',
+                    'stock_adjustment_recovers.note as sar_pur',
+                    'hrm_payroll_payments.reference_no as payroll_pay_voucher',
+                    'hrm_payroll_payments.note as payroll_payment_pur',
+                    'productions.reference_no as production_voucher',
+                    'loans.reference_no as loan_voucher_no',
+                    'loan_payments.voucher_no as loan_payment_voucher',
                 );
 
-            return DataTables::of($sales)
-                ->editColumn('date', function ($row) {
+            if ($request->from_date) {
+                $from_date = date('Y-m-d', strtotime($request->from_date));
+                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $query->whereBetween('account_ledgers.report_date', $date_range); // Final
+            }
 
+            return DataTables::of($query)
+                ->editColumn('date', function ($row) {
                     $dateFormat = json_decode($settings->business, true)['date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->date));
                 })
-                ->editColumn('particulars', function ($row) {
-                    $html = '';
-                    $html .= $row->invoice_id;
-                    $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
-                    return $html;
+                ->editColumn('particulars', function ($row) use ($accountUtil) {
+                    $type = $accountUtil->voucherType($row->voucher_type);
+                    return '<b>' . $type['name'] . '</b>' . ($row->{$type['pur']} ? '/' . $row->{$type['pur']} : '');
                 })
-                ->editColumn('from',  function ($row) use ($generalSettings) {
-                    if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
-                    } else {
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
-                    }
+                ->editColumn('voucher_no',  function ($row) use ($accountUtil) {
+                    $type = $accountUtil->voucherType($row->voucher_type);
+                    return $row->{$type['voucher_no']};
                 })
-                ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
-                ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
-                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
-                ->editColumn('due', fn ($row) =>  '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
-                ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . $row->sale_return_amount . '">' . $this->converter->format_in_bdt($row->sale_return_amount) . '</span>')
-                ->editColumn('sale_return_due', fn ($row) => '<span class="sale_return_due text-danger" data-value="' . $row->sale_return_due . '">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
-                ->editColumn('paid_status', function ($row) {
-                    $payable = $row->total_payable_amount - $row->sale_return_amount;
-                    if ($row->due <= 0) {
-                        return '<span class="text-success"><b>Paid</b></span>';
-                    } elseif ($row->due > 0 && $row->due < $payable) {
-                        return '<span class="text-primary"><b>Partial</b></span>';
-                    } elseif ($payable == $row->due) {
-                        return '<span class="text-danger"><b>Due</b></span>';
-                    }
-                })
-                ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status'])
+                ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . $this->converter->format_in_bdt($row->debit) . '</span>')
+                ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . $this->converter->format_in_bdt($row->credit) . '</span>')
+                ->editColumn('running_balance', fn ($row) => '<span class="running_balance" data-value="' . $row->running_balance . '">' . $this->converter->format_in_bdt($row->running_balance) . '</span>')
+                ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
                 ->make(true);
         }
 

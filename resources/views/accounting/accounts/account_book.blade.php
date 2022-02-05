@@ -158,7 +158,65 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 
+    var account_ledger_table = $('.data_tbl').DataTable({
+        "processing": true,
+        "serverSide": true,
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary'},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary'},
+            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary'},
+        ],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+        "ajax": {
+            "url": "{{ route('accounting.accounts.book', $account->id) }}",
+            "data": function(d) {
+                //d.branch_id = $('#branch_id').val();
+                //d.user_id = $('#user_id').val();
+                d.from_date = $('.from_date').val();
+                d.to_date = $('.to_date').val();
+            }
+        },
+        columnDefs: [{
+            "targets": [1, 2, 3],
+            "orderable": false,
+            "searchable": false
+        }],
+        columns: [
+            {data: 'date', name: 'date'},
+            {data: 'particulars', name: 'particulars'},
+            {data: 'voucher_no', name: 'voucher_no'},
+            {data: 'debit', name: 'debit', className: 'text-end'},
+            {data: 'credit', name: 'credit', className: 'text-end'},
+            {data: 'running_balance', name: 'running_balance', className: 'text-end'},
+        ],fnDrawCallback: function() {
+            // var debit = sum_table_col($('.data_tbl'), 'debit');
+            // $('#debit').text(bdFormat(debit));
+            // var credit = sum_table_col($('.data_tbl'), 'credit');
+            // $('#credit').text(bdFormat(credit));
+  
+            $('.data_preloader').hide();
+        }
+    });
 
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
+
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_form', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            sales_table.ajax.reload();
+        });
 
     // Setup ajax for csrf token.
     // $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});

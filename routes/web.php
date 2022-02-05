@@ -525,7 +525,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
 
     Route::group(['prefix' => 'accounts'], function () {
         Route::get('/', 'AccountController@index')->name('accounting.accounts.index');
-        Route::get('all/account', 'AccountController@allAccounts')->name('accounting.accounts.all.account');
+        // Route::get('all/account', 'AccountController@allAccounts')->name('accounting.accounts.all.account');
         Route::get('account/book/{accountId}', 'AccountController@accountBook')->name('accounting.accounts.book');
         Route::post('store', 'AccountController@store')->name('accounting.accounts.store');
         Route::get('edit/{id}', 'AccountController@edit')->name('accounting.accounts.edit');

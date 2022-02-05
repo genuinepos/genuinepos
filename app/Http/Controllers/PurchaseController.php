@@ -297,6 +297,7 @@ class PurchaseController extends Controller
             } elseif ($request->payment_method == 'Custom') {
                 $addPurchasePayment->transaction_no = $request->transaction_no;
             }
+
             $addPurchasePayment->admin_id = auth()->user()->id;
             $addPurchasePayment->save();
 
@@ -778,7 +779,7 @@ class PurchaseController extends Controller
         $purchase = Purchase::where('id', $purchaseId)->first();
 
         $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 4, "0", STR_PAD_LEFT);
-        
+
         // Add purchase payment
         $addPurchasePayment = new PurchasePayment();
         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPR') . $invoiceId;
@@ -907,51 +908,57 @@ class PurchaseController extends Controller
             $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
             $updatePurchasePayment->attachment = $purchasePaymentAttachmentName;
         }
-        $updatePurchasePayment->save();
-        $updatePurchasePayment->ledger->report_date = $updatePurchasePayment->report_date;
-        $updatePurchasePayment->ledger->save();
 
-        if ($request->account_id) {
-            // Add or update cash flow
-            $cashFlow = CashFlow::where('account_id', $request->account_id)
-                ->where('purchase_payment_id', $updatePurchasePayment->id)->first();
-            if ($cashFlow) {
-                $cashFlow->debit = $request->amount;
-                $cashFlow->date = $request->date;
-                $cashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                $cashFlow->month = date('F');
-                $cashFlow->year = date('Y');
-                $cashFlow->admin_id = auth()->user()->id;
-                $cashFlow->save();
-                $cashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-                $cashFlow->save();
+        $updatePurchasePayment->save();
+
+        if ($updatePurchasePayment->ledger) {
+            $updatePurchasePayment->ledger->report_date = $updatePurchasePayment->report_date;
+            $updatePurchasePayment->ledger->save();
+        }
+
+        if ($updatePurchasePayment->supplier_payment_id == NULL) {
+            if ($request->account_id) {
+                // Add or update cash flow
+                $cashFlow = CashFlow::where('account_id', $request->account_id)
+                    ->where('purchase_payment_id', $updatePurchasePayment->id)->first();
+                if ($cashFlow) {
+                    $cashFlow->debit = $request->amount;
+                    $cashFlow->date = $request->date;
+                    $cashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+                    $cashFlow->month = date('F');
+                    $cashFlow->year = date('Y');
+                    $cashFlow->admin_id = auth()->user()->id;
+                    $cashFlow->save();
+                    $cashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                    $cashFlow->save();
+                } else {
+                    if ($updatePurchasePayment->cashFlow) {
+                        $storeAccountId = $updatePurchasePayment->cashFlow->account_id;
+                        $updatePurchasePayment->cashFlow->delete();
+                        $this->accountUtil->adjustAccountBalance($storeAccountId);
+                    }
+
+                    $addCashFlow = new CashFlow();
+                    $addCashFlow->account_id = $request->account_id;
+                    $addCashFlow->debit = $request->amount;
+                    $addCashFlow->purchase_payment_id = $updatePurchasePayment->id;
+                    $addCashFlow->transaction_type = 3;
+                    $addCashFlow->cash_type = 1;
+                    $addCashFlow->date = $request->date;
+                    $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+                    $addCashFlow->month = date('F');
+                    $addCashFlow->year = date('Y');
+                    $addCashFlow->admin_id = auth()->user()->id;
+                    $addCashFlow->save();
+                    $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                    $addCashFlow->save();
+                }
             } else {
                 if ($updatePurchasePayment->cashFlow) {
                     $storeAccountId = $updatePurchasePayment->cashFlow->account_id;
                     $updatePurchasePayment->cashFlow->delete();
                     $this->accountUtil->adjustAccountBalance($storeAccountId);
                 }
-
-                $addCashFlow = new CashFlow();
-                $addCashFlow->account_id = $request->account_id;
-                $addCashFlow->debit = $request->amount;
-                $addCashFlow->purchase_payment_id = $updatePurchasePayment->id;
-                $addCashFlow->transaction_type = 3;
-                $addCashFlow->cash_type = 1;
-                $addCashFlow->date = $request->date;
-                $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                $addCashFlow->month = date('F');
-                $addCashFlow->year = date('Y');
-                $addCashFlow->admin_id = auth()->user()->id;
-                $addCashFlow->save();
-                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-                $addCashFlow->save();
-            }
-        } else {
-            if ($updatePurchasePayment->cashFlow) {
-                $storeAccountId = $updatePurchasePayment->cashFlow->account_id;
-                $updatePurchasePayment->cashFlow->delete();
-                $this->accountUtil->adjustAccountBalance($storeAccountId);
             }
         }
 
@@ -1109,51 +1116,56 @@ class PurchaseController extends Controller
             $updatePurchasePayment->attachment = $purchasePaymentAttachmentName;
         }
         $updatePurchasePayment->save();
-        $updatePurchasePayment->ledger->report_date = $updatePurchasePayment->report_date;
-        $updatePurchasePayment->ledger->save();
 
-        if ($request->account_id) {
-            // Add or update cash flow
-            $cashFlow = CashFlow::where('account_id', $request->account_id)
-                ->where('purchase_payment_id', $updatePurchasePayment->id)
-                ->first();
-            if ($cashFlow) {
-                $cashFlow->credit = $request->amount;
-                $cashFlow->date = $request->date;
-                $cashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                $cashFlow->month = date('F');
-                $cashFlow->year = date('Y');
-                $cashFlow->admin_id = auth()->user()->id;
-                $cashFlow->save();
-                $cashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-                $cashFlow->save();
+        if ($updatePurchasePayment->ledger) {
+            $updatePurchasePayment->ledger->report_date = $updatePurchasePayment->report_date;
+            $updatePurchasePayment->ledger->save();
+        }
+
+        if ($updatePurchasePayment->supplier_payment_id == NULL) {
+            if ($request->account_id) {
+                // Add or update cash flow
+                $cashFlow = CashFlow::where('account_id', $request->account_id)
+                    ->where('purchase_payment_id', $updatePurchasePayment->id)
+                    ->first();
+                if ($cashFlow) {
+                    $cashFlow->credit = $request->amount;
+                    $cashFlow->date = $request->date;
+                    $cashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+                    $cashFlow->month = date('F');
+                    $cashFlow->year = date('Y');
+                    $cashFlow->admin_id = auth()->user()->id;
+                    $cashFlow->save();
+                    $cashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
+                    $cashFlow->save();
+                } else {
+                    if ($updatePurchasePayment->cashFlow) {
+                        $storeAccountId = $updatePurchasePayment->cashFlow->account_id;
+                        $updatePurchasePayment->cashFlow->delete();
+                        $this->accountUtil->adjustAccountBalance($storeAccountId);
+                    }
+
+                    $addCashFlow = new CashFlow();
+                    $addCashFlow->account_id = $request->account_id;
+                    $addCashFlow->credit = $request->amount;
+                    $addCashFlow->purchase_payment_id = $updatePurchasePayment->id;
+                    $addCashFlow->transaction_type = 3;
+                    $addCashFlow->cash_type = 1;
+                    $addCashFlow->date = $request->date;
+                    $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+                    $addCashFlow->month = date('F');
+                    $addCashFlow->year = date('Y');
+                    $addCashFlow->admin_id = auth()->user()->id;
+                    $addCashFlow->save();
+                    $this->accountUtil->adjustAccountBalance($request->account_id);
+                    $addCashFlow->save();
+                }
             } else {
                 if ($updatePurchasePayment->cashFlow) {
                     $storeAccountId = $updatePurchasePayment->cashFlow->account_id;
                     $updatePurchasePayment->cashFlow->delete();
                     $this->accountUtil->adjustAccountBalance($storeAccountId);
                 }
-
-                $addCashFlow = new CashFlow();
-                $addCashFlow->account_id = $request->account_id;
-                $addCashFlow->credit = $request->amount;
-                $addCashFlow->purchase_payment_id = $updatePurchasePayment->id;
-                $addCashFlow->transaction_type = 3;
-                $addCashFlow->cash_type = 1;
-                $addCashFlow->date = $request->date;
-                $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                $addCashFlow->month = date('F');
-                $addCashFlow->year = date('Y');
-                $addCashFlow->admin_id = auth()->user()->id;
-                $addCashFlow->save();
-                $this->accountUtil->adjustAccountBalance($request->account_id);
-                $addCashFlow->save();
-            }
-        } else {
-            if ($updatePurchasePayment->cashFlow) {
-                $storeAccountId = $updatePurchasePayment->cashFlow->account_id;
-                $updatePurchasePayment->cashFlow->delete();
-                $this->accountUtil->adjustAccountBalance($storeAccountId);
             }
         }
 

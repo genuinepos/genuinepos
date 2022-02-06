@@ -144,26 +144,71 @@ class CustomerUtil
         return $totalDue;
     }
 
-    public function voucherTypes()
+    public static function voucherTypes()
     {
         return [
             1 => 'Sale',
             2 => 'Sale Return',
             3 => 'Received Payment',
             4 => 'Return Payment',
+            5 => 'Receive From Customer',
+            6 => 'Paid Return Amt.',
         ];
     }
 
     public function voucherType($voucher_type_id)
     {
         $data = [
-            0 => ['name' => 'Opening_balance', 'id' => 'sale_id', 'voucher_no' => NULL, 'amt' => 'debit'],
-            1 => ['name' => 'Sale', 'id' => 'sale_id', 'voucher_no' => 'sale_inv_id', 'amt' => 'debit'],
-            2 => ['name' => 'Sale Return', 'id' => 'sale_return_id', 'voucher_no' => 'return_inv_id', 'amt' => 'credit'],
-            3 => ['name' => 'Received Payment', 'id' => 'sale_payment_id', 'voucher_no' => 'received_voucher_no', 'amt' => 'credit'],
-            4 => ['name' => 'Return Payment', 'id' => 'sale_payment_id', 'return_pay_voucher_no', 'amt' => 'debit'],
-            5 => ['name' => 'Receive From Customer', 'id' => 'customer_payment_id', 'customer_payment_voucher', 'amt' => 'credit'],
-            6 => ['name' => 'Paid Return Amt.', 'id' => 'customer_payment_id', 'customer_return_payment_voucher', 'amt' => 'debit'],
+            0 => [
+                'name' => 'Opening_balance',
+                'id' => 'sale_id',
+                'voucher_no' =>
+                'sale_inv_id',
+                'amt' => 'debit',
+                'par' => 'sale_par',
+            ],
+            1 => [
+                'name' => 'Sale',
+                'id' => 'sale_id',
+                'voucher_no' => 'sale_inv_id',
+                'amt' => 'debit',
+                'par' => 'sale_par',
+            ],
+            2 => [
+                'name' => 'Sale Return',
+                'id' => 'sale_return_id',
+                'voucher_no' => 'return_inv_id',
+                'amt' => 'credit',
+                'par' => 'sale_return_par',
+            ],
+            3 => [
+                'name' => 'Received Payment',
+                'id' => 'sale_payment_id',
+                'voucher_no' => 'sale_payment_voucher',
+                'amt' => 'credit',
+                'par' => 'sale_payment_par',
+            ],
+            4 => [
+                'name' => 'Return Payment',
+                'id' => 'sale_payment_id',
+                'voucher_no' => 'sale_payment_voucher',
+                'amt' => 'debit',
+                'par' => 'sale_payment_par',
+            ],
+            5 => [
+                'name' => 'Receive From Customer',
+                'id' => 'customer_payment_id',
+                'voucher_no' => 'customer_payment_voucher',
+                'amt' => 'credit',
+                'par' => 'customer_payment_par',
+            ],
+            6 => [
+                'name' => 'Paid Return Amt.',
+                'id' => 'customer_payment_id',
+                'voucher_no' => 'customer_payment_voucher',
+                'amt' => 'debit',
+                'par' => 'customer_payment_par',
+            ],
         ];
 
         return $data[$voucher_type_id];
@@ -195,7 +240,7 @@ class CustomerUtil
             $updateCustomerLedger->amount = $amount;
             $updateCustomerLedger->running_balance = $this->adjustCustomerAmountForSalePaymentDue($customer_id);
             $updateCustomerLedger->save();
-        }else {
+        } else {
             $this->addCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount);
         }
     }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\CashFlow;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Utils\Converter;
 use App\Utils\AccountUtil;
 use App\Utils\PurchaseUtil;
 use App\Utils\SupplierUtil;
@@ -24,16 +26,19 @@ class SupplierController extends Controller
     public $purchaseUtil;
     public $accountUtil;
     public $invoiceVoucherRefIdUtil;
+    public $converter;
     public function __construct(
         SupplierUtil $supplierUtil,
         PurchaseUtil $purchaseUtil,
         AccountUtil $accountUtil,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
+        Converter $converter,
     ) {
         $this->supplierUtil = $supplierUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->accountUtil = $accountUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -42,6 +47,7 @@ class SupplierController extends Controller
         if (auth()->user()->permission->contact['supplier_all'] == '0') {
             abort(403, 'Access Forbidden.');
         }
+
         return view('contacts.suppliers.index');
     }
 
@@ -294,46 +300,142 @@ class SupplierController extends Controller
                 ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'return_amount', 'return_due', 'payment_status', 'status', 'created_by'])
                 ->make(true);
         }
+
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
         return view('contacts.suppliers.view', compact('supplierId', 'supplier'));
     }
 
-    // supplier all info
-    public function SupplierAllInfo($supplierId)
-    {
-        $supplier = Supplier::where('id', $supplierId)->first();
-        return response()->json($supplier);
-    }
-
     // Supplier payment list
-    public function paymentList($supplierId)
+    public function ledgers(Request $request, $supplierId)
     {
-        $supplier = DB::table('suppliers')->where('id', $supplierId)->select('name', 'contact_id')->first();
-        $addSupplierLedgerModelData = SupplierLedger::orderBy('report_date', 'ASC');
-        $ledgers = $addSupplierLedgerModelData->with(['purchase', 'purchase_payment', 'purchase_payment.purchase', 'supplier_payment'])
-            ->where('supplier_id', $supplierId)->get();
+        if ($request->ajax()) {
+            $settings = DB::table('general_settings')->first();
 
-        // $ledgers = SupplierLedger::with(['purchase', 'purchase_payment', 'purchase_payment.purchase', 'supplier_payment'])
-        //     ->where('supplier_id', $supplierId)->orderBy('report_date', 'ASC')->get();
-        return view('contacts.suppliers.ajax_view.ledger_list', compact('ledgers', 'supplier'));
+            $supplierUtil = $this->supplierUtil;
+
+            $supplierLedgers = '';
+
+            $query = DB::table('supplier_ledgers')->where('supplier_ledgers.supplier_id', $supplierId)
+                ->leftJoin('purchases', 'supplier_ledgers.purchase_id', 'purchases.id')
+                ->leftJoin('purchase_returns', 'supplier_ledgers.purchase_return_id', 'purchase_returns.id')
+                ->leftJoin('purchase_payments', 'supplier_ledgers.purchase_payment_id', 'purchase_payments.id')
+                ->leftJoin('supplier_payments', 'supplier_ledgers.supplier_payment_id', 'supplier_payments.id')
+                ->leftJoin('purchases as agp_purchase', 'purchase_payments.purchase_id', 'agp_purchase.id')
+                ->select(
+                    'supplier_ledgers.report_date',
+                    'supplier_ledgers.voucher_type',
+                    'supplier_ledgers.debit',
+                    'supplier_ledgers.credit',
+                    'supplier_ledgers.running_balance',
+                    'purchases.invoice_id as purchase_inv_id',
+                    'purchases.purchase_note as purchase_par',
+                    'purchase_returns.invoice_id as return_inv_id',
+                    'purchase_returns.date as purchase_return_par',
+                    'purchase_payments.invoice_id as payment_voucher_no',
+                    'purchase_payments.note as purchase_payment_par',
+                    'supplier_payments.voucher_no as supplier_payment_voucher',
+                    'supplier_payments.note as supplier_payment_par',
+                    'agp_purchase.invoice_id as agp_purchase',
+                )->orderBy('supplier_ledgers.report_date', 'asc');
+
+            if ($request->voucher_type) {
+                $query->where('supplier_ledgers.voucher_type', $request->voucher_type); // Final
+            }
+
+            if ($request->from_date) {
+                $from_date = date('Y-m-d', strtotime($request->from_date));
+                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+                $query->whereBetween('supplier_ledgers.report_date', $date_range); // Final
+            }
+
+            $supplierLedgers = $query;
+
+            return DataTables::of($supplierLedgers)
+                ->editColumn('date', function ($row) use ($settings) {
+                    $dateFormat = json_decode($settings->business, true)['date_format'];
+                    $__date_format = str_replace('-', '/', $dateFormat);
+                    return date($__date_format, strtotime($row->report_date));
+                })
+
+                ->editColumn('particulars', function ($row) use ($supplierUtil) {
+                    $type = $supplierUtil->voucherType($row->voucher_type);
+                    $__agp = $row->agp_purchase ? '/' . 'AGP:<b>' . $row->agp_purchase . '</b>' : '';
+                    return '<b>' . $type['name'] . '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                })
+
+                ->editColumn('voucher_no',  function ($row) use ($supplierUtil) {
+                    $type = $supplierUtil->voucherType($row->voucher_type);
+                    return $row->{$type['voucher_no']};
+                })
+
+                ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . $this->converter->format_in_bdt($row->debit) . '</span>')
+
+                ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . $this->converter->format_in_bdt($row->credit) . '</span>')
+
+                ->editColumn('running_balance', fn ($row) => '<span class="running_balance" data-value="' . $row->running_balance . '">' . $this->converter->format_in_bdt($row->running_balance) . '</span>')
+
+                ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
+                ->make(true);
+        }
     }
 
-    public function ledgerPrint($supplierId)
+    public function ledgerPrint(Request $request, $supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->select(
             'name',
             'contact_id',
             'phone',
             'address',
-            'opening_balance',
-            'total_paid',
-            'total_purchase',
-            'total_purchase_due'
         )->first();
-        $addSupplierLedgerModelData = SupplierLedger::orderBy('report_date', 'asc');
-        $ledgers = $addSupplierLedgerModelData->with(['purchase', 'purchase_payment', 'purchase_payment.purchase', 'supplier_payment'])
-            ->where('supplier_id', $supplierId)->get();
-        return view('contacts.suppliers.ajax_view.print_ledger', compact('ledgers', 'supplier'));
+
+        $supplierUtil = $this->supplierUtil;
+
+        $ledgers = '';
+
+        $query = DB::table('supplier_ledgers')->where('supplier_ledgers.supplier_id', $supplierId)
+            ->leftJoin('purchases', 'supplier_ledgers.purchase_id', 'purchases.id')
+            ->leftJoin('purchase_returns', 'supplier_ledgers.purchase_return_id', 'purchase_returns.id')
+            ->leftJoin('purchase_payments', 'supplier_ledgers.purchase_payment_id', 'purchase_payments.id')
+            ->leftJoin('supplier_payments', 'supplier_ledgers.supplier_payment_id', 'supplier_payments.id')
+            ->leftJoin('purchases as agp_purchase', 'purchase_payments.purchase_id', 'agp_purchase.id')
+            ->select(
+                'supplier_ledgers.report_date',
+                'supplier_ledgers.voucher_type',
+                'supplier_ledgers.debit',
+                'supplier_ledgers.credit',
+                'supplier_ledgers.running_balance',
+                'purchases.invoice_id as purchase_inv_id',
+                'purchases.purchase_note as purchase_par',
+                'purchase_returns.invoice_id as return_inv_id',
+                'purchase_returns.date as purchase_return_par',
+                'purchase_payments.invoice_id as payment_voucher_no',
+                'purchase_payments.note as purchase_payment_par',
+                'supplier_payments.voucher_no as supplier_payment_voucher',
+                'supplier_payments.note as supplier_payment_par',
+                'agp_purchase.invoice_id as agp_purchase',
+            )->orderBy('supplier_ledgers.report_date', 'asc');
+
+        if ($request->voucher_type) {
+            $query->where('supplier_ledgers.voucher_type', $request->voucher_type); // Final
+        }
+
+        $fromDate = '';
+        $toDate = '';
+
+        if ($request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $query->whereBetween('supplier_ledgers.report_date', $date_range); // Final
+
+            $fromDate = $from_date;
+            $toDate = $to_date;
+        }
+
+        $ledgers = $query->get();
+
+        return view('contacts.suppliers.ajax_view.print_ledger', compact('ledgers', 'supplier', 'supplierUtil', 'fromDate', 'toDate'));
     }
 
     // Supplier  purchases

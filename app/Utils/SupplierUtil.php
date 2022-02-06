@@ -71,7 +71,7 @@ class SupplierUtil
             + $totalSupplierReturn->sum('total_sup_return_amt');
 
         $totalReturnPaid = $totalInvoiceReturnPayment->sum('total_inv_return_paid')
-            + $totalSupplierReturnPayment->sum('sr_paid') 
+            + $totalSupplierReturnPayment->sum('sr_paid')
             + $__totalInvoiceReturnPayment->sum('total_inv_return_paid');
 
         $totalDue = ($totalPurchase + $supplier->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn;
@@ -86,14 +86,14 @@ class SupplierUtil
         return $totalDue;
     }
 
-    public function voucherTypes()
+    public static function voucherTypes()
     {
         return [
             1 => 'Purchases',
-            2 => 'Purchase Return',
-            3 => 'Payment',
-            4 => 'Return Payment',
-            5 => 'Paid To Supplier',
+            2 => 'Purchase Returns',
+            3 => 'Purchase Payments',
+            4 => 'Return Payments',
+            5 => 'Supplier Payments',
             6 => 'Received From Supplier',
         ];
     }
@@ -101,13 +101,55 @@ class SupplierUtil
     public function voucherType($voucher_type_id)
     {
         $data = [
-            0 => ['name' => 'Opening Balance', 'id' => 'purchase_id', 'voucher_no' => NULL, 'amt'=> 'credit'],
-            1 => ['name' => 'Purchase', 'id' => 'purchase_id', 'voucher_no' => 'purchase_inv_id', 'amt'=> 'credit'],
-            2 => ['name' => 'Purchase Return', 'id' => 'purchase_return_id', 'voucher_no' => 'return_inv_id', 'amt' => 'debit'],
-            3 => ['name' => 'Purchase Payment', 'id' => 'purchase_payment_id', 'voucher_no' => 'payment_voucher_no', 'amt' => 'debit'],
-            4 => ['name' => 'Received Return Amt.', 'id' => 'purchase_payment_id', 'voucher_no' => 'return_pay_voucher_no', 'amt' => 'credit'],
-            5 => ['name' => 'Paid To Supplier', 'id' => 'supplier_payment_id', 'voucher_no' => 'supplier_payment_voucher', 'amt' => 'debit'],
-            6 => ['name' => 'Return Amt. Received', 'id' => 'supplier_payment_id', 'voucher_no' => 'supplier_return_payment_voucher', 'amt' => 'credit'],
+            0 => [
+                'name' => 'Opening Balance',
+                'id' => 'purchase_id',
+                'voucher_no' => 'purchase_inv_id',
+                'amt' => 'credit',
+                'par' => 'purchase_par'
+            ],
+            1 => [
+                'name' => 'Purchase',
+                'id' => 'purchase_id',
+                'voucher_no' => 'purchase_inv_id',
+                'amt' => 'credit',
+                'par' => 'purchase_par',
+            ],
+            2 => [
+                'name' => 'Purchase Return',
+                'id' => 'purchase_return_id',
+                'voucher_no' => 'return_inv_id',
+                'amt' => 'debit',
+                'par' => 'purchase_return_par',
+            ],
+            3 => [
+                'name' => 'Purchase Payment',
+                'id' => 'purchase_payment_id',
+                'voucher_no' => 'payment_voucher_no',
+                'amt' => 'debit',
+                'par' => 'purchase_payment_par',
+            ],
+            4 => [
+                'name' => 'Received Return Amt.',
+                'id' => 'purchase_payment_id',
+                'voucher_no' => 'payment_voucher_no',
+                'amt' => 'credit',
+                'par' => 'purchase_payment_par',
+            ],
+            5 => [
+                'name' => 'Paid To Supplier',
+                'id' => 'supplier_payment_id',
+                'voucher_no' => 'supplier_payment_voucher',
+                'amt' => 'debit',
+                'par' => 'supplier_payment_par',
+            ],
+            6 => [
+                'name' => 'Return Amt. Received',
+                'id' => 'supplier_payment_id',
+                'voucher_no' => 'supplier_payment_voucher',
+                'amt' => 'credit',
+                'par' => 'supplier_payment_par',
+            ],
         ];
 
         return $data[$voucher_type_id];
@@ -118,7 +160,7 @@ class SupplierUtil
         $voucher_type = $this->voucherType($voucher_type_id);
         $addSupplierLedger = new SupplierLedger();
         $addSupplierLedger->supplier_id = $supplier_id;
-        $addSupplierLedger->report_date = date('Y-m-d', strtotime($date.date(' H:i:s')));
+        $addSupplierLedger->report_date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         $addSupplierLedger->{$voucher_type['id']} = $trans_id;
         $addSupplierLedger->{$voucher_type['amt']} = $amount;
         $addSupplierLedger->amount = $amount;
@@ -133,7 +175,7 @@ class SupplierUtil
         $voucher_type = $this->voucherType($voucher_type_id);
         $updateSupplierLedger = SupplierLedger::where($voucher_type['id'], $trans_id)->first();
         //$updateSupplierLedger->supplier_id = $supplier_id;
-        $updateSupplierLedger->report_date = date('Y-m-d', strtotime($date.date(' H:i:s')));
+        $updateSupplierLedger->report_date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         $updateSupplierLedger->{$voucher_type['amt']} = $amount;
         $updateSupplierLedger->amount = $amount;
         $updateSupplierLedger->running_balance = $this->adjustSupplierForSalePaymentDue($supplier_id);

@@ -160,8 +160,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::delete('delete/{supplierId}', 'SupplierController@delete')->name('contacts.supplier.delete');
         Route::get('change/status/{supplierId}', 'SupplierController@changeStatus')->name('contacts.supplier.change.status');
         Route::get('view/{supplierId}', 'SupplierController@view');
-        Route::get('all/info/{supplierId}', 'SupplierController@SupplierAllInfo')->name('contacts.supplier.all.info');
-        Route::get('payment/list/{supplierId}', 'SupplierController@paymentList')->name('contacts.supplier.payment.list');
+        Route::get('ledgers/{supplierId}', 'SupplierController@ledgers')->name('contacts.supplier.ledgers');
         Route::get('purchase/list/{supplierId}', 'SupplierController@purchaseList')->name('contacts.supplier.purchase.list');
         Route::get('print/ledger/{supplierId}', 'SupplierController@ledgerPrint')->name('contacts.supplier.ledger.print');
         Route::get('purchases/{supplierId}', 'SupplierController@purchases');
@@ -192,8 +191,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::delete('delete/{customerId}', 'CustomerController@delete')->name('contacts.customer.delete');
         Route::get('change/status/{customerId}', 'CustomerController@changeStatus')->name('contacts.customer.change.status');
         Route::get('view/{customerId}', 'CustomerController@view');
-        Route::get('all/info/{customerId}', 'CustomerController@cutomerAllInfo')->name('contacts.customer.all.info');
-        Route::get('ledger/list/{customerId}', 'CustomerController@ledgerList')->name('contacts.customer.ledger.list');
+        Route::get('ledgers/list/{customerId}', 'CustomerController@ledgerList')->name('contacts.customer.ledger.list');
         Route::get('print/ledger/{customerId}', 'CustomerController@ledgerPrint')->name('contacts.customer.ledger.print');
         Route::get('payment/{customerId}', 'CustomerController@payment')->name('customers.payment');
         Route::post('payment/{customerId}', 'CustomerController@paymentAdd')->name('customers.payment.add');
@@ -525,17 +523,11 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
 
     Route::group(['prefix' => 'accounts'], function () {
         Route::get('/', 'AccountController@index')->name('accounting.accounts.index');
-        // Route::get('all/account', 'AccountController@allAccounts')->name('accounting.accounts.all.account');
         Route::get('account/book/{accountId}', 'AccountController@accountBook')->name('accounting.accounts.book');
         Route::post('store', 'AccountController@store')->name('accounting.accounts.store');
         Route::get('edit/{id}', 'AccountController@edit')->name('accounting.accounts.edit');
         Route::post('update/{id}', 'AccountController@update')->name('accounting.accounts.update');
         Route::delete('delete/{accountId}', 'AccountController@delete')->name('accounting.accounts.delete');
-        Route::post('fund/transfer', 'AccountController@fundTransfer')->name('accounting.accounts.fund.transfer');
-        Route::post('deposit', 'AccountController@deposit')->name('accounting.accounts.fund.deposit');
-        Route::get('account/cash/flows/{accountId}', 'AccountController@accountCashflows')->name('accounting.accounts.account.cash.flows');
-        Route::get('account/cash/flow/filter/{accountId}', 'AccountController@accountCashflowFilter')->name('accounting.accounts.account.cash.flow.filter');
-        Route::delete('delete/cash/flow/{cashFlowId}', 'AccountController@deleteCashFlow')->name('accounting.accounts.account.delete.cash.flow');
     });
 
     Route::group(['prefix' => '/'], function () {

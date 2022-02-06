@@ -716,7 +716,7 @@ class PurchaseController extends Controller
         if ($storedPurchaseReturnAccountId) {
             $this->accountUtil->adjustAccountBalance('credit', $storedPurchaseReturnAccountId);
         }
-        
+
         foreach ($storePurchaseProducts as $purchase_product) {
             $variant_id = $purchase_product->product_variant_id ? $purchase_product->product_variant_id : NULL;
             $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $variant_id);
@@ -897,24 +897,27 @@ class PurchaseController extends Controller
 
             $this->purchaseUtil->updatePurchasePayment($request, $updatePurchasePayment);
 
-            // Update Bank/Cash-in-hand A/C Ledger
-            $this->accountUtil->updateAccountLedger(
-                voucher_type_id: 11,
-                date: $request->date,
-                account_id: $request->account_id,
-                trans_id: $updatePurchasePayment->id,
-                amount: $request->paying_amount,
-                balance_type: 'debit'
-            );
+            if ($updatePurchasePayment->supplier_payment_id == NULL) {
 
-            // Update supplier ledger
-            $this->supplierUtil->updateSupplierLedger(
-                voucher_type_id: 3,
-                supplier_id: $purchase->supplier_id,
-                date: $request->date,
-                trans_id: $updatePurchasePayment->id,
-                amount: $request->paying_amount
-            );
+                // Update Bank/Cash-in-hand A/C Ledger
+                $this->accountUtil->updateAccountLedger(
+                    voucher_type_id: 11,
+                    date: $request->date,
+                    account_id: $request->account_id,
+                    trans_id: $updatePurchasePayment->id,
+                    amount: $request->paying_amount,
+                    balance_type: 'debit'
+                );
+
+                // Update supplier ledger
+                $this->supplierUtil->updateSupplierLedger(
+                    voucher_type_id: 3,
+                    supplier_id: $purchase->supplier_id,
+                    date: $request->date,
+                    trans_id: $updatePurchasePayment->id,
+                    amount: $request->paying_amount
+                );
+            }
 
             $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
         }
@@ -950,6 +953,7 @@ class PurchaseController extends Controller
         $purchase = Purchase::with(['purchase_return'])->where('id', $purchaseId)->first();
 
         if ($request->paying_amount > 0) {
+
             $purchaseReturnPaymentGetId = $this->purchaseUtil->purchaseReturnPaymentGetId(
                 request: $request,
                 purchase: $purchase,
@@ -979,6 +983,7 @@ class PurchaseController extends Controller
 
             // update purchase return
             if ($purchase->purchase_return) {
+
                 $this->purchaseReturnUtil->adjustPurchaseReturnAmounts($purchase->purchase_return);
             }
         }
@@ -1020,29 +1025,33 @@ class PurchaseController extends Controller
 
             $this->purchaseUtil->updatePurchaseReturnPayment($request, $updatePurchasePayment);
 
-            // Update Bank/Cash-in-hand A/C Ledger
-            $this->accountUtil->updateAccountLedger(
-                voucher_type_id: 17,
-                date: $request->date,
-                account_id: $request->account_id,
-                trans_id: $updatePurchasePayment->id,
-                amount: $request->paying_amount,
-                balance_type: 'debit'
-            );
+            if ($updatePurchasePayment->supplier_payment_id == NULL) {
 
-            // Update supplier ledger
-            $this->supplierUtil->updateSupplierLedger(
-                voucher_type_id: 4,
-                supplier_id: $purchase->supplier_id,
-                date: $request->date,
-                trans_id: $updatePurchasePayment->id,
-                amount: $request->paying_amount
-            );
+                // Update Bank/Cash-in-hand A/C Ledger
+                $this->accountUtil->updateAccountLedger(
+                    voucher_type_id: 17,
+                    date: $request->date,
+                    account_id: $request->account_id,
+                    trans_id: $updatePurchasePayment->id,
+                    amount: $request->paying_amount,
+                    balance_type: 'debit'
+                );
 
+                // Update supplier ledger
+                $this->supplierUtil->updateSupplierLedger(
+                    voucher_type_id: 4,
+                    supplier_id: $purchase->supplier_id,
+                    date: $request->date,
+                    trans_id: $updatePurchasePayment->id,
+                    amount: $request->paying_amount
+                );
+            }
+            
             $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
 
             // update purchase return
             if ($purchase->purchase_return) {
+
                 $this->purchaseReturnUtil->adjustPurchaseReturnAmounts($purchase->purchase_return);
             }
         }

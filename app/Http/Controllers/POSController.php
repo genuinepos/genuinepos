@@ -419,7 +419,7 @@ class POSController extends Controller
     {
         $invoiceProducts = SaleProduct::with(['sale', 'product', 'variant'])->where('sale_id', $saleId)->get();
         $qty_limits = [];
-        
+
         foreach ($invoiceProducts as $sale_product) {
 
             if ($sale_product->product->is_manage_stock == 0) {
@@ -1014,6 +1014,9 @@ class POSController extends Controller
                     amount: $request->paying_amount
                 );
             }
+        } else {
+
+            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
         }
 
         $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);

@@ -14,7 +14,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="far fa-file-alt"></span>
@@ -94,7 +93,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
                     <div class="row px-3 mt-1">
                         <div class="card">

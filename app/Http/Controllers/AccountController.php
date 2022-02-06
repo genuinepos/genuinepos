@@ -470,85 +470,85 @@ class AccountController extends Controller
     //     return view('accounting.accounts.ajax_view.account_cash_flow_list', compact('accountCashFlows'));
     // }
 
-    public function accountCashflowFilter(Request $request, $accountId)
-    {
-        $filterAccountCashFlows = '';
-        $query = CashFlow::with([
-            'sender_account',
-            'receiver_account',
-            'sale_payment',
-            'sale_payment.customer',
-            'sale_payment.sale',
-            'purchase_payment',
-            'purchase_payment.supplier',
-            'purchase_payment.purchase',
-            'expanse_payment',
-            'expanse_payment.expense',
-            'money_receipt',
-            'money_receipt.customer',
-            'payroll',
-            'payroll_payment',
-            'loan',
-            'loan_payment',
-            'loan_payment.branch',
-            'loan_payment.company',
-            'loan.company',
-        ])->where('account_id', $accountId);
+    // public function accountCashflowFilter(Request $request, $accountId)
+    // {
+    //     $filterAccountCashFlows = '';
+    //     $query = CashFlow::with([
+    //         'sender_account',
+    //         'receiver_account',
+    //         'sale_payment',
+    //         'sale_payment.customer',
+    //         'sale_payment.sale',
+    //         'purchase_payment',
+    //         'purchase_payment.supplier',
+    //         'purchase_payment.purchase',
+    //         'expanse_payment',
+    //         'expanse_payment.expense',
+    //         'money_receipt',
+    //         'money_receipt.customer',
+    //         'payroll',
+    //         'payroll_payment',
+    //         'loan',
+    //         'loan_payment',
+    //         'loan_payment.branch',
+    //         'loan_payment.company',
+    //         'loan.company',
+    //     ])->where('account_id', $accountId);
 
-        if ($request->from_date) {
-            $fromDate = date('Y-m-d', strtotime($request->from_date));
-            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
-            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
-            $query->whereBetween('report_date', $date_range); // Final
-        }
+    //     if ($request->from_date) {
+    //         $fromDate = date('Y-m-d', strtotime($request->from_date));
+    //         $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+    //         $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+    //         $query->whereBetween('report_date', $date_range); // Final
+    //     }
 
-        if ($request->transaction_type) {
-            $query->where('cash_type', $request->transaction_type);
-        }
-        $filterAccountCashFlows = $query->orderBy('id', 'desc')->get();
-        return view('accounting.accounts.ajax_view.filter_account_cash_flow_list', compact('filterAccountCashFlows'));
-    }
+    //     if ($request->transaction_type) {
+    //         $query->where('cash_type', $request->transaction_type);
+    //     }
+    //     $filterAccountCashFlows = $query->orderBy('id', 'desc')->get();
+    //     return view('accounting.accounts.ajax_view.filter_account_cash_flow_list', compact('filterAccountCashFlows'));
+    // }
 
-    public function deleteCashFlow($cashFlowId)
-    {
-        $deleteCashflow = CashFlow::with('account', 'sender_account', 'receiver_account')
-            ->where('id', $cashFlowId)->first();
-        if (!is_null($deleteCashflow)) {
-            if ($deleteCashflow->transaction_type == 4) {
-                if ($deleteCashflow->cash_type == 1) {
-                    $deleteCashflow->account->debit -= $deleteCashflow->debit;
-                    $deleteCashflow->account->balance += $deleteCashflow->debit;
-                    $deleteCashflow->account->save();
+    // public function deleteCashFlow($cashFlowId)
+    // {
+    //     $deleteCashflow = CashFlow::with('account', 'sender_account', 'receiver_account')
+    //         ->where('id', $cashFlowId)->first();
+    //     if (!is_null($deleteCashflow)) {
+    //         if ($deleteCashflow->transaction_type == 4) {
+    //             if ($deleteCashflow->cash_type == 1) {
+    //                 $deleteCashflow->account->debit -= $deleteCashflow->debit;
+    //                 $deleteCashflow->account->balance += $deleteCashflow->debit;
+    //                 $deleteCashflow->account->save();
 
-                    $deleteCashflow->receiver_account->credit -= $deleteCashflow->debit;
-                    $deleteCashflow->receiver_account->balance -= $deleteCashflow->debit;
-                    $deleteCashflow->receiver_account->save();
-                } elseif ($deleteCashflow->cash_type == 2) {
-                    $deleteCashflow->account->credit -= $deleteCashflow->credit;
-                    $deleteCashflow->account->balance -= $deleteCashflow->debit;
-                    $deleteCashflow->account->save();
+    //                 $deleteCashflow->receiver_account->credit -= $deleteCashflow->debit;
+    //                 $deleteCashflow->receiver_account->balance -= $deleteCashflow->debit;
+    //                 $deleteCashflow->receiver_account->save();
+    //             } elseif ($deleteCashflow->cash_type == 2) {
+    //                 $deleteCashflow->account->credit -= $deleteCashflow->credit;
+    //                 $deleteCashflow->account->balance -= $deleteCashflow->debit;
+    //                 $deleteCashflow->account->save();
 
-                    $deleteCashflow->sender_account->debit -= $deleteCashflow->credit;
-                    $deleteCashflow->sender_account->balance += $deleteCashflow->debit;
-                    $deleteCashflow->sender_account->save();
-                }
-            } elseif ($deleteCashflow->transaction_type == 5) {
-                $deleteCashflow->account->credit -= $deleteCashflow->credit;
-                $deleteCashflow->account->balance -= $deleteCashflow->debit;
-                $deleteCashflow->account->save();
+    //                 $deleteCashflow->sender_account->debit -= $deleteCashflow->credit;
+    //                 $deleteCashflow->sender_account->balance += $deleteCashflow->debit;
+    //                 $deleteCashflow->sender_account->save();
+    //             }
+    //         } elseif ($deleteCashflow->transaction_type == 5) {
+    //             $deleteCashflow->account->credit -= $deleteCashflow->credit;
+    //             $deleteCashflow->account->balance -= $deleteCashflow->debit;
+    //             $deleteCashflow->account->save();
 
-                if ($deleteCashflow->sender_account) {
-                    $deleteCashflow->sender_account->debit -= $deleteCashflow->credit;
-                    $deleteCashflow->sender_account->balance += $deleteCashflow->balance;
-                    $deleteCashflow->sender_account->save();
-                }
-            }
-            if ($deleteCashflow->related_cash_flow_id) {
-                $relatedCashFlow = CashFlow::where('id', $deleteCashflow->related_cash_flow_id)->first();
-                $relatedCashFlow->delete();
-            }
-            $deleteCashflow->delete();
-        }
-        return response()->json('Successfully cashflow is deleted');
-    }
+    //             if ($deleteCashflow->sender_account) {
+    //                 $deleteCashflow->sender_account->debit -= $deleteCashflow->credit;
+    //                 $deleteCashflow->sender_account->balance += $deleteCashflow->balance;
+    //                 $deleteCashflow->sender_account->save();
+    //             }
+    //         }
+    //         if ($deleteCashflow->related_cash_flow_id) {
+    //             $relatedCashFlow = CashFlow::where('id', $deleteCashflow->related_cash_flow_id)->first();
+    //             $relatedCashFlow->delete();
+    //         }
+    //         $deleteCashflow->delete();
+    //     }
+    //     return response()->json('Successfully cashflow is deleted');
+    // }
 }

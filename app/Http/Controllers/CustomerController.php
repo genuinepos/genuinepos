@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Sale;
 use App\Models\Account;
+use App\Utils\SaleUtil;
 use App\Models\CashFlow;
 use App\Models\Customer;
 use App\Utils\Converter;
@@ -16,7 +18,6 @@ use App\Models\CustomerPayment;
 use Illuminate\Support\Facades\DB;
 use App\Models\CustomerPaymentInvoice;
 use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Utils\SaleUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class CustomerController extends Controller
@@ -311,56 +312,150 @@ class CustomerController extends Controller
     }
 
     // Customer ledger list
-    public function ledgerList($customerId)
+    public function ledgerList(Request $request, $customerId)
     {
-        $ledgers = CustomerLedger::with(
-            [
-                'sale',
-                'sale.sale_products',
-                'sale.sale_products.product',
-                'sale.sale_products.variant',
-                'sale_payment',
-                'sale_payment.account',
-                'sale_payment.sale',
-                'money_receipt',
-                'customer_payment'
-            ]
-        )->where('customer_id', $customerId)->orderBy('report_date', 'ASC')->get();
+        // $ledgers = CustomerLedger::with(
+        //     [
+        //         'sale',
+        //         'sale.sale_products',
+        //         'sale.sale_products.product',
+        //         'sale.sale_products.variant',
+        //         'sale_payment',
+        //         'sale_payment.account',
+        //         'sale_payment.sale',
+        //         'money_receipt',
+        //         'customer_payment'
+        //     ]
+        // )->where('customer_id', $customerId)->orderBy('report_date', 'ASC')->get();
+
+        if ($request->ajax()) {
+            $settings = DB::table('general_settings')->first();
+
+            $customerUtil = $this->customerUtil;
+
+            $customerLedgers = '';
+
+            $query = DB::table('customer_ledgers')->where('customer_ledgers.customer_id', $customerId)
+                ->leftJoin('sales', 'customer_ledgers.sale_id', 'sales.id')
+                ->leftJoin('sale_returns', 'customer_ledgers.sale_return_id', 'sale_returns.id')
+                ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
+                ->leftJoin('customer_payments', 'customer_ledgers.customer_payment_id', 'customer_payments.id')
+                ->leftJoin('sales as ags_sale', 'sale_payments.sale_id', 'ags_sale.id')
+                ->select(
+                    'customer_ledgers.report_date',
+                    'customer_ledgers.voucher_type',
+                    'customer_ledgers.debit',
+                    'customer_ledgers.credit',
+                    'customer_ledgers.running_balance',
+                    'sales.invoice_id as sale_inv_id',
+                    'sales.sale_note as sale_par',
+                    'sale_returns.invoice_id as return_inv_id',
+                    'sale_returns.date as sale_return_par',
+                    'sale_payments.invoice_id as sale_payment_voucher',
+                    'sale_payments.note as sale_payment_par',
+                    'customer_payments.voucher_no as customer_payment_voucher',
+                    'customer_payments.note as customer_payment_par',
+                    'ags_sale.invoice_id as ags_sale',
+                )->orderBy('customer_ledgers.report_date', 'asc');
+
+            if ($request->voucher_type) {
+                $query->where('customer_ledgers.voucher_type', $request->voucher_type); // Final
+            }
+
+            if ($request->from_date) {
+                $from_date = date('Y-m-d', strtotime($request->from_date));
+                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+                $query->whereBetween('customer_ledgers.report_date', $date_range); // Final
+            }
+
+            $customerLedgers = $query;
+
+            return DataTables::of($customerLedgers)
+                ->editColumn('date', function ($row) use ($settings) {
+                    $dateFormat = json_decode($settings->business, true)['date_format'];
+                    $__date_format = str_replace('-', '/', $dateFormat);
+                    return date($__date_format, strtotime($row->report_date));
+                })
+
+                ->editColumn('particulars', function ($row) use ($customerUtil) {
+                    $type = $customerUtil->voucherType($row->voucher_type);
+                    $__agp = $row->ags_sale ? '/' . 'AGS:<b>' . $row->ags_sale . '</b>' : '';
+                    return '<b>' . $type['name'] . '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                })
+
+                ->editColumn('voucher_no', function ($row) use ($customerUtil) {
+                    $type = $customerUtil->voucherType($row->voucher_type);
+                    return $row->{$type['voucher_no']};
+                })
+
+                ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . $this->converter->format_in_bdt($row->debit) . '</span>')
+
+                ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . $this->converter->format_in_bdt($row->credit) . '</span>')
+
+                ->editColumn('running_balance', fn ($row) => '<span class="running_balance" data-value="' . $row->running_balance . '">' . $this->converter->format_in_bdt($row->running_balance) . '</span>')
+
+                ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
+                ->make(true);
+        }
 
         $customer = DB::table('customers')->where('id', $customerId)->select('id', 'contact_id', 'name')->first();
         return view('contacts.customers.ajax_view.ledger_list', compact('ledgers', 'customer'));
     }
 
     // Customer ledger list
-    public function ledgerPrint($customerId)
+    public function ledgerPrint(Request $request, $customerId)
     {
-        $ledgers = CustomerLedger::with(
-            [
-                'sale',
-                'sale.sale_products',
-                'sale.sale_products.product',
-                'sale.sale_products.variant',
-                'sale_payment',
-                'sale_payment.account',
-                'sale_payment.sale',
-                'money_receipt',
-                'customer_payment'
-            ]
-        )->where('customer_id', $customerId)->orderBy('report_date', 'ASC')->get();
+        $customerUtil = $this->customerUtil;
 
-        $customer = DB::table('customers')->where('id', $customerId)->select(
-            'id',
-            'contact_id',
-            'name',
-            'phone',
-            'address',
-            'opening_balance',
-            'total_sale',
-            'total_paid',
-            'total_sale_due',
-            'total_sale_return_due',
-        )->first();
-        return view('contacts.customers.ajax_view.print_ledger', compact('ledgers', 'customer'));
+        $ledgers = '';
+
+        $query = DB::table('customer_ledgers')->where('customer_ledgers.customer_id', $customerId)
+            ->leftJoin('sales', 'customer_ledgers.sale_id', 'sales.id')
+            ->leftJoin('sale_returns', 'customer_ledgers.sale_return_id', 'sale_returns.id')
+            ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
+            ->leftJoin('customer_payments', 'customer_ledgers.customer_payment_id', 'customer_payments.id')
+            ->leftJoin('sales as ags_sale', 'sale_payments.sale_id', 'ags_sale.id')
+            ->select(
+                'customer_ledgers.report_date',
+                'customer_ledgers.voucher_type',
+                'customer_ledgers.debit',
+                'customer_ledgers.credit',
+                'customer_ledgers.running_balance',
+                'sales.invoice_id as sale_inv_id',
+                'sales.sale_note as sale_par',
+                'sale_returns.invoice_id as return_inv_id',
+                'sale_returns.date as sale_return_par',
+                'sale_payments.invoice_id as sale_payment_voucher',
+                'sale_payments.note as sale_payment_par',
+                'customer_payments.voucher_no as customer_payment_voucher',
+                'customer_payments.note as customer_payment_par',
+                'ags_sale.invoice_id as ags_sale',
+            )->orderBy('customer_ledgers.report_date', 'asc');
+
+        if ($request->voucher_type) {
+            $query->where('customer_ledgers.voucher_type', $request->voucher_type); // Final
+        }
+
+        $fromDate = '';
+        $toDate = '';
+
+        if ($request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $query->whereBetween('customer_ledgers.report_date', $date_range); // Final
+
+            $fromDate = $from_date;
+            $toDate = $to_date;
+        }
+
+        $ledgers = $query->get();
+
+        $customer = DB::table('customers')->where('id', $customerId)
+            ->select('id', 'contact_id', 'name', 'phone', 'address',)->first();
+
+        return view('contacts.customers.ajax_view.print_ledger', compact('ledgers', 'customer', 'customerUtil', 'fromDate', 'toDate'));
     }
 
     // Customer payment view

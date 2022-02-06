@@ -540,7 +540,7 @@ class SaleController extends Controller
             'sale_products.product.comboProducts'
         ])->where('id', $saleId)->first();
 
-        if ($updateSale->status == 1 && $request->action != 1) {
+        if ($updateSale->status == 1 && $request->status != 1) {
 
             return response()->json(['errorMsg' => 'Final sale you can not update to quotation, draft.']);
         }
@@ -1017,26 +1017,28 @@ class SaleController extends Controller
         $payment = SalePayment::with(['sale'])->where('id', $paymentId)->first();
         $this->saleUtil->updatePayment($request, $payment);
 
-        // Update Bank/Cash-In-Hand ledger
-        $this->accountUtil->updateAccountLedger(
-            voucher_type_id: 10,
-            date: $request->date,
-            account_id: $request->account_id,
-            trans_id: $payment->id,
-            amount: $request->paying_amount,
-            balance_type: 'debit'
-        );
-
-        $this->saleUtil->adjustSaleInvoiceAmounts($payment->sale);
-        if ($payment->sale->customer_id) {
-            // Update customer ledger
-            $this->customerUtil->updateCustomerLedger(
-                voucher_type_id: 3,
-                customer_id: $payment->sale->customer_id,
+        if ($payment->customer_payment_id == NULL) {
+            // Update Bank/Cash-In-Hand ledger
+            $this->accountUtil->updateAccountLedger(
+                voucher_type_id: 10,
                 date: $request->date,
+                account_id: $request->account_id,
                 trans_id: $payment->id,
-                amount: $request->paying_amount
+                amount: $request->paying_amount,
+                balance_type: 'debit'
             );
+
+            $this->saleUtil->adjustSaleInvoiceAmounts($payment->sale);
+            if ($payment->sale->customer_id) {
+                // Update customer ledger
+                $this->customerUtil->updateCustomerLedger(
+                    voucher_type_id: 3,
+                    customer_id: $payment->sale->customer_id,
+                    date: $request->date,
+                    trans_id: $payment->id,
+                    amount: $request->paying_amount
+                );
+            }
         }
 
         return response()->json('Payment updated successfully.');
@@ -1158,25 +1160,28 @@ class SaleController extends Controller
 
         $this->saleUtil->updateSaleReturnPayment($request, $updateSalePayment);
 
-        // Update Bank/Cash-in-Hand A/C ledger
-        $this->accountUtil->updateAccountLedger(
-            voucher_type_id: 12,
-            date: $request->date,
-            account_id: $request->account_id,
-            trans_id: $payment->id,
-            amount: $request->paying_amount,
-            balance_type: 'debit'
-        );
+        if ($updateSalePayment->customer_payment_id == NULL) {
 
-        if ($updateSalePayment->sale->customer_id) {
-            // Update customer ledger
-            $this->customerUtil->updateCustomerLedger(
-                voucher_type_id: 4,
-                customer_id: $updateSalePayment->sale->customer_id,
+            // Update Bank/Cash-in-Hand A/C ledger
+            $this->accountUtil->updateAccountLedger(
+                voucher_type_id: 12,
                 date: $request->date,
-                trans_id: $updateSalePayment->id,
-                amount: $request->paying_amount
+                account_id: $request->account_id,
+                trans_id: $payment->id,
+                amount: $request->paying_amount,
+                balance_type: 'debit'
             );
+
+            if ($updateSalePayment->sale->customer_id) {
+                // Update customer ledger
+                $this->customerUtil->updateCustomerLedger(
+                    voucher_type_id: 4,
+                    customer_id: $updateSalePayment->sale->customer_id,
+                    date: $request->date,
+                    trans_id: $updateSalePayment->id,
+                    amount: $request->paying_amount
+                );
+            }
         }
 
         $this->saleUtil->adjustSaleInvoiceAmounts($updateSalePayment->sale);

@@ -345,7 +345,7 @@ class SaleUtil
     public function updatePayment($request, $payment)
     {
         // update sale payment
-        $payment->account_id = $request->account_id;
+        $payment->account_id = $payment->customer_payment_id == NULL ? $request->account_id : $payment->account_id;
         $payment->payment_method_id = $request->payment_method_id;
         $payment->paid_amount = $request->paying_amount;
         $payment->date = $request->date;
@@ -403,7 +403,7 @@ class SaleUtil
     public function updateSaleReturnPayment($request, $payment)
     {
         // update sale payment
-        $payment->account_id = $request->account_id;
+        $payment->account_id = $payment->customer_payment_id == NULL ? $request->account_id : $payment->account_id;
         $payment->payment_method_id = $request->payment_method_id;
         $payment->paid_amount = $request->paying_amount;
         $payment->date = $request->date;

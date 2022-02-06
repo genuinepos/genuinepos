@@ -25,21 +25,21 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="text-start"> <strong>Bank :</strong> </td>
-                                                    <td class="bank_name text-start">{{ $account->bank ? $account->bank->name .' ('.$account->bank->branch_name.')' : '' }}</td>
+                                                    <td class="bank_name text-start">{{ $account->bank ? $account->bank->name .'('.$account->bank->branch_name.')' : '' }}</td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="text-start"> <strong>Account Name :</strong> </td>
+                                                    <td class="text-start"> <strong>A/C Name :</strong> </td>
                                                     <td class="account_name text-start">{{ $account->name }}</td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="text-start"><strong>Account Number :</strong></td>
+                                                    <td class="text-start"><strong>A/C No. :</strong></td>
                                                     <td class="account_number text-start">{{ $account->account_number }}</td>
                                                 </tr>
         
                                                 <tr>
-                                                    <td class="text-start"><strong>Account Type :</strong></td>
+                                                    <td class="text-start"><strong>A/C Type :</strong></td>
                                                     <td class="account_type text-start">{{ App\Utils\Util::accountType($account->account_type) }}</td>
                                                 </tr>
         
@@ -57,7 +57,7 @@
                                 <div class="sec-name mt-1 t">
                                     <div class="col-md-12">
                                         <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
-                                        <form id="filter_account_cash_flow" action="{{ route('accounting.accounts.account.cash.flow.filter', $account->id) }}" method="get" class="px-2">
+                                        <form id="filter_account_ledgers" method="get" class="px-2">
                                             <div class="form-group row mt-4">
                                                 <div class="col-md-2">
                                                     <label><strong>Transaction Type :</strong></label>
@@ -148,6 +148,15 @@
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="2" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th class="text-white text-end"></th>
+                                                <th id="debit" class="text-white text-end"></th>
+                                                <th id="credit" class="text-white text-end"></th>
+                                                <th id="due" class="text-white text-end">---</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -171,11 +180,11 @@
     var account_ledger_table = $('.data_tbl').DataTable({
         "processing": true,
         "serverSide": true,
+        "searching" : false,
         dom: "lBfrtip",
         buttons: [
             {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary'},
-            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary'},
         ],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         "ajax": {
@@ -187,24 +196,18 @@
                 d.to_date = $('.to_date').val();
             }
         },
-        columnDefs: [{
-            "targets": [1, 2, 3],
-            "orderable": false,
-            "searchable": false
-        }],
         columns: [
-            {data: 'date', name: 'date'},
+            {data: 'date', name: 'account_ledgers.date'},
             {data: 'particulars', name: 'particulars'},
             {data: 'voucher_no', name: 'voucher_no'},
-            {data: 'debit', name: 'debit', className: 'text-end'},
-            {data: 'credit', name: 'credit', className: 'text-end'},
-            {data: 'running_balance', name: 'running_balance', className: 'text-end'},
+            {data: 'debit', name: 'account_ledgers.debit', className: 'text-end'},
+            {data: 'credit', name: 'account_ledgers.credit', className: 'text-end'},
+            {data: 'running_balance', name: 'account_ledgers.running_balance', className: 'text-end'},
         ],fnDrawCallback: function() {
-            // var debit = sum_table_col($('.data_tbl'), 'debit');
-            // $('#debit').text(bdFormat(debit));
-            // var credit = sum_table_col($('.data_tbl'), 'credit');
-            // $('#credit').text(bdFormat(credit));
-  
+            var debit = sum_table_col($('.data_tbl'), 'debit');
+            $('#debit').text(bdFormat(debit));
+            var credit = sum_table_col($('.data_tbl'), 'credit');
+            $('#credit').text(bdFormat(credit));
             $('.data_preloader').hide();
         }
     });
@@ -222,74 +225,11 @@
     }
 
     //Submit filter form by select input changing
-    $(document).on('submit', '#filter_account_cash_flow', function (e) {
+    $(document).on('submit', '#filter_account_ledgers', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
         account_ledger_table.ajax.reload();
     });
-
-    // Setup ajax for csrf token.
-    // $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-    // function getCashFlow() {
-    //     $('.data_preloader').show();
-    //     $.ajax({
-    //         url:"{{route('accounting.accounts.account.cash.flows', $account->id)}}",
-    //         type:'get',
-    //         success:function(data){
-    //             $('#data-list').html(data);
-    //             $('.data_preloader').hide();
-    //         }
-    //     });
-    // }
-    // getCashFlow();
-
-    // $(document).on('click', '#delete',function(e){
-    //     e.preventDefault();
-    //     var url = $(this).attr('href');
-    //     $('#deleted_form').attr('action', url);           
-    //     $.confirm({
-    //         'title': 'Delete Confirmation',
-    //         'message': 'Are you sure?',
-    //         'buttons': {
-    //             'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
-    //             'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
-    //         }
-    //     });
-    // });
-       
-//    //data delete by ajax
-//    $(document).on('submit', '#deleted_form',function(e){
-//        e.preventDefault();
-//        var url = $(this).attr('action');
-//        var request = $(this).serialize();
-//        $.ajax({
-//            url:url,
-//            type:'post',
-//            data:request,
-//            success:function(data){
-//                getCashFlow();
-//                toastr.error(data);
-//                $('#deleted_form')[0].reset();
-//            }
-//        });
-//    });
-
-//    //Send account filter request
-//    $('#filter_account_cash_flow').on('submit', function (e) {
-//        e.preventDefault();
-//        $('.data_preloader').show();
-//        var url = $(this).attr('action');
-//        var request = $(this).serialize();
-//        $.ajax({
-//            url:url,
-//            type:'get',
-//            data: request,
-//            success:function(data){
-//                $('#data-list').html(data);
-//                $('.data_preloader').hide();
-//            }
-//        }); 
-//    });
 </script>
 
 <script type="text/javascript">

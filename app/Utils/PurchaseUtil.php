@@ -818,7 +818,7 @@ class PurchaseUtil
     public function updatePurchasePayment($request, $payment)
     {
         // update sale payment
-        $payment->account_id = $request->account_id;
+        $payment->account_id = $payment->supplier_payment_id == NULL ? $request->account_id : $payment->account_id;
         $payment->payment_method_id = $request->payment_method_id;
         $payment->paid_amount = $request->paying_amount;
         $payment->date = $request->date;
@@ -876,7 +876,7 @@ class PurchaseUtil
     public function updatePurchaseReturnPayment($request, $payment)
     {
         // update sale payment
-        $payment->account_id = $request->account_id;
+        $payment->account_id = $payment->supplier_payment_id == NULL ? $request->account_id : $payment->account_id;
         $payment->payment_method_id = $request->payment_method_id;
         $payment->paid_amount = $request->paying_amount;
         $payment->date = $request->date;

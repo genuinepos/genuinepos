@@ -61,7 +61,7 @@
 
     <div class="form-group mt-1">
         <label><strong>Remarks :</strong></label>
-        <input type="text" name="remark" class="form-control" id="e_remarks" placeholder="Remarks" value="{{ $contra->remarks }}"/>
+        <input type="text" name="remarks" class="form-control" id="e_remarks" placeholder="Remarks" value="{{ $contra->remarks }}"/>
     </div>
 
     <div class="form-group text-right py-2">

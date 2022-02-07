@@ -158,8 +158,8 @@ class AccountUtil
             23 => ['name' => 'Payroll Payment', 'voucher_no' => 'payroll_pay_voucher', 'id' => 'payroll_payment_id', 'amt' => 'credit', 'pur' => 'payroll_payment_pur'],
             24 => ['name' => 'Loan&Liabilities-money-trans', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit', 'pur' => 'loan_pur'],
             25 => ['name' => 'Loan&Advance-money-trans', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit', 'pur' => 'loan_pur'],
-            26 => ['name' => 'Contra', 'voucher_no' => 'contra_voucher_no', 'id' => 'contra_sender_id', 'amt' => 'debit', 'pur' => 'contra_pur'],
-            27 => ['name' => 'Contra', 'voucher_no' => 'contra_voucher_no', 'id' => 'contra_receiver_id', 'amt' => 'credit', 'pur' => 'contra_pur'],
+            26 => ['name' => 'Contra', 'voucher_no' => 'co_debit_voucher_no', 'id' => 'contra_debit_id', 'amt' => 'debit', 'pur' => 'co_debit_pur'],
+            27 => ['name' => 'Contra', 'voucher_no' => 'co_credit_voucher_no', 'id' => 'contra_credit_id', 'amt' => 'credit', 'pur' => 'co_credit_pur'],
         ];
 
         return $data[$voucher_type_id];

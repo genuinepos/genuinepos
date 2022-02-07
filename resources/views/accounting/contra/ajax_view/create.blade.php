@@ -60,7 +60,7 @@
 
     <div class="form-group mt-1">
         <label><strong>Remarks :</strong></label>
-        <input type="text" name="remark" class="form-control" id="remarks" placeholder="Remarks"/>
+        <input type="text" name="remarks" class="form-control" id="remarks" placeholder="Remarks"/>
     </div>
 
     <div class="form-group text-right py-2">

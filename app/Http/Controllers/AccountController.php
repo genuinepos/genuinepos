@@ -122,7 +122,7 @@ class AccountController extends Controller
 
             $query = DB::table('account_ledgers')->where('account_ledgers.account_id', $accountId)
                 ->leftJoin('expanses', 'account_ledgers.expense_id', 'expanses.id')
-                ->leftJoin('expanse_payments', 'account_ledgers.expense_payment_id', 'expanses.id')
+                ->leftJoin('expanse_payments', 'account_ledgers.expense_payment_id', 'expanse_payments.id')
                 ->leftJoin('sales', 'account_ledgers.sale_id', 'sales.id')
                 ->leftJoin('sale_payments', 'account_ledgers.sale_payment_id', 'sale_payments.id')
                 ->leftJoin('supplier_payments', 'account_ledgers.supplier_payment_id', 'supplier_payments.id')
@@ -138,6 +138,10 @@ class AccountController extends Controller
                 ->leftJoin('productions', 'account_ledgers.production_id', 'productions.id')
                 ->leftJoin('loans', 'account_ledgers.loan_id', 'loans.id')
                 ->leftJoin('loan_payments', 'account_ledgers.loan_payment_id', 'loan_payments.id')
+                ->leftJoin('contras as contra_debit', 'account_ledgers.contra_debit_id', 'contra_debit.id')
+                ->leftJoin('contras as contra_credit', 'account_ledgers.contra_credit_id', 'contra_credit.id')
+                ->leftJoin('accounts as sender_ac', 'contra_debit.sender_account_id', 'sender_ac.id')
+                ->leftJoin('accounts as receiver_ac', 'contra_credit.receiver_account_id', 'receiver_ac.id')
                 ->select(
                     'account_ledgers.date',
                     'account_ledgers.voucher_type',
@@ -175,6 +179,12 @@ class AccountController extends Controller
                     'loans.loan_reason as loan_pur',
                     'loan_payments.voucher_no as loan_payment_voucher',
                     'loan_payments.date as loan_pay_pur',
+                    'contra_debit.voucher_no as co_debit_voucher_no',
+                    'contra_debit.remarks as co_debit_pur',
+                    'contra_credit.voucher_no as co_credit_voucher_no',
+                    'contra_credit.remarks as co_credit_pur',
+                    'receiver_ac.name as receiver_acn',
+                    'sender_ac.name as sender_acn',
                 )->orderBy('account_ledgers.date', 'asc');
 
             if ($request->transaction_type) {
@@ -202,7 +212,10 @@ class AccountController extends Controller
                 })
                 ->editColumn('particulars', function ($row) use ($accountUtil) {
                     $type = $accountUtil->voucherType($row->voucher_type);
-                    return '<b>' . $type['name'] . '</b>' . ($row->{$type['pur']} ? ' : ' . $row->{$type['pur']} : '');
+                    $des = $row->{$type['pur']} ? '/' . $row->{$type['pur']} : '';
+                    $receiver_ac = $row->receiver_acn ? '/To:<b>'.$row->receiver_acn.'</b>' : '';
+                    $sender_ac = $row->sender_acn ? '/From:<b>'.$row->sender_acn.'</b>' : '';
+                    return '<b>' . $type['name'] . '</b>' .$receiver_ac.$sender_ac.$des;
                     //return '<b>' . $type['name'].'</b>';
                 })
                 ->editColumn('voucher_no',  function ($row) use ($accountUtil) {

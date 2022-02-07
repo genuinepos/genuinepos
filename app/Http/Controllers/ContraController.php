@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Utils\Util;
 use App\Models\Contra;
 use App\Utils\Converter;
@@ -82,7 +83,7 @@ class ContraController extends Controller
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="' . route('accounting.contras.show', [$row->id]) . '"><i class="far fa-eye me-1 text-primary"></i> View</a>';
                     $html .= '<a class="dropdown-item" id="edit" href="' . route('accounting.contras.edit', [$row->id]) . '"><i class="far fa-edit me-1 text-primary"></i> Edit</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('accounting.contras.delete', [$row->id]) . '"><i class="far fa-trash-alt me-1 text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('accounting.contras.delete', [$row->id]) . '"><i class="far fa-trash-alt me-1 text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;
@@ -131,6 +132,8 @@ class ContraController extends Controller
 
     public function store(Request $request)
     {
+        //return $request->all();
+
         $this->validate($request, [
             'date' => 'required|date',
             'receiver_account_id' => 'required',
@@ -141,7 +144,7 @@ class ContraController extends Controller
             'receiver_account_id.required' => 'Receiver A/C is required.',
         ]);
 
-        $addContraGetId = Contra::insert([
+        $addContraGetId = Contra::insertGetId([
             'branch_id' => auth()->user()->branch_id,
             'user_id' => auth()->user()->id,
             'voucher_no' => $request->voucher_no
@@ -236,7 +239,7 @@ class ContraController extends Controller
             balance_type: 'debit'
         );
 
-        return response()->json('Contra update successfully');
+        return response()->json('Contra updated successfully');
     }
 
     public function delete(Request $request, $contraId)
@@ -259,5 +262,7 @@ class ContraController extends Controller
                 $this->accountUtil->adjustAccountBalance(balanceType : 'debit', account_id : $storedReceiverAccountId);
             }
         }
+
+        return response()->json('Contra deleted successfully');
     }
 }

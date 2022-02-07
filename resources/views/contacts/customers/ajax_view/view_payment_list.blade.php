@@ -32,12 +32,14 @@
                             <b class="text-success">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</b> 
                         </h6>
                     </li>
+                    
                     <li>
                         <h6>
                             Total Sale Due : {{ json_decode($generalSettings->business, true)['currency'] }}
                             <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</b> 
                         </h6>
                     </li>
+
                     <li>
                         <h6>
                             Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }}

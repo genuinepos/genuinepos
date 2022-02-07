@@ -124,12 +124,14 @@ class AccountUtil
             23 => 'Payroll Payment',
             24 => 'Loan&Liabilities-money-trans',
             25 => 'Loan&Advance-money-trans',
+            26 => 'Contra',
+            27 => 'Contra',
         ];
     }
 
     public function voucherType($voucher_type_id)
     {
-        $data =  [
+        $data = [
             0 => ['name' => 'Opening balance', 'voucher_no' => 'sale_inv_id', 'id' => 'sale_id', 'amt' => 'debit/credit', 'pur' => 'sale_pur'],
             1 => ['name' => 'Sales', 'voucher_no' => 'sale_inv_id', 'id' => 'sale_id', 'amt' => 'credit', 'pur' => 'sale_pur'],
             2 => ['name' => 'Sale Return', 'voucher_no' => 'sale_return_inv', 'id' => 'sale_return_id', 'amt' => 'debit', 'pur' => 'sale_return_pur'],
@@ -156,6 +158,8 @@ class AccountUtil
             23 => ['name' => 'Payroll Payment', 'voucher_no' => 'payroll_pay_voucher', 'id' => 'payroll_payment_id', 'amt' => 'credit', 'pur' => 'payroll_payment_pur'],
             24 => ['name' => 'Loan&Liabilities-money-trans', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit', 'pur' => 'loan_pur'],
             25 => ['name' => 'Loan&Advance-money-trans', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit', 'pur' => 'loan_pur'],
+            26 => ['name' => 'Contra', 'voucher_no' => 'contra_voucher_no', 'id' => 'contra_sender_id', 'amt' => 'debit', 'pur' => 'contra_pur'],
+            27 => ['name' => 'Contra', 'voucher_no' => 'contra_voucher_no', 'id' => 'contra_receiver_id', 'amt' => 'credit', 'pur' => 'contra_pur'],
         ];
 
         return $data[$voucher_type_id];
@@ -182,6 +186,7 @@ class AccountUtil
         $voucherType = $this->voucherType($voucher_type_id);
         $update = AccountLedger::where($voucherType['id'], $trans_id)->first();
         if ($update) {
+
             $previousAccountId = $update->account_id;
             $update->date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
             $update->account_id = $account_id;
@@ -193,7 +198,7 @@ class AccountUtil
             if ($previousAccountId != $account_id) {
                 $this->adjustAccountBalance($balance_type, $account_id);
             }
-        }else {
+        } else {
             $this->addAccountLedger($voucher_type_id, $date, $account_id, $trans_id, $amount, $balance_type);
         }
     }

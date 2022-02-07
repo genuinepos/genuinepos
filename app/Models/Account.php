@@ -2,9 +2,9 @@
 
 namespace App\Models;
 use App\Models\Bank;
-use App\Models\CashFlow;
 use App\Models\AdminAndUser;
 use App\Models\AccountBranch;
+use App\Models\AccountLedger;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
@@ -22,9 +22,9 @@ class Account extends Model
         return $this->hasMany(AccountBranch::class);
     }
 
-    public function cash_flows()
+    public function accountLedgers()
     {
-        return $this->hasMany(CashFlow::class, 'account_id');
+        return $this->hasMany(AccountLedger::class);
     }
 
     public function admin()

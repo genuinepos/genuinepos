@@ -530,6 +530,17 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::delete('delete/{accountId}', 'AccountController@delete')->name('accounting.accounts.delete');
     });
 
+    Route::group(['prefix' => 'contras'], function () {
+        Route::get('/', 'ContraController@index')->name('accounting.contras.index');
+        Route::get('create', 'ContraController@create')->name('accounting.contras.create');
+        Route::get('show/{contraId}', 'ContraController@show')->name('accounting.contras.show');
+        Route::get('account/book/{contraId}', 'ContraController@accountBook')->name('accounting.contras.book');
+        Route::post('store', 'ContraController@store')->name('accounting.contras.store');
+        Route::get('edit/{contraId}', 'ContraController@edit')->name('accounting.contras.edit');
+        Route::post('update/{contraId}', 'ContraController@update')->name('accounting.contras.update');
+        Route::delete('delete/{contraId}', 'ContraController@delete')->name('accounting.contras.delete');
+    });
+
     Route::group(['prefix' => '/'], function () {
         Route::get('balance/sheet', 'AccountingRelatedSectionController@balanceSheet')->name('accounting.balance.sheet');
         Route::get('balance/sheet/amounts', 'AccountingRelatedSectionController@balanceSheetAmounts')->name('accounting.balance.sheet.amounts');

@@ -77,6 +77,7 @@ return [
   'accounts' => 'Accounts',
   'assets' => 'Assets',
   'loans' => 'Loans',
+  'contra' => 'Contra',
   'balance_sheet' => 'Balance Sheet',
   'trial_balance' => 'Trial Balance',
   'cash_flow' => 'Cash Flow',

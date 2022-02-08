@@ -121,7 +121,6 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'first_name' => 'required',
-            'email' => 'required|unique:admin_and_users,email',
         ]);
 
         if (isset($request->allow_login)) {
@@ -130,21 +129,6 @@ class UserController extends Controller
                 'password' => 'required|confirmed',
             ]);
         }
-
-        $addons = DB::table('addons')->first();
-        // if ($addons->hrm == 1) {
-        //     $this->validate($request, [
-        //         'department_id' => 'required',
-        //         'shift_id' => 'required',
-        //         'emp_id' => 'required',
-        //         'salary' => 'required',
-        //         'pay_type' => 'required',
-        //     ], [
-        //         'department_id.required' => 'Department field is required.',
-        //         'shift_id.required' => 'Shift field is required.',
-        //         'emp_id.required' => 'Employee ID field is required.',
-        //     ]);
-        // }
 
         //return $request->all();
         $addUser = new AdminAndUser();
@@ -201,6 +185,7 @@ class UserController extends Controller
         $addUser->salary = $request->salary ? $request->salary : 0.00;
         $addUser->salary_type = $request->pay_type;
         $addUser->save();
+        
         session()->flash('successMsg', 'User created successfully');
         return response()->json('User created successfully');
     }

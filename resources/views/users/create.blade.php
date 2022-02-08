@@ -509,7 +509,7 @@
                                             <div class="row mt-1">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span> <b>Salary :</b> </label>
+                                                        <label for="inputEmail3" class="col-4"> <b>Salary :</b> </label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="salary" id="salary" class="form-control" placeholder="Salary Amount" autocomplete="off">
                                                             <span class="error error_salary"></span>
@@ -519,7 +519,7 @@
 
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span> <b>Pay Type :</b> </label>
+                                                        <label for="inputEmail3" class="col-4"> <b>Pay Type :</b> </label>
                                                         <div class="col-8">
                                                             <select name="pay_type" class="form-control" id="pay_type">
                                                                 <option value="">Select Pay type</option>
@@ -585,7 +585,6 @@
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                 $('.error').html('');
                 $.each(err.responseJSON.errors, function(key, error) {
-                    //console.log(key);
                     $('.error_' + key + '').html(error[0]);
                 });
             }

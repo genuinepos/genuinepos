@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Utils\BranchUtil;
 use App\Models\Branch;
 use App\Models\Account;
 use Illuminate\Http\Request;
 use App\Models\InvoiceSchema;
-use App\Utils\Util;
 use Illuminate\Support\Facades\DB;
 
 class BranchController extends Controller
 {
-    protected $util;
-    public function __construct(Util $util)
+    protected $branchUtil;
+
+    public function __construct(BranchUtil $branchUtil)
     {
-        $this->util = $util;
+        $this->branchUtil = $branchUtil;
+
         $this->middleware('auth:admin_and_user');
     }
 
@@ -29,10 +31,7 @@ class BranchController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
-        $invSchemas = DB::table('invoice_schemas')->select('id', 'name')->get();
-        $invLayouts = DB::table('invoice_layouts')->select('id', 'name')->get();
-        return view('settings.branches.index', compact('accounts', 'invSchemas', 'invLayouts'));
+        return view('settings.branches.index');
     }
 
     public function getAllBranch()
@@ -48,12 +47,24 @@ class BranchController extends Controller
         } else {
             $branches = Branch::where('id', auth()->user()->branch_id)->get();
         }
+
         return view('settings.branches.ajax_view.branch_list', compact('branches'));
+    }
+
+    public function create()
+    {
+        $invSchemas = DB::table('invoice_schemas')->select('id', 'name')->get();
+        $invLayouts = DB::table('invoice_layouts')->select('id', 'name')->get();
+
+        $roles = DB::table('roles')->select('id', 'name')->get();
+
+        return view('settings.branches.ajax_view.create', compact('invSchemas', 'invLayouts', 'roles'));
     }
 
     public function store(Request $request)
     {
         $addons = DB::table('addons')->select('branches')->first();
+
         if ($addons->branches == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -69,38 +80,45 @@ class BranchController extends Controller
             'logo' => 'sometimes|image|max:2048',
         ]);
 
-        $addBranch = new Branch();
-        $addBranch->name = $request->name;
-        $addBranch->branch_code = $request->code;
-        $addBranch->phone = $request->phone;
-        $addBranch->city = $request->city;
-        $addBranch->state = $request->state;
-        $addBranch->zip_code = $request->zip_code;
-        $addBranch->country = $request->country;
-        $addBranch->alternate_phone_number = $request->alternate_phone_number;
-        $addBranch->email = $request->email;
-        $addBranch->website = $request->website;
-        $addBranch->purchase_permission = $request->purchase_permission ? $request->purchase_permission : 0;
-        $addBranch->invoice_schema_id = $request->invoice_schema_id;
-        $addBranch->add_sale_invoice_layout_id = $request->add_sale_invoice_layout_id;
-        $addBranch->pos_sale_invoice_layout_id = $request->pos_sale_invoice_layout_id;
-        $addBranch->default_account_id = $request->default_account_id;
+        if ($request->add_opening_user) {
+            $this->validate($request, [
+                'first_name' => 'required',
+                'user_phone' => 'required',
+                'role_id' => 'required',
+                'username' => 'required|unique:admin_and_users,username',
+                'password' => 'required|confirmed',
+            ]);
+        }
 
+        $branchLogoName = '';
         if ($request->hasFile('logo')) {
             $branchLogo = $request->file('logo');
             $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
             $branchLogo->move(public_path('uploads/branch_logo/'), $branchLogoName);
-            $addBranch->logo = $branchLogoName;
         }
-        $addBranch->save();
 
-        $allAccountTypes = $this->util->creatableDefaultAccount();
-        foreach ($allAccountTypes as $type => $name) {
-            $addAccount = new Account();
-            $addAccount->name = $name;
-            $addAccount->account_type = $type;
-            $addAccount->branch_id = $addBranch->id;
-            $addAccount->save();
+        $addBranchGetId = Branch::insertGetId([
+            'name' => $request->name,
+            'branch_code' => $request->code,
+            'phone' => $request->phone,
+            'city' => $request->city,
+            'state' => $request->state,
+            'zip_code' => $request->zip_code,
+            'country' => $request->country,
+            'alternate_phone_number' => $request->alternate_phone_number,
+            'email' => $request->email,
+            'website' => $request->website,
+            'purchase_permission' => $request->purchase_permission ? $request->purchase_permission : 0,
+            'invoice_schema_id' => $request->invoice_schema_id,
+            'add_sale_invoice_layout_id' => $request->add_sale_invoice_layout_id,
+            'pos_sale_invoice_layout_id' => $request->pos_sale_invoice_layout_id,
+            'logo' => $branchLogoName ? $branchLogoName : 'default.png',
+        ]);
+
+        $this->branchUtil->addBranchDefaultAccounts($addBranchGetId);
+
+        if ($request->add_opening_user) {
+            $this->branchUtil->addBranchOpeningUser($request, $addBranchGetId);
         }
 
         return response()->json('Business Location created successfully');
@@ -149,6 +167,7 @@ class BranchController extends Controller
         $updateBranch->add_sale_invoice_layout_id = $request->add_sale_invoice_layout_id;
         $updateBranch->pos_sale_invoice_layout_id = $request->pos_sale_invoice_layout_id;
         $updateBranch->default_account_id = $request->default_account_id;
+
         if ($request->hasFile('logo')) {
             if ($updateBranch->logo != 'default.png') {
                 if (file_exists(public_path('uploads/branch_logo/' . $updateBranch->logo))) {
@@ -163,6 +182,7 @@ class BranchController extends Controller
         }
 
         $updateBranch->save();
+
         return response()->json('Business location updated successfully');
     }
 
@@ -184,25 +204,18 @@ class BranchController extends Controller
         return response()->json('Business location deleted successfully');
     }
 
-    public function allSchemas()
-    {
-        $schemas = DB::table('invoice_schemas')->get();
-        return response()->json($schemas);
-    }
-
-    public function allLayouts()
-    {
-        $layouts = DB::table('invoice_layouts')->select('id', 'name')->get();
-        return response()->json($layouts);
-    }
-
     public function getAllAccounts()
     {
         $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
         return response()->json($accounts);
     }
 
-    public function quickInvoiceSchema(Request $request)
+    public function quickInvoiceSchemaModal()
+    {
+        return view('settings.branches.ajax_view.add_quick_invoice_schema');
+    }
+
+    public function quickInvoiceSchemaStore(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|unique:invoice_schemas,name',

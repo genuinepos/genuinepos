@@ -245,6 +245,9 @@ class Util
             4 => 'Purchase Return A/C',
             5 => 'Sales A/C',
             6 => 'Sales Return A/C',
+            24 => 'Direct Income',
+            25 => 'Indirect Income',
+            26 => 'Capital A/C',
             7 => 'Direct Expense A/C',
             8 => 'Indirect Expense A/C',
             9 => 'Current Assets A/C',
@@ -267,9 +270,9 @@ class Util
         return $types[$index];
     }
 
-    public static function allAccountTypes()
+    public static function allAccountTypes($forFilter = 0)
     {
-        $data =  [
+        $data = [
             1 => 'Cash-In-Hand',
             2 => 'Bank A/C',
             3 => 'Purchase A/C',
@@ -278,6 +281,9 @@ class Util
             6 => 'Sales Return A/C',
             7 => 'Direct Expense A/C',
             8 => 'Indirect Expense A/C',
+            24 => 'Direct Income',
+            25 => 'Indirect Income',
+            26 => 'Capital A/C',
             9 => 'Current Assets A/C',
             10 => 'Current liabilities A/C',
             11 => 'Misc. Expense A/C',
@@ -295,12 +301,16 @@ class Util
             23 => 'Production A/C',
         ];
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+        if ($forFilter == 0) {
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                return $data;
+            } else {
+                return $filteredType =  array_filter($data, function ($val, $key) {
+                    return $key != 2;
+                }, ARRAY_FILTER_USE_BOTH);
+            }
+        }else {
             return $data;
-        } else {
-            $filteredType =  array_filter($data, function ($val, $key) {
-                return $key != 2;
-            }, ARRAY_FILTER_USE_BOTH);
         }
     }
 }

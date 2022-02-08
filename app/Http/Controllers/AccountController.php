@@ -213,9 +213,9 @@ class AccountController extends Controller
                 ->editColumn('particulars', function ($row) use ($accountUtil) {
                     $type = $accountUtil->voucherType($row->voucher_type);
                     $des = $row->{$type['pur']} ? '/' . $row->{$type['pur']} : '';
-                    $receiver_ac = $row->receiver_acn ? '/To:<b>'.$row->receiver_acn.'</b>' : '';
-                    $sender_ac = $row->sender_acn ? '/From:<b>'.$row->sender_acn.'</b>' : '';
-                    return '<b>' . $type['name'] . '</b>' .$receiver_ac.$sender_ac.$des;
+                    $receiver_ac = $row->receiver_acn ? '/To:<b>' . $row->receiver_acn . '</b>' : '';
+                    $sender_ac = $row->sender_acn ? '/From:<b>' . $row->sender_acn . '</b>' : '';
+                    return '<b>' . $type['name'] . '</b>' . $receiver_ac . $sender_ac . $des;
                     //return '<b>' . $type['name'].'</b>';
                 })
                 ->editColumn('voucher_no',  function ($row) use ($accountUtil) {
@@ -267,7 +267,7 @@ class AccountController extends Controller
 
         if ($request->account_type == 2) {
             foreach ($request->business_location as $branch_id) {
-                $addAccountBranch = AccountBranch::insert(
+                AccountBranch::insert(
                     [
                         'branch_id' => $branch_id != 'NULL' ? $branch_id : NULL,
                         'account_id' => $addAccountGetId,
@@ -275,7 +275,7 @@ class AccountController extends Controller
                 );
             }
         } else {
-            $addAccountBranch = AccountBranch::insert(
+            AccountBranch::insert(
                 [
                     'branch_id' => auth()->user()->branch_id,
                     'account_id' => $addAccountGetId,
@@ -331,11 +331,14 @@ class AccountController extends Controller
             }
         }
 
+        $openingBalance = $request->opening_balance ? $request->opening_balance : 0;
+
         $updateAccount->update([
             'name' => $request->name,
             'account_number' => $request->account_type == 2 ? $request->account_number : null,
             'bank_id' => $request->account_type == 2 ? $request->bank_id : null,
             'account_type' => $request->account_type,
+            'opening_balance' => $openingBalance,
             'remark' => $request->remark,
         ]);
 
@@ -362,17 +365,32 @@ class AccountController extends Controller
         // Delete unused account branch row
         $accountBranches = AccountBranch::where('account_id', $updateAccount->id)->where('is_delete_in_update', 1)->get();
         foreach ($accountBranches as $accountBranch) {
+
             $accountBranch->delete();
         }
+
+        // Update Opening Balance Ledger
+        $updateAccountLedger = AccountLedger::where('account_id', $updateAccount->id)->where('voucher_type', 0)->first();
+        $updateAccountLedger->{$this->accountUtil->accountBalanceType($request->account_type)} = $openingBalance;
+        $updateAccountLedger->amount_type = $this->accountUtil->accountBalanceType($request->account_type);
+        $updateAccountLedger->save();
+
+        $runningBalance = $this->accountUtil->adjustAccountBalance(
+            balanceType: $this->accountUtil->accountBalanceType($request->account_type),
+            account_id: $updateAccount->id,
+        );
+
+        $updateAccountLedger->running_balance = $runningBalance;
+        $updateAccountLedger->save();
 
         return response()->json('Account updated successfully');
     }
 
     public function delete(Request $request, $accountId)
     {
-        $deleteAccount = Account::with('accountLedgers')->where('id', $accountId)->first($accountId);
+        $deleteAccount = Account::with('accountLedgers')->where('id', $accountId)->first();
 
-        if (count($deleteAccount->accountLedgers) > 0) {
+        if (count($deleteAccount->accountLedgers) > 1) {
             return response()->json('Account can not delete. One or more ledgers is belonging in this account.');
         }
 
@@ -381,5 +399,109 @@ class AccountController extends Controller
         }
 
         return response()->json('Account deleted successfully');
+    }
+
+    public function ledgerPrint(Request $request, $accountId)
+    {
+        $accountUtil = $this->accountUtil;
+
+        $ledgers = '';
+
+        $query = DB::table('account_ledgers')->where('account_ledgers.account_id', $accountId)
+            ->leftJoin('expanses', 'account_ledgers.expense_id', 'expanses.id')
+            ->leftJoin('expanse_payments', 'account_ledgers.expense_payment_id', 'expanse_payments.id')
+            ->leftJoin('sales', 'account_ledgers.sale_id', 'sales.id')
+            ->leftJoin('sale_payments', 'account_ledgers.sale_payment_id', 'sale_payments.id')
+            ->leftJoin('supplier_payments', 'account_ledgers.supplier_payment_id', 'supplier_payments.id')
+            ->leftJoin('sale_returns', 'account_ledgers.sale_return_id', 'sale_returns.id')
+            ->leftJoin('purchases', 'account_ledgers.purchase_id', 'purchases.id')
+            ->leftJoin('purchase_payments', 'account_ledgers.purchase_payment_id', 'purchase_payments.id')
+            ->leftJoin('customer_payments', 'account_ledgers.customer_payment_id', 'customer_payments.id')
+            ->leftJoin('purchase_returns', 'account_ledgers.purchase_return_id', 'purchase_returns.id')
+            ->leftJoin('stock_adjustments', 'account_ledgers.adjustment_id', 'stock_adjustments.id')
+            ->leftJoin('stock_adjustment_recovers', 'account_ledgers.stock_adjustment_recover_id', 'stock_adjustment_recovers.id')
+            // ->leftJoin('hrm_payrolls', 'account_ledgers.payroll_id', 'hrm_payrolls.id')
+            ->leftJoin('hrm_payroll_payments', 'account_ledgers.payroll_payment_id', 'hrm_payroll_payments.id')
+            ->leftJoin('productions', 'account_ledgers.production_id', 'productions.id')
+            ->leftJoin('loans', 'account_ledgers.loan_id', 'loans.id')
+            ->leftJoin('loan_payments', 'account_ledgers.loan_payment_id', 'loan_payments.id')
+            ->leftJoin('contras as contra_debit', 'account_ledgers.contra_debit_id', 'contra_debit.id')
+            ->leftJoin('contras as contra_credit', 'account_ledgers.contra_credit_id', 'contra_credit.id')
+            ->leftJoin('accounts as sender_ac', 'contra_debit.sender_account_id', 'sender_ac.id')
+            ->leftJoin('accounts as receiver_ac', 'contra_credit.receiver_account_id', 'receiver_ac.id')
+            ->select(
+                'account_ledgers.date',
+                'account_ledgers.voucher_type',
+                'account_ledgers.debit',
+                'account_ledgers.credit',
+                'account_ledgers.running_balance',
+                'expanses.invoice_id as exp_voucher_no',
+                'expanses.note as ex_pur',
+                'expanse_payments.invoice_id as exp_payment_voucher',
+                'expanse_payments.note as expense_payment_pur',
+                'sales.invoice_id as sale_inv_id',
+                'sales.sale_note as sale_pur',
+                'sale_payments.invoice_id as sale_payment_voucher',
+                'sale_payments.note as sale_payment_pur',
+                'supplier_payments.voucher_no as supplier_payment_voucher',
+                'supplier_payments.note as supplier_payment_pur',
+                'sale_returns.invoice_id as sale_return_inv',
+                'sale_returns.date as sale_return_pur',
+                'purchases.invoice_id as purchase_inv_id',
+                'purchases.purchase_note as purchase_pur',
+                'purchase_payments.invoice_id as pur_payment_voucher',
+                'purchase_payments.note as purchase_payment_pur',
+                'customer_payments.voucher_no as customer_payment_voucher',
+                'customer_payments.note as customer_payment_pur',
+                'purchase_returns.invoice_id as pur_return_invoice',
+                'purchase_returns.date as purchase_return_pur',
+                'stock_adjustments.invoice_id as sa_voucher',
+                'stock_adjustments.reason as adjustment_pur',
+                'stock_adjustment_recovers.voucher_no as sar_amt_voucher',
+                'stock_adjustment_recovers.note as sar_pur',
+                'hrm_payroll_payments.reference_no as payroll_pay_voucher',
+                'hrm_payroll_payments.note as payroll_payment_pur',
+                'productions.reference_no as production_voucher',
+                'loans.reference_no as loan_voucher_no',
+                'loans.loan_reason as loan_pur',
+                'loan_payments.voucher_no as loan_payment_voucher',
+                'loan_payments.date as loan_pay_pur',
+                'contra_debit.voucher_no as co_debit_voucher_no',
+                'contra_debit.remarks as co_debit_pur',
+                'contra_credit.voucher_no as co_credit_voucher_no',
+                'contra_credit.remarks as co_credit_pur',
+                'receiver_ac.name as receiver_acn',
+                'sender_ac.name as sender_acn',
+            )->orderBy('account_ledgers.date', 'asc');
+
+        if ($request->transaction_type) {
+            $query->where('account_ledgers.amount_type', $request->transaction_type); // Final
+        }
+
+        if ($request->voucher_type) {
+            $query->where('account_ledgers.voucher_type', $request->voucher_type); // Final
+        }
+
+        $fromDate = '';
+        $toDate = '';
+
+        if ($request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $query->whereBetween('account_ledgers.date', $date_range); // Final
+
+            $fromDate = $from_date;
+            $toDate = $to_date;
+        }
+
+        $ledgers = $query->get();
+
+        $account = DB::table('accounts')
+            ->where('accounts.id', $accountId)
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
+            ->select('accounts.id', 'accounts.name', 'account_type', 'accounts.account_number', 'accounts.balance', 'banks.name as bank_name')->first();
+
+        return view('accounting.accounts.ajax_view.account_ledger_print', compact('account', 'ledgers', 'fromDate', 'toDate', 'accountUtil'));
     }
 }

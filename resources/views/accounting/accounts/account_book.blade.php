@@ -112,7 +112,9 @@
                                                         </div>
             
                                                         <div class="col-md-5 mt-3">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
+                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report">
+                                                                <i class="fas fa-print "></i> Print
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -141,7 +143,7 @@
                                             <tr>
                                                 <th class="text-start">Date</th>
                                                 <th class="text-start">Perticulars</th>
-                                                <th class="text-start">Voucher/Invoice No</th>
+                                                <th class="text-start">Voucher/Invoice</th>
                                                 <th class="text-start">Debit</th>
                                                 <th class="text-start">Credit</th>
                                                 <th class="text-start">Running Balance</th>
@@ -229,6 +231,32 @@
         e.preventDefault();
         $('.data_preloader').show();
         account_ledger_table.ajax.reload();
+    });
+
+    //Print account ledger
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('accounting.accounts.ledger.print', $account->id) }}";
+        var voucher_type = $('#voucher_type').val();
+        var transaction_type = $('#transaction_type').val();
+        var from_date = $('.from_date').val();
+        var to_date = $('.to_date').val();
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: { voucher_type, transaction_type, from_date, to_date },
+            success:function(data){
+                $(data).printThis({
+                    debug: false,                   
+                    importCSS: true,                
+                    importStyle: true,          
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    removeInline: false, 
+                    printDelay: 700, 
+                    header: null,        
+                });
+            }
+        }); 
     });
 </script>
 

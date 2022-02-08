@@ -7,7 +7,7 @@ return [
   'sales' => 'Sales',
   'transfer' => 'Transfer',
   'adjustment' => 'Adjustment',
-  'expenses' => 'Expenses',
+  'expenses' => 'Expenses & Incomes',
   'accounting' => 'Accounting',
   'setup' => 'Set-up',
   'users' => 'Users',

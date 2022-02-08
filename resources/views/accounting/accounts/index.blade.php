@@ -48,7 +48,7 @@
                                                     <label><strong>Account Type :</strong></label>
                                                     <select name="account_type" id="f_account_type" class="form-control">
                                                         <option value="">All</option>
-                                                        @foreach (App\Utils\Util::allAccountTypes() as $key => $accountType)
+                                                        @foreach (App\Utils\Util::allAccountTypes(1) as $key => $accountType)
                                                             <option value="{{ $key }}">{{ $accountType }}</option>
                                                         @endforeach
                                                     </select>
@@ -93,8 +93,8 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">A/C Name</th>
                                                 <th class="text-start">A/C Type</th>
+                                                <th class="text-start">A/C Name</th>
                                                 <th class="text-start">A/C Number</th>
                                                 <th class="text-start">Bank </th>
                                                 <th class="text-start">Business Location </th>
@@ -143,7 +143,7 @@
                             <select name="account_type" class="form-control add_input" data-name="Account Type"
                                 id="account_type">
                                 <option value="">Select Account type</option>
-                                @foreach (App\Utils\Util::allAccountTypes() as $key => $accountType)
+                                @foreach (App\Utils\Util::allAccountTypes(0) as $key => $accountType)
                                     <option value="{{ $key }}">{{ $accountType }}</option>
                                 @endforeach
                             </select>
@@ -225,140 +225,6 @@
             </div>
         </div>
     </div>
-
-    {{-- <!-- Fund transfer Modal -->
-    <div class="modal fade" id="fundTransferModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Fund Transfer</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="fund_transfer_form" action="{{ route('accounting.accounts.fund.transfer') }}">
-                        <div class="form-group">
-                            <label><strong>Selected Account :</strong> <span class="selected_account"></span></label><br>
-                            <label><strong>Balance :</strong> <span class="balance"></span></label>
-                            <input type="hidden" name="sender_account_id" id="sender_account_id">
-                        </div>
-
-                        <div class="form-group">
-                            <label><strong>Transfer To :</strong> <span class="text-danger">*</span></label>
-                            <select name="receiver_account_id" class="form-control form-control-sm ft_input"
-                                id="receiver_account_id" data-name="Receiver account">
-                                <option value="">Select receiver account</option>
-                            </select>
-                            <span class="error error_receiver_account_id"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
-                            <input type="number" name="amount" class="form-control form-control-sm ft_input"
-                                data-name="Amount" id="amount" value="0.00" step="any" />
-                            <span class="error error_amount"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Date :</strong> <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1"><i
-                                            class="fas fa-calendar-week text-dark"></i></span>
-                                </div>
-                                <input type="text" name="date" class="form-control form-control-sm ft_input"
-                                    autocomplete="off" id="date" data-name="Date"
-                                    value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
-                            </div>
-                            <span class="error error_date"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Note :</strong></label>
-                            <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3"
-                                placeholder="Note"></textarea>
-                        </div>
-
-                        <div class="form-group text-right py-2">
-                            <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn me-0 btn_blue float-end submit_button">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Deposit Modal -->
-    <div class="modal fade" id="depositModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Deposit</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="deposit_form" action="{{ route('accounting.accounts.fund.deposit') }}">
-                        <div class="form-group">
-                            <label><strong>Selected Account :</strong> <span class="selected_account"></span></label><br>
-                            <label><strong>Balance :</strong> <span class="balance"></span></label>
-                            <input type="hidden" name="receiver_account_id" id="dp_receiver_account_id">
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
-                            <input type="number" name="amount" class="form-control form-control-sm dp_input"
-                                data-name="Amount" id="dp_amount" value="0.00" step="any" />
-                            <span class="error error_dp_amount"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Deposti Form :</strong> <span class="text-danger">*</span></label>
-                            <select name="sender_account_id" class="form-control form-control-sm"
-                                id="dp_sender_account_id">
-                                <option value="">Select receiver account</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Date :</strong> <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1"><i
-                                            class="fas fa-calendar-week text-dark"></i></span>
-                                </div>
-                                <input type="text" name="date" class="form-control form-control-sm dp_input"
-                                    autocomplete="off" id="dp_date" data-name="Date"
-                                    value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}"
-                                    autocomplete="off">
-                            </div>
-                            <span class="error error_dp_date"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>Note :</strong></label>
-                            <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3"
-                                placeholder="Note"></textarea>
-                        </div>
-
-                        <div class="form-group text-right py-2">
-                            <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn me-0 btn_blue float-end submit_button">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js"
@@ -395,8 +261,8 @@
                 "searchable": false
             }],
             columns: [
-                {data: 'name', name: 'accounts.name'},
                 {data: 'account_type', name: 'account_type'},
+                {data: 'name', name: 'accounts.name'},
                 {data: 'ac_number', name: 'accounts.account_number'},
                 {data: 'bank', name: 'banks.name'},
                 {data: 'branch', name: 'branches.name'},

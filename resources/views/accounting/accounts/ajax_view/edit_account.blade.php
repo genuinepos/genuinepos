@@ -68,6 +68,12 @@
     @endif
 
     <div class="form-group mt-1">
+        <label><strong>Opening Balance :</strong></label>
+        <input type="number" step="any" name="opening_balance" class="form-control" 
+            id="e_opening_balance" value="{{ $account->opening_balance }}"/>
+    </div>
+
+    <div class="form-group mt-1">
         <label><strong>Remarks :</strong></label>
         <input type="text" name="remark" class="form-control" data-name="Remark" id="e_remarks" value="{{ $account->remark }}"/>
     </div>

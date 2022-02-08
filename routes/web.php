@@ -524,6 +524,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
     Route::group(['prefix' => 'accounts'], function () {
         Route::get('/', 'AccountController@index')->name('accounting.accounts.index');
         Route::get('account/book/{accountId}', 'AccountController@accountBook')->name('accounting.accounts.book');
+        Route::get('account/ledger/print/{accountId}', 'AccountController@ledgerPrint')->name('accounting.accounts.ledger.print');
         Route::post('store', 'AccountController@store')->name('accounting.accounts.store');
         Route::get('edit/{id}', 'AccountController@edit')->name('accounting.accounts.edit');
         Route::post('update/{id}', 'AccountController@update')->name('accounting.accounts.update');
@@ -603,14 +604,13 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     Route::group(['prefix' => 'branches'], function () {
         Route::get('/', 'BranchController@index')->name('settings.branches.index');
         Route::get('get/all/branch', 'BranchController@getAllBranch')->name('settings.get.all.branch');
-        Route::get('all/accounts', 'BranchController@getAllAccounts')->name('settings.get.all.accounts');
+        Route::get('create', 'BranchController@create')->name('settings.branches.create');
         Route::post('store', 'BranchController@store')->name('settings.branches.store');
         Route::get('edit/{branchId}', 'BranchController@edit')->name('settings.branches.edit');
         Route::post('update/{branchId}', 'BranchController@update')->name('settings.branches.update');
         Route::delete('delete/{id}', 'BranchController@delete')->name('settings.branches.delete');
-        Route::get('all/schemas', 'BranchController@allSchemas')->name('settings.all.invoice.schemas');
-        Route::get('all/layouts', 'BranchController@allLayouts')->name('settings.all.invoice.layouts');
-        Route::post('quick/invoice/schema', 'BranchController@quickInvoiceSchema')->name('settings.branches.quick.invoice.schema');
+        Route::get('quick/invoice/schema/modal', 'BranchController@quickInvoiceSchemaModal')->name('settings.branches.quick.invoice.schema.modal');
+        Route::post('quick/invoice/schema/store', 'BranchController@quickInvoiceSchemaStore')->name('settings.branches.quick.invoice.schema.store');
     });
 
     Route::group(['prefix' => 'warehouses'], function () {

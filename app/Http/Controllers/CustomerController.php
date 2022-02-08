@@ -314,20 +314,6 @@ class CustomerController extends Controller
     // Customer ledger list
     public function ledgerList(Request $request, $customerId)
     {
-        // $ledgers = CustomerLedger::with(
-        //     [
-        //         'sale',
-        //         'sale.sale_products',
-        //         'sale.sale_products.product',
-        //         'sale.sale_products.variant',
-        //         'sale_payment',
-        //         'sale_payment.account',
-        //         'sale_payment.sale',
-        //         'money_receipt',
-        //         'customer_payment'
-        //     ]
-        // )->where('customer_id', $customerId)->orderBy('report_date', 'ASC')->get();
-
         if ($request->ajax()) {
             $settings = DB::table('general_settings')->first();
 

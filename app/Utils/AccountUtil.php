@@ -73,24 +73,34 @@ class AccountUtil
 
     public static function creatableDefaultAccount()
     {
-        return  [
+        return [
             1 => 'Cash',
-            2 => 'Bank',
             3 => 'Purchase',
             4 => 'Purchase Return',
             5 => 'Sales',
             6 => 'Sales Return',
-            7 => 'Direct Expense',
-            8 => 'Indirect Expense',
-            9 => 'Office Building/Factory',
-            9 => 'Land',
-            10 => 'Damage Stock',
-            13 => 'Loans',
+            7 => 'Expense',
+            7 => 'Office Expense',
+            7 => 'Cartage',
+            7 => 'Buy Goods',
+            8 => 'Advertisement Expenses',
+            8 => 'Rent Paid',
+            9 => 'Current Asset',
+            10 => 'Salary Payable',
+            10 => 'Tax Deducted Payable',
+            13 => 'Loan Liabilities',
+            14 => 'Loan&Advances',
+            14 => 'Advance Salary',
             15 => 'Furniture',
             15 => 'Vehicle',
-            21 => 'Payroll',
             22 => 'Stock Adjustment',
             23 => 'Production',
+            24 => 'Income',
+            24 => 'Discount On Purchase',
+            24 => 'Discount Received',
+            25 => 'Interest Received',
+            26 => 'Capital',
+            26 => 'Profit & Loss A/C',
         ];
     }
 
@@ -206,7 +216,7 @@ class AccountUtil
     public function accountBalanceType($balance_type)
     {
         $data = [
-            1 => 'debit', 2 => 'debit', 3 => 'debit', 4 => 'credit', 5 => 'credit', 6 => 'debit', 7 => 'debit', 8 => 'debit', 9 => 'debit', 10 => 'debit', 11 => 'debit', 12 => 'credit', 13 => 'credit', 14 => 'debit', 15 => 'debit', 16 => 'debit', 17 => 'debit', 18 => 'credit', 19 => 'debit', 20 => 'debit', 21 => 'debit', 22 => 'credit', 23 => 'debit',
+            1 => 'debit', 2 => 'debit', 3 => 'debit', 4 => 'credit', 5 => 'credit', 6 => 'debit', 7 => 'debit', 8 => 'debit', 9 => 'debit', 10 => 'debit', 11 => 'debit', 12 => 'credit', 13 => 'credit', 14 => 'debit', 15 => 'debit', 16 => 'debit', 17 => 'debit', 18 => 'credit', 19 => 'debit', 20 => 'debit', 21 => 'debit', 22 => 'credit', 23 => 'debit', 24 => 'credit', 25 => 'credit', 26 => 'credit',
         ];
 
         return $data[$balance_type];

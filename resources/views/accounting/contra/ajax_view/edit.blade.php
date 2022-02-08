@@ -9,7 +9,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><strong>Voucher No :</strong> <span class="text-danger">*</span></label>
+            <label><strong>Voucher No :</strong></label>
             <input type="text" name="voucher_no" class="form-control add_input" data-name="Date" id="voucher_no" placeholder="Voucher Number" autocomplete="off" value="{{ $contra->voucher_no }}"/>
         </div>
     </div>

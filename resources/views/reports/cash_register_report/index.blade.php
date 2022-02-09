@@ -173,6 +173,45 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
+
+var accounts_table = $('.data_tbl').DataTable({
+            "processing": true,
+            "serverSide": true,
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            ],
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "ajax": {
+                "url": "{{ route('reports.cash.registers.index') }}",
+                "data": function(d) {
+                    d.branch_id = $('#f_branch_id').val();
+                    d.user_id = $('#user_id').val();
+                    d.status = $('#status').val();
+                    d.from_date = $('.from_date').val();
+                    d.to_date = $('.to_date').val();
+                }
+            },
+            columnDefs: [{
+                "targets": [1, 6],
+                "orderable": false,
+                "searchable": false
+            }],
+            columns: [
+                {data: 'open_time', name: 'open_time'},
+                {data: 'closed_time', name: 'closed_time'},
+                {data: 'branch', name: 'branch'},
+                {data: 'bank', name: 'banks.name'},
+                {data: 'branch', name: 'branches.name'},
+                {data: 'opening_balance', name: 'accounts.opening_balance', className: 'text-end'},
+                {data: 'balance', name: 'accounts.balance', className: 'text-end'},
+                {data: 'action'},
+             
+            ],fnDrawCallback: function() {
+                $('.data_preloader').hide();
+            }
+        });
     // $('.loading_button').hide();
     // Filter area toggle
     // function getCashRegisterReport() {

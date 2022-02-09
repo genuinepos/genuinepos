@@ -373,8 +373,9 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::group(['prefix' => 'cash/register'], function () {
         Route::get('/', 'CashRegisterController@create')->name('sales.cash.register.create');
         Route::post('store', 'CashRegisterController@store')->name('sales.cash.register.store');
-        Route::get('close/cash/registser/modal/view', 'CashRegisterController@closeCashRegisterModalView')->name('sales.cash.register.close.modal.view');
-        Route::get('close/cash/registser/details', 'CashRegisterController@cashRegisterDetails')->name('sales.cash.register.details');
+        Route::get('close/cash/register/modal/view', 'CashRegisterController@closeCashRegisterModalView')->name('sales.cash.register.close.modal.view');
+        Route::get('cash/register/details', 'CashRegisterController@cashRegisterDetails')->name('sales.cash.register.details');
+        Route::get('cash/register/details/for/report/{crId}', 'CashRegisterController@cashRegisterDetailsForReport')->name('sales.cash.register.details.for.report');
         Route::post('close', 'CashRegisterController@close')->name('sales.cash.register.close');
     });
 

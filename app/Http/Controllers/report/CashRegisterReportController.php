@@ -82,6 +82,9 @@ class CashRegisterReportController extends Controller
             }
 
             return DataTables::of($cashRegisters)
+                ->addColumn('action', function ($row) {
+                    '<a id="register_details_btn" href="'. route('reports.get.cash.register.details', $cash_register->id) .'" class="btn btn-sm btn-primary">View</a>';
+                })
                 ->editColumn('open_time', function ($row) {
 
                     return Carbon::parse($row->created_at)->toFormattedDateString();

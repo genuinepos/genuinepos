@@ -33,8 +33,10 @@ class CashRegisterController extends Controller
             ->first();
 
         if (!$openedCashRegister) {
+
             return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts'));
         } else {
+
             return redirect()->route('sales.pos.create');
         }
     }
@@ -54,7 +56,7 @@ class CashRegisterController extends Controller
 
         $addCashRegister = new CashRegister();
         $addCashRegister->admin_id = auth()->user()->id;
-        $addCashRegister->date = date(json_decode(json_decode($settings->business, true)['date_format']));
+        $addCashRegister->date = date(json_decode($settings->business, true)['date_format']);
         $addCashRegister->cash_counter_id = $request->counter_id;
         $addCashRegister->sale_account_id = $request->sale_account_id;
         $addCashRegister->cash_in_hand = $request->cash_in_hand;
@@ -64,60 +66,54 @@ class CashRegisterController extends Controller
         return redirect()->route('sales.pos.create');
     }
 
-    // Close cash register
+    // cash register Details
     public function cashRegisterDetails()
     {
         if (auth()->user()->permission->register['register_view'] == '0') {
+
             return 'Access Forbidden';
         }
 
-        $activeCashRegister = DB::table('cash_registers')
-            ->leftJoin('branches', 'cash_registers.branch_id', 'branches.id')
-            ->leftJoin('admin_and_users', 'cash_registers.admin_id', 'admin_and_users.id')
-            ->leftJoin('cash_counters', 'cash_registers.cash_counter_id', 'cash_counters.id')
-            ->where('admin_and_users.id', auth()->user()->id)
-            ->where('cash_registers.status', 1)
-            ->select(
-                'cash_registers.id',
-                'cash_registers.created_at',
-                'cash_registers.cash_in_hand',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_first_name',
-                'admin_and_users.last_name as u_last_name',
-                'admin_and_users.username',
-                'admin_and_users.email as u_email',
-                'cash_counters.counter_name',
-                'cash_counters.short_name as cc_s_name',
-                'branches.name as b_name',
-                'branches.branch_code as b_name',
-            )->first();
+        $queries = $this->detailsRegisterQuery();
 
-        $paymentMethodPayments = DB::table('sale_payments')
-            ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
-            ->leftJoin('payment_methods', 'sale_payments.payment_method_id', 'payment_methods.id')
-            ->leftJoin('cash_register_transactions', 'sales.id', 'cash_register_transactions.sale_id')
-            ->where('cash_register_transactions.cash_register_id', $activeCashRegister->id)
-            ->select('payment_methods.name', DB::raw('SUM(paid_amount) as total_paid'))
-            ->groupBy('sale_payments.payment_method_id')->groupBy('payment_methods.name')->get();
-
-        $accountPayments = DB::table('sale_payments')
-            ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
-            ->leftJoin('accounts', 'sale_payments.account_id', 'accounts.id')
-            ->leftJoin('cash_register_transactions', 'sales.id', 'cash_register_transactions.sale_id')
-            ->where('cash_register_transactions.cash_register_id', $activeCashRegister->id)
-            ->select('accounts.account_type', DB::raw('SUM(paid_amount) as total_paid'))
-            ->groupBy('accounts.account_type')->groupBy('accounts.account_type')->get();
-
-        $totalCredit = DB::table('sales')
-            ->leftJoin('cash_register_transactions', 'sales.id', 'cash_register_transactions.sale_id')
-            ->where('cash_register_transactions.cash_register_id', $activeCashRegister->id)
-            ->select(DB::raw('SUM(sales.due) as total_due'))
-            ->groupBy('cash_register_transactions.cash_register_id')
-            ->get();
+        $activeCashRegister = $queries['activeCashRegister'];
+        $paymentMethodPayments = $queries['paymentMethodPayments'];
+        $accountPayments = $queries['accountPayments'];
+        $totalCredit = $queries['totalCredit'];
 
         return view(
+
             'sales.cash_register.ajax_view.cash_register_details',
             compact(
+
+                'activeCashRegister',
+                'paymentMethodPayments',
+                'accountPayments',
+                'totalCredit'
+            )
+        );
+    }
+
+    // Cash Register Details For Report
+    public function cashRegisterDetailsForReport($crId)
+    {
+        if (auth()->user()->permission->register['register_view'] == '0') {
+
+            return 'Access Forbidden';
+        }
+
+        $queries = $this->detailsRegisterQuery($crId);
+
+        $activeCashRegister = $queries['activeCashRegister'];
+        $paymentMethodPayments = $queries['paymentMethodPayments'];
+        $accountPayments = $queries['accountPayments'];
+        $totalCredit = $queries['totalCredit'];
+
+        return view(
+
+            'sales.cash_register.ajax_view.cash_register_details',
+            compact(
+
                 'activeCashRegister',
                 'paymentMethodPayments',
                 'accountPayments',
@@ -129,58 +125,15 @@ class CashRegisterController extends Controller
     // get closing cash register details 
     public function closeCashRegisterModalView()
     {
-        // $activeCashRegister = CashRegister::with([
-        //     'cash_register_transactions',
-        //     'cash_register_transactions.sale',
-        //     'cash_register_transactions.sale.sale_products',
-        //     'cash_register_transactions.sale.sale_payments'
-        // ])->where('admin_id', auth()->user()->id)->where('status', 1)->first();
+        $queries = $this->detailsRegisterQuery();
 
-        $activeCashRegister = DB::table('cash_registers')
-            ->leftJoin('branches', 'cash_registers.branch_id', 'branches.id')
-            ->leftJoin('admin_and_users', 'cash_registers.admin_id', 'admin_and_users.id')
-            ->leftJoin('cash_counters', 'cash_registers.cash_counter_id', 'cash_counters.id')
-            ->where('admin_and_users.id', auth()->user()->id)
-            ->where('cash_registers.status', 1)
-            ->select(
-                'cash_registers.id',
-                'cash_registers.created_at',
-                'cash_registers.cash_in_hand',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_first_name',
-                'admin_and_users.last_name as u_last_name',
-                'admin_and_users.username',
-                'admin_and_users.email as u_email',
-                'cash_counters.counter_name',
-                'cash_counters.short_name as cc_s_name',
-                'branches.name as b_name',
-                'branches.branch_code as b_name',
-            )->first();
-
-        $paymentMethodPayments = DB::table('sale_payments')
-            ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
-            ->leftJoin('payment_methods', 'sale_payments.payment_method_id', 'payment_methods.id')
-            ->leftJoin('cash_register_transactions', 'sales.id', 'cash_register_transactions.sale_id')
-            ->where('cash_register_transactions.cash_register_id', $activeCashRegister->id)
-            ->select('payment_methods.name', DB::raw('SUM(paid_amount) as total_paid'))
-            ->groupBy('sale_payments.payment_method_id')->groupBy('payment_methods.name')->get();
-
-        $accountPayments = DB::table('sale_payments')
-            ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
-            ->leftJoin('accounts', 'sale_payments.account_id', 'accounts.id')
-            ->leftJoin('cash_register_transactions', 'sales.id', 'cash_register_transactions.sale_id')
-            ->where('cash_register_transactions.cash_register_id', $activeCashRegister->id)
-            ->select('accounts.account_type', DB::raw('SUM(paid_amount) as total_paid'))
-            ->groupBy('accounts.account_type')->groupBy('accounts.account_type')->get();
-
-        $totalCredit = DB::table('sales')
-            ->leftJoin('cash_register_transactions', 'sales.id', 'cash_register_transactions.sale_id')
-            ->where('cash_register_transactions.cash_register_id', $activeCashRegister->id)
-            ->select(DB::raw('SUM(sales.due) as total_due'))
-            ->groupBy('cash_register_transactions.cash_register_id')
-            ->get();
+        $activeCashRegister = $queries['activeCashRegister'];
+        $paymentMethodPayments = $queries['paymentMethodPayments'];
+        $accountPayments = $queries['accountPayments'];
+        $totalCredit = $queries['totalCredit'];
 
         return view(
+
             'sales.cash_register.ajax_view.close_cash_register_view',
             compact(
                 'activeCashRegister',
@@ -201,10 +154,74 @@ class CashRegisterController extends Controller
         $closeCashRegister = CashRegister::where('admin_id', auth()->user()->id)->where('status', 1)->first();
         $closeCashRegister->closed_amount = $request->closed_amount;
         $closeCashRegister->closing_note = $request->closing_note;
-        $closeCashRegister->closed_at = Carbon::now()->format('Y-m-d H:i:00');
+        $closeCashRegister->closed_at = Carbon::now()->format('Y-m-d H:i:s');
         $closeCashRegister->status = 0;
         $closeCashRegister->save();
 
         return redirect()->back();
+    }
+
+    private function detailsRegisterQuery($crId = NULL)
+    {
+        $activeCashRegister = '';
+        $activeCashRegisterQuery = DB::table('cash_registers')
+            ->leftJoin('branches', 'cash_registers.branch_id', 'branches.id')
+            ->leftJoin('admin_and_users', 'cash_registers.admin_id', 'admin_and_users.id')
+            ->leftJoin('cash_counters', 'cash_registers.cash_counter_id', 'cash_counters.id')
+            ->select(
+                'cash_registers.id',
+                'cash_registers.created_at',
+                'cash_registers.cash_in_hand',
+                'admin_and_users.prefix as u_prefix',
+                'admin_and_users.name as u_first_name',
+                'admin_and_users.last_name as u_last_name',
+                'admin_and_users.username',
+                'admin_and_users.email as u_email',
+                'cash_counters.counter_name',
+                'cash_counters.short_name as cc_s_name',
+                'branches.name as b_name',
+                'branches.branch_code as b_name',
+            );
+
+        if (!$crId) {
+
+            $activeCashRegister = $activeCashRegisterQuery
+                ->where('admin_and_users.id', auth()->user()->id)
+                ->where('cash_registers.status', 1)->first();
+        } else {
+
+            $activeCashRegister = $activeCashRegisterQuery
+                ->where('cash_registers.id', $crId)->first();
+        }
+
+        $paymentMethodPayments = DB::table('sale_payments')
+            ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
+            ->leftJoin('payment_methods', 'sale_payments.payment_method_id', 'payment_methods.id')
+            ->leftJoin('cash_register_transactions', 'sales.id', 'cash_register_transactions.sale_id')
+            ->where('cash_register_transactions.cash_register_id', $activeCashRegister->id)
+            ->select('payment_methods.name', DB::raw('SUM(paid_amount) as total_paid'))
+            ->groupBy('sale_payments.payment_method_id')->groupBy('payment_methods.name')->get();
+
+        $accountPayments = DB::table('sale_payments')
+            ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
+            ->leftJoin('accounts', 'sale_payments.account_id', 'accounts.id')
+            ->leftJoin('cash_register_transactions', 'sales.id', 'cash_register_transactions.sale_id')
+            ->where('cash_register_transactions.cash_register_id', $activeCashRegister->id)
+            ->select('accounts.account_type', DB::raw('SUM(paid_amount) as total_paid'))
+            ->groupBy('accounts.account_type')->groupBy('accounts.account_type')->get();
+
+        $totalCredit = DB::table('sales')
+            ->leftJoin('cash_register_transactions', 'sales.id', 'cash_register_transactions.sale_id')
+            ->where('cash_register_transactions.cash_register_id', $activeCashRegister->id)
+            ->select(DB::raw('SUM(sales.due) as total_due'))
+            ->groupBy('cash_register_transactions.cash_register_id')
+            ->get();
+
+        return [
+            'activeCashRegister' => $activeCashRegister,
+            'paymentMethodPayments' => $paymentMethodPayments,
+            'accountPayments' => $accountPayments,
+            'totalCredit' => $totalCredit
+        ];
     }
 }

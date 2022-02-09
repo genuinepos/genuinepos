@@ -42,6 +42,8 @@ class CashRegisterController extends Controller
     // Store cash register
     public function store(Request $request)
     {
+        $settings = DB::table('general_settings')->select(['business'])->first();
+
         $this->validate($request, [
             'counter_id' => 'required',
             'cash_in_hand' => 'required',
@@ -52,6 +54,7 @@ class CashRegisterController extends Controller
 
         $addCashRegister = new CashRegister();
         $addCashRegister->admin_id = auth()->user()->id;
+        $addCashRegister->date = date(json_decode(json_decode($settings->business, true)['date_format']));
         $addCashRegister->cash_counter_id = $request->counter_id;
         $addCashRegister->sale_account_id = $request->sale_account_id;
         $addCashRegister->cash_in_hand = $request->cash_in_hand;

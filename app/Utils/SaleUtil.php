@@ -43,32 +43,32 @@ class SaleUtil
             if ($request->previous_due > 0) {
                 if ($paidAmount >= $request->total_invoice_payable) {
                     $addPaymentGetId = $this->addPaymentGetId(
-                        invoicePrefix : $paymentInvoicePrefix,
-                        request : $request,
-                        payingAmount : $request->total_invoice_payable,
-                        invoiceId : $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
-                        saleId : $addSale->id,
-                        customerPaymentId : NULL
+                        invoicePrefix: $paymentInvoicePrefix,
+                        request: $request,
+                        payingAmount: $request->total_invoice_payable,
+                        invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                        saleId: $addSale->id,
+                        customerPaymentId: NULL
                     );
 
                     // Add bank/cash-in-hand A/C ledger
                     $this->accountUtil->addAccountLedger(
-                        voucher_type_id : 10,
-                        date : $request->date ?? date('Y-m-d'),
-                        account_id : $request->account_id,
-                        trans_id : $addPaymentGetId,
-                        amount : $request->total_invoice_payable,
-                        balance_type : 'debit'
+                        voucher_type_id: 10,
+                        date: $request->date ?? date('Y-m-d'),
+                        account_id: $request->account_id,
+                        trans_id: $addPaymentGetId,
+                        amount: $request->total_invoice_payable,
+                        balance_type: 'debit'
                     );
 
                     if ($request->customer_id) {
                         // add customer ledger
                         $this->customerUtil->addCustomerLedger(
-                            voucher_type_id : 3,
-                            customer_id : $request->customer_id,
-                            date : $request->date ?? date('Y-m-d'),
-                            trans_id : $addPaymentGetId,
-                            amount : $request->total_invoice_payable
+                            voucher_type_id: 3,
+                            customer_id: $request->customer_id,
+                            date: $request->date ?? date('Y-m-d'),
+                            trans_id: $addPaymentGetId,
+                            amount: $request->total_invoice_payable
                         );
                     }
 
@@ -197,8 +197,8 @@ class SaleUtil
 
                             $__report_date = '';
                             if (isset($request->date)) {
-                                $__report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
-                            }else {
+                                $__report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+                            } else {
                                 $__report_date = date('Y-m-d H:i:s');
                             }
 
@@ -307,15 +307,15 @@ class SaleUtil
     {
         $__report_date = '';
         if (isset($request->date)) {
-            $__report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
-        }else {
+            $__report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        } else {
             $__report_date = date('Y-m-d H:i:s');
         }
 
         $__invoiceId = str_pad($invoiceId, 5, "0", STR_PAD_LEFT);
         $sale = DB::table('sales')->where('id', $saleId)->select('customer_id')->first();
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV'). $__invoiceId;
+        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV') . $__invoiceId;
         $addSalePayment->sale_id = $saleId;
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
         $addSalePayment->account_id = $request->account_id;
@@ -373,7 +373,7 @@ class SaleUtil
     {
         // Add sale return payment
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = 'SRPV'. $this->invoiceVoucherRefIdUtil->getLastId('sale_payments');
+        $addSalePayment->invoice_id = 'SRPV' . $this->invoiceVoucherRefIdUtil->getLastId('sale_payments');
         $addSalePayment->sale_id = $sale->id;
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
         $addSalePayment->account_id = $request->account_id;
@@ -423,7 +423,7 @@ class SaleUtil
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
             $payment->attachment = $salePaymentAttachmentName;
         }
-        
+
         $payment->save();
     }
 
@@ -458,8 +458,8 @@ class SaleUtil
         if ($storedSaleReturnAccountId) {
             // Adjust sale account balance
             $this->accountUtil->adjustAccountBalance(
-                balanceType : 'debit',
-                account_id : $storedSaleReturnAccountId
+                balanceType: 'debit',
+                account_id: $storedSaleReturnAccountId
             );
         }
 
@@ -482,6 +482,7 @@ class SaleUtil
         }
 
         if ($storeStatus == 1) {
+
             foreach ($storedSaleProducts as $saleProduct) {
                 $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
@@ -490,6 +491,7 @@ class SaleUtil
         }
 
         if ($storedCustomerId) {
+
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
         }
     }

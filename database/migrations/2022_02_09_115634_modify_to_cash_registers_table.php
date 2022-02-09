@@ -17,6 +17,7 @@ class ModifyToCashRegistersTable extends Migration
             $table->dropForeign(['warehouse_id']);
             $table->dropColumn('warehouse_id');
             $table->decimal('cash_in_hand', 22, 2)->after('admin_id')->default(0);
+            $table->string('date', 20)->after('cash_in_hand')->nullable();
             $table->dropColumn('total_card_slips');
             $table->dropColumn('total_cheques');
         });

@@ -281,7 +281,7 @@
                                             <div class="input-group mt-1">
                                                 <label class=" col-4"><b>Order Note :</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="">
+                                                    <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>

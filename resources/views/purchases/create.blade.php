@@ -352,7 +352,7 @@
                                                     <div class="input-group mt-1">
                                                         <label for="inputEmail3" class=" col-4"><b>Paying Amount :</b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
                                                         <div class="col-8">
-                                                            <input name="paying_amount" class="form-control" id="paying_amount" value="0.00">
+                                                            <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                         </div>
                                                     </div>
         
@@ -405,7 +405,7 @@
                                                     <div class="input-group mt-1">
                                                         <label for="inputEmail3" class=" col-4"><b>Payment Note :</b> </label>
                                                         <div class="col-8">
-                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note">
+                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note" autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>

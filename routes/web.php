@@ -886,6 +886,7 @@ Route::get('/test', function () {
     //     $p->save();
     // }
     // $testQuery = DB::table('accounts')->first();
+
 });
 
 // All authenticated routes

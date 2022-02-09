@@ -33,7 +33,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"> <b>Cash In Hand :</b> <span class="text-danger">*</span> </label>
+                                                    <label class="col-4"> <b>Opeing Balance :</b> <span class="text-danger">*</span> </label>
                                                     <div class="col-8">
                                                         <input required type="number" step="any" name="cash_in_hand" class="form-control" placeholder="Enter Amount" value="0.00">
                                                         <span class="error">{{ $errors->first('cash_in_hand') }}</span>

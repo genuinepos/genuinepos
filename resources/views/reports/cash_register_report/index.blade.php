@@ -1,15 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
-<link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
-<link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
-    <style>
-        .sale_and_purchase_amount_area table tbody tr th,td {color: #32325d;}
-        .sale_purchase_and_profit_area {position: relative;}
-        .report_data_area {position: relative;}
-        .data_preloader{top:2.3%}
-        .sale_and_purchase_amount_area table tbody tr th{text-align: left;}
-        .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
-    </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    
 @endpush
 @section('title', 'Cash Register Report - ')
 @section('content')
@@ -18,7 +10,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-cash-register"></span>
@@ -130,40 +121,37 @@
 
     <div class="modal fade" id="cashRegisterDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content" id="cash_register_details_content">
-                
-            </div>
+            <div class="modal-content" id="cash_register_details_content"></div>
         </div>
     </div> 
 @endsection
 @push('scripts')
-<script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    $('.loading_button').hide();
+    // $('.loading_button').hide();
     // Filter area toggle
-    function getCashRegisterReport() {
-        $('.data_preloader').show();
-        var branch_id = $('#branch_id').val();
-        var user_id = $('#user_id').val();
-        var status = $('#status').val();
-        var date_range = $('#date_range').val();
-        $.ajax({
-            url:"{{ route('reports.get.cash.registers') }}",
-            type:'get',
-            data: {
-                branch_id, 
-                user_id, 
-                status, 
-                date_range, 
-            },
-            success:function(data){
-                $('#data-list').html(data);
-                $('.data_preloader').hide();
-            }
-        });
-    }
-    getCashRegisterReport();
+    // function getCashRegisterReport() {
+    //     $('.data_preloader').show();
+    //     var branch_id = $('#branch_id').val();
+    //     var user_id = $('#user_id').val();
+    //     var status = $('#status').val();
+    //     var date_range = $('#date_range').val();
+    //     $.ajax({
+    //         url:"{{ route('reports.get.cash.registers') }}",
+    //         type:'get',
+    //         data: {
+    //             branch_id, 
+    //             user_id, 
+    //             status, 
+    //             date_range, 
+    //         },
+    //         success:function(data){
+    //             $('#data-list').html(data);
+    //             $('.data_preloader').hide();
+    //         }
+    //     });
+    // }
+    // getCashRegisterReport();
 
     // Get all users for filter form
     function setUsers(){
@@ -189,29 +177,29 @@
     }
     setUsers();
 
-    $(document).on('change', '.submit_able', function () {
-        $('#register_report_filter_form').submit();
-    });
+    // $(document).on('change', '.submit_able', function () {
+    //     $('#register_report_filter_form').submit();
+    // });
 
-    //Submit filter form by date-range field blur 
-    $(document).on('blur', '.submit_able_input', function () {
-        setTimeout(function() {
-            $('#register_report_filter_form').submit();
-        }, 500);
-    });
+    // //Submit filter form by date-range field blur 
+    // $(document).on('blur', '.submit_able_input', function () {
+    //     setTimeout(function() {
+    //         $('#register_report_filter_form').submit();
+    //     }, 500);
+    // });
 
-    //Submit filter form by date-range apply button
-    $(document).on('click', '.applyBtn', function () {
-        setTimeout(function() {
-            $('.submit_able_input').addClass('.form-control:focus');
-            $('.submit_able_input').blur();
-        }, 500);
-    });
+    // //Submit filter form by date-range apply button
+    // $(document).on('click', '.applyBtn', function () {
+    //     setTimeout(function() {
+    //         $('.submit_able_input').addClass('.form-control:focus');
+    //         $('.submit_able_input').blur();
+    //     }, 500);
+    // });
 
-    $('#register_report_filter_form').on('submit', function (e) {
-       e.preventDefault();
-       getCashRegisterReport();
-    });
+    // $('#register_report_filter_form').on('submit', function (e) {
+    //    e.preventDefault();
+    //    getCashRegisterReport();
+    // });
 
     $(document).on('click', '#register_details_btn',function (e) {
         e.preventDefault();

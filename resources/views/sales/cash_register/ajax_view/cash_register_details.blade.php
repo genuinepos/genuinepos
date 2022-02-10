@@ -5,7 +5,12 @@
 <div class="modal-header">
     <h6 class="modal-title" id="exampleModalLabel">Register Details ( 
         {{ Carbon::createFromFormat('Y-m-d H:i:s', $activeCashRegister->created_at)->format('jS M, Y h:i A') }}  
-        - {{ Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'))->format('jS M, Y h:i A') }} )
+        @if ($activeCashRegister->closed_at)
+            - {{ Carbon::createFromFormat('Y-m-d H:i:s', $activeCashRegister->closed_at)->format('jS M, Y h:i A') }} 
+        @else 
+            - {{ Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'))->format('jS M, Y h:i A') }} 
+        @endif
+        )
     </h6>
 
     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close">

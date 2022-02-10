@@ -117,7 +117,10 @@ class BranchController extends Controller
 
         $this->branchUtil->addBranchDefaultAccounts($addBranchGetId);
 
+        $this->branchUtil->addBranchDefaultCashCounter($addBranchGetId);
+
         if ($request->add_opening_user) {
+
             $this->branchUtil->addBranchOpeningUser($request, $addBranchGetId);
         }
 

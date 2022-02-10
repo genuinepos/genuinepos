@@ -54,9 +54,19 @@ class CashRegisterController extends Controller
             'sale_account_id.required' => 'Sale A/C is required',
         ]);
 
+        $dateFormat = json_decode($settings->business, true)['date_format'];
+        $timeFormat = json_decode($settings->business, true)['time_format'];
+        
+        $__timeFormat = '';
+        if ($timeFormat == '12') {
+            $__timeFormat = ' h:i:s';
+        } else if ($timeFormat == '24') {
+            $__timeFormat = ' H:i:s';
+        }
+
         $addCashRegister = new CashRegister();
         $addCashRegister->admin_id = auth()->user()->id;
-        $addCashRegister->date = date(json_decode($settings->business, true)['date_format']);
+        $addCashRegister->date = date($dateFormat.$__timeFormat);
         $addCashRegister->cash_counter_id = $request->counter_id;
         $addCashRegister->sale_account_id = $request->sale_account_id;
         $addCashRegister->cash_in_hand = $request->cash_in_hand;
@@ -171,6 +181,7 @@ class CashRegisterController extends Controller
             ->select(
                 'cash_registers.id',
                 'cash_registers.created_at',
+                'cash_registers.closed_at',
                 'cash_registers.cash_in_hand',
                 'admin_and_users.prefix as u_prefix',
                 'admin_and_users.name as u_first_name',

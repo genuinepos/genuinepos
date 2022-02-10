@@ -28,6 +28,10 @@ Route::get('route-list', function () {
     }
 });
 
+Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controllers'], function () {
+    Route::get('branch/authenticated/users/{branchId}', 'CommonAjaxCallController@branchAuthenticatedUsers');
+});
+
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 //Product section route group
 Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], function () {
@@ -808,6 +812,7 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
         Route::get('/', 'CashRegisterReportController@index')->name('reports.cash.registers.index');
         Route::get('get', 'CashRegisterReportController@getCashRegisterReport')->name('reports.get.cash.registers');
         Route::get('details/{cashRegisterId}', 'CashRegisterReportController@detailsCashRegister')->name('reports.get.cash.register.details');
+        Route::get('report/print', 'CashRegisterReportController@reportPrint')->name('reports.get.cash.register.report.print');
     });
 
     Route::group(['prefix' => 'sale/representive'], function () {
@@ -888,6 +893,7 @@ Route::get('/test', function () {
     // }
     // $testQuery = DB::table('accounts')->first();
 
+    // $branchProducts = DB::table('product_branches')->leftJoin('')
 });
 
 // All authenticated routes

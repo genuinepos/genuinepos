@@ -6,6 +6,7 @@ use App\Utils\Util;
 use App\Models\Account;
 use App\Utils\Converter;
 use App\Utils\AccountUtil;
+use App\Models\CashCounter;
 use App\Models\AdminAndUser;
 use App\Models\AccountBranch;
 use App\Models\AccountLedger;
@@ -75,5 +76,14 @@ class BranchUtil
         $addUser->branch_id = $branch_id;
 
         $addUser->save();
+    }
+
+    public function addBranchDefaultCashCounter($branch_id)
+    {
+        CashCounter::insert([
+            'branch_id' => auth()->user()->branch_id,
+            'counter_name' => 'Counter-1',
+            'short_name' => 'CCN-1',
+        ]);
     }
 }

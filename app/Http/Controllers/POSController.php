@@ -912,6 +912,30 @@ class POSController extends Controller
         $updateSale->ex_status = 1;
         $updateSale->save();
 
+        if ($updateSale->sale_account_id) {
+            // Update Sales A/C Ledger
+            $this->accountUtil->updateAccountLedger(
+                voucher_type_id: 1,
+                date: $updateSale->date,
+                account_id: $updateSale->sale_account_id,
+                trans_id: $updateSale->id,
+                amount: $updateSale->total_payable_amount,
+                balance_type: 'credit'
+            );
+        }
+
+        if ($updateSale->customer_id) {
+
+            // Update customer ledger
+            $this->customerUtil->updateCustomerLedger(
+                voucher_type_id: 1,
+                customer_id: $updateSale->customer_id,
+                date: $updateSale->date,
+                trans_id: $updateSale->id,
+                amount: $updateSale->total_payable_amount
+            );
+        }
+
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
         $descriptions = $request->descriptions;
@@ -1006,7 +1030,7 @@ class POSController extends Controller
 
             if ($updateSale->customer_id) {
                 // add customer ledger
-                $this->customerUtil->addCustomerLedger(
+                $this->customerUtil->updateCustomerLedger(
                     voucher_type_id: 3,
                     customer_id: $updateSale->customer_id,
                     date: date('Y-m-d'),

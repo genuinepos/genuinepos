@@ -1017,7 +1017,7 @@ class POSController extends Controller
         // Add new payment 
         if ($request->paying_amount > 0) {
 
-            $__paymentInvoicePrefix = $paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI';
+            $__paymentInvoicePrefix = $paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPV';
 
             $addPaymentGetId = $this->saleUtil->addPaymentGetId(
                 invoicePrefix: $__paymentInvoicePrefix,

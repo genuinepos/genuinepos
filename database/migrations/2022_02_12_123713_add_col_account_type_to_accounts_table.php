@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddMoreOneColumnToAccountsTable extends Migration
+class AddColAccountTypeToAccountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddMoreOneColumnToAccountsTable extends Migration
     public function up()
     {
         Schema::table('accounts', function (Blueprint $table) {
-            $table->integer('account_type')->after('bank_id')->nullable();
+            $table->integer('account_type')->after('id')->default(2);
         });
     }
 
@@ -25,6 +25,8 @@ class AddMoreOneColumnToAccountsTable extends Migration
      */
     public function down()
     {
-        
+        Schema::table('accounts', function (Blueprint $table) {
+            //
+        });
     }
 }

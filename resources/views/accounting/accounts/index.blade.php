@@ -1,8 +1,5 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css"
-        integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{asset('public')}}/backend/asset/css/select2.min.css"/>
 @endpush
 @section('title', 'Account List - ')
@@ -79,8 +76,8 @@
 
                                 <div class="col-md-2">
                                     <div class="btn_30_blue float-end">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                class="fas fa-plus-square"></i> Add</a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" id="add"><i
+                                                class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +131,7 @@
                         <div class="form-group">
                             <label><strong>Name :</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control add_input" data-name="Name" id="name"
-                                placeholder="Account Name" autocomplete="off"/>
+                                placeholder="Account Name" autocomplete="off" autofocus/>
                             <span class="error error_name"></span>
                         </div>
                         
@@ -227,9 +224,6 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js"
-        integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{asset('public')}}/backend/asset/js/select2.min.js"></script>
 
     <script>
@@ -311,7 +305,6 @@
                         accounts_table.ajax.reload();
                         $(".select2").select2().val('').trigger('change');
                         $('#addModal').modal('hide');
-                        $('#addModal').modal('show');
                         $('#name').focus();
                     },
                     error: function(err) {
@@ -396,42 +389,22 @@
             }
         });
 
-        new Litepicker({
-            singleMode: true,
-            element: document.getElementById('dp_date'),
-            dropdowns: {
-                minYear: new Date().getFullYear() - 50,
-                maxYear: new Date().getFullYear() + 100,
-                months: true,
-                years: true
-            },
-            tooltipText: {
-                one: 'night',
-                other: 'nights'
-            },
-            tooltipNumber: (totalDays) => {
-                return totalDays - 1;
-            },
-            format: 'DD-MM-YYYY',
+        $('#add').on('click', function() {
+            setTimeout(function () {
+                $('#name').focus();
+            }, 500);
         });
 
-        new Litepicker({
-            singleMode: true,
-            element: document.getElementById('date'),
-            dropdowns: {
-                minYear: new Date().getFullYear() - 50,
-                maxYear: new Date().getFullYear() + 100,
-                months: true,
-                years: true
-            },
-            tooltipText: {
-                one: 'night',
-                other: 'nights'
-            },
-            tooltipNumber: (totalDays) => {
-                return totalDays - 1;
-            },
-            format: 'DD-MM-YYYY',
-        });
+        document.onkeyup = function () {
+            var e = e || window.event; // for IE to cover IEs window event-object
+            //console.log(e);
+            if(e.ctrlKey && e.which == 13) {
+                $('#addModal').modal('show');
+                setTimeout(function () {
+                    $('#name').focus();
+                }, 500);
+                //return false;
+            }
+        }
     </script>
 @endpush

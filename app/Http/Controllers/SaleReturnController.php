@@ -24,12 +24,14 @@ class SaleReturnController extends Controller
     protected $accountUtil;
     protected $customerUtil;
     protected $converter;
+    protected $invoiceVoucherRefIdUtil;
     public function __construct(
         ProductStockUtil $productStockUtil,
         SaleUtil $saleUtil,
         AccountUtil $accountUtil,
         CustomerUtil $customerUtil,
-        Converter $converter
+        Converter $converter,
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
         $this->productStockUtil = $productStockUtil;
         $this->saleUtil = $saleUtil;

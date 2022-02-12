@@ -612,17 +612,23 @@ class ProductStockUtil
             ->first();
 
         if ($product->is_manage_stock == 1) {
+
             $checkExistsProductInBranch = DB::table('product_branches')
                 ->where('branch_id', $branch_id)
                 ->where('product_id', $product_id)->first();
+
             if ($checkExistsProductInBranch) {
+                
                 if ($variant_id) {
+
                     $checkVariantInBranch = DB::table('product_branch_variants')
                         ->where('product_branch_id', $checkExistsProductInBranch->id)
                         ->where('product_id', $product_id)
                         ->where('product_variant_id', $variant_id)
                         ->first();
+
                     if (!$checkVariantInBranch) {
+
                         $productBranchVariant = new ProductBranchVariant();
                         $productBranchVariant->product_branch_id = $checkExistsProductInBranch->id;
                         $productBranchVariant->product_id = $product_id;
@@ -631,11 +637,14 @@ class ProductStockUtil
                     }
                 }
             } else {
+
                 $productBranch = new ProductBranch();
                 $productBranch->branch_id = auth()->user()->branch_id;
                 $productBranch->product_id = $product_id;
                 $productBranch->save();
+
                 if ($variant_id) {
+
                     $productBranchVariant = new ProductBranchVariant();
                     $productBranchVariant->product_branch_id = $productBranch->id;
                     $productBranchVariant->product_id = $product_id;

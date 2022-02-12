@@ -160,7 +160,7 @@ class CustomerUtil
     {
         $data = [
             0 => [
-                'name' => 'Opening_balance',
+                'name' => 'Opening Balance',
                 'id' => 'sale_id',
                 'voucher_no' =>
                 'sale_inv_id',

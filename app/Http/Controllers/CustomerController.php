@@ -488,7 +488,7 @@ class CustomerController extends Controller
         $customerPayment->account_id = $request->account_id;
         $customerPayment->paid_amount = $request->paying_amount;
         $customerPayment->payment_method_id = $request->payment_method_id;
-        $customerPayment->report_date = date('Y-m-d', strtotime($request->date));
+        $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $customerPayment->date = $request->date;
         $customerPayment->time = date('h:i:s a');
         $customerPayment->month = date('F');

@@ -120,7 +120,7 @@ class POSController extends Controller
         ]);
 
         $settings = DB::table('general_settings')
-        ->select(['id', 'business', 'prefix', 'reward_poing_settings', 'send_es_settings'])->first();
+            ->select(['id', 'business', 'prefix', 'reward_poing_settings', 'send_es_settings'])->first();
 
         $invoicePrefix = json_decode($settings->prefix, true)['sale_invoice'];
 
@@ -171,7 +171,7 @@ class POSController extends Controller
         }
 
         if ($request->button_type == 1 && $request->paying_amount == 0) {
-            
+
             return response()->json(['errorMsg' => 'If you want to sale in full credit, so click credit sale button.']);
         }
 
@@ -246,7 +246,7 @@ class POSController extends Controller
                 $invoicePayable = $request->total_payable_amount;
                 $addSale->total_payable_amount = $request->total_payable_amount;
                 // $addSale->paid = $request->paying_amount - $changedAmount;
-                $addSale->paid = $paidAmount ;
+                $addSale->paid = $paidAmount;
                 $addSale->change_amount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
                 $addSale->due = $request->total_due >= 0 ? $request->total_due : 0.00;
             }
@@ -338,14 +338,14 @@ class POSController extends Controller
         ])->where('id', $addSale->id)->first();
 
         if ($request->action == 1) {
-      
+
             if ($customer) {
 
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
             }
 
             $this->saleUtil->addPurchaseSaleProductChain($sale, $stockAccountingMethod);
-    
+
             $this->saleUtil->__getSalePaymentForAddSaleStore($request, $sale, $paymentInvoicePrefix);
         }
 
@@ -482,15 +482,15 @@ class POSController extends Controller
         $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
 
         $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
-        
+
         $updateSale = Sale::with([
-            'sale_payments', 
-            'sale_products', 
-            'sale_products.product', 
-            'sale_products.variant', 
+            'sale_payments',
+            'sale_products',
+            'sale_products.product',
+            'sale_products.variant',
             'sale_products.product.comboProducts'
-            ])
-        ->where('id', $request->sale_id)->first();
+        ])
+            ->where('id', $request->sale_id)->first();
 
         if ($request->product_ids == null) {
 
@@ -505,7 +505,7 @@ class POSController extends Controller
         if ($request->action == 1) {
 
             if ($request->paying_amount < $request->total_payable_amount && !$updateSale->customer_id) {
-                
+
                 return response()->json(['errorMsg' => 'Listed Customer is required when sale is credit or partial payment.']);
             }
         }
@@ -541,15 +541,18 @@ class POSController extends Controller
 
         if ($updateSale->status == 1) {
 
-            // Update Sales A/C Ledger
-            $this->accountUtil->updateAccountLedger(
-                voucher_type_id: 1,
-                date: date('Y-m-d'),
-                account_id: $request->sale_account_id,
-                trans_id: $updateSale->id,
-                amount: $request->total_payable_amount,
-                balance_type: 'credit'
-            );
+            if ($request->sale_account_id) {
+
+                // Update Sales A/C Ledger
+                $this->accountUtil->updateAccountLedger(
+                    voucher_type_id: 1,
+                    date: date('Y-m-d'),
+                    account_id: $request->sale_account_id,
+                    trans_id: $updateSale->id,
+                    amount: $request->total_payable_amount,
+                    balance_type: 'credit'
+                );
+            }
 
             if ($updateSale->customer_id) {
 
@@ -575,7 +578,7 @@ class POSController extends Controller
         foreach ($request->product_ids as $product_id) {
 
             $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
-            
+
             $saleProduct = SaleProduct::where('sale_id', $updateSale->id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)
@@ -617,6 +620,7 @@ class POSController extends Controller
                 $addSaleProduct->description = $request->descriptions[$__index];
                 $addSaleProduct->save();
             }
+            
             $__index++;
         }
 
@@ -674,7 +678,7 @@ class POSController extends Controller
         if ($request->action == 1) {
 
             $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
-            
+
             if ($updateSale->customer_id) {
 
                 $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
@@ -1086,7 +1090,7 @@ class POSController extends Controller
             $index++;
         }
 
-        $settings = DB::table('general_settings')->select(['id', 'business','prefix'])->first();
+        $settings = DB::table('general_settings')->select(['id', 'business', 'prefix'])->first();
         $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
         $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
 

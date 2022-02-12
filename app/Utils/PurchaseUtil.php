@@ -813,7 +813,7 @@ class PurchaseUtil
         $addPurchasePayment->paid_amount = $payingAmount;
         $addPurchasePayment->date = $request->date;
         $addPurchasePayment->time = date('h:i:s a');
-        $addPurchasePayment->report_date = date('Y-m-d H:is', strtotime($request->date.date(' H:i:s')));
+        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addPurchasePayment->month = date('F');
         $addPurchasePayment->year = date('Y');
         $addPurchasePayment->note = $request->note;
@@ -837,7 +837,7 @@ class PurchaseUtil
         $payment->payment_method_id = $request->payment_method_id;
         $payment->paid_amount = $request->paying_amount;
         $payment->date = $request->date;
-        $payment->report_date = date('Y-m-d H:is', strtotime($request->date.date(' H:i:s')));
+        $payment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $payment->month = date('F');
         $payment->year = date('Y');
         $payment->note = $request->note;
@@ -871,7 +871,7 @@ class PurchaseUtil
         $addPurchaseReturnPayment->paid_amount = $request->paying_amount;
         $addPurchaseReturnPayment->date = $request->date;
         $addPurchaseReturnPayment->time = date('h:i:s a');
-        $addPurchaseReturnPayment->report_date = date('Y-m-d H:is', strtotime($request->date.date(' H:i:s')));
+        $addPurchaseReturnPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addPurchaseReturnPayment->month = date('F');
         $addPurchaseReturnPayment->year = date('Y');
         $addPurchaseReturnPayment->note = $request->note;
@@ -895,7 +895,7 @@ class PurchaseUtil
         $payment->payment_method_id = $request->payment_method_id;
         $payment->paid_amount = $request->paying_amount;
         $payment->date = $request->date;
-        $payment->report_date = date('Y-m-d H:is', strtotime($request->date.date(' H:i:s')));
+        $payment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $payment->month = date('F');
         $payment->year = date('Y');
         $payment->note = $request->note;

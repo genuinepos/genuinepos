@@ -821,6 +821,7 @@ class SaleController extends Controller
     {
         $product_code = (string)$product_code;
         $branch_id = auth()->user()->branch_id;
+
         $product = Product::with(['product_variants', 'product_variants.updateVariantCost','tax', 'unit', 'updateProductCost'])
             ->where('product_code', $product_code)
             ->select([
@@ -828,7 +829,9 @@ class SaleController extends Controller
             ])->first();
 
         if ($product) {
+
             if ($product->is_manage_stock == 0) {
+
                 return response()->json(
                     [
                         'product' => $product,
@@ -844,10 +847,14 @@ class SaleController extends Controller
                 ->first();
 
             if ($productBranch) {
+
                 if ($product->type == 2) {
+
                     return response()->json(['errorMsg' => 'Combo product is not sellable in this demo']);
                 } else {
+
                     if ($productBranch->product_quantity > 0) {
+
                         return response()->json(
                             [
                                 'product' => $product,
@@ -855,20 +862,26 @@ class SaleController extends Controller
                             ]
                         );
                     } else {
+
                         return response()->json(['errorMsg' => 'Stock is out of this product of this Location/Shop']);
                     }
                 }
             } else {
+
                 return response()->json(['errorMsg' => 'This product is not available in this Location/Shop. ']);
             }
         } else {
+
             $variant_product = ProductVariant::with('product', 'updateVariantCost', 'product.tax', 'product.unit')
                 ->where('variant_code', $product_code)
                 ->select([
                     'id', 'product_id', 'variant_name', 'variant_code', 'variant_quantity', 'variant_cost', 'variant_cost_with_tax', 'variant_profit', 'variant_price'
                 ])->first();
+
             if ($variant_product) {
+
                 if ($variant_product->product->is_manage_stock == 0) {
+
                     return response()->json([
                         'variant_product' => $variant_product,
                         'qty_limit' => PHP_INT_MAX
@@ -876,12 +889,14 @@ class SaleController extends Controller
                 }
 
                 if ($variant_product) {
+
                     $productBranch = DB::table('product_branches')
                         ->where('branch_id', $branch_id)
                         ->where('product_id', $variant_product->product_id)
                         ->first();
 
                     if (is_null($productBranch)) {
+
                         return response()->json(['errorMsg' => 'This product is not available in this Location/Shop']);
                     }
 
@@ -893,19 +908,24 @@ class SaleController extends Controller
                         ->first();
 
                     if (is_null($productBranchVariant)) {
+
                         return response()->json(['errorMsg' => 'This variant is not available in this Location/Shop']);
                     }
 
                     if ($productBranch && $productBranchVariant) {
+
                         if ($productBranchVariant->variant_quantity > 0) {
+
                             return response()->json([
                                 'variant_product' => $variant_product,
                                 'qty_limit' => $productBranchVariant->variant_quantity
                             ]);
                         } else {
+
                             return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this Location/Shop']);
                         }
                     } else {
+                        
                         return response()->json(['errorMsg' => 'This product is not available in this Location/Shop.']);
                     }
                 }

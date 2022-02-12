@@ -20,7 +20,7 @@ class CreateStockAdjustmentRecoversTable extends Migration
             $table->unsignedBigInteger('account_id')->nullable();
             $table->unsignedBigInteger('payment_method_id')->nullable();
             $table->decimal('recovered_amount', 22, 2)->default(0);
-            $table->mediumText('note')->default(0);
+            $table->mediumText('note')->nullable();
             $table->timestamp('report_date')->nullable();
             $table->timestamps();
             $table->foreign('stock_adjustment_id')->references('id')->on('stock_adjustments')->onDelete('cascade');

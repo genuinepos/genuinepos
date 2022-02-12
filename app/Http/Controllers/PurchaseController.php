@@ -720,7 +720,7 @@ class PurchaseController extends Controller
 
                 $variant = $purchase_product->variant ? ' - ' . $purchase_product->variant : '';
                 $product = $purchase_product->product->name . $variant;
-                return response()->json(["errorMsg" => "Can not delete is purchase. Mismatch between sold and purchase stock account method. Product: ${product}"]);
+                return response()->json("Can not delete is purchase. Mismatch between sold and purchase stock account method. Product: ${product}");
             }
         }
 
@@ -777,6 +777,7 @@ class PurchaseController extends Controller
         }
 
         $this->supplierUtil->adjustSupplierForSalePaymentDue($supplier->id);
+
         return response()->json('Successfully purchase is deleted');
     }
 

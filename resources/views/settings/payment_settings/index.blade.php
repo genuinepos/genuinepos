@@ -39,13 +39,17 @@
                 
                                         <div class="form-group row mt-1">
                                             <div class="col-md-12">
-                                                <label><b>Default Payment Account :</b> </label>
+                                                <label><b>Default Debit/Credit Account :</b> </label>
                                                 <select name="account_id" id="account_id" class="form-control">
-                                                    <option value="">Cash-In-Hand</option>
+                                                    <option value="">Select Default Account</option>
                                                     @foreach ($accounts as $account)
-                                                        <option value="{{ $account->id }}">{{ $account->name.' (A/C:'.$account->account_number.')' }}</option>
+                                                            @php
+                                                                $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                            @endphp
+                                                        <option value="{{ $account->id }}">{{ $account->name.$accountType }}</option>
                                                     @endforeach
                                                 </select>
+                                                <span class="error error_account_id"></span>
                                             </div>
                                         </div>
                 

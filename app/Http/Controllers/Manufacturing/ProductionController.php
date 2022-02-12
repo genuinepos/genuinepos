@@ -13,23 +13,24 @@ use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Models\Manufacturing\Production;
 use App\Utils\Manufacturing\ProductionUtil;
 use App\Models\Manufacturing\ProductionIngredient;
+use App\Utils\AccountUtil;
 
 class ProductionController extends Controller
 {
     protected $invoiceVoucherRefIdUtil;
     protected $productStockUtil;
     protected $productionUtil;
-    protected $purchaseUtil;
+    protected $accountUtil;
     public function __construct(
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         ProductStockUtil $productStockUtil,
         ProductionUtil $productionUtil,
-        PurchaseUtil $purchaseUtil
+        AccountUtil $accountUtil
     ) {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->productStockUtil = $productStockUtil;
         $this->productionUtil = $productionUtil;
-        $this->purchaseUtil = $purchaseUtil;
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -52,10 +53,13 @@ class ProductionController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')
+        $warehouses = DB::table('warehouses')
+            ->select('id', 'warehouse_name', 'warehouse_code')
             ->where('branch_id', auth()->user()->branch_id)
             ->get();
+
         $taxes = DB::table('taxes')->select('id', 'tax_percent', 'tax_name')->get();
+
         $products =  DB::table('processes')
             ->leftJoin('products', 'processes.product_id', 'products.id')
             ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
@@ -70,7 +74,14 @@ class ProductionController extends Controller
                 'product_variants.variant_name as v_name',
                 'product_variants.variant_code as v_code',
             )->get();
-        return view('manufacturing.production.create', compact('warehouses', 'products', 'taxes'));
+
+        $productionAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 23)
+            ->get(['accounts.id', 'accounts.name']);
+
+        return view('manufacturing.production.create', compact('warehouses', 'products', 'taxes', 'productionAccounts'));
     }
 
     public function store(Request $request)
@@ -85,10 +96,15 @@ class ProductionController extends Controller
         }
 
         $this->validate($request, [
+            'production_account_id' => 'required',
+            'process_id' => 'required',
             'date' => 'required',
             'output_quantity' => 'required',
             'final_output_quantity' => 'required',
             'total_cost' => 'required',
+        ], [
+            'production_account_id.required' => 'Production A/C is required',
+            'process_id.required' => 'Please select the product',
         ]);
 
         if (isset($request->store_warehouse_id) && isset($request->stock_warehouse_id)) {
@@ -115,6 +131,7 @@ class ProductionController extends Controller
         $addProduction->reference_no = $request->reference_no ? $request->reference_no : ($referenceNoPrefix != null ? $referenceNoPrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('productions'), 5, "0", STR_PAD_LEFT);
         $addProduction->branch_id = auth()->user()->branch_id;
         $addProduction->warehouse_id = isset($request->store_warehouse_id) ? $request->store_warehouse_id : NULL;
+        $addProduction->production_account_id = $request->production_account_id;
 
         if (isset($request->stock_warehouse_id)) {
             $addProduction->stock_warehouse_id = $request->stock_warehouse_id;
@@ -160,8 +177,10 @@ class ProductionController extends Controller
         $addRowInPurchaseProductTable->save();
 
         if (isset($request->product_ids)) {
+
             $index = 0;
             foreach ($request->product_ids as $product_id) {
+
                 $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
                 $addProductionIngredient = new ProductionIngredient();
                 $addProductionIngredient->production_id = $addProduction->id;
@@ -175,11 +194,15 @@ class ProductionController extends Controller
                 $addProductionIngredient->save();
 
                 if (json_decode($generalSetting->mf_settings, true)['enable_editing_ingredient_qty'] == '1') {
+
                     if (isset($request->is_final)) {
+
                         $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
                         if (isset($request->stock_warehouse_id)) {
+
                             $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $request->stock_warehouse_id);
                         } else {
+
                             $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
                         }
                     }
@@ -189,22 +212,37 @@ class ProductionController extends Controller
         }
 
         if (isset($request->is_final)) {
+
             if (json_decode($generalSetting->mf_settings, true)['enable_updating_product_price'] == '1') {
+
                 $this->productionUtil->updateProductAndVariantPriceByProduction($request->product_id, $request->variant_id, $request->per_unit_cost_exc_tax, $request->per_unit_cost_inc_tax, $request->xMargin, $request->selling_price, $tax_id, $request->tax_type);
             }
 
             $this->productStockUtil->adjustMainProductAndVariantStock($request->product_id, $request->variant_id);
 
             if (isset($request->store_warehouse_id)) {
+
                 $this->productStockUtil->addWarehouseProduct($request->product_id, $request->variant_id, $request->stock_warehouse_id);
                 $this->productStockUtil->adjustWarehouseStock($request->product_id, $request->variant_id, $request->store_warehouse_id);
             } else {
+
                 $this->productStockUtil->addBranchProduct($request->product_id, $request->variant_id, auth()->user()->branch_id);
                 $this->productStockUtil->adjustBranchStock($request->product_id, $request->variant_id, auth()->user()->branch_id);
             }
+
+            // Add production A/C ledger
+            $this->accountUtil->addAccountLedger(
+                voucher_type_id: 22,
+                date: $request->date,
+                account_id: $request->production_account_id,
+                trans_id: $addProduction->id,
+                amount: $request->total_cost,
+                balance_type: 'debit'
+            );
         }
 
         if ($request->action_type == 'save_and_print') {
+
             $production = Production::with([
                 'branch',
                 'stock_branch:id,name,branch_code',
@@ -221,6 +259,7 @@ class ProductionController extends Controller
             ])->where('id', $addProduction->id)->first();
             return view('manufacturing.production.save_and_print_template.print', compact('production'));
         } else {
+
             return response()->json(['successMsg' => 'Successfully production is created.']);
         }
     }
@@ -272,7 +311,9 @@ class ProductionController extends Controller
         $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')
             ->where('branch_id', auth()->user()->branch_id)
             ->get();
+
         $taxes = DB::table('taxes')->select('id', 'tax_percent', 'tax_name')->get();
+        
         return view('manufacturing.production.edit', compact('warehouses', 'production', 'taxes'));
     }
 
@@ -288,10 +329,15 @@ class ProductionController extends Controller
         }
 
         $this->validate($request, [
+            'production_account_id' => 'required',
+            'process_id' => 'required',
             'date' => 'required',
             'output_quantity' => 'required',
             'final_output_quantity' => 'required',
             'total_cost' => 'required',
+        ], [
+            'production_account_id.required' => 'Production A/C is required',
+            'process_id.required' => 'Please select the product',
         ]);
 
         if (isset($request->store_warehouse_id) && isset($request->stock_warehouse_id)) {
@@ -311,6 +357,7 @@ class ProductionController extends Controller
         $storedWarehouseId = $updateProduction->warehouse_id;
 
         $updateProduction->reference_no = $request->reference_no ? $request->reference_no : ($referenceNoPrefix != null ? $referenceNoPrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('productions'), 5, "0", STR_PAD_LEFT);
+        $updateProduction->production_account_id = $request->production_account_id;
         $updateProduction->branch_id = auth()->user()->branch_id;
         $updateProduction->warehouse_id = isset($request->store_warehouse_id) ? $request->store_warehouse_id : NULL;
         $updateProduction->date = $request->date;
@@ -359,6 +406,19 @@ class ProductionController extends Controller
             $addRowInPurchaseProductTable->save();
         }
 
+        if (isset($request->is_final)) {
+
+            // Update Production A/C Ledger
+            $this->accountUtil->updateAccountLedger(
+                voucher_type_id: 22,
+                date: $request->date,
+                account_id: $request->production_account_id,
+                trans_id: $updateProduction->id,
+                amount: $request->total_cost,
+                balance_type: 'debit'
+            );
+        }
+        
         if (isset($request->product_ids)) {
             $index = 0;
             foreach ($request->product_ids as $product_id) {
@@ -422,7 +482,6 @@ class ProductionController extends Controller
     public function delete(Request $request, $productionId)
     {
         if (auth()->user()->permission->manufacturing['production_delete'] == '0') {
-
             return response()->json('Access Denied');
         }
 

@@ -6,10 +6,10 @@
     .payment_list_table {position: relative;}
     .payment_details_contant{background: azure!important;}
 </style>
-<div class="modal-dialog four-col-modal" role="document">
+<div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Receive Loan Due Payment</h6>
+            <h6 class="modal-title" id="exampleModalLabel">Loan Advance Receive</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                     class="fas fa-times"></span></a>
         </div>
@@ -30,20 +30,21 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Loan Pay : </strong>
+                                <li><strong>Total Loan&Advance : </strong>
                                     <span class="card_text invoice_no">
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                        <b>{{ App\Utils\Converter::format_in_bdt($company->pay_loan_amount) }}</b> 
                                     </span>
                                 </li>
 
-                                <li><strong>Total Due Receive : </strong>
+                                <li><strong>Total Received : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->total_receive) }}</b> 
                                     </span>
                                 </li>
-                                <li><strong>Total Payment Due : </strong>
+
+                                <li><strong>Total Due : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-danger">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->pay_loan_due) }}</b> 
@@ -56,7 +57,7 @@
             </div>
             
             <!--begin::Form-->
-            <form id="loan_payment_form" action="{{ route('accounting.loan.payment.due.receive.store', $company->id) }}" method="POST" enctype="multipart/form-data">
+            <form id="loan_payment_form" action="{{ route('accounting.loan.advance.receive.store', $company->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
@@ -64,13 +65,13 @@
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i
-                                        class="far fa-money-bill-alt text-dark"></i></span>
+                                        class="far fa-money-bill-alt text-dark input_i"></i></span>
                             </div>
                             <input type="hidden" id="p_available_amount" value="{{ $company->pay_loan_due }}">
-                            <input type="number" name="amount" class="form-control form-control-sm p_input" step="any"
-                                data-name="Amount" id="p_amount" value="" autocomplete="off" autofocus/>
+                            <input type="number" name="paying_amount" class="form-control p_input" step="any"
+                                data-name="Amount" id="p_paying_amount" value="" autocomplete="off" autofocus/>
                         </div>
-                        <span class="error error_p_amount"></span>
+                        <span class="error error_p_paying_amount"></span>
                     </div>
             
                     <div class="col-md-4">
@@ -78,9 +79,9 @@
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i
-                                        class="fas fa-calendar-week text-dark"></i></span>
+                                        class="fas fa-calendar-week text-dark input_i"></i></span>
                             </div>
-                            <input type="text" name="date" class="form-control form-control-sm p_input"
+                            <input type="text" name="date" class="form-control p_input"
                                 autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
                         </div>
                         <span class="error error_p_date"></span>
@@ -90,36 +91,39 @@
                         <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
                             </div>
-                            <select name="payment_method" class="form-control form-control-sm" id="payment_method">
-                                <option value="Cash">Cash</option>
-                                <option value="Advanced">Advanced</option>
-                                <option value="Card">Card</option>
-                                <option value="Cheque">Cheque</option>
-                                <option value="Bank-Transfer">Bank-Transfer</option>
-                                <option value="Other">Other</option>
-                                <option value="Custom">Custom Field</option>
+                            <select name="payment_method_id" class="form-control" id="p_payment_method_id">
+                                @foreach ($methods as $method)
+                                    <option value="{{ $method->id }}">
+                                        {{ $method->name }}
+                                    </option>
+                                @endforeach
                             </select>
+                            <span class="error error_p_payment_method_id"></span>
                         </div>
                     </div>
                 </div>
             
                 <div class="form-group row mt-2">
-                    <div class="col-md-7">
-                        <label><strong>Payment Account :</strong> </label>
+                    <div class="col-md-4">
+                        <label><strong>Debit Account :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i
-                                        class="fas fa-money-check-alt text-dark"></i></span>
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
                             </div>
-                            <select name="account_id" class="form-control form-control-sm" id="p_account_id">
-                                <option value="">None</option>
+                            <select required name="account_id" class="form-control add_input" id="p_account_id">
                                 @foreach ($accounts as $account)
-                                    <option {{ auth()->user()->branch ? auth()->user()->branch->default_account_id == $account->id ? 'SELECTED' : '' : '' }} value="{{ $account->id }}">{{ $account->name }} (A/C:
-                                        {{ $account->account_number }}) (Balance: {{ $account->balance }})</option>
+                                    <option value="{{ $account->id }}">
+                                        @php
+                                            $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                            $balance = ' BL : '.$account->balance;
+                                        @endphp
+                                        {{ $account->name.$accountType.$balance}}
+                                    </option>
                                 @endforeach
                             </select>
+                            <span class="error error_p_account_id"></span>
                         </div>
                     </div>
                 </div>
@@ -132,9 +136,8 @@
             
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button name="action" value="save" type="submit" class="c-btn btn_blue float-end" id="add_payment">Save</button>
-                        <button name="action" value="save_and_print" type="submit" class="c-btn btn_blue float-end" id="add_payment">Save & Print</button>
+                        <button type="button" class="btn loading_button_p loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                        <button name="action" value="save" type="submit" class="c-btn btn_blue float-end submit_button" id="add_payment">Save</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                     </div>
                 </div>
@@ -143,6 +146,61 @@
     </div>
 </div>
 
+<script>
+    //Add loan payment request by ajax
+    $('#loan_payment_form').on('submit',function(e){
+        e.preventDefault();
+        $('.loading_button_p').show();
+        var available_amount = $('#p_available_amount').val();
+        var paying_amount = $('#p_paying_amount').val();
+        if (parseFloat(paying_amount) > parseFloat(available_amount)) {
+            $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
+            $('.loading_button_p').hide();
+            return;
+        }
+
+        if (parseFloat(paying_amount) <= 0) {
+            $('.error_p_amount').html('Amount must be greater then 0.');
+            $('.loading_button_p').hide();
+            return;
+        }
+
+        var url = $(this).attr('action');
+        $('#submit_button').prop('type', 'button');
+        $.ajax({
+            url:url,
+            type:'post',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success:function(data){
+                $('#submit_button').prop('type', 'submit');
+                $('.loading_button_p').hide();
+                $('#loanPymentModal').modal('hide');
+                toastr.success(data);
+                companies_table.ajax.reload();
+                loans_table.ajax.reload();
+            },error: function(err) {
+                $('#submit_button').prop('type', 'submit');
+                $('.loading_button_p').hide();
+                $('.error').html('');
+
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }else if (err.status == 500) {
+                    toastr.error('Server error. Please contact the support team.'); 
+                    return;
+                }
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_p_' + key + '').html(error[0]);
+                });
+            }
+        });
+    });
+</script>
 
 <script>
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";

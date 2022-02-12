@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\CashFlow;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Models\PaymentMethod;
 use App\Models\SupplierLedger;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,7 +22,12 @@ class PurchasePayment extends Model
 
     public function account()
     {
-        return $this->belongsTo(Account::class, 'account_id')->select(['id', 'name', 'account_number', 'debit', 'credit', 'balance']);
+        return $this->belongsTo(Account::class, 'account_id');
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }
 
     public function cashFlow()

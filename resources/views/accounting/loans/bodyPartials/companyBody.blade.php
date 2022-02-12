@@ -71,9 +71,9 @@
                             <tr>
                                 <th>S/L</th>
                                 <th>Name</th>
-                                <th>Pay loan amount</th>
+                                <th>Total Loan&Advance</th>
                                 <th>Total Receive</th>
-                                <th>Get Loan Amount</th>
+                                <th>Total Loan&Liabilities</th>
                                 <th>Total Pay</th>
                                 <th>Action</th>
                             </tr>
@@ -99,7 +99,7 @@
 
   <!-- Customer payment view Modal--> 
   <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog col-60-modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>

@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\PurchaseReturnProduct;
 use App\Models\ProductWarehouseVariant;
+use App\Utils\AccountUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -33,6 +34,7 @@ class PurchaseReturnController extends Controller
     protected $supplierUtil;
     protected $purchaseUtil;
     protected $converter;
+    protected $accountUtil;
     protected $invoiceVoucherRefIdUtil;
     public function __construct(
         PurchaseReturnUtil $purchaseReturnUtil,
@@ -41,6 +43,7 @@ class PurchaseReturnController extends Controller
         SupplierUtil $supplierUtil,
         PurchaseUtil $purchaseUtil,
         Converter $converter,
+        AccountUtil $accountUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
         $this->purchaseReturnUtil = $purchaseReturnUtil;
@@ -49,6 +52,7 @@ class PurchaseReturnController extends Controller
         $this->supplierUtil = $supplierUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->converter = $converter;
+        $this->accountUtil = $accountUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->middleware('auth:admin_and_user');
     }
@@ -127,7 +131,7 @@ class PurchaseReturnController extends Controller
                             if ($row->purchase_id) {
                                 $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->purchase_id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
                             } else {
-                                $html .= '<a class="dropdown-item" id="add_supplier_return_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
+                                $html .= '<a class="dropdown-item" id="add_supplier_return_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Receive Return Amt.</a>';
                             }
                         }
                     }
@@ -188,30 +192,39 @@ class PurchaseReturnController extends Controller
         }
 
         $purchaseId = $purchaseId;
+
         $purchase = Purchase::with(['warehouse', 'branch', 'supplier'])->where('id', $purchaseId)->first();
-        return view('purchases.purchase_return.create', compact('purchaseId', 'purchase'));
+
+        $purchaseReturnAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 4)
+            ->get(['accounts.id', 'accounts.name']);
+
+        return view('purchases.purchase_return.create', compact('purchaseId', 'purchase', 'purchaseReturnAccounts'));
     }
 
     public function store(Request $request, $purchaseId)
     {
-        $this->validate($request, [
-            'date' => 'required',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'purchase_return_account_id' => 'required',
+                'date' => 'required',
+            ]
+        );
 
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
 
         // generate invoice ID
         $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_returns'), 4, "0", STR_PAD_LEFT);
-      
-        $purchase_product_ids = $request->purchase_product_ids;
-        $return_quantities = $request->return_quantities;
-        $return_subtotals = $request->return_subtotals;
-        $units = $request->units;
-
+     
         $qty = 0;
-        foreach ($return_quantities as $return_quantity) {
+        foreach ($request->return_quantities as $return_quantity) {
+
             if ($return_quantity > 0) {
+
                 $qty += 1;
             }
         }
@@ -221,13 +234,17 @@ class PurchaseReturnController extends Controller
         }
 
         $purchaseReturn = PurchaseReturn::where('purchase_id', $purchaseId)->first();
+
         if ($purchaseReturn) {
+
             $this->purchaseReturnUtil->updatePurchaseInvoiceWiseReturn($purchaseId, $purchaseReturn, $request, $invoicePrefix, $invoiceId);
         } else {
+
             $this->purchaseReturnUtil->storePurchaseInvoiceWiseReturn($purchaseId, $request, $invoicePrefix, $invoiceId);
         }
 
         if ($request->action == 'save_and_print') {
+
             $purchaseReturn = PurchaseReturn::with([
                 'purchase',
                 'branch',
@@ -240,9 +257,11 @@ class PurchaseReturnController extends Controller
             ])->where('purchase_id', $purchaseId)->first();
 
             if ($purchaseReturn) {
+
                 return view('purchases.purchase_return.save_and_print_template.purchase_return_print_view', compact('purchaseReturn'));
             }
         } else {
+
             return response()->json(['successMsg' => 'Purchase Return Added Successfully.']);
         }
     }
@@ -289,13 +308,18 @@ class PurchaseReturnController extends Controller
         $storedReturnType = $purchaseReturn->return_type;
         $storedBranchId = $purchaseReturn->branch_id;
         $storedWarehouseId = $purchaseReturn->warehouse_id;
+        $storePurchaseReturnAccountId = $purchaseReturn->purchase_return_account_id;
         $storeSupplierId = $purchaseReturn->purchase ? $purchaseReturn->purchase->supplier_id : $purchaseReturn->supplier_id;
+
         if ($purchaseReturn->return_type == 1) {
+
             $purchaseReturn->purchase->is_return_available = 0;
+
             if ($purchaseReturn->total_return_due_received > 0) {
                 return response()->json(['errorMsg' => "You can not delete this, cause your have received some or full amount on this return."]);
             }
         } else {
+
             if ($purchaseReturn->total_return_due_received > 0) {
                 return response()->json(['errorMsg' => "You can not delete this, cause your have received some or full amount on this return."]);
             }
@@ -303,14 +327,18 @@ class PurchaseReturnController extends Controller
         $purchaseReturn->delete();
 
         foreach ($storeReturnProducts as $return_product) {
+
             $this->productStockUtil->adjustMainProductAndVariantStock($return_product->product_id, $return_product->product_variant_id);
+
             if ($storedReturnType == 1) {
+
                 if ($storePurchase->warehouse_id) {
                     $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $storePurchase->warehouse_id);
                 } else {
                     $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $storePurchase->branch_id);
                 }
             } else {
+
                 if ($storedWarehouseId) {
                     $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $storedWarehouseId);
                 } else {
@@ -323,6 +351,10 @@ class PurchaseReturnController extends Controller
             $this->purchaseUtil->adjustPurchaseInvoiceAmounts($storePurchase);
         }
 
+        if ($storePurchaseReturnAccountId) {
+            $this->accountUtil->adjustAccountBalance('credit', $storePurchaseReturnAccountId);
+        }
+
         $this->supplierUtil->adjustSupplierForSalePaymentDue($storeSupplierId);
         return response()->json('Successfully purchase return is deleted');
     }
@@ -332,10 +364,18 @@ class PurchaseReturnController extends Controller
         if (auth()->user()->permission->purchase['purchase_return'] == '0') {
             abort(403, 'Access Forbidden.');
         }
+
         $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')
             ->where('branch_id', auth()->user()->branch_id)->get();
+
+        $purchaseReturnAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 4)
+            ->get(['accounts.id', 'accounts.name']);
+
         $suppliers = DB::table('suppliers')->select('id', 'name', 'phone')->get();
-        return view('purchases.purchase_return.supplier_return', compact('warehouses', 'suppliers'));
+        return view('purchases.purchase_return.supplier_return', compact('warehouses', 'suppliers', 'purchaseReturnAccounts'));
     }
 
     // Search product by code
@@ -420,7 +460,6 @@ class PurchaseReturnController extends Controller
         return $this->nameSearchUtil->nameSearching($product_code);
     }
 
-
     public function checkWarehouseProductVariant($productId, $variantId, $warehouseId)
     {
         $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouseId)->where('product_id', $productId)->first();
@@ -460,6 +499,7 @@ class PurchaseReturnController extends Controller
 
         $addPurchaseReturn = new PurchaseReturn();
         $addPurchaseReturn->supplier_id = $request->supplier_id;
+        $addPurchaseReturn->purchase_return_account_id = $request->purchase_return_account_id;
         $addPurchaseReturn->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $addPurchaseReturn->branch_id = auth()->user()->branch_id;
         $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
@@ -513,7 +553,25 @@ class PurchaseReturnController extends Controller
             $__index2++;
         }
 
-        $this->supplierUtil->adjustSupplierForSalePaymentDue($request->supplier_id);
+        // Add Purchase Return A/C ledger
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 4,
+            date: $request->date,
+            account_id: $request->purchase_return_account_id,
+            trans_id: $addPurchaseReturn->id,
+            amount: $request->total_return_amount,
+            balance_type: 'credit'
+        );
+
+        // Add supplier Ledger
+        $this->supplierUtil->addSupplierLedger(
+            voucher_type_id: 2,
+            supplier_id: $request->supplier_id,
+            date: $request->date,
+            trans_id: $addPurchaseReturn->id,
+            amount: $request->total_return_amount
+        );
+
         return response()->json('Successfully purchase return is added.');
     }
 
@@ -523,7 +581,14 @@ class PurchaseReturnController extends Controller
         $purchaseReturnId = $purchaseReturnId;
         $return = DB::table('purchase_returns')->where('id', $purchaseReturnId)->first();
         $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')->get();
-        return view('purchases.purchase_return.edit_supplier_return', compact('purchaseReturnId', 'return', 'warehouses'));
+
+        $purchaseReturnAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 4)
+            ->get(['accounts.id', 'accounts.name']);
+
+        return view('purchases.purchase_return.edit_supplier_return', compact('purchaseReturnId', 'return', 'warehouses', 'purchaseReturnAccounts'));
     }
 
     public function getEditableSupplierReturn($purchaseReturnId)
@@ -569,10 +634,14 @@ class PurchaseReturnController extends Controller
 
     public function supplierReturnUpdate(Request $request, $purchaseReturnId)
     {
+        //return $request->purchase_return_account_id;
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
+
         $updatePurchaseReturn = PurchaseReturn::with('purchase_return_products')->where('id', $purchaseReturnId)->first();
+
         $storedWarehouseId = $updatePurchaseReturn->warehouse_id;
+
         $storedReturnProducts = $updatePurchaseReturn->purchase_return_products;
 
         foreach ($updatePurchaseReturn->purchase_return_products as $purchase_return_product) {
@@ -661,7 +730,25 @@ class PurchaseReturnController extends Controller
             }
         }
 
-        $this->supplierUtil->adjustSupplierForSalePaymentDue($updatePurchaseReturn->supplier_id);
+        // Update Purchase Return A/C ledger
+        $this->accountUtil->updateAccountLedger(
+            voucher_type_id: 4,
+            date: $request->date,
+            account_id: $request->purchase_return_account_id,
+            trans_id: $updatePurchaseReturn->id,
+            amount: $request->total_return_amount,
+            balance_type: 'credit'
+        );
+
+        // Update Supplier Ledger
+        $this->supplierUtil->updateSupplierLedger(
+            voucher_type_id: 2,
+            supplier_id: $updatePurchaseReturn->supplier_id,
+            date: $request->date,
+            trans_id: $updatePurchaseReturn->id,
+            amount: $request->total_return_amount
+        );
+
         session()->flash('successMsg', 'Purchase return created successfully.');
         return response()->json('Purchase return created successfully.');
     }

@@ -1308,6 +1308,10 @@ li.dp-link {
     font-size: 12px;
 }
 
+.input_f {
+    font-size: 13px;
+}
+
 div#sidebar_t {
     height: 100vh;
 }

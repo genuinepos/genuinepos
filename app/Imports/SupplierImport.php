@@ -7,10 +7,13 @@ use App\Models\SupplierLedger;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\SupplierUtil;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class SupplierImport implements ToCollection
 {
+    protected $supplierUtil;
+    protected $invoiceVoucherRefIdUtil;
     /**
      * @param Collection $collection
      */
@@ -18,14 +21,18 @@ class SupplierImport implements ToCollection
     {
         $this->invoiceVoucherRefIdUtil = new InvoiceVoucherRefIdUtil;
         //dd($collection);
+
         $index = 0;
         $generalSettings = DB::table('general_settings')->first('prefix');
         $supIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
+        $this->supplierUtil = new SupplierUtil();
         foreach ($collection as $c) {
             if ($index != 0) {
                 if ($c[2]) {
+
                     $firstLetterOfSupplier = str_split($c[2])[0];
                     $supplierId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT);
+
                     $addSupplier = Supplier::create([
                         'contact_id' => $c[0] ? $c[0] : $supIdPrefix . $supplierId,
                         'business_name' => $c[1],
@@ -49,13 +56,14 @@ class SupplierImport implements ToCollection
                         'total_purchase_due' => (float)$c[9] ? (float)$c[9] : 0,
                     ]);
 
-                    if ((float)$c[9] && (float)$c[9] >= 0) {
-                        $addSupplierLedger = new SupplierLedger();
-                        $addSupplierLedger->supplier_id = $addSupplier->id;
-                        $addSupplierLedger->row_type = 3;
-                        $addSupplierLedger->amount = (float)$c[9];
-                        $addSupplierLedger->save();
-                    }
+                    // Add supplier Ledger
+                    $this->supplierUtil->addSupplierLedger(
+                        voucher_type_id: 0,
+                        supplier_id: $addSupplier->id,
+                        date: date('Y-m-d'),
+                        trans_id: NULL,
+                        amount: (float)$c[9] ? (float)$c[9] : 0
+                    );
                 }
             }
             $index++;

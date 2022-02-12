@@ -154,12 +154,12 @@
                                 tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
                                 tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
                                     unites.forEach(function(unit) {
-                                    if (product.unit.name == unit) {
-                                        tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
-                                    }else{
-                                        tr += '<option value="'+unit+'">'+unit+'</option>';   
-                                    }
-                                })
+                                        if (product.unit.name == unit) {
+                                            tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
+                                        } else {
+                                            tr += '<option value="'+unit+'">'+unit+'</option>';   
+                                        }
+                                    });
                                 tr += '</select>';
                                 tr += '</td>';
 
@@ -230,28 +230,60 @@
                             $('#search_product').val('');
                         }
                     }else if(!$.isEmptyObject(product.namedProducts)){
-                        if(product.namedProducts.length > 0){
+
+                        if(product.namedProducts.length > 0) {
+
+                            // var li = "";
+                            // var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                            // var products = product.namedProducts; 
+                            // $.each(products, function (key, product) {
+                            //     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
+                            //     if (product.product_variants.length > 0) {
+                            //         $.each(product.product_variants, function(key, variant){
+                            //             var tax_amount = parseFloat(product.tax != null ? variant.variant_cost/100 * product.tax.tax_percent : 0.00);
+                            //             var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price);
+                            //             li += '<li class="mt-1">';
+                            //             li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                            //             li +='</li>';
+                            //         });
+                            //     }else{
+                            //         var tax_amount = parseFloat(product.tax != null ? product.product_cost/100 * product.tax.tax_percent : 0.00);
+                            //         var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
+                            //         li += '<li class="mt-1">';
+                            //         li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-p_code="'+product.product_code+'" data-p_cost="'+product.product_cost+'" data-p_profit="'+product.profit+'" data-p_price="'+product.product_price+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                            //         li +='</li>';
+                            //     }
+                            // });
+
+                            // Test
+
                             var li = "";
                             var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                             var products = product.namedProducts; 
                             $.each(products, function (key, product) {
-                                var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
-                                if (product.product_variants.length > 0) {
-                                    $.each(product.product_variants, function(key, variant){
-                                        var tax_amount = parseFloat(product.tax != null ? variant.variant_cost/100 * product.tax.tax_percent : 0.00);
-                                        var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
-                                        li += '<li class="mt-1">';
-                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
-                                        li +='</li>';
-                                    });
-                                }else{
-                                    var tax_amount = parseFloat(product.tax != null ? product.product_cost/100 * product.tax.tax_percent : 0.00);
-                                    var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
+
+                                var tax_percent = product.tax_percent != null ? product.tax_percent : 0.00;
+
+                                if (product.is_variant == 1) {
+                                   
+                                    var tax_amount = parseFloat(product.variant_cost/100 * product.tax_percent);
+                                    var unitPriceIncTax = (parseFloat(product.variant_price) / 100 * tax_percent) + parseFloat(product.variant_price);
                                     li += '<li class="mt-1">';
-                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-p_code="'+product.product_code+'" data-p_cost="'+product.product_cost+'" data-p_profit="'+product.profit+'" data-p_price="'+product.product_price+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#"><img style="width:30px; height:30px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit_name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+product.variant_code+'" data-v_cost="'+product.variant_cost+'" data-v_profit="'+product.variant_profit+'" data-v_price="'+product.variant_price+'" data-v_cost_with_tax="'+product.variant_cost_with_tax+'"  data-v_name="'+product.variant_name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Unit Cost: '+product.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li +='</li>';
+                                    
+                                } else {
+
+                                    var tax_amount = parseFloat(product.product_cost/100 * product.tax_percent);
+
+                                    var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
+
+                                    li += '<li class="mt-1">';
+                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit_name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-p_code="'+product.product_code+'" data-p_cost="'+product.product_cost+'" data-p_profit="'+product.profit+'" data-p_price="'+product.product_price+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li +='</li>';
                                 }
                             });
+
                             $('.variant_list_area').html(li);
                             $('.select_area').show();
                         }
@@ -730,7 +762,7 @@
     $(document).on('input', '#selling_price',function() {
         var selling_price = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
-        var product_cost = tr.find('#unit_cost').val() ? tr.find('#unit_cost').val() : 0;
+        var product_cost = tr.find('#unit_cost_with_discount').val() ? tr.find('#unit_cost_with_discount').val() : 0;
         var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
         var __cost = parseFloat(product_cost) > 0 ? parseFloat(product_cost) : parseFloat(profitAmount);
         var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
@@ -874,26 +906,7 @@
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
-        var inputs = $('.add_input');
-            inputs.removeClass('is-invalid');
-            $('.error').html('');  
-            var countErrorField = 0;  
-        $.each(inputs, function(key, val){
-            var inputId = $(val).attr('id');
-            var idValue = $('#'+inputId).val();
-            if(idValue == ''){
-                countErrorField += 1;
-                var fieldName = $('#'+inputId).data('name');
-                $('.error_'+inputId).html(fieldName+' is required.');
-            }
-        });
-
-        if(countErrorField > 0){
-            $('.loading_button').hide();
-            toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-            return;
-        }
-
+        
         $.ajax({
             url:url,
             type:'post',
@@ -914,14 +927,20 @@
                         window.location = "{{route('purchases.po.list')}}";
                     @endif
                 }
-            }, error: function(err) {
+            },error: function(err) {
                 $('.loading_button').hide();
                 $('.error').html('');
+                
                 if (err.status == 0) {
                     toastr.error('Net Connetion Error. Reload This Page.'); 
-                }else{
-                    toastr.error('Server error please contact to the support team.');
+                    return;
                 }
+
+                toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_' + key + '').html(error[0]);
+                });
             }
         });
     });
@@ -1132,6 +1151,7 @@
                 $('#purchase_status').val(purchase.purchase_status);
                 $('#pay').val(purchase.purchase_status);
                 $('#paid').val(purchase.paid);
+                $('#purchase_account_id').val(purchase.purchase_account_id);
                 var product_rows = '';
                 if ($.isEmptyObject(purchase.purchase_products)) {
                     product_rows = purchase.purchase_order_products;
@@ -1242,7 +1262,26 @@
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
     new Litepicker({
         singleMode: true,
-        element: document.getElementById('datepicker'),
+        element: document.getElementById('date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat,
+    });
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('delivery_date'),
         dropdowns: {
             minYear: new Date().getFullYear() - 50,
             maxYear: new Date().getFullYear() + 100,

@@ -68,7 +68,13 @@
                             <td class="text-start">{{ $payment->invoice_id }}</td>
                             <td class="text-start">{{ $payment->note }}</td>
                             <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'].' '.$payment->paid_amount }}</td>
-                            <td class="text-start">{{ $payment->pay_mode }}</td>
+                            <td class="text-start">
+                                @if ($payment->payment_method)
+                                      {{ $payment->payment_method->name }}
+                                @else 
+                                    {{ $payment->pay_mode }}
+                                @endif
+                            </td>
                             <td class="text-start">{{ 'Expanse due'  }}</td>
                             <td class="text-start">{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
                             <td class="text-start">

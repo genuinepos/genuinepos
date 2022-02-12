@@ -5,7 +5,7 @@
         .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
         .form-control {padding: 4px!important;}
     </style>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('title', 'HRM Payrolls - ')
 @section('content')
@@ -86,14 +86,13 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
-                                        <form action="" method="get" class="px-2">
+                                        <form id="filter_form" class="px-2">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if ($addons->branches == 1)
                                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                            <div class="col-md-3">
-                                                                <label><strong>Branch :</strong></label>
+                                                            <div class="col-md-2">
+                                                                <label><strong>Business Location :</strong></label>
                                                                 <select name="branch_id"
                                                                     class="form-control submit_able" id="branch_id" autofocus>
                                                                     <option value="">All</option>
@@ -109,8 +108,8 @@
                                                     @endif
                                                 @endif
                                                 
-                                                <div class="col-md-3">
-                                                    <label><strong>Users :</strong></label>
+                                                <div class="col-md-2">
+                                                    <label><strong>Users/Employees :</strong></label>
                                                     <select name="user_id"
                                                         class="form-control submit_able" id="user_id" autofocus>
                                                         <option value="">All</option>
@@ -120,16 +119,34 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                    <label><strong>Date Range :</strong></label>
+                                                <div class="col-md-2">
+                                                    <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
+                                                        <input type="text" name="from_date" id="datepicker"
+                                                            class="form-control from_date date"
                                                             autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i
+                                                                    class="fas fa-calendar-week input_f"></i></span>
+                                                        </div>
+                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -139,7 +156,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
                     <div class="container-fluid">
                         <div class="row">
@@ -174,9 +190,7 @@
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -263,9 +277,7 @@
                     <h6 class="modal-title" id="exampleModalLabel">Payroll Payments</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="payment_view_modal_body">
-                
-                </div>
+                <div class="modal-body" id="payment_view_modal_body"></div>
             </div>
         </div>
     </div>
@@ -278,18 +290,14 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
 
-                <div class="modal-body" id="payment_modal_body">
-                    
-                </div>
+                <div class="modal-body" id="payment_modal_body"></div>
             </div>
         </div>
     </div>
 
     <div class="modal fade" id="viewPayrollModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog col-50-modal" role="document">
-            <div class="modal-content" id="view_payroll_modal_content">
-
-            </div>
+            <div class="modal-content" id="view_payroll_modal_content"></div>
         </div>
     </div>
 
@@ -300,9 +308,9 @@
                     <h6 class="modal-title" id="exampleModalLabel">Payment Details</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="payment_details_modal_body">
-                    
-                </div>
+
+                <div class="modal-body" id="payment_details_modal_body"></div>
+
                 <div class="modal-footer">
                     <div class="form-group text-end">
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
@@ -314,8 +322,7 @@
     </div>
 @endsection
 @push('scripts')
-<script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
 <script>
     // Show session message by toster alert.
@@ -341,7 +348,8 @@
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.user_id = $('#user_id').val();
-                d.date_range = $('#date_range').val();
+                d.from_date = $('.from_date').val();
+                d.to_date = $('.to_date').val();
             }
         },
         columns: [
@@ -354,33 +362,21 @@
             {data: 'payment_status', name: 'payment_status'},
             {data: 'created_by', name: 'created_by'},
             {data: 'action'},
-        ],
+        ],fnDrawCallback: function() {
+            $('.data_preloader').hide();
+        }
     });
 
     //Submit filter form by select input changing
-    $(document).on('change', '.submit_able', function () {
+    $(document).on('submit', '#filter_form', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
         table.ajax.reload();
-    });
-
-    //Submit filter form by date-range field blur 
-    $(document).on('blur', '.submit_able_input', function () {
-        setTimeout(function() {
-            table.ajax.reload();
-        }, 800);
-    });
-
-    //Submit filter form by date-range apply button
-    $(document).on('click', '.applyBtn', function () {
-        setTimeout(function() {
-            $('.submit_able_input').addClass('.form-control:focus');
-            $('.submit_able_input').blur();
-        }, 1000);
     });
 
     $('#department_id').on('change', function(e){
         e.preventDefault();
         var department_id = $(this).val();
-        console.log(department_id);
         $.ajax({
             url:"{{ url('hrm/leave/department/employees/') }}"+"/"+department_id,
             type:'get',
@@ -460,61 +456,6 @@
         });
     });
 
-    //Add sale payment request by ajax
-    $(document).on('submit', '#payroll_payment_form', function(e){
-        e.preventDefault();
-        $('.loading_button').show();
-        var available_amount = $('#available_amount').val();
-        var paying_amount = $('#p_amount').val();
-        if (parseFloat(paying_amount) > parseFloat(available_amount)) {
-            $('.error_p_amount').html('Paying amount must not be greater then due amount.');
-            $('.loading_button').hide();
-            return;
-        }
-
-        var url = $(this).attr('action');
-        var inputs = $('.p_input');
-            inputs.removeClass('is-invalid');
-            $('.error').html('');  
-            var countErrorField = 0;  
-        $.each(inputs, function(key, val){
-            var inputId = $(val).attr('id');
-            var idValue = $('#'+inputId).val();
-            if(idValue == ''){
-                countErrorField += 1;
-                var fieldName = $('#'+inputId).data('name');
-                $('.error_'+inputId).html(fieldName+' is required.');
-            }
-        });
-
-        if(countErrorField > 0){
-            $('.loading_button').hide();
-            toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-            return;
-        }
-
-        $.ajax({
-            url:url,
-            type:'post',
-            data: new FormData(this),
-            contentType: false,
-            cache: false,
-            processData: false,
-            success:function(data){
-                if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
-                    $('.loading_button').hide();
-                }else{
-                    table.ajax.reload();
-                    $('.loading_button').hide();
-                    $('.modal').modal('hide');
-                    toastr.success(data); 
-                }
-            }
-        });
-    });
-
-
     $(document).on('click', '#delete',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
@@ -525,15 +466,9 @@
             'buttons': {
                 'Yes': {
                     'class': 'yes bg-primary',
-                    'action': function() {
-                        $('#deleted_form').submit();
-                    }
+                    'action': function() {$('#deleted_form').submit();}
                 },
-                'No': {
-                    'class': 'no bg-danger',
-                    'action': function() {
-                        // alert('Deleted canceled.')
-                    } 
+                'No': {'class': 'no bg-danger','action': function() {console.log('Deleted canceled.');} 
                 }
             }
         });
@@ -613,12 +548,6 @@
         });
     });
 
-    $(document).on('change', '#payment_method',function () {
-        var value = $(this).val();
-        $('.payment_method').hide();
-        $('#'+value).show();
-    });
-
     $(document).on('click', '.print_payroll',function (e) {
        e.preventDefault(); 
         var body = $('.payroll_print_area').html();
@@ -673,6 +602,46 @@
                 'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
             }
         });
+    });
+</script>
+
+<script type="text/javascript">
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY'
+    });
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker2'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY',
     });
 </script>
 @endpush

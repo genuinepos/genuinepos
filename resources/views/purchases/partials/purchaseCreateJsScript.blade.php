@@ -4,12 +4,6 @@
     $('.collapse_table').on('click', function () {
         $('.last_p_product_list').toggle(500);
     });
-    
-    $('#payment_method').on('change', function () {
-        var value = $(this).val();
-        $('.payment_method').hide();
-        $('#'+value).show();
-    });
 
     var suppliersArray = '';
     function setSuppliers(){
@@ -24,19 +18,6 @@
         });
     }
     setSuppliers();
-
-    function setAccount(){
-        $.ajax({
-            url:"{{route('accounting.accounts.all.form.account')}}",
-            success:function(accounts){
-                $.each(accounts, function (key, account) {
-                    $('#account_id').append('<option value="'+account.id+'">'+ account.name +' (A/C: '+account.account_number+')'+' (Balance: '+account.balance+')'+'</option>');
-                });
-                $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
-            }
-        });
-    }
-    setAccount();
 
     $('#supplier_id').on('change', function () {
         document.getElementById('search_product').focus();
@@ -104,7 +85,7 @@
 
         quantities.forEach(function(qty){
             total_item += 1;
-            total_qty += parseFloat(qty.value);
+            total_qty += parseFloat(qty.value)
         });
 
         $('#total_qty').val(parseFloat(total_qty));
@@ -216,21 +197,27 @@
                                 tr += '<td>';
                                 tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
                                 tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
-                                    unites.forEach(function(unit) {
+                                unites.forEach(function(unit) {
+
                                     if (product.unit.name == unit) {
+
                                         tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
                                     }else{
+
                                         tr += '<option value="'+unit+'">'+unit+'</option>';   
                                     }
-                                })
+                                });
                                 tr += '</select>';
                                 tr += '</td>';
 
                                 tr += '<td>';
                                 tr += '<input value="'+product.product_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost" autocomplete="off">';
+                                
                                 @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
+
                                     tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
                                 @endif
+
                                 tr += '</td>';
 
                                 tr += '<td>';
@@ -246,7 +233,8 @@
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<input realonly type="text" name="tax_percents[]" id="tax_percent" class="form-control" value="'+tax_percent+'">';
+                                tr += '<span>'+tax_percent+'%'+'</span>'
+                                tr += '<input type="hidden" name="tax_percents[]" id="tax_percent" value="'+tax_percent+'">';
                                 tr += '<input type="hidden" value="'+parseFloat(tax_amount).toFixed(2)+'" name="unit_taxes[]" id="unit_tax">';
                                 tr += '</td>';
 
@@ -260,6 +248,7 @@
                                 tr += '</td>';
 
                                 @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
+
                                     tr += '<td>';
                                     tr += '<input value="'+product.profit+'" type="text" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                                     tr += '</td>';
@@ -278,7 +267,7 @@
                                 calculateTotalAmount();  
                             }
                         }else{
-                            //console.log(product); 
+
                             var li = "";
                             var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                             var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
@@ -294,25 +283,56 @@
                             $('#search_product').val('');
                         }
                     }else if(!$.isEmptyObject(product.namedProducts)){
+
                         if(product.namedProducts.length > 0) {
+
+                            // var li = "";
+                            // var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                            // var products = product.namedProducts; 
+                            // $.each(products, function (key, product) {
+                            //     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
+                            //     if (product.product_variants.length > 0) {
+                            //         $.each(product.product_variants, function(key, variant){
+                            //             var tax_amount = parseFloat(product.tax != null ? variant.variant_cost/100 * product.tax.tax_percent : 0.00);
+                            //             var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price);
+                            //             li += '<li class="mt-1">';
+                            //             li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                            //             li +='</li>';
+                            //         });
+                            //     }else{
+                            //         var tax_amount = parseFloat(product.tax != null ? product.product_cost/100 * product.tax.tax_percent : 0.00);
+                            //         var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
+                            //         li += '<li class="mt-1">';
+                            //         li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-p_code="'+product.product_code+'" data-p_cost="'+product.product_cost+'" data-p_profit="'+product.profit+'" data-p_price="'+product.product_price+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                            //         li +='</li>';
+                            //     }
+                            // });
+
+                            // Test
+
                             var li = "";
                             var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                             var products = product.namedProducts; 
                             $.each(products, function (key, product) {
-                                var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
-                                if (product.product_variants.length > 0) {
-                                    $.each(product.product_variants, function(key, variant){
-                                        var tax_amount = parseFloat(product.tax != null ? variant.variant_cost/100 * product.tax.tax_percent : 0.00);
-                                        var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price);
-                                        li += '<li class="mt-1">';
-                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
-                                        li +='</li>';
-                                    });
-                                }else{
-                                    var tax_amount = parseFloat(product.tax != null ? product.product_cost/100 * product.tax.tax_percent : 0.00);
-                                    var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
+
+                                var tax_percent = product.tax_percent != null ? product.tax_percent : 0.00;
+
+                                if (product.is_variant == 1) {
+                                   
+                                    var tax_amount = parseFloat(product.variant_cost/100 * product.tax_percent);
+                                    var unitPriceIncTax = (parseFloat(product.variant_price) / 100 * tax_percent) + parseFloat(product.variant_price);
                                     li += '<li class="mt-1">';
-                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-p_code="'+product.product_code+'" data-p_cost="'+product.product_cost+'" data-p_profit="'+product.profit+'" data-p_price="'+product.product_price+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit_name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+product.variant_code+'" data-v_cost="'+product.variant_cost+'" data-v_profit="'+product.variant_profit+'" data-v_price="'+product.variant_price+'" data-v_cost_with_tax="'+product.variant_cost_with_tax+'"  data-v_name="'+product.variant_name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Unit Cost: '+product.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li +='</li>';
+                                    
+                                }else{
+
+                                    var tax_amount = parseFloat(product.product_cost/100 * product.tax_percent);
+
+                                    var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
+
+                                    li += '<li class="mt-1">';
+                                    li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit_name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-p_code="'+product.product_code+'" data-p_cost="'+product.product_cost+'" data-p_profit="'+product.profit+'" data-p_price="'+product.product_price+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li +='</li>';
                                 }
                             });
@@ -321,6 +341,7 @@
                             $('.select_area').show();
                         }
                     }else if(!$.isEmptyObject(product.variant_product)){
+
                         $('.select_area').hide();
                         $('#search_product').val('');
                         var variant_product = product.variant_product;
@@ -329,9 +350,13 @@
                         var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * tax_percent : 0); 
                         var variant_ids = document.querySelectorAll('#variant_id');
                         var sameVariant = 0;
+
                         variant_ids.forEach(function(input){
+
                             if(input.value != 'noid'){
+
                                 if(input.value == variant_product.id){
+
                                     sameVariant += 1;
                                     var className = input.getAttribute('class');
                                     // get closest table row for increasing qty and re calculate product amount
@@ -366,6 +391,7 @@
                         });
                         
                         if(sameVariant == 0){
+
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                             var tax_amount = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * variant_product.product.tax.tax_percent : 0);
                             var tr = '';
@@ -380,10 +406,14 @@
                             tr += '<td>';
                             tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
                             tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
+
                             unites.forEach(function(unit) {
+
                                 if (variant_product.product.unit.name == unit) {
+
                                     tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
                                 }else{
+
                                     tr += '<option value="'+unit+'">'+unit+'</option>';   
                                 }
                             })
@@ -392,9 +422,12 @@
 
                             tr += '<td>';
                             tr += '<input value="'+variant_product.variant_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost">';
+
                             @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
+
                                 tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
                             @endif
+
                             tr += '</td>';
 
                             tr += '<td>';
@@ -410,7 +443,8 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<input readonly type="text"  name="tax_percents[]" id="tax_percent" class="form-control" id="unit_tax" value="'+tax_percent+'">';
+                            tr += '<span>'+tax_percent+'%'+'</span>'
+                            tr += '<input readonly type="hidden" name="tax_percents[]" id="tax_percent" value="'+tax_percent+'">';
                             tr += '<input type="hidden" value="'+parseFloat(tax_amount).toFixed(2)+'" name="unit_taxes[]" id="unit_tax">';
                             tr += '</td>';
 
@@ -424,6 +458,7 @@
                             tr += '</td>';
 
                             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
+
                                 tr += '<td>';
                                 tr += '<input value="'+variant_product.variant_profit+'" type="text" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                                 tr += '</td>';
@@ -453,8 +488,10 @@
     var keyName = 1;
     function singleProduct(e){
         if (keyName == 13 || keyName == 1) {
+
             document.getElementById('search_product').focus();
         }
+
         $('.select_area').hide();
         $('#search_product').val('');
 
@@ -472,8 +509,11 @@
         var product_price = e.getAttribute('data-p_price');
         product_ids = document.querySelectorAll('#product_id');
         var sameProduct = 0;
+
         product_ids.forEach(function(input){
+
             if(input.value == product_id){
+
                 sameProduct += 1;
                 var className = input.getAttribute('class');
                 // get closest table row for increasing qty and re calculate product amount
@@ -503,6 +543,7 @@
                 var lineTotal = closestTr.find('#line_total').val(parseFloat(calcLineTotal));
                 calculateTotalAmount();
                 if (keyName == 9) {
+
                     closestTr.find('#quantity').focus();
                     closestTr.find('#quantity').select();
                     keyName = 1;
@@ -512,6 +553,7 @@
         });
 
         if(sameProduct == 0) {
+
             var tr = '';
             tr += '<tr class="text-start">';
             tr += '<td>';
@@ -524,21 +566,29 @@
             tr += '<td>';
             tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity" autocomplete="off">';
             tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
-                unites.forEach(function(unit) {
+
+            unites.forEach(function(unit) {
+
                 if (product_unit == unit) {
+
                     tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
                 }else{
+
                     tr += '<option value="'+unit+'">'+unit+'</option>';   
                 }
-            })
+            });
+
             tr += '</select>';
             tr += '</td>';
 
             tr += '<td>';
             tr += '<input value="'+product_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost" autocomplete="off">';
+
             @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
+
                 tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
             @endif
+
             tr += '</td>';
 
             tr += '<td>';
@@ -554,8 +604,9 @@
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input readonly type="text" name="tax_percents[]"  id="tax_percent" class="form-control" value="'+tax_percent+'">'
-            tr += '<input type="hidden" value="'+parseFloat(tax_amount).toFixed(2)+'" name="unit_taxes[]"   id="unit_tax">';
+            tr += '<span>'+tax_percent+'%'+'</span>';
+            tr += '<input type="hidden" name="tax_percents[]" id="tax_percent" value="'+tax_percent+'">';
+            tr += '<input type="hidden" name="unit_taxes[]" value="'+parseFloat(tax_amount).toFixed(2)+'" id="unit_tax">';
             ;
             tr += '</td>';
 
@@ -594,7 +645,9 @@
 
     // select variant product and add purchase table
     function salectVariant(e){
+
         if (keyName == 13 || keyName == 1) {
+
             document.getElementById('search_product').focus();
         }
         
@@ -615,9 +668,13 @@
         var variant_price = e.getAttribute('data-v_price');
         var variant_ids = document.querySelectorAll('#variant_id');
         var sameVariant = 0;
+
         variant_ids.forEach(function(input){
+
             if(input.value != 'noid'){
+
                 if(input.value == variant_id){
+
                     sameVariant += 1;
                     var className = input.getAttribute('class');
                     // get closest table row for increasing qty and re calculate product amount
@@ -646,7 +703,9 @@
                     var calcLineTotal = parseFloat(calsNetUnitCost) * parseFloat(updateQty);
                     var lineTotal = closestTr.find('#line_total').val(parseFloat(calcLineTotal));
                     calculateTotalAmount();
+
                     if (keyName == 9) {
+
                         closestTr.find('#quantity').focus();
                         closestTr.find('#quantity').select();
                         keyName = 1;
@@ -657,6 +716,7 @@
         });
 
         if(sameVariant == 0){
+
             var tr = '';
             tr += '<tr class="text-start">';
             tr += '<td>';
@@ -669,10 +729,14 @@
             tr += '<td>';
             tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity" autocomplete="off">';
             tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
+
             unites.forEach(function(unit) {
+
                 if (product_unit == unit) {
+
                     tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
                 }else{
+
                     tr += '<option value="'+unit+'">'+unit+'</option>';   
                 }
             })
@@ -682,9 +746,12 @@
 
             tr += '<td>';
             tr += '<input value="'+variant_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost">';
+
             @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
+
                 tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
             @endif
+
             tr += '</td>';
             tr += '<td>';
             tr += '<input readonly value="0.00" required name="unit_discounts[]" type="number" class="form-control" id="unit_discount">';
@@ -699,9 +766,9 @@
             tr += '</td>';
 
             tr += '<td>';
-            
-            tr += '<input readonly type="text" name="tax_percents[]"  id="tax_percent" class="form-control" value="'+tax_percent+'">%';
-            tr += '<input type="hidden" value="'+parseFloat(tax_amount).toFixed(2)+'" name="unit_taxes[]" type="text" id="unit_tax" autocomplete="off">';
+            tr += '<span>'+tax_percent+'%'+'</span>';
+            tr += '<input type="hidden" name="tax_percents[]" id="tax_percent" class="form-control" value="'+tax_percent+'">';
+            tr += '<input type="hidden" value="'+parseFloat(tax_amount).toFixed(2)+'" name="unit_taxes[]" id="unit_tax">';
             tr += '</td>';
 
             tr += '<td>';
@@ -714,6 +781,7 @@
             tr += '</td>';
 
             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
+
                 tr += '<td>';
                 tr += '<input value="'+variant_profit+'" type="text" name="profits[]" class="form-control" type="number" id="profit" autocomplete="off">';
                 tr += '</td>';
@@ -730,7 +798,9 @@
             tr += '</tr>';
             $('#purchase_list').prepend(tr); 
             calculateTotalAmount();
+
             if (keyName == 9) {
+
                 $("#quantity").select();
                 keyName = 1;
             }
@@ -739,6 +809,7 @@
 
     // Quantity increase or dicrease and clculate row amount
     $(document).on('input', '#quantity', function(){
+
         var qty = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
         //Update subtotal 
@@ -756,6 +827,7 @@
 
     // Change tax percent and clculate row amount
     $(document).on('input', '#unit_cost', function(){
+
         var unitCost = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
         
@@ -792,9 +864,10 @@
     });
 
     $(document).on('input', '#selling_price',function() {
+
         var selling_price = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
-        var product_cost = tr.find('#unit_cost').val() ? tr.find('#unit_cost').val() : 0;
+        var product_cost = tr.find('#unit_cost_with_discount').val() ? tr.find('#unit_cost_with_discount').val() : 0;
         var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
         var __cost = parseFloat(product_cost) > 0 ? parseFloat(product_cost) : parseFloat(profitAmount);
         var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
@@ -804,6 +877,7 @@
 
     // Input discount and clculate row amount
     $(document).on('input', '#unit_discount', function() {
+
         var unit_discount = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
         //Update unit cost with discount 
@@ -836,13 +910,24 @@
     });
 
     $(document).on('blur', '#unit_discount', function(){
+
         if ($(this).val() == '') {
+
+            $(this).val(parseFloat(0).toFixed(2));
+        }
+    });
+
+    $(document).on('blur', '#paying_amount', function(){
+
+        if ($(this).val() == '') {
+
             $(this).val(parseFloat(0).toFixed(2));
         }
     });
 
     // Input profit margin and clculate row amount
     $(document).on('input', '#profit', function(){
+
         var profit = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
         
@@ -855,20 +940,26 @@
     });
 
     $(document).on('blur', '#profit', function(){
+
         if ($(this).val() == '') {
+
             $(this).val(parseFloat(0).toFixed(2));
         }
     });
 
     // Input order discount and clculate total amount
     $(document).on('input', '#order_discount', function(){
+
         var orderDiscount = $(this).val() ? $(this).val() : 0;
         var orderDiscountType = $('#order_discount_type').val();
         var netTotalAmount = $('#net_total_amount').val();
+
         if (orderDiscountType == 1) {
+
             $('.label_order_discount_amount').html(parseFloat(orderDiscount).toFixed(2)); 
             $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2)); 
         }else{
+
             var calsOrderDiscount = parseFloat(netTotalAmount) / 100 * parseFloat(orderDiscount);
             $('.label_order_discount_amount').html(parseFloat(calsOrderDiscount).toFixed(2)); 
             $('#order_discount_amount').val(parseFloat(calsOrderDiscount).toFixed(2));
@@ -878,27 +969,34 @@
 
     // Input order discount type and clculate total amount
     $(document).on('change', '#order_discount_type', function(){
+
         var orderDiscountType = $(this).val() ? $(this).val() : 0;
         var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0.00;
         var netTotalAmount = $('#net_total_amount').val();
+
         if (orderDiscountType == 1) {
+
             $('.label_order_discount_amount').html(parseFloat(orderDiscount).toFixed(2)); 
             $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2)); 
         }else{
+
             var calsOrderDiscount = parseFloat(netTotalAmount) / 100 * parseFloat(orderDiscount);
             $('.label_order_discount_amount').html(parseFloat(calsOrderDiscount).toFixed(2)); 
             $('#order_discount_amount').val(parseFloat(calsOrderDiscount).toFixed(2));
         }
+
         calculateTotalAmount();
     });
 
     // Input shipment charge and clculate total amount
     $(document).on('input', '#shipment_charge', function(){
+
         calculateTotalAmount();
     });
 
     // chane purchase tax and clculate total amount
     $(document).on('change', '#purchase_tax', function(){
+
         var purchaseTax = $(this).val() ? $(this).val() : 0;
         var netTotalAmount = $('#net_total_amount').val();
         var calcPurchaseTaxAmount = parseFloat(netTotalAmount) / 100 * parseFloat(purchaseTax);
@@ -908,6 +1006,7 @@
 
     // Input paying amount and clculate due amount
     $(document).on('input', '#paying_amount', function(){
+
         var payingAmount = $(this).val() ? $(this).val() : 0;
         var total_purchase_amount = $('#total_purchase_amount').val() ? $('#total_purchase_amount').val() : 0;
         var calcDueAmount = parseFloat(total_purchase_amount) - parseFloat(payingAmount);
@@ -916,6 +1015,7 @@
 
     // Remove product form purchase product list (Table) 
     $(document).on('click', '#remove_product_btn',function(e){
+
         e.preventDefault();
         $(this).closest('tr').remove();
         calculateTotalAmount();
@@ -923,6 +1023,7 @@
     });
 
     $('.submit_button').on('click', function () {
+
         var value = $(this).val();
         $('#action').val(value); 
     });
@@ -932,26 +1033,7 @@
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
-        var inputs = $('.add_input');
-            inputs.removeClass('is-invalid');
-            $('.error').html('');  
-            var countErrorField = 0;  
-        $.each(inputs, function(key, val){
-            var inputId = $(val).attr('id');
-            var idValue = $('#'+inputId).val();
-            if(idValue == ''){
-                countErrorField += 1;
-                var fieldName = $('#'+inputId).data('name');
-                $('.error_'+inputId).html(fieldName+' is required.');
-            }
-        });
-
-        if(countErrorField > 0){
-            $('.loading_button').hide();
-            toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-            return;
-        }
-
+       
         $('.submit_button').prop('type', 'button');
         $.ajax({
             url:url,
@@ -964,12 +1046,15 @@
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
                 if(!$.isEmptyObject(data.errorMsg)){
+
                     toastr.error(data.errorMsg,'ERROR');
                 }else if (data.successMsg) {
+
                     toastr.success(data.successMsg); 
                     $('#add_purchase_form')[0].reset();
                     $('#purchase_list').empty();
                 }else{
+
                     toastr.success('Successfully Purchase Created.');
                     $('#add_purchase_form')[0].reset();
                     $('#purchase_list').empty();
@@ -984,14 +1069,23 @@
                     });
                 }
             },error: function(err) {
+
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
                 $('.error').html('');
+                
                 if (err.status == 0) {
+
                     toastr.error('Net Connetion Error. Reload This Page.'); 
-                }else{
-                    toastr.error('Server error please contact to the support.');
+                    return;
                 }
+
+                toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+
+                $.each(err.responseJSON.errors, function(key, error) {
+
+                    $('.error_' + key + '').html(error[0]);
+                });
             }
         });
     });
@@ -1063,6 +1157,7 @@
             type: 'post',
             data: request,
             success: function(data) {
+
                 toastr.success('Successfully product is added.');
                 $.ajax({
                     url:"{{url('purchases/recent/product')}}"+"/"+data.id,
@@ -1077,6 +1172,7 @@
                 });
             },
             error: function(err) {
+
                 $('.loading_button').hide();
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                 $('.error').html('');
@@ -1088,6 +1184,7 @@
     });
 
     $(document).on('change', '#add_category_id', function () {
+
         var category_id = $(this).val();
         $.ajax({
             url:"{{url('sales/get/all/sub/category')}}"+"/"+category_id,
@@ -1120,6 +1217,7 @@
     });
 
     $(document).on('click', '#add_description', function () {
+
         var value = $('#product_description').val();
         lastSelectedTr.find('#description').val(value);
         $('#product_description').val('');
@@ -1129,14 +1227,18 @@
 
     $(document).keypress(".scanable", function(event) {
         if (event.which == '13') {
+
             if (is_prevent_default == 1) {
+
                 event.preventDefault();
             }
         }
     });
 
     $('body').keyup(function(e) {
+
         if (e.keyCode == 13 || e.keyCode == 9){  
+
             $(".selectProduct").click();
             $('#list').empty();
             keyName = e.keyCode;
@@ -1156,7 +1258,7 @@
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
     new Litepicker({
         singleMode: true,
-        element: document.getElementById('datepicker'),
+        element: document.getElementById('date'),
         dropdowns: {
             minYear: new Date().getFullYear() - 50,
             maxYear: new Date().getFullYear() + 100,

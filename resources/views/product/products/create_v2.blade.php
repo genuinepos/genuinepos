@@ -297,7 +297,7 @@
                                                     </div>
                                                 </div>
 
-                                                
+                                        
                                             @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
                                                 <div class="row mt-1">
                                                     <div class="col-md-6">
@@ -378,33 +378,33 @@
                                                                             <tr>
                                                                                 <td class="text-start">
                                                                                     <select class="form-control form-control" name=""
-                                                                                        id="variants">
-                            
-                                                                                    </select>
+                                                                                        id="variants"></select>
                                                                                     <input type="text" name="variant_combinations[]"
-                                                                                        id="variant_combination" class="form-control"
+                                                                                        id="variant_combination" class="form-control reqireable"
                                                                                         placeholder="Variant Combination">
                                                                                 </td>
                 
                                                                                 <td class="text-start">
-                                                                                    <input type="text" name="variant_codes[]" id="variant_code" class="form-control"
+                                                                                    <input type="text" name="variant_codes[]" id="variant_code" class="form-control reqireable"
                                                                                         placeholder="Variant Code">
                                                                                 </td>
                 
                                                                                 <td class="text-start">
-                                                                                    <input type="number" name="variant_costings[]" step="any" class="form-control" placeholder="Cost" id="variant_costing">
+                                                                                    <input type="number" name="variant_costings[]" step="any" class="form-control requireable" placeholder="Cost" id="variant_costing">
                                                                                 </td>
                 
                                                                                 <td class="text-start">
-                                                                                    <input type="number" step="any" name="variant_costings_with_tax[]"class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax">
+                                                                                    <input type="number" step="any" name="variant_costings_with_tax[]"class="form-control requireable" placeholder="Cost inc.tax" id="variant_costing_with_tax"
+
+                                                                                    >
                                                                                 </td>
                 
                                                                                 <td class="text-start">
-                                                                                    <input type="number" step="any" name="variant_profits[]" class="form-control" placeholder="Profit" value="0.00" id="variant_profit">
+                                                                                    <input type="number" step="any" name="variant_profits[]" class="form-control requireable" placeholder="Profit" value="0.00" id="variant_profit">
                                                                                 </td>
                             
                                                                                 <td class="text-start">
-                                                                                    <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax">
+                                                                                    <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control requireable" placeholder="Price inc.tax" id="variant_price_exc_tax">
                                                                                 </td>
                             
                                                                                 <td class="text-start">
@@ -632,10 +632,13 @@
     });
 
     function costCalculate() {
+
         var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
         var tax_type = $('#tax_type').val();
         var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent);
+
         if (tax_type == 2) {
+
             var __tax_percent = 100 + parseFloat(tax_percent);
             var calc_tax = parseFloat(product_cost) / parseFloat(__tax_percent) * 100;
             calc_product_cost_tax = parseFloat(product_cost) - parseFloat(calc_tax);
@@ -646,6 +649,7 @@
         var profit = $('#profit').val() ? $('#profit').val() : 0;
 
         if (parseFloat(profit) > 0) {
+
             var calculate_profit = parseFloat(product_cost) / 100 * parseFloat(profit);
             var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
             $('#product_price').val(parseFloat(product_price).toFixed(2));
@@ -658,10 +662,12 @@
     }
 
     $(document).on('input', '#product_cost',function() {
+
         costCalculate();
     });
 
     $(document).on('input', '#product_price',function() {
+
         var selling_price = $(this).val() ? $(this).val() : 0;
         var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
         var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
@@ -708,13 +714,14 @@
         var id = $(this).val();
         var parentTableRow = $(this).closest('tr');
         variant_row_index = parentTableRow.index();
+
         $('.modal_variant_child').empty();
+
         var html = '';
+
         var variant = variantsWithChild.filter(function(variant) {
             return variant.id == id;
         });
-
-        console.log(variant);
 
         $.each(variant[0].bulk_variant_child, function(key, child) {
             html += '<li class="modal_variant_child_list">';
@@ -722,36 +729,39 @@
                 child.child_name + '</a>';
             html += '</li>';
         });
+
         $('.modal_variant_child').html(html);
         $('#VairantChildModal').modal('show');
         $(this).val('');
     });
 
     $(document).on('click', '.select_variant_child', function(e) {
+
         e.preventDefault();
         var child = $(this).data('child');
         var parent_tr = $('.dynamic_variant_body tr:nth-child(' + (variant_row_index + 1) + ')');
         var child_value = parent_tr.find('#variant_combination').val();
         var filter = child_value == '' ? '' : ',';
         var variant_combination = parent_tr.find('#variant_combination').val(child_value + filter + child);
-        var product_code = $('#code').val() ? $('#code').val() : $('#auto_generated_code').val();
-        parent_tr.find('#variant_code').val(parent_tr.find('#variant_combination').val().split(/\s/).join('').toLowerCase() + '-' +product_code);
         $('#VairantChildModal').modal('hide');
     });
 
     $(document).on('input', '#variant_costing', function() {
+
         var parentTableRow = $(this).closest('tr');
         variant_row_index = parentTableRow.index();
         calculateVariantAmount(variant_row_index);
     });
 
     $(document).on('input', '#variant_profit', function() {
+
         var parentTableRow = $(this).closest('tr');
         variant_row_index = parentTableRow.index();
         calculateVariantAmount(variant_row_index);
     });
 
     function calculateVariantAmount(variant_row_index) {
+
         var parent_tr = $('.dynamic_variant_body tr:nth-child(' + (variant_row_index + 1) + ')');
         var tax = tax_percent;
         var variant_costing = parent_tr.find('#variant_costing');
@@ -768,10 +778,64 @@
         variant_price_exc_tax.val(parseFloat(profit).toFixed(2));
     }
 
+    var variant_code_sequel = 0;
+    // Select Variant and show variant creation area
+    $(document).on('change', '#is_variant', function() {
+
+        var product_cost = $('#product_cost').val();
+        var product_cost_with_tax = $('#product_cost_with_tax').val();
+        var profit = $('#profit').val();
+        var product_price = $('#product_price').val();
+
+        if (product_cost == '' || product_price == '') {
+            alert(
+                'After creating the variant, product cost and product price field must not be empty.'
+                );
+            $(this).prop('checked', false);
+            return;
+        }
+
+        var code = $('#code').val();
+
+        var auto_generated_code = $('#auto_generated_code').val();
+
+        var variant_code = code ? code+'/'+(++variant_code_sequel) : auto_generated_code+'/'+(++variant_code_sequel);
+
+        $('#variant_code').val(variant_code);
+        $('#variant_costing').val(parseFloat(product_cost).toFixed(2));
+        $('#variant_costing_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
+        $('#variant_price_exc_tax').val(parseFloat(product_price).toFixed(2));
+        $('#variant_profit').val(parseFloat(profit).toFixed(2));
+        if ($(this).is(':CHECKED', true)) {
+            console.log('ON');
+            $('.dynamic_variant_create_area').show(500);
+            $('#variant_combination').prop('required', true);
+            $('#variant_costing').prop('required', true);
+            $('#variant_costing_with_tax').prop('required', true);
+            $('#variant_profit').prop('required', true);
+            $('#variant_price_exc_tax').prop('required', true);
+        } else {
+            $('.dynamic_variant_create_area').hide(500);
+            $('#variant_combination').prop('required', false);
+            $('#variant_costing').prop('required', false);
+            $('#variant_costing_with_tax').prop('required', false);
+            $('#variant_profit').prop('required', false);
+            $('#variant_price_exc_tax').prop('required', false);
+        }
+    });
+
     // Get default profit
     var defaultProfit = {{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }};
+
     $(document).on('click', '#add_more_variant_btn',function(e) {
         e.preventDefault();
+
+        var code = $('#code').val();
+            
+        var auto_generated_code = $('#auto_generated_code').val();
+
+        var variant_code = code ? code+'/'+(++variant_code_sequel) : auto_generated_code+'/'+(++variant_code_sequel);
+
         var product_cost = $('#product_cost').val();
         var product_cost_with_tax = $('#product_cost_with_tax').val();
         var profit = $('#profit').val();
@@ -781,28 +845,30 @@
         html += '<td>';
         html += '<select class="form-control" name="" id="variants">';
         html += '<option value="">Create Combination</option>';
+
         $.each(variantsWithChild, function(key, val) {
             html += '<option value="' + val.id + '">' + val.bulk_variant_name + '</option>';
         });
+
         html += '</select>';
-        html += '<input type="text" name="variant_combinations[]" id="variant_combination" class="form-control" placeholder="Variant Combination">';
+        html += '<input type="text" name="variant_combinations[]" id="variant_combination" class="form-control" placeholder="Variant Combination" required>';
         html += '</td>';
-        html += '<td><input type="text" name="variant_codes[]" id="variant_code" class="form-control" placeholder="Variant Code">';
+        html += '<td><input type="text" name="variant_codes[]" id="variant_code" class="form-control" placeholder="Variant Code" value="'+variant_code+'">';
         html += '</td>';
         html += '<td>';
-        html += '<input type="number" step="any" name="variant_costings[]" class="form-control" placeholder="Cost" id="variant_costing" value="' +
+        html += '<input required type="number" step="any" name="variant_costings[]" class="form-control" placeholder="Cost" id="variant_costing" value="' +
             parseFloat(product_cost).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
-        html += '<input type="number" step="any" name="variant_costings_with_tax[]" class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax" value="' +
+        html += '<input required type="number" step="any" name="variant_costings_with_tax[]" class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax" value="' +
             parseFloat(product_cost_with_tax).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
-        html += '<input type="number" step="any" name="variant_profits[]" class="form-control" placeholder="Profit" value="' +
+        html += '<input required type="number" step="any" name="variant_profits[]" class="form-control" placeholder="Profit" value="' +
             parseFloat(profit).toFixed(2) + '" id="variant_profit">';
         html += '</td>';
         html += '<td>';
-        html += '<input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax" value="' +
+        html += '<input required type="number" step="any" name="variant_prices_exc_tax[]" class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax" value="' +
             parseFloat(product_price).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
@@ -818,17 +884,21 @@
     function CountTotalComboProductPrice(allQuantities, allUnitPrices) {
         var allUnitPriceContainer = [];
         allUnitPrices.forEach(function(price) {
+
             allUnitPriceContainer.push(price.value);
         });
+
         var countedPrice = [];
         var i = 0;
         allQuantities.forEach(function(quantity) {
+
             countedPrice.push(parseFloat(parseFloat(quantity.value) * parseFloat(allUnitPriceContainer[i])));
             i++;
         });
 
         var totalPrice = 0;
         countedPrice.forEach(function(price) {
+
             totalPrice += parseFloat(price);
         });
 
@@ -855,62 +925,31 @@
 
         // Select product and show spacific product creation fields or area
         $('#type').on('change', function() {
+
             var value = $(this).val();
             get_form_part(value);
         });
 
         // Automatic generate product code
         function autoGeneratedCode() {
+
             var code = '';
             var x = 9; // can be any number
             var rand = Math.floor(Math.random() * x) + 1;
             var range = 7;
             var length = 0;
+
             while (length < range) {
+
                 var x = 9; // can be any number
                 var rand = Math.floor(Math.random() * x) + 1;
                 code += rand.toString();
                 length++;
             }
+
             $('#auto_generated_code').val("{{ json_decode($generalSettings->product, true)['product_code_prefix'] }}" + code);
         }
         autoGeneratedCode();
-
-        // Select Variant and show variant creation area
-        $(document).on('change', '#is_variant', function() {
-            var product_cost = $('#product_cost').val();
-            var product_cost_with_tax = $('#product_cost_with_tax').val();
-            var profit = $('#profit').val();
-            var product_price = $('#product_price').val();
-
-            if (product_cost == '' || product_price == '') {
-                alert(
-                    'After creating the variant, product cost and product price field must not be empty.'
-                    );
-                $(this).prop('checked', false);
-                return;
-            }
-
-            $('#variant_costing').val(parseFloat(product_cost).toFixed(2));
-            $('#variant_costing_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
-            $('#variant_price_exc_tax').val(parseFloat(product_price).toFixed(2));
-            $('#variant_profit').val(parseFloat(profit).toFixed(2));
-            if ($(this).is(':CHECKED', true)) {
-                $('.dynamic_variant_create_area').show(500);
-                $('#variant_combination').prop('required', true);
-                $('#variant_costing').prop('required', true);
-                $('#variant_costing_with_tax').prop('required', true);
-                $('#variant_profit').prop('required', true);
-                $('#variant_price_exc_tax').prop('required', true);
-            } else {
-                $('.dynamic_variant_create_area').hide(500);
-                $('#variant_combination').prop('required', false);
-                $('#variant_costing').prop('required', false);
-                $('#variant_costing_with_tax').prop('required', false);
-                $('#variant_profit').prop('required', false);
-                $('#variant_price_exc_tax').prop('required', false);
-            }
-        });
 
         // Search product for creating combo
         $(document).on('input', '#search_product',function(e) {
@@ -1161,9 +1200,12 @@
         function calculateTotalAmount() {
             var subtotals = document.querySelectorAll('#subtotal');
             var netTotalAmount = 0;
+
             subtotals.forEach(function(subtotal){
+
                 netTotalAmount += parseFloat(subtotal.value);
             });
+
             $('.span_total_combo_price').html(parseFloat(netTotalAmount).toFixed(2));
             $('#total_combo_price').val(parseFloat(netTotalAmount).toFixed(2));
             var profit = $('#profit').val();
@@ -1173,8 +1215,11 @@
 
         // Combo product total price increase or dicrease by quantity
         $(document).on('input', '#combo_quantity', function() {
+
             var qty = $(this).val() ? $(this).val() : 0;
+
             var tr = $(this).closest('tr');
+
             //Update subtotal 
             var unitPriceIncTax = $(this).closest('tr').find('#unit_price_inc_tax').val();
             var calcSubtotal = parseFloat(unitPriceIncTax) * parseFloat(qty);
@@ -1234,6 +1279,7 @@
                     $('.error').html('');
                     if ($.isEmptyObject(data.errorMsg)) {
                         toastr.success(data);
+                        variant_code_sequel = 0;
                         if (action_direction == 'save') {
                             window.location = "{{ route('products.all.product') }}";
                         } else {

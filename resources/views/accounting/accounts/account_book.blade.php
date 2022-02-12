@@ -12,35 +12,35 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-book"></span>
-                                <h5>Accounts</h5>
+                                <h5>Account Book</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="sec-name mt-1">
                                     <div class="col-md-12">
                                         <table class="table modal-table table-sm">
                                             <tbody>
                                                 <tr>
                                                     <td class="text-start"> <strong>Bank :</strong> </td>
-                                                    <td class="bank_name text-start">{{ $account->bank->name .' ('.$account->bank->branch_name.')' }}</td>
+                                                    <td class="bank_name text-start">{{ $account->bank ? $account->bank->name .'('.$account->bank->branch_name.')' : '' }}</td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="text-start"> <strong>Account Name :</strong> </td>
+                                                    <td class="text-start"> <strong>A/C Name :</strong> </td>
                                                     <td class="account_name text-start">{{ $account->name }}</td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="text-start"><strong>Account Number :</strong></td>
+                                                    <td class="text-start"><strong>A/C No. :</strong></td>
                                                     <td class="account_number text-start">{{ $account->account_number }}</td>
                                                 </tr>
         
                                                 <tr>
-                                                    <td class="text-start"><strong>Account Type :</strong></td>
-                                                    <td class="account_type text-start">{{ $account->account_type ? $account->account_type->name : '' }}</td>
+                                                    <td class="text-start"><strong>A/C Type :</strong></td>
+                                                    <td class="account_type text-start">{{ App\Utils\Util::accountType($account->account_type) }}</td>
                                                 </tr>
         
                                                 <tr>
@@ -53,18 +53,28 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-8">
+                            <div class="col-md-9">
                                 <div class="sec-name mt-1 t">
                                     <div class="col-md-12">
                                         <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
-                                        <form id="filter_account_cash_flow" action="{{ route('accounting.accounts.account.cash.flow.filter', $account->id) }}" method="get" class="px-2">
+                                        <form id="filter_account_ledgers" method="get" class="px-2">
                                             <div class="form-group row mt-4">
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>Transaction Type :</strong></label>
                                                     <select name="transaction_type" class="form-control submit_able" id="transaction_type" autofocus>
                                                         <option value=""><strong>All</strong></option> 
-                                                        <option value="1"><strong>Debit</strong></option>  
-                                                        <option value="2">Credit</option>
+                                                        <option value="debit"><strong>Debit</strong></option>  
+                                                        <option value="credit">Credit</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>Voucher Type :</strong></label>
+                                                    <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
+                                                        <option value="">All</option> 
+                                                        @foreach (App\Utils\AccountUtil::voucherTypes() as $key => $type)
+                                                            <option value="{{ $key }}">{{ $type }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -73,7 +83,7 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="from_date" id="datepicker"
                                                             class="form-control from_date date"
@@ -86,23 +96,25 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="row">
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-7">
                                                             <label><strong></strong></label>
                                                             <div class="input-group">
                                                                 <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                             </div>
                                                         </div>
             
-                                                        <div class="col-md-6 mt-3">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
+                                                        <div class="col-md-5 mt-3">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report">
+                                                                <i class="fas fa-print "></i> Print
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -118,7 +130,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Transactions</h6>
+                                    <h6>Account Ledgers</h6>
                                 </div>
                             </div>
                             <div class="widget_content">
@@ -130,17 +142,23 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-start">Date</th>
-                                                <th class="text-start">Description</th>
-                                                <th class="text-start">Created By</th>
+                                                <th class="text-start">Perticulars</th>
+                                                <th class="text-start">Voucher/Invoice</th>
                                                 <th class="text-start">Debit</th>
                                                 <th class="text-start">Credit</th>
-                                                <th class="text-start">Balance</th>
-                                                <th class="text-start text-center">Action</th>
+                                                <th class="text-start">Running Balance</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="2" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th class="text-white text-end"></th>
+                                                <th id="debit" class="text-white text-end"></th>
+                                                <th id="credit" class="text-white text-end"></th>
+                                                <th id="due" class="text-white text-end">---</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -160,68 +178,86 @@
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    // Setup ajax for csrf token.
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-    function getCashFlow() {
-        $('.data_preloader').show();
-        $.ajax({
-            url:"{{route('accounting.accounts.account.cash.flows', $account->id)}}",
-            type:'get',
-            success:function(data){
-                $('#data-list').html(data);
-                $('.data_preloader').hide();
-            }
-        });
-    }
-    getCashFlow();
 
-    $(document).on('click', '#delete',function(e){
-        e.preventDefault();
-        var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);           
-        $.confirm({
-            'title': 'Delete Confirmation',
-            'message': 'Are you sure?',
-            'buttons': {
-                'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
-                'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
+    var account_ledger_table = $('.data_tbl').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "searching" : false,
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary'},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary'},
+        ],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+        "ajax": {
+            "url": "{{ route('accounting.accounts.book', $account->id) }}",
+            "data": function(d) {
+                d.voucher_type = $('#voucher_type').val();
+                d.transaction_type = $('#transaction_type').val();
+                d.from_date = $('.from_date').val();
+                d.to_date = $('.to_date').val();
             }
-        });
+        },
+        columns: [
+            {data: 'date', name: 'account_ledgers.date'},
+            {data: 'particulars', name: 'particulars'},
+            {data: 'voucher_no', name: 'voucher_no'},
+            {data: 'debit', name: 'account_ledgers.debit', className: 'text-end'},
+            {data: 'credit', name: 'account_ledgers.credit', className: 'text-end'},
+            {data: 'running_balance', name: 'account_ledgers.running_balance', className: 'text-end'},
+        ],fnDrawCallback: function() {
+            var debit = sum_table_col($('.data_tbl'), 'debit');
+            $('#debit').text(bdFormat(debit));
+            var credit = sum_table_col($('.data_tbl'), 'credit');
+            $('#credit').text(bdFormat(credit));
+            $('.data_preloader').hide();
+        }
     });
-       
-   //data delete by ajax
-   $(document).on('submit', '#deleted_form',function(e){
-       e.preventDefault();
-       var url = $(this).attr('action');
-       var request = $(this).serialize();
-       $.ajax({
-           url:url,
-           type:'post',
-           data:request,
-           success:function(data){
-               getCashFlow();
-               toastr.error(data);
-               $('#deleted_form')[0].reset();
-           }
-       });
-   });
 
-   //Send account filter request
-   $('#filter_account_cash_flow').on('submit', function (e) {
-       e.preventDefault();
-       $('.data_preloader').show();
-       var url = $(this).attr('action');
-       var request = $(this).serialize();
-       $.ajax({
-           url:url,
-           type:'get',
-           data: request,
-           success:function(data){
-               $('#data-list').html(data);
-               $('.data_preloader').hide();
-           }
-       }); 
-   });
+    function sum_table_col(table, class_name) {
+        var sum = 0;
+        table.find('tbody').find('tr').each(function() {
+            if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                sum += parseFloat(
+                    $(this).find('.' + class_name).data('value')
+                );
+            }
+        });
+        return sum;
+    }
+
+    //Submit filter form by select input changing
+    $(document).on('submit', '#filter_account_ledgers', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        account_ledger_table.ajax.reload();
+    });
+
+    //Print account ledger
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('accounting.accounts.ledger.print', $account->id) }}";
+        var voucher_type = $('#voucher_type').val();
+        var transaction_type = $('#transaction_type').val();
+        var from_date = $('.from_date').val();
+        var to_date = $('.to_date').val();
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: { voucher_type, transaction_type, from_date, to_date },
+            success:function(data){
+                $(data).printThis({
+                    debug: false,                   
+                    importCSS: true,                
+                    importStyle: true,          
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    removeInline: false, 
+                    printDelay: 700, 
+                    header: null,        
+                });
+            }
+        }); 
+    });
 </script>
 
 <script type="text/javascript">

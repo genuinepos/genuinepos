@@ -26,11 +26,19 @@ class ProductUtil
         $countPriceGroup = DB::table('price_groups')->where('status', 'Active')->count();
         $img_url = asset('public/uploads/product/thumbnail');
         $products = '';
-        $query = DB::table('products')->join('units', 'products.unit_id', 'units.id')
-            ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
-            ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
-            ->leftJoin('brands', 'products.brand_id', 'brands.id');
+
+        // $query = DB::table('products')->join('units', 'products.unit_id', 'units.id')
+        //     ->leftJoin('categories', 'products.category_id', 'categories.id')
+        //     ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
+        //     ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+        //     ->leftJoin('brands', 'products.brand_id', 'brands.id');
+
+        $query = DB::table('product_branches')
+        ->leftJoin('products', 'product_branches.product_id', 'products.id')
+        ->leftJoin('categories', 'products.category_id', 'categories.id')
+        ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
+        ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+        ->leftJoin('brands', 'products.brand_id', 'brands.id');
 
         if ($request->type == 1) {
             $query->where('products.type', 1)->where('products.is_variant', 0);
@@ -67,17 +75,28 @@ class ProductUtil
         // if ($request->is_for_sale) {
         //     $query->where('products.is_for_sale', '0');
         // }
-
+    
         $products = $query->select(
             [
-                'products.*',
-                'units.name as unit_name',
+                'products.id',
+                'products.name',
+                'products.status',
+                'products.is_variant',
+                'products.type',
+                'products.product_cost_with_tax',
+                'products.product_price',
+                'products.is_manage_stock',
+                'products.thumbnail_photo',
+                'products.expire_date',
+                'products.is_combo',
+                'product_branches.product_quantity',
+                // 'units.name as unit_name',
                 'taxes.tax_name',
                 'categories.name as cate_name',
                 'sub_cate.name as sub_cate_name',
                 'brands.name as brand_name',
             ]
-        )->orderBy('id', 'desc');
+        )->where('product_branches.branch_id', auth()->user()->branch_id)->orderBy('id', 'desc');
 
         return DataTables::of($products)
             ->addColumn('multiple_delete', function ($row) {

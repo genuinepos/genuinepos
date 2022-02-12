@@ -115,9 +115,9 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
             $('#product_list').empty();
             $('#product_list').prepend(tr);
             $('#pos_submit_form')[0].reset();
-            $('#account_id').val(defaultAccount);
-            
+
             $('#ex_sale_id').val(data.sale.id);
+            //$('#previous_due').val(data.sale.due);
             $('#customer_id').val(data.sale.customer_id);
             calculateTotalAmount();
             var exchange_url = $('#exchange_url').val();

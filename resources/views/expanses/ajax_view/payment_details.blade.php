@@ -79,7 +79,13 @@
 
                         <tr>
                             <th class="text-start">Method :</th>
-                            <td class="text-end">{{ $payment->pay_mode }}</td>
+                            <td class="text-end">
+                                @if ($payment->payment_method)
+                                      {{ $payment->payment_method->name }}
+                                @else 
+                                    {{ $payment->pay_mode }}
+                                @endif
+                            </td>
                         </tr>
 
                         <tr>

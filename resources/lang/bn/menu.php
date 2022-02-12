@@ -75,6 +75,8 @@ return [
     'account_types' => 'অ্যাকাউন্টের ধরণ',
     'accounts' => 'ব্যাংক হিসাব',
     'loans' => 'ঋণ',
+    'assets' => 'সম্পদ',
+    'contra' => 'কনট্রা',
     'balance_sheet' => 'ব্যালেন্স শীট',
     'trial_balance' => 'পরীক্ষার ভারসাম্য',
     'cash_flow' => 'নগদ প্রবাহ',

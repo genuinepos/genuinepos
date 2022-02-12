@@ -277,9 +277,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="edit-modal-form-body">
-
-                </div>
+                <div class="modal-body" id="edit-modal-form-body"></div>
             </div>
         </div>
     </div>
@@ -287,16 +285,14 @@
     <!-- Customer payment Modal-->
     <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Receive Payment</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="payment_modal_body">
-
-                </div>
+                <div class="modal-body" id="payment_modal_body"></div>
             </div>
         </div>
     </div>
@@ -305,16 +301,14 @@
     <!-- Money Receipt list Modal-->
     <div class="modal fade" id="moneyReceiptListModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Payment Receipt Voucher List</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="receipt_voucher_list_modal_body">
-
-                </div>
+                <div class="modal-body" id="receipt_voucher_list_modal_body"></div>
             </div>
         </div>
     </div>
@@ -323,16 +317,14 @@
     <!--add money receipt Modal-->
     <div class="modal fade" id="MoneyReciptModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Generate Money Receipt Voucher</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="money_receipt_modal">
-                    <!--begin::Form-->
-                </div>
+                <div class="modal-body" id="money_receipt_modal"></div>
             </div>
         </div>
     </div>
@@ -346,7 +338,7 @@
 
     <!-- Customer payment view Modal-->
     <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>
@@ -610,7 +602,7 @@
                         $('#payment_modal_body').html(data);
                         $('#paymentModal').modal('show');
                         $('.data_preloader').hide();
-                        document.getElementById('p_amount').focus();
+                        document.getElementById('p_paying_amount').focus();
                     }
                 });
             });
@@ -636,34 +628,16 @@
                 e.preventDefault();
                 $('.loading_button').show();
                 var available_amount = $('#p_available_amount').val();
-                var paying_amount = $('#p_amount').val();
+                var paying_amount = $('#p_paying_amount').val();
+                
                 if (parseFloat(paying_amount) > parseFloat(available_amount)) {
-                    $('.error_p_amount').html('Paying amount must not be greater then due amount.');
+                    $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
                     $('.loading_button').hide();
                     return;
                 }
 
                 var url = $(this).attr('action');
-                var inputs = $('.p_input');
-                inputs.removeClass('is-invalid');
-                $('.error').html('');
-                var countErrorField = 0;
-                $.each(inputs, function(key, val) {
-                    var inputId = $(val).attr('id');
-                    var idValue = $('#' + inputId).val();
-                    if (idValue == '') {
-                        countErrorField += 1;
-                        var fieldName = $('#' + inputId).data('name');
-                        $('.error_' + inputId).html(fieldName + ' is required.');
-                    }
-                });
-
-                if (countErrorField > 0) {
-                    toastr.error('Please chack all form fields', 'SOMETHING WANG WRONG');
-                    $('.loading_button').hide();
-                    return;
-                }
-
+             
                 $.ajax({
                     url: url,
                     type: 'post',
@@ -681,6 +655,19 @@
                             toastr.success(data);
                             table.ajax.reload();
                         }
+                    },
+                    error: function(err) {
+                        $('.loading_button').hide();
+                        $('.error').html('');
+
+                        if (err.status == 0) {
+                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            return;
+                        }
+
+                        $.each(err.responseJSON.errors, function(key, error) {
+                            $('.error_p_' + key + '').html(error[0]);
+                        });
                     }
                 });
             });
@@ -697,12 +684,6 @@
                         'No': {'class': 'no btn-danger','action': function() {console.log('Edit canceled.');}}
                     }
                 });
-            });
-
-            $(document).on('change', '#payment_method', function() {
-                var value = $(this).val();
-                $('.payment_method').hide();
-                $('#' + value).show();
             });
 
             $(document).on('click', '#generate_receipt', function(e) {

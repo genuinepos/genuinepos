@@ -58,8 +58,11 @@ class ProductController extends Controller
         }
 
         if ($request->ajax()) {
-            $products = DB::table('products')
-                ->select('id', 'name', 'product_cost', 'product_price')->orderBy('products.id', 'desc');
+            $products = DB::table('product_branches')
+                ->leftJoin('products', 'product_branches.product_id', 'products.id')
+                ->select('products.id', 'products.name', 'products.product_cost', 'products.product_price')
+                ->where('product_branches.branch_id', auth()->user()->branch_id)
+                ->orderBy('products.id', 'desc');
 
             return DataTables::of($products)
                 ->addColumn('action', function ($row) {
@@ -145,6 +148,7 @@ class ProductController extends Controller
         }
 
         if ($request->type == 1) {
+
             $this->validate(
                 $request,
                 [
@@ -154,12 +158,14 @@ class ProductController extends Controller
                     'product_cost_with_tax' => 'required',
                 ],
             );
+
             $addProduct->product_cost = $request->product_cost;
             $addProduct->profit = $request->profit ? $request->profit : 0.00;
             $addProduct->product_cost_with_tax = $request->product_cost_with_tax;
             $addProduct->product_price = $request->product_price;
 
             if ($request->file('photo')) {
+
                 $productThumbnailPhoto = $request->file('photo');
                 $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
                 Image::make($productThumbnailPhoto)->resize(600, 600)->save('public/uploads/product/thumbnail/' . $productThumbnailName);
@@ -167,8 +173,11 @@ class ProductController extends Controller
             }
 
             if (isset($request->is_variant)) {
+
                 $addProduct->is_variant = 1;
+
                 if ($request->variant_combinations == null) {
+
                     return response()->json(['errorMsg' => 'You have selected variant option but there is no variant at all.']);
                 }
 
@@ -181,36 +190,43 @@ class ProductController extends Controller
 
                 $addProduct->save();
 
-                $variant_combinations = $request->variant_combinations;
-                $variant_codes = $request->variant_codes;
-                $variant_costings = $request->variant_costings;
-                $variant_costings_with_tax = $request->variant_costings_with_tax;
-                $variant_profits = $request->variant_profits;
-                $variant_prices_exc_tax = $request->variant_prices_exc_tax;
-                $variant_images = $request->variant_image;
                 $index = 0;
-                foreach ($variant_combinations as $value) {
+                foreach ($request->variant_combinations as $value) {
+
                     $addVariant = new ProductVariant();
                     $addVariant->product_id = $addProduct->id;
                     $addVariant->variant_name = $value;
-                    $addVariant->variant_code = $variant_codes[$index];
-                    $addVariant->variant_cost = $variant_costings[$index];
-                    $addVariant->variant_cost_with_tax = $variant_costings_with_tax[$index];
-                    $addVariant->variant_profit = $variant_profits[$index];
-                    $addVariant->variant_price = $variant_prices_exc_tax[$index];
+                    $addVariant->variant_code = $request->variant_codes[$index];
+                    $addVariant->variant_cost = $request->variant_costings[$index];
+                    $addVariant->variant_cost_with_tax = $request->variant_costings_with_tax[$index];
+                    $addVariant->variant_profit = $request->variant_profits[$index];
+                    $addVariant->variant_price = $request->variant_prices_exc_tax[$index];
 
-                    if (isset($variant_images[$index])) {
-                        $variantImage = $variant_images[$index];
+                    if (isset($request->variant_image[$index])) {
+                        $variantImage = $request->variant_image[$index];
                         $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
                         Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
                         $addVariant->variant_image = $variantImageName;
                     }
 
-                    $index++;
                     $addVariant->save();
+
+                    $this->productStockUtil->addBranchProduct(
+                        product_id : $addProduct->id, 
+                        variant_id : $addVariant->id, 
+                        branch_id : auth()->user()->branch_id
+                    );
+                    $index++;
                 }
             } else {
+
                 $addProduct->save();
+
+                $this->productStockUtil->addBranchProduct(
+                    product_id : $addProduct->id, 
+                    variant_id : NULL, 
+                    branch_id : auth()->user()->branch_id
+                );
             }
         }
 
@@ -568,11 +584,15 @@ class ProductController extends Controller
 
             // Upload product thumbnail
             if ($request->file('photo')) {
+
                 if ($updateProduct->thumbnail_photo != 'default.png') {
+
                     if (file_exists(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo))) {
+
                         unlink(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo));
                     }
                 }
+
                 $productThumbnailPhoto = $request->file('photo');
                 $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
                 Image::make($productThumbnailPhoto)->resize(250, 250)->save('public/uploads/product/thumbnail/' . $productThumbnailName);
@@ -580,11 +600,14 @@ class ProductController extends Controller
             }
 
             if ($updateProduct->is_variant == 1) {
+
                 if ($request->variant_combinations == null) {
+
                     return response()->json(['errorMsg' => 'You have selected variant option but there is no variant at all.']);
                 }
 
                 foreach ($updateProduct->product_variants as $product_variant) {
+
                     $product_variant->delete_in_update = 1;
                     $product_variant->save();
                 }
@@ -607,6 +630,7 @@ class ProductController extends Controller
                 $variant_images = $request->variant_image;
                 $index = 0;
                 foreach ($variant_combinations as $value) {
+
                     $updateVariant = ProductVariant::where('id', $variant_ids[$index])->first();
                     if ($updateVariant) {
                         $updateVariant->variant_name = $value;
@@ -630,6 +654,7 @@ class ProductController extends Controller
                             $updateVariant->variant_image = $variantImageName;
                         }
                         $updateVariant->save();
+
                     } else {
                         $addVariant = new ProductVariant();
                         $addVariant->product_id = $updateProduct->id;
@@ -647,7 +672,14 @@ class ProductController extends Controller
                             $addVariant->variant_image = $variantImageName;
                         }
                         $addVariant->save();
+
+                        $this->productStockUtil->addBranchProduct(
+                            product_id : $updateProduct->id, 
+                            variant_id : $addVariant->id, 
+                            branch_id : auth()->user()->branch_id
+                        );
                     }
+
                     $index++;
                 }
 
@@ -662,6 +694,12 @@ class ProductController extends Controller
                 }
             } else {
                 $updateProduct->save();
+
+                $this->productStockUtil->addBranchProduct(
+                    product_id : $updateProduct->id, 
+                    variant_id : NULL, 
+                    branch_id : auth()->user()->branch_id
+                );
             }
         }
 

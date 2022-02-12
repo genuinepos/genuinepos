@@ -104,7 +104,7 @@
     </div>
 
     @if (auth()->user()->permission->manufacturing['process_add'] == '1') 
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+        <div class="modal fade" id="addModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog double-col-modal" role="document">
                 <div class="modal-content">

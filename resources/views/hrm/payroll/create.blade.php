@@ -269,9 +269,7 @@
                                                                             </select>
                         
                                                                             <div class="input-group deduction_percent_field {{ $deduction->amount_type == 1 ? 'd-none' : '' }} ">
-                        
                                                                                 <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="{{ $deduction->amount_type == 2 ? $deduction->amount : 0.00 }}" id="deduction_percent">
-                        
                                                                                 <div class="input-group-prepend">
                                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-percentage input_i"></i>
                                                                                     </span>

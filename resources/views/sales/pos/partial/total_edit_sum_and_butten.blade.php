@@ -261,7 +261,6 @@
 </div>
 
 <script>
-    var defaultAccount = "{{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }}";
     $(document).on('click', '#submit_btn', function (e) {
         e.preventDefault();
         var action = $(this).data('action_id');
@@ -377,10 +376,8 @@
 
     $(document).on('click', '#cancel_pay_mathod', function (e) {
         e.preventDefault();
-        console.log('cancel_pay_mathod');
         $('#payment_method').val('Cash');
         $('.payment_method').hide();
-        $('#account_id').val(defaultAccount);
         $('#otherPaymentMethod').modal('hide');
     });
 

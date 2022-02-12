@@ -56,13 +56,13 @@
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i
-                            class="far fa-money-bill-alt text-dark"></i></span>
+                            class="far fa-money-bill-alt text-dark input_i"></i></span>
                 </div>
                 <input type="hidden" id="p_available_amount" value="{{ $customer->total_sale_due }}">
-                <input type="number" name="amount" class="form-control form-control-sm p_input" step="any"
-                    data-name="Amount" id="p_amount" value="" autocomplete="off" autofocus/>
+                <input type="number" name="paying_amount" class="form-control p_input" step="any"
+                    data-name="Amount" id="p_paying_amount" value="" autocomplete="off" autofocus/>
             </div>
-            <span class="error error_p_amount"></span>
+            <span class="error error_p_paying_amount"></span>
         </div>
 
         <div class="col-md-4">
@@ -70,9 +70,9 @@
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i
-                            class="fas fa-calendar-week text-dark"></i></span>
+                            class="fas fa-calendar-week text-dark input_i"></i></span>
                 </div>
-                <input type="text" name="date" class="form-control form-control-sm p_input"
+                <input type="text" name="date" class="form-control p_input"
                     autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
             </div>
             <span class="error error_p_date"></span>
@@ -82,131 +82,52 @@
             <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
                 </div>
-                <select name="payment_method" class="form-control form-control-sm" id="payment_method">
-                    <option value="Cash">Cash</option>
-                    <option value="Advanced">Advanced</option>
-                    <option value="Card">Card</option>
-                    <option value="Cheque">Cheque</option>
-                    <option value="Bank-Transfer">Bank-Transfer</option>
-                    <option value="Other">Other</option>
-                    <option value="Custom">Custom Field</option>
+                <select name="payment_method_id" class="form-control" id="p_payment_method_id">
+                    @foreach ($methods as $method)
+                        <option value="{{ $method->id }}">
+                            {{ $method->name }}
+                        </option>
+                    @endforeach
                 </select>
+                <span class="error error_p_payment_method_id"></span>
             </div>
         </div>
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-7">
-            <label><strong>Payment Account :</strong> </label>
+        <div class="col-md-4">
+            <label><strong>Payment Account :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i
-                            class="fas fa-money-check-alt text-dark"></i></span>
+                            class="fas fa-money-check-alt text-dark input_i"></i></span>
                 </div>
-                <select name="account_id" class="form-control form-control-sm" id="p_account_id">
-                    <option value="">None</option>
+                <select name="account_id" class="form-control" id="p_account_id">
                     @foreach ($accounts as $account)
-                        <option {{ auth()->user()->branch ? auth()->user()->branch->default_account_id == $account->id ? 'SELECTED' : '' : '' }} value="{{ $account->id }}">{{ $account->name }} (A/C:
-                            {{ $account->account_number }}) (Balance: {{ $account->balance }})</option>
+                        <option value="{{ $account->id }}">
+                            @php
+                                $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                $balance = ' BL : '.$account->balance;
+                            @endphp
+                            {{ $account->name.$accountType.$balance}}
+                        </option>
                     @endforeach
                 </select>
+                <span class="error error_p_account_id"></span>
             </div>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-4">
             <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
-            <input type="file" name="attachment" class="form-control form-control-sm" id="attachment">
-        </div>
-    </div>
-
-    <div class="form-group mt-2">
-        <div class="payment_method d-none" id="Card">
-            <div class="row">
-                <div class="col-md-3">
-                    <label><strong>Card Number :</strong> </label>
-                    <input type="text" class="form-control form-control-sm" name="card_no" id="p_card_no"
-                        placeholder="Card number">
-                </div>
-
-                <div class="col-md-3">
-                    <label><strong>Card Holder Name :</strong> </label>
-                    <input type="text" class="form-control form-control-sm" name="card_holder_name"
-                        id="p_card_holder_name" placeholder="Card holder name">
-                </div>
-
-                <div class="col-md-3">
-                    <label><strong>Card Transaction No :</strong> </label>
-                    <input type="text" class="form-control form-control-sm" name="card_transaction_no"
-                        id="p_card_transaction_no" placeholder="Card transaction no">
-                </div>
-
-                <div class="col-md-3">
-                    <label><strong>Card Type :</strong> </label>
-                    <select name="card_type" class="form-control form-control-sm" id="p_card_type">
-                        <option value="Credit-Card">Credit Card</option>
-                        <option value="Debit-Card">Debit Card</option>
-                        <option value="Visa">Visa Card</option>
-                        <option value="Master-Card">Master Card</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col-md-3">
-                    <label><strong>Month :</strong> </label>
-                    <input type="text" class="form-control form-control-sm" name="month" id="p_month"
-                        placeholder="Month">
-                </div>
-
-                <div class="col-md-3">
-                    <label><strong>Year :</strong> </label>
-                    <input type="text" class="form-control form-control-sm" name="year" id="p_year" placeholder="Year">
-                </div>
-
-                <div class="col-md-3">
-                    <label><strong>Secure Code :</strong> </label>
-                    <input type="text" class="form-control form-control-sm" name="secure_code" id="p_secure_code"
-                        placeholder="Secure code">
-                </div>
-            </div>
-        </div>
-
-        <div class="payment_method d-none" id="Cheque">
-            <div class="row">
-                <div class="col-md-12">
-                    <label><strong>Cheque Number :</strong> </label>
-                    <input type="text" class="form-control form-control-sm" name="cheque_no" id="p_cheque_no"
-                        placeholder="Cheque number">
-                </div>
-            </div>
-        </div>
-
-        <div class="payment_method d-none" id="Bank-Transfer">
-            <div class="row">
-                <div class="col-md-12">
-                    <label><strong>Account Number :</strong> </label>
-                    <input type="text" class="form-control form-control-sm" name="account_no" id="p_account_no"
-                        placeholder="Account number">
-                </div>
-            </div>
-        </div>
-
-        <div class="payment_method d-none" id="Custom">
-            <div class="row">
-                <div class="col-md-12">
-                    <label><strong>Transaction No :</strong> </label>
-                    <input type="text" class="form-control form-control-sm" name="transaction_no" id="p_transaction_no"
-                        placeholder="Transaction number">
-                </div>
-            </div>
+            <input type="file" name="attachment" class="form-control" id="attachment">
         </div>
     </div>
 
     <div class="form-group mt-2">
         <label><strong> Payment Note :</strong></label>
-        <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3"
+        <textarea name="note" class="form-control" id="note" cols="30" rows="3"
             placeholder="Note"></textarea>
     </div>
 
@@ -215,7 +136,6 @@
             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
             <button name="action" value="save" type="button" class="c-btn btn_blue float-end" id="add_payment">Save</button>
             <button name="action" value="save_and_print" type="button" class="c-btn btn_blue float-end" id="add_payment">Save & Print</button>
-           
             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
         </div>
     </div>

@@ -51,55 +51,8 @@
 
                         <tr>
                             <th width="50%" class="text-start">Payment Method :</th>
-                            <td width="50%">{{ $supplierPayment->pay_mode }}</td>
+                            <td width="50%">{{ $supplierPayment->paymentMethod ? $supplierPayment->paymentMethod->name : $supplierPayment->pay_mode }}</td>
                         </tr>
-
-                        @if ($supplierPayment->pay_mode == 'Card')
-                            <tr>
-                                <th width="50%" class="text-start">Card Number :</th>
-                                <td width="50%">{{ $supplierPayment->card_no }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Card Holder :</th>
-                                <td width="50%">{{ $supplierPayment->card_holder }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Card Type :</th>
-                                <td width="50%">{{ $supplierPayment->card_type }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%">{{ $supplierPayment->card_transaction_no }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Month :</th>
-                                <td width="50%">{{ $supplierPayment->card_month }}</td>
-                            </tr>
-
-                            <tr>
-                                <th width="50%" class="text-start">Year :</th>
-                                <td width="50%">{{ $supplierPayment->card_year }}</td>
-                            </tr>
-                        @elseif($supplierPayment->pay_mode == 'Cheque')
-                            <tr>
-                                <th width="50%" class="text-start">Chaque No :</th>
-                                <td width="50%">{{ $supplierPayment->cheque_no }}</td>
-                            </tr>
-                        @elseif($supplierPayment->pay_mode == 'Bank-Transfer')
-                            <tr>
-                                <th width="50%" class="text-start">Account No :</th>
-                                <td width="50%">{{ $supplierPayment->account_no }}</td>
-                            </tr>
-                        @elseif($supplierPayment->pay_mode == 'Custom')
-                            <tr>
-                                <th width="50%" class="text-start">Transaction No :</th>
-                                <td width="50%">{{ $supplierPayment->transaction_no }}</td>
-                            </tr>
-                        @endif
                     </tbody>
                 </table>
             </div>

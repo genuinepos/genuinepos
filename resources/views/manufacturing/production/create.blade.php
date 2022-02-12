@@ -34,6 +34,19 @@
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-2">
+                                            <label><b>Production A/C : <span class="text-danger">*</span></b></label>
+                                            <select name="production_account_id" class="form-control add_input"
+                                                id="production_account_id" data-name="Production A/C">
+                                                @foreach ($productionAccounts as $productionAccount)
+                                                    <option value="{{ $productionAccount->id }}">
+                                                        {{ $productionAccount->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_production_account_id"></span>
+                                        </div>
+
+                                        <div class="col-md-2">
                                             @if (count($warehouses) > 0)
                                                 <label > <b>Store Location : </b> <span
                                                     class="text-danger">*</span></label>
@@ -58,14 +71,15 @@
 
                                         <div class="col-md-2">
                                             <label><b>Date :</b></label>
-                                            <input required type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                            <input type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                            <span class="error error_date"></span>
                                         </div>
 
                                         <div class="col-md-2">
                                             @if (count($warehouses) > 0)
                                                 <label > <b>Ingredials Stock Location : </b> <span
                                                     class="text-danger">*</span></label>
-                                                <select required class="form-control changeable add_input"
+                                                <select class="form-control changeable add_input"
                                                     name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id">
                                                     <option value="">Select Warehouse</option>
                                                     @foreach ($warehouses as $w)
@@ -81,7 +95,7 @@
 
                                         <div class="col-md-2">
                                             <label><b>Product :</b> <span class="text-danger">*</span></label>
-                                            <select required name="process_id" data-name="Product" class="form-control add_input"
+                                            <select name="process_id" data-name="Product" class="form-control add_input"
                                                 id="product_id">
                                                 <option value="">Select Process</option>
                                                 @foreach ($products as $product)
@@ -92,7 +106,7 @@
                                                     <option value="{{ $product->id }}">{{ $product->p_name.' '.$variant_name.' ('.$product_code.')' }}</option>
                                                 @endforeach
                                             </select>
-                                            <span class="error error_product_id"></span>
+                                            <span class="error error_process_id"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -152,9 +166,9 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>Output Qty :</b></label>
                                                 <div class="col-md-8">
-                                                    <input required type="number" step="any" data-name="Quantity" class="form-control add_input" name="output_quantity" id="output_quantity" value="1.00">
+                                                    <input type="number" step="any" data-name="Quantity" class="form-control add_input" name="output_quantity" id="output_quantity" value="1.00">
                                                     <input type="text" name="parameter_quantity" class="d-none" id="parameter_quantity" value="0.00">
-                                                    <span class="error error_quantity"></span>
+                                                    <span class="error error_output_quantity"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -166,6 +180,7 @@
                                                 <label class="col-4"><b>Wasted Qty :</b></label>
                                                 <div class="col-md-8">
                                                     <input type="number" step="any" name="wasted_quantity" class="form-control" id="wasted_quantity" value="0.00">
+                                                    <span class="error error_wasted_quantity"></span>
                                                 </div>
                                             </div> 
                                         </div>
@@ -177,6 +192,7 @@
                                                 <label class="col-4"><b>Final Output Qty :</b></label>
                                                 <div class="col-md-8">
                                                     <input readonly type="text" step="any" class="form-control" name="final_output_quantity" id="final_output_quantity" value="1.00">
+                                                    <span class="error error_final_output_quantity"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -199,6 +215,7 @@
                                                 <label class="col-4"><b>Total Production Cost :</b></label>
                                                 <div class="col-md-8">
                                                     <input readonly type="number" step="any" name="total_cost" class="form-control" id="total_cost" value="0.00">
+                                                    <span class="error error_total_cost"></span>
                                                 </div>
                                             </div> 
                                         </div>
@@ -245,7 +262,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>Par Unit Cost :</b></label>
                                                 <div class="col-md-8">
-                                                    <input required type="text" name="per_unit_cost_exc_tax" id="per_unit_cost_exc_tax" class="form-control" placeholder="Par Unit Cost Exc.Tax" autocomplete="off" value="0.00">
+                                                    <input type="text" name="per_unit_cost_exc_tax" id="per_unit_cost_exc_tax" class="form-control" placeholder="Par Unit Cost Exc.Tax" autocomplete="off" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -281,10 +298,11 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <p class="float-end is_final"> 
-                                        <input type="checkbox" name="is_final" id="is_final"> &nbsp; <b> Finalize</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Once finalized all ingredient stock will be deducted & production item stock will be increased and production item unit cost, price will be updated as well as editing of production will not be allowed." class="fas fa-info-circle tp"></i></p> 
+                                    <input type="checkbox" name="is_final" id="is_final"> &nbsp; <b> Finalize</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Once finalized all ingredient stock will be deducted & production item stock will be increased and production item unit cost, price will be updated as well as editing of production will not be allowed." class="fas fa-info-circle tp"></i></p> 
                                 </div>
                             </div>
 
@@ -354,7 +372,11 @@
                 var product_id = data.product_id;
                 var variantId = data.variant_id ? data.variant_id : null;
                 var url = "{{ url('manufacturing/productions/get/ingredients') }}"+"/"+processId+"/"+stockWarehouseId;
-                $.get(url, function(data) {$('#ingredient_list').html(data);__calculateTotalAmount();});
+
+                $.get(url, function(data) {
+                    $('#ingredient_list').html(data);
+                    __calculateTotalAmount();
+                });
             });
         });
 
@@ -525,9 +547,17 @@
                     $('.error').html('');
                     if (err.status == 0) {
                         toastr.error('Net Connetion Error. Reload This Page.'); 
-                    }else{
+                        return;
+                    }else if (err.status == 500) {
                         toastr.error('Server error please contact to the support.');
+                        return;
                     }
+                    
+                    toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_' + key + '').html(error[0]);
+                    });
                 }
             });
         });

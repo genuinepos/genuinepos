@@ -28,151 +28,195 @@ class LoanPaymentController extends Controller
         $this->middleware('auth:admin_and_user');
     }
 
-    public function dueReceiveModal($company_id)
+    public function loanAdvanceReceiveModal($company_id)
     {
-        $accounts = DB::table('accounts')->select('id', 'name', 'account_number', 'balance')->get();
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
         $company = DB::table('loan_companies')->where('id', $company_id)->first();
-        return view('accounting.loans.ajax_view.loan_due_receive_modal', compact('accounts', 'company'));
+
+        return view('accounting.loans.ajax_view.loan_advance_receive_modal', compact('accounts', 'company', 'methods'));
     }
 
-    public function dueReceiveStore(Request $request, $company_id)
+    public function loanAdvanceReceiveStore(Request $request, $company_id)
     {
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'payment_method_id|required' => 'Please select a payment method.',
+            'account_id|required' => 'Please select debit account.',
+        ]);
+
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'PLDR'.date('my').$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
+        $loanPayment->voucher_no = 'LAR' . $this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 1;
         $loanPayment->branch_id = auth()->user()->branch_id;
         $loanPayment->account_id = $request->account_id;
         $loanPayment->user_id = auth()->user()->id;
-        $loanPayment->paid_amount = $request->amount;
-        $loanPayment->pay_mode = $request->pay_mode;
+        $loanPayment->paid_amount = $request->paying_amount;
+        $loanPayment->payment_method_id = $request->payment_method_id;
         $loanPayment->date = $request->date;
         $loanPayment->report_date = date('Y-m-d', strtotime($request->date));
         $loanPayment->save();
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->credit = $request->amount;
-            $addCashFlow->cash_type = 2;
-            $addCashFlow->loan_payment_id = $loanPayment->id;
-            $addCashFlow->transaction_type = 11;
-            $addCashFlow->date = $request->date;
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->id();
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
-        }
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 16,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $loanPayment->id,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
 
-        $dueLoans = Loan::where('type', 1)->where('loan_company_id', $company_id)->where('due', '>', 0)->orderBy('id', 'asc')->get();
-        $paying_amount = $request->amount;
+        $dueLoans = Loan::where('type', 1)->where('loan_company_id', $company_id)->where('due', '>', 0)->get();
+        
         foreach ($dueLoans as $dueLoan) {
-            if ($dueLoan->due > $paying_amount) {
-                if ($paying_amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $paying_amount, 1);
-                    $paying_amount -= $paying_amount;
-                    $this->loanUtil->loanAmountAdjustment($dueLoan); 
-                }else {
-                    break;
-                }
-            } elseif ($dueLoan->due == $request->amount) {
-                if ($paying_amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $paying_amount, 1);
-                    $paying_amount -= $paying_amount;
+            if ($dueLoan->due > $request->paying_amount) {
+
+                if ($request->paying_amount > 0) {
+
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->paying_amount, 1);
+
+                    $request->paying_amount -= $request->paying_amount;
+
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
                 } else {
+
                     break;
                 }
-            } elseif ($dueLoan->due < $paying_amount) {
-                if ($paying_amount > 0) {
+            } elseif ($dueLoan->due == $request->paying_amount) {
+
+                if ($request->paying_amount > 0) {
+
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->paying_amount, 1);
+
+                    $request->paying_amount -= $request->paying_amount;
+
+                    $this->loanUtil->loanAmountAdjustment($dueLoan);
+                } else {
+
+                    break;
+                }
+            } elseif ($dueLoan->due < $request->paying_amount) {
+
+                if ($request->paying_amount > 0) {
+
                     $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $dueLoan->due, 1);
-                    $paying_amount -= $dueLoan->due;
+                    $request->paying_amount -= $dueLoan->due;
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
                 } else {
+                    
                     break;
                 }
             }
         }
 
-        $this->loanUtil->adjustCompanyPayLoanAmount($company_id);
-        return response()->json('Pay Loan due received Successfully');
+        $this->loanUtil->adjustCompanyLoanAdvanceAmount($company_id);
+
+        return response()->json('Loan&Advance received Successfully');
     }
 
-    public function duePayModal($company_id)
+    public function loaLiabilityPaymentModal($company_id)
     {
-        $accounts = DB::table('accounts')->select('id', 'name', 'account_number', 'balance')->get();
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
         $company = DB::table('loan_companies')->where('id', $company_id)->first();
-        return view('accounting.loans.ajax_view.loan_due_pay_modal', compact('accounts', 'company'));
+
+        return view('accounting.loans.ajax_view.loan_liability_pay_modal', compact('accounts', 'company', 'methods'));
     }
 
-    public function duePayStore(Request $request, $company_id)
+    public function loanLiabilityPaymentStore(Request $request, $company_id)
     {
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'payment_method_id|required' => 'Please select a payment method.',
+            'account_id|required' => 'Please select debit account.',
+        ]);
+        
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'GLDR'.date('my').$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
+        $loanPayment->voucher_no = 'LLP' . $this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 2;
         $loanPayment->branch_id = auth()->user()->branch_id;
         $loanPayment->account_id = $request->account_id;
         $loanPayment->user_id = auth()->user()->id;
-        $loanPayment->paid_amount = $request->amount;
-        $loanPayment->pay_mode = $request->pay_mode;
+        $loanPayment->paid_amount = $request->paying_amount;
+        $loanPayment->payment_method_id = $request->payment_method_id;
         $loanPayment->date = $request->date;
         $loanPayment->report_date = date('Y-m-d', strtotime($request->date));
         $loanPayment->save();
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->debit = $request->amount;
-            $addCashFlow->cash_type = 1;
-            $addCashFlow->loan_payment_id = $loanPayment->id;
-            $addCashFlow->transaction_type = 11;
-            $addCashFlow->date = $request->date;
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->id();
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
-        }
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 15,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $loanPayment->id,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
 
         $dueLoans = Loan::where('type', 2)->where('loan_company_id', $company_id)->where('due', '>', 0)->get();
-        $paying_amount = $request->amount;
+
         foreach ($dueLoans as $dueLoan) {
-            if ($dueLoan->due > $paying_amount) {
-                if ($request->amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $paying_amount, 2);
+
+            if ($dueLoan->due > $request->paying_amount) {
+
+                if ($request->paying_amount > 0) {
+
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->paying_amount, 2);
+                    $request->paying_amount -= $request->paying_amount;
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $paying_amount -= $paying_amount;
-                }  else {
-                    break;
-                }
-            } elseif ($dueLoan->due == $paying_amount) {
-                if ($paying_amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $paying_amount, 2);
-                    $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $paying_amount -= $paying_amount;
-                }  else {
-                    break;
-                }
-            } elseif ($dueLoan->due < $paying_amount) {
-                if ($paying_amount > 0) {
-                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $dueLoan->due, 2);
-                    $this->loanUtil->loanAmountAdjustment($dueLoan);
-                    $paying_amount -= $dueLoan->due;
                 } else {
+
+                    break;
+                }
+            } elseif ($dueLoan->due == $request->paying_amount) {
+
+                if ($request->paying_amount > 0) {
+
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $request->paying_amount, 2);
+                    $request->paying_amount -= $request->paying_amount;
+                    $this->loanUtil->loanAmountAdjustment($dueLoan);
+                } else {
+
+                    break;
+                }
+            } elseif ($dueLoan->due < $request->paying_amount) {
+
+                if ($request->paying_amount > 0) {
+
+                    $this->addLoanPaymentDistribution($loanPayment->id, $dueLoan->id, $dueLoan->due, 2);
+                    $request->paying_amount -= $dueLoan->due;
+                    $this->loanUtil->loanAmountAdjustment($dueLoan);
+                } else {
+
                     break;
                 }
             }
         }
 
-        $this->loanUtil->adjustCompanyReceiveLoanAmount($company_id);
+        $this->loanUtil->adjustCompanyLoanLiabilityAmount($company_id);
         return response()->json('Get Loan due paid Successfully');
     }
 
@@ -180,10 +224,10 @@ class LoanPaymentController extends Controller
     {
         $company = DB::table('loan_companies')->where('id', $company_id)->first();
         $loan_payments = DB::table('loan_payments')
-        ->leftJoin('accounts', 'loan_payments.account_id', 'accounts.id')
-        ->select('loan_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no')
-        ->where('loan_payments.company_id', $company_id)
-        ->orderBy('loan_payments.report_date', 'desc')->get();
+            ->leftJoin('accounts', 'loan_payments.account_id', 'accounts.id')
+            ->leftJoin('payment_methods', 'loan_payments.payment_method_id', 'payment_methods.id')
+            ->select('loan_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no', 'payment_methods.name as payment_method')
+            ->orderBy('loan_payments.report_date', 'desc')->get();
         return view('accounting.loans.ajax_view.payment_list', compact('company', 'loan_payments'));
     }
 
@@ -197,17 +241,21 @@ class LoanPaymentController extends Controller
         $deleteLoanPayment->delete();
 
         foreach ($storedPaymentDistributions as $storedPaymentDistribution) {
+
             $this->loanUtil->loanAmountAdjustment($storedPaymentDistribution->loan);
         }
 
         if ($storedPaymentType == 1) {
-            $this->loanUtil->adjustCompanyPayLoanAmount($storedCompanyId);
+
+            $this->loanUtil->adjustCompanyLoanAdvanceAmount($storedCompanyId);
         } else {
-            $this->loanUtil->adjustCompanyReceiveLoanAmount($storedCompanyId);
+
+            $this->loanUtil->adjustCompanyLoanLiabilityAmount($storedCompanyId);
         }
 
         if ($storedAccountId) {
-            $this->accountUtil->adjustAccountBalance($storedAccountId);
+            
+            $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
         }
 
         return response()->json('Loan payment deleted Successfully');

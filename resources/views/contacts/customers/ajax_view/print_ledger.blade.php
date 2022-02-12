@@ -1,17 +1,43 @@
 
+<style>
+    @media print
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+    }
+
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 20px;margin-right: 20px;}
+    .header, .header-space,
+    .footer, .footer-space {height: 20px;}
+    .header {position: fixed;top: 0;}
+    .footer {position: fixed;bottom: 0;}
+    .noBorder {border: 0px !important;}
+    tr.noBorder td {border: 0px !important;}
+    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
+</style>
+
 <div class="row">
     <div class="col-md-12 text-center">
-        <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-        <p>{{ json_decode($generalSettings->business, true)['address'] }}</p>
-        {{-- @if ($fromDate && $toDate)
+        @if (auth()->user()->branch_id)
+            <h6>{{ auth()->user()->branch->name }}</h6>
+            <p style="width: 60%; margin:0 auto;">{{ auth()->user()->branch->city.', '.auth()->user()->branch->state.', '.auth()->user()->branch->zip_code.','.auth()->user()->branch->country }}</p>
+        @else
+            <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+        @endif
+        
+         @if ($fromDate && $toDate)
             <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
-        @endif --}}
+        @endif 
         
         <p><b>Customer Ledger </b></p> 
     </div>
 </div>
-<br>
-<div class="customer_details_area">
+
+<div class="customer_details_area mt-1">
     <div class="row">
         <div class="col-6">
             <ul class="list-unstyled">
@@ -22,112 +48,69 @@
         </div>
     </div>
 </div>
-<br>
-<div class="row" >
+@php
+    $totalDebit = 0;
+    $totalCredit = 0;
+@endphp
+<div class="row mt-1">
     <div class="col-12" >
         <table class="table modal-table table-sm table-bordered" >
             <thead>
                 <tr>
                     <th class="text-start">Date</th>
-                    <th class="text-start"></th>
-                    <th class="text-start">Description</th>
-                    <th class="text-start">Invoice ID</th>
-                    <th class="text-start">Voucher No</th>
-                    <th class="text-start">Payment Method</th>
-                    <th class="text-end">Debit({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                    <th class="text-end">Credit({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-start">Particulars</th>
+                    <th class="text-start">Voucher/Invoice</th>
+                    <th class="text-end">Debit</th>
+                    <th class="text-end">Credit</th>
+                    <th class="text-end">Running Balance</th>
                 </tr>
             </thead>
             
             <tbody>
-                @foreach ($ledgers as $ledger)
+                @foreach ($ledgers as $row)
                     <tr>
-                        @if ($ledger->row_type == 1)
-                            <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale->date)) }}</td> 
-                            <td class="text-start">Cr</td>
-                            <td class="text-start"><b>Sale :</b>  
-                                @foreach ($ledger->sale->sale_products as $item)
-                                    {{ Str::limit($item->product->name, 15)  }} {{$item->variant ? $item->variant->variant_name : ''}}, 
-                                @endforeach
-                            </td>
-                            <td class="text-start">{{ $ledger->sale->invoice_id }}</td>
-                            <td class="text-start">---</td>
-                            <td class="text-start">---</td>
-                            <td class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($ledger->sale->total_payable_amount) }}
-                            </td>
-                            <td class="text-start">---</td>
-                        @elseif($ledger->row_type == 2)
-                            <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->sale_payment->date)) }}</td> 
-                            <td class="text-start">{{ $ledger->sale_payment->payment_type == 1 ? 'Dr' : 'Cr' }}</td>
-                            <td class="text-start">
-                                {{ $ledger->sale_payment->payment_type == 1 ? 'Receive Payment' : 'Sale Return Payment' }}<br>
-                                {{ $ledger->sale_payment->account ? $ledger->sale_payment->account->name : '' }}
-                                {{ $ledger->sale_payment->account ? ' A/C '.$ledger->sale_payment->account->account_number : '' }} 
-                                Payment For Sale : (Invoice ID {{ $ledger->sale_payment->sale->invoice_id }})
-                            </td>
-                            <td class="text-start">---</td>
-                            <td class="text-start">{{ $ledger->sale_payment->invoice_id }}</td>
-                        
-                            <td class="text-start">{{ $ledger->sale_payment->pay_mode }}</td>
-                            @if ($ledger->sale_payment->payment_type == 1)
-                                <td class="text-start">---</td>
-                                <td class="text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($ledger->sale_payment->paid_amount) }}
-                                </td>
-                            @else   
-                                <td class="text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($ledger->sale_payment->paid_amount) }}
-                                </td>
-                                <td>---</td>  
-                            @endif
-                        @elseif ($ledger->row_type == 4)
-                            <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->created_at)) }}</td> 
-                            <td class="text-start">Dr</td>
-                            <td class="text-start">
-                                Receive Payment By Money Receipt
-                            </td>
-                            <td class="text-start">---</td>
-                            <td class="text-start"> {{ $ledger->money_receipt->invoice_id }}</td>
-                            <td class="text-start">{{ $ledger->money_receipt->payment_method }}</td>
-                            <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ledger->amount) }}</td>
-                            <td class="text-start">---</td> 
-                        @elseif($ledger->row_type == 5)
-                            <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->customer_payment->date)) }}</td> 
-                            <td class="text-start">{{ $ledger->customer_payment->type == 1 ? 'Dr' : 'Cr' }}</td>
-                            <td class="text-start">
-                                {{ $ledger->customer_payment->type == 1 ? 'Received From Customer(Sale Due)' : 'Paid To Customer (Sale Return Due)' }}
-                                <b>{!! $ledger->customer_payment->account ? '<br>'.$ledger->customer_payment->account->name : '' !!}
-                                {!! $ledger->customer_payment->account ? 'A/C '.$ledger->customer_payment->account->account_number: '' !!}</b>
-                            </td>
-                            <td class="text-start">---</td>
-                            <td class="text-start">{{ $ledger->customer_payment->voucher_no }}</td>
-                            <td class="text-start">{{ $ledger->customer_payment->pay_mode }}</td>
-                            @if ($ledger->customer_payment->type == 1)
-                                <td class="text-start">---</td>
-                                <td class="text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($ledger->customer_payment->paid_amount) }}
-                                </td>
-                            @else   
-                                <td class="text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($ledger->customer_payment->paid_amount) }}
-                                </td>
-                                <td class="text-start">---</td>
-                            @endif
-                        @else 
-                            <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ledger->created_at)) }}</td> 
-                            <td class="text-start">Cr</td>
-                            <td class="text-start">Opening Balance</td>
-                            <td class="text-start">---</td>
-                            <td class="text-start">---</td>
-                            <td class="text-start">---</td>   
-                            <td class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($ledger->amount) }}
-                            </td>
-                            <td class="text-start">---</td>   
-                        @endif
+                        <td class="text-start">
+                            @php
+                                $dateFormat = json_decode($generalSettings->business, true)['date_format'];
+                                $__date_format = str_replace('-', '/', $dateFormat);
+                            @endphp
+                            
+                            {{ date($__date_format, strtotime($row->report_date)) }}
+                        </td>
+
+                        <td class="text-start">
+                            @php
+                                $type = $customerUtil->voucherType($row->voucher_type);
+                                $__ags = $row->ags_sale ? '/' . 'AGS: ' . $row->ags_sale : '';
+                                $particulars = '<b>' . $type['name'] . '</b>' . $__ags . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                            @endphp 
+
+                            {!! $particulars !!}
+                        </td>
+
+                        <td class="text-start">
+                            @php
+                                $type = $customerUtil->voucherType($row->voucher_type);
+                            @endphp
+                            
+                            {{ $row->{$type['voucher_no']} }}
+                        </td>
+
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($row->debit) }}
+                            @php
+                                $totalDebit += $row->debit;
+                            @endphp
+                        </td>
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($row->credit) }}
+                            @php
+                                $totalCredit += $row->credit;
+                            @endphp
+                        </td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($row->running_balance) }}</td>
                     </tr>
-                @endforeach
+            @endforeach
             </tbody>
         </table>
     </div>
@@ -136,34 +119,33 @@
 <div class="row">
     <div class="col-6"></div>
     <div class="col-6">
-        <table class="table modal-table table-sm">
+        <table class="table modal-table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <td class="text-start"><strong>Opening Balance :</strong></td>
-                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
-                        {{ bcadd($customer->opening_balance, 0, 2) }}
+                    <td class="text-end">
+                        <strong>Total Debit :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                    </td>
+                    <td class="text-end">
+                        {{ App\Utils\Converter::format_in_bdt($totalDebit) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="text-start"><strong>Total Sale :</strong></td>
-                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
-                        {{ bcadd($customer->total_sale, 0, 2) }}
+                    <td class="text-end">
+                        <strong>Total Credit :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                    </td>
+                    <td class="text-end"> 
+                        {{ App\Utils\Converter::format_in_bdt($totalCredit) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="text-start"><strong>Total Paid :</strong></td>
-                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
-                        {{ bcadd($customer->total_paid, 0, 2) }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="text-start"><strong>Balance Due :</strong></td>
-                    <td class="text-start">
-                        <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
-                        {{ bcadd($customer->total_sale_due, 0, 2) }}
+                    <td class="text-end"><strong>Closing Balance :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}</td>
+                    <td class="text-end">
+                        @php
+                            $closingBalance =  $totalDebit - $totalCredit;
+                        @endphp
+                        {{ App\Utils\Converter::format_in_bdt($closingBalance) }}
                     </td>
                 </tr>
             </tbody>

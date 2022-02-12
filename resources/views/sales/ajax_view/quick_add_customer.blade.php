@@ -148,6 +148,7 @@
     $('#add_customer_form').on('submit', function(e){
         e.preventDefault();
         $('.loading_button').show();
+        $('.submit_button').prop('button');
         var url = $(this).attr('action');
         var request = $(this).serialize();
         var inputs = $('.c_add_input');
@@ -165,6 +166,7 @@
 
         if(countErrorField > 0){
             $('.loading_button').hide();
+            $('.submit_button').prop('submit');
             return;
         }
 

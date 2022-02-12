@@ -64,22 +64,12 @@
         </div>
 
         <div class="col-md-3">
-            <label> <strong>Branch Logo :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
+            <label> <strong>Location Logo :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
             <input type="file" name="logo" class="form-control" id="logo"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
-        <div class="col-md-3">
-            <label><strong>Default Account :</strong> </label>
-            <select name="default_account_id" id="e_default_account_id" class="form-control ">
-                <option value="">Select Please</option>
-                @foreach ($accounts as $ac)
-                    <option {{ $ac->id == $branch->default_account_id ? 'SELECTED' : '' }} value="{{ $ac->id }}">{{ $ac->name.' (A/C:'.$ac->account_number.')' }}</option>
-                @endforeach
-            </select>
-        </div>
-
         <div class="col-md-3">
             <label><strong>Invoice Schema :</strong>  <span class="text-danger">*</span></label>
             <select name="invoice_schema_id" id="e_invoice_schema_id" data-name="Add sale pos invoice schema" class="form-control  edit_input">
@@ -115,7 +105,7 @@
     </div>
 
     <div class="form-group row mt-1">
-        <div class="col-md-3">
+        <div class="col-md-12">
             <div class="row">
                 <p class="checkbox_input_wrap mt-2"> 
             <input type="checkbox" {{ $branch->purchase_permission == 1 ? 'CHECKED' : '' }} name="purchase_permission" id="e_purchase_permission" value="1"> &nbsp; <b>Enable purchase permission</b>  </p> 
@@ -129,3 +119,45 @@
         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
     </div>
 </form>
+
+<script>
+    // edit branch by ajax
+    $('#edit_branch_form').on('submit', function(e){
+        e.preventDefault();
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        var inputs = $('.edit_input');
+            $('.error').html('');
+            var countErrorField = 0;
+        $.each(inputs, function(key, val){
+            var inputId = $(val).attr('id');
+            var idValue = $('#'+inputId).val()
+            if(idValue == ''){
+                countErrorField += 1;
+                var fieldName = $('#'+inputId).data('name');
+                $('.error_'+inputId).html(fieldName+' is required.');
+            }
+        });
+
+        if(countErrorField > 0){
+            $('.loading_button').hide();
+            return;
+        }
+
+        $.ajax({
+            url:url,
+            type:'post',
+            data:new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success:function(data){
+                $('#editModal').modal('hide');
+                toastr.success(data);
+                $('.loading_button').hide();
+                getAllBranch();
+            }
+        });
+    });
+</script>

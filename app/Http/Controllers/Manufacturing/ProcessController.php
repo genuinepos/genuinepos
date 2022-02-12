@@ -71,6 +71,16 @@ class ProcessController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        $productAndVariantId = explode('-', $request->product_id);
+        $product_id = $productAndVariantId[0];
+        $variant_id = $productAndVariantId[1] != 'NULL' ? $productAndVariantId[1] : NULL;
+
+        $checkSameItemProcess = Process::where('product_id', $product_id)->where('variant_id', $variant_id)->first();
+
+        if ($checkSameItemProcess) {
+            return redirect()->route('manufacturing.process.edit', $checkSameItemProcess->id);
+        }
+
         $product = $this->processUtil->getProcessableProductForCreate($request);
         return view('manufacturing.process.create', compact('product'));
     }
@@ -87,6 +97,7 @@ class ProcessController extends Controller
         ]);
 
         $addProcess = new Process();
+        $addProcess->branch_id = auth()->user()->branch_id;
         $addProcess->product_id = $request->product_id;
         $addProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : NULL;
         $addProcess->total_ingredient_cost = $request->total_ingredient_cost;

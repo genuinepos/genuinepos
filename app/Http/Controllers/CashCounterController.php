@@ -6,6 +6,7 @@ use App\Models\CashCounter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Validation\Rule;
 
 class CashCounterController extends Controller
 {
@@ -67,8 +68,14 @@ class CashCounterController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'counter_name' => 'required|unique:cash_counters,counter_name',
-            'short_name' => 'required|unique:cash_counters,short_name',
+            // 'counter_name' => 'required|unique:cash_counters,counter_name',
+            'counter_name' => ['required', Rule::unique('cash_counters')->where(function ($query) {
+                return $query->where('branch_id', auth()->user()->branch_id);
+            })],
+            // 'short_name' => 'required|unique:cash_counters,short_name',
+            'short_name' => ['required', Rule::unique('cash_counters')->where(function ($query) {
+                return $query->where('branch_id', auth()->user()->branch_id);
+            })],
         ]);
 
         CashCounter::insert([

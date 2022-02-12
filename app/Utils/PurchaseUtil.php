@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Utils\Converter;
 use Illuminate\Support\Str;
 use App\Models\ProductVariant;
+use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseOrderProduct;
@@ -15,9 +16,11 @@ use Yajra\DataTables\Facades\DataTables;
 class PurchaseUtil
 {
     public $converter;
-    public function __construct(Converter $converter)
+    public $invoiceVoucherRefIdUtil;
+    public function __construct(Converter $converter, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
         $this->converter = $converter;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
     }
 
     public function purchaseListTable($request)
@@ -795,5 +798,120 @@ class PurchaseUtil
         $leftQty = $purchaseProduct->quantity - $totalSold->sum('total_sold');
         $purchaseProduct->left_qty = $leftQty;
         $purchaseProduct->save();
+    }
+
+    public function addPurchasePaymentGetId($invoicePrefix, $request, $payingAmount, $invoiceId, $purchase, $supplier_payment_id)
+    {
+        // Add purchase payment
+        $addPurchasePayment = new PurchasePayment();
+        $addPurchasePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'PPV') . $invoiceId;
+        $addPurchasePayment->purchase_id = $purchase->id;
+        $addPurchasePayment->is_advanced = $purchase->is_purchased == 0 ? 1 : 0;
+        $addPurchasePayment->account_id = $request->account_id;
+        $addPurchasePayment->payment_method_id = $request->payment_method_id;
+        $addPurchasePayment->supplier_payment_id = $supplier_payment_id;
+        $addPurchasePayment->paid_amount = $payingAmount;
+        $addPurchasePayment->date = $request->date;
+        $addPurchasePayment->time = date('h:i:s a');
+        $addPurchasePayment->report_date = date('Y-m-d H:is', strtotime($request->date.date(' H:i:s')));
+        $addPurchasePayment->month = date('F');
+        $addPurchasePayment->year = date('Y');
+        $addPurchasePayment->note = $request->note;
+        $addPurchasePayment->admin_id = auth()->user()->id;
+
+        if ($request->hasFile('attachment')) {
+            $purchasePaymentAttachment = $request->file('attachment');
+            $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
+            $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
+            $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
+        }
+
+        $addPurchasePayment->save();
+        return $addPurchasePayment->id;
+    }
+
+    public function updatePurchasePayment($request, $payment)
+    {
+        // update sale payment
+        $payment->account_id = $payment->supplier_payment_id == NULL ? $request->account_id : $payment->account_id;
+        $payment->payment_method_id = $request->payment_method_id;
+        $payment->paid_amount = $request->paying_amount;
+        $payment->date = $request->date;
+        $payment->report_date = date('Y-m-d H:is', strtotime($request->date.date(' H:i:s')));
+        $payment->month = date('F');
+        $payment->year = date('Y');
+        $payment->note = $request->note;
+
+        if ($request->hasFile('attachment')) {
+            if ($payment->attachment != null) {
+                if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                }
+            }
+            $salePaymentAttachment = $request->file('attachment');
+            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
+            $payment->attachment = $salePaymentAttachmentName;
+        }
+
+        $payment->save();
+    }
+
+    public function purchaseReturnPaymentGetId($request, $purchase, $supplier_payment_id)
+    {
+        // Add sale return payment
+        $addPurchaseReturnPayment = new PurchasePayment();
+        $addPurchaseReturnPayment->invoice_id = 'PRPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+        $addPurchaseReturnPayment->purchase_id = $purchase->id;
+        $addPurchaseReturnPayment->supplier_id = $purchase->supplier_id;
+        $addPurchaseReturnPayment->account_id = $request->account_id;
+        $addPurchaseReturnPayment->payment_method_id = $request->payment_method_id;
+        $addPurchaseReturnPayment->supplier_payment_id = $supplier_payment_id;
+        $addPurchaseReturnPayment->payment_type = 2;
+        $addPurchaseReturnPayment->paid_amount = $request->paying_amount;
+        $addPurchaseReturnPayment->date = $request->date;
+        $addPurchaseReturnPayment->time = date('h:i:s a');
+        $addPurchaseReturnPayment->report_date = date('Y-m-d H:is', strtotime($request->date.date(' H:i:s')));
+        $addPurchaseReturnPayment->month = date('F');
+        $addPurchaseReturnPayment->year = date('Y');
+        $addPurchaseReturnPayment->note = $request->note;
+        $addPurchaseReturnPayment->admin_id = auth()->user()->id;
+
+        if ($request->hasFile('attachment')) {
+            $attachment = $request->file('attachment');
+            $attachmentName = uniqid() . '-' . '.' . $attachment->getClientOriginalExtension();
+            $attachment->move(public_path('uploads/payment_attachment/'), $attachmentName);
+            $addPurchaseReturnPayment->attachment = $attachmentName;
+        }
+        $addPurchaseReturnPayment->save();
+
+        return $addPurchaseReturnPayment->id;
+    }
+
+    public function updatePurchaseReturnPayment($request, $payment)
+    {
+        // update sale payment
+        $payment->account_id = $payment->supplier_payment_id == NULL ? $request->account_id : $payment->account_id;
+        $payment->payment_method_id = $request->payment_method_id;
+        $payment->paid_amount = $request->paying_amount;
+        $payment->date = $request->date;
+        $payment->report_date = date('Y-m-d H:is', strtotime($request->date.date(' H:i:s')));
+        $payment->month = date('F');
+        $payment->year = date('Y');
+        $payment->note = $request->note;
+
+        if ($request->hasFile('attachment')) {
+            if ($payment->attachment != null) {
+                if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                }
+            }
+            $attachment = $request->file('attachment');
+            $attachmentName = uniqid() . '-' . '.' . $attachment->getClientOriginalExtension();
+            $attachment->move(public_path('uploads/payment_attachment/'), $attachmentName);
+            $payment->attachment = $attachmentName;
+        }
+
+        $payment->save();
     }
 }

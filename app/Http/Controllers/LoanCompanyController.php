@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoanCompany;
+use App\Utils\AccountUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class LoanCompanyController extends Controller
 {
-    public function __construct()
+    protected $accountUtil;
+
+    public function __construct(AccountUtil $accountUtil)
     {
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -18,7 +22,7 @@ class LoanCompanyController extends Controller
     {
         if ($request->ajax()) {
             $companies = DB::table('loan_companies')->orderBy('id', 'DESC')
-            ->where('branch_id', auth()->user()->branch_id)->get();
+                ->where('branch_id', auth()->user()->branch_id)->get();
             $generalSettings = DB::table('general_settings')->first();
             return DataTables::of($companies)
                 ->addIndexColumn()
@@ -31,11 +35,11 @@ class LoanCompanyController extends Controller
                     $html .= '<a class="dropdown-item" href="' . route('accounting.loan.payment.list', [$row->id]) . '" id="view_payments"><i class="far fa-edit text-primary"></i> View Payments</a>';
 
                     if ($row->pay_loan_due > 0) {
-                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.payment.due.receive.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Due Amount</a>';
+                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.advance.receive.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Loan & Advance Due Receive</a>';
                     }
 
                     if ($row->get_loan_due > 0) {
-                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.payment.due.pay.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Due Amount</a>';
+                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.liability.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Loan Liability Due Payment</a>';
                     }
 
                     $html .= '<a class="dropdown-item" id="delete_company" href="' . route('accounting.loan.companies.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
@@ -95,9 +99,42 @@ class LoanCompanyController extends Controller
 
     public function delete(Request $request, $companyId)
     {
-        $deleteCompany = LoanCompany::find($companyId);
+        $deleteCompany = LoanCompany::with(['loans', 'loanPayments'])->where('id', $companyId)->first();
+        $storedCompanyLoans = $deleteCompany->loans;
+        $storedCompanyLoanPayments = $deleteCompany->loanPayments;
         if (!is_null($deleteCompany)) {
             $deleteCompany->delete();
+
+            foreach ($storedCompanyLoanPayments as $companyLoanPayment) {
+                // Adjust Bank/Cash-In-Hand A/C balance
+                $this->accountUtil->adjustAccountBalance('debit', $companyLoanPayment->account_id);
+            }
+
+            foreach ($storedCompanyLoans as $companyLoan) {
+                if ($companyLoan->type == 1) {
+
+                    if ($companyLoan->loan_account_id) {
+                        // Adjust Loan A/C balance
+                        $this->accountUtil->adjustAccountBalance('debit', $companyLoan->loan_account_id);
+                    }
+
+                    if ($companyLoan->account_id) {
+                        // Adjust Bank/Cash-In-Hand A/C balance
+                        $this->accountUtil->adjustAccountBalance('debit', $companyLoan->account_id);
+                    }
+                } else {
+
+                    if ($companyLoan->loan_account_id) {
+                        // Adjust Loan A/C balance
+                        $this->accountUtil->adjustAccountBalance('credit', $companyLoan->loan_account_id);
+                    }
+
+                    if ($companyLoan->account_id) {
+                        // Adjust Bank/Cash-In-Hand A/C balance
+                        $this->accountUtil->adjustAccountBalance('debit', $companyLoan->account_id);
+                    }
+                }
+            }
         }
 
         return response()->json('Company deleted Successfully');

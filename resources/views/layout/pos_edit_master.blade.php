@@ -54,11 +54,13 @@
          <div class="modal fade in" id="otherPaymentMethod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog col-50-modal" role="document">
                 <div class="modal-content">
+
                     <div class="modal-header">
                         <h6 class="modal-title" id="payment_heading">Choose Payment method</h6>
                         <a href="" class="close-btn" id="cancel_pay_mathod"><span
                             class="fas fa-times"></span></a>
                     </div>
+
                     <div class="modal-body">
                         <!--begin::Form-->
                         <div class="form-group row">
@@ -68,105 +70,31 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
-                                    <select name="payment_method" class="form-control"  id="payment_method">
-                                        <option value="Cash">Cash</option>
-                                        <option value="Card">Card</option>
-                                        <option value="Bkash">Bkash</option>
-                                        <option value="Rocket">Rocket</option>
-                                        <option value="Nagad">Nagad</option>
-                                        <option value="Cheque">Cheque</option>
-                                        <option value="Advanced">Advanced</option>
-                                        <option value="Bank-Transfer">Bank-Transfer</option>
-                                        <option value="Other">Other</option>
-                                        <option value="Custom">Custom Field</option>
+                                    <select name="payment_method_id" class="form-control"  id="payment_method_id">
+                                        @foreach ($methods as $method)
+                                            <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong>Payment Account :</strong> </label>
+                                <label><strong>Debit Account :</strong> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
-                                    <select name="account_id" class="form-control"  id="account_id">
-                                        <option value="">Select Accout</option>
+                                    <select name="account_id" class="form-control" id="account_id">
+                                        @foreach ($accounts as $account)
+                                            <option value="{{ $account->id }}">
+                                                @php
+                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                    $balance = ' BL : '.$account->balance;
+                                                @endphp
+                                                {{ $account->name.$accountType.$balance}}
+                                            </option>
+                                        @endforeach
                                     </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group mt-2">
-                            <div class="payment_method d-none" id="Card">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label><strong>Card Number :</strong> </label>
-                                        <input type="text" class="form-control" name="card_no" id="p_card_no" placeholder="Card number">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label><strong>Holder Name :</strong> </label>
-                                        <input type="text" class="form-control" name="card_holder_name" id="p_card_holder_name" placeholder="Card holder name">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label><strong>Transaction No :</strong> </label>
-                                        <input type="text" class="form-control" name="card_transaction_no" id="p_card_transaction_no" placeholder="Card transaction no">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label><strong>Card Type :</strong> </label>
-                                        <select name="card_type" class="form-control"  id="p_card_type">
-                                            <option value="Credit-Card">Credit Card</option>
-                                            <option value="Debit-Card">Debit Card</option>
-                                            <option value="Visa">Visa Card</option>
-                                            <option value="Master-Card">Master Card</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row mt-2">
-                                    <div class="col-md-3">
-                                        <label><strong>Month :</strong> </label>
-                                        <input type="text" class="form-control" name="month" id="p_month" placeholder="Month">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label><strong>Year :</strong> </label>
-                                        <input type="text" class="form-control" name="year" id="p_year" placeholder="Year">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label><strong>Secure Code :</strong> </label>
-                                        <input type="text" class="form-control" name="secure_code" id="p_secure_code" placeholder="Secure code">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="payment_method d-none" id="Cheque">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label><strong>Cheque Number :</strong> </label>
-                                        <input type="text" class="form-control" name="cheque_no" id="p_cheque_no" placeholder="Cheque number">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="payment_method d-none" id="Bank-Transfer">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label><strong>Account Number :</strong> </label>
-                                        <input type="text" class="form-control" name="account_no" id="p_account_no" placeholder="Account number">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="payment_method d-none" id="Custom">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label><strong>Transaction No :</strong> </label>
-                                        <input type="text" class="form-control" name="transaction_no" id="p_transaction_no" placeholder="Transaction number">
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -233,9 +161,7 @@
                                                         <th class="text-start">Actions</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="data-list" id="transection_list">
-
-                                                </tbody>
+                                                <tbody class="data-list" id="transection_list"></tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -273,9 +199,7 @@
                                     <div class="data_preloader" id="hold_invoice_preloader">
                                         <h6><i class="fas fa-spinner"></i> Processing...</h6>
                                     </div>
-                                    <div class="table-responsive" id="hold_invoices">
-
-                                    </div>
+                                    <div class="table-responsive" id="hold_invoices"></div>
                                 </div>
                             </div>
                         </div>
@@ -304,9 +228,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="stock_modal_body">
-
-                </div>
+                <div class="modal-body" id="stock_modal_body"></div>
             </div>
         </div>
     </div>
@@ -469,20 +391,6 @@
         }
         allPosShortcutMenus();
 
-         // Set accounts in payment and payment edit form
-        function setAccount(){
-            $.ajax({
-                url:"{{ route('accounting.accounts.all.form.account') }}",
-                success:function(accounts){
-                    $.each(accounts, function (key, account) {
-                        $('#account_id').append('<option value="'+account.id+'">'+ account.name +' (A/C: '+account.account_number+')'+' (Balance: '+account.balance+')'+'</option>');
-                    });
-                    $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
-                }
-            });
-        }
-        setAccount();
-
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
             var indexs = document.querySelectorAll('#index');
@@ -548,12 +456,6 @@
             if (event.which == '10' || event.which == '13') {
                 event.preventDefault();
             }
-        });
-
-        $('#payment_method').on('change', function () {
-            var value = $(this).val();
-            $('.payment_method').hide();
-            $('#'+value).show();
         });
 
         var tableRowIndex = 0;

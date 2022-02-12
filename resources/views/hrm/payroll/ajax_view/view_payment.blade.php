@@ -71,7 +71,7 @@
                             <td>{{ $payment->reference_no }}</td>
                             <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid }}
                             </td>
-                            <td>{{ $payment->pay_mode }}</td>
+                            <td>{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                             <td>{{ $payment->account ? $payment->account->name : 'N/A' }}</td>
                             <td>
                                 @if (auth()->user()->branch_id == $payroll->employee->branch_id)

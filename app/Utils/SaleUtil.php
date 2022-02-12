@@ -40,7 +40,7 @@ class SaleUtil
         $this->purchaseUtil = $purchaseUtil;
     }
 
-    public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix, $invoiceId)
+    public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix)
     {
         if ($request->paying_amount > 0) {
             $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0.00;
@@ -48,7 +48,36 @@ class SaleUtil
 
             if ($request->previous_due > 0) {
                 if ($paidAmount >= $request->total_invoice_payable) {
-                    $this->addPayment($paymentInvoicePrefix, $request, $request->total_invoice_payable, $invoiceId, $addSale->id);
+                    $addPaymentGetId = $this->addPaymentGetId(
+                        invoicePrefix: $paymentInvoicePrefix,
+                        request: $request,
+                        payingAmount: $request->total_invoice_payable,
+                        invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                        saleId: $addSale->id,
+                        customerPaymentId: NULL
+                    );
+
+                    // Add bank/cash-in-hand A/C ledger
+                    $this->accountUtil->addAccountLedger(
+                        voucher_type_id: 10,
+                        date: $request->date ?? date('Y-m-d'),
+                        account_id: $request->account_id,
+                        trans_id: $addPaymentGetId,
+                        amount: $request->total_invoice_payable,
+                        balance_type: 'debit'
+                    );
+
+                    if ($request->customer_id) {
+                        // add customer ledger
+                        $this->customerUtil->addCustomerLedger(
+                            voucher_type_id: 3,
+                            customer_id: $request->customer_id,
+                            date: $request->date ?? date('Y-m-d'),
+                            trans_id: $addPaymentGetId,
+                            amount: $request->total_invoice_payable
+                        );
+                    }
+
                     $payingPreviousDue = $paidAmount - $request->total_invoice_payable;
                     if ($payingPreviousDue > 0) {
                         $dueAmounts = $payingPreviousDue;
@@ -60,14 +89,36 @@ class SaleUtil
                             foreach ($dueInvoices as $dueInvoice) {
                                 if ($dueInvoice->due > $dueAmounts) {
                                     if ($dueAmounts > 0) {
-
-                                        $this->addPayment(
-                                            $paymentInvoicePrefix,
-                                            $request,
-                                            $dueAmounts,
-                                            $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
-                                            $dueInvoice->id
+                                        // add sale payment
+                                        $addPaymentGetId = $this->addPaymentGetId(
+                                            invoicePrefix: $paymentInvoicePrefix,
+                                            request: $request->date ?? date('Y-m-d'),
+                                            payingAmount: $dueAmounts,
+                                            invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                                            saleId: $dueInvoice->id,
+                                            customerPaymentId: NULL
                                         );
+
+                                        // Add bank/cash-in-hand A/C ledger
+                                        $this->accountUtil->addAccountLedger(
+                                            voucher_type_id: 10,
+                                            date: $request->date ?? date('Y-m-d'),
+                                            account_id: $request->account_id,
+                                            trans_id: $addPaymentGetId,
+                                            amount: $dueAmounts,
+                                            balance_type: 'debit'
+                                        );
+
+                                        if ($request->customer_id) {
+                                            // add customer ledger
+                                            $this->customerUtil->addCustomerLedger(
+                                                voucher_type_id: 3,
+                                                customer_id: $request->customer_id,
+                                                date: $request->date ?? date('Y-m-d'),
+                                                trans_id: $addPaymentGetId,
+                                                amount: $dueAmounts
+                                            );
+                                        }
 
                                         $dueAmounts -= $dueAmounts;
 
@@ -75,14 +126,35 @@ class SaleUtil
                                     }
                                 } elseif ($dueInvoice->due == $dueAmounts) {
                                     if ($dueAmounts > 0) {
-
-                                        $this->addPayment(
-                                            $paymentInvoicePrefix,
-                                            $request,
-                                            $dueAmounts,
-                                            $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
-                                            $dueInvoice->id
+                                        $addPaymentGetId = $this->addPaymentGetId(
+                                            invoicePrefix: $paymentInvoicePrefix,
+                                            request: $request,
+                                            payingAmount: $dueAmounts,
+                                            invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                                            saleId: $dueInvoice->id,
+                                            customerPaymentId: NULL
                                         );
+
+                                        // Add bank/cash-in-hand A/C Ledger
+                                        $this->accountUtil->addAccountLedger(
+                                            voucher_type_id: 10,
+                                            date: $request->date ?? date('Y-m-d'),
+                                            account_id: $request->account_id,
+                                            trans_id: $addPaymentGetId,
+                                            amount: $dueAmounts,
+                                            balance_type: 'debit'
+                                        );
+
+                                        if ($request->customer_id) {
+                                            // Add customer Ledger
+                                            $this->customerUtil->addCustomerLedger(
+                                                voucher_type_id: 3,
+                                                customer_id: $request->customer_id,
+                                                date: $request->date ?? date('Y-m-d'),
+                                                trans_id: $addPaymentGetId,
+                                                amount: $dueAmounts
+                                            );
+                                        }
 
                                         $dueAmounts -= $dueAmounts;
 
@@ -90,17 +162,38 @@ class SaleUtil
                                     }
                                 } elseif ($dueInvoice->due < $dueAmounts) {
                                     if ($dueInvoice->due > 0) {
-
-                                        $this->addPayment(
-                                            $paymentInvoicePrefix,
-                                            $request,
-                                            $dueInvoice->due,
-                                            $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
-                                            $dueInvoice->id
+                                        // add payment
+                                        $addPaymentGetId = $this->addPaymentGetId(
+                                            invoicePrefix: $paymentInvoicePrefix,
+                                            request: $request,
+                                            payingAmount: $dueInvoice->due,
+                                            invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                                            saleId: $dueInvoice->id,
+                                            customerPaymentId: NULL
                                         );
 
-                                        $dueAmounts -= $dueInvoice->due;
+                                        // Add bank/cash-in-hand A/C Ledger
+                                        $this->accountUtil->addAccountLedger(
+                                            voucher_type_id: 10,
+                                            date: $request->date ?? date('Y-m-d'),
+                                            account_id: $request->account_id,
+                                            trans_id: $addPaymentGetId,
+                                            amount: $dueInvoice->due,
+                                            balance_type: 'debit'
+                                        );
 
+                                        if ($request->customer_id) {
+                                            // add customer ledger
+                                            $this->customerUtil->addCustomerLedger(
+                                                voucher_type_id: 3,
+                                                customer_id: $request->customer_id,
+                                                date: $request->date ?? date('Y-m-d'),
+                                                trans_id: $addPaymentGetId,
+                                                amount: $dueInvoice->due
+                                            );
+                                        }
+
+                                        $dueAmounts = $dueAmounts - $dueInvoice->due;
                                         $this->adjustSaleInvoiceAmounts($dueInvoice);
                                     }
                                 }
@@ -111,7 +204,16 @@ class SaleUtil
                         //DB::table('test')->insert(['test_value' => $dueAmounts]);
 
                         if ($dueAmounts > 0) {
+
+                            $__report_date = '';
+                            if (isset($request->date)) {
+                                $__report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+                            } else {
+                                $__report_date = date('Y-m-d H:i:s');
+                            }
+
                             // Add Customer Payment Record
+                            $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
                             $customerPayment = new CustomerPayment();
 
                             $customerPayment->voucher_no = 'CPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
@@ -121,95 +223,222 @@ class SaleUtil
                             $customerPayment->account_id = $request->account_id;
                             $customerPayment->paid_amount = $dueAmounts;
                             $customerPayment->payment_method_id = $request->payment_method_id;
-                            $customerPayment->date = $request->date;
+                            $customerPayment->date = $request->date ?? date('d-m-Y');
                             $customerPayment->time = date('h:i:s a');
+                            $customerPayment->report_date = $__report_date;
                             $customerPayment->month = date('F');
                             $customerPayment->year = date('Y');
                             $customerPayment->note = $request->note;
                             $customerPayment->save();
 
-                            if ($request->account_id) {
-                                // Add cash flow
-                                $addCashFlow = new CashFlow();
-                                $addCashFlow->account_id = $request->account_id;
-                                $addCashFlow->credit = $dueAmounts;
-                                $addCashFlow->customer_payment_id = $customerPayment->id;
-                                $addCashFlow->transaction_type = 13;
-                                $addCashFlow->cash_type = 2;
-                                $addCashFlow->date = date('d-m-Y', strtotime($request->date));
-                                $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-                                $addCashFlow->month = date('F');
-                                $addCashFlow->year = date('Y');
-                                $addCashFlow->admin_id = auth()->user()->id;
-                                $addCashFlow->save();
-                                $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-                                $addCashFlow->save();
-                            }
+                            // Add bank/cash-in-hand A/C Ledger
+                            $this->accountUtil->addAccountLedger(
+                                voucher_type_id: 18,
+                                date: $request->date ?? date('Y-m-d'),
+                                account_id: $request->account_id,
+                                trans_id: $customerPayment->id,
+                                amount: $dueAmounts,
+                                balance_type: 'debit'
+                            );
 
-                            // Add customer payment for direct payment
-                            $addCustomerLedger = new CustomerLedger();
-                            $addCustomerLedger->customer_id = $addSale->customer_id;
-                            $addCustomerLedger->row_type = 5;
-                            $addCustomerLedger->customer_payment_id = $customerPayment->id;
-                            $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
-                            $addCustomerLedger->save();
+                            // add customer ledger
+                            $this->customerUtil->addCustomerLedger(
+                                voucher_type_id: 5,
+                                customer_id: $request->customer_id,
+                                date: $request->date ?? date('Y-m-d'),
+                                trans_id: $customerPayment->id,
+                                amount: $dueAmounts
+                            );
                         }
                     }
                 } elseif ($paidAmount < $request->invoice_payable_amount) {
-                    $this->addPayment($paymentInvoicePrefix, $request, $paidAmount, $invoiceId, $addSale->id);
+                    $addPaymentGetId = $this->addPaymentGetId(
+                        invoicePrefix: $paymentInvoicePrefix,
+                        request: $request,
+                        payingAmount: $paidAmount,
+                        invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                        saleId: $addSale->id,
+                        customerPaymentId: NULL
+                    );
+
+                    // Add bank account Ledger
+                    $this->accountUtil->addAccountLedger(
+                        voucher_type_id: 10,
+                        date: $request->date ?? date('Y-m-d'),
+                        account_id: $request->account_id,
+                        trans_id: $addPaymentGetId,
+                        amount: $paidAmount,
+                        balance_type: 'debit'
+                    );
+
+                    if ($request->customer_id) {
+                        $this->customerUtil->addCustomerLedger(
+                            voucher_type_id: 3,
+                            customer_id: $request->customer_id,
+                            date: $request->date ?? date('Y-m-d'),
+                            trans_id: $addPaymentGetId,
+                            amount: $paidAmount
+                        );
+                    }
                 }
             } else {
-                $this->addPayment($paymentInvoicePrefix, $request, $paidAmount, $invoiceId, $addSale->id);
+                $addPaymentGetId = $this->addPaymentGetId(
+                    invoicePrefix: $paymentInvoicePrefix,
+                    request: $request,
+                    payingAmount: $paidAmount,
+                    invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                    saleId: $addSale->id,
+                    customerPaymentId: NULL
+                );
+
+                // Add bank/cash-in-hand A/C ledger
+                $this->accountUtil->addAccountLedger(
+                    voucher_type_id: 10,
+                    date: $request->date ?? date('Y-m-d'),
+                    account_id: $request->account_id,
+                    trans_id: $addPaymentGetId,
+                    amount: $paidAmount,
+                    balance_type: 'debit'
+                );
+
+                if ($request->customer_id) {
+                    $this->customerUtil->addCustomerLedger(
+                        voucher_type_id: 3,
+                        customer_id: $request->customer_id,
+                        date: $request->date ?? date('Y-m-d'),
+                        trans_id: $addPaymentGetId,
+                        amount: $paidAmount
+                    );
+                }
             }
         }
     }
 
     // Add sale add payment util method
-    public function addPayment($invoicePrefix, $request, $payingAmount, $invoiceId, $saleId)
+    public function addPaymentGetId($invoicePrefix, $request, $payingAmount, $invoiceId, $saleId, $customerPaymentId)
     {
+        $__report_date = '';
+        if (isset($request->date)) {
+            $__report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        } else {
+            $__report_date = date('Y-m-d H:i:s');
+        }
+
+        $__invoiceId = str_pad($invoiceId, 5, "0", STR_PAD_LEFT);
+
         $sale = DB::table('sales')->where('id', $saleId)->select('customer_id')->first();
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV') . str_pad($invoiceId, 5, "0", STR_PAD_LEFT);
+        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV') . str_pad($__invoiceId, 5, "0", STR_PAD_LEFT);
         $addSalePayment->sale_id = $saleId;
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
         $addSalePayment->account_id = $request->account_id;
         $addSalePayment->payment_method_id = $request->payment_method_id;
+        $addSalePayment->customer_payment_id = $customerPaymentId;
         $addSalePayment->paid_amount = $payingAmount;
+        $addSalePayment->date = $request->date ?? date('d-m-Y');
+        $addSalePayment->time = date('h:i:s a');
+        $addSalePayment->report_date = $__report_date;
+        $addSalePayment->month = date('F');
+        $addSalePayment->year = date('Y');
+        $addSalePayment->note = $request->payment_note;
+        $addSalePayment->admin_id = auth()->user()->id;
+
+        if ($request->hasFile('attachment')) {
+            
+            $salePaymentAttachment = $request->file('attachment');
+            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
+            $addSalePayment->attachment = $salePaymentAttachmentName;
+        }
+
+        $addSalePayment->save();
+
+        return $addSalePayment->id;
+    }
+
+    public function updatePayment($request, $payment)
+    {
+        // update sale payment
+        $payment->account_id = $payment->customer_payment_id == NULL ? $request->account_id : $payment->account_id;
+        $payment->payment_method_id = $request->payment_method_id;
+        $payment->paid_amount = $request->paying_amount;
+        $payment->date = $request->date;
+        $payment->report_date = date('Y-m-d', strtotime($request->date));
+        $payment->month = date('F');
+        $payment->year = date('Y');
+        $payment->note = $request->note;
+
+        if ($request->hasFile('attachment')) {
+            if ($payment->attachment != null) {
+                if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                }
+            }
+            $salePaymentAttachment = $request->file('attachment');
+            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
+            $payment->attachment = $salePaymentAttachmentName;
+        }
+
+        $payment->save();
+    }
+
+    public function saleReturnPaymentGetId($request, $sale, $customer_payment_id)
+    {
+        // Add sale return payment
+        $addSalePayment = new SalePayment();
+        $addSalePayment->invoice_id = 'SRPV' . $this->invoiceVoucherRefIdUtil->getLastId('sale_payments');
+        $addSalePayment->sale_id = $sale->id;
+        $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
+        $addSalePayment->account_id = $request->account_id;
+        $addSalePayment->payment_method_id = $request->payment_method_id;
+        $addSalePayment->customer_payment_id = $customer_payment_id;
+        $addSalePayment->payment_type = 2;
+        $addSalePayment->paid_amount = $request->paying_amount;
         $addSalePayment->date = $request->date;
         $addSalePayment->time = date('h:i:s a');
         $addSalePayment->report_date = date('Y-m-d', strtotime($request->date));
         $addSalePayment->month = date('F');
         $addSalePayment->year = date('Y');
-        $addSalePayment->note = $request->payment_note;
+        $addSalePayment->note = $request->note;
         $addSalePayment->admin_id = auth()->user()->id;
+
+        if ($request->hasFile('attachment')) {
+            $salePaymentAttachment = $request->file('attachment');
+            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
+            $addSalePayment->attachment = $salePaymentAttachmentName;
+        }
         $addSalePayment->save();
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->credit = $payingAmount;
-            $addCashFlow->sale_payment_id = $addSalePayment->id;
-            $addCashFlow->transaction_type = 2;
-            $addCashFlow->cash_type = 2;
-            $addCashFlow->date = $request->date;
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->user()->id;
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
+        return $addSalePayment->id;
+    }
+
+    public function updateSaleReturnPayment($request, $payment)
+    {
+        // update sale payment
+        $payment->account_id = $payment->customer_payment_id == NULL ? $request->account_id : $payment->account_id;
+        $payment->payment_method_id = $request->payment_method_id;
+        $payment->paid_amount = $request->paying_amount;
+        $payment->date = $request->date;
+        $payment->report_date = date('Y-m-d', strtotime($request->date));
+        $payment->month = date('F');
+        $payment->year = date('Y');
+        $payment->note = $request->note;
+
+        if ($request->hasFile('attachment')) {
+            if ($payment->attachment != null) {
+                if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                }
+            }
+            $salePaymentAttachment = $request->file('attachment');
+            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
+            $payment->attachment = $salePaymentAttachmentName;
         }
 
-        if ($sale->customer_id) {
-            $addCustomerLedger = new CustomerLedger();
-            $addCustomerLedger->customer_id = $sale->customer_id;
-            $addCustomerLedger->sale_payment_id = $addSalePayment->id;
-            $addCustomerLedger->row_type = 2;
-            $addCustomerLedger->report_date = date('Y-m-d', strtotime($request->date));
-            $addCustomerLedger->save();
-        }
+        $payment->save();
     }
 
     public function deleteSale($request, $saleId)
@@ -222,14 +451,33 @@ class SaleUtil
             'sale_products.product',
             'sale_products.variant',
             'sale_products.product.comboProducts',
+            'sale_return',
         ])->where('id', $saleId)->first();
 
         $storedCustomerId = $deleteSale->customer_id;
+        $storedSaleAccountId = $deleteSale->sale_account_id;
+        $storedSaleReturnAccountId = $deleteSale->sale_return ? $deleteSale->sale_return->sale_return_account_id : NULL;
         $storedBranchId = $deleteSale->branch_id;
         $storedPayments = $deleteSale->sale_payments;
         $storedSaleProducts = $deleteSale->sale_products;
         $storeStatus = $deleteSale->status;
         $deleteSale->delete();
+
+        if ($storedSaleAccountId) {
+            // Adjust sale account balance
+            $this->accountUtil->adjustAccountBalance(
+                balanceType: 'credit',
+                account_id: $storedSaleAccountId
+            );
+        }
+
+        if ($storedSaleReturnAccountId) {
+            // Adjust sale account balance
+            $this->accountUtil->adjustAccountBalance(
+                balanceType: 'debit',
+                account_id: $storedSaleReturnAccountId
+            );
+        }
 
         if (count($storedPayments) > 0) {
             foreach ($storedPayments as $payment) {
@@ -240,12 +488,17 @@ class SaleUtil
                 }
 
                 if ($payment->account_id) {
-                    $this->accountUtil->adjustAccountBalance($payment->account_id);
+                    // Adjust Bank/Cash-in-Hand A/C balance
+                    $this->accountUtil->adjustAccountBalance(
+                        balanceType: 'debit',
+                        account_id: $payment->account_id
+                    );
                 }
             }
         }
 
         if ($storeStatus == 1) {
+
             foreach ($storedSaleProducts as $saleProduct) {
                 $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
@@ -258,6 +511,7 @@ class SaleUtil
         }
 
         if ($storedCustomerId) {
+
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
         }
     }

@@ -46,7 +46,7 @@
                                                 <div class="col-8">
                                                     <div class="input-group width-60">
                                                         <select name="customer_id" class="form-control" id="customer_id">
-                                                            <option value="0">Walk-In-Customer</option>
+                                                            <option value="">Walk-In-Customer</option>
                                                             @foreach ($customers as $customer)
                                                                 <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
                                                             @endforeach
@@ -99,10 +99,11 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Date :</b></label>
+                                                <label for="inputEmail3" class=" col-4"><b>Date : <span
+                                                    class="text-danger">*</span></b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="date" class="form-control datepicker"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="datepicker">
+                                                    <input type="text" name="date" class="form-control add_input" data-name="Date"
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="date">
                                                         <span class="error error_date"></span>
                                                 </div>
                                             </div>
@@ -143,6 +144,22 @@
                                                             <option {{ json_decode($generalSettings->sale, true)['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
                                                         @endforeach
                                                     </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class="col-5"><b>Sales A/C : <span
+                                                    class="text-danger">*</span></b></label>
+                                                <div class="col-7">
+                                                    <select name="sale_account_id" class="form-control add_input"
+                                                        id="sale_account_id" data-name="Sale A/C">
+                                                        @foreach ($saleAccounts as $saleAccount)
+                                                            <option value="{{ $saleAccount->id }}">
+                                                                {{ $saleAccount->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_sale_account_id"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -366,7 +383,7 @@
                                         </div>
                                         <div class="payment_body">
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Cash Receive:</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Cash Receive: >></label>
                                                 <div class="col-sm-7">
                                                     <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00">
                                                 </div>
@@ -394,14 +411,21 @@
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Pay Account :</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Debit A/C : <span
+                                                    class="text-danger">*</span></label>
                                                 <div class="col-sm-7">
-                                                    <select name="account_id" class="form-control" id="account_id">
-                                                        <option value="">Select Account</option>
+                                                    <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
                                                         @foreach ($accounts as $account)
-                                                            <option value="{{ $account->id }}">{{ $account->name .' (A/C: '.$account->account_number.')'}}</option>
+                                                            <option value="{{ $account->id }}">
+                                                                @php
+                                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                                    $balance = ' BL : '.$account->balance;
+                                                                @endphp
+                                                                {{ $account->name.$accountType.$balance}}
+                                                            </option>
                                                         @endforeach
                                                     </select>
+                                                    <span class="error error_account_id"></span>
                                                 </div>
                                             </div>
 

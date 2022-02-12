@@ -1,29 +1,21 @@
 @extends('layout.master')
 @push('stylesheets')
-<link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
-<link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
-    <style>
-        .sale_and_purchase_amount_area table tbody tr th,td {color: #32325d;}
-        .sale_purchase_and_profit_area {position: relative;}
-        .report_data_area {position: relative;}
-        .data_preloader{top:2.3%}
-        .sale_and_purchase_amount_area table tbody tr th{text-align: left;}
-        .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
-    </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    
 @endpush
-@section('title', 'Cash Register Report - ')
+@section('title', 'Cash Register Reports - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-cash-register"></span>
-                                <h5>Cash Register Report</h5>
+                                <h5>Cash Register Reports</h5>
                             </div>
+
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
@@ -33,7 +25,7 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <form id="register_report_filter_form" action="" method="get">
+                                        <form id="filter_form" action="" method="get">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -41,7 +33,10 @@
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
                                                                 <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                <option value="NULL">
+                                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)
+                                                                </option>
+
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -53,10 +48,18 @@
                                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     @endif
                                                 @endif
+
                                                 <div class="col-md-2">
                                                     <label><strong>User :</strong></label>
                                                     <select name="user_id" class="form-control submit_able" id="user_id" autofocus>
-                                                        <option value="">All</option>
+                                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                            <option value="">All</option> 
+                                                        @else 
+                                                            <option value="">All</option> 
+                                                            @foreach ($branchUsers as $user)
+                                                                <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
+                                                            @endforeach
+                                                        @endif
                                                     </select>
                                                 </div>
 
@@ -70,13 +73,47 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Date Range :</strong></label>
+                                                    <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <i class="fas fa-calendar-week input_f"></i>
+                                                            </span>
                                                         </div>
-                                                        <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input" autocomplete="off">
+
+                                                        <input type="text" name="from_date" id="datepicker"
+                                                            class="form-control from_date date"
+                                                            autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <i class="fas fa-calendar-week input_f"></i>
+                                                            </span>
+                                                        </div>
+
+                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label><strong></strong></label>
+                                                            <div class="input-group">
+                                                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start">
+                                                                    <i class="fas fa-funnel-dollar"></i> Filter
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 mt-3">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -89,7 +126,12 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <div class="report_data_area">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                    <div class="data_preloader"> 
+                                        <h6> 
+                                            <i class="fas fa-spinner text-primary"></i> Processing...
+                                        </h6>
+                                    </div>
+
                                     <div class="card">
                                         <div class="table-responsive" id="data-list">
                                             <table class="display data_tbl data__table">
@@ -97,23 +139,22 @@
                                                     <tr>
                                                         <th class="text-start">Open Time</th>
                                                         <th class="text-start">Closed Time</th>
-                                                        <th class="text-start">Branch</th>
+                                                        <th class="text-start">Business Location</th>
                                                         <th class="text-start">User</th>
-                                                        <th class="text-start">Total Card Slip</th>
-                                                        <th class="text-start">Total Cheque</th>
-                                                        <th class="text-start">Total Cash</th>
+                                                        <th class="text-start">Closing Note</th>
                                                         <th class="text-start">Status</th>
+                                                        <th class="text-start">Closing Amount</th>
                                                         <th class="text-start">Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-        
-                                                </tbody>
+                                                <tbody></tbody>
                                                 <tfoot>
-                                                    <tr>
-                                                        <th colspan="2" class="text-end">Total :</th>
-                                                        <th>{{ json_decode($generalSettings->business, true)['currency'] }} <span id="paid_amount"></span></th>
-                                                        <th colspan="3"></th>
+                                                    <tr class="bg-secondary">
+                                                        <th colspan="6" class="text-end text-white">Total : 
+                                                            {{ json_decode($generalSettings->business, true)['currency'] }}  
+                                                        </th>
+                                                        <th id="closed_amount" class="text-end text-white"></th>
+                                                        <th></th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -130,89 +171,84 @@
 
     <div class="modal fade" id="cashRegisterDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content" id="cash_register_details_content">
-                
-            </div>
+            <div class="modal-content" id="cash_register_details_content"></div>
         </div>
     </div> 
 @endsection
 @push('scripts')
-<script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
-    $('.loading_button').hide();
-    // Filter area toggle
-    function getCashRegisterReport() {
+    var cr_table = $('.data_tbl').DataTable({
+        "processing": true,
+        "serverSide": true,
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+        ],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+        "ajax": {
+            "url": "{{ route('reports.cash.registers.index') }}",
+            "data": function(d) {
+                d.branch_id = $('#branch_id').val();
+                d.user_id = $('#user_id').val();
+                d.status = $('#status').val();
+                d.from_date = $('.from_date').val();
+                d.to_date = $('.to_date').val();
+            }
+        },
+        columnDefs: [{
+            "targets": [1, 5, 7],
+            "orderable": false,
+            "searchable": false
+        }],
+        columns: [
+            {data: 'created_at', name: 'created_at'},
+            {data: 'closed_time', name: 'closed_time'},
+            {data: 'branch', name: 'branches.name'},
+            {data: 'user', name: 'admin_and_users.name'},
+            {data: 'closing_note', name: 'closing_note'},
+            {data: 'status', name: 'status', className: 'text-end'},
+            {data: 'closed_amount', name: 'closed_amount', className: 'text-end'},
+            {data: 'action'},
+            
+        ],fnDrawCallback: function() {
+            $('.data_preloader').hide();
+        }
+    });
+        
+    //Submit filter form by select input changing
+    $(document).on('submit', '#filter_form', function (e) {
+        e.preventDefault();
+        cr_table.ajax.reload();
         $('.data_preloader').show();
-        var branch_id = $('#branch_id').val();
-        var user_id = $('#user_id').val();
-        var status = $('#status').val();
-        var date_range = $('#date_range').val();
-        $.ajax({
-            url:"{{ route('reports.get.cash.registers') }}",
-            type:'get',
-            data: {
-                branch_id, 
-                user_id, 
-                status, 
-                date_range, 
-            },
-            success:function(data){
-                $('#data-list').html(data);
-                $('.data_preloader').hide();
-            }
+    });
+  
+    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) 
+        $(document).on('change', '#branch_id', function () {
+            var branch_id = $(this).val();
+            $('#user_id').empty();
+            $('#user_id').append('<option value="">All</option>');
+            $.ajax({
+                url:"{{ url('common/ajax/call/branch/authenticated/users/') }}"+"/"+branch_id,
+                type: 'get',
+                dataType: 'json',
+                success:function(users){
+                    $('#user_id').empty();
+                    $('#user_id').append('<option value="">All</option>');
+
+                    $.each(users, function(key, val){
+                        var prefix = val.prefix ? val.prefix : '';
+                        var last_name = val.last_name ? val.last_name : '';
+                        $('#user_id').append('<option value="'+val.id+'">'+prefix+' '+val.name+' '+last_name+'</option>');
+                    });
+                }
+            });
         });
-    }
-    getCashRegisterReport();
-
-    // Get all users for filter form
-    function setUsers(){
-        $.ajax({
-            url:"{{route('sales.get.all.users')}}",
-            async:true,
-            type:'get',
-            dataType: 'json',
-            success:function(users){
-                $.each(users, function(key, val){
-                    var role = '';
-                    if (val.role_type == 1) {
-                        role = 'Super-Admin';
-                    }else if(val.role_type == 2){
-                        role = 'Admin';
-                    }else if(val.role_type == 3){
-                        role = val.role.name
-                    }
-                    $('#user_id').append('<option value="'+val.id+'">'+ val.name +' ('+role+')'+'</option>');
-                });
-            }
-        });
-    }
-    setUsers();
-
-    $(document).on('change', '.submit_able', function () {
-        $('#register_report_filter_form').submit();
-    });
-
-    //Submit filter form by date-range field blur 
-    $(document).on('blur', '.submit_able_input', function () {
-        setTimeout(function() {
-            $('#register_report_filter_form').submit();
-        }, 500);
-    });
-
-    //Submit filter form by date-range apply button
-    $(document).on('click', '.applyBtn', function () {
-        setTimeout(function() {
-            $('.submit_able_input').addClass('.form-control:focus');
-            $('.submit_able_input').blur();
-        }, 500);
-    });
-
-    $('#register_report_filter_form').on('submit', function (e) {
-       e.preventDefault();
-       getCashRegisterReport();
-    });
-
+    @endif
+   
     $(document).on('click', '#register_details_btn',function (e) {
         e.preventDefault();
         var url = $(this).attr('href');
@@ -225,35 +261,78 @@
             }
         });
     });
+
+    //Print purchase Payment report
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('reports.get.cash.register.report.print') }}";
+        var branch_id = $('#branch_id').val();
+        var user_id = $('#user_id').val();
+        var status = $('#status').val();
+        var from_date = $('.from_date').val();
+        var to_date = $('.to_date').val();
+        $.ajax({
+            url:url,
+            type:'get',
+            data: {branch_id, user_id, status, from_date, to_date},
+            success:function(data){
+                $(data).printThis({
+                    debug: false,                   
+                    importCSS: true,                
+                    importStyle: true,          
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                    removeInline: false, 
+                    printDelay: 500, 
+                    header: "", 
+                    pageTitle: "",
+                    // footer: 'Footer Text',
+                    formValues: false,         
+                    canvas: false, 
+                    beforePrint: null,
+                    afterPrint: null      
+                });
+            }
+        }); 
+    });
 </script>
 
 <script type="text/javascript">
-    $(function() {
-        var start = moment().startOf('year');
-        var end = moment().endOf('year');
-        $('.daterange').daterangepicker({
-            buttonClasses: ' btn',
-            applyClass: 'btn-primary',
-            cancelClass: 'btn-secondary',
-            startDate: start,
-            endDate: end,
-            locale: {cancelLabel: 'Clear'},
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,'month').endOf('month')],
-                'This Year': [moment().startOf('year'), moment().endOf('year')],
-                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
-            }
-        });
-        $('.daterange').val('');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY'
     });
 
-    $(document).on('click', '.cancelBtn ', function () {
-        $('.daterange').val('');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker2'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY',
     });
 </script>
 @endpush

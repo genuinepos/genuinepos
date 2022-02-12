@@ -103,7 +103,7 @@
                                             <tr>
                                                 <th class="text-start">Actions</th>
                                                 <th class="text-start">Date</th>
-                                                <th class="text-start">Reference No</th>
+                                                <th class="text-start">Voucher No</th>
                                                 <th class="text-start">Adjustment location</th>
                                                 <th class="text-start">Business location</th>
                                                 <th class="text-start">Reason</th>

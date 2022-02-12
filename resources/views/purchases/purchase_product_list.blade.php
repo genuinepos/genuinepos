@@ -165,7 +165,6 @@
                                                 <th>P.Invoice ID</th>
                                                 <th>Quantity</th>
                                                 <th>Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Unit Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
                                         </thead>
@@ -174,7 +173,6 @@
                                             <tr class="bg-secondary">
                                                 <th colspan="5" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                                 <th class="text-start text-white">(<span id="total_qty"></span>)</th>
-                                                <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white"><span id="total_subtotal"></span></th>
                                             </tr>
@@ -233,7 +231,6 @@
                 {data: 'invoice_id', name: 'purchases.invoice_id'},
                 {data: 'quantity', name: 'quantity', className: 'text-end'},
                 {data: 'net_unit_cost', name: 'net_unit_cost', className: 'text-end'},
-                {data: 'price', name: 'purchase_products.selling_price', className: 'text-end'},
                 {data: 'subtotal', name: 'subtotal', className: 'text-end'},
             ],
             fnDrawCallback: function() {

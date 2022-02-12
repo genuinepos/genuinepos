@@ -15,13 +15,26 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Hrm\PayrollAllowance;
 use App\Models\Hrm\PayrollDeduction;
+use App\Utils\AccountUtil;
+use App\Utils\Hrm\PayrollUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class PayrollController extends Controller
 {
-    public function __construct()
-    {
+    protected $invoiceVoucherRefIdUtil;
+    protected $accountUtil;
+    protected $payrollUtil;
+
+    public function __construct(
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
+        AccountUtil $accountUtil,
+        PayrollUtil $payrollUtil
+    ) {
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->accountUtil = $accountUtil;
+        $this->payrollUtil = $payrollUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -48,41 +61,31 @@ class PayrollController extends Controller
                 $query->where('hrm_payrolls.user_id', $request->user_id);
             }
 
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $query->whereBetween('hrm_payrolls.report_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+            if ($request->from_date) {
+                $from_date = date('Y-m-d', strtotime($request->from_date));
+                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $query->whereBetween('hrm_payrolls.report_date_ts', $date_range); // Final
             }
+
+            $query->select(
+                'hrm_payrolls.*',
+                'admin_and_users.prefix as emp_prefix',
+                'admin_and_users.name as emp_name',
+                'admin_and_users.last_name as emp_last_name',
+                'admin_and_users.branch_id',
+                'hrm_department.department_name',
+                'hrm_designations.designation_name',
+                'created_by.prefix as user_prefix',
+                'created_by.name as user_name',
+                'created_by.last_name as user_last_name',
+            );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
-                $payrolls = $query->select(
-                    'hrm_payrolls.*',
-                    'admin_and_users.prefix as emp_prefix',
-                    'admin_and_users.name as emp_name',
-                    'admin_and_users.last_name as emp_last_name',
-                    'admin_and_users.branch_id',
-                    'hrm_department.department_name',
-                    'hrm_designations.designation_name',
-                    'created_by.prefix as user_prefix',
-                    'created_by.name as user_name',
-                    'created_by.last_name as user_last_name',
-                );
+                $payrolls = $query;
             } else {
-                $payrolls = $query->select(
-                    'hrm_payrolls.*',
-                    'admin_and_users.prefix as emp_prefix',
-                    'admin_and_users.name as emp_name',
-                    'admin_and_users.last_name as emp_last_name',
-                    'admin_and_users.branch_id',
-                    'hrm_department.department_name',
-                    'hrm_designations.designation_name',
-                    'created_by.prefix as user_prefix',
-                    'created_by.name as user_name',
-                    'created_by.last_name as user_last_name',
-                )->where('admin_and_users.branch_id', auth()->user()->branch_id);
+                $payrolls = $query->where('admin_and_users.branch_id', auth()->user()->branch_id);
             }
-
 
             return DataTables::of($payrolls)
                 ->addIndexColumn()
@@ -190,16 +193,9 @@ class PayrollController extends Controller
             'duration_unit' => 'required',
         ]);
 
-        $i = 4;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
 
         $addPayroll = new Payroll();
-        $addPayroll->reference_no = 'EP' . date('dmy') . $invoiceId;
+        $addPayroll->reference_no = 'EP' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('hrm_payrolls'), 4, "0", STR_PAD_LEFT);
         $addPayroll->user_id = $request->user_id;
         $addPayroll->duration_time = $request->duration_time;
         $addPayroll->duration_unit = $request->duration_unit;
@@ -286,11 +282,13 @@ class PayrollController extends Controller
         $updatePayroll->save();
 
         foreach ($updatePayroll->allowances as $allowance) {
+
             $allowance->is_delete_in_update = 1;
             $allowance->save();
         }
 
         foreach ($updatePayroll->deductions as $deduction) {
+
             $deduction->is_delete_in_update = 1;
             $deduction->save();
         }
@@ -302,9 +300,12 @@ class PayrollController extends Controller
         $allowance_amounts = $request->allowance_amounts;
 
         if ($request->allowance_amounts != null) {
+
             foreach ($allowance_names as $key => $allowance_name) {
+
                 $salaryAllowance = PayrollAllowance::where('id', $allowance_id[$key])->first();
                 if ($salaryAllowance) {
+
                     $salaryAllowance->allowance_name = $allowance_name;
                     $salaryAllowance->amount_type = $al_amount_types[$key];
                     $al_percent = $allowance_percents[$key] ? $allowance_percents[$key] : 0;
@@ -313,7 +314,9 @@ class PayrollController extends Controller
                     $salaryAllowance->is_delete_in_update = 0;
                     $salaryAllowance->save();
                 } else {
+
                     if ($allowance_name || $allowance_amounts[$key]) {
+
                         $addSalaryAllowance = new PayrollAllowance();
                         $addSalaryAllowance->payroll_id = $updatePayroll->id;
                         $addSalaryAllowance->allowance_name = $allowance_name;
@@ -334,9 +337,12 @@ class PayrollController extends Controller
         $deduction_amounts = $request->deduction_amounts;
 
         if ($request->deduction_amounts != null) {
+
             foreach ($deduction_names as $key => $deduction_name) {
+
                 $salaryDeduction = PayrollDeduction::where('id', $deduction_id[$key])->first();
                 if ($salaryDeduction) {
+
                     $salaryDeduction->deduction_name = $deduction_name;
                     $salaryDeduction->amount_type = $de_amount_types[$key];
                     $d_percent = $deduction_percents[$key] ? $deduction_percents[$key] : 0;
@@ -345,7 +351,9 @@ class PayrollController extends Controller
                     $salaryDeduction->is_delete_in_update = 0;
                     $salaryDeduction->save();
                 } else {
+
                     if ($deduction_name || $deduction_amounts[$key]) {
+
                         $addSalaryDeduction = new PayrollDeduction();
                         $addSalaryDeduction->payroll_id = $updatePayroll->id;
                         $addSalaryDeduction->deduction_name = $deduction_name;
@@ -361,14 +369,18 @@ class PayrollController extends Controller
 
         $allowances = PayrollAllowance::where('is_delete_in_update', 1)->get();
         if (count($allowances)) {
+
             foreach ($allowances as $allowance) {
+
                 $allowance->delete();
             }
         }
 
         $deductions = PayrollDeduction::where('is_delete_in_update', 1)->get();
         if (count($deductions)) {
+
             foreach ($deductions as $deduction) {
+
                 $deduction->delete();
             }
         }
@@ -396,7 +408,7 @@ class PayrollController extends Controller
 
     public function paymentView($payrollId)
     {
-        $payroll = Payroll::with('payments', 'employee', 'employee.branch')->where('id', $payrollId)->first();
+        $payroll = Payroll::with('payments', 'payments.paymentMethod', 'payments.account', 'employee', 'employee.branch')->where('id', $payrollId)->first();
         return view('hrm.payroll.ajax_view.view_payment', compact('payroll'));
     }
 
@@ -404,33 +416,46 @@ class PayrollController extends Controller
     public function payment($payrollId)
     {
         $payroll = Payroll::with('employee', 'employee.branch')->where('id', $payrollId)->first();
-        $accounts = DB::table('accounts')->where('status', 1)->get();
-        return view('hrm.payroll.ajax_view.add_payment', compact('payroll', 'accounts'));
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(
+                [
+                    'accounts.id',
+                    'accounts.name',
+                    'accounts.account_number',
+                    'accounts.account_type',
+                    'accounts.balance'
+                ]
+            );
+
+        return view('hrm.payroll.ajax_view.add_payment', compact('payroll', 'accounts', 'methods'));
     }
 
     // Add payment method 
     public function addPayment(Request $request, $payrollId)
     {
-        $updatePayroll = Payroll::where('id', $payrollId)->first();
-        $updatePayroll->paid = $request->amount;
-        $updatePayroll->due -= $request->amount;
-        $updatePayroll->save();
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ]);
 
-        // generate invoice ID
-        $i = 5;
-        $a = 0;
-        $invoiceId = '';
-        while ($a < $i) {
-            $invoiceId .= rand(1, 9);
-            $a++;
-        }
+        $updatePayroll = Payroll::where('id', $payrollId)->first();
+
         // Add sale payment
         $addPayrollPayment = new PayrollPayment();
-        $addPayrollPayment->reference_no = 'PRP' . date('ymd') . $invoiceId;
+        $addPayrollPayment->reference_no = 'PRP' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('hrm_payroll_payments'), 4, "0", STR_PAD_LEFT);
         $addPayrollPayment->payroll_id = $updatePayroll->id;
         $addPayrollPayment->account_id = $request->account_id;
-        $addPayrollPayment->pay_mode = $request->payment_method;
-        $addPayrollPayment->paid = $request->amount;
+        $addPayrollPayment->payment_method_id = $request->payment_method_id;
+        $addPayrollPayment->paid = $request->paying_amount;
         $addPayrollPayment->due = $updatePayroll->due;
         $addPayrollPayment->date = $request->date;
         $addPayrollPayment->time = date('h:i:s a');
@@ -439,26 +464,10 @@ class PayrollController extends Controller
         $addPayrollPayment->year = date('Y');
         $addPayrollPayment->note = $request->note;
         $addPayrollPayment->due = $updatePayroll->due;
-
-        if ($request->payment_method == 'Card') {
-            $addPayrollPayment->card_no = $request->card_no;
-            $addPayrollPayment->card_holder = $request->card_holder_name;
-            $addPayrollPayment->card_transaction_no = $request->card_transaction_no;
-            $addPayrollPayment->card_type = $request->card_type;
-            $addPayrollPayment->card_month = $request->month;
-            $addPayrollPayment->card_year = $request->year;
-            $addPayrollPayment->card_secure_code = $request->secure_code;
-        } elseif ($request->payment_method == 'Cheque') {
-            $addPayrollPayment->cheque_no = $request->cheque_no;
-        } elseif ($request->payment_method == 'Bank-Transfer') {
-            $addPayrollPayment->account_no = $request->account_no;
-        } elseif ($request->payment_method == 'Custom') {
-            $addPayrollPayment->transaction_no = $request->transaction_no;
-        }
-
         $addPayrollPayment->admin_id = auth()->user()->id;
 
         if ($request->hasFile('attachment')) {
+
             $payrollPaymentAttachment = $request->file('attachment');
             $payrollPaymentAttachmentName = uniqid() . '-' . '.' . $payrollPaymentAttachment->getClientOriginalExtension();
             $payrollPaymentAttachment->move(public_path('uploads/payment_attachment/'), $payrollPaymentAttachmentName);
@@ -466,37 +475,25 @@ class PayrollController extends Controller
         }
         $addPayrollPayment->save();
 
-        if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->debit += $request->amount;
-            $account->balance -= $request->amount;
-            $account->save();
+        // Add bank/cash-in-hand A/C ledger
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 23,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $addPayrollPayment->id,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
 
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            $addCashFlow->debit = $request->amount;
-            $addCashFlow->balance = $account->balance;
-            $addCashFlow->payroll_id = $updatePayroll->id;
-            $addCashFlow->payroll_payment_id = $addPayrollPayment->id;
-            $addCashFlow->transaction_type = 8;
-            $addCashFlow->cash_type = 1;
-            $addCashFlow->date = $request->date;
-            $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->user()->id;
-            $addCashFlow->save();
-            Cache::forget('all-accounts');
-        }
+        $this->payrollUtil->adjustPayrollAmounts($updatePayroll);
+
         return response()->json('Payment added successfully.');
     }
 
     // Get payment details **requested by ajax**
     public function paymentDetails($paymentId)
     {
-        $payment = PayrollPayment::with('payroll', 'payroll.employee', 'payroll.employee.branch')
+        $payment = PayrollPayment::with('payroll', 'payroll.employee', 'payroll.employee.branch', 'paymentMethod')
             ->where('id', $paymentId)->first();
         return view('hrm.payroll.ajax_view.payment_details', compact('payment'));
     }
@@ -504,85 +501,81 @@ class PayrollController extends Controller
     // Payroll payment delete
     public function paymentDelete($paymentId)
     {
-        $deletePayrollPayment = PayrollPayment::with('payroll', 'account')->where('id', $paymentId)->first();
+        $deletePayrollPayment = PayrollPayment::with('payroll')->where('id', $paymentId)->first();
+        $storedAccountId = $deletePayrollPayment->account_id;
+        $storedPayroll = $deletePayrollPayment->payroll;
 
         if (!is_null($deletePayrollPayment)) {
-            // Update purchase 
-            $deletePayrollPayment->payroll->paid -= $deletePayrollPayment->paid;
-            $deletePayrollPayment->payroll->due += $deletePayrollPayment->paid;
-            $deletePayrollPayment->payroll->save();
-
-            // Update previous account and delete previous cashflow.
-            if ($deletePayrollPayment->account) {
-                $deletePayrollPayment->account->debit -= $deletePayrollPayment->paid;
-                $deletePayrollPayment->account->balance += $deletePayrollPayment->paid;
-                $deletePayrollPayment->account->save();
-            }
 
             if ($deletePayrollPayment->attachment != null) {
+
                 if (file_exists(public_path('uploads/payment_attachment/' . $deletePayrollPayment->attachment))) {
+
                     unlink(public_path('uploads/payment_attachment/' . $deletePayrollPayment->attachment));
                 }
             }
 
             $deletePayrollPayment->delete();
-            Cache::forget('all-accounts');
+
+            if ($storedAccountId) {
+
+                $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
+            }
+
+            if ($storedPayroll) {
+                
+                $this->payrollUtil->adjustPayrollAmounts($storedPayroll);
+            }
         }
+
         return response()->json('Payment deleted successfully.');
     }
 
     // Edit payroll payment modal view 
     public function paymentEdit($paymentId)
     {
-        $accounts = DB::table('accounts')->where('status', 1)->get();
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(
+                [
+                    'accounts.id',
+                    'accounts.name',
+                    'accounts.account_number',
+                    'accounts.account_type',
+                    'accounts.balance'
+                ]
+            );
+
         $payment = PayrollPayment::with('payroll', 'payroll.employee')->where('id', $paymentId)->first();
-        return view('hrm.payroll.ajax_view.edit_payment', compact('payment', 'accounts'));
+        return view('hrm.payroll.ajax_view.edit_payment', compact('payment', 'accounts', 'methods'));
     }
 
     // Update payroll payment
     public function paymentUpdate(Request $request, $paymentId)
     {
-        $updatePayrollPayment = PayrollPayment::with('account', 'payroll',)->where('id', $paymentId)->first();
-
-        $updatePayrollPayment->payroll->paid -= $updatePayrollPayment->paid;
-        $updatePayrollPayment->payroll->due += $updatePayrollPayment->paid;
-        $updatePayrollPayment->payroll->paid += $request->amount;
-        $updatePayrollPayment->payroll->due -= $request->amount;
-        $updatePayrollPayment->payroll->save();
-
-        // Update previoues account and delete previous cashflow.
-        if ($updatePayrollPayment->account) {
-            $updatePayrollPayment->account->debit -= $updatePayrollPayment->paid;
-            $updatePayrollPayment->account->balance += $updatePayrollPayment->paid;
-            $updatePayrollPayment->account->save();
-        }
+        $this->validate($request, [
+            'paying_amount' => 'required',
+            'date' => 'required',
+            'payment_method_id' => 'required',
+            'account_id' => 'required',
+        ]);
+        
+        $updatePayrollPayment = PayrollPayment::with('payroll')->where('id', $paymentId)->first();
 
         // update purchase payment
         $updatePayrollPayment->account_id = $request->account_id;
-        $updatePayrollPayment->pay_mode = $request->payment_method;
-        $updatePayrollPayment->paid = $request->amount;
-        $updatePayrollPayment->due = $updatePayrollPayment->payroll->due;
+        $updatePayrollPayment->payment_method_id = $request->payment_method_id;
+        $updatePayrollPayment->paid = $request->paying_amount;
         $updatePayrollPayment->date = $request->date;
         $updatePayrollPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updatePayrollPayment->month = date('F');
         $updatePayrollPayment->year = date('Y');
         $updatePayrollPayment->note = $request->note;
-
-        if ($request->payment_method == 'Card') {
-            $updatePayrollPayment->card_no = $request->card_no;
-            $updatePayrollPayment->card_holder = $request->card_holder_name;
-            $updatePayrollPayment->card_transaction_no = $request->card_transaction_no;
-            $updatePayrollPayment->card_type = $request->card_type;
-            $updatePayrollPayment->card_month = $request->month;
-            $updatePayrollPayment->card_year = $request->year;
-            $updatePayrollPayment->card_secure_code = $request->secure_code;
-        } elseif ($request->payment_method == 'Cheque') {
-            $updatePayrollPayment->cheque_no = $request->cheque_no;
-        } elseif ($request->payment_method == 'Bank-Transfer') {
-            $updatePayrollPayment->account_no = $request->account_no;
-        } elseif ($request->payment_method == 'Custom') {
-            $updatePayrollPayment->transaction_no = $request->transaction_no;
-        }
 
         if ($request->hasFile('attachment')) {
             if ($updatePayrollPayment->attachment != null) {
@@ -596,47 +589,23 @@ class PayrollController extends Controller
             $payrollPaymentAttachment->move(public_path('uploads/payment_attachment/'), $payrollPaymentAttachmentName);
             $updatePayrollPayment->attachment = $payrollPaymentAttachmentName;
         }
+
         $updatePayrollPayment->save();
 
-        if ($request->account_id) {
-            // update account
-            $account = Account::where('id', $request->account_id)->first();
-            $account->debit += $request->amount;
-            $account->balance -= $request->amount;
-            $account->save();
+        // Update Sales A/C Ledger
+        $this->accountUtil->updateAccountLedger(
+            voucher_type_id: 23,
+            date: $request->date,
+            account_id: $request->account_id,
+            trans_id: $updatePayrollPayment->id,
+            amount: $request->paying_amount,
+            balance_type: 'debit'
+        );
 
-            $cashFlow = CashFlow::where('payroll_id', $updatePayrollPayment->payroll->id)
-                ->where('payroll_payment_id', $updatePayrollPayment->id)->first();
-            if ($cashFlow) {
-                $cashFlow->account_id = $request->account_id;
-                $cashFlow->debit = $request->amount;
-                $cashFlow->balance = $account->balance;
-                $cashFlow->save();
-            } else {
-                // Add cash flow
-                $addCashFlow = new CashFlow();
-                $addCashFlow->account_id = $request->account_id;
-                $addCashFlow->debit = $request->amount;
-                $addCashFlow->balance = $account->balance;
-                $addCashFlow->payroll_id = $updatePayrollPayment->payroll->id;
-                $addCashFlow->payroll_payment_id = $updatePayrollPayment->id;
-                $addCashFlow->transaction_type = 8;
-                $addCashFlow->cash_type = 1;
-                $addCashFlow->date = $request->date;
-                $addCashFlow->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                $addCashFlow->month = date('F');
-                $addCashFlow->year = date('Y');
-                $addCashFlow->admin_id = auth()->user()->id;
-                $addCashFlow->save();
-            }
-        } else {
-            $cashFlow = CashFlow::where('payroll_id', $updatePayrollPayment->payroll->id)
-                ->where('payroll_payment_id', $updatePayrollPayment->id)->first();
-            if (!is_null($cashFlow)) {
-                $cashFlow->delete();
-            }
+        if ($updatePayrollPayment->payroll) {
+            $this->payrollUtil->adjustPayrollAmounts($updatePayrollPayment->payroll);
         }
-        Cache::forget('all-accounts');
+
         return response()->json('Payment updated successfully.');
     }
 

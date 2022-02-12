@@ -22,7 +22,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Add Purchase Return</h5>
+                                            <h5>Edit Purchase Return</h5>
                                         </div>
 
                                         <div class="col-6">
@@ -35,7 +35,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Supplier:<span
+                                                <label for="inputEmail3" class=" col-4"><b>Supplier :</b> <span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <input readonly type="text" id="supplier_name" class="form-control">
@@ -44,7 +44,7 @@
 
                                             @if ($return->warehouse_id)
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class="col-4">Warehouse:<span
+                                                    <label for="inputEmail3" class="col-4"><b>Warehouse :</b> <span
                                                         class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <select class="form-control changeable add_input"
@@ -59,7 +59,7 @@
                                                 </div>
                                             @else 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4">Location :</label>
+                                                <label for="inputEmail3" class="col-4"><b>Location :</b> </label>
                                                 <div class="col-8">
                                                     <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
@@ -70,16 +70,34 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Invoice ID:</label>
+                                                <label for="inputEmail3" class="col-4"><b>PR. Invoice ID :</b> </label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class="col-4"><b>Return A/C : <span
+                                                    class="text-danger">*</span></b></label>
+                                                <div class="col-8">
+                                                    <select name="purchase_return_account_id" class="form-control add_input"
+                                                        id="purchase_return_account_id" data-name="Purchase Return A/C">
+                                                        @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
+                                                            <option {{ $return->purchase_return_account_id == $purchaseReturnAccount->id ? 'SELECTED' : '' }}
+                                                             value="{{ $purchaseReturnAccount->id }}">
+                                                                {{ $purchaseReturnAccount->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_purchase_return_account_id"></span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Date:</label>
+                                                <label for="inputEmail3" class="col-4"><b>Return Date :</b> <span
+                                                    class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control changeable"
                                                         value="{{ date('Y-m-d', strtotime($return->date)) }}" id="date" autocomplete="off">
@@ -89,7 +107,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Attachment:</label>
+                                                <label for="inputEmail3" class="col-4"><b>Attachment :</b> </label>
                                                 <div class="col-8">
                                                     <input type="file" class="form-control" name="attachment">
                                                 </div>
@@ -142,9 +160,7 @@
                                                                     <th><i class="fas fa-trash-alt"></i></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="purchase_return_list">
-                                                               
-                                                            </tbody>
+                                                            <tbody id="purchase_return_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -728,7 +744,7 @@
                     } else {
                         $('.loading_button').hide();
                         toastr.success(data); 
-                        window.location = "{{ route('purchases.returns.index') }}"
+                        //window.location = "{{ route('purchases.returns.index') }}"
                     }
                 }
             });

@@ -154,12 +154,12 @@
                                 tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
                                 tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
                                     unites.forEach(function(unit) {
-                                    if (product.unit.name == unit) {
-                                        tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
-                                    }else{
-                                        tr += '<option value="'+unit+'">'+unit+'</option>';   
-                                    }
-                                })
+                                        if (product.unit.name == unit) {
+                                            tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
+                                        } else {
+                                            tr += '<option value="'+unit+'">'+unit+'</option>';   
+                                        }
+                                    });
                                 tr += '</select>';
                                 tr += '</td>';
 
@@ -730,7 +730,7 @@
     $(document).on('input', '#selling_price',function() {
         var selling_price = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
-        var product_cost = tr.find('#unit_cost').val() ? tr.find('#unit_cost').val() : 0;
+        var product_cost = tr.find('#unit_cost_with_discount').val() ? tr.find('#unit_cost_with_discount').val() : 0;
         var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
         var __cost = parseFloat(product_cost) > 0 ? parseFloat(product_cost) : parseFloat(profitAmount);
         var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
@@ -874,26 +874,7 @@
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
-        var inputs = $('.add_input');
-            inputs.removeClass('is-invalid');
-            $('.error').html('');  
-            var countErrorField = 0;  
-        $.each(inputs, function(key, val){
-            var inputId = $(val).attr('id');
-            var idValue = $('#'+inputId).val();
-            if(idValue == ''){
-                countErrorField += 1;
-                var fieldName = $('#'+inputId).data('name');
-                $('.error_'+inputId).html(fieldName+' is required.');
-            }
-        });
-
-        if(countErrorField > 0){
-            $('.loading_button').hide();
-            toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-            return;
-        }
-
+        
         $.ajax({
             url:url,
             type:'post',
@@ -914,14 +895,20 @@
                         window.location = "{{route('purchases.po.list')}}";
                     @endif
                 }
-            }, error: function(err) {
+            },error: function(err) {
                 $('.loading_button').hide();
                 $('.error').html('');
+                
                 if (err.status == 0) {
                     toastr.error('Net Connetion Error. Reload This Page.'); 
-                }else{
-                    toastr.error('Server error please contact to the support team.');
+                    return;
                 }
+
+                toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_' + key + '').html(error[0]);
+                });
             }
         });
     });
@@ -1132,6 +1119,7 @@
                 $('#purchase_status').val(purchase.purchase_status);
                 $('#pay').val(purchase.purchase_status);
                 $('#paid').val(purchase.paid);
+                $('#purchase_account_id').val(purchase.purchase_account_id);
                 var product_rows = '';
                 if ($.isEmptyObject(purchase.purchase_products)) {
                     product_rows = purchase.purchase_order_products;
@@ -1242,7 +1230,26 @@
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
     new Litepicker({
         singleMode: true,
-        element: document.getElementById('datepicker'),
+        element: document.getElementById('date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat,
+    });
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('delivery_date'),
         dropdowns: {
             minYear: new Date().getFullYear() - 50,
             maxYear: new Date().getFullYear() + 100,

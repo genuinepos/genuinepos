@@ -7,7 +7,7 @@ use App\Models\Loan;
 use App\Utils\LoanUtil;
 use App\Models\CashFlow;
 use App\Utils\Converter;
-use App\Utils\AccountUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -17,14 +17,17 @@ class LoanController extends Controller
     protected $accountUtil;
     protected $loanUtil;
     protected $converter;
+    protected $invoiceVoucherRefIdUtil;
     public function __construct(
         AccountUtil $accountUtil,
         LoanUtil $loanUtil,
-        Converter $converter
+        Converter $converter,
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
         $this->accountUtil = $accountUtil;
         $this->loanUtil = $loanUtil;
         $this->converter = $converter;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -71,7 +74,8 @@ class LoanController extends Controller
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item" id="view" href="' . route('accounting.loan.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
-                    $html .= '<a class="dropdown-item" href="' . route('accounting.loan.edit', [$row->id]) . '" id="edit_loan"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    // $html .= '<a class="dropdown-item" href="' . route('accounting.loan.edit', [$row->id]) . '" id="edit_loan"><i class="far fa-edit text-primary"></i> Edit</a>';
+
                     $html .= '<a class="dropdown-item" id="delete_loan" href="' . route('accounting.loan.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
@@ -86,9 +90,9 @@ class LoanController extends Controller
                     }
                 })->editColumn('type', function ($row) {
                     if ($row->type == 1) {
-                        return '<span class="text-success"><strong>Pay Loan</strong></span>';
+                        return '<span class="text-success"><strong>Loan&Advance</strong></span>';
                     } else {
-                        return '<span class="text-danger"><strong>Get Loan</strong></span>';
+                        return '<span class="text-danger"><strong>Loan&Liability</strong></span>';
                     }
                 })->editColumn('loan_by', function ($row) {
                     if ($row->loan_by) {
@@ -106,34 +110,49 @@ class LoanController extends Controller
                     }
                 })->rawColumns(['report_date', 'branch', 'type', 'loan_by', 'loan_amount', 'due', 'total_paid', 'action'])->smart(true)->make(true);
         }
+
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
-        return view('accounting.loans.index', compact('branches', 'accounts'));
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
+        $loanAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->whereIn('account_type', [13, 14])
+            ->orderBy('account_type', 'desc')
+            ->get(['accounts.id', 'accounts.name', 'account_type']);
+
+        return view('accounting.loans.index', compact('branches', 'accounts', 'loanAccounts'));
     }
 
     public function store(Request $request)
     {
+        //return $request->all();
         $this->validate($request, [
             'company_id' => 'required',
             'type' => 'required',
             'loan_amount' => 'required',
+            'loan_account_id' => 'required',
             'account_id' => 'required',
             'date' => 'required'
         ], [
             'company_id.required' => 'Company field is required.',
-            'account_id.required' => 'Account field is required.',
+            'loan_account_id.required' => 'Loan A/C field is required.',
+            'account_id.required' => 'Debit/Credit A/C field is required.',
         ]);
 
         // generate reference no
-        $refId = 1;
-        $lastLoan = DB::table('loans')->orderBy('id', 'desc')->first();
-        if ($lastLoan) {
-            $refId = ++$lastLoan->id;
-        }
+        $refId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('loans'), 4, "0", STR_PAD_LEFT);
 
-        $prefix = $request->type == 1 ? 'LP' : 'LG';
+        $prefix = $request->type == 1 ? 'LA' : 'LL';
         $addLoan = new Loan();
-        $addLoan->reference_no = $prefix . date('my') . $refId;
+        $addLoan->reference_no = $prefix . $refId;
+        $addLoan->loan_account_id = $request->loan_account_id;
         $addLoan->branch_id = auth()->user()->branch_id;
         $addLoan->loan_company_id = $request->company_id;
         $addLoan->type = $request->type;
@@ -147,33 +166,49 @@ class LoanController extends Controller
         $addLoan->save();
 
         if ($request->type == 1) {
-            $this->loanUtil->adjustCompanyPayLoanAmount($request->company_id);
+            $this->loanUtil->adjustCompanyLoanAdvanceAmount($request->company_id);
+            // Add Loan A/C ledger
+            $this->accountUtil->addAccountLedger(
+                voucher_type_id: 14,
+                date: $request->date,
+                account_id: $request->loan_account_id,
+                trans_id: $addLoan->id,
+                amount: $request->loan_amount,
+                balance_type: 'debit'
+            );
+
+            // Add Bank/Cash-in-hand A/C ledger
+            $this->accountUtil->addAccountLedger(
+                voucher_type_id: 25,
+                date: $request->date,
+                account_id: $request->account_id,
+                trans_id: $addLoan->id,
+                amount: $request->loan_amount,
+                balance_type: 'debit'
+            );
+
         } else {
-            $this->loanUtil->adjustCompanyReceiveLoanAmount($request->company_id);
-        }
+            $this->loanUtil->adjustCompanyLoanLiabilityAmount($request->company_id);
+            // Add Loan A/C ledger
+            $this->accountUtil->addAccountLedger(
+                voucher_type_id: 13,
+                date: $request->date,
+                account_id: $request->loan_account_id,
+                trans_id: $addLoan->id,
+                amount: $request->loan_amount,
+                balance_type: 'credit'
+            );
 
-        if ($request->account_id) {
-            // Add cash flow
-            $addCashFlow = new CashFlow();
-            $addCashFlow->account_id = $request->account_id;
-            if ($request->type == 1) {
-                $addCashFlow->debit = $request->loan_amount;
-                $addCashFlow->cash_type = 1;
-            } else {
-                $addCashFlow->credit = $request->loan_amount;
-                $addCashFlow->cash_type = 2;
-            }
+            // Add Bank/Cash-in-hand A/C ledger
+            $this->accountUtil->addAccountLedger(
+                voucher_type_id: 24,
+                date: $request->date,
+                account_id: $request->account_id,
+                trans_id: $addLoan->id,
+                amount: $request->loan_amount,
+                balance_type: 'debit'
+            );
 
-            $addCashFlow->loan_id = $addLoan->id;
-            $addCashFlow->transaction_type = 10;
-            $addCashFlow->date = $request->date;
-            $addCashFlow->report_date = date('Y-m-d', strtotime($request->date));
-            $addCashFlow->month = date('F');
-            $addCashFlow->year = date('Y');
-            $addCashFlow->admin_id = auth()->id();
-            $addCashFlow->save();
-            $addCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-            $addCashFlow->save();
         }
 
         return response()->json('Loan created Successfully');
@@ -187,51 +222,42 @@ class LoanController extends Controller
         }
 
         $companies = DB::table('loan_companies')->select('id', 'name')->get();
-        $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
-        return view('accounting.loans.ajax_view.editLoan', compact('loan', 'companies', 'accounts'));
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
+        $loanAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->whereIn('account_type', [13, 14])
+            ->orderBy('accounts.account_type', 'desc')
+            ->get(['accounts.id', 'accounts.name', 'account_type']);
+
+        return view('accounting.loans.ajax_view.editLoan', compact('loan', 'companies', 'accounts', 'loanAccounts'));
     }
 
     public function update(Request $request, $loanId)
     {
+        //return $request->all();
         $this->validate($request, [
             'company_id' => 'required',
             'type' => 'required',
             'loan_amount' => 'required',
+            'loan_account_id' => 'required',
             'account_id' => 'required',
             'date' => 'required'
         ], [
             'company_id.required' => 'Company field is required.',
-            'account_id.required' => 'Account field is required.',
+            'loan_account_id.required' => 'Loan A/C field is required.',
+            'account_id.required' => 'Debit/Credit A/C field is required.',
         ]);
 
         $updateLoan = Loan::where('id', $loanId)->first();
-        $storedPreviousAccountId = $updateLoan->account_id;
-
-        if ($request->type == 1) {
-            $this->loanUtil->adjustCompanyPayLoanAmount($request->company_id);
-        } else {
-            $this->loanUtil->adjustCompanyReceiveLoanAmount($request->company_id);
-        }
-
-        $updateCashFlow = CashFlow::where('loan_id', $updateLoan->id)->first();
-        $updateCashFlow->account_id = $request->account_id;
-        if ($request->type == 1) {
-            $updateCashFlow->debit = $request->loan_amount;
-            $updateCashFlow->credit = NULL;
-            $updateCashFlow->cash_type = 1;
-        } else {
-            $updateCashFlow->credit = $request->loan_amount;
-            $updateCashFlow->debit = NULL;
-            $updateCashFlow->cash_type = 2;
-        }
-
-        $updateCashFlow->loan_id = $updateLoan->id;
-        $updateCashFlow->transaction_type = 10;
-        $updateCashFlow->save();
-        $updateCashFlow->balance = $this->accountUtil->adjustAccountBalance($request->account_id);
-        $updateCashFlow->save();
-
         $updateLoan->loan_company_id = $request->company_id;
+        $updateLoan->loan_account_id = $request->loan_account_id;
         $updateLoan->type = $request->type;
         $updateLoan->loan_amount = $request->loan_amount;
         $updateLoan->account_id = $request->account_id;
@@ -241,8 +267,52 @@ class LoanController extends Controller
         $updateLoan->save();
         $this->loanUtil->loanAmountAdjustment($updateLoan);
 
-        if ($request->account_id != $storedPreviousAccountId) {
-            $this->accountUtil->adjustAccountBalance($storedPreviousAccountId);
+        if ($request->type == 1) {
+            $this->loanUtil->adjustCompanyLoanAdvanceAmount($request->company_id);
+
+            // Update loan A/C Ledger
+            $this->accountUtil->updateAccountLedger(
+                voucher_type_id: 14,
+                date: $request->date,
+                account_id: $request->loan_account_id,
+                trans_id: $updateLoan->id,
+                amount: $request->loan_amount,
+                balance_type: 'debit'
+            );
+
+            // Update Bank/Cash-In-Hand A/C Ledger
+            $this->accountUtil->updateAccountLedger(
+                voucher_type_id: 25,
+                date: $request->date,
+                account_id: $request->account_id,
+                trans_id: $updateLoan->id,
+                amount: $request->loan_amount,
+                balance_type: 'debit'
+            );
+
+        } else {
+            $this->loanUtil->adjustCompanyLoanLiabilityAmount($request->company_id);
+            // Update loan A/C Ledger
+            $this->accountUtil->updateAccountLedger(
+                voucher_type_id: 13,
+                date: $request->date,
+                account_id: $request->loan_account_id,
+                trans_id: $updateLoan->id,
+                amount: $request->loan_amount,
+                balance_type: 'credit'
+            );
+
+            // Update Bank/Cash-In-Hand A/C Ledger
+            $this->accountUtil->updateAccountLedger(
+                voucher_type_id: 24,
+                date: $request->date,
+                account_id: $request->account_id,
+                trans_id: $updateLoan->id,
+                amount: $request->loan_amount,
+                balance_type: 'debit'
+            );
+
+            return 'Type 2';
         }
 
         return response()->json('Loan updated Successfully');
@@ -252,6 +322,7 @@ class LoanController extends Controller
     {
         $loan = Loan::where('id', $loanId)->first();
         $storeAccountId = $loan->account_id;
+        $storeLoanAccountId = $loan->loan_account_id;
         $storedType = $loan->type;
         $storedCompanyId = $loan->loan_company_id;
         if ($loan->total_paid > 0) {
@@ -260,18 +331,23 @@ class LoanController extends Controller
 
         $loan->delete();
         if ($storedType == 1) {
-            $this->loanUtil->adjustCompanyPayLoanAmount($storedCompanyId);
+            $this->loanUtil->adjustCompanyLoanAdvanceAmount($storedCompanyId);
+            $this->accountUtil->adjustAccountBalance('debit', $storeLoanAccountId);
+            $this->accountUtil->adjustAccountBalance('debit', $storeAccountId);
         } else {
-            $this->loanUtil->adjustCompanyReceiveLoanAmount($storedCompanyId);
+            $this->loanUtil->adjustCompanyLoanLiabilityAmount($storedCompanyId);
+            $this->accountUtil->adjustAccountBalance('credit', $storeLoanAccountId);
+            $this->accountUtil->adjustAccountBalance('debit', $storeAccountId);
         }
 
-        $this->accountUtil->adjustAccountBalance($storeAccountId);
         return response()->json('Loan deleted Successfully');
     }
 
     public function allCompaniesForForm()
     {
-        return DB::table('loan_companies')->select('id', 'name')->where('branch_id', auth()->user()->branch_id)->get();
+        return DB::table('loan_companies')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->select('id', 'name')->get();
     }
 
     public function show($loanId)

@@ -4,12 +4,6 @@
     $('.collapse_table').on('click', function () {
         $('.last_p_product_list').toggle(500);
     });
-    
-    $('#payment_method').on('change', function () {
-        var value = $(this).val();
-        $('.payment_method').hide();
-        $('#'+value).show();
-    });
 
     var suppliersArray = '';
     function setSuppliers(){
@@ -24,19 +18,6 @@
         });
     }
     setSuppliers();
-
-    function setAccount(){
-        $.ajax({
-            url:"{{route('accounting.accounts.all.form.account')}}",
-            success:function(accounts){
-                $.each(accounts, function (key, account) {
-                    $('#account_id').append('<option value="'+account.id+'">'+ account.name +' (A/C: '+account.account_number+')'+' (Balance: '+account.balance+')'+'</option>');
-                });
-                $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
-            }
-        });
-    }
-    setAccount();
 
     $('#supplier_id').on('change', function () {
         document.getElementById('search_product').focus();
@@ -104,7 +85,7 @@
 
         quantities.forEach(function(qty){
             total_item += 1;
-            total_qty += parseFloat(qty.value);
+            total_qty += parseFloat(qty.value)
         });
 
         $('#total_qty').val(parseFloat(total_qty));
@@ -794,7 +775,7 @@
     $(document).on('input', '#selling_price',function() {
         var selling_price = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
-        var product_cost = tr.find('#unit_cost').val() ? tr.find('#unit_cost').val() : 0;
+        var product_cost = tr.find('#unit_cost_with_discount').val() ? tr.find('#unit_cost_with_discount').val() : 0;
         var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
         var __cost = parseFloat(product_cost) > 0 ? parseFloat(product_cost) : parseFloat(profitAmount);
         var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
@@ -836,6 +817,12 @@
     });
 
     $(document).on('blur', '#unit_discount', function(){
+        if ($(this).val() == '') {
+            $(this).val(parseFloat(0).toFixed(2));
+        }
+    });
+
+    $(document).on('blur', '#paying_amount', function(){
         if ($(this).val() == '') {
             $(this).val(parseFloat(0).toFixed(2));
         }
@@ -932,26 +919,7 @@
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
-        var inputs = $('.add_input');
-            inputs.removeClass('is-invalid');
-            $('.error').html('');  
-            var countErrorField = 0;  
-        $.each(inputs, function(key, val){
-            var inputId = $(val).attr('id');
-            var idValue = $('#'+inputId).val();
-            if(idValue == ''){
-                countErrorField += 1;
-                var fieldName = $('#'+inputId).data('name');
-                $('.error_'+inputId).html(fieldName+' is required.');
-            }
-        });
-
-        if(countErrorField > 0){
-            $('.loading_button').hide();
-            toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-            return;
-        }
-
+       
         $('.submit_button').prop('type', 'button');
         $.ajax({
             url:url,
@@ -987,11 +955,17 @@
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
                 $('.error').html('');
+                
                 if (err.status == 0) {
                     toastr.error('Net Connetion Error. Reload This Page.'); 
-                }else{
-                    toastr.error('Server error please contact to the support.');
+                    return;
                 }
+
+                toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_' + key + '').html(error[0]);
+                });
             }
         });
     });
@@ -1156,7 +1130,7 @@
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
     new Litepicker({
         singleMode: true,
-        element: document.getElementById('datepicker'),
+        element: document.getElementById('date'),
         dropdowns: {
             minYear: new Date().getFullYear() - 50,
             maxYear: new Date().getFullYear() + 100,

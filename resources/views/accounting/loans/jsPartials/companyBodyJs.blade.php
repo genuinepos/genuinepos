@@ -153,63 +153,6 @@
         });
     });
 
-    //Add sale payment request by ajax
-    $(document).on('submit', '#loan_payment_form', function(e){
-        e.preventDefault();
-        $('.loading_button').show();
-        var available_amount = $('#p_available_amount').val();
-        var paying_amount = $('#p_amount').val();
-        if (parseFloat(paying_amount) > parseFloat(available_amount)) {
-            $('.error_p_amount').html('Paying amount must not be greater then due amount.');
-            $('.loading_button').hide();
-            return;
-        }
-
-        if (parseFloat(paying_amount) <= 0) {
-            $('.error_p_amount').html('Amount must be greater then 0.');
-            $('.loading_button').hide();
-            return;
-        }
-
-        var url = $(this).attr('action');
-        var inputs = $('.p_input');
-            $('.error').html('');  
-            var countErrorField = 0;  
-        $.each(inputs, function(key, val){
-            var inputId = $(val).attr('id');
-            var idValue = $('#'+inputId).val();
-            if(idValue == ''){
-                countErrorField += 1;
-                var fieldName = $('#'+inputId).data('name');
-                $('.error_'+inputId).html(fieldName+' is required.');
-            }
-        });
-
-        if(countErrorField > 0){
-            $('.loading_button').hide();
-            toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-            return;
-        }
-
-        $.ajax({
-            url:url,
-            type:'post',
-            data: new FormData(this),
-            contentType: false,
-            cache: false,
-            processData: false,
-            success:function(data){
-                $('.loading_button').hide();
-                $('#loanPymentModal').modal('hide');
-                toastr.success(data);
-                companies_table.ajax.reload();
-                loans_table.ajax.reload();
-            },error:function(err){
-                toastr.error('Please Reload this page again.','Net Connetion is Error'); 
-            }
-        });
-    });
-
     $(document).on('click', '#view_payments', function(e) {
         e.preventDefault();
         $('.data_preloader').show();

@@ -209,7 +209,6 @@ class LoanController extends Controller
                 amount: $request->loan_amount,
                 balance_type: 'debit'
             );
-
         }
 
         return response()->json('Loan created Successfully');
@@ -313,7 +312,6 @@ class LoanController extends Controller
                 balance_type: 'debit'
             );
 
-            return 'Type 2';
         }
 
         return response()->json('Loan updated Successfully');
@@ -326,8 +324,13 @@ class LoanController extends Controller
         $storeLoanAccountId = $loan->loan_account_id;
         $storedType = $loan->type;
         $storedCompanyId = $loan->loan_company_id;
+
         if ($loan->total_paid > 0) {
-            return response()->json(['errorMsg' => 'This loan can not delete. Some or full amount has been paid/received on this loan.']);
+            return response()->json(['errorMsg' => 'This loan can not delete. Some or full amount has been paid on this loan.']);
+        }
+
+        if ($loan->total_receive > 0) {
+            return response()->json(['errorMsg' => 'This loan can not delete. Some or full amount has been received on this loan.']);
         }
 
         $loan->delete();

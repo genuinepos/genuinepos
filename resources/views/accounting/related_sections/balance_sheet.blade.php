@@ -28,7 +28,7 @@
                                                     <h6><strong>BALANCE SHEET</h6>
                                                 </div>
                                             </div>
-                                            <table class="table modal-table table-sm table-bordered table-striped">
+                                            <table class="table modal-table table-sm table-bordered">
                                                 <thead>
                                                     <tr class="bg-primary">
                                                         <th class="liability text-white">Liability</th>
@@ -47,6 +47,7 @@
                                                                             <span class="supplier_due"></span>
                                                                         </td>
                                                                     </tr>
+
                                                                     <tr>
                                                                         <td class="text-start"><strong>Customer Return Due :</strong></td>
                                                                         <td class="text-end">
@@ -54,12 +55,53 @@
                                                                             <span class="customer_return_due"></span>
                                                                         </td>
                                                                     </tr>
+
+                                                                    <tr>
+                                                                        <td class="text-start"><strong>Payable Loan & Liabilities :</strong></td>
+                                                                        <td class="text-end">
+                                                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                                            <span class="payable_ll"></span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td class="text-start"><strong>Capital A/C :</strong></td>
+                                                                        <td class="text-end">
+                                                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                                            <span class="payable_ll"></span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td class="text-start"><strong>Opening Stock :</strong></td>
+                                                                        <td class="text-end">
+                                                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                                            <span class="payable_ll"></span>
+                                                                        </td>
+                                                                    </tr>
                                                                 </tbody>
                                                             </table>
                                                         </td>
+
                                                         <td class="asset_area">
                                                             <table class="table table-sm">
                                                                 <tbody>
+                                                                    <tr>
+                                                                        <td class="text-start"><strong>Cash-In-Hand :</strong></td>
+                                                                        <td class="text-end">
+                                                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                                            <span class="cash_in_hand"></span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td class="text-start"><strong>Bank A/C Balance :</strong></td>
+                                                                        <td class="text-end">
+                                                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                                            <span class="bank_balance"></span>
+                                                                        </td>
+                                                                    </tr>
+
                                                                     <tr>
                                                                         <td class="text-start"><strong>Customer Due :</strong></td>
                                                                         <td class="text-end">
@@ -77,15 +119,31 @@
                                                                     </tr>
 
                                                                     <tr>
-                                                                        <td class="text-start"><strong>Closing Stock :</strong></td>
+                                                                        <td class="text-start"><strong>Current Stock Value :</strong></td>
                                                                         <td class=" text-end">
                                                                             {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                                                            <span class="closing_stock"></span>
+                                                                            <span class="stock_value"></span>
                                                                         </td>
                                                                     </tr>
 
                                                                     <tr>
-                                                                        <td class="text-start"><strong>Asset :</strong></td>
+                                                                        <td class="text-start"><strong>Investments :</strong></td>
+                                                                        <td class=" text-end">
+                                                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                                            <span class="investment"></span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td class="text-start"><strong>Receivable Loan&Advance :</strong></td>
+                                                                        <td class=" text-end">
+                                                                            {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                                                            <span class="receiveable_la"></span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr class="bg-info">
+                                                                        <td class="text-end text-white"><strong>Total Current Asset :</strong></td>
                                                                         <td class=" text-end">
                                                                             {{ json_decode($generalSettings->business, true)['currency'] }} 
                                                                             <span class="total_physical_asset"></span>
@@ -93,9 +151,12 @@
                                                                     </tr>
 
                                                                     <tr>
-                                                                        <td class="text-start" colspan="2">
-                                                                            <strong>Account Balance :</strong>
-                                                                        </td>
+                                                                        <td class="text-end text-white"></td>
+                                                                        <td class="text-end"></td>
+                                                                    </tr>
+
+                                                                    <tr class="bg-secondary">
+                                                                        <th colspan="2" class="text-start"><strong>Fixed Asset :</strong></th>
                                                                     </tr>
 
                                                                     <tr class="account_balance_list_area">
@@ -103,8 +164,15 @@
                                                                             <table class="table table-sm">
                                                                                 <tbody class="account_balance_list">
                                                                                     <tr>
-                                                                                        <td class="text-start">Sale Account </td>
-                                                                                        <td class="text-end">0.00 </td>
+                                                                                        <td class="text-start" colspan="2">
+                                                                                            Furniture :
+                                                                                        </td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td class="text-start" colspan="2">
+                                                                                            Vechels :
+                                                                                        </td>
                                                                                     </tr>
                                                                                 </tbody>
                                                                             </table>
@@ -165,41 +233,41 @@
 <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
 <script>
     // Set accounts in payment and payment edit form
-    function getBalanceAmounts(){
-        $('.data_preloader').show();
-        $.ajax({
-            url:"{{route('accounting.balance.sheet.amounts')}}",
-            success:function(amounts){
-                console.log(amounts);
-                $('.supplier_due').html(parseFloat(amounts.totalSupplierDue).toFixed(2));
-                $('.customer_return_due').html(parseFloat(amounts.totalCustomerReturnDue).toFixed(2));
-                $('.customer_due').html(parseFloat(amounts.totalCustomerDue).toFixed(2));
-                $('.supplier_return_due').html(parseFloat(amounts.totalSupplierReturnDue).toFixed(2));
-                $('.total_liability').html(parseFloat(amounts.totalLiLiability).toFixed(2));
-                $('.closing_stock').html(parseFloat(amounts.closingStock).toFixed(2));
+    // function getBalanceAmounts(){
+    //     $('.data_preloader').show();
+    //     $.ajax({
+    //         url:"{{route('accounting.balance.sheet.amounts')}}",
+    //         success:function(amounts){
+    //             console.log(amounts);
+    //             $('.supplier_due').html(parseFloat(amounts.totalSupplierDue).toFixed(2));
+    //             $('.customer_return_due').html(parseFloat(amounts.totalCustomerReturnDue).toFixed(2));
+    //             $('.customer_due').html(parseFloat(amounts.totalCustomerDue).toFixed(2));
+    //             $('.supplier_return_due').html(parseFloat(amounts.totalSupplierReturnDue).toFixed(2));
+    //             $('.total_liability').html(parseFloat(amounts.totalLiLiability).toFixed(2));
+    //             $('.closing_stock').html(parseFloat(amounts.closingStock).toFixed(2));
                 
-                $('.total_physical_asset').html(parseFloat(amounts.totalPhysicalAsset).toFixed(2));
-                if(amounts.totalAsset >= 0){
-                    $('.total_asset').html(parseFloat(amounts.totalAsset).toFixed(2));
-                }else{
-                    $('.total_asset').html('<b><span class="text-danger">' + parseFloat(amounts.totalAsset).toFixed(2)+'</span><b>');
-                }
+    //             $('.total_physical_asset').html(parseFloat(amounts.totalPhysicalAsset).toFixed(2));
+    //             if(amounts.totalAsset >= 0){
+    //                 $('.total_asset').html(parseFloat(amounts.totalAsset).toFixed(2));
+    //             }else{
+    //                 $('.total_asset').html('<b><span class="text-danger">' + parseFloat(amounts.totalAsset).toFixed(2)+'</span><b>');
+    //             }
 
-                var tr = '';
-                $.each(amounts.accounts, function (key, account) {
-                    tr += '<tr>';
-                    tr += '<td class="text-start">'+account.name+'</td>';
-                    tr += '<td class="text-end">'+"{{ json_decode($generalSettings->business, true)['currency'] }} "+account.balance+'</td>';
-                    tr += '</tr>';
-                });
+    //             var tr = '';
+    //             $.each(amounts.accounts, function (key, account) {
+    //                 tr += '<tr>';
+    //                 tr += '<td class="text-start">'+account.name+'</td>';
+    //                 tr += '<td class="text-end">'+"{{ json_decode($generalSettings->business, true)['currency'] }} "+account.balance+'</td>';
+    //                 tr += '</tr>';
+    //             });
 
-                $('.account_balance_list').empty();
-                $('.account_balance_list').html(tr); 
-                $('.data_preloader').hide();
-            }
-        });
-    }
-    getBalanceAmounts();
+    //             $('.account_balance_list').empty();
+    //             $('.account_balance_list').html(tr); 
+    //             $('.data_preloader').hide();
+    //         }
+    //     });
+    // }
+    // getBalanceAmounts();
 
     // Print single payment details
     $('#print_btn').on('click', function (e) {

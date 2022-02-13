@@ -35,21 +35,18 @@ class AccountingRelatedSectionController extends Controller
         $accountBalance = 0;
         $closingStock = 0;
 
-
         $suppliers = DB::table('suppliers')
             ->select(
                 DB::raw('SUM(total_purchase_due) as total_due'),
                 DB::raw('SUM(total_purchase_return_due) as total_return_due'),
-            )
-            ->get();
+            )->get();
 
         $customers = DB::table('customers')
             ->select(
                 DB::raw('SUM(total_sale_due) as total_due'),
                 DB::raw('SUM(total_sale_return_due) as total_return_due'),
                 ['id', 'total_sale_due', 'total_sale_return_due']
-            )
-            ->get();
+            )->get();
 
         $totalCashInHand = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -64,8 +61,31 @@ class AccountingRelatedSectionController extends Controller
             ->select(DB::raw('SUM(accounts.balance) as total_cash'))
             ->where('accounts.account_type', 2)
             ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->groupBy('accounts.account_type')->get();
+
+        $TotalBankBalance = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->select(DB::raw('SUM(accounts.balance) as total_investment'))
+            ->where('accounts.account_type', 16)
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->groupBy('accounts.account_type')
             ->get();
+
+        $fixedAsset = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->select(
+                'accounts.name',
+                'balance'
+            )->where('accounts.account_type', 15)
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.id', 'desc')
+            ->get();
+
+        $loanCompanies = DB::table('loan_companies')
+                ->select(
+                    DB::raw('SUM(pay_loan_due) as total_la_receivable'),
+                    DB::raw('SUM(get_loan_due) as total_ll_payable'),
+                )->where('loan_companies.branch_id', auth()->user()->branch_id)->get();
 
         // $accounts = DB::table('accounts')
         //     ->select(['id', 'name', 'balance'])->get();

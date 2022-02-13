@@ -13,12 +13,12 @@
             </h3>
             <p>
                 @if ($expense->branch)
-                    {{ $expense->branch->city . ', ' . $expense->branch->state . ', ' . $expense->branch->zip_code . ', ' . $payment->expense->branch->country }}
+                    {{ $expense->branch->city . ', ' . $expense->branch->state . ', ' . $expense->branch->zip_code . ', ' . $expense->branch->country }}
                 @else
                     {{ json_decode($generalSettings->business, true)['address'] }}
                 @endif
             </p>
-            <h6><b>Expense Details</b></h6>
+            <h6><strong>Expense Details</strong></h6>
         </div>
     </div>
 

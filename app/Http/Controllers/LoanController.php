@@ -7,9 +7,10 @@ use App\Models\Loan;
 use App\Utils\LoanUtil;
 use App\Models\CashFlow;
 use App\Utils\Converter;
-use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\AccountUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class LoanController extends Controller
@@ -123,7 +124,7 @@ class LoanController extends Controller
         $loanAccounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->whereIn('account_type', [13, 14])
+            ->whereIn('account_type', [13, 14, 26])
             ->orderBy('account_type', 'desc')
             ->get(['accounts.id', 'accounts.name', 'account_type']);
 

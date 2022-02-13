@@ -891,81 +891,94 @@ Route::get('/test', function () {
     //     $p->save();
     // }
 
-    $customerLedgers = CustomerLedger::with('sale', 'sale_payment', 'customer_payment')->get();
+    // $customerLedgers = CustomerLedger::with('sale', 'sale_payment', 'customer_payment')->get();
 
-    foreach ($customerLedgers as $ledger) {
+    // foreach ($customerLedgers as $ledger) {
 
-        if ($ledger->amount != NULL) {
-            $ledger->voucher_type = 0;
-            $ledger->debit = $ledger->amount;
-            $ledger->amount_type = 'debit';
-            $ledger->report_date =  $ledger->created_at;
-        }
+    //     if ($ledger->amount != NULL) {
+    //         $ledger->voucher_type = 0;
+    //         $ledger->debit = $ledger->amount;
+    //         $ledger->amount_type = 'debit';
+    //         $ledger->report_date =  $ledger->created_at;
+    //     }
 
-        if ($ledger->sale_id) {
+    //     if ($ledger->sale_id) {
 
-            $ledger->voucher_type = 1;
-            $ledger->debit = $ledger->sale->total_payable_amount;
-            $ledger->amount_type = 'debit';
-            $ledger->amount = $ledger->sale->total_payable_amount;
-            $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->sale->date . date(' H:i:s')));
-        } elseif ($ledger->sale_payment_id) {
+    //         $ledger->voucher_type = 1;
+    //         $ledger->debit = $ledger->sale->total_payable_amount;
+    //         $ledger->amount_type = 'debit';
+    //         $ledger->amount = $ledger->sale->total_payable_amount;
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->sale->date . date(' H:i:s')));
+    //     } elseif ($ledger->sale_payment_id) {
 
-            $ledger->voucher_type = 3;
-            $ledger->credit = $ledger->sale_payment->paid_amount;
-            $ledger->amount = $ledger->sale_payment->paid_amount;
-            $ledger->amount_type = 'credit';
-            $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->sale_payment->date . date(' H:i:s')));
-        } elseif ($ledger->customer_payment_id) {
+    //         $ledger->voucher_type = 3;
+    //         $ledger->credit = $ledger->sale_payment->paid_amount;
+    //         $ledger->amount = $ledger->sale_payment->paid_amount;
+    //         $ledger->amount_type = 'credit';
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->sale_payment->date . date(' H:i:s')));
+    //     } elseif ($ledger->customer_payment_id) {
 
-            $ledger->voucher_type = 5;
-            $ledger->credit = $ledger->customer_payment->paid_amount;
-            $ledger->amount = $ledger->customer_payment->paid_amount;
-            $ledger->amount_type = 'credit';
-            $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->customer_payment->date . date(' H:i:s')));
-        }
+    //         $ledger->voucher_type = 5;
+    //         $ledger->credit = $ledger->customer_payment->paid_amount;
+    //         $ledger->amount = $ledger->customer_payment->paid_amount;
+    //         $ledger->amount_type = 'credit';
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->customer_payment->date . date(' H:i:s')));
+    //     }
 
-        $ledger->save();
-    }
+    //     $ledger->save();
+    // }
 
-    $supplierLedgers = SupplierLedger::with('purchase', 'purchase_payment', 'supplier_payment')->get();
+    // $supplierLedgers = SupplierLedger::with('purchase', 'purchase_payment', 'supplier_payment')->get();
 
-    foreach ($supplierLedgers as $ledger) {
+    // foreach ($supplierLedgers as $ledger) {
 
-        if ($ledger->amount != NULL) {
-            $ledger->voucher_type = 0;
-            $ledger->credit = $ledger->amount;
-            $ledger->amount_type = 'credit';
-            $ledger->report_date =  $ledger->created_at;
-        }
+    //     if ($ledger->amount != NULL) {
+    //         $ledger->voucher_type = 0;
+    //         $ledger->credit = $ledger->amount;
+    //         $ledger->amount_type = 'credit';
+    //         $ledger->report_date =  $ledger->created_at;
+    //     }
 
-        if ($ledger->purchase_id) {
+    //     if ($ledger->purchase_id) {
 
-            $ledger->voucher_type = 1;
-            $ledger->debit = $ledger->purchase->total_purchase_amount;
-            $ledger->amount = $ledger->purchase->total_purchase_amount;
-            $ledger->amount_type = 'credit';
-            $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->purchase->date . date(' H:i:s')));
-        } elseif ($ledger->purchase_payment_id) {
+    //         $ledger->voucher_type = 1;
+    //         $ledger->debit = $ledger->purchase->total_purchase_amount;
+    //         $ledger->amount = $ledger->purchase->total_purchase_amount;
+    //         $ledger->amount_type = 'credit';
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->purchase->date . date(' H:i:s')));
+    //     } elseif ($ledger->purchase_payment_id) {
 
-            $ledger->voucher_type = 3;
-            $ledger->credit = $ledger->purchase_payment->paid_amount;
-            $ledger->amount = $ledger->purchase_payment->paid_amount;
-            $ledger->amount_type = 'debit';
-            $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->purchase_payment->date . date(' H:i:s')));
-        } elseif ($ledger->supplier_payment_id) {
+    //         $ledger->voucher_type = 3;
+    //         $ledger->credit = $ledger->purchase_payment->paid_amount;
+    //         $ledger->amount = $ledger->purchase_payment->paid_amount;
+    //         $ledger->amount_type = 'debit';
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->purchase_payment->date . date(' H:i:s')));
+    //     } elseif ($ledger->supplier_payment_id) {
 
-            $ledger->voucher_type = 5;
-            $ledger->credit = $ledger->supplier_payment->paid_amount;
-            $ledger->amount = $ledger->supplier_payment->paid_amount;
-            $ledger->amount_type = 'debit';
-            $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->supplier_payment->date . date(' H:i:s')));
-        }
+    //         $ledger->voucher_type = 5;
+    //         $ledger->credit = $ledger->supplier_payment->paid_amount;
+    //         $ledger->amount = $ledger->supplier_payment->paid_amount;
+    //         $ledger->amount_type = 'debit';
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->supplier_payment->date . date(' H:i:s')));
+    //     }
 
-        $ledger->save();
-    }
+    //     $ledger->save();
+    // }
 
-    return 'done';
+    // return 'done';
+
+    $TotalBankBalance = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->select(
+                'accounts.name',
+                DB::raw('SUM(accounts.balance) as total_cash')
+                )
+            ->where('accounts.account_type', 2)
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->groupBy('accounts.account_type')
+            ->groupBy('accounts.name')
+            ->get();
+
 });
 
 // All authenticated routes

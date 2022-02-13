@@ -124,7 +124,7 @@ class LoanController extends Controller
         $loanAccounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->whereIn('account_type', [13, 14])
+            ->whereIn('account_type', [13, 14, 26])
             ->orderBy('account_type', 'desc')
             ->get(['accounts.id', 'accounts.name', 'account_type']);
 

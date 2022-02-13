@@ -35,26 +35,50 @@ class AccountingRelatedSectionController extends Controller
         $accountBalance = 0;
         $closingStock = 0;
 
-        $suppliers = DB::table('suppliers')->select(['id', 'total_purchase_due', 'total_purchase_return_due'])->get();
-        foreach ($suppliers as $supplier) {
-            $totalSupplierDue += $supplier->total_purchase_due;
-            $totalSupplierReturnDue += $supplier->total_purchase_return_due;
-        }
 
-        $customers = DB::table('customers')->select(['id', 'total_sale_due', 'total_sale_return_due'])->get();
-        foreach ($customers as $customer) {
-            $totalCustomerDue += $customer->total_sale_due;
-            $totalCustomerReturnDue += $customer->total_sale_return_due;
-        }
+        $suppliers = DB::table('suppliers')
+            ->select(
+                DB::raw('SUM(total_purchase_due) as total_due'),
+                DB::raw('SUM(total_purchase_return_due) as total_return_due'),
+            )
+            ->get();
 
-        $accounts = DB::table('accounts')->select(['id', 'name', 'balance'])->get();
-        foreach ($accounts as $account) {
-            $accountBalance += $account->balance;
-        }
+        $customers = DB::table('customers')
+            ->select(
+                DB::raw('SUM(total_sale_due) as total_due'),
+                DB::raw('SUM(total_sale_return_due) as total_return_due'),
+                ['id', 'total_sale_due', 'total_sale_return_due']
+            )
+            ->get();
 
-        $totalPhysicalAsset = DB::table('assets')->select(
-            DB::raw('sum(total_value) as t_value'),
-        )->groupBy('assets.id')->get();
+        $totalCashInHand = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->select(DB::raw('SUM(accounts.balance) as total_cash'))
+            ->where('accounts.account_type', 1)
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->groupBy('accounts.account_type')
+            ->get();
+
+        $TotalBankBalance = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->select(DB::raw('SUM(accounts.balance) as total_cash'))
+            ->where('accounts.account_type', 2)
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->groupBy('accounts.account_type')
+            ->get();
+
+        // $accounts = DB::table('accounts')
+        //     ->select(['id', 'name', 'balance'])->get();
+
+        // foreach ($accounts as $account) {
+        //     $accountBalance += $account->balance;
+        // }
+
+        // $totalPhysicalAsset = DB::table('assets')->select(
+        //     DB::raw('sum(total_value) as t_value'),
+        // )->groupBy('assets.id')->get();
+
+        // $fixedAssets = 
 
         $products = Product::with('product_variants')->select(['id', 'product_cost_with_tax'])->get();
 
@@ -69,11 +93,11 @@ class AccountingRelatedSectionController extends Controller
         }
 
         $totalLiLiability = $totalSupplierDue + $totalCustomerReturnDue;
-        $totalAsset = $totalSupplierReturnDue + 
-        $totalCustomerDue + 
-        $accountBalance + 
-        $closingStock + 
-        $totalPhysicalAsset->sum('t_value');
+        $totalAsset = $totalSupplierReturnDue +
+            $totalCustomerDue +
+            $accountBalance +
+            $closingStock +
+            $totalPhysicalAsset->sum('t_value');
 
         return response()->json([
             'totalSupplierDue' => $totalSupplierDue,
@@ -221,7 +245,7 @@ class AccountingRelatedSectionController extends Controller
         if ($request->transaction_type) {
             $query->where('cash_type', $request->transaction_type);
         }
-        
+
         $filterCashFlows = $query->orderBy('report_date', 'desc')->get();
         return view('accounting.related_sections.ajax_view.filtered_cash_flow', compact('filterCashFlows'));
     }
@@ -266,7 +290,7 @@ class AccountingRelatedSectionController extends Controller
         if ($request->transaction_type) {
             $query->where('cash_type', $request->transaction_type);
         }
-        
+
         $filterCashFlows = $query->orderBy('id', 'desc')->get();
         return view('accounting.related_sections.ajax_view.print_cash_flow', compact('filterCashFlows', 'fromDate', 'toDate'));
     }

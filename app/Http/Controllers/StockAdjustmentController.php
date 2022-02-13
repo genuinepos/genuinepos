@@ -165,9 +165,10 @@ class StockAdjustmentController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $stockAdjustmentAccounts = DB::table('accounts')
-            ->where('accounts.branch_id', auth()->user()->branch_id)
-            ->where('account_type', 22)
+        $stockAdjustmentAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 22)
             ->get(['id', 'name']);
 
         $accounts = DB::table('account_branches')

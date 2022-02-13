@@ -169,7 +169,7 @@ class StockAdjustmentController extends Controller
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->where('accounts.account_type', 22)
-            ->get(['id', 'name']);
+            ->get(['accounts.id', 'accounts.name']);
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')

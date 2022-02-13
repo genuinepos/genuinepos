@@ -967,16 +967,15 @@ Route::get('/test', function () {
 
     // return 'done';
 
-    $TotalBankBalance = DB::table('account_branches')
+    return $fixedAsset = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->select(
                 'accounts.name',
-                DB::raw('SUM(accounts.balance) as total_cash')
-                )
-            ->where('accounts.account_type', 2)
+                'balance'
+            )
+            ->where('accounts.account_type', 15)
             ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->groupBy('accounts.account_type')
-            ->groupBy('accounts.name')
+            ->orderBy('accounts.id', 'desc')
             ->get();
 
 });

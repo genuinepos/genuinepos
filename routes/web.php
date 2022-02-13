@@ -33,6 +33,7 @@ Route::get('route-list', function () {
 
 Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('branch/authenticated/users/{branchId}', 'CommonAjaxCallController@branchAuthenticatedUsers');
+    Route::get('category/subcategories/{categoryId}', 'CommonAjaxCallController@categorySubcategories');
 });
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
@@ -81,7 +82,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('default/profit', 'ProductController@defaultProfit')->name('products.add.get.default.profit');
         Route::delete('delete/{productId}', 'ProductController@delete')->name('products.delete');
         Route::delete('multiple/delete', 'ProductController@multipleDelete')->name('products.multiple.delete');
-        Route::get('all/sub/category/{categoryId}', 'ProductController@allFromSubCategory');
         Route::get('all/form/variant', 'ProductController@getAllFormVariants')->name('products.add.get.all.from.variant');
         Route::get('search/product/{productCode}', 'ProductController@searchProduct');
         Route::get('get/product/stock/{productId}', 'ProductController@getProductStock');
@@ -358,7 +358,6 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::post('return/payment/update/{paymentId}', 'SaleController@returnPaymentUpdate')->name('sales.return.payment.update');
 
     Route::get('add/product/modal/view', 'SaleController@addProductModalVeiw')->name('sales.add.product.modal.view');
-    Route::get('get/all/sub/category/{categoryId}', 'SaleController@getAllSubCategory');
     Route::post('add/product', 'SaleController@addProduct')->name('sales.add.product');
     Route::get('get/recent/product/{product_id}', 'SaleController@getRecentProduct');
     Route::get('get/product/price/group', 'SaleController@getProductPriceGroup')->name('sales.product.price.groups');
@@ -884,6 +883,7 @@ Route::get('pin_login', function () {
 });
 
 Route::get('/test', function () {
+
     //return str_pad(10, 10, "0", STR_PAD_LEFT);
     // $purchases = Purchase::all();
     // foreach ($purchases as $p) {

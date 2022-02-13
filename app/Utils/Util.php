@@ -196,6 +196,7 @@ class Util
         $addProduct = new Product();
         $tax_id = NULL;
         if ($request->tax_id) {
+
             $tax_id = explode('-', $request->tax_id)[0];
         }
 
@@ -233,6 +234,13 @@ class Util
         $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
         $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
         $addProduct->save();
+
+        // Add product Branch
+        $addProductBranch = new ProductBranch();
+        $addProductBranch->branch_id = auth()->user()->branch_id;
+        $addProductBranch->product_id = $addProduct->id;
+        $addProductBranch->save();
+
         return response()->json($addProduct);
     }
 

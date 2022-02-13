@@ -97,8 +97,8 @@
 
         <div class="col-md-4">
             <div class="row mt-5">
-                <h6 class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_in_ecom" id="is_show_in_ecom" value="1"> &nbsp; Product wil be displayed in E-Commerce. &nbsp; </h6>
-                <h6 class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_emi_on_pos" id="is_show_emi_on_pos" value="1"> &nbsp; Enable IMEI or SL NO &nbsp;</h6>
+                <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_in_ecom" id="is_show_in_ecom" value="1"> &nbsp; Product wil be displayed in E-Commerce. &nbsp; </p>
+                <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_emi_on_pos" id="is_show_emi_on_pos" value="1"> &nbsp; Enable IMEI or SL NO &nbsp;</p>
             </div>
         </div>
     </div>
@@ -138,27 +138,30 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-6 text-start">
-                                    <label><strong>Item Cost Exc.Tax :</strong> <span class="text-danger">*</span></label>
-                                    <input type="text" name="product_cost" class="form-control" autocomplete="off" id="add_product_cost">
+                                    <label><b>Unit Cost Exc.Tax :</b> <span class="text-danger">*</span></label>
+                                    <input type="number" step="any" name="product_cost" id="add_product_cost" class="form-control" autocomplete="off" placeholder="Unit Cost Exc.Tax">
                                     <span class="error error_add_product_cost"></span>
                                 </div>
                                 <div class="col-md-6 text-start">
-                                    <label><strong>Item Cost (Inc.Tax) :</strong><span class="text-danger">*</span></label>
-                                    <input type="text" name="product_cost_with_tax"
+                                    <label><b>Unit Cost Inc.Tax :</b> <span class="text-danger">*</span></label>
+                                    <input type="number" step="any" name="product_cost_with_tax"
                                     class="form-control" autocomplete="off"
-                                    id="add_product_cost_with_tax">
+                                    id="add_product_cost_with_tax" placeholder="Unit Cost Inc.Tax">
                                     <span class="error error_add_product_cost_with_tax"></span>
                                 </div>
                             </div>
                         </td>
+
                         <td>
                             <label></label>
-                            <input type="text" name="profit" class="form-control" autocomplete="off" id="add_profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] }}">
+                            <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="add_profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] }}"
+                            placeholder="Profix Margin">
                         </td>
+
                         <td class="text-start">
-                            <label><strong>Price Exc.Tax :</strong><span class="text-danger">*</span></label>
-                                <input type="text" name="product_price" class="form-control"
-                                    autocomplete="off" id="add_product_price">
+                            <label><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
+                                <input type="number" step="any" name="product_price" class="form-control"
+                                    autocomplete="off" id="add_product_price" placeholder="Price Exc.Tax">
                             <span class="error error_add_product_price"></span>
                         </td>
                     </tr>
@@ -171,9 +174,120 @@
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i
                     class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+            <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
             <button type="reset" data-bs-dismiss="modal"
                 class="c-btn btn_orange float-end">Close</button>
         </div>
     </div>
 </form>
+
+<script>
+    var tax_percent = 0;
+    $(document).on('change', '#add_tax_id',function() {
+        var tax = $(this).val();
+        if (tax) {
+            var split = tax.split('-');
+            tax_percent = split[1];
+        } else {
+            tax_percent = 0;
+        }
+    });
+
+    function costCalculate() {
+        var product_cost = $('#add_product_cost').val() ? $('#add_product_cost').val() : 0;
+        var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent ? tax_percent : 0);
+        var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
+        $('#add_product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
+        var profit = $('#add_profit').val() ? $('#add_profit').val() : 0;
+        var calculate_profit = parseFloat(product_cost) / 100 * parseFloat(profit);
+        var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
+        $('#add_product_price').val(parseFloat(product_price).toFixed(2));
+    }
+
+    $(document).on('input', '#add_product_cost',function() {
+        console.log($(this).val());
+        costCalculate();
+    });
+
+    $(document).on('change', '#add_tax_id', function() {
+        costCalculate();
+    });
+
+    $(document).on('input', '#add_profit',function() {
+        costCalculate();
+    });
+
+    // Add product by ajax
+    $('#add_product_form').on('submit', function(e) {
+        e.preventDefault();
+
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $('.submit_button').prop('type', 'button');
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
+
+                $('.error').html('');
+                toastr.success('Successfully product is added.');
+                $.ajax({
+                    url:"{{url('purchases/recent/product')}}"+"/"+data.id,
+                    type:'get',
+                    success:function(data){
+
+                        $('#addProductModal').modal('hide');
+                        $('.loading_button').hide();
+                        $('.submit_button').prop('type', 'submit');
+                        $('#purchase_list').prepend(data); 
+                        calculateTotalAmount();
+                        document.getElementById('search_product').focus();
+                    }
+                });
+            },
+            error : function(err) {
+
+                $('.error').html('');
+                $('.loading_button').hide();
+                $('.submit_button').prop('type', 'submit');
+
+                if (err.status == 0) {
+
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                }else if (err.status == 500) {
+
+                    toastr.error('Server error please contact to the support.');
+                }
+
+                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                
+                $.each(err.responseJSON.errors, function(key, error) {
+
+                    $('.error_add_' + key + '').html(error[0]);
+                });
+            }
+        });
+    });
+
+    $('#add_category_id').on('change', function () {
+        var category_id = $(this).val();
+        $.ajax({
+            url:"{{ url('common/ajax/call/category/subcategories/') }}"+"/"+category_id,
+            async:true,
+            type:'get',
+            dataType: 'json',
+            success:function(subcate){
+
+                $('#add_child_category_id').empty();
+                $('#add_child_category_id').append('<option value="">Select Sub-Category</option>');
+
+                $.each(subcate, function(key, val){
+
+                    $('#add_child_category_id').append('<option value="'+val.id+'">'+val.name+'</option>');
+                });
+            }
+        });
+    });
+</script>

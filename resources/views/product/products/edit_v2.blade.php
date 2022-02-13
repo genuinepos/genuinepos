@@ -1432,11 +1432,15 @@
 
         // set sub category in form field
         $('#category_id').on('change', function() {
+
             var category_id = $(this).val();
-            $.get("{{ url('product/all/sub/category/') }}"+"/"+category_id, function(subCategories) {
+            $.get("{{ url('common/ajax/call/category/subcategories/') }}"+"/"+category_id, function(subCategories) {
+
                 $('#child_category_id').empty();
                 $('#child_category_id').append('<option value="">Select Sub-Category</option>');
+
                 $.each(subCategories, function(key, val) {
+                    
                     $('#child_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                 });
             });
@@ -1455,24 +1459,31 @@
                 cache: false,
                 processData: false,
                 success: function(data) {
+
                     $('.loading_button').hide();
                     if ($.isEmptyObject(data.errorMsg)) {
+
                         toastr.success(data);
-                        //window.location = "{{ route('products.all.product') }}";
                         window.location = "{{ url()->previous() }}";
                     } else {
+
                         toastr.error(data.errorMsg);
                         $('.error').html('');
                     }
                 },error: function(err) {
+
                     $('.loading_button').addClass('d-none');
                     $('.error').html('');
+
                     if (err.status == 0) {
+
                         toastr.error('Net Connetion Error. Reload This Page.'); 
                         return;
                     }
+
                     toastr.error('Please check again all form fields.',
                         'Some thing want wrong.');
+
                     $.each(err.responseJSON.errors, function(key, error) {
                         $('.error_' + key + '').html(error[0]);
                     });

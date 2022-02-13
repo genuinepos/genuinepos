@@ -459,7 +459,7 @@ class POSController extends Controller
                     $qty_limits[] = 500000;
                 } elseif ($sale_product->product_variant_id) {
 
-                    $productBranchVariant = DB::table('product_branch_variant')
+                    $productBranchVariant = DB::table('product_branch_variants')
                         ->where('product_branch_id', $productBranch->id)
                         ->where('product_id', $sale_product->product_id)
                         ->where('product_variant_id', $sale_product->product_variant_id)
@@ -805,69 +805,62 @@ class POSController extends Controller
     public function posProductList(Request $request)
     {
         $products = '';
-        $query = Product::with([
-            'tax:id,tax_percent',
-            'unit:id,name',
-            'product_variants:id,product_id,variant_name,variant_code,variant_cost_with_tax,variant_price,variant_profit',
-            'product_variants.updateVariantCost',
-            'updateProductCost',
-        ]);
-
-        // $query = DB::table('products')
-        //     ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
-        //     ->leftJoin('units', 'products.unit_id', 'units.id')
-        //     ->leftJoin('product_variants', 'products.id', 'product_variants.product_id');
-
+        $query = DB::table('product_branches')
+            ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
+            ->leftJoin('products', 'product_branches.product_id', 'products.id')
+            ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+            ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
+            ->where('products.is_for_sale', 1)
+            ->where('products.status', 1)
+            ->where('product_branches.branch_id', auth()->user()->branch_id);
 
         if ($request->category_id) {
-            $query->where('category_id', $request->category_id);
+
+            $query->where('products.category_id', $request->category_id);
         }
 
         if ($request->brand_id) {
-            $query->where('brand_id', $request->brand_id);
+
+            $query->where('products.brand_id', $request->brand_id);
         }
 
         if (!$request->category_id  && !$request->brand_id) {
+
             $query->orderBy('products.id', 'DESC')->limit(90);
         }
 
         $products = $query->select(
             'products.id',
-            'category_id',
-            'brand_id',
-            'unit_id',
-            'number_of_sale',
-            'thumbnail_photo',
-            'name',
-            'product_code',
-            'product_cost_with_tax',
-            'profit',
-            'product_price',
-            'is_show_emi_on_pos',
-            'tax_type',
+            'products.name',
+            'products.product_code',
+            'products.is_combo',
+            'products.is_manage_stock',
+            'products.is_purchased',
+            'products.is_show_emi_on_pos',
+            'products.is_variant',
+            'products.product_cost',
+            'products.product_cost_with_tax',
+            'products.product_price',
+            'products.profit',
+            'products.quantity',
+            'products.tax_id',
+            'products.tax_type',
+            'products.thumbnail_photo',
+            'products.type',
+            'products.unit_id',
+            'taxes.id as tax_id',
+            'taxes.tax_name',
+            'taxes.tax_percent',
+            'product_variants.id as variant_id',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'product_variants.variant_cost',
+            'product_variants.variant_cost_with_tax',
+            'product_variants.variant_price',
+            'units.id as unit_id',
+            'units.name as unit_name',
         )->get();
-
-        // return $products = $query->select(
-        //     'products.id',
-        //     'products.number_of_sale',
-        //     'products.thumbnail_photo',
-        //     'products.name',
-        //     'products.product_code',
-        //     'products.product_cost_with_tax',
-        //     'products.profit',
-        //     'products.product_price',
-        //     'products.is_show_emi_on_pos',
-        //     'products.tax_type',
-        //     'units.name as unit_name',
-        //     'taxes.id as tax_id',
-        //     'taxes.tax_percent',
-        //     'product_variants.id as variant_id',
-        //     'product_variants.variant_name',
-        //     'product_variants.variant_code',
-        //     'product_variants.variant_cost_with_tax',
-        //     'product_variants.variant_profit',
-        //     'product_variants.variant_price', 
-        // )->orderBy('products.id', 'desc')->get();
 
         return view('sales.pos.ajax_view.select_product_list', compact('products'));
     }

@@ -25,9 +25,12 @@ class ProcessController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $products = DB::table('products')
-            ->where('status', 1)
-            ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+        $products = DB::table('product_branches')
+            ->leftJoin('products', 'product_branches.product_id', 'products.id')
+            ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
+            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
+            ->where('products.status', 1)
+            ->where('product_branches.branch_id', auth()->user()->branch_id)
             ->select(
                 'products.id',
                 'products.name',

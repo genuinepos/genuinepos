@@ -723,13 +723,17 @@ class ProductController extends Controller
             $combo_quantities = $request->combo_quantities;
             $productVariantIds = $request->variant_ids;
             $index = 0;
+
             foreach ($productIds as $id) {
+
                 $updateComboProduct = ComboProduct::where('id', $combo_ids[$index])->first();
                 if ($updateComboProduct) {
+
                     $updateComboProduct->quantity = $combo_quantities[$index];
                     $updateComboProduct->delete_in_update = 0;
                     $updateComboProduct->save();
                 } else {
+
                     $addComboProducts = new ComboProduct();
                     $addComboProducts->product_id = $updateProduct->id;
                     $addComboProducts->combo_product_id = $id;
@@ -742,7 +746,9 @@ class ProductController extends Controller
         }
 
         $deleteNotFoundComboProducts = ComboProduct::where('delete_in_update', 1)->get();
+
         foreach ($deleteNotFoundComboProducts as $deleteNotFoundComboProduct) {
+
             $deleteNotFoundComboProduct->delete();
         }
 
@@ -916,10 +922,5 @@ class ProductController extends Controller
         $variants = BulkVariant::with(['bulk_variant_child'])->get();
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
         return view('product.products.ajax_view.form_part', compact('type', 'variants', 'taxes'));
-    }
-
-    public function allFromSubCategory($categoryId)
-    {
-        return DB::table('categories')->where('parent_category_id', $categoryId)->get(['id', 'name']);
     }
 }

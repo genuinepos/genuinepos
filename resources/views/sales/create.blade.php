@@ -183,13 +183,12 @@
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i
-                                                                    class="fas fa-barcode text-dark"></i></span>
+                                                                    class="fas fa-barcode text-dark input_f"></i></span>
                                                         </div>
-                                                        <input type="text" name="search_product" class="form-control scanable"
-                                                            autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
+                                                        <input type="text" name="search_product" class="form-control scanable" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autocomplete="off" autofocus>
                                                         @if (auth()->user()->permission->product['product_add'] == '1')
                                                             <div class="input-group-prepend">
-                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                             </div> 
                                                         @endif
                                                     </div>

@@ -35,7 +35,6 @@ class NameSearchUtil
                 'products.thumbnail_photo',
                 'products.type',
                 'products.unit_id',
-                'taxes.id as tax_id',
                 'taxes.tax_name',
                 'taxes.tax_percent',
                 'product_variants.id as variant_id',
@@ -44,7 +43,6 @@ class NameSearchUtil
                 'product_variants.variant_cost',
                 'product_variants.variant_cost_with_tax',
                 'product_variants.variant_price',
-                'units.id as unit_id',
                 'units.name as unit_name',
             )
             ->where('products.is_for_sale', 1)

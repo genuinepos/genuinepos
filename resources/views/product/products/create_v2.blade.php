@@ -1247,14 +1247,19 @@
 
         // Setup ajax for csrf token.
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-
+    
         // set sub category in form field
         $('#category_id').on('change', function() {
+
             var category_id = $(this).val();
-            $.get("{{ url('product/all/sub/category/') }}"+"/"+category_id, function(subCategories) {
+
+            $.get("{{ url('common/ajax/call/category/subcategories/') }}"+"/"+category_id, function(subCategories) {
+
                 $('#child_category_id').empty();
                 $('#child_category_id').append('<option value="">Select Sub-Category</option>');
+
                 $.each(subCategories, function(key, val) {
+
                     $('#child_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                 });
             });
@@ -1262,10 +1267,12 @@
 
         // Add product by ajax
         $('#add_product_form').on('submit', function(e) {
+
             e.preventDefault();
             $('.loading_button').removeClass('d-none');
             $('.submit_button').prop('type', 'button');
             var url = $(this).attr('action');
+
             $.ajax({
                 url: url,
                 type: 'post',
@@ -1274,18 +1281,26 @@
                 cache: false,
                 processData: false,
                 success: function(data) {
+
                     $('.loading_button').addClass('d-none');
                     $('.submit_button').prop('type', 'submit');
                     $('.error').html('');
+
                     if ($.isEmptyObject(data.errorMsg)) {
+
                         toastr.success(data);
                         variant_code_sequel = 0;
+
                         if (action_direction == 'save') {
+
                             window.location = "{{ route('products.all.product') }}";
                         } else {
+
                             @if ($addons->e_commerce == 1) 
+
                                 clearEditor();
                             @endif
+
                             $('#add_product_form')[0].reset();
                             get_form_part(1);
                             $('#profit').val(parseFloat(defaultProfit).toFixed(2));
@@ -1294,19 +1309,26 @@
                             table.ajax.reload();
                         }
                     } else {
+
                         toastr.error(data.errorMsg);
                     }
                 },error: function(err) {
+
                     $('.loading_button').addClass('d-none');
                     $('.submit_button').prop('type', 'submit');
                     $('.error').html('');
+
                     if (err.status == 0) {
+
                         toastr.error('Net Connetion Error. Reload This Page.'); 
                         return;
                     }
+
                     toastr.error('Please check again all form fields.',
                         'Some thing want wrong.');
+
                     $.each(err.responseJSON.errors, function(key, error) {
+
                         $('.error_' + key + '').html(error[0]);
                     });
                 }
@@ -1330,13 +1352,17 @@
         $('.loading_button').removeClass('d-none');
         var url = $(this).attr('action');
         var request = $(this).serialize();
+
         var inputs = $('.add_cate_input');
         $('.error').html('');
         var countErrorField = 0;
+
         $.each(inputs, function(key, val) {
+
             var inputId = $(val).attr('id');
             var idValue = $('#' + inputId).val();
             if (idValue == '') {
+
                 countErrorField += 1;
                 var fieldName = $('#' + inputId).data('name');
                 $('.error_' + inputId).html(fieldName + ' is required.');
@@ -1344,9 +1370,11 @@
         });
 
         if (countErrorField > 0) {
+
             $('.loading_button').addClass('d-none');
             return;
         }
+
         $.ajax({
             url: url,
             type: 'post',
@@ -1365,17 +1393,23 @@
 
     // Add brand from create product by ajax
     $(document).on('submit', '#add_brand_form', function(e) {
+
         e.preventDefault();
         $('.loading_button').removeClass('d-none');
         var url = $(this).attr('action');
         var request = $(this).serialize();
+
         var inputs = $('.add_brand_input');
         $('.error').html('');
         var countErrorField = 0;
+
         $.each(inputs, function(key, val) {
+
             var inputId = $(val).attr('id');
             var idValue = $('#' + inputId).val();
+
             if (idValue == '') {
+                
                 countErrorField += 1;
                 var fieldName = $('#' + inputId).data('name');
                 $('.error_' + inputId).html(fieldName + ' is required.');
@@ -1383,6 +1417,7 @@
         });
 
         if (countErrorField > 0) {
+
             $('.loading_button').hide();
             return;
         }
@@ -1404,17 +1439,23 @@
 
     // Add unit from create product by ajax
     $(document).on('submit', '#add_unit_form', function(e) {
+
         e.preventDefault();
          $('.loading_button').removeClass('d-none');
         var url = $(this).attr('action');
         var request = $(this).serialize();
+
         var inputs = $('.add_unit_input');
         $('.error').html('');
         var countErrorField = 0;
+
         $.each(inputs, function(key, val) {
+
             var inputId = $(val).attr('id');
             var idValue = $('#' + inputId).val();
+
             if (idValue == '') {
+
                 countErrorField += 1;
                 var fieldName = $('#' + inputId).data('name');
                 $('.error_' + inputId).html(fieldName + ' is required.');
@@ -1422,6 +1463,7 @@
         });
 
         if (countErrorField > 0) {
+
              $('.loading_button').addClass('d-none');
             return;
         }
@@ -1448,13 +1490,17 @@
         $('.loading_button').removeClass('d-none');
         var url = $(this).attr('action');
         var request = $(this).serialize();
+
         var inputs = $('.add_warranty_input');
         $('.error').html('');
         var countErrorField = 0;
         $.each(inputs, function(key, val) {
+
             var inputId = $(val).attr('id');
             var idValue = $('#' + inputId).val();
+
             if (idValue == '') {
+
                 countErrorField += 1;
                 var fieldName = $('#' + inputId).data('name');
                 $('.error_' + inputId).html(fieldName + ' is required.');
@@ -1462,6 +1508,7 @@
         });
 
         if (countErrorField > 0) {
+
              $('.loading_button').addClass('d-none');
             return;
         }
@@ -1482,7 +1529,9 @@
     });
 
     $(document).keypress(".scanable",function(event){
+
         if (event.which == '10' || event.which == '13') {
+
             event.preventDefault();
         }
     });
@@ -1512,17 +1561,23 @@
     });
 
     $(document).on('click', '#digital_product',function () {
+
         if ($(this).is(':CHECKED')) {
+
             $('#is_manage_stock').prop('checked', false);
         }else{
+
             $('#is_manage_stock').prop('checked', true);
         }
     });
 
     $(document).on('click', '#is_manage_stock',function () {
+
         if ($(this).is(':CHECKED')) {
+
             $('#digital_product').prop('checked', false);
         }else{
+
             $('#digital_product').prop('checked', true);
         }
     });

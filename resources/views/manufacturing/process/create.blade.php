@@ -279,35 +279,46 @@
                                 $('.select_area').show();
                                 $('#search_product').val('');
                             }
-                        } else if(!$.isEmptyObject(product.namedProducts)){
+                        } else if(!$.isEmptyObject(product.namedProducts)) {
+
                             if(product.namedProducts.length > 0){
+
                                 var li = "";
                                 var products = product.namedProducts; 
+
                                 $.each(products, function (key, product) {
-                                    if (product.product_variants.length > 0) {
-                                        $.each(product.product_variants, function(key, variant){
+
+                                    if (product.is_variant == 1) {
+                                      
                                             li += '<li class="mt-1">';
-                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'"  data-unit="'+product.unit.id+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'" data-v_name="'+variant.variant_name+'" href="#">'+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+'</a>';
+                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'"  data-unit="'+product.unit_id+'" data-v_code="'+product.variant_code+'" data-v_cost="'+product.variant_cost+'" data-v_cost_with_tax="'+product.variant_cost_with_tax+'" data-v_name="'+product.variant_name+'" href="#">'+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Unit Cost: '+product.variant_cost_with_tax+'</a>';
                                             li +='</li>';
-                                        });
-                                    }else{
+                                    } else {
+
                                         li += '<li class="mt-1">';
-                                        li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.id+'" data-p_code="'+product.product_code+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#">'+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+'</a>';
+                                        li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit_id+'" data-p_code="'+product.product_code+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#">'+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+'</a>';
                                         li +='</li>';
                                     }
                                 });
+
                                 $('.variant_list_area').html(li);
                                 $('.select_area').show();
                             }
                         }else if(!$.isEmptyObject(product.variant_product)){
+
                             $('.select_area').hide();
                             $('#search_product').val('');
+
                             var variant_product = product.variant_product;
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
+
                             variant_ids.forEach(function(input){
+
                                 if(input.value != 'noid'){
+
                                     if(input.value == variant_product.id){
+
                                         sameVariant += 1;
                                         var className = input.getAttribute('class');
                                         var closestTr = $('.'+className).closest('tr');
@@ -326,6 +337,7 @@
                             });
                             
                             if(sameVariant == 0){
+
                                 var tr = '';
                                 tr += '<tr class="text-center">';
                                 tr += '<td>';
@@ -341,13 +353,17 @@
 
                                 tr += '<td>';
                                 tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
-                                    unites.forEach(function(unit) {
-                                        if (product.unit.id == unit.id) {
-                                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
-                                        } else{
-                                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
-                                        }
-                                    });
+
+                                unites.forEach(function(unit) {
+
+                                    if (product.unit.id == unit.id) {
+
+                                        tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
+                                    } else{
+
+                                        tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
+                                    }
+                                });
                                 tr += '</select>';
                                 tr += '</td>';
 
@@ -378,7 +394,9 @@
         // select single product and add purchase table
         var keyName = 1;
         function singleProduct(e){
+
             if (keyName == 13 || keyName == 1) {
+
                 document.getElementById('search_product').focus();
             }
 
@@ -393,7 +411,9 @@
             product_ids = document.querySelectorAll('#product_id');
             var sameProduct = 0;
             product_ids.forEach(function(input){
+
                 if(input.value == productId){
+
                     sameProduct += 1;
                     var className = input.getAttribute('class');
                     var closestTr = $('.'+className).closest('tr');
@@ -406,7 +426,9 @@
                     var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty); 
                     closestTr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
                     __calculateTotalAmount();
+
                     if (keyName == 9) {
+
                         closestTr.find('#final_quantity').focus();
                         closestTr.find('#final_quantity').select();
                         keyName = 1;
@@ -416,6 +438,7 @@
             });
 
             if(sameProduct == 0){
+
                 var tr = '';
                 tr += '<tr class="text-start">';
                 tr += '<td>';
@@ -431,13 +454,16 @@
 
                 tr += '<td>';
                 tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
-                    unites.forEach(function(unit) {
-                        if (productUnit == unit.id) {
-                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
-                        }else{
-                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
-                        }
-                    })
+                unites.forEach(function(unit) {
+
+                    if (productUnit == unit.id) {
+
+                        tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
+                    }else{
+
+                        tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
+                    }
+                });
                 tr += '</select>';
                 tr += '</td>';
 
@@ -466,7 +492,9 @@
 
         // select variant product and add purchase table
         function salectVariant(e){
+
             if (keyName == 13 || keyName == 1) {
+
                 document.getElementById('search_product').focus();
             }
             
@@ -485,9 +513,13 @@
             variant_id = document.querySelectorAll('#variant_id');
             __calculateTotalAmount();
             var sameVariant = 0;
+
             variant_id.forEach(function(input){
+
                 if(input.value != 'noid'){
+
                     if(input.value == variantId){
+
                         sameVariant += 1;
                         var className = input.getAttribute('class');
                         var closestTr = $('.'+className).closest('tr');
@@ -506,6 +538,7 @@
             });
 
             if(sameVariant == 0){
+
                 var tr = '';
                 tr += '<tr>';
                 tr += '<td class="text-start">';
@@ -522,13 +555,18 @@
 
                 tr += '<td class="text-start">';
                 tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
-                    unites.forEach(function(unit) {
-                        if (productUnit == unit.id) {
-                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
-                        } else {
-                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
-                        }
-                    });
+
+                unites.forEach(function(unit) {
+
+                    if (productUnit == unit.id) {
+
+                        tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
+                    } else {
+
+                        tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
+                    }
+                });
+
                 tr += '</select>';
                 tr += '</td>';
 
@@ -547,7 +585,9 @@
                 tr += '</tr>';
                 $('#ingredient_list').prepend(tr);
                 __calculateTotalAmount();
+
                 if (keyName == 9) {
+                    
                     $("#final_quantity").select();
                     keyName = 1;
                 }

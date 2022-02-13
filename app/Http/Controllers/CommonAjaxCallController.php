@@ -19,4 +19,9 @@ class CommonAjaxCallController extends Controller
             ->where('branch_id', $branch_id)
             ->where('allow_login', 1)->get();
     }
+
+    public function categorySubcategories($categoryId)
+    {
+        return DB::table('categories')->where('parent_category_id', $categoryId)->select('id', 'name')->get();
+    }
 }

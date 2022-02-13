@@ -142,14 +142,20 @@
                 if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product) || !$.isEmptyObject(product.namedProducts)){
                     $('#search_product').addClass('is-valid');
                     if(!$.isEmptyObject(product.product)){
+
                         var product = product.product;
+
                         if(product.product_variants.length == 0){
+
                             $('.select_area').hide();
                             $('#search_product').val('');
                             product_ids = document.querySelectorAll('#product_id');
                             var sameProduct = 0;
+
                             product_ids.forEach(function(input){
+
                                 if(input.value == product.id){
+                                    
                                     sameProduct += 1;
                                     var className = input.getAttribute('class');
                                     // get closest table row for increasing qty and re calculate product amount
@@ -183,6 +189,7 @@
                             });
 
                             if(sameProduct == 0){
+
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
                                 var tax_amount = parseFloat(product.tax != null ? product.product_cost/100 * product.tax.tax_percent : 0);
                                 var tr = '';
@@ -286,33 +293,10 @@
 
                         if(product.namedProducts.length > 0) {
 
-                            // var li = "";
-                            // var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
-                            // var products = product.namedProducts; 
-                            // $.each(products, function (key, product) {
-                            //     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
-                            //     if (product.product_variants.length > 0) {
-                            //         $.each(product.product_variants, function(key, variant){
-                            //             var tax_amount = parseFloat(product.tax != null ? variant.variant_cost/100 * product.tax.tax_percent : 0.00);
-                            //             var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price);
-                            //             li += '<li class="mt-1">';
-                            //             li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost+'" data-v_profit="'+variant.variant_profit+'" data-v_price="'+variant.variant_price+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'"  data-v_name="'+variant.variant_name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
-                            //             li +='</li>';
-                            //         });
-                            //     }else{
-                            //         var tax_amount = parseFloat(product.tax != null ? product.product_cost/100 * product.tax.tax_percent : 0.00);
-                            //         var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
-                            //         li += '<li class="mt-1">';
-                            //         li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-p_code="'+product.product_code+'" data-p_cost="'+product.product_cost+'" data-p_profit="'+product.profit+'" data-p_price="'+product.product_price+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
-                            //         li +='</li>';
-                            //     }
-                            // });
-
-                            // Test
-
                             var li = "";
                             var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                             var products = product.namedProducts; 
+
                             $.each(products, function (key, product) {
 
                                 var tax_percent = product.tax_percent != null ? product.tax_percent : 0.00;
@@ -478,6 +462,7 @@
                         }    
                     }
                 }else{
+
                     $('#search_product').addClass('is-invalid');
                 }
             }
@@ -487,6 +472,7 @@
     // select single product and add purchase table
     var keyName = 1;
     function singleProduct(e){
+        
         if (keyName == 13 || keyName == 1) {
 
             document.getElementById('search_product').focus();
@@ -1043,6 +1029,7 @@
             cache: false,
             processData: false,
             success:function(data){
+
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
                 if(!$.isEmptyObject(data.errorMsg)){
@@ -1078,6 +1065,10 @@
 
                     toastr.error('Net Connetion Error. Reload This Page.'); 
                     return;
+                } else if(err.status == 500) {
+
+                    toastr.error('Server error. Please contact to the support team.'); 
+                    return;
                 }
 
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
@@ -1106,97 +1097,6 @@
             success:function(data){
                 $('#add_product_body').html(data);
                 $('#addProductModal').modal('show');
-            }
-        });
-    });
-
-    var tax_percent = 0;
-    $(document).on('change', '#add_tax_id',function() {
-        var tax = $(this).val();
-        if (tax) {
-            var split = tax.split('-');
-            tax_percent = split[1];
-        } else {
-            tax_percent = 0;
-        }
-    });
-
-    function costCalculate() {
-        console.log(tax_percent);
-        var product_cost = $('#add_product_cost').val() ? $('#add_product_cost').val() : 0;
-        var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent ? tax_percent : 0);
-        var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
-        $('#add_product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
-        var profit = $('#add_profit').val() ? $('#add_profit').val() : 0;
-        var calculate_profit = parseFloat(product_cost) / 100 * parseFloat(profit);
-        var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
-        $('#add_product_price').val(parseFloat(product_price).toFixed(2));
-    }
-
-    $(document).on('input', '#add_product_cost',function() {
-        console.log($(this).val());
-        costCalculate();
-    });
-
-    $(document).on('change', '#add_tax_id', function() {
-        costCalculate();
-    });
-
-    $(document).on('input', '#add_profit',function() {
-        costCalculate();
-    });
-
-    // Add product by ajax
-    $(document).on('submit', '#add_product_form',function(e) {
-        e.preventDefault();
-        $('.loading_button').show();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: request,
-            success: function(data) {
-
-                toastr.success('Successfully product is added.');
-                $.ajax({
-                    url:"{{url('purchases/recent/product')}}"+"/"+data.id,
-                    type:'get',
-                    success:function(data){
-                        $('.loading_button').hide();
-                        $('#addProductModal').modal('hide');
-                        $('#purchase_list').prepend(data); 
-                        calculateTotalAmount();
-                        document.getElementById('search_product').focus();
-                    }
-                });
-            },
-            error: function(err) {
-
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
-                $('.error').html('');
-                $.each(err.responseJSON.errors, function(key, error) {
-                    $('.error_add_' + key + '').html(error[0]);
-                });
-            }
-        });
-    });
-
-    $(document).on('change', '#add_category_id', function () {
-
-        var category_id = $(this).val();
-        $.ajax({
-            url:"{{url('sales/get/all/sub/category')}}"+"/"+category_id,
-            async:true,
-            type:'get',
-            dataType: 'json',
-            success:function(subcate){
-                $('#add_child_category_id').empty();
-                $('#add_child_category_id').append('<option value="">Select Sub-Category</option>');
-                $.each(subcate, function(key, val){
-                    $('#add_child_category_id').append('<option value="'+val.id+'">'+val.name+'</option>');
-                });
             }
         });
     });

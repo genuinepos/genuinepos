@@ -411,7 +411,7 @@ class PurchaseController extends Controller
         $purchaseId = $purchaseId;
         $editType = $editType;
         $warehouses = DB::table('warehouses')->get();
-        $purchase = DB::table('purchases')->where('id', $purchaseId)->select('id', 'warehouse_id', 'date', 'delivery_date')->first();
+        $purchase = DB::table('purchases')->where('id', $purchaseId)->select('id', 'warehouse_id', 'date', 'delivery_date', 'purchase_status')->first();
 
         $purchaseAccounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')

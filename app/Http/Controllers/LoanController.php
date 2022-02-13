@@ -209,7 +209,6 @@ class LoanController extends Controller
                 amount: $request->loan_amount,
                 balance_type: 'debit'
             );
-
         }
 
         return response()->json('Loan created Successfully');
@@ -313,7 +312,6 @@ class LoanController extends Controller
                 balance_type: 'debit'
             );
 
-            return 'Type 2';
         }
 
         return response()->json('Loan updated Successfully');

@@ -244,7 +244,7 @@ class StockAdjustmentController extends Controller
         }
 
         // generate invoice ID
-        $invoiceId = $this->invoiceVoucherRefIdUtil->getLastId('stock_adjustments');
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustments'), 5, "0", STR_PAD_LEFT);
 
         // Add Stock adjustment.
         $addStockAdjustment = new StockAdjustment();

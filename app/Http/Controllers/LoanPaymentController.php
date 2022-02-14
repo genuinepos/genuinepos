@@ -223,10 +223,12 @@ class LoanPaymentController extends Controller
     public function paymentList($company_id)
     {
         $company = DB::table('loan_companies')->where('id', $company_id)->first();
+
         $loan_payments = DB::table('loan_payments')
             ->leftJoin('accounts', 'loan_payments.account_id', 'accounts.id')
             ->leftJoin('payment_methods', 'loan_payments.payment_method_id', 'payment_methods.id')
             ->select('loan_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no', 'payment_methods.name as payment_method')
+            ->where('loan_payments.company_id', $company_id)
             ->orderBy('loan_payments.report_date', 'desc')->get();
         return view('accounting.loans.ajax_view.payment_list', compact('company', 'loan_payments'));
     }

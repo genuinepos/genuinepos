@@ -67,10 +67,10 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class=" col-4"><b>Voucher No :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                <label class=" col-4"><b>Voucher No :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id"
-                                                        class="form-control" placeholder="Reference ID" autocomplete="off">
+                                                        class="form-control" placeholder="Voucher No" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>

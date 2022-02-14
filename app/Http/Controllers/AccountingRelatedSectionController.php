@@ -22,18 +22,22 @@ class AccountingRelatedSectionController extends Controller
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-        return view('accounting.related_sections.balance_sheet');
+
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        return view('accounting.related_sections.balance_sheet', compact('branches'));
     }
 
     // Get balance sheet amounts **requested by ajax**
-    public function balanceSheetAmounts()
+    public function balanceSheetAmounts(Request $request)
     {
-        $totalSupplierDue = 0;
-        $totalSupplierReturnDue = 0;
-        $totalCustomerReturnDue = 0;
-        $totalCustomerDue = 0;
-        $accountBalance = 0;
-        $closingStock = 0;
+        $totalCashInHand = '';
+        $TotalBankBalance = '';
+        $TotalCapital = '';
+        $TotalInvestment = '';
+        $fixedAssets = '';
+        $loanCompanies = '';
+        $singleProductStockValueValue = '';
+        $variantProductStockValueValue = '';
 
         $suppliers = DB::table('suppliers')
             ->select(
@@ -45,91 +49,126 @@ class AccountingRelatedSectionController extends Controller
             ->select(
                 DB::raw('SUM(total_sale_due) as total_due'),
                 DB::raw('SUM(total_sale_return_due) as total_return_due'),
-                ['id', 'total_sale_due', 'total_sale_return_due']
             )->get();
 
-        $totalCashInHand = DB::table('account_branches')
+        $totalCashInHandQuery = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->select(DB::raw('SUM(accounts.balance) as total_cash'))
             ->where('accounts.account_type', 1)
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->groupBy('accounts.account_type')
-            ->get();
+            ->groupBy('accounts.account_type');
 
-        $TotalBankBalance = DB::table('account_branches')
+        $TotalBankBalanceQuery = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->select(DB::raw('SUM(accounts.balance) as total_cash'))
+            ->select(DB::raw('SUM(accounts.balance) as total_bank_balance'))
             ->where('accounts.account_type', 2)
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->groupBy('accounts.account_type')->get();
+            ->groupBy('accounts.account_type');
 
-        $TotalBankBalance = DB::table('account_branches')
+        $TotalCapitalQuery = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->select(DB::raw('SUM(accounts.balance) as total_capital'))
+            ->where('accounts.account_type', 26)
+            ->groupBy('accounts.account_type');
+
+        $TotalInvestmentQuery = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->select(DB::raw('SUM(accounts.balance) as total_investment'))
-            ->where('accounts.account_type', 16)
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->groupBy('accounts.account_type')
-            ->get();
+            ->where('accounts.account_type', 16)->groupBy('accounts.account_type');
 
-        $fixedAsset = DB::table('account_branches')
+        $fixedAssetQuery = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->select(
                 'accounts.name',
-                'balance'
-            )->where('accounts.account_type', 15)
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->orderBy('accounts.id', 'desc')
-            ->get();
+                'accounts.balance'
+            )->where('accounts.account_type', 15)->orderBy('accounts.id', 'desc');
 
-        $loanCompanies = DB::table('loan_companies')
-                ->select(
-                    DB::raw('SUM(pay_loan_due) as total_la_receivable'),
-                    DB::raw('SUM(get_loan_due) as total_ll_payable'),
-                )->where('loan_companies.branch_id', auth()->user()->branch_id)->get();
+        $loanCompanyQuery = DB::table('loan_companies')
+            ->select(
+                DB::raw('SUM(pay_loan_due) as total_la_receivable'),
+                DB::raw('SUM(get_loan_due) as total_ll_payable'),
+            );
 
-        // $accounts = DB::table('accounts')
-        //     ->select(['id', 'name', 'balance'])->get();
+        $singleProductStockValueQuery = DB::table('product_branches')
+            ->leftJoin('products', 'product_branches.product_id', 'products.id')
+            ->where('products.is_variant', 0)
+            ->select(DB::raw('SUM(products.product_cost_with_tax * product_branches.product_quantity) as total'));
 
-        // foreach ($accounts as $account) {
-        //     $accountBalance += $account->balance;
-        // }
+        $variantProductStockValueQuery = DB::table('product_branch_variants')
+            ->leftJoin('product_branches', 'product_branch_variants.product_branch_id', 'product_branches.id')
+            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
+            ->select(DB::raw('SUM(product_variants.variant_cost_with_tax * product_branch_variants.variant_quantity) as total'));
 
-        // $totalPhysicalAsset = DB::table('assets')->select(
-        //     DB::raw('sum(total_value) as t_value'),
-        // )->groupBy('assets.id')->get();
+        if ($request->branch_id) {
 
-        // $fixedAssets = 
+            if ($request->branch_id == 'NULL') {
 
-        $products = Product::with('product_variants')->select(['id', 'product_cost_with_tax'])->get();
+                $totalCashInHandQuery->where('account_branches.branch_id', NULL);
 
-        foreach ($products as $product) {
-            if ($product->product_variants) {
-                foreach ($product->product_variants as $variant) {
-                    $closingStock += $variant->variant_cost_with_tax;
-                }
+                $TotalBankBalanceQuery->where('account_branches.branch_id', NULL);
+
+                $TotalCapitalQuery->where('account_branches.branch_id', NULL);
+
+                $TotalInvestmentQuery->where('account_branches.branch_id', NULL);
+
+                $fixedAssetQuery->where('account_branches.branch_id', NULL)->get();
+
+                $loanCompanyQuery->where('loan_companies.branch_id', NULL)->get();
+
+                $singleProductStockValueQuery->where('product_branches.branch_id', NULL);
+
+                $variantProductStockValueQuery->where('product_branches.branch_id', NULL);
+
             } else {
-                $closingStock += $product->product_cost_with_tax;
+
+                $totalCashInHandQuery->where('account_branches.branch_id', $request->branch_id);
+
+                $TotalBankBalanceQuery->where('account_branches.branch_id', $request->branch_id);
+
+                $TotalCapitalQuery->where('account_branches.branch_id', $request->branch_id);
+
+                $TotalInvestmentQuery->where('account_branches.branch_id', $request->branch_id);
+
+                $fixedAssetQuery->where('account_branches.branch_id', $request->branch_id);
+
+                $loanCompanyQuery->where('loan_companies.branch_id', $request->branch_id);
+
+                $singleProductStockValueQuery->where('product_branches.branch_id', $request->branch_id);
+
+                $variantProductStockValueQuery->where('product_branches.branch_id', $request->branch_id);
             }
         }
 
-        $totalLiLiability = $totalSupplierDue + $totalCustomerReturnDue;
-        $totalAsset = $totalSupplierReturnDue +
-            $totalCustomerDue +
-            $accountBalance +
-            $closingStock +
-            $totalPhysicalAsset->sum('t_value');
+        $totalCashInHand = $totalCashInHandQuery->get();
 
-        return response()->json([
-            'totalSupplierDue' => $totalSupplierDue,
-            'totalSupplierReturnDue' => $totalSupplierReturnDue,
-            'totalCustomerReturnDue' => $totalCustomerReturnDue,
-            'totalCustomerDue' => $totalCustomerDue,
-            'closingStock' => $closingStock,
-            'totalPhysicalAsset' => $totalPhysicalAsset->sum('t_value'),
-            'totalLiLiability' => $totalLiLiability,
-            'totalAsset' => $totalAsset,
-            'accounts' => $accounts,
-        ]);
+        $TotalBankBalance = $TotalBankBalanceQuery->get();
+
+        $TotalCapital = $TotalCapitalQuery->get();
+
+        $TotalInvestment = $TotalInvestmentQuery->get();
+
+        $fixedAssets = $fixedAssetQuery->get();
+
+        $loanCompanies = $loanCompanyQuery->get();
+
+        $singleProductStockValue = $singleProductStockValueQuery->get();
+
+        $variantProductStockValue = $variantProductStockValueQuery->get();
+
+        $currentStockValue = $singleProductStockValue->sum('total') + $variantProductStockValue->sum('total');
+
+        return view(
+            'accounting.related_sections.ajax_view.balance_sheet_ajax_view',
+            compact(
+                'suppliers',
+                'customers',
+                'totalCashInHand',
+                'TotalBankBalance',
+                'TotalInvestment',
+                'fixedAssets',
+                'TotalCapital',
+                'loanCompanies',
+                'currentStockValue',
+            )
+        );
     }
 
     // Trial balance view

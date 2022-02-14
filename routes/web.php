@@ -967,17 +967,7 @@ Route::get('/test', function () {
 
     // return 'done';
 
-    return $fixedAsset = DB::table('account_branches')
-            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->select(
-                'accounts.name',
-                'balance'
-            )
-            ->where('accounts.account_type', 15)
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->orderBy('accounts.id', 'desc')
-            ->get();
-
+    
 });
 
 // All authenticated routes

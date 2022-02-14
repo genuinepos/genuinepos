@@ -243,8 +243,15 @@ class StockAdjustmentController extends Controller
             return response()->json(['errorMsg' => 'product table is empty.']);
         }
 
+        $settings = DB::table('general_settings')
+            ->select(['prefix'])
+            ->first();
+
+        $voucherPrefix = json_decode($settings->prefix, true)['stock_djustment'];
+        $__voucherPrefix = $voucherPrefix != null ? $voucherPrefix : '';
+
         // generate invoice ID
-        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustments'), 5, "0", STR_PAD_LEFT);
+        $invoiceId = $__voucherPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustments'), 5, "0", STR_PAD_LEFT);
 
         // Add Stock adjustment.
         $addStockAdjustment = new StockAdjustment();

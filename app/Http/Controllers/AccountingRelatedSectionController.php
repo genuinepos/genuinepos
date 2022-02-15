@@ -6,13 +6,17 @@ use Carbon\Carbon;
 use App\Models\Product;
 
 use App\Models\CashFlow;
+use App\Utils\AccountUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AccountingRelatedSectionController extends Controller
 {
-    public function __construct()
+    protected $accountUtil;
+
+    public function __construct(AccountUtil $accountUtil)
     {
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -116,7 +120,6 @@ class AccountingRelatedSectionController extends Controller
                 $singleProductStockValueQuery->where('product_branches.branch_id', NULL);
 
                 $variantProductStockValueQuery->where('product_branches.branch_id', NULL);
-
             } else {
 
                 $totalCashInHandQuery->where('account_branches.branch_id', $request->branch_id);
@@ -183,48 +186,94 @@ class AccountingRelatedSectionController extends Controller
     // Get balance sheet amounts **requested by ajax**
     public function trialBalanceAmounts()
     {
-        $totalSupplierDue = 0;
-        $totalSupplierReturnDue = 0;
-        $totalCustomerReturnDue = 0;
-        $totalCustomerDue = 0;
-        $accountBalance = 0;
+        $customers = DB::table('customers')
+            ->select(
+                DB::raw('SUM(total_sale_due) as balance'),
+                DB::raw('SUM(total_sale_return_due) as return_balance')
+            )->get();
 
-        $suppliers = DB::table('suppliers')->select(['id', 'total_purchase_due', 'total_purchase_return_due'])->get();
-        foreach ($suppliers as $supplier) {
-            $totalSupplierDue += $supplier->total_purchase_due;
-            $totalSupplierReturnDue += $supplier->total_purchase_return_due;
-        }
+        $suppliers = DB::table('suppliers')
+            ->select(
+                DB::raw('SUM(total_purchase_due) as balance'),
+                DB::raw('SUM(total_purchase_return_due) as return_balance')
+            )->get();
 
-        $customers = DB::table('customers')->select(['id', 'total_sale_due', 'total_sale_return_due'])->get();
-        foreach ($customers as $customer) {
-            $totalCustomerDue += $customer->total_sale_due;
-            $totalCustomerReturnDue += $customer->total_sale_return_due;
-        }
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->select(
+                'accounts.account_type',
+                DB::raw('SUM(accounts.balance) as total_balance')
+            )->groupBy('accounts.account_type')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get();
 
-        $accounts = DB::table('accounts')->select(['id', 'name', 'balance'])->get();
-        foreach ($accounts as $account) {
-            $accountBalance += $account->balance;
-        }
+        $openingStock = DB::table('product_opening_stocks')
+            ->select(DB::raw('SUM(quantity * unit_cost_inc_tax) as total_value'))
+            ->where('product_opening_stocks.branch_id', auth()->user()->branch_id)->get();
 
-        $totalPhysicalAsset = DB::table('assets')->select(
-            DB::raw('sum(total_value) as t_value'),
-        )->groupBy('assets.id')->get();
+        $accountUtil = $this->accountUtil;
 
+        return view(
+            'accounting.related_sections.ajax_view.trial_balance_ajax_view',
+            compact(
+                'customers',
+                'suppliers',
+                'accounts',
+                'openingStock',
+                'accountUtil'
+            )
+        );
 
-        $totalDebit = $totalSupplierDue + $totalCustomerReturnDue;
-        $totalCredit = $totalSupplierReturnDue + $totalCustomerDue + $accountBalance + $totalPhysicalAsset->sum('t_value');
-
-        return response()->json([
-            'totalSupplierDue' => $totalSupplierDue,
-            'totalSupplierReturnDue' => $totalSupplierReturnDue,
-            'totalCustomerReturnDue' => $totalCustomerReturnDue,
-            'totalCustomerDue' => $totalCustomerDue,
-            'totalPhysicalAsset' => $totalPhysicalAsset->sum('t_value'),
-            'totalDebit' => $totalDebit,
-            'totalCredit' => $totalCredit,
-            'accounts' => $accounts
-        ]);
     }
+
+    // // Get balance sheet amounts **requested by ajax**
+    // public function trialBalanceAmounts()
+    // {
+    //     $totalSupplierDue = 0;
+    //     $totalSupplierReturnDue = 0;
+    //     $totalCustomerReturnDue = 0;
+    //     $totalCustomerDue = 0;
+    //     $accountBalance = 0;
+
+    //     $suppliers = DB::table('suppliers')->select(['id', 'total_purchase_due', 'total_purchase_return_due'])->get();
+
+    //     foreach ($suppliers as $supplier) {
+    //         $totalSupplierDue += $supplier->total_purchase_due;
+    //         $totalSupplierReturnDue += $supplier->total_purchase_return_due;
+    //     }
+
+    //     $customers = DB::table('customers')->select(['id', 'total_sale_due', 'total_sale_return_due'])->get();
+
+    //     foreach ($customers as $customer) {
+    //         $totalCustomerDue += $customer->total_sale_due;
+    //         $totalCustomerReturnDue += $customer->total_sale_return_due;
+    //     }
+
+    //     $accounts = DB::table('accounts')->select(['id', 'name', 'balance'])->get();
+    //     foreach ($accounts as $account) {
+    //         $accountBalance += $account->balance;
+    //     }
+
+    //     $totalPhysicalAsset = DB::table('assets')->select(
+    //         DB::raw('sum(total_value) as t_value'),
+    //     )->groupBy('assets.id')->get();
+
+
+    //     $totalDebit = $totalSupplierDue + $totalCustomerReturnDue;
+    //     $totalCredit = $totalSupplierReturnDue + $totalCustomerDue + $accountBalance + $totalPhysicalAsset->sum('t_value');
+
+    //     return response()->json([
+    //         'totalSupplierDue' => $totalSupplierDue,
+    //         'totalSupplierReturnDue' => $totalSupplierReturnDue,
+    //         'totalCustomerReturnDue' => $totalCustomerReturnDue,
+    //         'totalCustomerDue' => $totalCustomerDue,
+    //         'totalPhysicalAsset' => $totalPhysicalAsset->sum('t_value'),
+    //         'totalDebit' => $totalDebit,
+    //         'totalCredit' => $totalCredit,
+    //         'accounts' => $accounts
+    //     ]);
+    // }
 
     // Cash flow view
     public function cashFow()
@@ -232,125 +281,128 @@ class AccountingRelatedSectionController extends Controller
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
             abort(403, 'Access Forbidden.');
         }
-        return view('accounting.related_sections.cash_flow');
+
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
+        return view('accounting.related_sections.cash_flow', compact('branches'));
     }
 
-    // All cash flows **requested by ajax**
-    public function allCashflows()
-    {
-        $CashFlows = CashFlow::with(
-            [
-                'account', 'sender_account',
-                'receiver_account',
-                'sale_payment',
-                'sale_payment.sale',
-                'sale_payment.customer',
-                'purchase_payment',
-                'purchase_payment.purchase',
-                'purchase_payment.supplier',
-                'expanse_payment',
-                'expanse_payment.expense',
-                'money_receipt',
-                'money_receipt.customer',
-                'payroll',
-                'payroll_payment',
-                'loan',
-                'loan_payment',
-                'loan_payment.branch',
-                'loan_payment.company',
-                'loan.company',
-            ]
-        )->orderBy('report_date', 'desc')->get();
+    // // All cash flows **requested by ajax**
+    // public function allCashflows()
+    // {
+    //     $CashFlows = CashFlow::with(
+    //         [
+    //             'account', 'sender_account',
+    //             'receiver_account',
+    //             'sale_payment',
+    //             'sale_payment.sale',
+    //             'sale_payment.customer',
+    //             'purchase_payment',
+    //             'purchase_payment.purchase',
+    //             'purchase_payment.supplier',
+    //             'expanse_payment',
+    //             'expanse_payment.expense',
+    //             'money_receipt',
+    //             'money_receipt.customer',
+    //             'payroll',
+    //             'payroll_payment',
+    //             'loan',
+    //             'loan_payment',
+    //             'loan_payment.branch',
+    //             'loan_payment.company',
+    //             'loan.company',
+    //         ]
+    //     )->orderBy('report_date', 'desc')->get();
 
-        return view('accounting.related_sections.ajax_view.cash_flows_list', compact('CashFlows'));
-    }
+    //     return view('accounting.related_sections.ajax_view.cash_flows_list', compact('CashFlows'));
+    // }
 
-    public function filterCashflows(Request $request)
-    {
-        $filterCashFlows = '';
-        $query = CashFlow::with(
-            [
-                'account',
-                'sender_account',
-                'receiver_account',
-                'sale_payment',
-                'sale_payment.sale',
-                'sale_payment.customer',
-                'purchase_payment',
-                'purchase_payment.purchase',
-                'purchase_payment.supplier',
-                'expanse_payment',
-                'expanse_payment.expense',
-                'money_receipt',
-                'money_receipt.customer',
-                'payroll',
-                'payroll_payment',
-                'loan',
-                'loan_payment',
-                'loan_payment.branch',
-                'loan_payment.company',
-                'loan.company',
-            ]
-        );
+    // public function filterCashflows(Request $request)
+    // {
+    //     $filterCashFlows = '';
+    //     $query = CashFlow::with(
+    //         [
+    //             'account',
+    //             'sender_account',
+    //             'receiver_account',
+    //             'sale_payment',
+    //             'sale_payment.sale',
+    //             'sale_payment.customer',
+    //             'purchase_payment',
+    //             'purchase_payment.purchase',
+    //             'purchase_payment.supplier',
+    //             'expanse_payment',
+    //             'expanse_payment.expense',
+    //             'money_receipt',
+    //             'money_receipt.customer',
+    //             'payroll',
+    //             'payroll_payment',
+    //             'loan',
+    //             'loan_payment',
+    //             'loan_payment.branch',
+    //             'loan_payment.company',
+    //             'loan.company',
+    //         ]
+    //     );
 
-        if ($request->from_date) {
-            $from_date = date('Y-m-d', strtotime($request->from_date));
-            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
-            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-            $query->whereBetween('report_date', $date_range); // Final
-        }
+    //     if ($request->from_date) {
+    //         $from_date = date('Y-m-d', strtotime($request->from_date));
+    //         $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+    //         //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+    //         $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+    //         $query->whereBetween('report_date', $date_range); // Final
+    //     }
 
-        if ($request->transaction_type) {
-            $query->where('cash_type', $request->transaction_type);
-        }
+    //     if ($request->transaction_type) {
+    //         $query->where('cash_type', $request->transaction_type);
+    //     }
 
-        $filterCashFlows = $query->orderBy('report_date', 'desc')->get();
-        return view('accounting.related_sections.ajax_view.filtered_cash_flow', compact('filterCashFlows'));
-    }
+    //     $filterCashFlows = $query->orderBy('report_date', 'desc')->get();
+    //     return view('accounting.related_sections.ajax_view.filtered_cash_flow', compact('filterCashFlows'));
+    // }
 
-    public function printCashflow(Request $request)
-    {
-        $filterCashFlows = '';
-        $fromDate = '';
-        $toDate = '';
-        $query = CashFlow::with(
-            [
-                'account',
-                'sender_account',
-                'receiver_account',
-                'sale_payment',
-                'sale_payment.sale',
-                'sale_payment.customer',
-                'purchase_payment',
-                'purchase_payment.purchase',
-                'purchase_payment.supplier',
-                'expanse_payment',
-                'expanse_payment.expense',
-                'money_receipt',
-                'money_receipt.customer',
-                'payroll',
-                'payroll_payment',
-                'loan',
-                'loan_payment',
-                'loan_payment.branch',
-                'loan_payment.company',
-                'loan.company',
-            ]
-        );
+    // public function printCashflow(Request $request)
+    // {
+    //     $filterCashFlows = '';
+    //     $fromDate = '';
+    //     $toDate = '';
+    //     $query = CashFlow::with(
+    //         [
+    //             'account',
+    //             'sender_account',
+    //             'receiver_account',
+    //             'sale_payment',
+    //             'sale_payment.sale',
+    //             'sale_payment.customer',
+    //             'purchase_payment',
+    //             'purchase_payment.purchase',
+    //             'purchase_payment.supplier',
+    //             'expanse_payment',
+    //             'expanse_payment.expense',
+    //             'money_receipt',
+    //             'money_receipt.customer',
+    //             'payroll',
+    //             'payroll_payment',
+    //             'loan',
+    //             'loan_payment',
+    //             'loan_payment.branch',
+    //             'loan_payment.company',
+    //             'loan.company',
+    //         ]
+    //     );
 
-        if ($request->from_date) {
-            $fromDate = date('Y-m-d', strtotime($request->from_date));
-            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
-            $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
-            $query->whereBetween('report_date', $date_range); // Final
-        }
+    //     if ($request->from_date) {
+    //         $fromDate = date('Y-m-d', strtotime($request->from_date));
+    //         $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
+    //         $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
+    //         $query->whereBetween('report_date', $date_range); // Final
+    //     }
 
-        if ($request->transaction_type) {
-            $query->where('cash_type', $request->transaction_type);
-        }
+    //     if ($request->transaction_type) {
+    //         $query->where('cash_type', $request->transaction_type);
+    //     }
 
-        $filterCashFlows = $query->orderBy('id', 'desc')->get();
-        return view('accounting.related_sections.ajax_view.print_cash_flow', compact('filterCashFlows', 'fromDate', 'toDate'));
-    }
+    //     $filterCashFlows = $query->orderBy('id', 'desc')->get();
+    //     return view('accounting.related_sections.ajax_view.print_cash_flow', compact('filterCashFlows', 'fromDate', 'toDate'));
+    // }
 }

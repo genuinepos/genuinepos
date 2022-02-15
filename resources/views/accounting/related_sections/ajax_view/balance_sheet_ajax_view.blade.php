@@ -75,7 +75,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Different In Opening Balance: </em>
+                                <em>Difference In Opening Balance: </em>
                             </td>
                             
                             <td class="text-end"> 

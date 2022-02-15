@@ -68,20 +68,22 @@ class ExpenseUtil
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
-                if (auth()->user()->permission->expense['edit_expense'] == '1') :
-                    $html .= '<a class="dropdown-item" href="' . route('expanses.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                endif;
-
-                if (auth()->user()->permission->expense['delete_expense'] == '1') :
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('expanses.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                endif;
-
                 if (auth()->user()->branch_id == $row->branch_id) :
+                    
+                    if (auth()->user()->permission->expense['edit_expense'] == '1') :
+                        $html .= '<a class="dropdown-item" href="' . route('expanses.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    endif;
+
+                    if (auth()->user()->permission->expense['delete_expense'] == '1') :
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('expanses.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    endif;
+
                     if ($row->due > 0) :
                         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('expanses.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                     endif;
-                    $html .= '<a class="dropdown-item" id="view_payment" href="' . route('expanses.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
                 endif;
+
+                $html .= '<a class="dropdown-item" id="view_payment" href="' . route('expanses.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
 
                 $html .= '</div>';
                 $html .= '</div>';

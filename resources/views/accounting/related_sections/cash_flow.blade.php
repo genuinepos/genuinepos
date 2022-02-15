@@ -2,19 +2,20 @@
 @push('stylesheets')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
-@section('title', 'Account Cash Flows - ')
+@section('title', 'Cash Flow Statements - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
+
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="far fa-money-bill-alt"></span>
-                                <h5>Cash Flow</h5>
+                                <h5>Cash Flow Statements</h5>
                             </div>
+
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -24,21 +25,29 @@
                                     <div class="col-md-12">
                                         <form id="filter_cash_flow" action="{{ route('accounting.filter.cash.flow') }}" method="get" class="px-2">
                                             <div class="form-group row">
-                                                <div class="col-md-3">
-                                                    <label><strong>Transaction Type :</strong></label>
-                                                    <select name="transaction_type" class="form-control submit_able" id="transaction_type" autofocus>
-                                                        <option value=""><strong>All</strong></option>
-                                                        <option value="1"><strong>Debit</strong></option>
-                                                        <option value="2">Credit</option>
-                                                    </select>
-                                                </div>
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-2">
+                                                            <label><strong>Business Location :</strong></label>
+                                                            <select name="branch_id"
+                                                                class="form-control submit_able" id="f_branch_id" autofocus>
+                                                                <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
+                                                @endif
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="from_date" id="datepicker"
                                                             class="form-control from_date date"
@@ -46,18 +55,17 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label><strong>To Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <label><strong></strong></label>
@@ -81,42 +89,173 @@
 
                     <div class="row margin_row mt-1">
                         <div class="card">
+
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Cash Flow</h6>
+                                    <h6>All Cash Flow Statements</h6>
                                 </div>
                             </div>
-                            <div class="widget_content">
+
+                            <div class="widget_content mt-2">
                                 <div class="data_preloader">
                                     <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-start">Date</th>
-                                                <th class="text-start">Description</th>
-                                                <th class="text-start">Created By</th>
-                                                <th class="text-start">Debit</th>
-                                                <th class="text-start">Credit</th>
-                                                <th class="text-start">Balance</th>
-                                                <th class="text-start text-center">Action</th>
-                                            </tr>
-                                        </thead>
+                                    <table class="table modal-table table-sm table-bordered">
                                         <tbody>
+                                            <tr>
+                                                <td class="aiability_area">
+                                                    <table class="table table-sm">
+                                                        <tbody>
+                                                            {{-- Cash Flow from operations --}}
+                                                            <tr>
+                                                                <th class="text-start" colspan="2">
+                                                                    <strong>CASH FLOW FROM OPERATIONS :</strong>
+                                                                </th>
+                                                            </tr>
 
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                   <em>Net Profit Before Tax :</em> 
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                   <em>0.00</em> 
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                   <em>Customer Balance : </em>  
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                     <em>- 0.00</em>    
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                   <em>Current Stock Value : </em> 
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>0.00</em>    
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                    <em>Current Asset :</em>  
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                     <em>0.00</em>    
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                   <em>Current Liability :</em>  
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>0.00</em>    
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                   <em>Tax Payable :</em>  
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>0.00</em>     
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr class="bg-info">
+                                                                <td class="text-start text-white">
+                                                                    <b>Total Operations : </b>  
+                                                                </td>
+
+                                                                <td class="text-start text-white">
+                                                                    <b>0.00</b>  
+                                                                </td>
+                                                            </tr>
+                                                        
+                                                            {{-- Cash Flow from investing --}}
+                                                            <tr>
+                                                                <th class="text-start" colspan="2">
+                                                                    <strong>CASH FLOW FROM INVESTING :</strong>
+                                                                </th>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                    <em>FIXED ASSET :</em> 
+                                                                </td>
+                                                                <td class="text-start">0.00</td>
+                                                            </tr>
+
+                                                            <tr class="bg-info">
+                                                                <td class="text-start text-white">
+                                                                    <b><em>Total Investing :</em>  </b>  
+                                                                </td>
+
+                                                                <td class="text-start text-white">
+                                                                    <b><em>0.00</em> </b>  
+                                                                </td>
+                                                            </tr> 
+
+                                                            {{-- Cash Flow from financing --}}
+                                                            <tr>
+                                                                <th class="text-start" colspan="2">
+                                                                    <strong>CASH FLOW FROM FINANCING :</strong>
+                                                                </th>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                    <em>Capital A/C :</em> 
+                                                                </td>
+                                                                <td class="text-start">0.00</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                    <em>Loan And Advance :</em> 
+                                                                </td>
+                                                                <td class="text-start">0.00</td>
+                                                            </tr>
+
+                                                            <tr class="bg-info">
+                                                                <td class="text-start text-white">
+                                                                    <b><em>Total financing :</em>  </b>  
+                                                                </td>
+
+                                                                <td class="text-start text-white">
+                                                                    <b><em>0.00</em> </b>  
+                                                                </td>
+                                                            </tr> 
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr class="bg-secondary">
+                                                                <th class="text-start text-white"><strong>Total Cash Flow : ({{ json_decode($generalSettings->business, true)['currency'] }} )</strong> </th>
+                                                                <th class="text-start text-white">
+                                                                    <span class="total_cash_flow">0.00</span>
+                                                                </th>    
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -128,91 +267,42 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    function getCashFlows() {
-       $('.data_preloader').show();
-       $.ajax({
-           url:"{{ route('accounting.all.cash.flow') }}",
-           success:function(data){
-               console.log(data);
-               $('#data-list').html(data);
-               $('.data_preloader').hide();
-           }
-       });
-    }
-    getCashFlows();
+    // function getCashFlows() {
+    //    $('.data_preloader').show();
+    //    $.ajax({
+    //        url:"{{ route('accounting.all.cash.flow') }}",
+    //        success:function(data){
+    //            $('#data-list').html(data);
+    //            $('.data_preloader').hide();
+    //        }
+    //    });
+    // }
+    // getCashFlows();
 
-    $(document).on('click', '#delete',function(e){
-        e.preventDefault();
-        var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);
-        $.confirm({
-            'title': 'Delete Confirmation',
-            'message': 'Are you sure?',
-            'buttons': {
-                'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
-                'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
-            }
-        });
-    });
-
-    //data delete by ajax
-    $(document).on('submit', '#deleted_form',function(e){
-       e.preventDefault();
-       var url = $(this).attr('action');
-       var request = $(this).serialize();
-       $.ajax({
-           url:url,
-           type:'post',
-           data:request,
-           success:function(data){
-               getCashFlows();
-               toastr.error(data);
-               $('#deleted_form')[0].reset();
-           }
-       });
-    });
-
-    //Send account filter request
-    $('#filter_cash_flow').on('submit', function (e) {
-        e.preventDefault();
-        $('.data_preloader').show();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
-        $.ajax({
-            url:url,
-            type:'get',
-            data: request,
-            success:function(data){
-                $('#data-list').html(data);
-                $('.data_preloader').hide();
-            }
-        });
-    });
-
-    //Print purchase Payment report
-    $(document).on('click', '#print_report', function (e) {
-        e.preventDefault();
-        var url = "{{ route('accounting.print.cash.flow') }}";
-        var transaction_type = $('#transaction_type').val();
-        var from_date = $('.from_date').val();
-        var to_date = $('.to_date').val();
-        $.ajax({
-            url:url,
-            type:'get',
-            data: {transaction_type, from_date, to_date},
-            success:function(data) {
-                $(data).printThis({
-                    debug: false,
-                    importCSS: true,
-                    importStyle: true,
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
-                    removeInline: false,
-                    printDelay: 700,
-                    header: null,
-                });
-            }
-        });
-    });
+    // //Print purchase Payment report
+    // $(document).on('click', '#print_report', function (e) {
+    //     e.preventDefault();
+    //     var url = "{{ route('accounting.print.cash.flow') }}";
+    //     var transaction_type = $('#transaction_type').val();
+    //     var from_date = $('.from_date').val();
+    //     var to_date = $('.to_date').val();
+    //     $.ajax({
+    //         url:url,
+    //         type:'get',
+    //         data: {transaction_type, from_date, to_date},
+    //         success:function(data) {
+    //             $(data).printThis({
+    //                 debug: false,
+    //                 importCSS: true,
+    //                 importStyle: true,
+    //                 loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+    //                 removeInline: false,
+    //                 printDelay: 700,
+    //                 header: null,
+    //             });
+    //         }
+    //     });
+    // });
 </script>
 
 <script type="text/javascript">

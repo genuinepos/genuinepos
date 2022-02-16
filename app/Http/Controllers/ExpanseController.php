@@ -58,8 +58,6 @@ class ExpanseController extends Controller
             return $this->expenseUtil->categoryWiseExpenseListTable($request);
         }
 
-
-
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         return view('expanses.category_wise_expense_list', compact('branches'));
     }
@@ -81,7 +79,8 @@ class ExpanseController extends Controller
         $expenseAccounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->whereIn('account_type', [7, 8, 9, 10, 15])
+            ->whereIn('accounts.account_type', [7, 8, 9, 10, 15])
+            ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'account_type']);
 
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();

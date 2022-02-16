@@ -134,7 +134,7 @@ class SaleController extends Controller
             'sale_products.product.warranty',
             'sale_products.variant',
             'sale_payments',
-            'sale_payments.paymentMethod',
+            'sale_payments.paymentMethod:id,name',
         ])->where('id', $saleId)->first();
         return view('sales.pos.ajax_view.show', compact('sale'));
     }

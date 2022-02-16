@@ -28,32 +28,36 @@ class BranchUtil
 
     public function addBranchDefaultAccounts($branch_id)
     {
-        foreach ($this->accountUtil::creatableDefaultAccount() as $account_type => $account_name) {
-            $addAccountGetId = Account::insertGetId([
-                'name' => $account_name,
-                'account_type' => $account_type,
-                'opening_balance' => 0,
-                'balance' => 0,
-                $this->accountUtil->accountBalanceType($account_type) => 0,
-                'admin_id' => auth()->user()->id,
-            ]);
-    
-            AccountBranch::insert(
-                [
-                    'branch_id' => $branch_id,
-                    'account_id' => $addAccountGetId,
-                ]
-            );
+        foreach ($this->accountUtil::creatableDefaultAccount() as $account_type => $account_array) {
 
-            // Add Opening Stock Ledger
-            $accountLedger = new AccountLedger();
-            $accountLedger->account_id = $addAccountGetId;
-            $accountLedger->voucher_type = 0;
-            $accountLedger->date = date('Y-m-d H:i:s');
-            $accountLedger->{$this->accountUtil->accountBalanceType($account_type)} = 0;
-            $accountLedger->amount_type = $this->accountUtil->accountBalanceType($account_type);
-            $accountLedger->running_balance = 0;
-            $accountLedger->save();
+            foreach ($account_array as $account_name) {
+
+                $addAccountGetId = Account::insertGetId([
+                    'name' => $account_name,
+                    'account_type' => $account_type,
+                    'opening_balance' => 0,
+                    'balance' => 0,
+                    $this->accountUtil->accountBalanceType($account_type) => 0,
+                    'admin_id' => auth()->user()->id,
+                ]);
+        
+                AccountBranch::insert(
+                    [
+                        'branch_id' => $branch_id,
+                        'account_id' => $addAccountGetId,
+                    ]
+                );
+    
+                // Add Opening Stock Ledger
+                $accountLedger = new AccountLedger();
+                $accountLedger->account_id = $addAccountGetId;
+                $accountLedger->voucher_type = 0;
+                $accountLedger->date = date('Y-m-d H:i:s');
+                $accountLedger->{$this->accountUtil->accountBalanceType($account_type)} = 0;
+                $accountLedger->amount_type = $this->accountUtil->accountBalanceType($account_type);
+                $accountLedger->running_balance = 0;
+                $accountLedger->save();
+            }
         }
     }
 

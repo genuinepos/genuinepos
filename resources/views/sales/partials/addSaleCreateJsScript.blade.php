@@ -1365,9 +1365,12 @@
     });
 
     function setDefaultAccount(account_id) {
+
         if (account_id) {
+
             $('#account_id').val(account_id);
         }else{
+
             $('#payment_method_id option:first-child').attr("selected", "selected");
         }
     }
@@ -1377,6 +1380,17 @@
     //const textInput = e.key || String.fromCharCode(e.keyCode);
     
     $(document).on('click', '#show_cost_button', function () {
+        
         $('#show_cost_section').toggle(500);
+    });
+
+    $(document).on('keyup', '.submit_button', function () {
+
+        var e = e || window.event; // for IE to cover IEs window event-object
+
+        if(e.which == 13) {
+
+            $(this).click();
+        }
     });
 </script>

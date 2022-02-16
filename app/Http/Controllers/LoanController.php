@@ -163,10 +163,11 @@ class LoanController extends Controller
         $addLoan->loan_by = 'Cash';
         $addLoan->loan_reason = $request->loan_reason;
         $addLoan->created_user_id = auth()->id();
-        $addLoan->report_date = date('Y-m-d', strtotime($request->date));
+        $addLoan->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addLoan->save();
 
         if ($request->type == 1) {
+            
             $this->loanUtil->adjustCompanyLoanAdvanceAmount($request->company_id);
             // Add Loan A/C ledger
             $this->accountUtil->addAccountLedger(
@@ -187,8 +188,8 @@ class LoanController extends Controller
                 amount: $request->loan_amount,
                 balance_type: 'debit'
             );
-
         } else {
+
             $this->loanUtil->adjustCompanyLoanLiabilityAmount($request->company_id);
             // Add Loan A/C ledger
             $this->accountUtil->addAccountLedger(

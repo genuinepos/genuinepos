@@ -267,17 +267,17 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // function getCashFlows() {
-    //    $('.data_preloader').show();
-    //    $.ajax({
-    //        url:"{{ route('accounting.all.cash.flow') }}",
-    //        success:function(data){
-    //            $('#data-list').html(data);
-    //            $('.data_preloader').hide();
-    //        }
-    //    });
-    // }
-    // getCashFlows();
+    function getCashFlow() {
+       $('.data_preloader').show();
+       $.ajax({
+           url:"{{ route('accounting.all.cash.flow') }}",
+           success:function(data){
+               $('#data-list').html(data);
+               $('.data_preloader').hide();
+           }
+       });
+    }
+    getCashFlow();
 
     // //Print purchase Payment report
     // $(document).on('click', '#print_report', function (e) {

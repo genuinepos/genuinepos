@@ -214,11 +214,15 @@ class StockAdjustmentController extends Controller
     public function store(Request $request)
     {
         if (isset($request->warehouse_id)) {
+
             if (auth()->user()->permission->s_adjust['adjustment_add_from_warehouse'] == '0') {
+
                 return response()->json('Access Denied.');
             }
         } else {
+
             if (auth()->user()->permission->s_adjust['adjustment_add_from_location'] == '0') {
+
                 return response()->json('Access Denied.');
             }
         }
@@ -234,12 +238,14 @@ class StockAdjustmentController extends Controller
         ]);
 
         if (isset($request->warehouse_id)) {
+
             $this->validate($request, [
                 'warehouse_id' => 'required',
             ]);
         }
 
         if ($request->product_ids == null) {
+
             return response()->json(['errorMsg' => 'product table is empty.']);
         }
 
@@ -285,6 +291,7 @@ class StockAdjustmentController extends Controller
 
         $index = 0;
         foreach ($request->product_ids as $product_id) {
+            
             $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
             $addStockAdjustmentProduct = new StockAdjustmentProduct();
             $addStockAdjustmentProduct->stock_adjustment_id = $addStockAdjustment->id;
@@ -298,15 +305,18 @@ class StockAdjustmentController extends Controller
 
             $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
             if (isset($request->warehouse_id)) {
+
                 $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $request->warehouse_id);
             } else {
+
                 $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
             }
             $index++;
         }
 
         if ($request->total_recovered_amount > 0) {
-            $voucher_no = $this->invoiceVoucherRefIdUtil->getLastId('stock_adjustment_recovers');
+
+            $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustment_recovers'), 5, "0", STR_PAD_LEFT) ;
             $addStockAdjustmentRecovered = new StockAdjustmentRecover();
             $addStockAdjustmentRecovered->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
             $addStockAdjustmentRecovered->voucher_no = 'SARV'.$voucher_no;

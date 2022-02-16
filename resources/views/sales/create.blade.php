@@ -182,8 +182,9 @@
                                                     <label class="col-form-label">Item Search</label>
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i
-                                                                    class="fas fa-barcode text-dark input_f"></i></span>
+                                                            <span class="input-group-text">
+                                                                <i class="fas fa-barcode text-dark input_f"></i>
+                                                            </span>
                                                         </div>
                                                         <input type="text" name="search_product" class="form-control scanable" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autocomplete="off" autofocus>
                                                         @if (auth()->user()->permission->product['product_add'] == '1')

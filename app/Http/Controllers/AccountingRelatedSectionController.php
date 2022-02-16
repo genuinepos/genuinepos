@@ -7,16 +7,19 @@ use App\Models\Product;
 
 use App\Models\CashFlow;
 use App\Utils\AccountUtil;
+use App\Utils\NetProfitLossAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AccountingRelatedSectionController extends Controller
 {
     protected $accountUtil;
+    protected $netProfitLossAccount;
 
-    public function __construct(AccountUtil $accountUtil)
+    public function __construct(AccountUtil $accountUtil, NetProfitLossAccount $netProfitLossAccount)
     {
         $this->accountUtil = $accountUtil;
+        $this->netProfitLossAccount = $netProfitLossAccount;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -24,6 +27,7 @@ class AccountingRelatedSectionController extends Controller
     public function balanceSheet()
     {
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -224,7 +228,6 @@ class AccountingRelatedSectionController extends Controller
                 'accountUtil'
             )
         );
-
     }
 
     // // Get balance sheet amounts **requested by ajax**
@@ -287,35 +290,86 @@ class AccountingRelatedSectionController extends Controller
         return view('accounting.related_sections.cash_flow', compact('branches'));
     }
 
-    // // All cash flows **requested by ajax**
-    // public function allCashflows()
-    // {
-    //     $CashFlows = CashFlow::with(
-    //         [
-    //             'account', 'sender_account',
-    //             'receiver_account',
-    //             'sale_payment',
-    //             'sale_payment.sale',
-    //             'sale_payment.customer',
-    //             'purchase_payment',
-    //             'purchase_payment.purchase',
-    //             'purchase_payment.supplier',
-    //             'expanse_payment',
-    //             'expanse_payment.expense',
-    //             'money_receipt',
-    //             'money_receipt.customer',
-    //             'payroll',
-    //             'payroll_payment',
-    //             'loan',
-    //             'loan_payment',
-    //             'loan_payment.branch',
-    //             'loan_payment.company',
-    //             'loan.company',
-    //         ]
-    //     )->orderBy('report_date', 'desc')->get();
+    // All cash flows **requested by ajax**
+    public function cashFlowAmounts(Request $request)
+    {
+        $customerReceivable = DB::table('customers')->select(DB::raw('SUM(total_sale_due) as total_due'))->get();
+        $supplierPayable = DB::table('customers')->select(DB::raw('SUM(total_sale_due) as total_due'))->get();
 
-    //     return view('accounting.related_sections.ajax_view.cash_flows_list', compact('CashFlows'));
-    // }
+        $this->netProfitLossAccount->netLossProfit($request);
+
+        $fixedAssets = '';
+        $currentAssets = '';
+        $currentLiability = '';
+        $loanAndAdvance = '';
+
+        $fixedAssetsQ = DB::table('expanses')
+            ->leftJoin('accounts', 'expanses.expense_account_id', 'accounts.id')
+            ->select(DB::raw('SUM(accounts.balance) as total_fixed_asset'))
+            ->where('accounts.account_type', 15);
+
+        $currentAssetsQ = DB::table('expanses')
+            ->leftJoin('accounts', 'expanses.expense_account_id', 'accounts.id')
+            ->select(DB::raw('SUM(accounts.balance) as total_fixed_asset'))
+            ->where('accounts.account_type', 9);
+
+        $currentLiabilityQ = DB::table('loans')
+            ->leftJoin('loan_companies', 'loans.loan_company_id', 'loan_companies.id')
+            ->where('loans.type', 2)
+            ->select(DB::raw('SUM(due) as current_liability'));
+
+        $loanAndAdvanceQ = DB::table('loans')
+            ->where('loans.type', 1)
+            ->leftJoin('loan_companies', 'loans.loan_company_id', 'loan_companies.id')
+            ->select(DB::raw('SUM(due) as current_liability'));
+
+        if (isset($request->branch_id) && $request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $fixedAssetsQ->where('expanses.branch_id', NULL);
+                $currentAssetsQ->where('expanses.branch_id', NULL);
+                $currentLiabilityQ->where('loan_companies.branch_id', NULL);
+                $loanAndAdvanceQ->where('loan_companies.branch_id', NULL);
+            } else {
+
+                $fixedAssetsQ->where('expanses.branch_id', $request->branch_id);
+                $currentAssetsQ->where('expanses.branch_id', $request->branch_id);
+                $currentLiabilityQ->where('loan_companies.branch_id', $request->branch_id);
+                $loanAndAdvanceQ->where('loan_companies.branch_id', $request->branch_id);
+            }
+        }
+
+        if (isset($request->from_date) && $request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = isset($request->to_date) && $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $fixedAssetsQ->whereBetween('expanses.report_date', $date_range);
+            $currentAssetsQ->whereBetween('expanses.report_date', $date_range);
+
+            $currentLiabilityQ->whereBetween('loans.report_date', $date_range);
+            $loanAndAdvanceQ->whereBetween('loans.report_date', $date_range);
+        }
+
+        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+
+            $fixedAssets = $fixedAssetsQ->get();
+            $currentAssets = $currentAssetsQ->get();
+            $currentLiability = $currentLiabilityQ->get();
+            $loanAndAdvance = $loanAndAdvanceQ->get();
+        } else {
+
+            $fixedAssets = $fixedAssetsQ->where('purchase_products.branch_id', auth()->user()->branch_id)->get();
+            $currentAssets = $currentAssetsQ->where('purchase_products.branch_id', auth()->user()->branch_id)->get();
+            $currentLiability = $currentLiabilityQ->where('loan_companies.branch_id', auth()->user()->branch_id)->get();
+            $loanAndAdvance = $loanAndAdvanceQ->where('loan_companies.branch_id', auth()->user()->branch_id)->get();
+        }
+
+
+        return view('accounting.related_sections.ajax_view.cash_flow_ajax_view', compact('CashFlows'));
+    }
 
     // public function filterCashflows(Request $request)
     // {

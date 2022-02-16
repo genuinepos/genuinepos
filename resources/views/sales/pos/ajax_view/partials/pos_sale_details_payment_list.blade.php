@@ -18,12 +18,21 @@
                         <tr data-info="{{ $payment }}">
                             <td class="text-start">{{ date('d/m/Y', strtotime($payment->date)) }}</td>
                             <td class="text-start">{{ $payment->invoice_id }}</td>
+                            
                             <td class="text-start">
                                 {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid_amount }}
                             </td>
-                            <td class="text-start">{{ $payment->account ? $payment->account->name : '----' }}</td>
-                            <td class="text-start">{{ $payment->pay_mode }}</td>
-                            <td class="text-start">{{ $payment->payment_type == 1 ? 'Sale due' : 'Return due' }}
+
+                            <td class="text-start">
+                                {{ $payment->account ? $payment->account->name : '----' }}
+                            </td>
+
+                            <td class="text-start">
+                                {{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}
+                            </td>
+
+                            <td class="text-start">
+                                {{ $payment->payment_type == 1 ? 'Sale due' : 'Return due' }}
                             </td>
                             
                             <td class="text-start">
@@ -39,11 +48,14 @@
                                     @endif
 
                                     <a href="{{ route('sales.payment.details', $payment->id) }}"
-                                        id="payment_details" class="btn-sm"><i
-                                            class="fas fa-eye text-primary"></i></a>
+                                        id="payment_details" class="btn-sm">
+                                        <i class="fas fa-eye text-primary"></i>
+                                    </a>
+
                                     <a href="{{ route('sales.payment.delete', $payment->id) }}"
-                                        id="delete_payment" class="btn-sm"><i
-                                            class="far fa-trash-alt text-danger"></i></a>
+                                        id="delete_payment" class="btn-sm">
+                                        <i class="far fa-trash-alt text-danger"></i>
+                                    </a>
                                 @else
                                     ............
                                 @endif

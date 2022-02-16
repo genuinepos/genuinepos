@@ -224,6 +224,7 @@ class POSController extends Controller
 
         $invoicePayable = 0;
         if ($request->action == 1) {
+
             $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
             $paidAmount = $request->paying_amount - $changedAmount;
 
@@ -264,6 +265,7 @@ class POSController extends Controller
             );
 
             if ($customer) {
+                
                 if (json_decode($settings->reward_poing_settings, true)['enable_cus_point'] == '1') {
 
                     $customer->point = $customer->point - $request->pre_redeemed;
@@ -523,10 +525,6 @@ class POSController extends Controller
 
         $updateSale->status = $request->action;
         $updateSale->sale_account_id = $request->sale_account_id;
-        $updateSale->date = date('d-m-Y');
-        $updateSale->report_date = date('Y-m-d H:i:s');
-        $updateSale->month = date('F');
-        $updateSale->year = date('Y');
         $updateSale->total_item = $request->total_item;
         $updateSale->net_total_amount = $request->net_total_amount;
         $updateSale->order_discount_type = 1;
@@ -658,7 +656,21 @@ class POSController extends Controller
                 customerPaymentId: NULL
             );
 
+            if ($request->account_id) {
+
+                // Add bank/cash-in-hand A/C ledger
+                $this->accountUtil->addAccountLedger(
+                    voucher_type_id: 10,
+                    date: date('Y-m-d', strtotime($updateSale->date)),
+                    account_id: $request->account_id,
+                    trans_id: $addPaymentGetId,
+                    amount: $request->paying_amount,
+                    balance_type: 'debit'
+                );
+            }
+
             if ($updateSale->customer_id) {
+        
                 // add customer ledger
                 $this->customerUtil->addCustomerLedger(
                     voucher_type_id: 3,

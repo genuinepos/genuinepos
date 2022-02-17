@@ -63,9 +63,11 @@
                         <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i
-                                        class="far fa-money-bill-alt text-dark input_i"></i></span>
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="far fa-money-bill-alt text-dark input_i"></i>
+                                </span>
                             </div>
+
                             <input type="hidden" id="p_available_amount" value="{{ $company->get_loan_due }}">
                             <input type="number" name="paying_amount" class="form-control p_input" step="any"
                                 data-name="Amount" id="p_paying_amount" value="" autocomplete="off" autofocus/>
@@ -77,8 +79,9 @@
                         <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i
-                                        class="fas fa-calendar-week text-dark input_i"></i></span>
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="fas fa-calendar-week text-dark input_i"></i>
+                                </span>
                             </div>
                             <input type="text" name="date" class="form-control p_input"
                                 autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
@@ -90,7 +93,9 @@
                         <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="fas fa-money-check text-dark input_i"></i>
+                                </span>
                             </div>
                             <select name="payment_method_id" class="form-control" id="p_payment_method_id">
                                 @foreach ($methods as $method)
@@ -109,8 +114,9 @@
                         <label><strong>Credit Account :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i
-                                        class="fas fa-money-check-alt text-dark input_i"></i></span>
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="fas fa-money-check-alt text-dark input_i"></i>
+                                </span>
                             </div>
                             <select name="account_id" class="form-control" id="p_account_id">
                                 @foreach ($accounts as $account)

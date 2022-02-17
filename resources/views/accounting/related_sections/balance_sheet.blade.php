@@ -43,8 +43,8 @@
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
                                                         <button type="submit"
-                                                            class="btn text-white btn-sm btn-secondary float-start"><i
-                                                                class="fas fa-funnel-dollar"></i> Filter</button>
+                                                            class="btn text-white btn-sm btn-secondary float-start">
+                                                            <i class="fas fa-funnel-dollar"></i> Filter</button>
                                                     </div>
                                                 </div>
                                             </div>

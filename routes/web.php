@@ -546,7 +546,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::get('trial/balance', 'AccountingRelatedSectionController@trialBalance')->name('accounting.trial.balance');
         Route::get('trial/balance/amounts', 'AccountingRelatedSectionController@trialBalanceAmounts')->name('accounting.trial.balance.amounts');
         Route::get('cash/flow', 'AccountingRelatedSectionController@cashFow')->name('accounting.cash.flow');
-        Route::get('all/cash/flow', 'AccountingRelatedSectionController@allCashflows')->name('accounting.all.cash.flow');
+        Route::get('cash/flow/amounts', 'AccountingRelatedSectionController@cashFlowAmounts')->name('accounting.cash.flow.amounts');
         Route::get('filter/cash/flow', 'AccountingRelatedSectionController@filterCashflows')->name('accounting.filter.cash.flow');
         Route::get('print/cash/flow', 'AccountingRelatedSectionController@printCashflow')->name('accounting.print.cash.flow');
     });

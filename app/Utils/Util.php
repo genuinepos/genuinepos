@@ -18,14 +18,18 @@ class Util
     protected $invoiceVoucherRefIdUtil;
     protected $supplierUtil;
     protected $customerUtil;
+    protected $productUtil;
+    
     public function __construct(
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         SupplierUtil $supplierUtil,
-        CustomerUtil $customerUtil
+        CustomerUtil $customerUtil,
+        ProductUtil $productUtil,
     ) {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->supplierUtil = $supplierUtil;
         $this->customerUtil = $customerUtil;
+        $this->productUtil = $productUtil;
     }
 
     public function addQuickProductFromAddSale($request)

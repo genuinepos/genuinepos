@@ -21,16 +21,16 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name mt-1">
+                                <div class="sec-name">
                                     <div class="col-md-12">
-                                        <form id="filter_cash_flow" action="{{ route('accounting.filter.cash.flow') }}" method="get" class="px-2">
+                                        <form id="filter_cash_flow" class="px-2">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
-                                                                class="form-control submit_able" id="f_branch_id" autofocus>
+                                                                class="form-control" id="branch_id" autofocus>
                                                                 <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="row margin_row mt-1">
-                        <div class="card">
+                        <div class="card col-md-7">
 
                             <div class="section-header">
                                 <div class="col-md-10">
@@ -116,27 +116,27 @@
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                   <em>Net Profit Before Tax :</em> 
+                                                                <em>Net Profit Before Tax :</em> 
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                   <em>0.00</em> 
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                   <em>Customer Balance : </em>  
-                                                                </td>
-
-                                                                <td class="text-start">
-                                                                     <em>- 0.00</em>    
+                                                                <em>0.00</em> 
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                   <em>Current Stock Value : </em> 
+                                                                <em>Customer Balance : </em>  
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>- 0.00</em>    
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                <em>Current Stock Value : </em> 
                                                                 </td>
 
                                                                 <td class="text-start">
@@ -150,13 +150,13 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                     <em>0.00</em>    
+                                                                    <em>0.00</em>    
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                   <em>Current Liability :</em>  
+                                                                <em>Current Liability :</em>  
                                                                 </td>
 
                                                                 <td class="text-start">
@@ -166,7 +166,7 @@
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                   <em>Tax Payable :</em>  
+                                                                <em>Tax Payable :</em>  
                                                                 </td>
 
                                                                 <td class="text-start">
@@ -269,8 +269,13 @@
 
     function getCashFlow() {
        $('.data_preloader').show();
+       var branch_id = $('#branch_id').val();
+       var from_date = $('.from_date').val();
+       var to_date = $('.to_date').val();
        $.ajax({
-           url:"{{ route('accounting.all.cash.flow') }}",
+           url:"{{ route('accounting.cash.flow.amounts') }}",
+           type: 'GET',
+           data : {branch_id, from_date, to_date},
            success:function(data){
                $('#data-list').html(data);
                $('.data_preloader').hide();
@@ -279,30 +284,36 @@
     }
     getCashFlow();
 
-    // //Print purchase Payment report
-    // $(document).on('click', '#print_report', function (e) {
-    //     e.preventDefault();
-    //     var url = "{{ route('accounting.print.cash.flow') }}";
-    //     var transaction_type = $('#transaction_type').val();
-    //     var from_date = $('.from_date').val();
-    //     var to_date = $('.to_date').val();
-    //     $.ajax({
-    //         url:url,
-    //         type:'get',
-    //         data: {transaction_type, from_date, to_date},
-    //         success:function(data) {
-    //             $(data).printThis({
-    //                 debug: false,
-    //                 importCSS: true,
-    //                 importStyle: true,
-    //                 loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
-    //                 removeInline: false,
-    //                 printDelay: 700,
-    //                 header: null,
-    //             });
-    //         }
-    //     });
-    // });
+    //Print purchase Payment report
+    $(document).on('submit', '#filter_cash_flow', function (e) {
+        e.preventDefault();
+        getCashFlow();
+    });
+
+    //Print purchase Payment report
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('accounting.print.cash.flow') }}";
+        var branch_id = $('#branch_id').val();
+        var from_date = $('.from_date').val();
+        var to_date = $('.to_date').val();
+        $.ajax({
+            url:url,
+            type:'get',
+            data: {branch_id, from_date, to_date},
+            success:function(data) {
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
+                });
+            }
+        });
+    });
 </script>
 
 <script type="text/javascript">

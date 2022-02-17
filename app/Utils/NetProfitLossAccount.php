@@ -2,12 +2,13 @@
 
 namespace App\Utils;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
 class NetProfitLossAccount
 {
-    public function netLossProfit(array $request = NULL) : array
+    public function netLossProfit($request = null): array
     {
         $directIncome = 0;
         $indirectIncome = 0;
@@ -17,15 +18,15 @@ class NetProfitLossAccount
         $openingStock = $this->openingStock($request);
         $stockAdjustments = $this->stockAdjustments($request);
         $totalPurchasesAndOrderTax = $this->totalPurchasesAndOrderTax($request);
- 
+
         $individualProductSaleTax = $this->individualProductSaleTax($request);
         $directExpense = $this->directExpense($request);
         $indirectExpense  = $this->indirectExpense($request);
-  
+
         $netProfit = $totalSaleAndOrderTax->sum('total_sale')
             + ($closingStock - $openingStock->sum('total_ops_value'))
             + $stockAdjustments->sum('total_recovered');
-            - $totalPurchasesAndOrderTax->sum('total_purchase')
+        -$totalPurchasesAndOrderTax->sum('total_purchase')
             - $totalSaleAndOrderTax->sum('total_sale_order_tax')
             - $individualProductSaleTax->sum('total_sale_pro_tax')
             - $directExpense->sum('total_di_expense')
@@ -35,10 +36,13 @@ class NetProfitLossAccount
         $netProfitBeforeTax = $totalSaleAndOrderTax->sum('total_sale')
             + ($closingStock - $openingStock->sum('total_ops_value'))
             + $stockAdjustments->sum('total_recovered');
-            - $totalPurchasesAndOrderTax->sum('total_purchase')
+        -$totalPurchasesAndOrderTax->sum('total_purchase')
             - $directExpense->sum('total_di_expense')
             - $indirectExpense->sum('total_indi_expense')
             - $stockAdjustments->sum('total_adjusted');
+
+        $tax_payable = $totalSaleAndOrderTax->sum('total_sale_order_tax')
+            + $individualProductSaleTax->sum('total_sale_pro_tax');
 
         return [
             'total_sale' => $totalSaleAndOrderTax->sum('total_sale'),
@@ -53,11 +57,11 @@ class NetProfitLossAccount
             'total_adjusted_recovered' => $stockAdjustments->sum('total_recovered'),
             'net_profit' => $netProfit,
             'net_profit_before_tax' => $netProfitBeforeTax,
+            'tax_payable' => $tax_payable,
         ];
     }
 
-
-    public function closingStock(array $request = NULL)
+    public function closingStock($request = NULL)
     {
         $purchaseProduct = '';
         $saleProducts = '';
@@ -68,7 +72,7 @@ class NetProfitLossAccount
         $saleProductsQ = DB::table('purchase_sale_product_chains')
             ->leftJoin('sale_products', 'purchase_sale_product_chains.sale_product_id', 'sale_products.id')
             ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
-            ->leftJoin('purchase_products', 'purchase_sale_product_chains.sale_id', 'sale_products.id')
+            ->leftJoin('purchase_products', 'purchase_sale_product_chains.purchase_product_id', 'purchase_products.id')
             ->select(DB::raw('SUM(purchase_products.net_unit_cost * purchase_sale_product_chains.sold_qty) as total_value'));
 
         if (isset($request->branch_id) && $request->branch_id) {
@@ -107,7 +111,7 @@ class NetProfitLossAccount
         return $purchaseProduct->sum('total_value') - $saleProducts->sum('total_value');
     }
 
-    public function totalPurchasesAndOrderTax(array $request = null)
+    public function totalPurchasesAndOrderTax($request = null)
     {
         $purchases = '';
 
@@ -146,7 +150,7 @@ class NetProfitLossAccount
         }
     }
 
-    public function totalSaleAndOrderTax(array $request = null)
+    public function totalSaleAndOrderTax($request = null)
     {
         $sales = '';
         $salesQ = DB::table('sales')
@@ -184,7 +188,7 @@ class NetProfitLossAccount
         }
     }
 
-    public function openingStock(array $request = null)
+    public function openingStock($request = null)
     {
         $openingStock = '';
         $openingStockQ = DB::table('product_opening_stocks')
@@ -207,7 +211,7 @@ class NetProfitLossAccount
             $to_date = isset($request->to_date) && $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
 
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-            $salesQ->whereBetween('product_opening_stocks.created_at', $date_range);
+            $openingStockQ->whereBetween('product_opening_stocks.created_at', $date_range);
         }
 
         if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
@@ -219,7 +223,7 @@ class NetProfitLossAccount
         }
     }
 
-    public function individualProductSaleTax(array $request = null)
+    public function individualProductSaleTax($request = null)
     {
         $individualProductSaleTax = '';
         $individualProductSaleTaxQ = DB::table('sale_products')
@@ -255,11 +259,11 @@ class NetProfitLossAccount
         }
     }
 
-    public function directExpense(array $request = null)
+    public function directExpense($request = null)
     {
         $directExpense = '';
         $directExpenseQ = DB::table('expanses')
-            ->leftJoin('accounts', 'expenses.expense_account_id', 'accounts.id')
+            ->leftJoin('accounts', 'expanses.expense_account_id', 'accounts.id')
             ->where('accounts.account_type', 7)
             ->select(DB::raw('SUM(net_total_amount) as total_di_expense'));
 
@@ -292,12 +296,12 @@ class NetProfitLossAccount
         }
     }
 
-    public function indirectExpense(array $request = null)
+    public function indirectExpense($request = null)
     {
         $indirectExpense = '';
 
         $indirectExpenseQ = DB::table('expanses')
-            ->leftJoin('accounts', 'expenses.account_id', 'accounts.id')
+            ->leftJoin('accounts', 'expanses.expense_account_id', 'accounts.id')
             ->where('accounts.account_type', 8)
             ->select(DB::raw('SUM(net_total_amount) as total_indi_expense'));
 
@@ -330,7 +334,7 @@ class NetProfitLossAccount
         }
     }
 
-    public function stockAdjustments(array $request = null)
+    public function stockAdjustments($request = null)
     {
         $stockAdjustments = '';
 
@@ -358,7 +362,7 @@ class NetProfitLossAccount
             $to_date = isset($request->to_date) && $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
 
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-            $stockAdjustmentsQ->whereBetween('stock_adjustments.report_date', $date_range);
+            $stockAdjustmentsQ->whereBetween('stock_adjustments.report_date_ts', $date_range);
         }
 
         if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {

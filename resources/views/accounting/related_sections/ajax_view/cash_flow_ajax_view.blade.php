@@ -1,3 +1,11 @@
+@php
+    $totalCashFlow = 0;
+@endphp
+<style>
+    .modal-table tbody tr {
+         background: #fff;
+    }
+</style>
 <table class="table modal-table table-sm table-bordered">
     <tbody>
         <tr>
@@ -5,6 +13,9 @@
                 <table class="table table-sm">
                     <tbody>
                         {{-- Cash Flow from operations --}}
+                        @php
+                            $oparationTotal = 0;
+                        @endphp
                         <tr>
                             <th class="text-start" colspan="2">
                                 <strong>CASH FLOW FROM OPERATIONS :</strong>
@@ -17,7 +28,10 @@
                             </td>
 
                             <td class="text-start">
-                               <em>0.00</em> 
+                               <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['net_profit_before_tax']) }}</em> 
+                               @php
+                                 $oparationTotal += $netProfitLossAccount['net_profit_before_tax'];  
+                               @endphp
                             </td>
                         </tr>
 
@@ -27,7 +41,23 @@
                             </td>
 
                             <td class="text-start">
-                                 <em>- 0.00</em>    
+                                <em>({{ App\Utils\Converter::format_in_bdt($customerReceivable->sum('total_due')) }})</em> 
+                                @php
+                                    $oparationTotal -= $customerReceivable->sum('total_due');  
+                                @endphp   
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-start">
+                               <em>Supplier Balance : </em>  
+                            </td>
+
+                            <td class="text-start">
+                                 <em>{{ App\Utils\Converter::format_in_bdt($supplierPayable->sum('total_due')) }}</em>
+                                @php
+                                    $oparationTotal += $supplierPayable->sum('total_due');  
+                                @endphp    
                             </td>
                         </tr>
 
@@ -37,7 +67,10 @@
                             </td>
 
                             <td class="text-start">
-                                <em>0.00</em>    
+                                <em>({{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['closing_stock']) }})</em>   
+                                @php
+                                    $oparationTotal -= $netProfitLossAccount['closing_stock'];  
+                                @endphp  
                             </td>
                         </tr>
 
@@ -47,7 +80,10 @@
                             </td>
 
                             <td class="text-start">
-                                 <em>0.00</em>    
+                                 <em>{{ App\Utils\Converter::format_in_bdt($currentAssets->sum('total_current_asset')) }}</em>   
+                                @php
+                                    $oparationTotal += $currentAssets->sum('total_current_asset');  
+                                @endphp 
                             </td>
                         </tr>
 
@@ -57,7 +93,10 @@
                             </td>
 
                             <td class="text-start">
-                                <em>0.00</em>    
+                                <em>{{ App\Utils\Converter::format_in_bdt($currentLiability->sum('current_liability')) }}</em>  
+                                @php
+                                    $oparationTotal += $currentLiability->sum('current_liability');  
+                                @endphp   
                             </td>
                         </tr>
 
@@ -67,21 +106,45 @@
                             </td>
 
                             <td class="text-start">
-                                <em>0.00</em>     
+                                <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['tax_payable']) }}</em>     
+                                @php
+                                    $oparationTotal += $netProfitLossAccount['tax_payable'];  
+                                @endphp 
                             </td>
                         </tr>
 
-                        <tr class="bg-info">
+                        <tr>
+                            <td class="text-end">
+                                <b>
+                                    <em>Total Operations : 
+                                        ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                    </em> 
+                                </b>  
+                            </td>
+
+                            <td class="text-start">
+                                <b>{{ $oparationTotal < 0 ? '('. App\Utils\Converter::format_in_bdt($oparationTotal).')' : App\Utils\Converter::format_in_bdt($oparationTotal) }}</b>  
+                                @php
+                                    $totalCashFlow += $oparationTotal;
+                                @endphp
+                            </td>
+                        </tr>
+
+                        {{-- <tr class="bg-info">
                             <td class="text-start text-white">
                                 <b>Total Operations : </b>  
                             </td>
 
                             <td class="text-start text-white">
-                                <b>0.00</b>  
+                                <b>{{ $oparationTotal < 0 ? '('. App\Utils\Converter::format_in_bdt($oparationTotal).')' : App\Utils\Converter::format_in_bdt($oparationTotal) }}</b>  
+                                @php
+                                    $totalCashFlow += $oparationTotal;
+                                @endphp
                             </td>
-                        </tr>
+                        </tr> --}}
                     
                         {{-- Cash Flow from investing --}}
+                       
                         <tr>
                             <th class="text-start" colspan="2">
                                 <strong>CASH FLOW FROM INVESTING :</strong>
@@ -92,16 +155,37 @@
                             <td class="text-start">
                                 <em>FIXED ASSET :</em> 
                             </td>
-                            <td class="text-start">0.00</td>
+                            <td class="text-start">
+                                <em>
+                                    ({{ App\Utils\Converter::format_in_bdt($fixedAssets->sum('total_fixed_asset')) }})
+                                </em> 
+                            </td>
+                            @php
+                                $totalCashFlow -= $fixedAssets->sum('total_fixed_asset');
+                            @endphp
                         </tr>
 
-                        <tr class="bg-info">
+                        {{-- <tr class="bg-info">
                             <td class="text-start text-white">
                                 <b><em>Total Investing :</em>  </b>  
                             </td>
 
                             <td class="text-start text-white">
-                                <b><em>0.00</em> </b>  
+                                <b><em>({{ App\Utils\Converter::format_in_bdt($fixedAssets->sum('total_fixed_asset')) }})</em> </b>  
+                            </td>
+                        </tr>  --}}
+
+                        <tr>
+                            <td class="text-end">
+                                <b>
+                                    <em>Total Investing : 
+                                        ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                    </em>  
+                                </b>  
+                            </td>
+
+                            <td class="text-start">
+                                <b><em>({{ App\Utils\Converter::format_in_bdt($fixedAssets->sum('total_fixed_asset')) }})</em> </b>  
                             </td>
                         </tr> 
 
@@ -123,24 +207,55 @@
                             <td class="text-start">
                                 <em>Loan And Advance :</em> 
                             </td>
-                            <td class="text-start">0.00</td>
+                            <td class="text-start">({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</td>
                         </tr>
 
-                        <tr class="bg-info">
+                        <tr>
+                            <td class="text-end">
+                                <b>
+                                    <em>Total financing : 
+                                        ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                    </em>
+                                </b>  
+                            </td>
+
+                            <td class="text-start">
+                                <b>
+                                    <em>({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</em> 
+                                </b>  
+                                @php
+                                    $totalCashFlow -= $loanAndAdvance->sum('current_loan_receivable');
+                                @endphp
+                            </td>
+                        </tr> 
+
+                        {{-- <tr class="bg-info">
                             <td class="text-start text-white">
                                 <b><em>Total financing :</em>  </b>  
                             </td>
 
                             <td class="text-start text-white">
-                                <b><em>0.00</em> </b>  
+                                <b><em>({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</em> </b>  
+                                @php
+                                    $totalCashFlow -= $loanAndAdvance->sum('current_loan_receivable');
+                                @endphp
                             </td>
-                        </tr> 
+                        </tr>  --}}
                     </tbody>
+                    
                     <tfoot>
                         <tr class="bg-secondary">
-                            <th class="text-start text-white"><strong>Total Cash Flow : ({{ json_decode($generalSettings->business, true)['currency'] }} )</strong> </th>
-                            <th class="text-start text-white">
-                                <span class="total_cash_flow">0.00</span>
+                            <td class="text-end text-white">
+                                <b>
+                                    <em>Total Cash Flow : ({{ json_decode($generalSettings->business, true)['currency'] }})</em> 
+                                </b> 
+                            </td>
+                            <td class="text-start text-white">
+                                <b class="total_cash_flow">
+                                    <em>
+                                        {{ $totalCashFlow < 0 ? '('.App\Utils\Converter::format_in_bdt($totalCashFlow).')' : App\Utils\Converter::format_in_bdt($totalCashFlow) }}
+                                    </em> 
+                                </b>
                             </th>    
                         </tr>
                     </tfoot>

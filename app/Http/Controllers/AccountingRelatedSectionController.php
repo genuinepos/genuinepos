@@ -230,54 +230,6 @@ class AccountingRelatedSectionController extends Controller
         );
     }
 
-    // // Get balance sheet amounts **requested by ajax**
-    // public function trialBalanceAmounts()
-    // {
-    //     $totalSupplierDue = 0;
-    //     $totalSupplierReturnDue = 0;
-    //     $totalCustomerReturnDue = 0;
-    //     $totalCustomerDue = 0;
-    //     $accountBalance = 0;
-
-    //     $suppliers = DB::table('suppliers')->select(['id', 'total_purchase_due', 'total_purchase_return_due'])->get();
-
-    //     foreach ($suppliers as $supplier) {
-    //         $totalSupplierDue += $supplier->total_purchase_due;
-    //         $totalSupplierReturnDue += $supplier->total_purchase_return_due;
-    //     }
-
-    //     $customers = DB::table('customers')->select(['id', 'total_sale_due', 'total_sale_return_due'])->get();
-
-    //     foreach ($customers as $customer) {
-    //         $totalCustomerDue += $customer->total_sale_due;
-    //         $totalCustomerReturnDue += $customer->total_sale_return_due;
-    //     }
-
-    //     $accounts = DB::table('accounts')->select(['id', 'name', 'balance'])->get();
-    //     foreach ($accounts as $account) {
-    //         $accountBalance += $account->balance;
-    //     }
-
-    //     $totalPhysicalAsset = DB::table('assets')->select(
-    //         DB::raw('sum(total_value) as t_value'),
-    //     )->groupBy('assets.id')->get();
-
-
-    //     $totalDebit = $totalSupplierDue + $totalCustomerReturnDue;
-    //     $totalCredit = $totalSupplierReturnDue + $totalCustomerDue + $accountBalance + $totalPhysicalAsset->sum('t_value');
-
-    //     return response()->json([
-    //         'totalSupplierDue' => $totalSupplierDue,
-    //         'totalSupplierReturnDue' => $totalSupplierReturnDue,
-    //         'totalCustomerReturnDue' => $totalCustomerReturnDue,
-    //         'totalCustomerDue' => $totalCustomerDue,
-    //         'totalPhysicalAsset' => $totalPhysicalAsset->sum('t_value'),
-    //         'totalDebit' => $totalDebit,
-    //         'totalCredit' => $totalCredit,
-    //         'accounts' => $accounts
-    //     ]);
-    // }
-
     // Cash flow view
     public function cashFow()
     {
@@ -294,9 +246,9 @@ class AccountingRelatedSectionController extends Controller
     public function cashFlowAmounts(Request $request)
     {
         $customerReceivable = DB::table('customers')->select(DB::raw('SUM(total_sale_due) as total_due'))->get();
-        $supplierPayable = DB::table('customers')->select(DB::raw('SUM(total_sale_due) as total_due'))->get();
+        $supplierPayable = DB::table('suppliers')->select(DB::raw('SUM(total_purchase_due) as total_due'))->get();
 
-        $this->netProfitLossAccount->netLossProfit($request);
+        $netProfitLossAccount = $this->netProfitLossAccount->netLossProfit($request);
 
         $fixedAssets = '';
         $currentAssets = '';
@@ -310,7 +262,7 @@ class AccountingRelatedSectionController extends Controller
 
         $currentAssetsQ = DB::table('expanses')
             ->leftJoin('accounts', 'expanses.expense_account_id', 'accounts.id')
-            ->select(DB::raw('SUM(accounts.balance) as total_fixed_asset'))
+            ->select(DB::raw('SUM(accounts.balance) as total_current_asset'))
             ->where('accounts.account_type', 9);
 
         $currentLiabilityQ = DB::table('loans')
@@ -321,7 +273,7 @@ class AccountingRelatedSectionController extends Controller
         $loanAndAdvanceQ = DB::table('loans')
             ->where('loans.type', 1)
             ->leftJoin('loan_companies', 'loans.loan_company_id', 'loan_companies.id')
-            ->select(DB::raw('SUM(due) as current_liability'));
+            ->select(DB::raw('SUM(due) as current_loan_receivable'));
 
         if (isset($request->branch_id) && $request->branch_id) {
 
@@ -361,102 +313,126 @@ class AccountingRelatedSectionController extends Controller
             $loanAndAdvance = $loanAndAdvanceQ->get();
         } else {
 
-            $fixedAssets = $fixedAssetsQ->where('purchase_products.branch_id', auth()->user()->branch_id)->get();
-            $currentAssets = $currentAssetsQ->where('purchase_products.branch_id', auth()->user()->branch_id)->get();
+            $fixedAssets = $fixedAssetsQ->where('expanses.branch_id', auth()->user()->branch_id)->get();
+            $currentAssets = $currentAssetsQ->where('expanses.branch_id', auth()->user()->branch_id)->get();
             $currentLiability = $currentLiabilityQ->where('loan_companies.branch_id', auth()->user()->branch_id)->get();
             $loanAndAdvance = $loanAndAdvanceQ->where('loan_companies.branch_id', auth()->user()->branch_id)->get();
         }
 
-
-        return view('accounting.related_sections.ajax_view.cash_flow_ajax_view', compact('CashFlows'));
+        return view(
+            'accounting.related_sections.ajax_view.cash_flow_ajax_view',
+            compact(
+                'customerReceivable',
+                'supplierPayable',
+                'fixedAssets',
+                'currentAssets',
+                'currentLiability',
+                'loanAndAdvance',
+                'netProfitLossAccount',
+            )
+        );
     }
 
-    // public function filterCashflows(Request $request)
-    // {
-    //     $filterCashFlows = '';
-    //     $query = CashFlow::with(
-    //         [
-    //             'account',
-    //             'sender_account',
-    //             'receiver_account',
-    //             'sale_payment',
-    //             'sale_payment.sale',
-    //             'sale_payment.customer',
-    //             'purchase_payment',
-    //             'purchase_payment.purchase',
-    //             'purchase_payment.supplier',
-    //             'expanse_payment',
-    //             'expanse_payment.expense',
-    //             'money_receipt',
-    //             'money_receipt.customer',
-    //             'payroll',
-    //             'payroll_payment',
-    //             'loan',
-    //             'loan_payment',
-    //             'loan_payment.branch',
-    //             'loan_payment.company',
-    //             'loan.company',
-    //         ]
-    //     );
+    public function printCashflow(Request $request)
+    {
+        $branch_id = $request->branch_id;
 
-    //     if ($request->from_date) {
-    //         $from_date = date('Y-m-d', strtotime($request->from_date));
-    //         $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-    //         //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
-    //         $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-    //         $query->whereBetween('report_date', $date_range); // Final
-    //     }
+        $customerReceivable = DB::table('customers')->select(DB::raw('SUM(total_sale_due) as total_due'))->get();
+        $supplierPayable = DB::table('suppliers')->select(DB::raw('SUM(total_purchase_due) as total_due'))->get();
 
-    //     if ($request->transaction_type) {
-    //         $query->where('cash_type', $request->transaction_type);
-    //     }
+        $netProfitLossAccount = $this->netProfitLossAccount->netLossProfit($request);
 
-    //     $filterCashFlows = $query->orderBy('report_date', 'desc')->get();
-    //     return view('accounting.related_sections.ajax_view.filtered_cash_flow', compact('filterCashFlows'));
-    // }
+        $fixedAssets = '';
+        $currentAssets = '';
+        $currentLiability = '';
+        $loanAndAdvance = '';
 
-    // public function printCashflow(Request $request)
-    // {
-    //     $filterCashFlows = '';
-    //     $fromDate = '';
-    //     $toDate = '';
-    //     $query = CashFlow::with(
-    //         [
-    //             'account',
-    //             'sender_account',
-    //             'receiver_account',
-    //             'sale_payment',
-    //             'sale_payment.sale',
-    //             'sale_payment.customer',
-    //             'purchase_payment',
-    //             'purchase_payment.purchase',
-    //             'purchase_payment.supplier',
-    //             'expanse_payment',
-    //             'expanse_payment.expense',
-    //             'money_receipt',
-    //             'money_receipt.customer',
-    //             'payroll',
-    //             'payroll_payment',
-    //             'loan',
-    //             'loan_payment',
-    //             'loan_payment.branch',
-    //             'loan_payment.company',
-    //             'loan.company',
-    //         ]
-    //     );
+        $fixedAssetsQ = DB::table('expanses')
+            ->leftJoin('accounts', 'expanses.expense_account_id', 'accounts.id')
+            ->select(DB::raw('SUM(accounts.balance) as total_fixed_asset'))
+            ->where('accounts.account_type', 15);
 
-    //     if ($request->from_date) {
-    //         $fromDate = date('Y-m-d', strtotime($request->from_date));
-    //         $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
-    //         $date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
-    //         $query->whereBetween('report_date', $date_range); // Final
-    //     }
+        $currentAssetsQ = DB::table('expanses')
+            ->leftJoin('accounts', 'expanses.expense_account_id', 'accounts.id')
+            ->select(DB::raw('SUM(accounts.balance) as total_current_asset'))
+            ->where('accounts.account_type', 9);
 
-    //     if ($request->transaction_type) {
-    //         $query->where('cash_type', $request->transaction_type);
-    //     }
+        $currentLiabilityQ = DB::table('loans')
+            ->leftJoin('loan_companies', 'loans.loan_company_id', 'loan_companies.id')
+            ->where('loans.type', 2)
+            ->select(DB::raw('SUM(due) as current_liability'));
 
-    //     $filterCashFlows = $query->orderBy('id', 'desc')->get();
-    //     return view('accounting.related_sections.ajax_view.print_cash_flow', compact('filterCashFlows', 'fromDate', 'toDate'));
-    // }
+        $loanAndAdvanceQ = DB::table('loans')
+            ->where('loans.type', 1)
+            ->leftJoin('loan_companies', 'loans.loan_company_id', 'loan_companies.id')
+            ->select(DB::raw('SUM(due) as current_loan_receivable'));
+
+        if (isset($request->branch_id) && $request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $fixedAssetsQ->where('expanses.branch_id', NULL);
+                $currentAssetsQ->where('expanses.branch_id', NULL);
+                $currentLiabilityQ->where('loan_companies.branch_id', NULL);
+                $loanAndAdvanceQ->where('loan_companies.branch_id', NULL);
+            } else {
+
+                $fixedAssetsQ->where('expanses.branch_id', $request->branch_id);
+                $currentAssetsQ->where('expanses.branch_id', $request->branch_id);
+                $currentLiabilityQ->where('loan_companies.branch_id', $request->branch_id);
+                $loanAndAdvanceQ->where('loan_companies.branch_id', $request->branch_id);
+            }
+        }
+
+        $fromDate = '';
+        $toDate = '';
+
+        if (isset($request->from_date) && $request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = isset($request->to_date) && $request->to_date
+                ? date('Y-m-d', strtotime($request->to_date))
+                : $from_date;
+
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $fixedAssetsQ->whereBetween('expanses.report_date', $date_range);
+            $currentAssetsQ->whereBetween('expanses.report_date', $date_range);
+
+            $currentLiabilityQ->whereBetween('loans.report_date', $date_range);
+            $loanAndAdvanceQ->whereBetween('loans.report_date', $date_range);
+
+            $fromDate = $from_date;
+            $toDate = $to_date;
+        }
+
+        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+
+            $fixedAssets = $fixedAssetsQ->get();
+            $currentAssets = $currentAssetsQ->get();
+            $currentLiability = $currentLiabilityQ->get();
+            $loanAndAdvance = $loanAndAdvanceQ->get();
+        } else {
+
+            $fixedAssets = $fixedAssetsQ->where('expanses.branch_id', auth()->user()->branch_id)->get();
+            $currentAssets = $currentAssetsQ->where('expanses.branch_id', auth()->user()->branch_id)->get();
+            $currentLiability = $currentLiabilityQ->where('loan_companies.branch_id', auth()->user()->branch_id)->get();
+            $loanAndAdvance = $loanAndAdvanceQ->where('loan_companies.branch_id', auth()->user()->branch_id)->get();
+        }
+
+        return view(
+            'accounting.related_sections.ajax_view.print_cash_flow',
+            compact(
+                'customerReceivable',
+                'supplierPayable',
+                'fixedAssets',
+                'currentAssets',
+                'currentLiability',
+                'loanAndAdvance',
+                'netProfitLossAccount',
+                'fromDate',
+                'toDate',
+                'branch_id'
+            )
+        );
+    }
 }

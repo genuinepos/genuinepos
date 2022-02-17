@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // The application will send a exception(warning) message if anything goes wrong. But will work.
         try {
+
             $generalSettings = DB::table('general_settings')->first();
             $addons = DB::table('addons')->first();
             $warehouseCount = DB::table('warehouses')->count();
@@ -37,12 +38,14 @@ class AppServiceProvider extends ServiceProvider
             $__date_format = str_replace('-', '/', $dateFormat);
             
             if (isset($generalSettings) && isset($addons) && isset($warehouseCount)) {
+
                 view()->share('generalSettings', $generalSettings);
                 view()->share('addons', $addons);
                 view()->share('warehouseCount', $warehouseCount);
                 view()->share('__date_format', $__date_format);
             }
         } catch (Exception $e) {
+            
             echo $e->getMessage() . PHP_EOL;
         }
     }

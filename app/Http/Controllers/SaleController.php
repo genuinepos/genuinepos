@@ -276,6 +276,7 @@ class SaleController extends Controller
         $addSale->status = $request->status;
 
         if ($request->status == 1) {
+
             $addSale->is_fixed_challen = 1;
         }
 
@@ -303,7 +304,9 @@ class SaleController extends Controller
 
         // Update customer due
         $invoicePayable = 0;
+
         if ($request->status == 1) {
+
             $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0;
             $paidAmount = $request->paying_amount - $changedAmount;
 
@@ -311,10 +314,13 @@ class SaleController extends Controller
 
                 $invoicePayable = $request->total_invoice_payable;
                 $addSale->total_payable_amount = $request->total_invoice_payable;
+
                 if ($paidAmount >= $request->total_invoice_payable) {
+
                     $addSale->paid = $request->total_invoice_payable;
                     $addSale->due = 0.00;
                 } elseif ($paidAmount < $request->total_invoice_payable) {
+
                     $addSale->paid = $request->paying_amount;
                     $calcDue = $request->total_invoice_payable - $request->paying_amount;
                     $addSale->due = $calcDue;
@@ -343,6 +349,7 @@ class SaleController extends Controller
             );
 
             if ($request->customer_id) {
+
                 // Add customer ledger
                 $this->customerUtil->addCustomerLedger(
                     voucher_type_id: 1,
@@ -353,6 +360,7 @@ class SaleController extends Controller
                 );
             }
         } else {
+
             $addSale->total_payable_amount = $request->total_invoice_payable;
             $addSale->save();
         }
@@ -397,6 +405,7 @@ class SaleController extends Controller
         ])->where('id', $addSale->id)->first();
 
         if ($request->status == 1) {
+
             $this->saleUtil->__getSalePaymentForAddSaleStore(
                 $request,
                 $sale,
@@ -405,6 +414,7 @@ class SaleController extends Controller
 
             $__index = 0;
             foreach ($request->product_ids as $product_id) {
+
                 $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
                 $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
@@ -424,7 +434,9 @@ class SaleController extends Controller
             env('MAIL_ACTIVE') == 'true' &&
             json_decode($settings->send_es_settings, true)['send_inv_via_email'] == '1'
         ) {
+
             if ($sale->customer && $sale->customer->email) {
+
                 SaleMailJob::dispatch($sale->customer->email, $sale)
                     ->delay(now()->addSeconds(5));
             }
@@ -434,13 +446,17 @@ class SaleController extends Controller
             env('SMS_ACTIVE') == 'true' &&
             json_decode($settings->send_es_settings, true)['send_notice_via_sms'] == '1'
         ) {
+
             if ($sale->customer && $sale->customer->phone) {
+
                 $this->smsUtil->singleSms($sale);
             }
         }
 
         if ($request->action == 'save_and_print') {
+
             if ($request->status == 1) {
+
                 return view('sales.save_and_print_template.sale_print', compact(
                     'sale',
                     'previous_due',
@@ -450,18 +466,23 @@ class SaleController extends Controller
                     'change_amount'
                 ));
             } elseif ($request->status == 2) {
+
                 return view('sales.save_and_print_template.draft_print', compact('sale'));
             } elseif ($request->status == 4) {
+
                 return view('sales.save_and_print_template.quotation_print', compact('sale'));
             }
         } else {
             if ($request->status == 1) {
+
                 session()->flash('successMsg', 'Sale created successfully');
                 return response()->json(['finalMsg' => 'Sale created successfully']);
             } elseif ($request->status == 2) {
+
                 session()->flash('successMsg', 'Sale draft created successfully');
                 return response()->json(['draftMsg' => 'Sale draft created successfully']);
             } elseif ($request->status == 4) {
+
                 session()->flash('successMsg', 'Sale quotation created successfully');
                 return response()->json(['quotationMsg' => 'Sale quotation created successfully']);
             }
@@ -712,6 +733,7 @@ class SaleController extends Controller
 
             $sale = Sale::with([
                 'sale_products',
+                'sale_products.product',
                 'sale_products.purchaseSaleProductChains',
                 'sale_products.purchaseSaleProductChains.purchaseProduct',
             ])->where('id', $updateSale->id)->first();

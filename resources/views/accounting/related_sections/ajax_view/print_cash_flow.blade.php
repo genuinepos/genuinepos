@@ -8,7 +8,7 @@
         tfoot { display:table-footer-group }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 15px;margin-right: 15px;}
+    @page {size:a4; margin-top: 0.8cm;margin-bottom: 35px; margin-left: 15px;margin-right: 15px;}
     .header, .header-space,
     .footer, .footer-space {height: 20px;}
     .header {position: fixed; top: 0;}
@@ -18,96 +18,264 @@
     tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
 
-@php
-    $totalPaid = 0;
-@endphp
 <div class="row">
     <div class="col-md-12 text-center">
-        <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-        <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address']  }}</p>
-        @if ($fromDate && $toDate)
-            <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
+        @if ($branch_id == '')
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <p><b>All Business Location</b></p>
+        @elseif ($branch_id == 'NULL')
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+        @else
+            @php
+                $branch = DB::table('branches')
+                    ->where('id', $branch_id)
+                    ->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')
+                    ->first();
+            @endphp
+            <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
-        <br>
-        <h6>Accounts Cash Flow </h6> 
+
+        @if ($fromDate && $toDate)
+            <p><b>Date :</b>
+                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
+                <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+            </p>
+        @endif
+        <h6 style="margin-top: 10px;"><b>Cash Flow Statement </b></h6>
     </div>
 </div>
 <br>
 <div class="row">
     <div class="col-12">
+        @php
+            $totalCashFlow = 0;
+        @endphp
         <table class="table modal-table table-sm table-bordered">
-            <thead>
-                <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Account</th>
-                    <th class="text-start">Description</th>
-                    <th class="text-start">Created By</th>
-                    <th class="text-start">Debit</th>
-                    <th class="text-start">Credit</th>
-                    <th class="text-start">Balance</th>
-                </tr>
-            </thead>
             <tbody>
-                @foreach ($filterCashFlows as $cashFlow)
-                    <tr>
-                        <td class="text-start">{{ date('d/m/Y', strtotime($cashFlow->date)) }}</td> 
-                        <td class="text-start">{{ $cashFlow->account->name }}</td>
-                        <td class="text-start">
-                            @if ($cashFlow->transaction_type == 4)
-                                @if ($cashFlow->cash_type == 1)
-                                    {!! '<b>Fund Transfer</b> (To: '. $cashFlow->receiver_account->name.')'!!}
-                                @else  
-                                    {!! '<b>Fund Transfer</b> (From: '. $cashFlow->sender_account->name.')'!!}  
-                                @endif
-                            @elseif($cashFlow->transaction_type == 5)
-                                <b>Deposit</b>   
-                            @elseif($cashFlow->transaction_type == 7)   
-                                <b>Opening Balance</b>    
-                            @elseif($cashFlow->transaction_type == 3)  
-                                {{ $cashFlow->purchase_payment->payment_type == 1 ? 'Purchase Payment' : 'Purchase Return' }}  <br>
-                                <span class="mt-1">{{ 'Supplier : ' .$cashFlow->purchase_payment->purchase->supplier->name }}</span>  <br>
-                                <span class="mt-1">{!! '<b>Purchase Invoice : </b>'. '<span class="text-primary">'.$cashFlow->purchase_payment->purchase->invoice_id.'</span>' !!}</span> <br>
-                                <span class="mt-1">{!! '<b>Payment Voucher : </b>'. '<span class="text-primary">'. $cashFlow->purchase_payment->invoice_id.'</span>' !!}</span>
-                              
-                            @elseif($cashFlow->transaction_type == 2)  
-                                {{ $cashFlow->sale_payment->payment_type == 1 ? 'Sale Payment' : 'Sale Return' }} <br>
-                                <span class="mt-1">Customer : {{ $cashFlow->sale_payment->sale->customer ? $cashFlow->sale_payment->sale->customer->name : 'Walk-In-Customer' }}</span>  <br>
-                                <span class="mt-1">{!! '<b>Sale Invoice</b>: '. $cashFlow->sale_payment->sale->invoice_id !!}</span><br>
-                                <span class="mt-1">{!! '<b>Payment Voucher : </b>'. $cashFlow->sale_payment->invoice_id !!}</span>
-                            @elseif($cashFlow->transaction_type == 6)  
-                                <b>Expense</b> <br>
-                                <span class="mt-1"><b>Expense ReferenceID :</b> {!! '<span class="text-primary">'.$cashFlow->expanse_payment->expense->invoice_id.'</span>'  !!}</span>  <br>
-                                <span class="mt-1">{!! '<b>Payment Voucher : </b>'.'<span class="text-primary">'. $cashFlow->expanse_payment->invoice_id.'</span>' !!}</span>  
-                            @elseif($cashFlow->transaction_type == 8)  
-                                <b>Payroll Payment</b><br>
-                                <b>Reference No : </b> {{ $cashFlow->payroll->reference_no }}<br>
-                                <span class="mt-1"><b>Payment Voucher No :</b> {!! '<span class="text-primary">'.$cashFlow->payroll_payment->reference_no.'</span>'  !!}</span>      
-                            @elseif($cashFlow->transaction_type == 10)  
-                                <b>{{ $cashFlow->loan->type == 1 ? 'Pay Loan' : 'Get Loan' }}</b><br>
-                                <b>Loan By : </b> {{ $cashFlow->loan->loan_by }}<br>
-                                <b>{{ $cashFlow->loan->company->name }}</b><br>
-                                <b>Reference No : </b> {{ $cashFlow->loan->reference_no }}
-                            @elseif($cashFlow->transaction_type == 11)  
-                                <b>{{ $cashFlow->loan_payment->payment_type == 1 ? 'Pay Loan Due Receive' : 'Get Loan Due Paid' }}</b><br/>
-                                <b>B.Location : </b> {{ $cashFlow->loan_payment->branch ? $cashFlow->loan_payment->branch->name.'/'.$cashFlow->loan_payment->branch->branch_code.'(BL)' : json_decode($generalSettings->business, true)['shop_name'] .'(HO)' }}<br/>
-                                <b>Company/Person :</b> {{ $cashFlow->loan_payment->company->name }}<br/>
-                                <b>Payment Voucher No : </b> {{ $cashFlow->loan_payment->voucher_no }}
-                            @elseif($cashFlow->transaction_type == 12)  
-                                <b>{{ $cashFlow->supplier_payment->type == 1 ? 'Paid To Supplier(Purchase Due)' : 'Receive From Supplier(Return Due)' }}</b><br>
-                                <b>Supplier : </b>{{ $cashFlow->supplier_payment->supplier->name }}<br>
-                                <b>Payment Voucher No : </b> {{ $cashFlow->supplier_payment->voucher_no }}
-                            @elseif($cashFlow->transaction_type == 13)  
-                                <b>{{ $cashFlow->customer_payment->type == 1 ? 'Receive From Customer(Sale Due)' : 'Paid To Customer(Return Due)' }}</b><br>
-                                <b>Customer :</b> {{ $cashFlow->customer_payment->customer->name }}<br>
-                                <b>Payment Voucher No : </b> {{ $cashFlow->customer_payment->voucher_no }}
-                            @endif
-                        </td> 
-                        <td class="text-start">{{ $cashFlow->admin ? $cashFlow->admin->prefix.' '.$cashFlow->admin->name.' '.$cashFlow->admin->last_name : '' }}</td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($cashFlow->debit) }}</td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($cashFlow->credit) }}</td>
-                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($cashFlow->balance) }}</td>
-                    </tr>
-                @endforeach
+                <tr>
+                    <td class="aiability_area">
+                        <table class="table table-sm">
+                            <tbody>
+                                {{-- Cash Flow from operations --}}
+                                @php
+                                    $oparationTotal = 0;
+                                @endphp
+                                <tr>
+                                    <th class="text-start" colspan="2">
+                                        <strong>CASH FLOW FROM OPERATIONS :</strong>
+                                    </th>
+                                </tr>
+        
+                                <tr>
+                                    <td class="text-start">
+                                       <em>Net Profit Before Tax :</em> 
+                                    </td>
+        
+                                    <td class="text-start">
+                                       <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['net_profit_before_tax']) }}</em> 
+                                       @php
+                                         $oparationTotal += $netProfitLossAccount['net_profit_before_tax'];  
+                                       @endphp
+                                    </td>
+                                </tr>
+        
+                                <tr>
+                                    <td class="text-start">
+                                       <em>Customer Balance : </em>  
+                                    </td>
+        
+                                    <td class="text-start">
+                                        <em>({{ App\Utils\Converter::format_in_bdt($customerReceivable->sum('total_due')) }})</em> 
+                                        @php
+                                            $oparationTotal -= $customerReceivable->sum('total_due');  
+                                        @endphp   
+                                    </td>
+                                </tr>
+        
+                                <tr>
+                                    <td class="text-start">
+                                       <em>Supplier Balance : </em>  
+                                    </td>
+        
+                                    <td class="text-start">
+                                         <em>{{ App\Utils\Converter::format_in_bdt($supplierPayable->sum('total_due')) }}</em>
+                                        @php
+                                            $oparationTotal += $supplierPayable->sum('total_due');  
+                                        @endphp    
+                                    </td>
+                                </tr>
+        
+                                <tr>
+                                    <td class="text-start">
+                                       <em>Current Stock Value : </em> 
+                                    </td>
+        
+                                    <td class="text-start">
+                                        <em>({{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['closing_stock']) }})</em>   
+                                        @php
+                                            $oparationTotal -= $netProfitLossAccount['closing_stock'];  
+                                        @endphp  
+                                    </td>
+                                </tr>
+        
+                                <tr>
+                                    <td class="text-start">
+                                        <em>Current Asset :</em>  
+                                    </td>
+        
+                                    <td class="text-start">
+                                         <em>{{ App\Utils\Converter::format_in_bdt($currentAssets->sum('total_current_asset')) }}</em>   
+                                        @php
+                                            $oparationTotal += $currentAssets->sum('total_current_asset');  
+                                        @endphp 
+                                    </td>
+                                </tr>
+        
+                                <tr>
+                                    <td class="text-start">
+                                       <em>Current Liability :</em>  
+                                    </td>
+        
+                                    <td class="text-start">
+                                        <em>{{ App\Utils\Converter::format_in_bdt($currentLiability->sum('current_liability')) }}</em>  
+                                        @php
+                                            $oparationTotal += $currentLiability->sum('current_liability');  
+                                        @endphp   
+                                    </td>
+                                </tr>
+        
+                                <tr>
+                                    <td class="text-start">
+                                       <em>Tax Payable :</em>  
+                                    </td>
+        
+                                    <td class="text-start">
+                                        <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['tax_payable']) }}</em>     
+                                        @php
+                                            $oparationTotal += $netProfitLossAccount['tax_payable'];  
+                                        @endphp 
+                                    </td>
+                                </tr>
+        
+                                <tr>
+                                    <td class="text-end">
+                                        <b>
+                                            <em>Total Operations : 
+                                                ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                            </em> 
+                                        </b>  
+                                    </td>
+        
+                                    <td class="text-start">
+                                        <b>{{ $oparationTotal < 0 ? '('. App\Utils\Converter::format_in_bdt($oparationTotal).')' : App\Utils\Converter::format_in_bdt($oparationTotal) }}</b>  
+                                        @php
+                                            $totalCashFlow += $oparationTotal;
+                                        @endphp
+                                    </td>
+                                </tr>
+                            
+                                {{-- Cash Flow from investing --}}
+                               
+                                <tr>
+                                    <th class="text-start" colspan="2">
+                                        <strong>CASH FLOW FROM INVESTING :</strong>
+                                    </th>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="text-start">
+                                        <em>FIXED ASSET :</em> 
+                                    </td>
+
+                                    <td class="text-start">
+                                        <em>
+                                            ({{ App\Utils\Converter::format_in_bdt($fixedAssets->sum('total_fixed_asset')) }})
+                                        </em>
+                                    </td>
+                                    @php
+                                        $totalCashFlow -= $fixedAssets->sum('total_fixed_asset');
+                                    @endphp
+                                </tr>
+        
+                                <tr>
+                                    <td class="text-end">
+                                        <b>
+                                            <em>Total Investing : 
+                                                ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                            </em>  
+                                        </b>  
+                                    </td>
+        
+                                    <td class="text-start">
+                                        <b><em>({{ App\Utils\Converter::format_in_bdt($fixedAssets->sum('total_fixed_asset')) }})</em> </b>  
+                                    </td>
+                                </tr> 
+        
+                                {{-- Cash Flow from financing --}}
+                                <tr>
+                                    <th class="text-start" colspan="2">
+                                        <strong>CASH FLOW FROM FINANCING :</strong>
+                                    </th>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="text-start">
+                                        <em>Capital A/C :</em> 
+                                    </td>
+                                    <td class="text-start">0.00</td>
+                                </tr>
+        
+                                <tr>
+                                    <td class="text-start">
+                                        <em>Loan And Advance :</em> 
+                                    </td>
+                                    <td class="text-start">({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</td>
+                                </tr>
+        
+                                <tr>
+                                    <td class="text-end">
+                                        <b>
+                                            <em>Total financing : 
+                                                ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                            </em>
+                                        </b>  
+                                    </td>
+        
+                                    <td class="text-start">
+                                        <b>
+                                            <em>({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</em> 
+                                        </b>  
+                                        @php
+                                            $totalCashFlow -= $loanAndAdvance->sum('current_loan_receivable');
+                                        @endphp
+                                    </td>
+                                </tr> 
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-end">
+                                        <b>
+                                            <em>
+                                                Total Cash Flow : ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                            </em> 
+                                        </b> 
+                                    </td>
+
+                                    <td class="text-start">
+                                        <b class="total_cash_flow">
+                                            <em>
+                                                {{ $totalCashFlow < 0 ? '('.App\Utils\Converter::format_in_bdt($totalCashFlow).')' : App\Utils\Converter::format_in_bdt($totalCashFlow) }}
+                                            </em> 
+                                        </span>
+                                    </th>    
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

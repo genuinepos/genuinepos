@@ -82,11 +82,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $addProduct = new Product();
-        $tax_id = NULL;
-        if ($request->tax_id) {
-            $tax_id = explode('-', $request->tax_id)[0];
-        }
+        
 
         $this->validate(
             $request,
@@ -101,6 +97,15 @@ class ProductController extends Controller
                 'unit_id.required' => 'Product unit field is required.',
             ]
         );
+
+        $addProduct = new Product();
+
+        $tax_id = NULL;
+
+        if ($request->tax_id) {
+
+            $tax_id = explode('-', $request->tax_id)[0];
+        }
 
         $addProduct->type = $request->type;
         $addProduct->name = $request->name;
@@ -128,14 +133,19 @@ class ProductController extends Controller
         $addProduct->custom_field_3 = $request->custom_field_3;
 
         if ($request->file('image')) {
+
             if (count($request->file('image')) > 2) {
+
                 return response()->json(['errorMsg' => 'You can upload only 2 product images.']);
             }
         }
 
         if ($request->file('image')) {
+
             if (count($request->file('image')) > 0) {
+
                 foreach ($request->file('image') as $image) {
+
                     $productImage = $image;
                     $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
                     Image::make($productImage)->resize(600, 600)->save('public/uploads/product/' . $productImageName);
@@ -203,6 +213,7 @@ class ProductController extends Controller
                     $addVariant->variant_price = $request->variant_prices_exc_tax[$index];
 
                     if (isset($request->variant_image[$index])) {
+
                         $variantImage = $request->variant_image[$index];
                         $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
                         Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
@@ -216,6 +227,7 @@ class ProductController extends Controller
                         variant_id : $addVariant->id, 
                         branch_id : auth()->user()->branch_id
                     );
+
                     $index++;
                 }
             } else {
@@ -225,13 +237,16 @@ class ProductController extends Controller
                 $this->productStockUtil->addBranchProduct(
                     product_id : $addProduct->id, 
                     variant_id : NULL, 
-                    branch_id : auth()->user()->branch_id
+                    branch_id : auth()->user()->branch_id,
+                    force_add : 1
                 );
             }
         }
 
         if ($request->type == 2) {
+
             if ($request->product_ids == null) {
+
                 return response()->json(['errorMsg' => 'You have selected combo product but there is no product at all']);
             }
 
@@ -245,7 +260,9 @@ class ProductController extends Controller
             $combo_quantities = $request->combo_quantities;
             $productVariantIds = $request->variant_ids;
             $index = 0;
+
             foreach ($productIds as $id) {
+
                 $addComboProducts = new ComboProduct();
                 $addComboProducts->product_id = $addProduct->id;
                 $addComboProducts->combo_product_id = $id;

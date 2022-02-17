@@ -381,11 +381,12 @@
                                                 <input class="d-none" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00">
                                             </div>
                                         </div>
+                                        
                                         <div class="payment_body">
                                             <div class="row">
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Cash Receive: >></label>
                                                 <div class="col-sm-7">
-                                                    <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00">
+                                                    <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                 </div>
                                             </div>
 

@@ -605,13 +605,13 @@ class ProductStockUtil
         }
     }
 
-    public function addBranchProduct($product_id, $variant_id, $branch_id)
+    public function addBranchProduct($product_id, $variant_id, $branch_id, $force_add = 0)
     {
         $product = DB::table('products')
             ->where('id', $product_id)->select('id', 'is_manage_stock')
             ->first();
 
-        if ($product->is_manage_stock == 1) {
+        if ($product->is_manage_stock == 1 || ($product->is_manage_stock == 0 && $force_add == 1)) {
 
             $checkExistsProductInBranch = DB::table('product_branches')
                 ->where('branch_id', $branch_id)

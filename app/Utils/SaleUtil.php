@@ -344,7 +344,7 @@ class SaleUtil
         $addSalePayment->admin_id = auth()->user()->id;
 
         if ($request->hasFile('attachment')) {
-            
+
             $salePaymentAttachment = $request->file('attachment');
             $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
@@ -1171,61 +1171,79 @@ class SaleUtil
     public function addPurchaseSaleProductChain($sale, $stockAccountingMethod)
     {
         foreach ($sale->sale_products as $sale_product) {
-            $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
 
-            $purchaseProducts = '';
-            if ($stockAccountingMethod == '1') {
-                $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
-                    ->where('product_id', $sale_product->product_id)
-                    ->where('product_variant_id',  $variant_id)
-                    ->where('branch_id', auth()->user()->branch_id)
-                    ->orderBy('created_at', 'asc')->get();
-            } else if ($stockAccountingMethod == '2') {
-                $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
-                    ->where('product_id', $sale_product->product_id)
-                    ->where('product_variant_id', $variant_id)
-                    ->where('branch_id', auth()->user()->branch_id)
-                    ->orderBy('created_at', 'desc')->get();
-            }
+            if ($sale_product->product->is_manage_stock == 1) {
 
-            if (count($purchaseProducts) > 0) {
-                $sold_qty = $sale_product->quantity;
-                foreach ($purchaseProducts as $purchaseProduct) {
-                    if ($sold_qty > $purchaseProduct->left_qty) {
-                        if ($sold_qty > 0) {
-                            $addPurchaseSaleChain = new PurchaseSaleProductChain();
-                            $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
-                            $addPurchaseSaleChain->sale_product_id = $sale_product->id;
-                            $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
-                            $addPurchaseSaleChain->save();
-                            $sold_qty -= $purchaseProduct->left_qty;
-                            $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
-                        } else {
-                            break;
-                        }
-                    } else if ($sold_qty == $purchaseProduct->left_qty) {
-                        if ($sold_qty > 0) {
-                            $addPurchaseSaleChain = new PurchaseSaleProductChain();
-                            $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
-                            $addPurchaseSaleChain->sale_product_id = $sale_product->id;
-                            $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
-                            $addPurchaseSaleChain->save();
-                            $sold_qty -= $purchaseProduct->left_qty;
-                            $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
-                        } else {
-                            break;
-                        }
-                    } else if ($sold_qty < $purchaseProduct->left_qty) {
-                        if ($sold_qty > 0) {
-                            $addPurchaseSaleChain = new PurchaseSaleProductChain();
-                            $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
-                            $addPurchaseSaleChain->sale_product_id = $sale_product->id;
-                            $addPurchaseSaleChain->sold_qty = $sold_qty;
-                            $addPurchaseSaleChain->save();
-                            $sold_qty -= $sold_qty;
-                            $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
-                        } else {
-                            break;
+                $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
+
+                $purchaseProducts = '';
+
+                if ($stockAccountingMethod == '1') {
+
+                    $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
+                        ->where('product_id', $sale_product->product_id)
+                        ->where('product_variant_id',  $variant_id)
+                        ->where('branch_id', auth()->user()->branch_id)
+                        ->orderBy('created_at', 'asc')->get();
+                } else if ($stockAccountingMethod == '2') {
+
+                    $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
+                        ->where('product_id', $sale_product->product_id)
+                        ->where('product_variant_id', $variant_id)
+                        ->where('branch_id', auth()->user()->branch_id)
+                        ->orderBy('created_at', 'desc')->get();
+                }
+
+                if (count($purchaseProducts) > 0) {
+
+                    $sold_qty = $sale_product->quantity;
+                    foreach ($purchaseProducts as $purchaseProduct) {
+
+                        if ($sold_qty > $purchaseProduct->left_qty) {
+
+                            if ($sold_qty > 0) {
+
+                                $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+                                $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+                                $addPurchaseSaleChain->save();
+                                $sold_qty -= $purchaseProduct->left_qty;
+                                $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+                            } else {
+
+                                break;
+                            }
+                        } else if ($sold_qty == $purchaseProduct->left_qty) {
+
+                            if ($sold_qty > 0) {
+
+                                $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+                                $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+                                $addPurchaseSaleChain->save();
+                                $sold_qty -= $purchaseProduct->left_qty;
+                                $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+                            } else {
+
+                                break;
+                            }
+                        } else if ($sold_qty < $purchaseProduct->left_qty) {
+
+                            if ($sold_qty > 0) {
+
+                                $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+                                $addPurchaseSaleChain->sold_qty = $sold_qty;
+                                $addPurchaseSaleChain->save();
+                                $sold_qty -= $sold_qty;
+                                $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+                            } else {
+
+                                break;
+                            }
                         }
                     }
                 }
@@ -1236,91 +1254,110 @@ class SaleUtil
     public function updatePurchaseSaleProductChain($sale, $stockAccountingMethod)
     {
         foreach ($sale->sale_products as $sale_product) {
-            $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
 
-            $sold_qty = $sale_product->quantity;
-            $salePurchaseProductChains = PurchaseSaleProductChain::with('purchaseProduct')
-                ->where('sale_product_id', $sale_product->id)->get();
+            if ($sale_product->product->is_manage_stock == 1) {
 
-            foreach ($salePurchaseProductChains as $salePurchaseProductChain) {
-                $salePurchaseProductChain->purchaseProduct->left_qty += $salePurchaseProductChain->sold_qty;
-                $salePurchaseProductChain->purchaseProduct->save();
-                if ($sold_qty > $salePurchaseProductChain->purchaseProduct->left_qty) {
+                $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
 
-                    //$dist_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
-                    $salePurchaseProductChain->sold_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
-                    $salePurchaseProductChain->save();
-                    $sold_qty = $sold_qty - $salePurchaseProductChain->purchaseProduct->left_qty;
-                    $this->purchaseUtil->adjustPurchaseLeftQty($salePurchaseProductChain->purchaseProduct);
-                } elseif ($sold_qty == $salePurchaseProductChain->purchaseProduct->left_qty) {
+                $sold_qty = $sale_product->quantity;
+                $salePurchaseProductChains = PurchaseSaleProductChain::with('purchaseProduct')
+                    ->where('sale_product_id', $sale_product->id)->get();
 
-                    //$dist_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
-                    $salePurchaseProductChain->sold_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
-                    $salePurchaseProductChain->save();
-                    $sold_qty = $sold_qty - $salePurchaseProductChain->purchaseProduct->left_qty;
-                    $this->purchaseUtil->adjustPurchaseLeftQty($salePurchaseProductChain->purchaseProduct);
-                } elseif ($sold_qty < $salePurchaseProductChain->purchaseProduct->left_qty) {
-                    //$dist_qty = $sold_qty;
-                    $salePurchaseProductChain->sold_qty = $sold_qty;
-                    $salePurchaseProductChain->save();
-                    $sold_qty = $sold_qty - $sold_qty;
-                    $this->purchaseUtil->adjustPurchaseLeftQty($salePurchaseProductChain->purchaseProduct);
-                }
-            }
+                foreach ($salePurchaseProductChains as $salePurchaseProductChain) {
 
-            if ($sold_qty > 0) {
-                $purchaseProducts = '';
-                if ($stockAccountingMethod == '1') {
-                    $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
-                        ->where('product_id', $sale_product->product_id)
-                        ->where('product_variant_id',  $variant_id)
-                        ->where('branch_id', auth()->user()->branch_id)
-                        ->orderBy('created_at', 'asc')->get();
-                } else if ($stockAccountingMethod == '2') {
-                    $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
-                        ->where('product_id', $sale_product->product_id)
-                        ->where('product_variant_id', $variant_id)
-                        ->where('branch_id', auth()->user()->branch_id)
-                        ->orderBy('created_at', 'desc')->get();
+                    $salePurchaseProductChain->purchaseProduct->left_qty += $salePurchaseProductChain->sold_qty;
+                    $salePurchaseProductChain->purchaseProduct->save();
+
+                    if ($sold_qty > $salePurchaseProductChain->purchaseProduct->left_qty) {
+
+                        //$dist_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
+                        $salePurchaseProductChain->sold_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
+                        $salePurchaseProductChain->save();
+                        $sold_qty = $sold_qty - $salePurchaseProductChain->purchaseProduct->left_qty;
+                        $this->purchaseUtil->adjustPurchaseLeftQty($salePurchaseProductChain->purchaseProduct);
+                    } elseif ($sold_qty == $salePurchaseProductChain->purchaseProduct->left_qty) {
+
+                        //$dist_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
+                        $salePurchaseProductChain->sold_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
+                        $salePurchaseProductChain->save();
+                        $sold_qty = $sold_qty - $salePurchaseProductChain->purchaseProduct->left_qty;
+                        $this->purchaseUtil->adjustPurchaseLeftQty($salePurchaseProductChain->purchaseProduct);
+                    } elseif ($sold_qty < $salePurchaseProductChain->purchaseProduct->left_qty) {
+
+                        //$dist_qty = $sold_qty;
+                        $salePurchaseProductChain->sold_qty = $sold_qty;
+                        $salePurchaseProductChain->save();
+                        $sold_qty = $sold_qty - $sold_qty;
+                        $this->purchaseUtil->adjustPurchaseLeftQty($salePurchaseProductChain->purchaseProduct);
+                    }
                 }
 
-                if (count($purchaseProducts) > 0) {
-                    foreach ($purchaseProducts as $purchaseProduct) {
-                        if ($sold_qty > $purchaseProduct->left_qty) {
-                            if ($sold_qty > 0) {
-                                $addPurchaseSaleChain = new PurchaseSaleProductChain();
-                                $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
-                                $addPurchaseSaleChain->sale_product_id = $sale_product->id;
-                                $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
-                                $addPurchaseSaleChain->save();
-                                $sold_qty -= $purchaseProduct->left_qty;
-                                $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
-                            } else {
-                                break;
-                            }
-                        } else if ($sold_qty == $purchaseProduct->left_qty) {
-                            if ($sold_qty > 0) {
-                                $addPurchaseSaleChain = new PurchaseSaleProductChain();
-                                $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
-                                $addPurchaseSaleChain->sale_product_id = $sale_product->id;
-                                $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
-                                $addPurchaseSaleChain->save();
-                                $sold_qty -= $purchaseProduct->left_qty;
-                                $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
-                            } else {
-                                break;
-                            }
-                        } else if ($sold_qty < $purchaseProduct->left_qty) {
-                            if ($sold_qty > 0) {
-                                $addPurchaseSaleChain = new PurchaseSaleProductChain();
-                                $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
-                                $addPurchaseSaleChain->sale_product_id = $sale_product->id;
-                                $addPurchaseSaleChain->sold_qty = $sold_qty;
-                                $addPurchaseSaleChain->save();
-                                $sold_qty -= $sold_qty;
-                                $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
-                            } else {
-                                break;
+                if ($sold_qty > 0) {
+
+                    $purchaseProducts = '';
+                    if ($stockAccountingMethod == '1') {
+
+                        $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
+                            ->where('product_id', $sale_product->product_id)
+                            ->where('product_variant_id',  $variant_id)
+                            ->where('branch_id', auth()->user()->branch_id)
+                            ->orderBy('created_at', 'asc')->get();
+                    } else if ($stockAccountingMethod == '2') {
+
+                        $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
+                            ->where('product_id', $sale_product->product_id)
+                            ->where('product_variant_id', $variant_id)
+                            ->where('branch_id', auth()->user()->branch_id)
+                            ->orderBy('created_at', 'desc')->get();
+                    }
+
+                    if (count($purchaseProducts) > 0) {
+
+                        foreach ($purchaseProducts as $purchaseProduct) {
+
+                            if ($sold_qty > $purchaseProduct->left_qty) {
+
+                                if ($sold_qty > 0) {
+
+                                    $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                    $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                    $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+                                    $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+                                    $addPurchaseSaleChain->save();
+                                    $sold_qty -= $purchaseProduct->left_qty;
+                                    $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+                                } else {
+
+                                    break;
+                                }
+                            } else if ($sold_qty == $purchaseProduct->left_qty) {
+                                if ($sold_qty > 0) {
+
+                                    $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                    $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                    $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+                                    $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+                                    $addPurchaseSaleChain->save();
+                                    $sold_qty -= $purchaseProduct->left_qty;
+                                    $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+                                } else {
+
+                                    break;
+                                }
+                            } else if ($sold_qty < $purchaseProduct->left_qty) {
+                                if ($sold_qty > 0) {
+
+                                    $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                    $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                    $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+                                    $addPurchaseSaleChain->sold_qty = $sold_qty;
+                                    $addPurchaseSaleChain->save();
+                                    $sold_qty -= $sold_qty;
+                                    $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
+                                } else {
+
+                                    break;
+                                }
                             }
                         }
                     }

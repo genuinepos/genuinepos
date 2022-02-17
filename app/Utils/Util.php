@@ -195,6 +195,7 @@ class Util
     {
         $addProduct = new Product();
         $tax_id = NULL;
+        
         if ($request->tax_id) {
 
             $tax_id = explode('-', $request->tax_id)[0];

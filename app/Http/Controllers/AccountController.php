@@ -398,7 +398,8 @@ class AccountController extends Controller
         $deleteAccount = Account::with('accountLedgers')->where('id', $accountId)->first();
 
         if (count($deleteAccount->accountLedgers) > 1) {
-            return response()->json('Account can not delete. One or more ledgers is belonging in this account.');
+
+            return response()->json('Account can not be deleted. One or more ledgers is belonging in this account.');
         }
 
         if (!is_null($deleteAccount)) {

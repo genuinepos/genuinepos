@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Customer;
 use App\Models\CustomerLedger;
+use App\Utils\CustomerUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ class CustomerImport implements ToCollection
 {
     protected $invoiceVoucherRefIdUtil;
 
+    protected $customerUtil;
     /**
      * @param Collection $collection
      */
@@ -22,7 +24,11 @@ class CustomerImport implements ToCollection
         //dd($collection);
         $index = 0;
         $generalSettings = DB::table('general_settings')->first('prefix');
+        
         $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
+
+        $this->customerUtil = new CustomerUtil();
+
         foreach ($collection as $c) {
             if ($index != 0) {
                 if ($c[2] && $c[3]) {
@@ -49,13 +55,14 @@ class CustomerImport implements ToCollection
                         'total_sale_due' => (float)$c[9] ? (float)$c[9] : 0,
                     ]);
 
-                    if ((float)$c[9] && (float)$c[9] >= 0) {
-                        $addCustomerLedger = new CustomerLedger();
-                        $addCustomerLedger->customer_id = $addCustomer->id;
-                        $addCustomerLedger->row_type = 3;
-                        $addCustomerLedger->amount = (float)$c[9];
-                        $addCustomerLedger->save();
-                    }
+                    // Add Customer Ledger
+                    $this->customerUtil->addCustomerLedger(
+                        voucher_type_id: 0,
+                        customer_id: $addCustomer->id,
+                        date: date('Y-m-d'),
+                        trans_id: NULL,
+                        amount: (float)$c[9] ? (float)$c[9] : 0
+                    );
                 }
             }
             $index++;

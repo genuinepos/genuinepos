@@ -256,10 +256,8 @@
 </div>
 
 <script>
-    var defaultAccount = "{{ auth()->user()->branch ? auth()->user()->branch->default_account_id : $openedCashRegister->account_id }}";
-
     var actionMessage = 'Data inserted Successfull.';
-    $('#pos_submit_form').on('submit', function(e){
+    $('#pos_submit_form').on('submit', function(e) {
         e.preventDefault();
         $('.loading_button').show();
         var request = $(this).serialize();
@@ -271,9 +269,9 @@
             data: request,
             success:function(data){
                 $('.loading_button').hide();
+                $('.submit_preloader').hide();
                 if(!$.isEmptyObject(data.errorMsg)){
                     toastr.error(data.errorMsg,'Attention');
-                    $('.submit_preloader').hide();
                     return;
                 }else if(data.suspendMsg){
                     toastr.success(data.suspendMsg);
@@ -297,6 +295,20 @@
                     });
                     document.getElementById('search_product').focus();
                 }
+            },error: function(err) {
+                $('.loading_button').hide();
+                $('.submit_preloader').hide();
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }else if (err.status == 500) {
+                    toastr.error('Server error. Please contact the support team.'); 
+                    return;
+                }
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    toastr.error(error[0]); 
+                });
             }
         });
     });

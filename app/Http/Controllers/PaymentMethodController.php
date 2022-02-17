@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Utils\Util;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
@@ -10,13 +11,18 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PaymentMethodController extends Controller
 {
+    protected $util;
+    public function __construct(Util $util)
+    {
+        $this->util = $util;
+        $this->middleware('auth:admin_and_user');
+    }
     public function index(Request $request)
     {
         if ($request->ajax()) {
             $methods = DB::table('payment_methods')
                 ->leftJoin('accounts', 'payment_methods.account_id', 'accounts.id')
-                ->select('payment_methods.*', 'accounts.name as ac_name', 'accounts.account_number')
-                ->orderBy('id', 'desc')
+                ->select('payment_methods.*', 'accounts.name as ac_name', 'accounts.account_type')
                 ->get();
             return DataTables::of($methods)
                 ->addIndexColumn()
@@ -27,19 +33,30 @@ class PaymentMethodController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
-                ->editColumn('account', fn ($row) => $row->ac_name ? $row->ac_name . ' (A/C' . $row->account_number . ')' : 'Cash-In-Hand')
+                ->editColumn('account', fn ($row) => $row->ac_name ? $row->ac_name . ' (<b>' . $this->util->accountType($row->account_type) . '</b>)' : 'N/A')
                 ->rawColumns(['action', 'account'])
                 ->make(true);
         }
-        $accounts = DB::table('accounts')->get(['id', 'name', 'account_number']);
+
+        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])
+            ->orderBy('account_type', 'asc')
+            ->get(['id', 'name', 'account_number', 'account_type']);
+
         return view('settings.payment_settings.index', compact('accounts'));
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|unique:payment_methods,name',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|unique:payment_methods,name',
+                //'account_id' => 'required',
+            ],
+            // [
+            //     'account_id.required' => 'Please select a default account',
+            // ]
+        );
 
         PaymentMethod::insert([
             'name' => $request->name,
@@ -52,15 +69,24 @@ class PaymentMethodController extends Controller
     public function edit($id)
     {
         $method = DB::table('payment_methods')->where('id', $id)->first();
-        $accounts = DB::table('accounts')->get(['id', 'name', 'account_number']);
+        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])
+            ->orderBy('account_type', 'asc')
+            ->get(['id', 'name', 'account_number', 'account_type']);
         return view('settings.payment_settings.ajax_view.edit_payment_method', compact('method', 'accounts'));
     }
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required|unique:payment_methods,name,' . $id,
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|unique:payment_methods,name,' . $id,
+                //'account_id' => 'required',
+            ],
+            // [
+            //     'account_id.required' => 'Please select a default account',
+            // ]
+        );
 
         $updatePayment = PaymentMethod::where('id', $id)->first();
         $updatePayment->update([
@@ -73,9 +99,9 @@ class PaymentMethodController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $deleteCardType = PaymentMethod::where('id', $id)->first();
-        if (!is_null($deleteCardType)) {
-            $deleteCardType->delete();
+        $deletePaymentMethod = PaymentMethod::where('id', $id)->first();
+        if (!is_null($deletePaymentMethod)) {
+            $deletePaymentMethod->delete();
         }
 
         return response()->json('Payment Method deleted successfully.');

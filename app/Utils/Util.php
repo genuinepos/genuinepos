@@ -16,12 +16,19 @@ use App\Utils\InvoiceVoucherRefIdUtil;
 class Util
 {
     protected $invoiceVoucherRefIdUtil;
+    protected $supplierUtil;
+    protected $customerUtil;
     protected $productUtil;
+    
     public function __construct(
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
-        ProductUtil $productUtil
+        SupplierUtil $supplierUtil,
+        CustomerUtil $customerUtil,
+        ProductUtil $productUtil,
     ) {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->supplierUtil = $supplierUtil;
+        $this->customerUtil = $customerUtil;
         $this->productUtil = $productUtil;
     }
 
@@ -105,6 +112,7 @@ class Util
 
         $generalSettings = DB::table('general_settings')->first('prefix');
         $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
+
         $addCustomer = Customer::create([
             'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
@@ -129,12 +137,14 @@ class Util
             'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
         ]);
 
-        $addCustomerLedger = new CustomerLedger();
-        $addCustomerLedger->customer_id = $addCustomer->id;
-        $addCustomerLedger->row_type = 3;
-        $addCustomerLedger->report_date = date('Y-m-d');
-        $addCustomerLedger->amount = $request->opening_balance ? $request->opening_balance : 0.00;
-        $addCustomerLedger->save();
+        // Add Customer Ledger
+        $this->customerUtil->addCustomerLedger(
+            voucher_type_id: 0,
+            customer_id: $addCustomer->id,
+            date: date('Y-m-d'),
+            trans_id: NULL,
+            amount: $request->opening_balance ? $request->opening_balance : 0
+        );
 
         return response()->json($addCustomer);
     }
@@ -149,6 +159,7 @@ class Util
         $generalSettings = DB::table('general_settings')->first('prefix');
         $subIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
         $firstLetterOfSupplier = str_split($request->name)[0];
+
         $addSupplier = Supplier::create([
             'contact_id' => $request->contact_id ? $request->contact_id : $subIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
@@ -172,14 +183,14 @@ class Util
             'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
         ]);
 
-        if ($request->opening_balance && $request->opening_balance >= 0) {
-            $addSupplierLedger = new SupplierLedger();
-            $addSupplierLedger->supplier_id = $addSupplier->id;
-            $addSupplierLedger->row_type = 3;
-            $addSupplierLedger->report_date = date('Y-m-d');
-            $addSupplierLedger->amount = $request->opening_balance;
-            $addSupplierLedger->save();
-        }
+        // Add supplier Ledger
+        $this->supplierUtil->addSupplierLedger(
+            voucher_type_id: 0,
+            supplier_id: $addSupplier->id,
+            date: date('Y-m-d'),
+            trans_id: NULL,
+            amount: $request->opening_balance ? $request->opening_balance : 0
+        );
 
         return response()->json($addSupplier);
     }
@@ -188,7 +199,9 @@ class Util
     {
         $addProduct = new Product();
         $tax_id = NULL;
+        
         if ($request->tax_id) {
+
             $tax_id = explode('-', $request->tax_id)[0];
         }
 
@@ -226,6 +239,13 @@ class Util
         $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
         $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
         $addProduct->save();
+
+        // Add product Branch
+        $addProductBranch = new ProductBranch();
+        $addProductBranch->branch_id = auth()->user()->branch_id;
+        $addProductBranch->product_id = $addProduct->id;
+        $addProductBranch->save();
+
         return response()->json($addProduct);
     }
 
@@ -240,5 +260,84 @@ class Util
     public static function getStockAccountingMethod($index)
     {
         return self::stockAccountingMethods()[$index];
+    }
+    
+    public static function accountType($index)
+    {
+        $types = [
+            0 => 'N/A',
+            1 => 'Cash-In-Hand',
+            2 => 'Bank A/C',
+            3 => 'Purchase A/C',
+            4 => 'Purchase Return A/C',
+            5 => 'Sales A/C',
+            6 => 'Sales Return A/C',
+            24 => 'Direct Income',
+            25 => 'Indirect Income',
+            26 => 'Capital A/C',
+            7 => 'Direct Expense A/C',
+            8 => 'Indirect Expense A/C',
+            9 => 'Current Assets A/C',
+            10 => 'Current liabilities A/C',
+            11 => 'Misc. Expense A/C',
+            12 => 'Misc. Income A/C',
+            13 => 'Loans & Liabilities A/C',
+            14 => 'Loans & Advances A/C',
+            15 => 'Fixed Asset A/C',
+            16 => 'Investments A/C',
+            17 => 'Bank OD A/C',
+            18 => 'Deposit A/C',
+            19 => 'Provision A/C',
+            20 => 'Reserves & Surplus A/C',
+            21 => 'Payroll A/C',
+            22 => 'Stock Adjustment A/C',
+            23 => 'Production A/C',
+        ];
+
+        return $types[$index];
+    }
+
+    public static function allAccountTypes($forFilter = 0)
+    {
+        $data = [
+            1 => 'Cash-In-Hand',
+            2 => 'Bank A/C',
+            3 => 'Purchase A/C',
+            4 => 'Purchase Return A/C',
+            5 => 'Sales A/C',
+            6 => 'Sales Return A/C',
+            7 => 'Direct Expense A/C',
+            8 => 'Indirect Expense A/C',
+            24 => 'Direct Income',
+            25 => 'Indirect Income',
+            26 => 'Capital A/C',
+            9 => 'Current Assets A/C',
+            10 => 'Current liabilities A/C',
+            11 => 'Misc. Expense A/C',
+            12 => 'Misc. Income A/C',
+            13 => 'Loans & Liabilities A/C',
+            14 => 'Loans & Advances A/C',
+            15 => 'Fixed Asset A/C',
+            16 => 'Investments A/C',
+            17 => 'Bank OD A/C',
+            18 => 'Deposit A/C',
+            19 => 'Provision A/C',
+            20 => 'Reserves & Surplus A/C',
+            21 => 'Payroll A/C',
+            22 => 'Stock Adjustment A/C',
+            23 => 'Production A/C',
+        ];
+
+        if ($forFilter == 0) {
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                return $data;
+            } else {
+                return $filteredType =  array_filter($data, function ($val, $key) {
+                    return $key != 2;
+                }, ARRAY_FILTER_USE_BOTH);
+            }
+        }else {
+            return $data;
+        }
     }
 }

@@ -10,6 +10,7 @@
 
 <div class="head-pos">
     <input type="hidden" name="sale_id" value="{{ $sale->id }}">
+    <input type="hidden" name="sale_account_id" value="{{ $sale->sale_account_id }}">
     <input type="hidden" name="action" id="action" value="">
     <nav class="pos-navigation">
         <div class="col-lg-4 col-sm-12 col-12 nav-left-sec">
@@ -44,7 +45,6 @@
                     @else 
                         {{ json_decode($generalSettings->business, true)['address'] }}
                     @endif
-                    
                 </p>
                 <small class="login-user-name">
                     <span class="text-highlight">Loggedin :</span> {{ $sale->admin ? $sale->admin->prefix.' '.$sale->admin->name.' '.$sale->admin->last_name : 'N/A' }} 

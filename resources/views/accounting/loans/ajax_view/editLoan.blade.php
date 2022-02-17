@@ -3,8 +3,20 @@
     <div class="form-group row">
         <div class="col-md-6">
             <label><strong>Date : <span class="text-danger">*</span></strong></label>
-            <input type="text" name="date" class="form-control datepicker" id="date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($loan->report_date)) }}">
+            <input type="text" name="date" class="form-control" id="e_date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($loan->report_date)) }}">
             <span class="error error_e_date"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label><b>Loan A/C :</b> <span class="text-danger">*</span></label>
+            <select required name="loan_account_id" class="form-control" id="loan_account_id">
+                <option value="">Select Loan Account</option>
+                @foreach ($loanAccounts as $loanAc)
+                    <option {{ $loanAc->id == $loan->loan_account_id ? 'SELECTED' : '' }} value="{{ $loanAc->id }}">
+                        {{ $loanAc->name.' ('.App\Utils\Util::accountType($loanAc->account_type).')' }}
+                    </option>
+                @endforeach
+            </select>
         </div>
     </div>
 
@@ -24,8 +36,8 @@
             <label><b>Type :</b> <span class="text-danger">*</span></label>
             <select name="type" class="form-control" id="e_type">
                 <option value="">Select Type</option>
-                <option {{ $loan->type == 1 ? 'SELECTED' : '' }} value="1">Pay Loan</option>
-                <option {{ $loan->type == 2 ? 'SELECTED' : '' }} value="2">Get Loan</option>
+                <option {{ $loan->type == 1 ? 'SELECTED' : '' }} value="1">Loan & Advance</option>
+                <option {{ $loan->type == 2 ? 'SELECTED' : '' }} value="2">Loan & Liabilities</option>
             </select>
             <span class="error error_e_type"></span>
         </div>
@@ -39,11 +51,17 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>Account :</b> <span class="text-danger">*</span></label>
+            <label><b>Debit/Credit Account :</b> <span class="text-danger">*</span></label>
             <select name="account_id" class="form-control" id="e_account_id">
                 <option value="">Select Account</option>
                 @foreach ($accounts as $account)
-                    <option {{ $loan->account_id == $account->id ? 'SELECTED' : '' }} value="{{ $account->id }}">{{ $account->name.' (A/C: '.$account->account_number.')' }}</option>
+                    @php
+                        $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                        $balance = ' BL : '.$account->balance;
+                    @endphp
+                    <option {{ $loan->account_id == $account->id ? 'SELECTED' : '' }} value="{{ $account->id }}">
+                        {{ $account->name.$accountType.$balance}}
+                    </option>
                 @endforeach
             </select>
             <span class="error error_e_account_id"></span>
@@ -67,10 +85,34 @@
 </form>
 
 <script>
+    // var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    // var _expectedDateFormat = '';
+    // _expectedDateFormat = dateFormat.replace('d', 'dd');
+    // _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
+    // _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
+    // $('.datepicker').datepicker({ format: _expectedDateFormat })
+
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
-    var _expectedDateFormat = '';
-    _expectedDateFormat = dateFormat.replace('d', 'dd');
-    _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
-    _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
-    $('.datepicker').datepicker({ format: _expectedDateFormat })
+    var _expectedDateFormat = '' ;
+    _expectedDateFormat = dateFormat.replace('d', 'DD');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('e_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat,
+    });
 </script>

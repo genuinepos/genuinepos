@@ -10,20 +10,22 @@ use App\Models\ProductVariant;
 use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\Manufacturing\Production;
-use App\Utils\PurchaseUtil;
+use App\Utils\AccountUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductionUtil
 {
     protected $converter;
     protected $productStockUtil;
-    
+    protected $accountUtil;
     public function __construct(
         Converter $converter,
         ProductStockUtil $productStockUtil,
+        AccountUtil $accountUtil,
     ) {
         $this->converter = $converter;
         $this->productStockUtil = $productStockUtil;
+        $this->accountUtil = $accountUtil;
     }
 
     public function productionList($request)
@@ -117,6 +119,9 @@ class ProductionUtil
         $storedWarehouseId = $production->warehouse_id;
         $storedStockWarehouseId = $production->stock_warehouse_id;
         $storeIngredients = $production->ingredients;
+
+        $storedProductionAccountId = $production->production_account_id;
+
         if (!is_null($production)) {
             $production->delete();
         }
@@ -139,6 +144,13 @@ class ProductionUtil
                     }
                 }
             }
+        }
+
+        if ($storedProductionAccountId) {
+            $this->accountUtil->adjustAccountBalance(
+                balanceType : 'debit',
+                account_id : $storedProductionAccountId
+            );
         }
     }
 

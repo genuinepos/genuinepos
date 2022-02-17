@@ -100,15 +100,29 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        
                                         <div class="col-md-3">
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4"> <b>Sale Date :</b> <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="date" class="form-control" id="datepicker"
+                                                    <input type="text" name="date" class="form-control" id="date" autocomplete="off"
                                                         value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) }}">
                                                     <span class="error error_date"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class=" col-4"> <b>Sale A/C :</b> <span
+                                                    class="text-danger">*</span></label>
+                                                <div class="col-8">
+                                                    <select name="sale_account_id" class="form-control add_input"
+                                                        id="sale_account_id" data-name="Sale account">
+                                                        @foreach ($saleAccounts as $saleAc)
+                                                            <option {{ $sale->sale_account_id == $saleAc->id ? 'SELECTED': '' }} value="{{ $saleAc->id }}">{{ $saleAc->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_sale_account_id"></span>
                                                 </div>
                                             </div>
                                         </div>

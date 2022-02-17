@@ -2,6 +2,7 @@
 @section('content')
     @push('stylesheets')
         <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
         <style>
             .contract_info_area ul li strong{color:#495677}.account_summary_area .heading h4{background:#0F3057;color:white}.contract_info_area ul li strong i {color: #495b77;font-size: 13px;}
         </style>
@@ -12,7 +13,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-people-arrows"></span>
@@ -24,20 +24,33 @@
                 
                     <div class="card">
                         <div class="card-body">
-                            <!--begin: Datatable-->
                             <div class="data_preloader">
                                 <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                             </div>
 
                             <div class="tab_list_area">
                                 <ul class="list-unstyled">
-                                    <li><a id="tab_btn" data-show="contract_info_area" class="tab_btn tab_active" href=""><i class="fas fa-info-circle"></i> Contract Info</a></li>
-                                    <li><a id="tab_btn" data-show="ledger" class="tab_btn" href=""><i class="fas fa-scroll"></i> Ledger</a></li>
-                                    <li><a id="tab_btn" data-show="sale" class="tab_btn" href=""><i class="fas fa-shopping-bag"></i> Sale</a></li>
+                                    <li>
+                                        <a id="tab_btn" data-show="ledger" class="tab_btn tab_active" href="#">
+                                            <i class="fas fa-scroll"></i> Ledger
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a id="tab_btn" data-show="contract_info_area" class="tab_btn" href="#"><i class="fas fa-info-circle">
+                                            </i> Contract Info
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a id="tab_btn" data-show="sale" class="tab_btn" href="#">
+                                            <i class="fas fa-shopping-bag"></i> Sale
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
 
-                            <div class="tab_contant contract_info_area">
+                            <div class="tab_contant contract_info_area d-none">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <ul class="list-unstyled">
@@ -77,9 +90,9 @@
                                 </div>
                             </div>
 
-                            <div class="tab_contant ledger d-none">
+                            <div class="tab_contant ledger">
                                 <div class="row">
-                                    <div class="col-md-6 col-sm-12 col-lg-6">
+                                    <div class="col-md-4 col-sm-12 col-lg-4">
                                         <div class="account_summary_area">
                                             <div class="heading py-2">
                                                 <h4 class="py-2 pl-1">Account Summary</h4>
@@ -125,29 +138,65 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12 col-lg-6">
+                                    <div class="col-md-8 col-sm-12 col-lg-8">
                                         <div class="account_summary_area">
                                             <div class="heading py-2">
                                                 <h4 class="py-2 pl-1">Filter Area</h4>
                                             </div>
 
                                             <div class="account_summary_table">
-                                                <table class="table modal-table table-sm">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <div class="input-group">
-                                                                    <div class="input-group-prepend">
-                                                                        <span class="input-group-text" id="basic-addon1"><i
-                                                                                class="fas fa-calendar-week input_i"></i></span>
-                                                                    </div>
-                                                                    <input readonly type="text" name="date_range" id="date_range" class="form-control daterange submit_able_input" autocomplete="off">
+                                                <form id="filter_customer_ledgers" method="get" class="px-2">
+                                                    <div class="form-group row mt-4">
+                                                        <div class="col-md-3">
+                                                            <label><strong>Voucher Type :</strong></label>
+                                                            <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
+                                                                <option value="">All</option> 
+                                                                @foreach (App\Utils\CustomerUtil::voucherTypes() as $key => $type)
+                                                                    <option value="{{ $key }}">{{ $type }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+        
+                                                        <div class="col-md-3">
+                                                            <label><strong>From Date :</strong></label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="basic-addon1"><i
+                                                                            class="fas fa-calendar-week input_f"></i></span>
                                                                 </div>
-                                                            </td>
-                                                            <td><a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                                <input type="text" name="from_date" id="datepicker"
+                                                                    class="form-control from_date date"
+                                                                    autocomplete="off">
+                                                            </div>
+                                                        </div>
+        
+                                                        <div class="col-md-3">
+                                                            <label><strong>To Date :</strong></label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="basic-addon1"><i
+                                                                            class="fas fa-calendar-week input_f"></i></span>
+                                                                </div>
+                                                                <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                            </div>
+                                                        </div>
+        
+                                                        <div class="col-md-3">
+                                                            <div class="row">
+                                                                <div class="col-md-7">
+                                                                    <label><strong></strong></label>
+                                                                    <div class="input-group">
+                                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                    </div>
+                                                                </div>
+                    
+                                                                <div class="col-md-5 mt-3">
+                                                                    <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -155,21 +204,30 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label> <strong>Customer Ledger</strong></label>
-                                        <div class="payment_table">
+                                        <div class="ladger_table">
                                             <div class="table-responsive" id="payment_list_table">
-                                                <table class="table">
+                                                <table class="display data_tbl data__table ledger_table">
                                                     <thead>
-                                                        <tr class="bg-navey-blue">
-                                                            <th>Date</th>
-                                                            <th>Invoice ID</th>
-                                                            <th>Type</th>
-                                                            <th>Debit</th>
-                                                            <th>Credit</th>
-                                                            <th>Payment Method</th>
-                                                            <th>Others</th>
+                                                        <tr>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Particulars</th>
+                                                                <th>Voucher/Invoice</th>
+                                                                <th>Debit</th>
+                                                                <th>Credit</th>
+                                                                <th>Running Balance</th>
+                                                            </tr>
                                                         </tr>
                                                     </thead>
+                                                    <tbody></tbody>
+                                                    <tfoot>
+                                                        <tr class="bg-secondary">
+                                                            <th colspan="3" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                            <th id="debit" class="text-white text-end"></th>
+                                                            <th id="credit" class="text-white text-end"></th>
+                                                            <th id="due" class="text-white text-end">---</th>
+                                                        </tr>
+                                                    </tfoot>
                                                 </table>
                                             </div>
                                         </div>
@@ -182,7 +240,7 @@
                                     <div class="col-md-12">
                                         <div class="table_area">
                                             <div class="table-responsive">
-                                                <table class="display data_tbl data__table w-100">
+                                                <table class="display data_tbl data__table data_tbl2 w-100">
                                                     <thead>
                                                         <tr>
                                                             <th>Actions</th>
@@ -202,6 +260,7 @@
                                                 </table>
                                             </div>
                                         </div>
+
                                         <form id="deleted_form" action="" method="post">
                                             @method('DELETE')
                                             @csrf
@@ -268,9 +327,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="payment_details_area">
-
-                    </div>
+                    <div class="payment_details_area"></div>
 
                     <div class="row">
                         <div class="col-md-6 text-right">
@@ -292,11 +349,10 @@
 
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/barcode/JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        $('.data_preloader').show();
         //Get all customer for filter form
-        sales_table = $('.data_tbl').DataTable({
+        var sales_table = $('.data_tbl2').DataTable({
             "processing": true,
             "serverSide": true,
             aaSorting: [[3, 'asc']],
@@ -321,13 +377,63 @@
                 {data: 'paid_status', name: 'paid_status'},
             ],
         });
-        
-        // Change customer 
-        $('#customer_id').on('change', function () {
-           var customerId = $(this).val(); 
-           window.location = "{{ url('contacts/customers/view') }}"+"/"+customerId;
+
+        var ledger_table = $('.ledger_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "searching" : false,
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
+                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+            ],
+
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+
+            "ajax": {
+                "url": "{{ route('contacts.customer.ledger.list', $customer->id) }}",
+                "data": function(d) {
+                    d.voucher_type = $('#voucher_type').val();
+                    d.from_date = $('.from_date').val();
+                    d.to_date = $('.to_date').val();
+                }
+            },
+
+            columns: [
+                {data: 'date', name: 'customer_ledgers.report_date'},
+                {data: 'particulars', name: 'particulars'},
+                {data: 'voucher_no', name: 'voucher_no'},
+                {data: 'debit', name: 'debit', className: 'text-end'},
+                {data: 'credit', name: 'credit', className: 'text-end'},
+                {data: 'running_balance', name: 'running_balance', className: 'text-end'},
+            ],fnDrawCallback: function() {
+                var debit = sum_table_col($('.data_tbl'), 'debit');
+                $('#debit').text(bdFormat(debit));
+                var credit = sum_table_col($('.data_tbl'), 'credit');
+                $('#credit').text(bdFormat(credit));
+                $('.data_preloader').hide();
+            }
         });
 
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
+
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_customer_ledgers', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            ledger_table.ajax.reload();
+        });
+        
         $(document).on('click', '#tab_btn', function(e) {
             e.preventDefault();
             $('.tab_btn').removeClass('tab_active');
@@ -336,18 +442,6 @@
             $('.' + show_content).show();
             $(this).addClass('tab_active');
         });
-
-        function getCustomerLedgerList() {
-            $.ajax({
-                url: "{{ route('contacts.customer.ledger.list', $customerId) }}",
-                type: 'get',
-                success: function(ledgerList) {
-                    $('#payment_list_table').html(ledgerList);
-                    $('.data_preloader').hide();
-                }
-            });
-        }
-        getCustomerLedgerList();
 
         // Show details modal with data
         $(document).on('click', '.details_button', function (e) {
@@ -520,12 +614,6 @@
             });
         });
 
-        $(document).on('change', '#payment_method', function () {
-            var value = $(this).val();
-            $('.payment_method').hide();
-            $('#'+value).show();
-        });
-
         $(document).on('click', '#add_return_payment', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
@@ -542,61 +630,6 @@
             });
         });
 
-        //Add sale payment request by ajax
-        $(document).on('submit', '#sale_payment_form', function(e){
-            e.preventDefault();
-            $('.loading_button').show();
-            var available_amount = $('#available_amount').val();
-            var paying_amount = $('#p_amount').val();
-            if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
-                $('.error_p_amount').html('Paying amount must not be greater then due amount.');
-                $('.loading_button').hide();
-                return;
-            }
-
-            var url = $(this).attr('action');
-            var inputs = $('.p_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-                return;
-            }
-
-            $.ajax({
-                url:url,
-                type:'post',
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success:function(data){
-                    if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR'); 
-                        $('.loading_button').hide();
-                    }else{
-                        $('.payment_method').hide();
-                        $('.loading_button').hide();
-                        $('#paymentModal').modal('hide');
-                        $('#paymentViewModal').modal('hide');
-                        sales_table.ajax.reload();
-                        toastr.success(data); 
-                    }
-                }
-            });
-        });
-       
         // //Show payment view modal with data
         $(document).on('click', '#view_payment', function (e) {
            e.preventDefault();
@@ -628,8 +661,8 @@
             });
         });
 
-         // show payment edit modal with data
-         $(document).on('click', '#edit_return_payment', function (e) {
+        // show payment edit modal with data
+        $(document).on('click', '#edit_return_payment', function (e) {
             e.preventDefault();
             var url = $(this).attr('href');
             $('#payment_heading').html('Edit Return Payment');
@@ -727,13 +760,17 @@
             });
         });
 
-        //Print Profit/Loss 
+        //Print Customer ledger
         $(document).on('click', '#print_report', function (e) {
             e.preventDefault();
             var url = "{{ route('contacts.customer.ledger.print', $customerId) }}";
+            var voucher_type = $('#voucher_type').val();
+            var from_date = $('.from_date').val();
+            var to_date = $('.to_date').val();
             $.ajax({
-                url:url,
-                type:'get',
+                url: url,
+                type: 'get',
+                data: { voucher_type, from_date, to_date },
                 success:function(data){
                     $(data).printThis({
                         debug: false,                   
@@ -746,6 +783,46 @@
                     });
                 }
             }); 
+        });
+    </script>
+
+    <script type="text/javascript">
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker2'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
         });
     </script>
 @endpush

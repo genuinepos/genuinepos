@@ -79,7 +79,9 @@
                         <td class="text-start">
                             {{ date($__date_format, strtotime($ex->date)) }}
                         </td>
+                        
                         <td class="text-start">{{ $ex->invoice_id }}</td>
+
                         <td class="text-start">
                             @php
                                 $expenseDescriptions = DB::table('expense_descriptions')
@@ -92,6 +94,7 @@
                                 {!! '<b>' . $exDescription->name . '(' . $exDescription->code . '):</b>'. $exDescription->amount !!} <br>
                             @endforeach
                         </td>
+
                         <td class="text-start">
                             @if ($ex->branch_name)
                                 {!! $ex->branch_name . '/' . $ex->branch_code . '(<b>BR</b>)' !!}

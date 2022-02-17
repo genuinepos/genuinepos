@@ -161,6 +161,7 @@
             type:'post',
             data: request,
             success:function(data){
+                
                 $('#addSupplierModal').modal('hide');
                 $('.submit_button').prop('type', 'submit');
                 toastr.success('Supplier Added Successfully.');
@@ -170,12 +171,16 @@
                 $('#supplier_id').val(data.id);
                 document.getElementById('search_product').focus();
             },error: function(err) {
+
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
                 $('.error').html('');
+
                 if (err.status == 0) {
+
                     toastr.error('Net Connetion Error. Reload This Page.'); 
-                }else{
+                }else if (err.status == 500) {
+
                     toastr.error('Server error please contact to the support.');
                 }
             }

@@ -277,13 +277,17 @@
 
                                     tr += '<td>';
                                     tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
-                                        unites.forEach(function(unit) {
+                                    unites.forEach(function(unit) {
+
                                         if (product.unit.id == unit.id) {
+
                                             tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
                                         }else{
+
                                             tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
                                         }
-                                    })
+                                    });
+
                                     tr += '</select>';
                                     tr += '</td>';
 
@@ -317,18 +321,22 @@
                             }
                         } else if(!$.isEmptyObject(product.namedProducts)){
                             if(product.namedProducts.length > 0){
+
                                 var li = "";
                                 var products = product.namedProducts; 
+
                                 $.each(products, function (key, product) {
-                                    if (product.product_variants.length > 0) {
-                                        $.each(product.product_variants, function(key, variant){
-                                            li += '<li class="mt-1">';
-                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'"  data-unit="'+product.unit.id+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost+'" data-v_cost_with_tax="'+variant.variant_cost_with_tax+'" data-v_name="'+variant.variant_name+'" href="#">'+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+'</a>';
-                                            li +='</li>';
-                                        });
-                                    }else{
+
+                                    if (product.is_variant == 1) {
+
                                         li += '<li class="mt-1">';
-                                        li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.id+'" data-p_code="'+product.product_code+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#">'+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+'</a>';
+                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'"  data-unit="'+product.unit_id+'" data-v_code="'+product.variant_code+'" data-v_cost="'+product.variant_cost+'" data-v_cost_with_tax="'+product.variant_cost_with_tax+'" data-v_name="'+product.variant_name+'" href="#">'+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Unit Cost: '+product.variant_cost_with_tax+'</a>';
+                                        li +='</li>';
+                                      
+                                    }else{
+
+                                        li += '<li class="mt-1">';
+                                        li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit_id+'" data-p_code="'+product.product_code+'" data-p_cost_with_tax="'+product.product_cost_with_tax+'" data-p_name="'+product.name+'" href="#">'+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+'</a>';
                                         li +='</li>';
                                     }
                                 });

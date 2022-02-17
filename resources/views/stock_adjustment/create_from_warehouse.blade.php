@@ -50,25 +50,41 @@
                                                     <span class="error error_warehouse_id"></span>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Ref. ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                            <div class="input-group mt-1">
+                                                <label class="col-4"><b>Adjust. A/C : <span
+                                                    class="text-danger">*</span></b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id"
-                                                        class="form-control" placeholder="Reference ID">
+                                                    <select name="adjustment_account_id" class="form-control add_input"
+                                                        id="adjustment_account_id" data-name="Stock Adjustiment A/C">
+                                                        @foreach ($stockAdjustmentAccounts as $stockAdjustmentAccount)
+                                                            <option value="{{ $stockAdjustmentAccount->id }}">
+                                                                {{ $stockAdjustmentAccount->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_adjustiment_account_id"></span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Date :</b> <span
+                                                <label for="inputEmail3" class=" col-4"><b>Voucher No :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                <div class="col-8">
+                                                    <input type="text" name="invoice_id" id="invoice_id"
+                                                        class="form-control" placeholder="Voucher No">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <label for="inputEmail3" class=" col-4"><b>Adjust. Date :</b> <span
                                                     class="text-danger">*</span> </label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control changeable"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                                    <input type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                                    <span class="error error_date"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -152,47 +168,98 @@
                 </section>
 
                 <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form_element">
                                 <div class="element-body">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Total Item :</b></label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" step="any" name="total_item" class="form-control"
-                                                        id="total_item" value="0.00">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class="col-4"><b>Total Item :</b></label>
+                                                            <div class="col-8">
+                                                                <input readonly type="number" step="any" name="total_item" class="form-control"
+                                                                    id="total_item" value="0.00">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                               
+                                                    <div class="input-group mt-1">
+                                                        <div class="input-group">
+                                                            <label for="inputEmail3" class=" col-4"><b>Net Total Amount :</b> </label>
+                                                            <div class="col-8">
+                                                                <input readonly type="number" class="form-control" step="any" step="any"
+                                                                    name="net_total_amount" id="net_total_amount" value="0.00">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Reason :</b></label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="reason" class="form-control"
+                                                                autocomplete="off" placeholder="Reason">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Net Total :</b> </label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" class="form-control" step="any" step="any"
-                                                        name="net_total_amount" id="net_total_amount" value="0.00">
-                                                </div>
-                                            </div>
-                                        </div>
+                        <div class="col-md-6">
+                            <div class="form_element">
+                                <div class="element-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <label class="col-4"><b>Recovered Amount : </b> <strong>>></strong></label>
+                                                        <div class="col-8">
+                                                            <input type="number" step="any" name="total_recovered_amount"
+                                                                id="total_recovered_amount" class="form-control" value="0.00">
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Payment Method : <span
+                                                            class="text-danger">*</span></b> </label>
+                                                        <div class="col-8">
+                                                            <select name="payment_method_id" class="form-control" id="payment_method_id">
+                                                                @foreach ($methods as $method)
+                                                                    <option value="{{ $method->id }}" 
+                                                                        data-account="{{ $method->account_id }}">
+                                                                        {{ $method->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="error error_payment_method_id"></span>
+                                                        </div>
+                                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Recovered :</b></label>
-                                                <div class="col-8">
-                                                    <input type="number" step="any" name="total_recodered_amount"
-                                                        id="total_recodered_amount" class="form-control" value="0.00">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-3"><b>Reason :</b></label>
-                                                <div class="col-9">
-                                                    <input type="text" name="reason" class="form-control"
-                                                        autocomplete="off" placeholder="Reason">
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Debit A/C : <span
+                                                            class="text-danger">*</span></b> </label>
+                                                        <div class="col-8">
+                                                            <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
+                                                                @foreach ($accounts as $account)
+                                                                    <option value="{{ $account->id }}">
+                                                                        @php
+                                                                            $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                                            $balance = ' BL : '.$account->balance;
+                                                                        @endphp
+                                                                        {{ $account->name.$accountType.$balance}}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="error error_account_id"></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -203,7 +270,7 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area py-2">
+                <div class="submit_button_area">
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -754,51 +821,66 @@
  
          //Add purchase request by ajax
          $('#add_adjustment_form').on('submit', function(e){
-             e.preventDefault();
-             var totalItem = $('#total_item').val();
-             if (parseFloat(totalItem) == 0) {
-                 toastr.error('Product table is empty.','Some thing want wrong.'); 
-                 return;
-             }
- 
-             $('.loading_button').show();
-             var url = $(this).attr('action');
-             var request = $(this).serialize();
-             var inputs = $('.add_input');
-                 inputs.removeClass('is-invalid');
-                 $('.error').html('');  
-                 var countErrorField = 0;  
-             $.each(inputs, function(key, val){
-                 var inputId = $(val).attr('id');
-                 var idValue = $('#'+inputId).val();
-                 if(idValue == ''){
-                     countErrorField += 1;
-                     var fieldName = $('#'+inputId).data('name');
-                     $('.error_'+inputId).html(fieldName+' is required.');
-                 }
-             });
- 
-             if(countErrorField > 0){
-                 $('.loading_button').hide();
-                 toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-                 return;
-             }
-             
-             $('.submit_button').prop('type', 'button');
-             $.ajax({
-                 url:url,
-                 type:'post',
-                 data: request,
-                 success:function(data){
-                     if (!$.isEmptyObject(data.errorMsg)) {
-                         toastr.error(data.errorMsg); 
-                     }else{
-                         toastr.success(data);
-                         $('.loading_button').hide();
-                         window.location = "{{ route('stock.adjustments.index') }}";
-                     }
-                 }
-             });
+            e.preventDefault();
+            var totalItem = $('#total_item').val();
+            if (parseFloat(totalItem) == 0) {
+                toastr.error('Product table is empty.','Some thing want wrong.'); 
+                return;
+            }
+
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            var inputs = $('.add_input');
+                inputs.removeClass('is-invalid');
+                $('.error').html('');  
+                var countErrorField = 0;  
+            $.each(inputs, function(key, val){
+                var inputId = $(val).attr('id');
+                var idValue = $('#'+inputId).val();
+                if(idValue == ''){
+                    countErrorField += 1;
+                    var fieldName = $('#'+inputId).data('name');
+                    $('.error_'+inputId).html(fieldName+' is required.');
+                }
+            });
+
+            if(countErrorField > 0){
+                $('.loading_button').hide();
+                toastr.error('Please check again all form fields.','Some thing want wrong.'); 
+                return;
+            }
+            
+            $('.submit_button').prop('type', 'button');
+            $.ajax({
+                url:url,
+                type:'post',
+                data: request,
+                success:function(data){
+                    if (!$.isEmptyObject(data.errorMsg)) {
+                        toastr.error(data.errorMsg); 
+                    }else{
+                        toastr.success(data);
+                        $('.loading_button').hide();
+                        window.location = "{{ route('stock.adjustments.index') }}";
+                    }
+                },error: function(err) {
+                $('.submit_button').prop('type', 'sumbit');
+                $('.loading_button').hide();
+                $('.error').html('');
+                
+                if (err.status == 0) {
+                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }
+
+                toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+
+                $.each(err.responseJSON.errors, function(key, error) {
+                    $('.error_' + key + '').html(error[0]);
+                });
+            }
+            });
          });
  
          // Decrease qty

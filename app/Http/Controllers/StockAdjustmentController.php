@@ -3,25 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Utils\Converter;
+use App\Utils\AccountUtil;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\ProductVariant;
 use App\Models\StockAdjustment;
+use App\Utils\ProductStockUtil;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use App\Models\StockAdjustmentProduct;
-use App\Utils\Converter;
-use App\Utils\ProductStockUtil;
+use App\Models\StockAdjustmentRecover;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockAdjustmentController extends Controller
 {
     protected $productStockUtil;
     protected $converter;
-    public function __construct(ProductStockUtil $productStockUtil, Converter $converter)
-    {
+    protected $invoiceVoucherRefIdUtil;
+    protected $accountUtil;
+    public function __construct(
+        ProductStockUtil $productStockUtil,
+        Converter $converter,
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
+        AccountUtil $accountUtil
+    ) {
         $this->productStockUtil = $productStockUtil;
         $this->converter = $converter;
+        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->accountUtil = $accountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -139,7 +150,10 @@ class StockAdjustmentController extends Controller
             'adjustment_products',
             'adjustment_products.product',
             'adjustment_products.variant',
-            'admin'
+            'admin',
+            'recover',
+            'recover.paymentMethod',
+            'recover.account',
         )->where('id', $adjustmentId)->first();
         return view('stock_adjustment.ajax_view.show', compact('adjustment'));
     }
@@ -151,7 +165,22 @@ class StockAdjustmentController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        return view('stock_adjustment.create');
+        $stockAdjustmentAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 22)
+            ->get(['accounts.id', 'accounts.name']);
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
+        return view('stock_adjustment.create', compact('stockAdjustmentAccounts', 'accounts', 'methods'));
     }
 
     public function createFromWarehouse()
@@ -164,53 +193,83 @@ class StockAdjustmentController extends Controller
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'warehouse_name', 'warehouse_code']);
 
-        return view('stock_adjustment.create_from_warehouse', compact('warehouses'));
+        $stockAdjustmentAccounts = DB::table('accounts')
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->where('account_type', 22)
+            ->get(['id', 'name']);
+
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
+        return view('stock_adjustment.create_from_warehouse', compact('warehouses', 'stockAdjustmentAccounts', 'accounts', 'methods'));
     }
 
     // Store Stock Adjustment
     public function store(Request $request)
     {
         if (isset($request->warehouse_id)) {
+
             if (auth()->user()->permission->s_adjust['adjustment_add_from_warehouse'] == '0') {
+
                 return response()->json('Access Denied.');
             }
         } else {
+
             if (auth()->user()->permission->s_adjust['adjustment_add_from_location'] == '0') {
+
                 return response()->json('Access Denied.');
             }
         }
 
         $this->validate($request, [
+            'date' => 'required',
             'type' => 'required',
+            'adjustment_account_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'adjustment_account_id.required' => 'Adjustment A/C is required.',
+            'account_id.required' => 'Debit A/C is required.'
         ]);
 
         if (isset($request->warehouse_id)) {
+
             $this->validate($request, [
                 'warehouse_id' => 'required',
             ]);
         }
 
         if ($request->product_ids == null) {
+
             return response()->json(['errorMsg' => 'product table is empty.']);
         }
 
+        $settings = DB::table('general_settings')
+            ->select(['prefix'])
+            ->first();
+
+        $voucherPrefix = json_decode($settings->prefix, true)['stock_djustment'];
+        $__voucherPrefix = $voucherPrefix != null ? $voucherPrefix : '';
+
         // generate invoice ID
-        $invoiceId = 1;
-        $lastRow = DB::table('stock_adjustments')->orderBy('id', 'desc')->first();
-        if ($lastRow) {
-            $invoiceId = ++$lastRow->id;
-        }
+        $invoiceId = $__voucherPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustments'), 5, "0", STR_PAD_LEFT);
 
         // Add Stock adjustment.
         $addStockAdjustment = new StockAdjustment();
         $addStockAdjustment->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
         $addStockAdjustment->branch_id = auth()->user()->branch_id;
 
-        $addStockAdjustment->invoice_id = $request->invoice_id ? $request->invoice_id : date('my') . $invoiceId;
+        $addStockAdjustment->invoice_id = $request->invoice_id ? $request->invoice_id : $invoiceId;
+        $addStockAdjustment->stock_adjustment_account_id = $request->adjustment_account_id;
         $addStockAdjustment->type = $request->type;
         $addStockAdjustment->total_item = $request->total_item;
         $addStockAdjustment->net_total_amount = $request->net_total_amount;
-        $addStockAdjustment->recovered_amount = $request->total_recodered_amount ? $request->total_recodered_amount : 0;
+        $addStockAdjustment->recovered_amount = $request->total_recovered_amount ? $request->total_recovered_amount : 0;
         $addStockAdjustment->date = $request->date;
         $addStockAdjustment->time = date('h:i:s a');;
         $addStockAdjustment->month = date('F');
@@ -220,34 +279,64 @@ class StockAdjustmentController extends Controller
         $addStockAdjustment->reason = $request->reason;
         $addStockAdjustment->save();
 
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-        $quantities = $request->quantities;
-        $units = $request->units;
-        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
-        $subtotals = $request->subtotals;
+        // Add Purchase A/C Ledger
+        $this->accountUtil->addAccountLedger(
+            voucher_type_id: 7,
+            date: $request->date,
+            account_id: $request->adjustment_account_id,
+            trans_id: $addStockAdjustment->id,
+            amount: $request->net_total_amount,
+            balance_type: 'credit'
+        );
 
         $index = 0;
-        foreach ($product_ids as $product_id) {
-            $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+        foreach ($request->product_ids as $product_id) {
+            
+            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
             $addStockAdjustmentProduct = new StockAdjustmentProduct();
             $addStockAdjustmentProduct->stock_adjustment_id = $addStockAdjustment->id;
             $addStockAdjustmentProduct->product_id = $product_id;
             $addStockAdjustmentProduct->product_variant_id = $variant_id;
-            $addStockAdjustmentProduct->quantity = $quantities[$index];
-            $addStockAdjustmentProduct->unit = $units[$index];
-            $addStockAdjustmentProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-            $addStockAdjustmentProduct->subtotal = $subtotals[$index];
+            $addStockAdjustmentProduct->quantity = $request->quantities[$index];
+            $addStockAdjustmentProduct->unit = $request->units[$index];
+            $addStockAdjustmentProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
+            $addStockAdjustmentProduct->subtotal = $request->subtotals[$index];
             $addStockAdjustmentProduct->save();
 
             $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
             if (isset($request->warehouse_id)) {
+
                 $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $request->warehouse_id);
             } else {
+
                 $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
             }
             $index++;
         }
+
+        if ($request->total_recovered_amount > 0) {
+
+            $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustment_recovers'), 5, "0", STR_PAD_LEFT) ;
+            $addStockAdjustmentRecovered = new StockAdjustmentRecover();
+            $addStockAdjustmentRecovered->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+            $addStockAdjustmentRecovered->voucher_no = 'SARV'.$voucher_no;
+            $addStockAdjustmentRecovered->stock_adjustment_id = $addStockAdjustment->id;
+            $addStockAdjustmentRecovered->account_id = $request->account_id;
+            $addStockAdjustmentRecovered->payment_method_id = $request->payment_method_id;
+            $addStockAdjustmentRecovered->recovered_amount = $request->total_recovered_amount;
+            $addStockAdjustmentRecovered->save();
+
+            // Add Purchase A/C Ledger
+            $this->accountUtil->addAccountLedger(
+                voucher_type_id : 8,
+                date : $request->date,
+                account_id : $request->account_id,
+                trans_id : $addStockAdjustmentRecovered->id,
+                amount : $request->total_recovered_amount,
+                balance_type : 'debit'
+            );
+        }
+
         session()->flash('successMsg', 'Stock adjustment created successfully');
         return response()->json('Stock adjustment created successfully');
     }
@@ -258,12 +347,15 @@ class StockAdjustmentController extends Controller
         $deleteAdjustment = StockAdjustment::with([
             'adjustment_products',
             'adjustment_products.product',
-            'adjustment_products.variant'
+            'adjustment_products.variant',
+            'recover',
         ])->where('id', $adjustmentId)->first();
 
         if (!is_null($deleteAdjustment)) {
             $storedWarehouseId = $deleteAdjustment->warehouse_id;
             $storedBranchId = $deleteAdjustment->branch_id;
+            $storedStockAdjustmentAccountId = $deleteAdjustment->stock_adjustment_account_id;
+            $storedAccountId = $deleteAdjustment->recover ? $deleteAdjustment->recover->account_id : NULL;
             $storedAdjustmentProducts = $deleteAdjustment->adjustment_products;
             $deleteAdjustment->delete();
             foreach ($storedAdjustmentProducts as $adjustment_product) {
@@ -273,7 +365,21 @@ class StockAdjustmentController extends Controller
                     $this->productStockUtil->adjustWarehouseStock($adjustment_product->product_id, $adjustment_product->product_variant_id, $storedWarehouseId);
                 } else {
                     $this->productStockUtil->adjustBranchStock($adjustment_product->product_id, $adjustment_product->product_variant_id, $storedBranchId);
-                } 
+                }
+            }
+
+            if ($storedStockAdjustmentAccountId) {
+                $this->accountUtil->adjustAccountBalance(
+                    balanceType: 'credit',
+                    account_id: $storedStockAdjustmentAccountId
+                );
+            }
+
+            if ($storedAccountId) {
+                $this->accountUtil->adjustAccountBalance(
+                    balanceType: 'debit',
+                    account_id: $storedAccountId
+                );
             }
         }
         return response()->json('Stock adjustment deleted successfully.');

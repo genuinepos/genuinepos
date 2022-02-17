@@ -84,6 +84,7 @@
                                                 <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Purchase Invoice ID" autocomplete="off">
+                                                    <span class="error error_invoice_id"></span>
                                                 </div>
                                             </div>
 
@@ -115,23 +116,8 @@
                                                 <label for="inputEmail3" class=" col-4"><b>PUR./PO. Date:</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control changeable"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker" placeholder="dd-mm-yyyy" autocomplete="off">
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Attachment :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc. Max File Size 2MB." class="fas fa-info-circle tp"></i></label>
-                                                <div class="col-8">
-                                                    <input type="file" class="form-control" name="attachment">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Delivery Date :</b></label>
-                                                <div class="col-8">
-                                                    <input type="text" name="delivery_date" class="form-control changeable" id="delivery_date" placeholder="DD-MM-YYYY" autocomplete="off">
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="date" placeholder="dd-mm-yyyy" autocomplete="off">
+                                                    <span class="error error_date"></span>
                                                 </div>
                                             </div>
 
@@ -156,6 +142,31 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <label for="inputEmail3" class=" col-4"><b>Delivery Date :</b></label>
+                                                <div class="col-8">
+                                                    <input type="text" name="delivery_date" class="form-control changeable" id="delivery_date" placeholder="DD-MM-YYYY" autocomplete="off">
+                                                </div>
+                                            </div>
+
+                                            <div class="input-group mt-1">
+                                                <label for="inputEmail3" class="col-4"><b>Purchase A/C : <span
+                                                    class="text-danger">*</span></b></label>
+                                                <div class="col-8">
+                                                    <select name="purchase_account_id" class="form-control add_input"
+                                                        id="purchase_account_id" data-name="Sale A/C">
+                                                        @foreach ($purchaseAccounts as $purchaseAccount)
+                                                            <option value="{{ $purchaseAccount->id }}">
+                                                                {{ $purchaseAccount->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_purchase_account_id"></span>
+                                                </div>
+                                            </div> 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -175,12 +186,12 @@
                                                     <label for="inputEmail3" class="col-form-label">Item Search</label>
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
+                                                            <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
                                                         @if (auth()->user()->permission->product['product_add'] == '1')
                                                             <div class="input-group-prepend">
-                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -228,88 +239,85 @@
                 </section>
 
                 <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form_element">
                                 <div class="element-body">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Discount :</b></label>
-                                                <div class="col-8">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <select name="order_discount_type" class="form-control" id="order_discount_type">
-                                                                <option value="1">Fixed(0.00)</option>
-                                                                <option value="2">Percentage(%)</option>
-                                                            </select>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <input readonly name="total_qty" type="number" step="any" class="d-none" id="total_qty" value="0.00">
+                                                        <label for="inputEmail3" class="col-4"><b>Total Item :</b> </label>
+                                                        <div class="col-8">
+                                                            <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
                                                         </div>
-
-                                                        <div class="col-md-6">
-                                                            <input name="order_discount" type="number" class="form-control" id="order_discount" value="0.00">
-                                                        </div>
-
                                                     </div>
-                                                    <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00">
                                                 </div>
-                                            </div>
 
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4"><b>Tax :</b><span class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <select name="purchase_tax" class="form-control" id="purchase_tax">
-                                                        <option value="0.00">NoTax</option>
-                                                    </select>
-                                                    <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Order Discount :</b></label>
+                                                        <div class="col-8">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <select name="order_discount_type" class="form-control" id="order_discount_type">
+                                                                        <option value="1">Fixed(0.00)</option>
+                                                                        <option value="2">Percentage(%)</option>
+                                                                    </select>
+                                                                </div>
+        
+                                                                <div class="col-md-6">
+                                                                    <input name="order_discount" type="number" class="form-control" id="order_discount" value="0.00">
+                                                                </div>
+                                                            </div>
+                                                            <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00">
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class="col-4"><b>Order Tax :</b><span class="text-danger">*</span></label>
+                                                        <div class="col-8">
+                                                            <select name="purchase_tax" class="form-control" id="purchase_tax">
+                                                                <option value="0.00">NoTax</option>
+                                                            </select>
+                                                            <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00">
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Ship Cost :</b></label>
-                                                <div class="col-8">
-                                                    <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Shipment Cost :</b></label>
+                                                        <div class="col-8">
+                                                            <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00">
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Shipment Details :</b></label>
+                                                        <div class="col-8">
+                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Ship Details :</b></label>
-                                                <div class="col-8">
-                                                    <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <input readonly name="total_qty" type="number" step="any" class="d-none" id="total_qty" value="0.00">
-                                                <label for="inputEmail3" class=" col-4"><b>Total Item :</b> </label>
-                                                <div class="col-8">
-                                                    <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Order Note :</b></label>
-                                                <div class="col-8">
-                                                    <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="" placeholder="Order Note.">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Net Total :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Payable :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control" value="0.00">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <input readonly name="total_qty" type="number" step="any" class="d-none" id="total_qty" value="0.00">
+                                                        <label for="inputEmail3" class=" col-4"><b>Total Item :</b> </label>
+                                                        <div class="col-8">
+                                                            <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Order Note :</b></label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="" placeholder="Order Note.">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -317,181 +325,89 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element m-0">
+                        <div class="col-md-6">
+                            <div class="form_element">
                                 <div class="element-body">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Paying :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input name="paying_amount" class="form-control" id="paying_amount" value="0.00">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4"><b>Pay Method :</b> </label>
-                                                <div class="col-8">
-                                                    <select name="payment_method" class="form-control" id="payment_method">
-                                                        <option value="Cash">Cash</option>
-                                                        <option value="Advanced">Advanced</option>
-                                                        <option value="Cheque">Cheque</option>
-                                                        <option value="Card">Card</option>
-                                                        <option value="Bank-Transfer">Bank-Transter</option>
-                                                        <option value="Other">Other</option>
-                                                        <option value="Custom">Custom Field</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4"><b>Account :</b> </label>
-                                                <div class="col-8">
-                                                    <select name="account_id" class="form-control" id="account_id">
-                                                        <option value="">None</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Total Due :</b></label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" step="any" class="form-control" name="purchase_due" id="purchase_due" value="0.00">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="payment_method d-none" id="Card">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><b>Card No :</b>  </label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control" name="card_no" id="card_no" placeholder="Card number">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class="col-4"><b>Holder :</b></label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control" name="card_holder_name" id="card_holder_name" placeholder="Card holder name">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3 " class="col-4"><b>Trans No :</b></label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control" name="card_transaction_no" id="card_transaction_no" placeholder="Card transaction no">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><b>Card Type :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="card_type" class="form-control"  id="p_card_type">
-                                                            <option value="Credit-Card">Credit Card</option>
-                                                            <option value="Debit-Card">Debit Card</option>
-                                                            <option value="Visa">Visa Card</option>
-                                                            <option value="Master-Card">Master Card</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3 mt-1" class=" col-4"><b>Month :</b>  </label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control " name="month" id="month" placeholder="Month">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class="col-4"><b>Year :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control form-control-sm" name="year" id="year" placeholder="Year">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class="col-4"><b>Secure ID :</b></label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control form-control-sm" name="secure_code" id="secure_code" placeholder="Secure code">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="payment_method d-none" id="Cheque">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-2"><b>Cheque Number :</b></label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control" name="cheque_no" id="cheque_no" placeholder="Cheque number">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="payment_method d-none" id="Bank-Transfer">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-2"><b>Account No :</b></label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control" name="account_no" id="account_no" placeholder="Account number">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="payment_method d-none" id="Custom">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-2"><b>Transaction No :</b></label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control " name="transaction_no" id="transaction_no" placeholder="Transaction number">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
                                         <div class="col-md-12">
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-1"><b>Pay Note :</b> </label>
-                                                <div class="col-8">
-                                                    <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Net Total Amount : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <div class="col-8">
+                                                            <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Total Payable :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <div class="col-8">
+                                                            <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control" value="0.00">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Paying Amount :</b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
+                                                        <div class="col-8">
+                                                            <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class="col-4"><b>Payment Method : <span
+                                                            class="text-danger">*</span></b> </label>
+                                                        <div class="col-8">
+                                                            <select name="payment_method_id" class="form-control" id="payment_method_id">
+                                                                @foreach ($methods as $method)
+                                                                    <option value="{{ $method->id }}" 
+                                                                        data-account="{{ $method->account_id }}">
+                                                                        {{ $method->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="error error_payment_method_id"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class="col-4"><b>Credit A/C : <span
+                                                            class="text-danger">*</span></b> </label>
+                                                        <div class="col-8">
+                                                            <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
+                                                                @foreach ($accounts as $account)
+                                                                    <option value="{{ $account->id }}">
+                                                                        @php
+                                                                            $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                                            $balance = ' BL : '.$account->balance;
+                                                                        @endphp
+                                                                        {{ $account->name.$accountType.$balance}}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="error error_account_id"></span>
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Total Due :</b></label>
+                                                        <div class="col-8">
+                                                            <input readonly type="number" step="any" class="form-control" name="purchase_due" id="purchase_due" value="0.00">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Payment Note :</b> </label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note" autocomplete="off">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -502,13 +418,11 @@
                     </div>
                 </section>
 
-                <div class="submitBtn">
-                    <div class="row justify-content-center">
-                        <div class="col-12 text-end">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" value="1" class="btn btn-sm btn-primary submit_button">Save & Print </button>
-                            <button type="submit" value="2" class="btn btn-sm btn-primary submit_button">Save</button>
-                        </div>
+                <div class="row justify-content-center">
+                    <div class="col-12 text-end">
+                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
+                        <button type="submit" value="1" class="btn btn-sm btn-primary submit_button">Save & Print </button>
+                        <button type="submit" value="2" class="btn btn-sm btn-primary submit_button">Save</button>
                     </div>
                 </div>
             </form>

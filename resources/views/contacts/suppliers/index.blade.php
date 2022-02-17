@@ -231,7 +231,7 @@
 
     <!-- Supplier payment Modal-->
     <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Add Payment</h6>
@@ -245,7 +245,7 @@
 
     <!-- Supplier payment view Modal-->
     <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>
@@ -333,6 +333,7 @@
                 $('.loading_button').hide();
                 return;
             }
+            
             $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
@@ -465,35 +466,19 @@
         //Add Supplier payment request by ajax
         $(document).on('submit', '#supplier_payment_form', function(e){
             e.preventDefault();
+
             $('.loading_button').show();
             var available_amount = $('#p_available_amount').val();
-            var paying_amount = $('#p_amount').val();
+            var paying_amount = $('#p_paying_amount').val();
+
             if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
-                $('.error_p_amount').html('Paying amount must not be greater then due amount.');
+                $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
                 $('.loading_button').hide();
                 return;
             }
 
             var url = $(this).attr('action');
-            var inputs = $('.p_input');
-                $('.error').html('');
-                var countErrorField = 0;
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                toastr.error('Please chack all form fields', 'SOMETHING WANG WRONG');
-                return;
-            }
-
+          
             $.ajax({
                 url:url,
                 type:'post',
@@ -502,15 +487,28 @@
                 cache: false,
                 processData: false,
                 success:function(data){
+                    $('.loading_button').hide();
+                    $('.error').html('');
                     if(!$.isEmptyObject(data.errorMsg)){
                         toastr.error(data.errorMsg,'ERROR');
-                        $('.loading_button').hide();
                     }else{
-                        $('.loading_button').hide();
                         $('#paymentModal').modal('hide');
                         toastr.success(data);
                         getAllSupplier();
                     }
+                },
+                error: function(err) {
+                    $('.loading_button').hide();
+                    $('.error').html('');
+
+                    if (err.status == 0) {
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        return;
+                    }
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_p_' + key + '').html(error[0]);
+                    });
                 }
             });
         });

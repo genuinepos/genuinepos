@@ -25,9 +25,12 @@ class ProcessController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $products = DB::table('products')
-            ->where('status', 1)
-            ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+        $products = DB::table('product_branches')
+            ->leftJoin('products', 'product_branches.product_id', 'products.id')
+            ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
+            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
+            ->where('products.status', 1)
+            ->where('product_branches.branch_id', auth()->user()->branch_id)
             ->select(
                 'products.id',
                 'products.name',
@@ -71,6 +74,16 @@ class ProcessController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        $productAndVariantId = explode('-', $request->product_id);
+        $product_id = $productAndVariantId[0];
+        $variant_id = $productAndVariantId[1] != 'NULL' ? $productAndVariantId[1] : NULL;
+
+        $checkSameItemProcess = Process::where('product_id', $product_id)->where('variant_id', $variant_id)->first();
+
+        if ($checkSameItemProcess) {
+            return redirect()->route('manufacturing.process.edit', $checkSameItemProcess->id);
+        }
+
         $product = $this->processUtil->getProcessableProductForCreate($request);
         return view('manufacturing.process.create', compact('product'));
     }
@@ -87,6 +100,7 @@ class ProcessController extends Controller
         ]);
 
         $addProcess = new Process();
+        $addProcess->branch_id = auth()->user()->branch_id;
         $addProcess->product_id = $request->product_id;
         $addProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : NULL;
         $addProcess->total_ingredient_cost = $request->total_ingredient_cost;

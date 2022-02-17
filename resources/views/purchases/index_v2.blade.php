@@ -70,7 +70,7 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">
-                                                                <i class="fas fa-calendar-week input_i"></i>
+                                                                <i class="fas fa-calendar-week input_f"></i>
                                                             </span>
                                                         </div>
                                                         <input type="text" name="from_date" id="datepicker"
@@ -84,7 +84,7 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">
-                                                                <i class="fas fa-calendar-week input_i"></i>
+                                                                <i class="fas fa-calendar-week input_f"></i>
                                                             </span>
                                                         </div>
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
@@ -257,7 +257,7 @@
             toastr.success('{{ session('successMsg') }}');
         @endif
 
-        purchase_table = $('.data_tbl').DataTable({
+        var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
@@ -370,13 +370,8 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    if ($.isEmptyObject(data.errorMsg)) {
-                        purchase_table.ajax.reload();
-                        toastr.error(data);
-                    }else{
-                        toastr.error(data.errorMsg);
-                    }
-                    
+                    table.ajax.reload();
+                    toastr.error(data);
                 },error: function(err) {
                     if (err.status == 0) {
                         toastr.error('Net Connetion Error. Reload This Page.'); 
@@ -398,7 +393,7 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    purchase_table.ajax.reload();
+                    table.ajax.reload();
                     toastr.success(data);
                     $('.loading_button').hide();
                     $('#changeStatusModal').modal('hide');
@@ -416,7 +411,7 @@
         $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
-            purchase_table.ajax.reload();
+            table.ajax.reload();
         });
 
         // Make print
@@ -433,12 +428,6 @@
                 printDelay: 500,
                 header: null,
             });
-        });
-
-        $(document).on('change', '#payment_method', function() {
-            var value = $(this).val();
-            $('.payment_method').hide();
-            $('#' + value).show();
         });
 
         $(document).on('click', '#add_payment', function(e) {
@@ -499,60 +488,6 @@
             });
         });
 
-        //Add purchase payment request by ajax
-        $(document).on('submit', '#payment_form', function(e) {
-            e.preventDefault();
-            $('.loading_button').show();
-            var available = $('#p_available_amount').val();
-            var paying_amount = $('#p_amount').val();
-            if (parseFloat(paying_amount) > parseFloat(available)) {
-                $('.error_p_amount').html('Paying amount must not be greater then due amount.');
-                $('.loading_button').hide();
-                return;
-            }
-            var url = $(this).attr('action');
-            var inputs = $('.p_input');
-            inputs.removeClass('is-invalid');
-            $('.error').html('');
-            var countErrorField = 0;
-            $.each(inputs, function(key, val) {
-                var inputId = $(val).attr('id');
-                var idValue = $('#' + inputId).val();
-                if (idValue == '') {
-                    countErrorField += 1;
-                    var fieldName = $('#' + inputId).data('name');
-                    $('.error_' + inputId).html(fieldName + ' is required.');
-                }
-            });
-
-            if (countErrorField > 0) {
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
-                return;
-            }
-
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    if (!$.isEmptyObject(data.errorMsg)) {
-                        toastr.error(data.errorMsg, 'ERROR');
-                        $('.loading_button').hide();
-                    } else {
-                        $('.loading_button').hide();
-                        $('#paymentModal').modal('hide');
-                        $('#paymentViewModal').modal('hide');
-                        toastr.success(data);
-                        purchase_table.ajax.reload();
-                    }
-                }
-            });
-        });
-
         $(document).on('click', '#delete_payment',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
@@ -578,7 +513,7 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    purchase_table.ajax.reload();
+                    table.ajax.reload();
                     $('#paymentViewModal').modal('hide');
                     toastr.success(data);
                 },error: function(err) {

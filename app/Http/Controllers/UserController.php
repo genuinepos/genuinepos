@@ -71,7 +71,7 @@ class UserController extends Controller
                 })
                 ->editColumn('branch', function ($row) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BRANCH</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>B.L</b>)';
                     } else {
                         return '(<b>Head Office</b>)';
                     }
@@ -121,28 +121,12 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'first_name' => 'required',
-            'email' => 'required|unique:admin_and_users,email',
         ]);
 
         if (isset($request->allow_login)) {
             $this->validate($request, [
                 'username' => 'required|unique:admin_and_users,username',
                 'password' => 'required|confirmed',
-            ]);
-        }
-
-        $addons = DB::table('addons')->first();
-        if ($addons->hrm == 1) {
-            $this->validate($request, [
-                'department_id' => 'required',
-                'shift_id' => 'required',
-                'emp_id' => 'required',
-                'salary' => 'required',
-                'pay_type' => 'required',
-            ], [
-                'department_id.required' => 'Department field is required.',
-                'shift_id.required' => 'Shift field is required.',
-                'emp_id.required' => 'Employee ID field is required.',
             ]);
         }
 
@@ -201,6 +185,7 @@ class UserController extends Controller
         $addUser->salary = $request->salary ? $request->salary : 0.00;
         $addUser->salary_type = $request->pay_type;
         $addUser->save();
+        
         session()->flash('successMsg', 'User created successfully');
         return response()->json('User created successfully');
     }
@@ -258,19 +243,19 @@ class UserController extends Controller
         }
 
         $addons = DB::table('addons')->first();
-        if ($addons->hrm == 1) {
-            $this->validate($request, [
-                'department_id' => 'required',
-                'shift_id' => 'required',
-                'emp_id' => 'required',
-                'salary' => 'required',
-                'pay_type' => 'required',
-            ], [
-                'department_id.required' => 'Department field is required.',
-                'shift_id.required' => 'Shift field is required.',
-                'emp_id.required' => 'Employee ID field is required.',
-            ]);
-        }
+        // if ($addons->hrm == 1) {
+        //     $this->validate($request, [
+        //         'department_id' => 'required',
+        //         'shift_id' => 'required',
+        //         'emp_id' => 'required',
+        //         'salary' => 'required',
+        //         'pay_type' => 'required',
+        //     ], [
+        //         'department_id.required' => 'Department field is required.',
+        //         'shift_id.required' => 'Shift field is required.',
+        //         'emp_id.required' => 'Employee ID field is required.',
+        //     ]);
+        // }
 
         //return $request->all();
         $updateUser->prefix = $request->prefix;
@@ -346,7 +331,7 @@ class UserController extends Controller
         $deleteUser = AdminAndUser::find($userId);
 
         if ($deleteUser->role_type == 1) {
-            abort(403, 'Access Forbidden.');
+            return response()->json('Super-admin can be deleted');
         }
 
         if (!is_null($deleteUser)) {

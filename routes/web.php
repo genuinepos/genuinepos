@@ -1,12 +1,16 @@
 <?php
 
+use App\Models\Purchase;
 use App\Models\AdminAndUser;
+use App\Models\CustomerLedger;
+use App\Models\SupplierLedger;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Utils\AccountUtil;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -25,6 +29,11 @@ Route::get('route-list', function () {
         echo '<h1>Access Denied</h1>';
         return null;
     }
+});
+
+Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controllers'], function () {
+    Route::get('branch/authenticated/users/{branchId}', 'CommonAjaxCallController@branchAuthenticatedUsers');
+    Route::get('category/subcategories/{categoryId}', 'CommonAjaxCallController@categorySubcategories');
 });
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
@@ -73,7 +82,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('default/profit', 'ProductController@defaultProfit')->name('products.add.get.default.profit');
         Route::delete('delete/{productId}', 'ProductController@delete')->name('products.delete');
         Route::delete('multiple/delete', 'ProductController@multipleDelete')->name('products.multiple.delete');
-        Route::get('all/sub/category/{categoryId}', 'ProductController@allFromSubCategory');
         Route::get('all/form/variant', 'ProductController@getAllFormVariants')->name('products.add.get.all.from.variant');
         Route::get('search/product/{productCode}', 'ProductController@searchProduct');
         Route::get('get/product/stock/{productId}', 'ProductController@getProductStock');
@@ -159,8 +167,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::delete('delete/{supplierId}', 'SupplierController@delete')->name('contacts.supplier.delete');
         Route::get('change/status/{supplierId}', 'SupplierController@changeStatus')->name('contacts.supplier.change.status');
         Route::get('view/{supplierId}', 'SupplierController@view');
-        Route::get('all/info/{supplierId}', 'SupplierController@SupplierAllInfo')->name('contacts.supplier.all.info');
-        Route::get('payment/list/{supplierId}', 'SupplierController@paymentList')->name('contacts.supplier.payment.list');
+        Route::get('ledgers/{supplierId}', 'SupplierController@ledgers')->name('contacts.supplier.ledgers');
         Route::get('purchase/list/{supplierId}', 'SupplierController@purchaseList')->name('contacts.supplier.purchase.list');
         Route::get('print/ledger/{supplierId}', 'SupplierController@ledgerPrint')->name('contacts.supplier.ledger.print');
         Route::get('purchases/{supplierId}', 'SupplierController@purchases');
@@ -191,8 +198,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::delete('delete/{customerId}', 'CustomerController@delete')->name('contacts.customer.delete');
         Route::get('change/status/{customerId}', 'CustomerController@changeStatus')->name('contacts.customer.change.status');
         Route::get('view/{customerId}', 'CustomerController@view');
-        Route::get('all/info/{customerId}', 'CustomerController@cutomerAllInfo')->name('contacts.customer.all.info');
-        Route::get('ledger/list/{customerId}', 'CustomerController@ledgerList')->name('contacts.customer.ledger.list');
+        Route::get('ledgers/list/{customerId}', 'CustomerController@ledgerList')->name('contacts.customer.ledger.list');
         Route::get('print/ledger/{customerId}', 'CustomerController@ledgerPrint')->name('contacts.customer.ledger.print');
         Route::get('payment/{customerId}', 'CustomerController@payment')->name('customers.payment');
         Route::post('payment/{customerId}', 'CustomerController@paymentAdd')->name('customers.payment.add');
@@ -352,7 +358,6 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::post('return/payment/update/{paymentId}', 'SaleController@returnPaymentUpdate')->name('sales.return.payment.update');
 
     Route::get('add/product/modal/view', 'SaleController@addProductModalVeiw')->name('sales.add.product.modal.view');
-    Route::get('get/all/sub/category/{categoryId}', 'SaleController@getAllSubCategory');
     Route::post('add/product', 'SaleController@addProduct')->name('sales.add.product');
     Route::get('get/recent/product/{product_id}', 'SaleController@getRecentProduct');
     Route::get('get/product/price/group', 'SaleController@getProductPriceGroup')->name('sales.product.price.groups');
@@ -374,8 +379,9 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::group(['prefix' => 'cash/register'], function () {
         Route::get('/', 'CashRegisterController@create')->name('sales.cash.register.create');
         Route::post('store', 'CashRegisterController@store')->name('sales.cash.register.store');
-        Route::get('close/cash/registser/modal/view', 'CashRegisterController@closeCashRegisterModalView')->name('sales.cash.register.close.modal.view');
-        Route::get('close/cash/registser/details', 'CashRegisterController@cashRegisterDetails')->name('sales.cash.register.details');
+        Route::get('close/cash/register/modal/view', 'CashRegisterController@closeCashRegisterModalView')->name('sales.cash.register.close.modal.view');
+        Route::get('cash/register/details', 'CashRegisterController@cashRegisterDetails')->name('sales.cash.register.details');
+        Route::get('cash/register/details/for/report/{crId}', 'CashRegisterController@cashRegisterDetailsForReport')->name('sales.cash.register.details.for.report');
         Route::post('close', 'CashRegisterController@close')->name('sales.cash.register.close');
     });
 
@@ -515,21 +521,23 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
 
     Route::group(['prefix' => 'accounts'], function () {
         Route::get('/', 'AccountController@index')->name('accounting.accounts.index');
-        Route::get('all/account', 'AccountController@allAccounts')->name('accounting.accounts.all.account');
         Route::get('account/book/{accountId}', 'AccountController@accountBook')->name('accounting.accounts.book');
+        Route::get('account/ledger/print/{accountId}', 'AccountController@ledgerPrint')->name('accounting.accounts.ledger.print');
         Route::post('store', 'AccountController@store')->name('accounting.accounts.store');
-        Route::get('edit/{accountId}', 'AccountController@edit')->name('accounting.accounts.edit');
-        Route::post('update/{accountId}', 'AccountController@update')->name('accounting.accounts.update');
+        Route::get('edit/{id}', 'AccountController@edit')->name('accounting.accounts.edit');
+        Route::post('update/{id}', 'AccountController@update')->name('accounting.accounts.update');
         Route::delete('delete/{accountId}', 'AccountController@delete')->name('accounting.accounts.delete');
-        Route::get('all/banks', 'AccountController@allBanks')->name('accounting.accounts.all.banks');
-        Route::get('all/account/types', 'AccountController@allAccountTypes')->name('accounting.accounts.all.account.types');
-        Route::get('all/form/account', 'AccountController@allFromAccount')->name('accounting.accounts.all.form.account');
-        Route::post('fund/transfer', 'AccountController@fundTransfer')->name('accounting.accounts.fund.transfer');
+    });
 
-        Route::post('deposit', 'AccountController@deposit')->name('accounting.accounts.fund.deposit');
-        Route::get('account/cash/flows/{accountId}', 'AccountController@accountCashflows')->name('accounting.accounts.account.cash.flows');
-        Route::get('account/cash/flow/filter/{accountId}', 'AccountController@accountCashflowFilter')->name('accounting.accounts.account.cash.flow.filter');
-        Route::delete('delete/cash/flow/{cashFlowId}', 'AccountController@deleteCashFlow')->name('accounting.accounts.account.delete.cash.flow');
+    Route::group(['prefix' => 'contras'], function () {
+        Route::get('/', 'ContraController@index')->name('accounting.contras.index');
+        Route::get('create', 'ContraController@create')->name('accounting.contras.create');
+        Route::get('show/{contraId}', 'ContraController@show')->name('accounting.contras.show');
+        Route::get('account/book/{contraId}', 'ContraController@accountBook')->name('accounting.contras.book');
+        Route::post('store', 'ContraController@store')->name('accounting.contras.store');
+        Route::get('edit/{contraId}', 'ContraController@edit')->name('accounting.contras.edit');
+        Route::post('update/{contraId}', 'ContraController@update')->name('accounting.contras.update');
+        Route::delete('delete/{contraId}', 'ContraController@delete')->name('accounting.contras.delete');
     });
 
     Route::group(['prefix' => '/'], function () {
@@ -538,7 +546,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::get('trial/balance', 'AccountingRelatedSectionController@trialBalance')->name('accounting.trial.balance');
         Route::get('trial/balance/amounts', 'AccountingRelatedSectionController@trialBalanceAmounts')->name('accounting.trial.balance.amounts');
         Route::get('cash/flow', 'AccountingRelatedSectionController@cashFow')->name('accounting.cash.flow');
-        Route::get('all/cash/flow', 'AccountingRelatedSectionController@allCashflows')->name('accounting.all.cash.flow');
+        Route::get('cash/flow/amounts', 'AccountingRelatedSectionController@cashFlowAmounts')->name('accounting.cash.flow.amounts');
         Route::get('filter/cash/flow', 'AccountingRelatedSectionController@filterCashflows')->name('accounting.filter.cash.flow');
         Route::get('print/cash/flow', 'AccountingRelatedSectionController@printCashflow')->name('accounting.print.cash.flow');
     });
@@ -580,10 +588,10 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         });
 
         Route::group(['prefix' => 'payments'], function () {
-            Route::get('due/receive/modal/{company_id}', 'LoanPaymentController@dueReceiveModal')->name('accounting.loan.payment.due.receive.modal');
-            Route::post('due/receive/store/{company_id}', 'LoanPaymentController@dueReceiveStore')->name('accounting.loan.payment.due.receive.store');
-            Route::get('due/pay/modal/{company_id}', 'LoanPaymentController@duePayModal')->name('accounting.loan.payment.due.pay.modal');
-            Route::post('due/pay/store/{company_id}', 'LoanPaymentController@duePayStore')->name('accounting.loan.payment.due.pay.store');
+            Route::get('due/receive/modal/{company_id}', 'LoanPaymentController@loanAdvanceReceiveModal')->name('accounting.loan.advance.receive.modal');
+            Route::post('due/receive/store/{company_id}', 'LoanPaymentController@loanAdvanceReceiveStore')->name('accounting.loan.advance.receive.store');
+            Route::get('due/pay/modal/{company_id}', 'LoanPaymentController@loaLiabilityPaymentModal')->name('accounting.loan.liability.payment.modal');
+            Route::post('due/pay/store/{company_id}', 'LoanPaymentController@loanLiabilityPaymentStore')->name('accounting.loan.liability.payment.store');
             Route::get('payment/list/{company_id}', 'LoanPaymentController@paymentList')->name('accounting.loan.payment.list');
             Route::delete('delete/{payment_id}', 'LoanPaymentController@delete')->name('accounting.loan.payment.delete');
         });
@@ -594,14 +602,13 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     Route::group(['prefix' => 'branches'], function () {
         Route::get('/', 'BranchController@index')->name('settings.branches.index');
         Route::get('get/all/branch', 'BranchController@getAllBranch')->name('settings.get.all.branch');
-        Route::get('all/accounts', 'BranchController@getAllAccounts')->name('settings.get.all.accounts');
+        Route::get('create', 'BranchController@create')->name('settings.branches.create');
         Route::post('store', 'BranchController@store')->name('settings.branches.store');
         Route::get('edit/{branchId}', 'BranchController@edit')->name('settings.branches.edit');
         Route::post('update/{branchId}', 'BranchController@update')->name('settings.branches.update');
         Route::delete('delete/{id}', 'BranchController@delete')->name('settings.branches.delete');
-        Route::get('all/schemas', 'BranchController@allSchemas')->name('settings.all.invoice.schemas');
-        Route::get('all/layouts', 'BranchController@allLayouts')->name('settings.all.invoice.layouts');
-        Route::post('quick/invoice/schema', 'BranchController@quickInvoiceSchema')->name('settings.branches.quick.invoice.schema');
+        Route::get('quick/invoice/schema/modal', 'BranchController@quickInvoiceSchemaModal')->name('settings.branches.quick.invoice.schema.modal');
+        Route::post('quick/invoice/schema/store', 'BranchController@quickInvoiceSchemaStore')->name('settings.branches.quick.invoice.schema.store');
     });
 
     Route::group(['prefix' => 'warehouses'], function () {
@@ -803,6 +810,7 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
         Route::get('/', 'CashRegisterReportController@index')->name('reports.cash.registers.index');
         Route::get('get', 'CashRegisterReportController@getCashRegisterReport')->name('reports.get.cash.registers');
         Route::get('details/{cashRegisterId}', 'CashRegisterReportController@detailsCashRegister')->name('reports.get.cash.register.details');
+        Route::get('report/print', 'CashRegisterReportController@reportPrint')->name('reports.get.cash.register.report.print');
     });
 
     Route::group(['prefix' => 'sale/representive'], function () {
@@ -875,6 +883,7 @@ Route::get('pin_login', function () {
 });
 
 Route::get('/test', function () {
+
     //return str_pad(10, 10, "0", STR_PAD_LEFT);
     // $purchases = Purchase::all();
     // foreach ($purchases as $p) {
@@ -882,7 +891,82 @@ Route::get('/test', function () {
     //     $p->save();
     // }
 
-    //return array_merge($arr1, $arr2, $arr3);
+    // $customerLedgers = CustomerLedger::with('sale', 'sale_payment', 'customer_payment')->get();
+
+    // foreach ($customerLedgers as $ledger) {
+
+    //     if ($ledger->amount != NULL) {
+    //         $ledger->voucher_type = 0;
+    //         $ledger->debit = $ledger->amount;
+    //         $ledger->amount_type = 'debit';
+    //         $ledger->report_date =  $ledger->created_at;
+    //     }
+
+    //     if ($ledger->sale_id) {
+
+    //         $ledger->voucher_type = 1;
+    //         $ledger->debit = $ledger->sale->total_payable_amount;
+    //         $ledger->amount_type = 'debit';
+    //         $ledger->amount = $ledger->sale->total_payable_amount;
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->sale->date . date(' H:i:s')));
+    //     } elseif ($ledger->sale_payment_id) {
+
+    //         $ledger->voucher_type = 3;
+    //         $ledger->credit = $ledger->sale_payment->paid_amount;
+    //         $ledger->amount = $ledger->sale_payment->paid_amount;
+    //         $ledger->amount_type = 'credit';
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->sale_payment->date . date(' H:i:s')));
+    //     } elseif ($ledger->customer_payment_id) {
+
+    //         $ledger->voucher_type = 5;
+    //         $ledger->credit = $ledger->customer_payment->paid_amount;
+    //         $ledger->amount = $ledger->customer_payment->paid_amount;
+    //         $ledger->amount_type = 'credit';
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->customer_payment->date . date(' H:i:s')));
+    //     }
+
+    //     $ledger->save();
+    // }
+
+    // $supplierLedgers = SupplierLedger::with('purchase', 'purchase_payment', 'supplier_payment')->get();
+
+    // foreach ($supplierLedgers as $ledger) {
+
+    //     if ($ledger->amount != NULL) {
+    //         $ledger->voucher_type = 0;
+    //         $ledger->credit = $ledger->amount;
+    //         $ledger->amount_type = 'credit';
+    //         $ledger->report_date =  $ledger->created_at;
+    //     }
+
+    //     if ($ledger->purchase_id) {
+
+    //         $ledger->voucher_type = 1;
+    //         $ledger->debit = $ledger->purchase->total_purchase_amount;
+    //         $ledger->amount = $ledger->purchase->total_purchase_amount;
+    //         $ledger->amount_type = 'credit';
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->purchase->date . date(' H:i:s')));
+    //     } elseif ($ledger->purchase_payment_id) {
+
+    //         $ledger->voucher_type = 3;
+    //         $ledger->credit = $ledger->purchase_payment->paid_amount;
+    //         $ledger->amount = $ledger->purchase_payment->paid_amount;
+    //         $ledger->amount_type = 'debit';
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->purchase_payment->date . date(' H:i:s')));
+    //     } elseif ($ledger->supplier_payment_id) {
+
+    //         $ledger->voucher_type = 5;
+    //         $ledger->credit = $ledger->supplier_payment->paid_amount;
+    //         $ledger->amount = $ledger->supplier_payment->paid_amount;
+    //         $ledger->amount_type = 'debit';
+    //         $ledger->report_date = date('Y-m-d H:i:s', strtotime($ledger->supplier_payment->date . date(' H:i:s')));
+    //     }
+
+    //     $ledger->save();
+    // }
+
+    // return 'done';
+    
 });
 
 // All authenticated routes

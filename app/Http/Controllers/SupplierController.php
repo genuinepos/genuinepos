@@ -121,25 +121,37 @@ class SupplierController extends Controller
             'phone' => 'required',
         ]);
 
-        Supplier::where('id', $request->id)->update([
-            'contact_id' => $request->contact_id,
-            'name' => $request->name,
-            'business_name' => $request->business_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'alternative_phone' => $request->phone,
-            'landline' => $request->phone,
-            'date_of_birth' => $request->date_of_birth,
-            'tax_number' => $request->tax_number,
-            'pay_term' => $request->pay_term,
-            'pay_term_number' => $request->pay_term_number,
-            'address' => $request->address,
-            'city' => $request->city,
-            'zip_code' => $request->zip_code,
-            'country' => $request->country,
-            'state' => $request->state,
-            'shipping_address' => $request->shipping_address,
-        ]);
+        $updateSupplier = Supplier::where('id', $request->id)->first();
+
+        $updateSupplier->contact_id = $request->contact_id;
+        $updateSupplier->name = $request->name;
+        $updateSupplier->business_name = $request->business_name;
+        $updateSupplier->email = $request->email;
+        $updateSupplier->phone = $request->phone;
+        $updateSupplier->alternative_phone = $request->phone;
+        $updateSupplier->landline = $request->phone;
+        $updateSupplier->date_of_birth = $request->date_of_birth;
+        $updateSupplier->tax_number = $request->tax_number;
+        $updateSupplier->pay_term = $request->pay_term;
+        $updateSupplier->pay_term_number = $request->pay_term_number;
+        $updateSupplier->address = $request->address;
+        $updateSupplier->city = $request->city;
+        $updateSupplier->zip_code = $request->zip_code;
+        $updateSupplier->country = $request->country;
+        $updateSupplier->state = $request->state;
+        $updateSupplier->shipping_address = $request->shipping_address;
+        $updateSupplier->opening_balance = $request->opening_balance ? $request->opening_balance : 0;
+        $updateSupplier->save();
+
+        // Add supplier Ledger
+        $this->supplierUtil->updateSupplierLedger(
+            voucher_type_id : 0,
+            supplier_id : $updateSupplier->id,
+            date : $updateSupplier->created_at,
+            trans_id : NULL,
+            amount : $updateSupplier->opening_balance,
+            fixed_date : $updateSupplier->created_at,
+        );
 
         return response()->json('Supplier updated successfully');
     }
@@ -781,7 +793,7 @@ class SupplierController extends Controller
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
 
-                        $addPurchasePayment->invoice_id = 'RPV'. $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+                        $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
 
                         $addPurchasePayment->purchase_id = $returnPurchase->id;
                         $addPurchasePayment->supplier_id = $supplierId;
@@ -906,7 +918,7 @@ class SupplierController extends Controller
                             $addPurchasePayment = new PurchasePayment();
 
                             $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
-                            
+
                             $addPurchasePayment->supplier_id = $supplierId;
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
                             $addPurchasePayment->supplier_return_id = $dueSupplierReturnInvoice->id;

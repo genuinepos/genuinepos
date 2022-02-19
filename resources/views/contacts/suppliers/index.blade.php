@@ -67,7 +67,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -147,13 +146,17 @@
                             </div>
 
                             <div class="col-md-3">
-                                <b>Pay Term :</b>
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <input type="text" name="pay_term_number" class="form-control  w-50"/>
-                                        <select name="pay_term" class="form-control  w-50">
-                                            <option value="">Select term</option>
-                                            <option value="1">Days </option>
+                                <label><b>Pay Term</b> : </label>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <input type="number" step="any" name="pay_term_number" class="form-control"
+                                        id="pay_term_number" placeholder="Number"/>
+                                    </div>
+                                    
+                                    <div class="col-md-7">
+                                        <select name="pay_term" class="form-control">
+                                            <option value="">Days/Months</option>
+                                            <option value="1">Days</option>
                                             <option value="2">Months</option>
                                         </select>
                                     </div>

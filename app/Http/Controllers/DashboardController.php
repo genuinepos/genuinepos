@@ -146,6 +146,7 @@ class DashboardController extends Controller
     public function stockAlert(Request $request)
     {
         if ($request->ajax()) {
+
             $products = DB::table('products')
                 ->join('units', 'products.unit_id', 'units.id')
                 ->select(
@@ -169,6 +170,7 @@ class DashboardController extends Controller
     public function saleOrder(Request $request)
     {
         if ($request->ajax()) {
+
             $generalSettings = DB::table('general_settings')->first();
             $sales = '';
             $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
@@ -176,15 +178,20 @@ class DashboardController extends Controller
                 ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $query->where('sales.branch_id', NULL);
                 } else {
+
                     $query->where('sales.branch_id', $request->branch_id);
                 }
             }
 
             if ($request->date_range != 'all_time') {
+
                 if ($request->date_range) {
+
                     $date_range = explode('~', $request->date_range);
                     $form_date = date('Y-m-d', strtotime($date_range[0]));
                     $to_date = date('Y-m-d', strtotime($date_range[1]));
@@ -207,32 +214,42 @@ class DashboardController extends Controller
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 $sales = $query->orderBy('id', 'desc')->where('sales.shipment_status', 1)->get();
             } else {
+
                 $sales = $query->where('sales.branch_id', auth()->user()->branch_id)
                     ->where('sales.shipment_status', 1)->get();
             }
 
             return DataTables::of($sales)
                 ->editColumn('date', function ($row) {
+
                     return date('d/m/Y', strtotime($row->date));
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
+
                     if ($row->branch_name) {
+
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
+
                         return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('shipment_status',  function ($row) {
+
                     if ($row->shipment_status == 1) {
+
                         return '<span class="badge bg-warning">Ordered</span>';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
+
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
                 ->editColumn('created_by',  function ($row) {
+
                     return $row->c_prefix . ' ' . $row->c_name . ' ' . $row->c_last_name;
                 })
                 ->rawColumns(['date', 'from', 'customer', 'created_by', 'shipment_status'])
@@ -243,6 +260,7 @@ class DashboardController extends Controller
     public function saleDue(Request $request)
     {
         if ($request->ajax()) {
+
             $generalSettings = DB::table('general_settings')->first();
             $sales = '';
             $query = DB::table('sales')
@@ -250,15 +268,20 @@ class DashboardController extends Controller
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id');
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $query->where('sales.branch_id', NULL);
                 } else {
+
                     $query->where('sales.branch_id', $request->branch_id);
                 }
             }
 
             if ($request->date_range != 'all_time') {
+
                 if ($request->date_range) {
+
                     $date_range = explode('~', $request->date_range);
                     $form_date = date('Y-m-d', strtotime($date_range[0]));
                     $to_date = date('Y-m-d', strtotime($date_range[1]));
@@ -277,27 +300,35 @@ class DashboardController extends Controller
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 $sales = $query->where('sales.due', '>', 0)->where('sales.status', 1)->orderBy('id', 'desc')->get();
             } else {
+
                 $sales = $query->where('sales.branch_id', auth()->user()->branch_id)
                     ->where('sales.due', '>', 0)->where('sales.status', 1)->get();
             }
 
             return DataTables::of($sales)
                 ->editColumn('date', function ($row) {
+
                     return date('d/m/Y', strtotime($row->date));
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
+
                     if ($row->branch_name) {
+
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
+
                         return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
+
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
                 ->editColumn('due',  function ($row) use ($generalSettings) {
+                    
                     return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
                 })
                 ->rawColumns(['date', 'from', 'customer', 'due'])

@@ -155,12 +155,12 @@ class SupplierUtil
         return $data[$voucher_type_id];
     }
 
-    public function addSupplierLedger($voucher_type_id, $supplier_id, $date, $trans_id, $amount, $fixed_date = null)
+    public function addSupplierLedger($voucher_type_id, $supplier_id, $date, $trans_id, $amount,)
     {
         $voucher_type = $this->voucherType($voucher_type_id);
         $addSupplierLedger = new SupplierLedger();
         $addSupplierLedger->supplier_id = $supplier_id;
-        $addSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $addSupplierLedger->report_date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         $addSupplierLedger->{$voucher_type['id']} = $trans_id;
         $addSupplierLedger->{$voucher_type['amt']} = $amount;
         $addSupplierLedger->amount = $amount;

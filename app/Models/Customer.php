@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     protected $guarded = [];
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['updated_at'];
     public function customer_group()
     {
         return $this->belongsTo(CustomerGroup::class, 'customer_group_id');

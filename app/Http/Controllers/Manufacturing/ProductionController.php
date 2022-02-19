@@ -21,16 +21,19 @@ class ProductionController extends Controller
     protected $productStockUtil;
     protected $productionUtil;
     protected $accountUtil;
+    protected $purchaseUtil;
     public function __construct(
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         ProductStockUtil $productStockUtil,
         ProductionUtil $productionUtil,
-        AccountUtil $accountUtil
+        AccountUtil $accountUtil,
+        PurchaseUtil $purchaseUtil
     ) {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->productStockUtil = $productStockUtil;
         $this->productionUtil = $productionUtil;
         $this->accountUtil = $accountUtil;
+        $this->purchaseUtil = $purchaseUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -313,8 +316,14 @@ class ProductionController extends Controller
             ->get();
 
         $taxes = DB::table('taxes')->select('id', 'tax_percent', 'tax_name')->get();
+
+        $productionAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 23)
+            ->get(['accounts.id', 'accounts.name']);
         
-        return view('manufacturing.production.edit', compact('warehouses', 'production', 'taxes'));
+        return view('manufacturing.production.edit', compact('warehouses', 'production', 'taxes', 'productionAccounts'));
     }
 
     public function update(Request $request, $productionId)
@@ -330,23 +339,23 @@ class ProductionController extends Controller
 
         $this->validate($request, [
             'production_account_id' => 'required',
-            'process_id' => 'required',
             'date' => 'required',
             'output_quantity' => 'required',
             'final_output_quantity' => 'required',
             'total_cost' => 'required',
         ], [
             'production_account_id.required' => 'Production A/C is required',
-            'process_id.required' => 'Please select the product',
         ]);
 
         if (isset($request->store_warehouse_id) && isset($request->stock_warehouse_id)) {
+
             $this->validate($request, [
                 'store_warehouse_id' => 'required',
             ]);
         }
 
         if (!isset($request->product_ids)) {
+
             return response()->json(['errorMsg' => 'Ingredients list must not be empty.']);
         }
 
@@ -420,6 +429,7 @@ class ProductionController extends Controller
         }
         
         if (isset($request->product_ids)) {
+
             $index = 0;
             foreach ($request->product_ids as $product_id) {
 

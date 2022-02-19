@@ -27,7 +27,7 @@ class CustomerController extends Controller
     public $converter;
     public $invoiceVoucherRefIdUtil;
     public $saleUtil;
-    
+
     public function __construct(CustomerUtil $customerUtil, AccountUtil $accountUtil, Converter $converter, SaleUtil $saleUtil, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
         $this->customerUtil = $customerUtil;
@@ -64,7 +64,9 @@ class CustomerController extends Controller
         ]);
 
         $generalSettings = DB::table('general_settings')->first('prefix');
+
         $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
+        
         $addCustomer = Customer::create([
             'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
@@ -120,6 +122,7 @@ class CustomerController extends Controller
     public function update(Request $request)
     {
         if (auth()->user()->permission->contact['customer_edit'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -128,26 +131,36 @@ class CustomerController extends Controller
             'phone' => 'required',
         ]);
 
-        Customer::where('id', $request->id)->update([
-            'name' => $request->name,
-            'business_name' => $request->business_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'alternative_phone' => $request->alternative_phone,
-            'landline' => $request->landline,
-            'date_of_birth' => $request->date_of_birth,
-            'tax_number' => $request->tax_number,
-            'pay_term' => $request->pay_term,
-            'pay_term_number' => $request->pay_term_number,
-            'customer_group_id' => $request->customer_group_id,
-            'address' => $request->address,
-            'city' => $request->city,
-            'zip_code' => $request->zip_code,
-            'country' => $request->country,
-            'state' => $request->state,
-            'shipping_address' => $request->shipping_address,
-            'credit_limit' => $request->credit_limit,
-        ]);
+        $updateCustomer = Customer::where('id', $request->id)->first();
+        $updateCustomer->name = $request->name;
+        $updateCustomer->business_name = $request->business_name;
+        $updateCustomer->email = $request->email;
+        $updateCustomer->phone = $request->phone;
+        $updateCustomer->alternative_phone = $request->alternative_phone;
+        $updateCustomer->landline = $request->landline;
+        $updateCustomer->date_of_birth = $request->date_of_birth;
+        $updateCustomer->tax_number = $request->tax_number;
+        $updateCustomer->pay_term = $request->pay_term;
+        $updateCustomer->pay_term_number = $request->pay_term_number;
+        $updateCustomer->customer_group_id = $request->customer_group_id;
+        $updateCustomer->address = $request->address;
+        $updateCustomer->city = $request->city;
+        $updateCustomer->zip_code = $request->zip_code;
+        $updateCustomer->country = $request->country;
+        $updateCustomer->state = $request->state;
+        $updateCustomer->shipping_address = $request->shipping_address;
+        $updateCustomer->credit_limit = $request->credit_limit;
+        $updateCustomer->opening_balance = $request->opening_balance ? $request->opening_balance : 0;
+        $updateCustomer->save();
+
+        $this->customerUtil->updateCustomerLedger(
+            voucher_type_id : 0, 
+            customer_id : $updateCustomer->id, 
+            date : $updateCustomer->created_at, 
+            trans_id : NULL, 
+            amount : $updateCustomer->opening_balance, 
+            fixed_date : $updateCustomer->created_at
+        );
 
         return response()->json('Customer updated successfully');
     }
@@ -488,7 +501,7 @@ class CustomerController extends Controller
         $customerPayment->account_id = $request->account_id;
         $customerPayment->paid_amount = $request->paying_amount;
         $customerPayment->payment_method_id = $request->payment_method_id;
-        $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $customerPayment->date = $request->date;
         $customerPayment->time = date('h:i:s a');
         $customerPayment->month = date('F');

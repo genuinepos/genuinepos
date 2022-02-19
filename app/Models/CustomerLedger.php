@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Sale;
+use App\Models\Customer;
 use App\Models\SalePayment;
 use App\Models\MoneyReceipt;
 use Illuminate\Database\Eloquent\Model;
@@ -30,5 +31,10 @@ class CustomerLedger extends Model
     public function customer_payment()
     {
         return $this->belongsTo(CustomerPayment::class, 'customer_payment_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 }

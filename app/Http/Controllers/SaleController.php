@@ -206,8 +206,7 @@ class SaleController extends Controller
 
     // Add Sale method
     public function store(Request $request)
-    {
-        
+    { 
         $this->validate($request, [
             'status' => 'required',
             'date' => 'required',
@@ -262,8 +261,6 @@ class SaleController extends Controller
             
             return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
         }
-
-        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
 
         $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
 

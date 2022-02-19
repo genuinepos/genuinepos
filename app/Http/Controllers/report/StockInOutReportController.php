@@ -129,7 +129,7 @@ class StockInOutReportController extends Controller
                     if ($row->purchase_inv) {
                         return 'Purchase: ' . '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="text-danger text-hover" id="details" title="view" >' . $row->purchase_inv . '</a>';
                     } else if ($row->production_voucher_no) {
-                        return 'Production: ' . '<a href="' . route('sales.show', [$row->production_id]) . '" class="text-danger text-hover" id="details" title="view" >' . $row->production_voucher_no . '</a>';
+                        return 'Production: ' . '<a href="' . route('manufacturing.productions.show', [$row->production_id]) . '" class="text-danger text-hover" id="details" title="view" >' . $row->production_voucher_no . '</a>';
                     } else if ($row->pos_id) {
                         return 'Opening Stock';
                     }

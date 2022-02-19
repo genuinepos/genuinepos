@@ -816,7 +816,7 @@ class PurchaseUtil
         $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addPurchasePayment->month = date('F');
         $addPurchasePayment->year = date('Y');
-        $addPurchasePayment->note = $request->note;
+        $addPurchasePayment->note = $request->payment_note;
         $addPurchasePayment->admin_id = auth()->user()->id;
 
         if ($request->hasFile('attachment')) {

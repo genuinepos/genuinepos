@@ -200,7 +200,7 @@
         $('.filter_body').toggle(500);
     });
 
-    product_table = $('.data_tbl').DataTable({
+    var product_table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [
             {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
@@ -230,15 +230,15 @@
             {data: 'photo',name: 'photo'},
             {data: 'action',name: 'action'},
             {data: 'name',name: 'products.name'},
-            {data: 'product_cost_with_tax',name: 'products.product_cost_with_tax'},
-            {data: 'product_price',name: 'products.product_price'},
-            {data: 'product_quantity',name: 'product_branches.product_quantity'},
-            {data: 'type',name: 'products.type'},
-            {data: 'cate_name',name: 'categories.name'},
-            {data: 'brand_name',name: 'brands.name'},
+            {data: 'product_cost_with_tax', name: 'products.product_cost_with_tax'},
+            {data: 'product_price', name: 'products.product_price'},
+            {data: 'product_quantity', name: 'product_branches.product_quantity'},
+            {data: 'type', name: 'products.type'},
+            {data: 'cate_name', name: 'categories.name'},
+            {data: 'brand_name', name: 'brands.name'},
             {data: 'tax_name', name: 'taxes.tax_name'},
-            {data: 'expire_date',name: 'expire_date'},
-            {data: 'status',name: 'status'},
+            {data: 'expire_date',name: 'products.expire_date'},
+            {data: 'status', name: 'products.status'},
         ],
     });
 

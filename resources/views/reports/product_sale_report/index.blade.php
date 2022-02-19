@@ -250,7 +250,9 @@
     $('#search_product').on('input', function () {
         $('.search_result').hide();
         var product_name = $(this).val();
+
         if (product_name === '') {
+
             $('.search_result').hide();
             $('#product_id').val('');
             $('#variant_id').val('');
@@ -258,7 +260,8 @@
         }
 
         $.ajax({
-            url:"{{ url('reports/product/purchases/search/product') }}"+"/"+product_name,
+            // url:"{{ url('reports/product/purchases/search/product') }}"+"/"+product_name,
+            url:"{{ url('common/ajax/call/only/search/product/for/reports') }}"+"/"+product_name,
             async:true,
             type:'get',
             success:function(data){

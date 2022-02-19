@@ -34,6 +34,11 @@
                                     <div class="btn_30_blue float-end">
                                         <a href="{{ route('contacts.customers.import.create') }}"><i class="fas fa-plus-square"></i> Import Customers</a>
                                     </div>
+
+                                    <div class="btn_30_blue float-end">
+                                        <a href="#" class="print_report"><i class="fas fa-print"></i> Print All</a>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -388,7 +393,6 @@
             buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
-                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
             ],
             "processing": true,
             "serverSide": true,
@@ -940,6 +944,32 @@
                     }
                 });
             });
+        });
+
+        //Print supplier report
+        $(document).on('click', '.print_report', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            var url = "{{ route('reports.customer.print') }}";
+            var customer_id = $('#customer_id').val();
+            console.log(customer_id);
+            $.ajax({
+                url:url,
+                type:'get',
+                data: {customer_id},
+                success:function(data){
+                    $('.data_preloader').hide();
+                    $(data).printThis({
+                        debug: false,                   
+                        importCSS: true,                
+                        importStyle: true,          
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                        removeInline: false, 
+                        printDelay: 700, 
+                        header: null,        
+                    });
+                }
+            }); 
         });
     </script>
 @endpush

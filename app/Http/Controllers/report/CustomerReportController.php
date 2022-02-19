@@ -30,7 +30,7 @@ class CustomerReportController extends Controller
 
             $customers = $query->select(
                 'customers.name',
-                'customers.contact_id',
+                // 'customers.contact_id',
                 'customers.phone',
                 'customers.address',
                 'customers.opening_balance',
@@ -42,10 +42,10 @@ class CustomerReportController extends Controller
 
             return DataTables::of($customers)
                 ->editColumn('name', function ($row) {
-                    return $row->name.' (ID: '.$row->contact_id.')';
+                    return $row->name.'(<b>'.$row->phone.'</b>)';
                 })
                 ->editColumn('opening_balance', fn ($row) => '<span class="opening_balance" data-value="' . $row->opening_balance . '">' . $this->converter->format_in_bdt($row->opening_balance) . '</span>')
-                ->editColumn('total_paid', fn ($row) => '<span class="total_paid" data-value="' . $row->total_paid . '">' . $this->converter->format_in_bdt($row->total_paid) . '</span></b>')
+                ->editColumn('total_paid', fn ($row) => '<span class="total_paid" data-value="' . $row->total_paid . '">' . $this->converter->format_in_bdt($row->total_paid) . '</span></>')
                 ->editColumn('total_sale_due', fn ($row) => '<span class="total_purchase_due" data-value="' . $row->total_sale_due . '">' . $this->converter->format_in_bdt($row->total_sale_due) . '</span>')
                 ->editColumn('total_sale', fn ($row) => '<span class="total_sale" data-value="' . $row->total_sale . '">' . $this->converter->format_in_bdt($row->total_sale) . '</span>')
                 ->editColumn('total_sale_return_due', fn ($row) => '<span class="total_sale_return_due" data-value="' . $row->total_sale_return_due . '">' . $this->converter->format_in_bdt($row->total_sale_return_due) . '</span>')
@@ -67,7 +67,7 @@ class CustomerReportController extends Controller
 
         $customerReports = $query->select(
             'customers.name',
-            'customers.contact_id',
+            // 'customers.contact_id',
             'customers.phone',
             'customers.address',
             'customers.opening_balance',

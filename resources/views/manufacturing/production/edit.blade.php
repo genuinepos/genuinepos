@@ -30,14 +30,27 @@
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-2">
+                                            <label><b>Production A/C : <span class="text-danger">*</span></b></label>
+                                            <select name="production_account_id" class="form-control add_input"
+                                                id="production_account_id" data-name="Production A/C">
+                                                @foreach ($productionAccounts as $productionAccount)
+                                                    <option {{ $productionAccount->id == $production->production_account_id ? 'SELECTED' : '' }} value="{{ $productionAccount->id }}">
+                                                        {{ $productionAccount->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_production_account_id"></span>
+                                        </div>
+
+                                        <div class="col-md-2">
                                             @if ($production->warehouse_id)
-                                                <label > <b>Store Location : </b> <span
+                                                <label> <b>Store Location : </b> <span
                                                     class="text-danger">*</span></label>
                                                 <select class="form-control changeable add_input"
                                                     name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id">
                                                     <option value="">Select Warehouse</option>
                                                     @foreach ($warehouses as $w)
-                                                        <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                                        <option {{ $production->warehouse_id == $w->id ? 'SELECTED' : '' }}  value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                                     @endforeach
                                                 </select>
                                                 <span class="error error_warehouse_id"></span>

@@ -24,4 +24,29 @@ class CommonAjaxCallController extends Controller
     {
         return DB::table('categories')->where('parent_category_id', $categoryId)->select('id', 'name')->get();
     }
+
+    public function onlySearchProductForReports($product_name)
+    {
+        $products = DB::table('product_branches')
+            ->leftJoin('products', 'product_branches.product_id', 'products.id')
+            ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
+            ->where('name', 'like', "%{$product_name}%")
+            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
+            ->select(
+                'products.id as product_id',
+                'products.name',
+                'products.product_code',
+                'product_variants.id as variant_id',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+            )->get();
+
+        if (count($products) > 0) {
+
+            return view('reports.product_purchase_report.ajax_view.search_result', compact('products'));
+        } else {
+            
+            return response()->json(['noResult' => 'no result']);
+        }
+    }
 }

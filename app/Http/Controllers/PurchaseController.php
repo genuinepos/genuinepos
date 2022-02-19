@@ -195,14 +195,17 @@ class PurchaseController extends Controller
         $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
 
         if (isset($request->warehouse_id)) {
+
             $this->validate($request, ['warehouse_id' => 'required']);
         }
 
         $this->validate($request, ['supplier_id' => 'required']);
 
         if (!isset($request->product_ids)) {
+
             return response()->json(['errorMsg' => 'Product table is empty.']);
         } elseif (count($request->product_ids) > 60) {
+
             return response()->json(['errorMsg' => 'Purchase invoice items must be less than 60 or equal.']);
         }
 
@@ -217,12 +220,15 @@ class PurchaseController extends Controller
         // Add supplier product
         $i = 0;
         foreach ($product_ids as $product_id) {
+
             $variant_id = $variant_ids[$i] != 'noid' ? $variant_ids[$i] : NULL;
             $SupplierProduct = SupplierProduct::where('supplier_id', $request->supplier_id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)
                 ->first();
+
             if (!$SupplierProduct) {
+
                 $addSupplierProduct = new SupplierProduct();
                 $addSupplierProduct->supplier_id = $request->supplier_id;
                 $addSupplierProduct->product_id = $product_id;
@@ -230,6 +236,7 @@ class PurchaseController extends Controller
                 $addSupplierProduct->label_qty = $quantities[$i];
                 $addSupplierProduct->save();
             } else {
+
                 $SupplierProduct->label_qty = $SupplierProduct->label_qty + $quantities[$i];
                 $SupplierProduct->save();
             }
@@ -237,7 +244,9 @@ class PurchaseController extends Controller
         }
 
         $updateLastCreated = Purchase::where('is_last_created', 1)->select('id', 'is_last_created')->first();
+
         if ($updateLastCreated) {
+
             $updateLastCreated->is_last_created = 0;
             $updateLastCreated->save();
         }
@@ -279,6 +288,7 @@ class PurchaseController extends Controller
         $addPurchase->is_last_created = 1;
 
         if ($request->hasFile('attachment')) {
+
             $purchaseAttachment = $request->file('attachment');
             $purchaseAttachmentName = uniqid() . '-' . '.' . $purchaseAttachment->getClientOriginalExtension();
             $purchaseAttachment->move(public_path('uploads/purchase_attachment/'), $purchaseAttachmentName);
@@ -288,8 +298,10 @@ class PurchaseController extends Controller
 
         // add purchase or purchase order product
         if ($request->purchase_status == 1) {
+
             $this->purchaseUtil->addPurchaseProduct($request, $isEditProductPrice, $addPurchase->id);
         } else {
+
             $this->purchaseUtil->addPurchaseOrderProduct($request, $isEditProductPrice, $addPurchase->id);
         }
 
@@ -313,6 +325,7 @@ class PurchaseController extends Controller
         );
 
         if ($request->paying_amount > 0) {
+
             // Add purchase payment
             $addPurchasePaymentGetId = $this->purchaseUtil->addPurchasePaymentGetId(
                 invoicePrefix: $paymentInvoicePrefix,
@@ -345,25 +358,42 @@ class PurchaseController extends Controller
 
         // update main product and variant price
         if ($request->purchase_status == 1) {
+
             $loop = 0;
             foreach ($product_ids as $productId) {
+
                 $variant_id = $variant_ids[$loop] != 'noid' ? $variant_ids[$loop] : NULL;
                 $__xMargin = isset($request->profits) ? $profits[$loop] : 0;
                 $__sale_price = isset($request->selling_prices) ? $selling_prices[$loop] : 0;
-                $this->purchaseUtil->updateProductAndVariantPrice($productId, $variant_id, $unit_costs_with_discount[$loop], $net_unit_costs[$loop], $__xMargin, $__sale_price, $isEditProductPrice);
+
+                $this->purchaseUtil->updateProductAndVariantPrice(
+                    $productId,
+                    $variant_id,
+                    $unit_costs_with_discount[$loop],
+                    $net_unit_costs[$loop],
+                    $__xMargin,
+                    $__sale_price,
+                    $isEditProductPrice
+                );
+
                 $loop++;
             }
         }
 
         if ($request->purchase_status == 1) {
+
             $__index = 0;
             foreach ($product_ids as $productId) {
+
                 $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($productId, $variant_id);
+
                 if (isset($request->warehouse_id)) {
+
                     $this->productStockUtil->addWarehouseProduct($productId, $variant_id, $request->warehouse_id);
                     $this->productStockUtil->adjustWarehouseStock($productId, $variant_id, $request->warehouse_id);
                 } else {
+
                     $this->productStockUtil->addBranchProduct($productId, $variant_id, auth()->user()->branch_id);
                     $this->productStockUtil->adjustBranchStock($productId, $variant_id, auth()->user()->branch_id);
                 }
@@ -373,9 +403,12 @@ class PurchaseController extends Controller
 
         // $this->supplierUtil->adjustSupplierForSalePaymentDue($request->supplier_id);
         if ($request->action == 2) {
+
             return response()->json(['successMsg' => 'Successfully purchase is created.']);
         } else {
+
             if ($request->purchase_status == 3) {
+
                 $purchase = Purchase::with([
                     'warehouse:id,warehouse_name,warehouse_code',
                     'branch',
@@ -387,8 +420,10 @@ class PurchaseController extends Controller
                     'purchase_products.variant',
                     'purchase_payments',
                 ])->where('id', $addPurchase->id)->first();
+
                 return view('purchases.save_and_print_template.print_order', compact('purchase'));
             } else {
+
                 $purchase = Purchase::with([
                     'warehouse:id,warehouse_name,warehouse_code',
                     'branch',
@@ -400,6 +435,7 @@ class PurchaseController extends Controller
                     'purchase_products.variant',
                     'purchase_payments',
                 ])->where('id', $addPurchase->id)->first();
+
                 return view('purchases.save_and_print_template.print_purchase', compact('purchase'));
             }
         }
@@ -480,12 +516,16 @@ class PurchaseController extends Controller
         // update supplier product
         $i = 0;
         foreach ($product_ids as $product_id) {
+            
             $variant_id = $variant_ids[$i] != 'noid' ? $variant_ids[$i] : NULL;
+
             $SupplierProduct = SupplierProduct::where('supplier_id', $updatePurchase->supplier_id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)
                 ->first();
+
             if (!$SupplierProduct) {
+
                 $addSupplierProduct = new SupplierProduct();
                 $addSupplierProduct->supplier_id = $updatePurchase->supplier_id;
                 $addSupplierProduct->product_id = $product_id;
@@ -493,6 +533,7 @@ class PurchaseController extends Controller
                 $addSupplierProduct->label_qty = $quantities[$i];
                 $addSupplierProduct->save();
             } else {
+
                 $SupplierProduct->label_qty = $SupplierProduct->label_qty + $quantities[$i];
                 $SupplierProduct->save();
             }
@@ -502,9 +543,9 @@ class PurchaseController extends Controller
         $updatePurchase->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
 
         // update purchase total information
-        $updatePurchase->invoice_id = $request->invoice_id 
-        ? $request->invoice_id 
-        : ($invoicePrefix != null ? $invoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);;
+        $updatePurchase->invoice_id = $request->invoice_id
+            ? $request->invoice_id
+            : ($invoicePrefix != null ? $invoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);;
         $updatePurchase->pay_term = $request->pay_term;
         $updatePurchase->pay_term_number = $request->pay_term_number;
         $updatePurchase->purchase_account_id = $request->purchase_account_id;
@@ -525,8 +566,11 @@ class PurchaseController extends Controller
         $updatePurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
 
         if ($request->hasFile('attachment')) {
+
             if ($updatePurchase->attachment != null) {
+
                 if (file_exists(public_path('uploads/purchase_attachment/' . $updatePurchase->attachment))) {
+
                     unlink(public_path('uploads/purchase_attachment/' . $updatePurchase->attachment));
                 }
             }
@@ -540,17 +584,24 @@ class PurchaseController extends Controller
 
         // update product and variant Price & quantity
         if ($editType == 'purchased') {
+
             $loop = 0;
             foreach ($product_ids as $productId) {
+
                 $variant_id = $variant_ids[$loop] != 'noid' ? $variant_ids[$loop] : NULL;
+
+                $__xMargin = isset($request->profits) ? $profits[$loop] : 0;
+                $__sale_price = isset($request->selling_prices) ? $selling_prices[$loop] : 0;
+
                 if ($updatePurchase->is_last_created == 1) {
+
                     $this->purchaseUtil->updateProductAndVariantPrice(
                         $productId,
                         $variant_id,
                         $unit_costs_with_discount[$loop],
                         $net_unit_costs[$loop],
-                        $profits[$loop],
-                        $selling_prices[$loop],
+                        $__xMargin,
+                        $__sale_price,
                         $isEditProductPrice
                     );
                 }
@@ -682,8 +733,10 @@ class PurchaseController extends Controller
             ->where('status', 1)->first();
 
         if ($product) {
+
             return response()->json(['product' => $product]);
         } else {
+
             $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $product_code)->first();
             if ($variant_product) {
                 return response()->json(['variant_product' => $variant_product]);
@@ -770,7 +823,7 @@ class PurchaseController extends Controller
             foreach ($storedPayments as $payment) {
 
                 if ($payment->account_id) {
-                    
+
                     $this->accountUtil->adjustAccountBalance('debit', $payment->account_id);
                 }
             }
@@ -1088,7 +1141,7 @@ class PurchaseController extends Controller
                     amount: $request->paying_amount
                 );
             }
-            
+
             $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
 
             // update purchase return

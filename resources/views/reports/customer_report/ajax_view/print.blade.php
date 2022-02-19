@@ -55,7 +55,7 @@
                         $allTotalReturnDue += $report->total_sale_return_due;
                     @endphp
                     <tr>
-                        <td class="text-start">{{ $report->name.' (ID: '.$report->contact_id.')' }}</td>
+                        <td class="text-start">{!! $report->name.'(<b>'.$report->phone.'</b>)' !!}</td>
                         <td class="text-end">{{ App\Utils\Converter::format_in_bdt($report->total_sale) }}</td>
                         <td class="text-end">{{ App\Utils\Converter::format_in_bdt($report->total_paid) }}</td>
                         <td class="text-end">{{ App\Utils\Converter::format_in_bdt($report->opening_balance) }}</td>

@@ -58,13 +58,22 @@
         </div>
 
         <div class="col-md-3">
-            <b>Pay Term :</b>
-            <div class="col-md-12">
-                <div class="row">
-                    <input type="text" name="pay_term_number" class="form-control  w-50" id="e_pay_term_number" value="{{ $supplier->pay_term_number }}"/>
-                    <select name="pay_term" class="form-control  w-50" id="e_pay_term">
-                        <option value="">Select term</option>
-                        <option {{ $supplier->pay_term == 1 ? 'SELECTED' : '' }} value="1">Days </option>
+            <label><b>Opening Balance :</b></label>
+            <input type="text" name="opening_balance" class="form-control " placeholder="Tax number" id="e_opening_balance" value="{{ $supplier->opening_balance }}"/>
+        </div>
+
+        <div class="col-md-3">
+            <label><b>Pay Term</b> : </label>
+            <div class="row">
+                <div class="col-md-5">
+                    <input type="number" step="any" name="pay_term_number" class="form-control"
+                    id="e_pay_term_number" value="{{ $supplier->pay_term_number }}" placeholder="Number"/>
+                </div>
+                
+                <div class="col-md-7">
+                    <select name="pay_term" class="form-control">
+                        <option value="">Days/Months</option>
+                        <option {{ $supplier->pay_term == 1 ? 'SELECTED' : '' }} value="1">Days</option>
                         <option {{ $supplier->pay_term == 2 ? 'SELECTED' : '' }} value="2">Months</option>
                     </select>
                 </div>

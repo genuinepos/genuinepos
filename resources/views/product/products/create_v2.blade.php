@@ -604,9 +604,9 @@
         "lengthMenu" : [25, 100, 500, 1000, 2000],
         ajax: "{{ route('products.add.view') }}",
         columns: [
-            {data: 'name',name: 'name'},
-            {data: 'product_cost',name: 'product_cost'},
-            {data: 'product_price',name: 'product_price'},
+            {data: 'name',name: 'products.name'},
+            {data: 'product_cost',name: 'products.product_cost'},
+            {data: 'product_price',name: 'products.product_price'},
             {data: 'action',name: 'action'},
         ],
     });

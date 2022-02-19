@@ -843,10 +843,14 @@ class PurchaseUtil
     {
         $updateProduct = Product::where('id', $productId)->first();
         $updateProduct->is_purchased = 1;
+        
         if ($updateProduct->is_variant == 0) {
+
             $updateProduct->product_cost = $unit_cost_with_discount;
             $updateProduct->product_cost_with_tax = $net_unit_cost;
+
             if ($isEditProductPrice == '1') {
+
                 $updateProduct->profit = $profit;
                 $updateProduct->product_price = $selling_price;
             }
@@ -855,6 +859,7 @@ class PurchaseUtil
         $updateProduct->save();
 
         if ($variant_id != NULL) {
+
             $updateVariant = ProductVariant::where('id', $variant_id)
                 ->where('product_id', $productId)
                 ->first();
@@ -862,6 +867,7 @@ class PurchaseUtil
             $updateVariant->variant_cost_with_tax = $net_unit_cost;
 
             if ($isEditProductPrice == '1') {
+
                 $updateVariant->variant_profit = $profit;
                 $updateVariant->variant_price = $selling_price;
             }

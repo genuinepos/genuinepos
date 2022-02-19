@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
+                    
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-people-arrows"></span>
@@ -59,44 +59,41 @@
                         <div class="row margin_row mt-1">
                             <div class="report_data_area">
                                 <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="report_data">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <!--begin: Datatable-->
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="table-responsive" >
-                                                        <table class="display data_tbl data__table">
-                                                            <thead>
-                                                                <tr class="text-start">
-                                                                    <th>Customer</th>
-                                                                    <th>Opening Balance Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                                                                    <th>Total Sale({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                                                                    <th>Total Paid({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                                                                    <th>Total Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                                                                    <th>Total Return Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                
-                                                            </tbody>
-                                                            <tfoot>
-                                                                <tr class="bg-secondary">
-                                                                    <th class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency']}}</th>
-                                                                    <th id="total_op_blc_due" class="text-white">0.00</th>
-                                                                    <th id="total_sale" class="text-white">0.00</th>
-                                                                    <th id="total_paid" class="text-white">0.00</th>
-                                                                    <th id="total_sale_due" class="text-white">0.00</th>
-                                                                    <th id="total_return_due" class="text-white">0.00</th>
-                                                                </tr>
-                                                            </tfoot>
-                                                        </table>
-                                                    </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="table-responsive" >
+                                                    <table class="display data_tbl data__table">
+                                                        <thead>
+                                                            <tr class="text-start">
+                                                                <th>Customer</th>
+                                                                <th>Opening Balance Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                                                                <th>Total Sale({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                                                                <th>Total Paid({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                                                                <th>Total Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                                                                <th>Total Return Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr class="bg-secondary">
+                                                                <th class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency']}}</th>
+                                                                <th id="total_op_blc_due" class="text-white">0.00</th>
+                                                                <th id="total_sale" class="text-white">0.00</th>
+                                                                <th id="total_paid" class="text-white">0.00</th>
+                                                                <th id="total_sale_due" class="text-white">0.00</th>
+                                                                <th id="total_return_due" class="text-white">0.00</th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
                                                 </div>
                                             </div>
-                                        </div>  
+                                        </div>
                                     </div>  
-                                </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
@@ -112,7 +109,6 @@
         buttons: [ 
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
-            {extend: 'print',text: 'Print',className: 'btn btn-primary'},
         ],
         "processing": true,
         "serverSide": true,

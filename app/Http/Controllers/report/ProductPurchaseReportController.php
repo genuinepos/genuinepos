@@ -196,24 +196,24 @@ class ProductPurchaseReportController extends Controller
     }
 
     // Search product 
-    public function searchProduct($product_name)
-    {
-        $products = DB::table('products')
-            ->where('name', 'like', "%{$product_name}%")
-            ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
-            ->select(
-                'products.id as product_id',
-                'products.name',
-                'products.product_code',
-                'product_variants.id as variant_id',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-            )->get();
+    // public function searchProduct($product_name)
+    // {
+    //     $products = DB::table('products')
+    //         ->where('name', 'like', "%{$product_name}%")
+    //         ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+    //         ->select(
+    //             'products.id as product_id',
+    //             'products.name',
+    //             'products.product_code',
+    //             'product_variants.id as variant_id',
+    //             'product_variants.variant_name',
+    //             'product_variants.variant_code',
+    //         )->get();
 
-        if (count($products) > 0) {
-            return view('reports.product_purchase_report.ajax_view.search_result', compact('products'));
-        } else {
-            return response()->json(['noResult' => 'no result']);
-        }
-    }
+    //     if (count($products) > 0) {
+    //         return view('reports.product_purchase_report.ajax_view.search_result', compact('products'));
+    //     } else {
+    //         return response()->json(['noResult' => 'no result']);
+    //     }
+    // }
 }

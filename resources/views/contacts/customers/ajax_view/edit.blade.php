@@ -56,6 +56,12 @@
         </div>
 
         <div class="col-md-3">
+            <label><strong>Opening Balance :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
+            <input type="number" step="any" name="opening_balance" class="form-control" id="e_opening_balance"
+                placeholder="Opening balance" value="{{ $customer->opening_balance }}" />
+        </div>
+
+        <div class="col-md-3">
             <label><strong>Credit Limit :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
             <input type="number" step="any" name="credit_limit" class="form-control"
                 placeholder="Credit Limit" value="{{ $customer->credit_limit }}"/>

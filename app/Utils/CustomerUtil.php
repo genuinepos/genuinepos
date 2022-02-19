@@ -214,12 +214,12 @@ class CustomerUtil
         return $data[$voucher_type_id];
     }
 
-    public function addCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount)
+    public function addCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount, $fixed_date = null)
     {
         $voucher_type = $this->voucherType($voucher_type_id);
         $addCustomerLedger = new CustomerLedger();
         $addCustomerLedger->customer_id = $customer_id;
-        $addCustomerLedger->report_date = date('Y-m-d', strtotime($date . date(' H:i:s')));
+        $addCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d', strtotime($date . date(' H:i:s')));
         $addCustomerLedger->{$voucher_type['id']} = $trans_id;
         $addCustomerLedger->{$voucher_type['amt']} = $amount;
         $addCustomerLedger->amount = $amount;
@@ -229,19 +229,26 @@ class CustomerUtil
         $addCustomerLedger->save();
     }
 
-    public function updateCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount)
+    public function updateCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount, $fixed_date = null)
     {
         $voucher_type = $this->voucherType($voucher_type_id);
-        $updateCustomerLedger = CustomerLedger::where($voucher_type['id'], $trans_id)->first();
+
+        $updateCustomerLedger = CustomerLedger::where('customer_id', $customer_id)
+            ->where($voucher_type['id'], $trans_id)
+            ->where('voucher_type', $voucher_type_id)
+            ->first();
+
         if ($updateCustomerLedger) {
+
             //$updateCustomerLedger->customer_id = $customer_id;
-            $updateCustomerLedger->report_date = date('Y-m-d', strtotime($date . date(' H:i:s')));
+            $updateCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d', strtotime($date . date(' H:i:s')));
             $updateCustomerLedger->{$voucher_type['amt']} = $amount;
             $updateCustomerLedger->amount = $amount;
             $updateCustomerLedger->running_balance = $this->adjustCustomerAmountForSalePaymentDue($customer_id);
             $updateCustomerLedger->save();
         } else {
-            $this->addCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount);
+
+            $this->addCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount, $fixed_date);
         }
     }
 }

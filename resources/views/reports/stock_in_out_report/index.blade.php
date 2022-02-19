@@ -216,6 +216,7 @@
              {data: 'lot_no', name: 'purchase_products.lot_no', className: 'text-end'},
             {data: 'net_unit_cost', name: 'purchase_products.net_unit_cost', className: 'text-end'},
         ],fnDrawCallback: function() {
+
             var sold_qty = sum_table_col($('.data_tbl'), 'sold_qty');
             $('#sold_qty').text(bdFormat(sold_qty));
             // var stock_in_qty = sum_table_col($('.data_tbl'), 'stock_in_qty');
@@ -225,9 +226,12 @@
     });
 
     function sum_table_col(table, class_name) {
+
         var sum = 0;
         table.find('tbody').find('tr').each(function() {
+
             if (parseFloat($(this).find('.' + class_name).data('value'))) {
+
                 sum += parseFloat(
                     $(this).find('.' + class_name).data('value')
                 );
@@ -238,6 +242,7 @@
 
     //Submit filter form by select input changing
     $(document).on('click', '#filter_button', function (e) {
+
         e.preventDefault();
         $('.data_preloader').show();
         table.ajax.reload();
@@ -245,15 +250,19 @@
 
     //Submit filter form by date-range field blur 
     $(document).on('click', '#search_product', function () {
+
         $(this).val('');
         $('#product_id').val('');
         $('#variant_id').val('');
     });
 
     $('#search_product').on('input', function () {
+
         $('.search_result').hide();
         var product_name = $(this).val();
+
         if (product_name === '') {
+
             $('.search_result').hide();
             $('#product_id').val('');
             $('#variant_id').val('');
@@ -261,13 +270,17 @@
         }
 
         $.ajax({
-            url:"{{ url('reports/product/purchases/search/product') }}"+"/"+product_name,
+            // url:"{{ url('reports/product/purchases/search/product') }}"+"/"+product_name,
+            url:"{{ url('common/ajax/call/only/search/product/for/reports') }}"+"/"+product_name,
             async:true,
             type:'get',
             success:function(data){
+
                 if (!$.isEmptyObject(data.noResult)) {
+
                     $('.search_result').hide();
                 }else{
+
                     $('.search_result').show();
                     $('#list').html(data);
                 }
@@ -277,6 +290,7 @@
 
     $(document).on('click', '#select_product', function (e) {
         e.preventDefault();
+
         var product_name = $(this).html();
         $('#search_product').val(product_name.trim());
         var product_id = $(this).data('p_id');
@@ -287,7 +301,9 @@
     });
 
     $('body').keyup(function(e){
+
         if (e.keyCode == 13 || e.keyCode == 9){  
+
             $(".selectProduct").click();
             $('.search_result').hide();
             $('#list').empty();
@@ -295,6 +311,7 @@
     });
 
     $(document).on('mouseenter', '#list>li>a',function () {
+        
         $('#list>li>a').removeClass('selectProduct');
         $(this).addClass('selectProduct');
     });
@@ -302,9 +319,12 @@
     // Show details modal with data
     $(document).on('click', '#details', function (e) {
         e.preventDefault();
+        
         $('.data_preloader').show();
         var url = $(this).attr('href');
+
         $.get(url, function(data) {
+
             $('#voucher_details').html(data);
             $('.data_preloader').hide();
             $('#detailsModal').modal('show');
@@ -316,16 +336,19 @@
         //Print purchase Payment report
     $(document).on('click', '#print_report', function (e) {
         e.preventDefault();
+
         var url = "{{ route('reports.stock.in.out.print') }}";
         var branch_id = $('#branch_id').val();
         var customer_id = $('#customer_id').val();
         var from_date = $('.from_date').val();
         var to_date = $('.to_date').val();
+
         $.ajax({
             url : url,
             type : 'get',
             data : {branch_id, customer_id, from_date, to_date},
             success:function(data){
+
                 $(data).printThis({
                     debug : false,                   
                     importCSS : true,                

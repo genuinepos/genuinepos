@@ -219,7 +219,16 @@
                     <div class="row">
                         <div class="form_element">
                             <div class="section-header">
-                                <h6><span class="fas fa-table"></span>Product Stock Alert</h6>
+                                <h6>
+                                    <span class="fas fa-table"></span>Stock Alert Of 
+                                    <b>
+                                        @if (auth()->user()->branch_id)
+                                            {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
+                                        @else 
+                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                        @endif
+                                    </b>
+                                </h6>
                             </div>
                             <div class="widget_content">
                                 <div class="mtr-table">
@@ -234,8 +243,7 @@
                                                     <th>Current Stock</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -265,9 +273,7 @@
                                                 <th>Created By</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -298,8 +304,7 @@
                                                         <th>Due Amount</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                </tbody>
+                                                <tbody></tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -402,7 +407,11 @@
                 processing: true,
                 serverSide: true,
                 searchable: true,
-                ajax: "{{ route('dashboard.stock.alert') }}",
+                "ajax": {
+                    "url": "{{ route('dashboard.stock.alert') }}",
+                    "data": function(d) {d.branch_id = $('#branch_id').val()}
+                },
+                // ajax: "{{ route('dashboard.stock.alert') }}",
                 columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
                     {data: 'name',name: 'name'},
                     {data: 'product_code',name: 'product_code'},

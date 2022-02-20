@@ -18,15 +18,17 @@ class NetProfitLossAccount
         $openingStock = $this->openingStock($request);
         $stockAdjustments = $this->stockAdjustments($request);
         $totalPurchasesAndOrderTax = $this->totalPurchasesAndOrderTax($request);
+        $totalSoldItemUnitCost = $this->totalSoldItemUnitCost($request);
 
         $individualProductSaleTax = $this->individualProductSaleTax($request);
         $directExpense = $this->directExpense($request);
         $indirectExpense  = $this->indirectExpense($request);
 
         $netProfit = $totalSaleAndOrderTax->sum('total_sale')
-            + ($closingStock - $openingStock->sum('total_ops_value'))
-            + $stockAdjustments->sum('total_recovered');
-        -$totalPurchasesAndOrderTax->sum('total_purchase')
+            // + ($closingStock - $openingStock->sum('total_ops_value'))
+            + $stockAdjustments->sum('total_recovered')
+            - $totalPurchasesAndOrderTax->sum('total_purchase')
+            // - $totalSoldItemUnitCost->sum('total_unit_cost')
             - $totalSaleAndOrderTax->sum('total_sale_order_tax')
             - $individualProductSaleTax->sum('total_sale_pro_tax')
             - $directExpense->sum('total_di_expense')
@@ -34,9 +36,10 @@ class NetProfitLossAccount
             - $stockAdjustments->sum('total_adjusted');
 
         $netProfitBeforeTax = $totalSaleAndOrderTax->sum('total_sale')
-            + ($closingStock - $openingStock->sum('total_ops_value'))
-            + $stockAdjustments->sum('total_recovered');
-        -$totalPurchasesAndOrderTax->sum('total_purchase')
+            // + ($closingStock - $openingStock->sum('total_ops_value'))
+            + $stockAdjustments->sum('total_recovered')
+            - $totalPurchasesAndOrderTax->sum('total_purchase')
+            // - $totalSoldItemUnitCost->sum('total_unit_cost')
             - $directExpense->sum('total_di_expense')
             - $indirectExpense->sum('total_indi_expense')
             - $stockAdjustments->sum('total_adjusted');
@@ -46,9 +49,11 @@ class NetProfitLossAccount
 
         return [
             'total_sale' => $totalSaleAndOrderTax->sum('total_sale'),
-            'closing_stock' => $closingStock,
             'opening_stock' => $openingStock->sum('total_ops_value'),
+            'closing_stock' => $closingStock,
             'total_purchase' => $totalPurchasesAndOrderTax->sum('total_purchase'),
+            'total_unit_cost' => $totalSoldItemUnitCost->sum('total_unit_cost'),
+
             'total_sale_order_tax' => $totalSaleAndOrderTax->sum('total_sale_order_tax'),
             'total_sale_pro_tax' => $individualProductSaleTax->sum('total_sale_pro_tax'),
             'total_direct_expense' => $directExpense->sum('total_di_expense'),
@@ -344,7 +349,6 @@ class NetProfitLossAccount
                 DB::raw('SUM(recovered_amount) as total_recovered'),
             );
 
-
         if (isset($request->branch_id) && $request->branch_id) {
 
             if ($request->branch_id == 'NULL') {
@@ -372,5 +376,49 @@ class NetProfitLossAccount
 
             return $stockAdjustments = $stockAdjustmentsQ->where('stock_adjustments.branch_id', auth()->user()->branch_id)->get();
         }
+    }
+
+    public function totalSoldItemUnitCost($request = null)
+    {
+        $totalSoldItemUnitCost = '';
+        $saleProductQuery = DB::table('purchase_sale_product_chains')
+            ->leftJoin('purchase_products', 'purchase_sale_product_chains.purchase_product_id', 'purchase_products.id')
+            ->leftJoin('sale_products', 'purchase_sale_product_chains.sale_product_id', 'sale_products.id')
+            ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
+            ->select(
+                DB::raw('SUM(purchase_products.net_unit_cost * purchase_sale_product_chains.sold_qty) as total_unit_cost')
+            );
+
+        if (isset($request->branch_id) && $request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $saleProductQuery->where('sales.branch_id', NULL);
+            } else {
+
+                $saleProductQuery->where('sales.branch_id', $request->branch_id);
+            }
+        }
+
+        if (isset($request->from_date) && $request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $saleProductQuery->whereBetween('sales.report_date', $date_range);
+        }
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $totalSoldItemUnitCost = $saleProductQuery->where('sales.status', 1)->get();
+        } else {
+
+            $totalSoldItemUnitCost = $saleProductQuery->where('sales.status', 1)
+                ->where('admin_and_users.branch_id', auth()->user()->branch_id)
+                ->get();
+        }
+
+        return $totalSoldItemUnitCost;
     }
 }

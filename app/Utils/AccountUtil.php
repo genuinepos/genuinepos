@@ -82,7 +82,7 @@ class AccountUtil
             7 => ['Expense', 'Office Expense', 'Cartage', 'Buy Goods',],
             8 => ['Advertisement Expenses', 'Rent Paid',],
             9 => ['Current Asset'],
-            10 => ['Salary Payable', 'Tax Deducted Payable',],
+            10 => ['Current Liability', 'Salary Payable', 'Tax Deducted Payable',],
             13 => ['Loan Liabilities',],
             14 => ['Loan&Advances', 'Advance Salary',],
             15 => ['Furniture', 'Vehicle',],

@@ -892,7 +892,7 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
-
+   return (new App\Utils\NetProfitLossAccount)->netLossProfit();
     // return 'done';
 });
 

@@ -147,23 +147,56 @@ class DashboardController extends Controller
     {
         if ($request->ajax()) {
 
-            $products = DB::table('products')
+            $alertQtyProducts = '';
+            $alertQtyProducts = DB::table('product_branches')
+                ->leftJoin('products', 'product_branches.product_id', 'products.id')
+                ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
+                ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
                 ->join('units', 'products.unit_id', 'units.id')
                 ->select(
                     [
                         'products.name',
                         'products.product_code',
                         'products.alert_quantity',
-                        'products.quantity',
+                        'product_branches.product_quantity',
+                        'product_branch_variants.variant_quantity',
+                        'product_variants.variant_name',
                         'units.name as unit_name',
+   
                     ]
-                )->whereColumn('products.quantity', '<=', 'products.alert_quantity')->orderBy('products.id', 'desc')->get();
+                )
+                ->where('product_branches.branch_id', auth()->user()->branch_id)
+                ->whereColumn('product_branch_variants.variant_quantity', '<=', 'products.alert_quantity')
+                ->orWhereColumn('product_branches.product_quantity', '<=', 'products.alert_quantity')
+                ->where('products.is_manage_stock', 1)
+                ->orderBy('products.id', 'desc')
+                ->get();
 
-            return DataTables::of($products)
+            
+            // if ($request->branch_id) {
+
+            //     if ($request->branch_id == 'NULL') {
+
+            //         $query->where('product_branches.branch_id', NULL);
+            //     } else {
+
+            //         $query->where('product_branches.branch_id', $request->branch_id);
+            //     }
+            // }
+
+            // if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            //     $alertQtyProducts = $query->get();
+            // }
+
+            return DataTables::of($alertQtyProducts)
                 ->addIndexColumn()
+                ->editColumn('name', function ($row) {
+                    return $row->name.($row->variant_name != null ? '/'.$row->variant_name : '');
+                })
                 ->editColumn('stock', function ($row) {
-                    return $quantity = '<span class="text-danger"><b>' . $row->quantity . '</b></span>';
-                })->rawColumns(['stock'])->make(true);
+                    return $quantity = '<span class="text-danger"><b>' . $row->product_quantity.'/'.$row->unit_name. '</b></span>';
+                })
+                ->rawColumns(['stock'])->make(true);
         }
     }
 
@@ -328,7 +361,7 @@ class DashboardController extends Controller
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
                 ->editColumn('due',  function ($row) use ($generalSettings) {
-                    
+
                     return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
                 })
                 ->rawColumns(['date', 'from', 'customer', 'due'])
@@ -463,7 +496,9 @@ class DashboardController extends Controller
             ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         if ($request->branch_id) {
+
             if ($request->branch_id == 'HF') {
+
                 $purchaseQuery->where('purchases.branch_id', NULL);
                 $saleQuery->where('sales.branch_id', NULL);
                 $expenseQuery->where('expanses.branch_id', NULL);
@@ -474,6 +509,7 @@ class DashboardController extends Controller
                 $warehouseTransferQuery->where('transfer_stock_to_warehouses.branch_id', NULL);
                 $payrollQuery->where('admin_and_users.branch_id', NULL);
             } else {
+
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
@@ -508,7 +544,7 @@ class DashboardController extends Controller
             $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)->whereDate('report_date', TODAY)->get();
 
             $adjustments = $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id)
-            ->whereDate('report_date_ts', TODAY)->get();
+                ->whereDate('report_date_ts', TODAY)->get();
 
             $purchaseReturn = $purchaseReturnQuery->where('purchase_returns.branch_id', auth()->user()->branch_id)
                 ->whereDate('report_date', TODAY)->get();

@@ -7,24 +7,36 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    Sale Details (Invoice ID : <strong><span
-                            class="head_invoice_id">{{ $sale->invoice_id }}</span></strong>)
+                    Sale Details (Invoice ID : <strong>
+                        <span class="head_invoice_id">{{ $sale->invoice_id }}</span>
+                    </strong>)
                 </h5>
-                <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                    class="fas fa-times"></span></a>
+                <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="fas fa-times"></span>
+                </a>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="list-unstyled">
-                            <li><strong>Customer :- </strong></li>
-                            <li><strong>Name : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                            <li>
+                                <strong>Customer :- </strong>
                             </li>
-                            <li><strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+
+                            <li>
+                                <strong>Name : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
-                            <li><strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+
+                            <li>
+                                <strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                             </li>
-                            <li><strong>Phone : </strong>{{ $sale->customer ? $sale->customer->phone : '' }}
+
+                            <li>
+                                <strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                            </li>
+
+                            <li>
+                                <strong>Phone : </strong>{{ $sale->customer ? $sale->customer->phone : '' }}
                             </li>
                         </ul>
                     </div>

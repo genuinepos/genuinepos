@@ -22,26 +22,26 @@ class CashCounterController extends Controller
             $cashCounters = '';
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $cashCounters = DB::table('cash_counters')->orderBy('id', 'DESC')
-                ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
-                ->select(
-                    'branches.name as br_name',
-                    'branches.branch_code as br_code',
-                    'cash_counters.id',
-                    'cash_counters.counter_name',
-                    'cash_counters.short_name'
-                )->get();
-            }else {
+                    ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
+                    ->select(
+                        'branches.name as br_name',
+                        'branches.branch_code as br_code',
+                        'cash_counters.id',
+                        'cash_counters.counter_name',
+                        'cash_counters.short_name'
+                    )->get();
+            } else {
                 $cashCounters = DB::table('cash_counters')->orderBy('id', 'DESC')
-                ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
-                ->select(
-                    'branches.name as br_name',
-                    'branches.branch_code as br_code',
-                    'cash_counters.id',
-                    'cash_counters.counter_name',
-                    'cash_counters.short_name'
-                )->where('branch_id', auth()->user()->branch_id)->get();
+                    ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
+                    ->select(
+                        'branches.name as br_name',
+                        'branches.branch_code as br_code',
+                        'cash_counters.id',
+                        'cash_counters.counter_name',
+                        'cash_counters.short_name'
+                    )->where('branch_id', auth()->user()->branch_id)->get();
             }
-           
+
             return DataTables::of($cashCounters)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -67,6 +67,19 @@ class CashCounterController extends Controller
 
     public function store(Request $request)
     {
+        $addons = DB::table('addons')->select('cash_counter_limit')->first();
+
+        $cash_counter_limit = $addons->cash_counter_limit;
+
+        $cash_counters = DB::table('cash_counters')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->count();
+
+        if ($cash_counter_limit <= $cash_counters) {
+
+            return response()->json(["errorMsg" => "Cash counter limit is ${cash_counter_limit}"]);
+        }
+
         $this->validate($request, [
             // 'counter_name' => 'required|unique:cash_counters,counter_name',
             'counter_name' => ['required', Rule::unique('cash_counters')->where(function ($query) {
@@ -95,7 +108,6 @@ class CashCounterController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $this->validate($request, [
             'counter_name' => 'required|unique:cash_counters,counter_name,' . $id,
             'short_name' => 'required|unique:cash_counters,short_name,' . $id,

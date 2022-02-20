@@ -85,7 +85,7 @@ class BranchUtil
     public function addBranchDefaultCashCounter($branch_id)
     {
         CashCounter::insert([
-            'branch_id' => auth()->user()->branch_id,
+            'branch_id' => $branch_id,
             'counter_name' => 'Counter-1',
             'short_name' => 'CCN-1',
         ]);

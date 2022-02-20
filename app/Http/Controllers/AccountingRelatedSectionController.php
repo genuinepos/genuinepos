@@ -117,9 +117,9 @@ class AccountingRelatedSectionController extends Controller
 
                 $TotalInvestmentQuery->where('account_branches.branch_id', NULL);
 
-                $fixedAssetQuery->where('account_branches.branch_id', NULL)->get();
+                $fixedAssetQuery->where('account_branches.branch_id', NULL);
 
-                $loanCompanyQuery->where('loan_companies.branch_id', NULL)->get();
+                $loanCompanyQuery->where('loan_companies.branch_id', NULL);
 
                 $singleProductStockValueQuery->where('product_branches.branch_id', NULL);
 
@@ -144,23 +144,61 @@ class AccountingRelatedSectionController extends Controller
             }
         }
 
-        $totalCashInHand = $totalCashInHandQuery->get();
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-        $TotalBankBalance = $TotalBankBalanceQuery->get();
+            $totalCashInHand = $totalCashInHandQuery->get();
 
-        $TotalCapital = $TotalCapitalQuery->get();
+            $TotalBankBalance = $TotalBankBalanceQuery->get();
+    
+            $TotalCapital = $TotalCapitalQuery->get();
+    
+            $TotalInvestment = $TotalInvestmentQuery->get();
+    
+            $fixedAssets = $fixedAssetQuery->get();
+    
+            $loanCompanies = $loanCompanyQuery->get();
+    
+            $singleProductStockValue = $singleProductStockValueQuery->get();
+    
+            $variantProductStockValue = $variantProductStockValueQuery->get();
+        } else {
+            $totalCashInHand = $totalCashInHandQuery->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->get();
 
-        $TotalInvestment = $TotalInvestmentQuery->get();
+            $TotalBankBalance = $TotalBankBalanceQuery->where('account_branches.branch_id', auth()->user()->branch_id)->get();
 
-        $fixedAssets = $fixedAssetQuery->get();
+            $TotalCapital = $TotalCapitalQuery->where('account_branches.branch_id', auth()->user()->branch_id)->get();
 
-        $loanCompanies = $loanCompanyQuery->get();
+            $TotalInvestment = $TotalInvestmentQuery->where('account_branches.branch_id', auth()->user()->branch_id)->get();
 
-        $singleProductStockValue = $singleProductStockValueQuery->get();
+            $fixedAssets = $fixedAssetQuery->where('account_branches.branch_id', auth()->user()->branch_id)->get();
 
-        $variantProductStockValue = $variantProductStockValueQuery->get();
+            $loanCompanies = $loanCompanyQuery->where('loan_companies.branch_id', auth()->user()->branch_id)->get();
+
+            $singleProductStockValue = $singleProductStockValueQuery->where('product_branches.branch_id', auth()->user()->branch_id)->get();
+
+            $variantProductStockValue = $variantProductStockValueQuery->where('product_branches.branch_id', auth()->user()->branch_id)->get();
+        }
+        
+        // $totalCashInHand = $totalCashInHandQuery->get();
+
+        // $TotalBankBalance = $TotalBankBalanceQuery->get();
+
+        // $TotalCapital = $TotalCapitalQuery->get();
+
+        // $TotalInvestment = $TotalInvestmentQuery->get();
+
+        // $fixedAssets = $fixedAssetQuery->get();
+
+        // $loanCompanies = $loanCompanyQuery->get();
+
+        // $singleProductStockValue = $singleProductStockValueQuery->get();
+
+        // $variantProductStockValue = $variantProductStockValueQuery->get();
 
         $currentStockValue = $singleProductStockValue->sum('total') + $variantProductStockValue->sum('total');
+
+        $netProfitLossAccount = $this->netProfitLossAccount->netLossProfit($request);
 
         return view(
             'accounting.related_sections.ajax_view.balance_sheet_ajax_view',
@@ -174,6 +212,7 @@ class AccountingRelatedSectionController extends Controller
                 'TotalCapital',
                 'loanCompanies',
                 'currentStockValue',
+                'netProfitLossAccount',
             )
         );
     }

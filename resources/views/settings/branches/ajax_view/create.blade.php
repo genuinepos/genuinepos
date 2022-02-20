@@ -189,11 +189,12 @@
     // Add branch by ajax
     $('#add_branch_form').on('submit', function(e){
         e.preventDefault();
-            $('.loading_button').show();
+        $('.loading_button').show();
         var url = $(this).attr('action');
         var request = $(this).serialize();
       
         $('.submit_button').prop('type', 'button');
+
         $.ajax({
             url:url,
             type:'post',
@@ -202,22 +203,33 @@
             cache: false,
             processData: false,
             success:function(data) {
+
+                $('.loading_button').hide();
+                if (!$.isEmptyObject(data.errorMsg)) {
+                    
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
                 $('#addBranchModal').modal('hide');
                 $('.submit_button').prop('type', 'sumbit');
                 toastr.success(data);
                 $('#add_branch_form')[0].reset();
-                $('.loading_button').hide();
+                
                 getAllBranch();
             },
             error: function(err) {
+
                 $('.submit_button').prop('type', 'submit');
                 $('.loading_button').hide();
                 $('.error').html('');
 
                 if (err.status == 0) {
+
                     toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
+
                     toastr.error('Server error. Please contact to the support team.');
                     return;
                 }

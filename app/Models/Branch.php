@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Models\Sale;
 use App\Models\InvoiceLayout;
 use App\Models\InvoiceSchema;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +24,21 @@ class Branch extends Model
     public function pos_sale_invoice_layout()
     {
         return $this->belongsTo(InvoiceLayout::class, 'pos_sale_invoice_layout_id');
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
+    public function product()
+    {
+        return $this->hasMany(Product::class);
     }
 }
 

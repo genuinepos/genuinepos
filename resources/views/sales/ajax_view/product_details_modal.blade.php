@@ -196,7 +196,7 @@
                                     </td>
                                 </tr>
     
-                                <tr>
+                                {{-- <tr>
                                     <th class="text-start">Order Discount :</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="order_discount">
@@ -205,6 +205,18 @@
                                             @endphp
                                             {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) . $discount_type }}
                                         </span>
+                                    </td>
+                                </tr> --}}
+
+                                <tr>
+                                    <th class="text-start"> Order Discount : </th>
+                                    <td class="text-start">
+                                        <b>{{ json_decode($generalSettings->business, true)['currency'] }} </b>
+                                        @if ($sale->order_discount_type == 1)
+                                            {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }} (Fixed)
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }} ({{ $sale->order_discount }}%)
+                                        @endif
                                     </td>
                                 </tr>
     

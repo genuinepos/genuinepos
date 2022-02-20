@@ -42,42 +42,55 @@ class ContraController extends Controller
             $query = DB::table('contras')
                 ->leftJoin('accounts as receiver_accounts', 'contras.receiver_account_id', 'receiver_accounts.id')
                 ->leftJoin('accounts as sender_accounts', 'contras.sender_account_id', 'sender_accounts.id')
-                ->leftJoin('branches', 'contras.branch_id', 'branches.id')
-                ->select(
-                    'contras.id',
-                    'contras.date',
-                    'contras.voucher_no',
-                    'contras.amount',
-                    'contras.remarks',
-                    'receiver_accounts.name as receiver_account_name',
-                    'receiver_accounts.account_number as receiver_account_no',
-                    'receiver_accounts.account_type as receiver_account_type',
-                    'sender_accounts.name as sender_account_name',
-                    'sender_accounts.account_number as sender_account_no',
-                    'sender_accounts.account_type as sender_account_type',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                )->orderBy('contras.report_date', 'desc');
+                ->leftJoin('branches', 'contras.branch_id', 'branches.id');
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $query->where('contras.branch_id', NULL);
                 } else {
+
                     $query->where('contras.branch_id', $request->branch_id);
                 }
             }
 
             if ($request->from_date) {
+                
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
                 $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
                 $query->whereBetween('contras.report_date', $date_range); // Final
             }
 
-            $contras = $query;
+            $query->select(
+                'contras.id',
+                'contras.date',
+                'contras.voucher_no',
+                'contras.amount',
+                'contras.remarks',
+                'receiver_accounts.name as receiver_account_name',
+                'receiver_accounts.account_number as receiver_account_no',
+                'receiver_accounts.account_type as receiver_account_type',
+                'sender_accounts.name as sender_account_name',
+                'sender_accounts.account_number as sender_account_no',
+                'sender_accounts.account_type as sender_account_type',
+                'branches.name as branch_name',
+                'branches.branch_code',
+            );
+
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+                $contras = $query->orderBy('contras.report_date', 'desc');
+            } else {
+
+                $contras = $query->where('contras.branch_id', auth()->user()->branch_id)
+                    ->orderBy('contras.report_date', 'desc');
+            }
 
             return DataTables::of($contras)
                 ->addColumn('action', function ($row) {
+
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
@@ -89,22 +102,28 @@ class ContraController extends Controller
                     return $html;
                 })
                 ->editColumn('date', function ($row) use ($settings) {
+
                     $dateFormat = json_decode($settings->business, true)['date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->date));
                 })
                 ->editColumn('receiver_account', function ($row) {
+
                     $__ac = $row->receiver_account_type == 2 ? '(A/C:' . $row->receiver_account_no . ')' : '(Cash-In-Hand)';
                     return $row->receiver_account_name . $__ac;
                 })
                 ->editColumn('sender_account', function ($row) {
+
                     $__ac = $row->sender_account_type == 2 ? '(A/C:' . $row->sender_account_no . ')' : '(Cash-In-Hand)';
                     return $row->sender_account_name . $__ac;
                 })
                 ->editColumn('branch', function ($row) use ($settings) {
+
                     if ($row->branch_name) {
+
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
+
                         return json_decode($settings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
@@ -121,11 +140,11 @@ class ContraController extends Controller
     public function create()
     {
         $accounts = DB::table('account_branches')
-        ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-        ->whereIn('accounts.account_type', [1, 2])
-        ->where('account_branches.branch_id', auth()->user()->branch_id)
-        ->orderBy('accounts.account_type', 'asc')
-        ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
         return view('accounting.contra.ajax_view.create', compact('accounts'));
     }
@@ -254,12 +273,12 @@ class ContraController extends Controller
 
             if ($storedSenderAccountId) {
                 // Adjust A/C balance
-                $this->accountUtil->adjustAccountBalance(balanceType : 'debit', account_id : $storedSenderAccountId);
+                $this->accountUtil->adjustAccountBalance(balanceType: 'debit', account_id: $storedSenderAccountId);
             }
 
             if ($storedReceiverAccountId) {
                 // Adjust A/C balance
-                $this->accountUtil->adjustAccountBalance(balanceType : 'debit', account_id : $storedReceiverAccountId);
+                $this->accountUtil->adjustAccountBalance(balanceType: 'debit', account_id: $storedReceiverAccountId);
             }
         }
 

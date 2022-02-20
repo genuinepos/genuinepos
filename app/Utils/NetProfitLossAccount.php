@@ -415,7 +415,7 @@ class NetProfitLossAccount
         } else {
 
             $totalSoldItemUnitCost = $saleProductQuery->where('sales.status', 1)
-                ->where('admin_and_users.branch_id', auth()->user()->branch_id)
+                ->where('sales.branch_id', auth()->user()->branch_id)
                 ->get();
         }
 

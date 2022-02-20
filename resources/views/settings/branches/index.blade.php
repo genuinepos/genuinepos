@@ -25,13 +25,15 @@
                                     <h6>All Business Locations</h6>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="btn_30_blue float-end">
-                                        <a id="create" href="{{ route('settings.branches.create') }}">
-                                            <i class="fas fa-plus-square"></i> Add Business Location
-                                        </a>
+                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1)
+                                    <div class="col-md-6">
+                                        <div class="btn_30_blue float-end">
+                                            <a id="create" href="{{ route('settings.branches.create') }}">
+                                                <i class="fas fa-plus-square"></i> Add Business Location
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
 
                             <div class="widget_content">
@@ -65,7 +67,6 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

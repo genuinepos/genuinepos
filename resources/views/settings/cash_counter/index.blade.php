@@ -7,7 +7,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-cubes"></span>
@@ -17,8 +16,7 @@
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
-
+                 
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
@@ -48,9 +46,7 @@
                                                     <th class="text-black">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -173,19 +169,28 @@
                     data: request,
                     success: function(data) {
                         $('.error').html('');
+                        $('.loading_button').hide();
+                        $('.submit_button').prop('type', 'submit');
+                        if (!$.isEmptyObject(data.errorMsg)) {
+                            toastr.error(data.errorMsg);
+                            return;
+                        }
+
+                        $('#addModal').modal('hide');
                         toastr.success(data);
                         $('#add_cash_counter_form')[0].reset();
-                        $('.loading_button').hide();
                         table.ajax.reload();
-                        $('#addModal').modal('hide');
-                        $('.submit_button').prop('type', 'submit');
                     },
                     error: function(err) {
+
                         $('.loading_button').hide();
                         $('.error').html('');
+
                         $.each(err.responseJSON.errors, function(key, error) {
+
                             $('.error_' + key + '').html(error[0]);
                         });
+                        
                         $('.submit_button').prop('type', 'submit');
                     }
                 });

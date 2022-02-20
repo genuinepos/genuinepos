@@ -1,7 +1,7 @@
 <?php 
     $totalLiability = 0;
     $totalAsset = 0;
-    $netProfitOrLoss = 1000;
+    $netProfitOrLoss = $netProfitLossAccount['net_profit'];
 ?>
 <table class="table modal-table table-sm table-bordered">
     <thead>

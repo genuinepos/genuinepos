@@ -16,43 +16,45 @@
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
+                        @if ($addons->branches == 1)
+                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                <div class="row">
                                     <div class="col-md-12">
-                                        <form id="filter_form" class="px-2">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
+                                        <div class="sec-name">
+                                            <div class="col-md-12">
+                                                <form id="filter_form" class="px-2">
+                                                    <div class="form-group row">
+                                                    
+                                                                <div class="col-md-2">
+                                                                    <label><strong>Business Location :</strong></label>
+                                                                    <select name="branch_id"
+                                                                        class="form-control submit_able" id="branch_id" autofocus>
+                                                                        <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                        @foreach ($branches as $branch)
+                                                                            <option value="{{ $branch->id }}">
+                                                                                {{ $branch->name . '/' . $branch->branch_code }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                        
 
-                                                <div class="col-md-2">
-                                                    <label><strong></strong></label>
-                                                    <div class="input-group">
-                                                        <button type="submit"
-                                                            class="btn text-white btn-sm btn-secondary float-start">
-                                                            <i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        <div class="col-md-2">
+                                                            <label><strong></strong></label>
+                                                            <div class="input-group">
+                                                                <button type="submit"
+                                                                    class="btn text-white btn-sm btn-secondary float-start">
+                                                                    <i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            @endif
+                        @endif
 
                         <div class="row">
                             <div class="col-md-12">
@@ -62,8 +64,16 @@
                                         <div class="balance_sheet_area">
                                             <div class="print_header d-none">
                                                 <div class="text-center pb-3">
-                                                    <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                                                    <h6><strong>BALANCE SHEET</h6>
+                                                    <h5>
+                                                        @if (auth()->user()->branch_id)
+
+                                                            {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
+                                                        @else 
+
+                                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                        @endif
+                                                    </h5>
+                                                    <h6 class="mt-2"><strong>BALANCE SHEET</h6>
                                                 </div>
                                             </div>
                                             <div id="data-list">

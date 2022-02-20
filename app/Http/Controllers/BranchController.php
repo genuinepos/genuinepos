@@ -37,7 +37,9 @@ class BranchController extends Controller
     public function getAllBranch()
     {
         $addons = DB::table('addons')->select('branches')->first();
+
         if ($addons->branches == 0) {
+            
             abort(403, 'Access Forbidden.');
         }
 
@@ -63,10 +65,20 @@ class BranchController extends Controller
 
     public function store(Request $request)
     {
-        $addons = DB::table('addons')->select('branches')->first();
+        $addons = DB::table('addons')->select('branches', 'branch_limit')->first();
+
+        $branch_limit = $addons->branch_limit;
 
         if ($addons->branches == 0) {
+
             abort(403, 'Access Forbidden.');
+        }
+
+        $branchCount = DB::table('branches')->count();
+
+        if ($branch_limit <= $branchCount) {
+
+            return response()->json(["errorMsg" => "Business Location limit is ${branch_limit}"]);
         }
 
         $this->validate($request, [
@@ -78,6 +90,9 @@ class BranchController extends Controller
             'country' => 'required',
             'zip_code' => 'required',
             'logo' => 'sometimes|image|max:2048',
+            'invoice_schema_id' => 'required',
+            'pos_sale_invoice_layout_id' => 'required',
+            'add_sale_invoice_layout_id' => 'required',
         ]);
 
         if ($request->add_opening_user) {
@@ -192,18 +207,34 @@ class BranchController extends Controller
     public function delete(Request $request, $id)
     {
         $addons = DB::table('addons')->select('branches')->first();
+
         if ($addons->branches == 0) {
+
             abort(403, 'Access Forbidden.');
         }
 
-        $deleteBranch = Branch::where('id', $id)->first();
+        $deleteBranch = Branch::with(['sales', 'purchases'])->where('id', $id)->first();
+
+        if (count($deleteBranch->sales) > 0) {
+            
+            return response()->json('Can not delete this business location. This location has one or more sales.');
+        }
+
+        if (count($deleteBranch->purchases) > 0) {
+
+            return response()->json('Can not delete this business location. This location has one or more purchases.');
+        }
+
         if ($deleteBranch->logo != 'default.png') {
+
             if (file_exists(public_path('uploads/branch_logo/' . $deleteBranch->logo))) {
+
                 unlink(public_path('uploads/branch_logo/' . $deleteBranch->logo));
             }
         }
 
         $deleteBranch->delete();
+
         return response()->json('Business location deleted successfully');
     }
 

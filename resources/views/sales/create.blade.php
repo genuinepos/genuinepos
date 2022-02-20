@@ -327,14 +327,14 @@
                                         <div class="row">
                                             <label for="inputEmail3" class="col-sm-5 col-form-label">Total Item :</label>
                                             <div class="col-sm-7">
-                                                <input readonly type="number" name="total_item" id="total_item" class="form-control" value="0.00">
+                                                <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="0.00">
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <label for="inputEmail3" class="col-sm-5 col-form-label">Net Total :</label>
                                             <div class="col-sm-7">
-                                                <input readonly type="number" class="form-control" name="net_total_amount" id="net_total_amount" value="0.00">
+                                                <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="0.00">
                                             </div>
                                         </div>
 
@@ -347,8 +347,8 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-4">
-                                                <input name="order_discount" type="number" class="form-control" id="order_discount" value="0.00"> 
-                                                <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount" value="0.00"> 
+                                                <input name="order_discount" type="number" step="any" class="form-control" id="order_discount" value="0.00"> 
+                                                <input name="order_discount_amount" step="any" type="number" class="d-none" id="order_discount_amount" value="0.00"> 
                                             </div>
                                         </div>
 

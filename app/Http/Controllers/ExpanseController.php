@@ -66,6 +66,7 @@ class ExpanseController extends Controller
     public function create()
     {
         if (auth()->user()->permission->expense['add_expense'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -84,6 +85,7 @@ class ExpanseController extends Controller
             ->get(['accounts.id', 'accounts.name', 'account_type']);
 
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        
         return view('expanses.create', compact('expenseAccounts', 'accounts', 'methods'));
     }
 

@@ -25,7 +25,8 @@
         $('.variant_list_area').empty();
         $('.select_area').hide();
         var product_code = $(this).val();
-        delay(function() { searchProduct(product_code); }, 200); //sendAjaxical is the name of remote-command
+        var __product_code = product_code.replaceAll('/', '~');
+        delay(function() { searchProduct(__product_code); }, 200); //sendAjaxical is the name of remote-command
     });
 
     function searchProduct(product_code) {
@@ -296,7 +297,7 @@
                             tr += '<input value="1" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
                             tr += '<input value="0.00" name="unit_discounts[]" type="hidden" id="unit_discount">';
                             tr += '<input value="0.00" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
-                            tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+(variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax)+'">';
+                            tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+(variant_product.update_variant_cost ? variant_product.update_variant_cost.net_unit_cost : variant_product.variant_cost_with_tax)+'">';
                             tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
                             tr += '</td>';
 
@@ -1076,7 +1077,9 @@
         var url = $(this).attr('action');
 
         var totalItem = $('#total_item').val();
+
         if (parseFloat(totalItem) == 0) {
+
             $('.loading_button').hide();
             toastr.error('Product table is empty.'); 
             return;
@@ -1091,23 +1094,29 @@
             cache: false,
             processData: false,
             success:function(data){
+
                 $('.submit_button').prop('type', 'sumbit');
                 if(!$.isEmptyObject(data.errorMsg)){
+
                     toastr.error(data.errorMsg); 
                     $('.loading_button').hide();
                     return;
                 }
 
                 if(!$.isEmptyObject(data.finalMsg)){
+
                     toastr.success(data.finalMsg); 
                     afterCreateSale();
                 }else if(!$.isEmptyObject(data.draftMsg)){
+
                     toastr.success(data.draftMsg); 
                     afterCreateSale();
                 }else if(!$.isEmptyObject(data.quotationMsg)){
+
                     toastr.success(data.quotationMsg); 
                     afterCreateSale();
                 }else{
+
                     toastr.success('Successfully sale is created.');
                     $(data).printThis({
                         debug: false,                   
@@ -1121,18 +1130,25 @@
                     afterCreateSale();
                 }
             },error: function(err) {
+
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
                 $('.error').html('');
                 
                 if (err.status == 0) {
+
                     toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }else if (err.status == 500) {
+
+                    toastr.error('Server Error. Please contact to the support team.'); 
                     return;
                 }
 
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
 
                 $.each(err.responseJSON.errors, function(key, error) {
+
                     $('.error_' + key + '').html(error[0]);
                 });
             }
@@ -1141,14 +1157,17 @@
 
     // Automatic remove searching product is found signal 
     setInterval(function(){
+
         $('#search_product').removeClass('is-invalid');
     }, 500); 
 
     setInterval(function(){
+
         $('#search_product').removeClass('is-valid');
     }, 1000);
 
     $('.submit_button').on('click', function () {
+
         var value = $(this).val();
         var data_status = $(this).data('status');
         var status = $('#status').val(data_status);
@@ -1156,18 +1175,23 @@
     });
     
     $('#addCustomer').on('click', function () {
+
         $.get("{{route('sales.pos.add.quick.customer.modal')}}", function(data) {
+
             $('#add_customer_modal_body').html(data);
             $('#addCustomerModal').modal('show');
         });
     });
 
     @if (auth()->user()->permission->product['product_add'] == '1')
+
         $('#add_product').on('click', function () {
+
             $.ajax({
                 url:"{{route('sales.add.product.modal.view')}}",
                 type:'get',
                 success:function(data){
+
                     $('#add_product_body').html(data);
                     $('#addProductModal').modal('show');
                 }
@@ -1186,26 +1210,33 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
+
                     toastr.success('Successfully product is added.');
                     $.ajax({
                         url:"{{url('sales/get/recent/product')}}"+"/"+data.id,
                         type:'get',
                         success:function(data){
+
                             $('.loading_button').hide();
                             $('#addProductModal').modal('hide');
                             if (!$.isEmptyObject(data.errorMsg)) {
+
                                 toastr.error(data.errorMsg);
                             }else{
+
                                 $('.sale-product-table tbody').prepend(data);
                                 calculateTotalAmount();
                             }
                         }
                     });
                 },error: function(err) {
+
                     $('.loading_button').hide();
                     toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                     $('.error').html('');
+
                     $.each(err.responseJSON.errors, function(key, error) {
+
                         $('.error_sale_' + key + '').html(error[0]);
                     });
                 }

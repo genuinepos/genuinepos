@@ -123,7 +123,8 @@
         $('.variant_list_area').empty();
         $('.select_area').hide();
         var product_code = $(this).val();
-        delay(function() { searchProduct(product_code); }, 200); //sendAjaxical is the name of remote-command
+        var __product_code = product_code.replaceAll('/', '~');
+        delay(function() { searchProduct(__product_code); }, 200); //sendAjaxical is the name of remote-command
     });
 
     function searchProduct(product_code) {

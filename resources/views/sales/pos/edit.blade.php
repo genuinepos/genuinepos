@@ -51,6 +51,7 @@
     // select single product and add stock adjustment table
     var keyName = 1;
     function singleProduct(e) {
+        
         var price_group_id = $('#price_group_id').val();
         $('.select_area').hide();
         $('#search_product').val("");

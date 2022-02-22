@@ -911,6 +911,42 @@
                                         <p class="switch_text">@lang('menu.receive_stocks')</p>
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
+                                        <p>{!! __('menu.transfer_stock_heading_3') !!}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('transfer.stock.branch.to.branch.create') }}" class="bar-link">
+                                                <span><i class="fas fa-exchange-alt"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.add_transfer')</p>
+                                    </div>
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('transfer.stock.branch.to.branch.transfer.list') }}" class="bar-link">
+                                                <span><i class="fas fa-list-ul"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.transfer_list') 
+                                        </p>
+                                    </div>
+
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('transfer.stock.branch.to.branch.receivable.list') }}"
+                                                class="bar-link">
+                                                <span><i class="fas fa-check-double"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.receive_stocks')</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

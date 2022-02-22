@@ -443,6 +443,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="row mt-1">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
@@ -788,9 +789,8 @@
         var product_price = $('#product_price').val();
 
         if (product_cost == '' || product_price == '') {
-            alert(
-                'After creating the variant, product cost and product price field must not be empty.'
-                );
+
+            alert('After creating the variant, product cost and product price field must not be empty.');
             $(this).prop('checked', false);
             return;
         }
@@ -799,7 +799,7 @@
 
         var auto_generated_code = $('#auto_generated_code').val();
 
-        var variant_code = code ? code+'/'+(++variant_code_sequel) : auto_generated_code+'/'+(++variant_code_sequel);
+        var variant_code = code ? code+'-'+(++variant_code_sequel) : auto_generated_code+'-'+(++variant_code_sequel);
 
         $('#variant_code').val(variant_code);
         $('#variant_costing').val(parseFloat(product_cost).toFixed(2));
@@ -807,7 +807,7 @@
         $('#variant_price_exc_tax').val(parseFloat(product_price).toFixed(2));
         $('#variant_profit').val(parseFloat(profit).toFixed(2));
         if ($(this).is(':CHECKED', true)) {
-            console.log('ON');
+
             $('.dynamic_variant_create_area').show(500);
             $('#variant_combination').prop('required', true);
             $('#variant_costing').prop('required', true);
@@ -815,6 +815,7 @@
             $('#variant_profit').prop('required', true);
             $('#variant_price_exc_tax').prop('required', true);
         } else {
+
             $('.dynamic_variant_create_area').hide(500);
             $('#variant_combination').prop('required', false);
             $('#variant_costing').prop('required', false);
@@ -834,7 +835,7 @@
             
         var auto_generated_code = $('#auto_generated_code').val();
 
-        var variant_code = code ? code+'/'+(++variant_code_sequel) : auto_generated_code+'/'+(++variant_code_sequel);
+        var variant_code = code ? code+'-'+(++variant_code_sequel) : auto_generated_code+'-'+(++variant_code_sequel);
 
         var product_cost = $('#product_cost').val();
         var product_cost_with_tax = $('#product_cost_with_tax').val();
@@ -847,6 +848,7 @@
         html += '<option value="">Create Combination</option>';
 
         $.each(variantsWithChild, function(key, val) {
+
             html += '<option value="' + val.id + '">' + val.bulk_variant_name + '</option>';
         });
 
@@ -882,6 +884,7 @@
 
     // This functionality of Count prackage product all prices
     function CountTotalComboProductPrice(allQuantities, allUnitPrices) {
+
         var allUnitPriceContainer = [];
         allUnitPrices.forEach(function(price) {
 
@@ -911,6 +914,7 @@
             async: true,
             type: 'get',
             success: function(html) {
+
                $('.form_part').html(html);
             }
         });
@@ -919,7 +923,9 @@
     // call jquery method 
     var action_direction = '';
     $(document).ready(function() {
+
         $(document).on('click', '.submit_button', function() {
+
             action_direction = $(this).val();
         });
 
@@ -953,33 +959,45 @@
 
         // Search product for creating combo
         $(document).on('input', '#search_product',function(e) {
+
             $('.variant_list_area').empty();
             $('.select_area').hide();
             var productCode = $(this).val();
+
             if ((productCode === "")) {
+
                 $('.variant_list_area').empty();
                 $('.select_area').hide();
                 return;
             }
+
             $.ajax({
                 url: "{{ url('product/search/product') }}" + "/" + productCode,
                 dataType: 'json',
                 success: function(product) {
+
                     if (!$.isEmptyObject(product)) {
+
                         $('#search_product').addClass('is-valid');
                     } 
 
                     if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product)){
+
                         $('#search_product').addClass('is-valid');
+
                         if(!$.isEmptyObject(product.product)){
+
                             var product = product.product;
                             if(product.product_variants.length == 0){
+
                                 $('.select_area').hide();
                                 $('#search_product').val('');
                                 product_ids = document.querySelectorAll('#product_id');
                                 var sameProduct = 0;
                                 product_ids.forEach(function(input){
+
                                     if(input.value == product.id){
+
                                         sameProduct += 1;
                                         var className = input.getAttribute('class');
                                         // get closest table row for increasing qty and re calculate product amount
@@ -1000,6 +1018,7 @@
                                 });
 
                                 if(sameProduct == 0){
+
                                     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
                                     var tax_amount = parseFloat(product.tax != null ? product.product_price/100 * product.tax.tax_percent : 0);
                                     var tr = '';
@@ -1034,9 +1053,12 @@
                                     calculateTotalAmount(); 
                                 }
                             }else{
+
                                 var li = "";
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
+
                                 $.each(product.product_variants, function(key, variant){
+
                                     var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
                                     var variantPriceIncTax = variant.variant_price + tax_amount;
                                     li += '<li>';
@@ -1050,12 +1072,14 @@
                                         .variant_name + ']' + '</a>';
                                     li += '</li>';
                                 });
+
                                 $('.variant_list_area').append(li);
                                 $('.select_area').show();
                                 $('#search_product').val('');
                             }
 
                         }else if(!$.isEmptyObject(product.variant_product)){
+
                             $('.select_area').hide();
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
@@ -1063,9 +1087,13 @@
                             var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * tax_percent : 0); 
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
+
                             variant_ids.forEach(function(input){
+
                                 if(input.value != 'noid'){
+
                                     if(input.value == variant_product.id){
+
                                         sameVariant += 1;
                                         var className = input.getAttribute('class');
                                         // get closest table row for increasing qty and re calculate product amount
@@ -1087,6 +1115,7 @@
                             });
                         
                             if(sameVariant == 0){
+
                                 var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                                 var tax_amount = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * variant_product.product.tax.tax_percent : 0);
                                 var tr = '';
@@ -1122,6 +1151,7 @@
                             }    
                         }
                     }else{
+
                         $('#search_product').addClass('is-invalid');
                     }
                 }
@@ -1140,9 +1170,13 @@
             var variant_price_inc_tax  = $(this).data('v_price'); 
             var variant_ids = document.querySelectorAll('#variant_id');
             var sameVariant = 0;
+
             variant_ids.forEach(function(input){
+
                 if(input.value != 'noid'){
+
                     if(input.value == variant_id){
+
                         sameVariant += 1;
                         var className = input.getAttribute('class');
                         var className = input.getAttribute('class');
@@ -1165,6 +1199,7 @@
             });
 
             if(sameVariant == 0){
+
                 var tr = '';
                 tr += '<tr class="text-center">';
                 tr += '<td>';
@@ -1198,6 +1233,7 @@
         });
 
         function calculateTotalAmount() {
+
             var subtotals = document.querySelectorAll('#subtotal');
             var netTotalAmount = 0;
 
@@ -1228,6 +1264,7 @@
         });
 
         $(document).on('click', '#remove_combo_product_btn', function(e) {
+
             e.preventDefault();
             $(this).closest('tr').remove();
             calculateTotalAmount();
@@ -1235,12 +1272,14 @@
 
         // Dispose Select area 
         $(document).on('click', '.remove_select_area_btn', function(e) {
+
             e.preventDefault();
             $('.select_area').hide();
         });
 
         // Romove variant table row
         $(document).on('click', '#variant_remove_btn', function(e) {
+
             e.preventDefault();
             $(this).closest('tr').remove();
         });
@@ -1337,17 +1376,20 @@
 
         // Automatic remove searching product not found signal 
         setInterval(function() {
+
             $('#search_product').removeClass('is-invalid');
         }, 350);
 
         // Automatic remove searching product is found signal 
         setInterval(function() {
+
             $('#search_product').removeClass('is-valid');
         }, 1000);
     });
 
     // Add category from create product by ajax
     $(document).on('submit', '#add_category_form', function(e) {
+
         e.preventDefault();
         $('.loading_button').removeClass('d-none');
         var url = $(this).attr('action');
@@ -1361,6 +1403,7 @@
 
             var inputId = $(val).attr('id');
             var idValue = $('#' + inputId).val();
+
             if (idValue == '') {
 
                 countErrorField += 1;
@@ -1518,6 +1561,7 @@
             type: 'post',
             data: request,
             success: function(data) {
+
                 $('.loading_button').addClass('d-none');
                 toastr.success('Successfully warranty is added.');
                 $('#warranty_id').append('<option value="' + data.id + '">' + data.name + '</option>');
@@ -1541,6 +1585,7 @@
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+    
     new Litepicker({
         singleMode: true,
         element: document.getElementById('datepicker'),

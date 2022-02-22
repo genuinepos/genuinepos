@@ -103,7 +103,6 @@
                                             </div>
                                         </div>
 
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -128,9 +127,7 @@
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code">
                                                     </div>
                                                     <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                          
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div> 
                                             </div>
@@ -151,9 +148,7 @@
                                                                     <th><i class="fas fa-trash-alt"></i></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="purchase_return_list">
-                                                               
-                                                            </tbody>
+                                                            <tbody id="purchase_return_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -238,6 +233,7 @@
         getTaxes();
 
         var delay = (function() {
+
             var timer = 0;
             return function(callback, ms) {
                 clearTimeout (timer);
@@ -246,10 +242,12 @@
         })();
 
         $('#search_product').on('input', function(e) {
+
             $('.variant_list_area').empty();
             $('.select_area').hide();
             var product_code = $(this).val();
-            delay(function() { searchProduct(product_code); }, 150); //sendAjaxical is the name of remote-command
+            var __product_code = product_code.replaceAll('/', '~');
+            delay(function() { searchProduct(__product_code); }, 150); //sendAjaxical is the name of remote-command
         });
       
         // add purchase product by searching product code

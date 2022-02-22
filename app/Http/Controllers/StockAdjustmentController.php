@@ -257,7 +257,7 @@ class StockAdjustmentController extends Controller
         $__voucherPrefix = $voucherPrefix != null ? $voucherPrefix : '';
 
         // generate invoice ID
-        $invoiceId = $__voucherPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustments'), 5, "0", STR_PAD_LEFT);
+        $invoiceId = $__voucherPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustments'), 5, "0", STR_PAD_LEFT);
 
         // Add Stock adjustment.
         $addStockAdjustment = new StockAdjustment();
@@ -291,7 +291,7 @@ class StockAdjustmentController extends Controller
 
         $index = 0;
         foreach ($request->product_ids as $product_id) {
-            
+
             $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
             $addStockAdjustmentProduct = new StockAdjustmentProduct();
             $addStockAdjustmentProduct->stock_adjustment_id = $addStockAdjustment->id;
@@ -316,10 +316,10 @@ class StockAdjustmentController extends Controller
 
         if ($request->total_recovered_amount > 0) {
 
-            $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustment_recovers'), 5, "0", STR_PAD_LEFT) ;
+            $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustment_recovers'), 5, "0", STR_PAD_LEFT);
             $addStockAdjustmentRecovered = new StockAdjustmentRecover();
-            $addStockAdjustmentRecovered->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
-            $addStockAdjustmentRecovered->voucher_no = 'SARV'.$voucher_no;
+            $addStockAdjustmentRecovered->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+            $addStockAdjustmentRecovered->voucher_no = 'SARV' . $voucher_no;
             $addStockAdjustmentRecovered->stock_adjustment_id = $addStockAdjustment->id;
             $addStockAdjustmentRecovered->account_id = $request->account_id;
             $addStockAdjustmentRecovered->payment_method_id = $request->payment_method_id;
@@ -328,12 +328,12 @@ class StockAdjustmentController extends Controller
 
             // Add Purchase A/C Ledger
             $this->accountUtil->addAccountLedger(
-                voucher_type_id : 8,
-                date : $request->date,
-                account_id : $request->account_id,
-                trans_id : $addStockAdjustmentRecovered->id,
-                amount : $request->total_recovered_amount,
-                balance_type : 'debit'
+                voucher_type_id: 8,
+                date: $request->date,
+                account_id: $request->account_id,
+                trans_id: $addStockAdjustmentRecovered->id,
+                amount: $request->total_recovered_amount,
+                balance_type: 'debit'
             );
         }
 
@@ -388,8 +388,10 @@ class StockAdjustmentController extends Controller
     // Search product
     public function searchProduct($keyword)
     {
+        $__keyword = str_replace('~', '/', $keyword);
+
         $namedProducts = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('name', 'LIKE', $keyword . '%')
+            ->where('name', 'LIKE', $__keyword . '%')
             ->where('status', 1)->get();
 
         if ($namedProducts->count() > 0) {
@@ -397,34 +399,52 @@ class StockAdjustmentController extends Controller
         }
 
         $branch_id = auth()->user()->branch_id;
-        $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $keyword)->first();
+        $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $__keyword)->first();
+
         if ($product) {
-            $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product->id)->first();
+
+            $productBranch = DB::table('product_branches')
+            ->where('branch_id', $branch_id)
+            ->where('product_id', $product->id)
+            ->first();
+
             if ($productBranch) {
+
                 if ($product->type == 2) {
+
                     return response()->json(['errorMsg' => 'Combo product is not adjustable.']);
                 } else {
+
                     if ($productBranch->product_quantity > 0) {
+
                         return response()->json([
                             'product' => $product,
                             'qty_limit' => $productBranch->product_quantity
                         ]);
                     } else {
+
                         return response()->json(['errorMsg' => 'Stock is out of this product of this branch']);
                     }
                 }
             } else {
+
                 return response()->json(['errorMsg' => 'This product is not available in this branch.']);
             }
         } else {
+
             $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
-                ->where('variant_code', $keyword)
+                ->where('variant_code', $__keyword)
                 ->first();
 
             if ($variant_product) {
 
-                $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $variant_product->product_id)->first();
+                $productBranch = DB::table('product_branches')
+                    ->where('branch_id', $branch_id)
+                    ->where('product_id', $variant_product->product_id)
+                    ->first();
+
                 if (is_null($productBranch)) {
+
                     return response()->json(['errorMsg' => 'This product is not available in this shop']);
                 }
 
@@ -434,19 +454,24 @@ class StockAdjustmentController extends Controller
                     ->first();
 
                 if (is_null($productBranchVariant)) {
+
                     return response()->json(['errorMsg' => 'This variant is not available in this shop']);
                 }
 
                 if ($productBranch && $productBranchVariant) {
+
                     if ($productBranchVariant->variant_quantity > 0) {
+
                         return response()->json([
                             'variant_product' => $variant_product,
                             'qty_limit' => $productBranchVariant->variant_quantity
                         ]);
                     } else {
+
                         return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this branch']);
                     }
                 } else {
+
                     return response()->json(['errorMsg' => 'This product is not available in this branch.']);
                 }
             }
@@ -455,45 +480,60 @@ class StockAdjustmentController extends Controller
 
     public function searchProductInWarehouse($keyword, $warehouse_id)
     {
+        $__keyword = str_replace('~', '/', $keyword);
+
         $namedProducts = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('name', 'LIKE', $keyword . '%')
+            ->where('name', 'LIKE', $__keyword . '%')
             ->where('status', 1)->get();
 
         if (count($namedProducts) > 0) {
             return response()->json(['namedProducts' => $namedProducts]);
         }
 
-        $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $keyword)->first();
+        $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $__keyword)->first();
+
         if ($product) {
+
             $productWarehouse = DB::table('product_warehouses')
                 ->where('warehouse_id', $warehouse_id)
                 ->where('product_id', $product->id)
                 ->first();
 
             if ($productWarehouse) {
+
                 if ($product->type == 2) {
+
                     return response()->json(['errorMsg' => 'Combo product is not adjustable.']);
                 } else {
+
                     if ($productWarehouse->product_quantity > 0) {
+
                         return response()->json([
                             'product' => $product,
                             'qty_limit' => $productWarehouse->product_quantity
                         ]);
                     } else {
+
                         return response()->json(['errorMsg' => 'Stock is out of this product of this warehouse']);
                     }
                 }
             } else {
+
                 return response()->json(['errorMsg' => 'This product is not available in this branch.']);
             }
         } else {
-            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $keyword)->first();
+
+            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
+            ->where('variant_code', $__keyword)->first();
+
             if ($variant_product) {
+
                 $productWarehouse = DB::table('product_warehouses')
                     ->where('warehouse_id', $warehouse_id)
                     ->where('product_id', $variant_product->product_id)->first();
 
                 if (is_null($productWarehouse)) {
+
                     return response()->json(['errorMsg' => 'This product is not available in this warehouse']);
                 }
 
@@ -503,15 +543,18 @@ class StockAdjustmentController extends Controller
                     ->where('product_variant_id', $variant_product->id)->first();
 
                 if (is_null($productWarehouseVariant)) {
+
                     return response()->json(['errorMsg' => 'This variant is not available in this warehouse']);
                 }
 
                 if ($productWarehouseVariant->variant_quantity > 0) {
+
                     return response()->json([
                         'variant_product' => $variant_product,
                         'qty_limit' => $productWarehouseVariant->variant_quantity
                     ]);
                 } else {
+
                     return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this warehouse']);
                 }
             }
@@ -521,13 +564,18 @@ class StockAdjustmentController extends Controller
     public function checkSingleProductStockInWarehouse($product_id, $warehouse_id)
     {
         $productWarehouse = ProductWarehouse::where('product_id', $product_id)->where('warehouse_id', $warehouse_id)->first();
+        
         if ($productWarehouse) {
+
             if ($productWarehouse->product_quantity > 0) {
+
                 return response()->json($productWarehouse->product_quantity);
             } else {
+
                 return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this Warehouse']);
             }
         } else {
+
             return response()->json(['errorMsg' => 'This product is not available in this Warehouse.']);
         }
     }
@@ -537,21 +585,29 @@ class StockAdjustmentController extends Controller
         $productWarehouse = DB::table('product_warehouses')
             ->where('warehouse_id', $warehouse_id)
             ->where('product_id', $product_id)->first();
+
         if ($productWarehouse) {
+
             $productWarehouseVariant = DB::table('product_warehouse_variants')
                 ->where('product_warehouse_id', $productWarehouse->id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
+
             if ($productWarehouseVariant) {
+
                 if ($productWarehouseVariant->variant_quantity > 0) {
+
                     return response()->json($productWarehouseVariant->variant_quantity);
                 } else {
+
                     return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this warehouse']);
                 }
             } else {
+
                 return response()->json(['errorMsg' => 'This variant is not available in this warehouse.']);
             }
         } else {
+
             return response()->json(['errorMsg' => 'This variant is not available in this warehouse.']);
         }
     }
@@ -559,16 +615,22 @@ class StockAdjustmentController extends Controller
     public function checkSingleProductStock($product_id)
     {
         $branch_id = auth()->user()->branch_id;
+
         $productBranch = ProductBranch::where('product_id', $product_id)
             ->where('branch_id', $branch_id)
             ->first();
+
         if ($productBranch) {
+
             if ($productBranch->product_quantity > 0) {
+
                 return response()->json($productBranch->product_quantity);
             } else {
+
                 return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop/branch']);
             }
         } else {
+
             return response()->json(['errorMsg' => 'This product is not available in this shop/branch.']);
         }
     }
@@ -578,22 +640,29 @@ class StockAdjustmentController extends Controller
         $branch_id = auth()->user()->branch_id;
 
         $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product_id)->first();
+        
         if ($productBranch) {
+
             $productBranchVariant = DB::table('product_branch_variants')
                 ->where('product_branch_id', $productBranch->id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
 
             if ($productBranchVariant) {
+
                 if ($productBranchVariant->variant_quantity > 0) {
+
                     return response()->json($productBranchVariant->variant_quantity);
                 } else {
+
                     return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop']);
                 }
             } else {
+
                 return response()->json(['errorMsg' => 'This variant is not available in this branch/shop.']);
             }
         } else {
+            
             return response()->json(['errorMsg' => 'This product is not available in this branch/shop.']);
         }
     }

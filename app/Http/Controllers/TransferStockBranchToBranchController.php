@@ -2,27 +2,89 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\ProductVariant;
-use App\Models\TransferStockBranchToBranch;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\NameSearchUtil;
+use App\Models\ProductVariant;
+use App\Utils\TransferStockUtil;
 use Illuminate\Support\Facades\DB;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Models\TransferStockBranchToBranch;
+use App\Models\TransferStockBranchToBranchProducts;
 
 class TransferStockBranchToBranchController extends Controller
 {
     protected $nameSearchUtil;
     protected $invoiceVoucherRefIdUtil;
+    protected $transferStockUtil;
 
     public function __construct(
         NameSearchUtil $nameSearchUtil,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
+        TransferStockUtil $transferStockUtil
     )
     {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->transferStockUtil = $transferStockUtil;
         $this->middleware('auth:admin_and_user');
+    }
+
+    public function transferList(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $settings = DB::table('general_settings')->select('id', 'business')->first();
+
+            $transfers = '';
+
+            $query = DB::table('transfer_stock_branch_to_branches')
+                ->leftJoin('branches as sender_branch', 'transfer_stock_branch_to_branches.sender_branch_id', 'sender_branch.id')
+                ->leftJoin('branches as receiver_branch', 'transfer_stock_branch_to_branches.receiver_branch_id', 'receiver_branch.id');
+
+                if ($request->branch_id) {
+
+                    if ($request->branch_id == 'NULL') {
+
+                        $query->where('transfer_stock_branch_to_branches.sender_branch_id', NULL);
+                    } else {
+                        
+                        $query->where('transfer_stock_branch_to_branches.sender_branch_id', $request->branch_id);
+                    }
+                }
+
+                // if ($request->status) {
+
+                //     $query->where('transfer_stock_branch_to_branches.status', $request->status);
+                // }
+        
+                if ($request->from_date) {
+
+                    $from_date = date('Y-m-d', strtotime($request->from_date));
+                    $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                    // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                    $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+                    $query->whereBetween('transfer_stock_branch_to_branches.report_date', $date_range); // Final
+                }
+
+                if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                    
+                    $transfers = $query->orderBy('transfer_stock_branch_to_branches.report_date');
+
+                }
+        }
+
+        $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')->get();
+
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
+        return view(
+
+            'transfer_stock.branch_to_branch.transfer_list',
+
+            compact('warehouses', 'branches')
+        );
     }
 
     public function create()
@@ -45,11 +107,13 @@ class TransferStockBranchToBranchController extends Controller
 
         $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')->get();
 
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view(
 
             'transfer_stock.branch_to_branch.create',
 
-            compact('warehouses', 'accounts', 'expenseAccounts', 'methods')
+            compact('warehouses', 'accounts', 'expenseAccounts', 'methods', 'branches')
         );
     }
 
@@ -60,10 +124,14 @@ class TransferStockBranchToBranchController extends Controller
             'ex_account_id' => 'required',
             'account_id' => 'required',
             'payment_method_id' => 'required',
+            'receiver_branch_id' => 'required',
         ], [
             'ex_account_id.required' => 'Expense ledger A/C is required',
             'account_id.required' => 'Credit A/C is required',
+            'receiver_branch_id.required' => 'Receive from field is required',
         ]);
+
+        $receiver_branch_id = $request->receiver_branch_id != 'NULL' ? $request->receiver_branch_id : NULL;
 
         $refId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('transfer_stock_branch_to_branches'), 5, "0", STR_PAD_LEFT);
 
@@ -71,6 +139,7 @@ class TransferStockBranchToBranchController extends Controller
         $addTransfer->ref_id = 'TBB'.$refId;
         $addTransfer->sender_branch_id = $request->sender_branch_id;
         $addTransfer->sender_warehouse_id = $request->sender_warehouse_id;
+        $addTransfer->receiver_branch_id = $receiver_branch_id;
         $addTransfer->date = $request->date;
         $addTransfer->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addTransfer->total_item = $request->total_item;
@@ -79,11 +148,56 @@ class TransferStockBranchToBranchController extends Controller
         $addTransfer->total_stock_value = $request->total_stock_value;
         $addTransfer->transfer_note = $request->transfer_note;
         $addTransfer->expense_account_id = $request->ex_account_id;
-        $addTransfer->transfer_cost = $request->transfer_cost;
         $addTransfer->bank_account_id = $request->account_id;
-        $addTransfer->payment_note = $request->payment_note;
+        $addTransfer->transfer_cost = $request->transfer_cost;
         $addTransfer->save();
+
+        if (count($request->product_ids) > 0) {
+
+            $index = 0;
+            foreach ($request->product_ids as $product_id) {
+                
+                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+
+                $addTransProduct = New TransferStockBranchToBranchProducts();
+                $addTransProduct->transfer_id = $addTransfer->id;
+                $addTransProduct->product_id = $product_id;
+                $addTransProduct->variant_id = $variant_id;
+                $addTransProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
+                $addTransProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
+                $addTransProduct->send_qty = $request->quantities[$index];
+                $addTransProduct->pending_qty = $request->quantities[$index];
+                $addTransProduct->subtotal = $request->subtotals[$index];
+                $addTransProduct->save();
+                $index++;
+            }
+        }
      
+        if($request->transfer_cost > 0){
+
+            $this->transferStockUtil->addExpenseFromTransferStock($request, $addTransfer->id);
+        }
+
+        if ($request->action == 'save') {
+
+            return response()->json(['successMsg' => 'Successfully transfer stock is added']);
+        } else {
+
+            $transfer = TransferStockBranchToBranch::with(
+                [
+                    'sender_branch',
+                    'sender_warehouse',
+                    'receiver_branch',
+                    'receiver_branch',
+                    'Transfer_products', 
+                    'Transfer_products.product', 
+                    'Transfer_products.variant',
+                    'Transfer_products.product.unit'
+                ]
+            )->where('id', $addTransfer->id)->first();
+
+            return view('transfer_stock.branch_to_branch.save_and_print_template.print', compact('transfer'));
+        }
     }
 
     public function searchProduct($product_code, $warehouse_id)

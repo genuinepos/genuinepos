@@ -229,6 +229,11 @@
     <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        
+        @if (Session::has('errorMsg'))
+            toastr.error("{{ session('errorMsg') }}");
+        @endif
+
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [
@@ -271,9 +276,12 @@
         });
 
         function sum_table_col(table, class_name) {
+
             var sum = 0;
             table.find('tbody').find('tr').each(function() {
+
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
+
                     sum += parseFloat(
                         $(this).find('.' + class_name).data('value')
                     );
@@ -293,7 +301,9 @@
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
+
             $.get(url, function(data) {
+
                 $('#payment_heading').html('Add Payment');
                 $('#payment-modal-body').html(data);
                 $('#paymentModal').modal('show');
@@ -307,7 +317,9 @@
             $('.modal_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Edit Payment');
+
             $.get(url, function(data) {
+
                 $('.modal_preloader').hide();
                 $('#payment-modal-body').html(data);
                 $('#paymentModal').modal('show');
@@ -320,6 +332,7 @@
            var url = $(this).attr('href');
            $('.data_preloader').show();
             $.get(url, function(data) {
+
                 $('#payment_view_modal_body').html(data);
                 $('.data_preloader').hide();
                 $('#paymentViewModal').modal('show');
@@ -331,7 +344,9 @@
            e.preventDefault();
            $('.modal_preloader').show();
            var url = $(this).attr('href');
+
             $.get(url, function(data) {
+
                 $('.payment_details_area').html(data);
                 $('.modal_preloader').hide();
                 $('#paymentDetailsModal').modal('show');
@@ -344,7 +359,9 @@
             $('.loading_button').show();
             var available_amount = $('#available_amount').val();
             var paying_amount = $('#p_amount').val();
+
             if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
+
                 $('.error_p_amount').html('Paying amount must not be greater then due amount.');
                 $('.loading_button').hide();
                 return;
@@ -355,9 +372,11 @@
                 $('.error').html('');
                 var countErrorField = 0;
             $.each(inputs, function(key, val){
+
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
                 if(idValue == ''){
+
                     countErrorField += 1;
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
@@ -365,6 +384,7 @@
             });
 
             if(countErrorField > 0){
+
                 $('.loading_button').hide();
                 toastr.error('Please check again all form fields.','Some thing want wrong.');
                 return;
@@ -378,10 +398,13 @@
                 cache: false,
                 processData: false,
                 success:function(data){
+
                     if(!$.isEmptyObject(data.errorMsg)){
+
                         toastr.error(data.errorMsg,'ERROR');
                         $('.loading_button').hide();
                     }else{
+
                         $('.loading_button').hide();
                         $('#paymentModal').modal('hide');
                         $('#paymentViewModal').modal('hide');
@@ -394,6 +417,7 @@
 
         // Set accounts in payment and payment edit form
         function setExpanseCategory(){
+
             $.ajax({
                 url:"{{route('expanses.all.categories')}}",
                 async:true,

@@ -20,6 +20,7 @@ class ExpanseController extends Controller
     protected $expenseUtil;
     protected $accountUtil;
     protected $invoiceVoucherRefIdUtil;
+
     public function __construct(
         ExpenseUtil $expenseUtil,
         AccountUtil $accountUtil,
@@ -51,10 +52,12 @@ class ExpanseController extends Controller
     public function categoryWiseExpense(Request $request)
     {
         if (auth()->user()->permission->expense['category_wise_expense'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->expenseUtil->categoryWiseExpenseListTable($request);
         }
 
@@ -93,12 +96,14 @@ class ExpanseController extends Controller
     public function store(Request $request)
     {
         if (auth()->user()->permission->expense['add_expense'] == '0') {
+
             return response()->json('Access Denied');
         }
 
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['expenses'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['expanse_payment'];
+
         $this->validate($request, [
             'date' => 'required',
             'ex_account_id' => 'required',
@@ -124,12 +129,14 @@ class ExpanseController extends Controller
         $category_ids = '';
 
         foreach ($request->category_ids as $category_id) {
+
             $category_ids .= $category_id . ', ';
         }
 
         $addExpanse->category_ids = $category_ids;
 
         if ($request->hasFile('attachment')) {
+
             $expanseAttachment = $request->file('attachment');
             $expanseAttachmentName = uniqid() . '-' . '.' . $expanseAttachment->getClientOriginalExtension();
             $expanseAttachment->move(public_path('uploads/expanse_attachment/'), $expanseAttachmentName);
@@ -140,6 +147,7 @@ class ExpanseController extends Controller
 
         $index = 0;
         foreach ($request->category_ids as $category_id) {
+
             $addExDescription = new ExpenseDescription();
             $addExDescription->expense_id = $addExpanse->id;
             $addExDescription->expense_category_id = $category_id;
@@ -159,6 +167,7 @@ class ExpanseController extends Controller
         );
 
         if ($request->paying_amount > 0) {
+
             $addPaymentGetId = $this->expenseUtil->addPaymentGetId(
                 voucher_prefix: $paymentInvoicePrefix,
                 expense_id: $addExpanse->id,
@@ -178,6 +187,7 @@ class ExpanseController extends Controller
 
         $expense = Expanse::with(['expense_descriptions', 'expense_descriptions.category', 'admin'])
             ->where('id', $addExpanse->id)->first();
+
         return view('expanses.ajax_view.expense_print', compact('expense'));
     }
 
@@ -190,16 +200,23 @@ class ExpanseController extends Controller
         }
 
         $deleteExpanse = Expanse::with('expense_payments')->where('id', $expanseId)->first();
+
+        if ($deleteExpanse->transfer_branch_to_branch_id) {
+
+            return response()->json('Expense can not be deleted. This expense is belonging a business location to business location transfer.');
+        }
+
         $storedExpenseAccountId = $deleteExpanse->expense_account_id;
+
         $storedExpensePayments = $deleteExpanse->expense_payments;
 
         if (!is_null($deleteExpanse)) {
 
             $deleteExpanse->delete();
 
-            if (count($storedPayments) > 0) {
+            if (count($storedExpensePayments) > 0) {
 
-                foreach ($storedPayments as $payment) {
+                foreach ($storedExpensePayments as $payment) {
 
                     if ($payment->attachment) {
 
@@ -212,7 +229,7 @@ class ExpanseController extends Controller
                     // Update Bank/Cash-in-hand Balance
                     if ($payment->account_id) {
 
-                        $this->accountUtil->adjustAccountBalance('debit', $storedExpenseAccountId);
+                        $this->accountUtil->adjustAccountBalance('debit', $payment->account_id);
                     }
                 }
             }
@@ -235,6 +252,15 @@ class ExpanseController extends Controller
         }
 
         $expense = Expanse::with('expense_descriptions')->where('id', $expenseId)->first();
+
+        if ($expense->transfer_branch_to_branch_id) {
+
+            session()->flash('errorMsg', 'This Expense is not editable from here. Cause this Expense is created by Business Location to Business Location Transfer.');
+
+            return redirect()->back();
+
+        }
+
         $categories = DB::table('expanse_categories')->get();
         $taxes = DB::table('taxes')->get();
 

@@ -38,7 +38,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class="col-3"><b>B.Location :</b></label>
+                                                <label class="col-4"><b>B.Location :</b></label>
                                                 <div class="col-8">
                                                     <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                     <input type="hidden" name="sender_branch_id" value="{{ auth()->user()->branch_id }}" id="sender_branch_id">
@@ -57,19 +57,18 @@
                                                             <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                                         @endforeach
                                                     </select>
-                                                    
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class="col-2"><b>Date :</b> 
+                                                <label class="col-4"><b>Transfer Date :</b> 
                                                     <span class="text-danger">*</span> 
                                                 </label>
 
                                                 <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control  changeable" autocomplete="off"
+                                                    <input required type="text" name="date" class="form-control changeable" autocomplete="off"
                                                         value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
                                                     <span class="error error_date"></span>
                                                 </div>
@@ -78,12 +77,32 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class="col-3"><b>Ref ID :</b> 
+                                                <label class="col-4"><b>Reference :</b> 
                                                     <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i>
                                                 </label>
                                                 
                                                 <div class="col-8">
                                                     <input type="text" name="ref_id" id="ref_id" class="form-control" placeholder="Reference ID">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-1">
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <label class="col-4"><b>Receive From :<span class="text-danger">*</span></b></label>
+                                                <div class="col-8">
+                                                    <select class="form-control changeable add_input"
+                                                        name="receiver_branch_id" data-name="Receive By" id="receiver_branch_id">
+                                                        <option value="">Select Receiver B.Location</option>
+                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</option>
+
+                                                        @foreach ($branches as $b)
+                                                            <option value="{{ $b->id }}">{{ $b->name.'/'.$b->branch_code }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_receiver_branch_id"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -132,6 +151,7 @@
                                                                     <th></th>
                                                                     <th class="text-center">Quantity</th>
                                                                     <th class="text-center">Unit</th>
+                                                                    <th class="text-center">Unit Cost Inc.Tax</th>
                                                                     <th class="text-center">SubTotal</th>
                                                                     <th><i class="fas fa-trash-alt text-dark"></i></th>
                                                                 </tr>
@@ -392,7 +412,11 @@
 
                     var qty_limit = product.qty_limit;
 
-                    if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product) || !$.isEmptyObject(product.namedProducts)){
+                    if(
+                        !$.isEmptyObject(product.product) || 
+                        !$.isEmptyObject(product.variant_product) || 
+                        !$.isEmptyObject(product.namedProducts)
+                    ){
 
                         $('#search_product').addClass('is-valid');
 
@@ -423,8 +447,8 @@
                                         closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                         
                                         //Update Subtotal
-                                        var unitPrice = closestTr.find('#unit_price').val();
-                                        var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
+                                        var unitCost = closestTr.find('#unit_cost_inc_tax').val();
+                                        var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
                                         closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                                         closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                                         calculateTotalAmount();
@@ -447,22 +471,27 @@
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
                                     tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
-
-                                    var unitPriceIncTax = parseFloat(product.product_price) / 100 * parseFloat(tax_percent) + parseFloat(product.product_price);
-                                    tr += '<input readonly name="unit_prices[]" type="hidden" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                                     tr += '</td>';
 
                                     tr += '<td>';
                                     tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
                                     tr += '</td>';
+
                                     tr += '<td class="text text-center">';
                                     tr += '<span class="span_unit">'+product.unit.name+'</span>'; 
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
+
+                                    var unitCostIncTax = parseFloat(product.product_cost_with_tax) / 100 * parseFloat(tax_percent) + parseFloat(product.product_cost_with_tax);
+
+                                    tr += '<td class="text text-center">';
+                                    tr += '<input readonly name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
+                                    tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
+                                    tr += '</td>';
                                 
                                     tr += '<td class="text text-center">';
-                                    tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>'; 
-                                    tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden"  id="subtotal">';
+                                    tr += '<strong><span class="span_subtotal"> '+parseFloat(unitCostIncTax).toFixed(2)+' </span></strong>'; 
+                                    tr += '<input value="'+parseFloat(unitCostIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden"  id="subtotal">';
                                     tr += '</td>';
                                     tr += '<td class="text-center">';
                                     tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
@@ -500,6 +529,7 @@
                             var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0); 
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
+
                             variant_ids.forEach(function(input){
 
                                 if(input.value != 'noid'){
@@ -523,8 +553,8 @@
                                         closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                         
                                         //Update Subtotal
-                                        var unitPrice = closestTr.find('#unit_price').val();
-                                        var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
+                                        var unitCost = closestTr.find('#unit_cost_inc_tax').val();
+                                        var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
                                         closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                                         closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                                         calculateTotalAmount();
@@ -547,22 +577,30 @@
                                 tr += '<small class="text-muted">Current Stock - '+qty_limit+' ('+variant_product.product.unit.name+')'+'<small>';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
-                                var unitPriceIncTax = variant_product.variant_price / 100 * tax_percent + variant_product.variant_price;
-                                tr += '<input readonly name="unit_prices[]" type="hidden" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2) +'">';
+
                                 tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
                                 tr += '</td>';
 
                                 tr += '<td>';
                                 tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
                                 tr += '</td>';
+
                                 tr += '<td class="text text-center">';
                                 tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
                                 tr += '</td>';
+
+                                var unitCostIncTax = variant_product.variant_cost_with_tax / 100 * tax_percent + variant_product.variant_cost_with_tax;
                                 tr += '<td class="text text-center">';
-                                tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>'; 
-                                tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
+                                tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2) +'">';
+                                tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
                                 tr += '</td>';
+
+                                tr += '<td class="text text-center">';
+                                tr += '<strong><span class="span_subtotal">'+parseFloat(unitCostIncTax).toFixed(2)+'</span></strong>'; 
+                                tr += '<input value="'+parseFloat(unitCostIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
+                                tr += '</td>';
+
                                 tr += '<td class="text-center">';
                                 tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                                 tr += '</td>';
@@ -651,6 +689,7 @@
 
                         var product_ids = document.querySelectorAll('#product_id');
                         var sameProduct = 0;
+
                         product_ids.forEach(function(input){
 
                             if(input.value == product_id){
@@ -669,8 +708,8 @@
                                 closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                 
                                 //Update Subtotal
-                                var unitPrice = closestTr.find('#unit_price').val();
-                                var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
+                                var unitCost = closestTr.find('#unit_cost_inc_tax').val();
+                                var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
 
                                 closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                                 closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
@@ -711,21 +750,20 @@
                             tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
+
+                            var unitCostIncTax = parseFloat(product_cost_inc_tax) / 100 * parseFloat(p_tax_percent) + parseFloat(product_cost_inc_tax);
+                            tr += '<td class="text text-center">';
+                            tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
+                            tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
+                            tr += '</td>';
                            
                             tr += '<td class="text text-center">';
-
-                            var unitPriceIncTax = parseFloat(product_price_exc_tax) / 100 * parseFloat(p_tax_percent) + parseFloat(product_price_exc_tax);
-
-                            tr += '<input name="unit_prices[]" type="hidden" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
-
-                            tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>'; 
-
-                            tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
-
+                            tr += '<strong><span class="span_subtotal"> '+parseFloat(unitCostIncTax).toFixed(2)+' </span></strong>'; 
+                            tr += '<input value="'+parseFloat(unitCostIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                             tr += '</td>';
                             
                             tr += '<td class="text-center">';
-                            tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
+                            tr += '<a href="#" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                             tr += '</td>';
 
                             tr += '</tr>';
@@ -764,6 +802,7 @@
             var variant_id = e.getAttribute('data-v_id');
             var variant_name = e.getAttribute('data-v_name');
             var variant_code = e.getAttribute('data-v_code');
+            var variant_cost_inc_tax = e.getAttribute('data-v_cost_inc_tax');
             var variant_price = e.getAttribute('data-v_price');
 
             var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : 'no_id';
@@ -803,8 +842,8 @@
                                     closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                     
                                     //Update Subtotal
-                                    var unitPrice = closestTr.find('#unit_price').val();
-                                    var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
+                                    var unitCost = closestTr.find('#unit_cost_inc_tax').val();
+                                    var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
                                     closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                                     closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                                     calculateTotalAmount();
@@ -834,29 +873,34 @@
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
 
-                            var unitPriceIncTax = parseFloat(variant_price) / 100 * parseFloat(tax_percent) + parseFloat(variant_price);
-                            tr += '<input name="unit_prices[]" type="hidden" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
-
                             tr += '<input type="hidden" id="qty_limit" value="'+branchVariantQty+'">';
                             tr += '</td>';
 
                             tr += '<td>';
                             tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
                             tr += '</td>';
+
                             tr += '<td class="text text-center">';
                             tr += '<span class="span_unit">'+product_unit+'</span>'; 
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
+
+                            var unitCostIncTax = parseFloat(variant_cost_inc_tax) / 100 * parseFloat(tax_percent) + parseFloat(variant_cost_inc_tax);
+                            tr += '<td class="text text-center">';
+                            tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
+                            tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
+                            tr += '</td>';
                        
                             tr += '<td class="text text-center">';
-                            tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>'; 
-                            tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
+                            tr += '<strong><span class="span_subtotal">'+parseFloat(unitCostIncTax).toFixed(2)+'</span></strong>'; 
+                            tr += '<input value="'+parseFloat(unitCostIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                             tr += '</td>';
                             tr += '<td class="text-center">';
                             tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                             tr += '</td>';
                             tr += '</tr>';
                             $('#transfer_list').prepend(tr);
+
                             calculateTotalAmount();
 
                             if (keyName == 9) {
@@ -888,16 +932,16 @@
 
                     alert('Quantity Limit Is - '+qty_limit+' '+unit);
                     $(this).val(qty_limit);
-                    var unitPrice = tr.find('#unit_price').val();
-                    var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
+                    var unitCost = tr.find('#unit_cost_inc_tax').val();
+                    var calcSubtotal = parseFloat(unitCost) * parseFloat(qty_limit);
                     tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                     tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                     calculateTotalAmount();  
                     return;
                 }
 
-                var unitPrice = tr.find('#unit_price').val();
-                var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
+                var unitCost = tr.find('#unit_cost_inc_tax').val();
+                var calcSubtotal = parseFloat(unitCost) * parseFloat(qty);
                 tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                 calculateTotalAmount();  
@@ -918,16 +962,16 @@
 
                     alert('Quantity Limit Is - '+qty_limit+' '+unit);
                     $(this).val(qty_limit);
-                    var unitPrice = tr.find('#unit_price').val();
-                    var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
+                    var unitCost = tr.find('#unit_cost_inc_tax').val();
+                    var calcSubtotal = parseFloat(unitCost) * parseFloat(qty_limit);
                     tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                     tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                     calculateTotalAmount();  
                     return;
                 }
 
-                var unitPrice = tr.find('#unit_price').val();
-                var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
+                var unitCost = tr.find('#unit_cost_inc_tax').val();
+                var calcSubtotal = parseFloat(unitCost) * parseFloat(qty);
                 tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                 calculateTotalAmount(); 
@@ -1018,7 +1062,7 @@
                             header: null,        
                         });
                     }
-                },error: function(err) {
+                }, error: function(err) {
 
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
@@ -1100,6 +1144,7 @@
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
         _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+
         new Litepicker({
             singleMode: true,
             element: document.getElementById('datepicker'),

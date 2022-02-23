@@ -21,6 +21,7 @@ class CreateTransferStockBranchToBranchProductsTable extends Migration
             $table->unsignedBigInteger('variant_id')->nullable();
             $table->decimal('unit_cost_inc_tax', 22, 2)->default(0);
             $table->decimal('unit_price_inc_tax', 22, 2)->default(0);
+            $table->decimal('subtotal', 22, 2)->default(0);
             $table->decimal('send_qty', 22, 2)->default(0);
             $table->decimal('received_qty', 22, 2)->default(0);
             $table->decimal('pending_qty', 22, 2)->default(0);

@@ -225,14 +225,14 @@ class ExpenseUtil
         $expense->save();
     }
 
-    public function addPaymentGetId($voucher_prefix, $expense_id, $request)
+    public function addPaymentGetId($voucher_prefix, $expense_id, $request, $another_amount = 0)
     {
         $addExpensePayment = new ExpansePayment();
         $addExpensePayment->invoice_id = ($voucher_prefix != null ? $voucher_prefix : 'EPV') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_payments'), 5, "0", STR_PAD_LEFT);
         $addExpensePayment->expanse_id = $expense_id;
         $addExpensePayment->account_id = $request->account_id;
         $addExpensePayment->payment_method_id = $request->payment_method_id;
-        $addExpensePayment->paid_amount = $request->paying_amount;
+        $addExpensePayment->paid_amount = isset($request->paying_amount) ? $request->paying_amount : $another_amount;
         $addExpensePayment->date = $request->date;
         $addExpensePayment->report_date = date('Y-m-d', strtotime($request->date));
         $addExpensePayment->month = date('F');

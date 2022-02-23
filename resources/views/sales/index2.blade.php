@@ -106,7 +106,8 @@
                                 <div class="col-md-10">
                                     <h6>All Sale</h6>
                                 </div>
-                                @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+                                
+                                @if (auth()->user()->permission->sale['create_add_sale'] == '1')
                                     <div class="col-md-2">
                                         <div class="btn_30_blue float-end">
                                             <a href="{{ route('sales.create') }}"><i class="fas fa-plus-square"></i> Add</a>

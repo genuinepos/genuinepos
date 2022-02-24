@@ -24,13 +24,13 @@
                             <div class="form_element">
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
-                                        <div class="col-10">
+                                        <div class="col-9">
                                             <h5>Add Transfer Stock (Business Location To Business Location)
                                                 || <small class="text-muted">(Save & Print = Ctrl + Enter), (Save = Shift + Enter)</small>
                                             </h5>
                                         </div>
 
-                                        <div class="col-2">
+                                        <div class="col-3">
                                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>

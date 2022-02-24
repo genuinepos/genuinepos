@@ -19,19 +19,6 @@
                         <li><strong>B.Location Name :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>Phone : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         
-                        @if ($transfer->sender_branch)
-                            <li><strong>Address : </strong> 
-                                {{ $transfer->sender_branch->city }},
-                                {{ $transfer->sender_branch->state }},
-                                {{ $transfer->sender_branch->zip_code }},
-                                {{ $transfer->sender_branch->country }}.
-                            </li>
-                        @else 
-                            <li><strong>Address : </strong> 
-                                {{ json_decode($generalSettings->business, true)['address'] }}
-                            </li>
-                        @endif
-
                         <li><strong>Stock Location : </strong> 
                             @if ($transfer->sender_warehouse)
 
@@ -45,7 +32,7 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>Send To : </strong></li>
+                        <li><strong>Receive From : </strong></li>
                         <li><strong>B.Location Name :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>Phone : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         

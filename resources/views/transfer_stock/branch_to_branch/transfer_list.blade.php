@@ -46,7 +46,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>Payment Status :</strong></label>
-                                                    <select name="payment_status" id="payment_status" class="form-control">
+                                                    <select name="receive_status" id="receive_status" class="form-control">
                                                         <option value="">All</option>
                                                         <option value="1">Pending</option>
                                                         <option value="2">Partial</option>
@@ -99,13 +99,12 @@
                                     <h6>Transfer List</h6>
                                 </div>
 
-                                @if (auth()->user()->permission->sale['create_add_sale'] == '1')
-                                    <div class="col-md-2">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('sales.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
+                                <div class="col-md-2">
+                                    <div class="btn_30_blue float-end">
+                                        <a href="{{ route('transfer.stock.branch.to.branch.create') }}"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>
-                                @endif
+                                </div>
+                               
                             </div>
 
                             <div class="widget_content">
@@ -127,7 +126,7 @@
                                                 <th>Send Qty</th>
                                                 <th>Received Qty</th>
                                                 <th>Pending Qty</th>
-                                                <th>Total Stock Value({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Total Transfer Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -138,7 +137,7 @@
                                                 <th id="total_send_qty" class="text-white text-end"></th>
                                                 <th id="total_received_qty" class="text-white text-end"></th>
                                                 <th id="total_pending_qty" class="text-white text-end"></th>
-                                                <th id="total_stock_value" class="text-white text-end"></th>
+                                                <th id="transfer_cost" class="text-white text-end"></th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -179,86 +178,94 @@
             toastr.success('{{ session('successMsg') }}');
         @endif
 
-        // var transfer_table = $('.data_tbl').DataTable({
-        //     "processing": true,
-        //     "serverSide": true,
-        //     dom: "lBfrtip",
-        //     buttons: [
-        //         {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-        //         {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-        //         {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
-        //     ],
-        //     "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
-        //     "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-        //     "ajax": {
-        //         "url": "{{ route('sales.index2') }}",
-        //         "data": function(d) {
-        //             d.branch_id = $('#branch_id').val();
-        //             d.customer_id = $('#customer_id').val();
-        //             d.payment_status = $('#payment_status').val();
-        //             d.user_id = $('#user_id').val();
-        //             d.from_date = $('.from_date').val();
-        //             d.to_date = $('.to_date').val();
-        //         }
-        //     },
-        //     columnDefs: [{
-        //         "targets": [0, 7],
-        //         "orderable": false,
-        //         "searchable": false
-        //     }],
-        //     columns: [
-        //         {data: 'action'},
-        //         {data: 'date', name: 'date'},
-        //         {data: 'invoice_id', name: 'invoice_id'},
-        //         {data: 'from', name: 'branches.name'},
-        //         {data: 'customer', name: 'customers.name'},
-        //         {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end'},
-        //         {data: 'sale_return_due', name: 'sale_return_due', className: 'text-end'},
-        //         {data: 'paid_status', name: 'paid_status', className: 'text-end'},
-        //         {data: 'due', name: 'due', className: 'text-end'},
-        //         {data: 'total_payable_amount', name: 'total_payable_amount', className: 'text-end'},
-        //         {data: 'paid', name: 'paid', className: 'text-end'},
-             
-        //     ],fnDrawCallback: function() {
-        //         var total_payable_amount = sum_table_col($('.data_tbl'), 'total_payable_amount');
-        //         $('#total_payable_amount').text(bdFormat(total_payable_amount));
-        //         var paid = sum_table_col($('.data_tbl'), 'paid');
-        //         $('#paid').text(bdFormat(paid));
-        //         var due = sum_table_col($('.data_tbl'), 'due');
-        //         $('#due').text(bdFormat(due));
-        //         var sale_return_amount = sum_table_col($('.data_tbl'), 'sale_return_amount');
-        //         $('#sale_return_amount').text(bdFormat(sale_return_amount));
-        //         var sale_return_due = sum_table_col($('.data_tbl'), 'sale_return_due');
-        //         $('#sale_return_due').text(bdFormat(sale_return_due));
-        //         $('.data_preloader').hide();
-        //     }
-        // });
+        var transfer_table = $('.data_tbl').DataTable({
+            "processing": true,
+            "serverSide": true,
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            ],
 
-        // function sum_table_col(table, class_name) {
-        //     var sum = 0;
-        //     table.find('tbody').find('tr').each(function() {
-        //         if (parseFloat($(this).find('.' + class_name).data('value'))) {
-        //             sum += parseFloat(
-        //                 $(this).find('.' + class_name).data('value')
-        //             );
-        //         }
-        //     });
-        //     return sum;
-        // }
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
 
-        // //Submit filter form by select input changing
-        // $(document).on('submit', '#filter_form', function (e) {
-        //     e.preventDefault();
-        //     $('.data_preloader').show();
-        //     sales_table.ajax.reload();
-        // });
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+
+            "ajax": {
+
+                "url": "{{ route('transfer.stock.branch.to.branch.transfer.list') }}",
+
+                "data": function(d) {
+                    d.branch_id = $('#branch_id').val();
+                    d.receive_status = $('#receive_status').val();
+                    d.from_date = $('.from_date').val();
+                    d.to_date = $('.to_date').val();
+                }
+            },
+            columnDefs: [{
+                "targets": [0],
+                "orderable": false,
+                "searchable": false
+            }],
+            columns: [
+                {data: 'action'},
+                {data: 'date', name: 'date'},
+                {data: 'ref_id', name: 'ref_id'},
+                {data: 'sender_branch', name: 'sender_branch.name'},
+                {data: 'receiver_branch', name: 'receiver_branch.name'},
+                {data: 'receive_status', name: 'receive_status', className: 'text-end'},
+                {data: 'total_item', name: 'total_item', className: 'text-end'},
+                {data: 'total_send_qty', name: 'total_send_qty', className: 'text-end'},
+                {data: 'total_received_qty', name: 'total_received_qty', className: 'text-end'},
+                {data: 'total_pending_qty', name: 'total_pending_qty', className: 'text-end'},
+                {data: 'transfer_cost', name: 'transfer_cost', className: 'text-end'},
+                
+            ],fnDrawCallback: function() {
+
+                var total_item = sum_table_col($('.data_tbl'), 'total_item');
+                $('#total_item').text(bdFormat(total_item));
+                var total_send_qty = sum_table_col($('.data_tbl'), 'total_send_qty');
+                $('#total_send_qty').text(bdFormat(total_send_qty));
+                var total_received_qty = sum_table_col($('.data_tbl'), 'total_received_qty');
+                $('#total_received_qty').text(bdFormat(total_received_qty));
+                var total_pending_qty = sum_table_col($('.data_tbl'), 'total_pending_qty');
+                $('#total_pending_qty').text(bdFormat(total_pending_qty));
+                var transfer_cost = sum_table_col($('.data_tbl'), 'transfer_cost');
+                $('#transfer_cost').text(bdFormat(transfer_cost));
+                $('.data_preloader').hide();
+            }
+        });
+
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
+
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_form', function (e) {
+            e.preventDefault();
+
+            $('.data_preloader').show();
+            transfer_table.ajax.reload();
+        });
 
         // Show details modal with data
         $(document).on('click', '.details_button', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
+
             $.get(url, function(data) {
+
                 $('#sale_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
@@ -268,8 +275,10 @@
         // Make print
         $(document).on('click', '.print_btn',function (e) {
            e.preventDefault();
+
             var body = $('.sale_print_template').html();
             var header = $('.heading_area').html();
+
             $(body).printThis({
                 debug: false,
                 importCSS: true,
@@ -287,6 +296,7 @@
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
             $.confirm({
+
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
@@ -306,8 +316,26 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    sales_table.ajax.reload();
+
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
+                    transfer_table.ajax.reload();
                     toastr.error(data);
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        return;
+                    }else if (err.status == 500) {
+                        
+                        toastr.error('Server Error. Please contact to the support team.'); 
+                        return;
+                    }
                 }
             });
         });

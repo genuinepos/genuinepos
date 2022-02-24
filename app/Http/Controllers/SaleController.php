@@ -520,20 +520,29 @@ class SaleController extends Controller
         ])->where('id', $saleId)->first();
 
         $qty_limits = [];
+        
         foreach ($sale->sale_products as $sale_product) {
+
             if ($sale_product->product->is_manage_stock == 0) {
+
                 $qty_limits[] = PHP_INT_MAX;
             } else {
+
                 $productBranch = ProductBranch::where('branch_id', $sale->branch_id)
                     ->where('product_id', $sale_product->product_id)->first();
+
                 if ($sale_product->product->type == 2) {
+
                     $qty_limits[] = 500000;
                 } elseif ($sale_product->product_variant_id) {
+
                     $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $sale_product->product_id)
                         ->where('product_variant_id', $sale_product->product_variant_id)
                         ->first();
+
                     $qty_limits[] = $productBranchVariant->variant_quantity;
                 } else {
+
                     $qty_limits[] = $productBranch->product_quantity;
                 }
             }

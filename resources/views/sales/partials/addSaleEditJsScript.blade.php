@@ -1162,6 +1162,7 @@
             success:function(sale){
 
                 var qty_limits = sale.qty_limits;
+                
                 var sale = sale.sale;
                 $('#invoice_id').val(sale.invoice_id);
                 $('#status').val(sale.status);

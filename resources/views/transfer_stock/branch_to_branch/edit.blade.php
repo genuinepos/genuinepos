@@ -15,7 +15,7 @@
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
-            <form id="add_transfer_form" action="{{ route('transfer.stock.branch.to.branch.store') }}" method="POST">
+            <form id="edit_transfer_form" action="{{ route('transfer.stock.branch.to.branch.update', $transfer->id) }}" method="POST">
                 @csrf
                 <input class="hidden_sp" type="hidden" name="action" id="action">
                 <section class="mt-5">
@@ -41,6 +41,7 @@
                                                 <label class="col-4"><b>B.Location :</b></label>
                                                 <div class="col-8">
                                                     <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
+
                                                     <input type="hidden" name="sender_branch_id" value="{{ auth()->user()->branch_id }}" id="sender_branch_id">
                                                 </div>
                                             </div>
@@ -84,7 +85,7 @@
                                                 </label>
                                                 
                                                 <div class="col-8">
-                                                    <input type="text" name="ref_id" id="ref_id" class="form-control" placeholder="Reference ID" value="{{ $tranfer->ref_id }}">
+                                                    <input type="text" name="ref_id" id="ref_id" class="form-control" placeholder="Reference ID" value="{{ $transfer->ref_id }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -94,8 +95,11 @@
                                         <div class="col-md-3">
                                             <div class="input-group">
                                                 <label class="col-4">
-                                                    <b>Receive From : <span class="text-danger">*</span></b>
+                                                    <b>Receive From : 
+                                                        <span class="text-danger">*</span>
+                                                    </b>
                                                 </label>
+
                                                 <div class="col-8">
                                                     <select class="form-control changeable add_input"
                                                         name="receiver_branch_id" data-name="Receive By" id="receiver_branch_id">
@@ -108,6 +112,7 @@
                                                             <option {{ $transfer->receiver_branch_id == $b->id ? 'SELECTED' : '' }} value="{{ $b->id }}">{{ $b->name.'/'.$b->branch_code }}</option>
                                                         @endforeach
                                                     </select>
+
                                                     <span class="error error_receiver_branch_id"></span>
                                                 </div>
                                             </div>
@@ -162,7 +167,79 @@
                                                                     <th><i class="fas fa-trash-alt text-dark"></i></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="transfer_list"></tbody>
+                                                            <tbody id="transfer_list">
+                                                                @php
+                                                                    $index = 0;
+                                                                @endphp
+                                                                @foreach ($transfer->transfer_products as $transfer_product)
+
+                                                                    @php
+                                                                        $tax_percent = $transfer_product->product->tax_id ? $transfer_product->product->tax->tax_percent : 0;  
+                                                                    @endphp
+                                                                    
+                                                                    <tr>
+                                                                        <td class="text-start" colspan="2">
+                                                                            <a href="#" class="text-success" id="edit_product">
+                                                                                <span class="product_name">
+                                                                                    {{ $transfer_product->product->name }}
+                                                                                </span>
+                                                                                <span class="product_variant"></span>
+                                                                                <span class="product_code">{{ $transfer_product->product->product_code }}</span>
+                                                                            </a><br/>
+                                                                            <small class="text-muted">Current Stock -{{ $qty_limits[$index].'/'.$transfer_product->product->unit->name }}<small>
+
+                                                                            <input value="{{ $transfer_product->product_id }}" type="hidden" class="productId-{{ $transfer_product->product_id }}" id="product_id" name="product_ids[]">
+
+                                                                            <input value="{{ $transfer_product->variant_id ? $transfer_product->variant_id : 'noid' }}" type="hidden" class="variantId-{{ $transfer_product->variant_id }}" id="variant_id" name="variant_ids[]">
+
+                                                                            <input type="hidden" id="qty_limit" value="{{ $qty_limits[$index] + $transfer_product->send_qty }}">
+                                                                        </td>
+                                    
+                                                                        <td>
+                                                                            <input value="{{ $transfer_product->send_qty }}" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">
+                                                                        </td>
+                                    
+                                                                        <td class="text text-center">
+                                                                            <span class="span_unit">
+                                                                                {{ $transfer_product->product->unit->name }}
+                                                                            </span> 
+
+                                                                            <input  name="units[]" type="hidden" id="unit" value="{{ $transfer_product->product->unit->name }}">
+                                                                        </td>
+                                    
+                                                                        @php
+                                                                        
+                                                                          $unitCostIncTax = $transfer_product->product->product_cost_with_tax;  
+                                                                        @endphp
+                                                                        
+                                                                        <td class="text text-center">
+                                                                            <input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="{{ $unitCostIncTax }}">
+                                                                            <span class="span_unit_cost">
+                                                                                {{ $unitCostIncTax }}
+                                                                            </span> 
+                                                                        </td>
+                                                                    
+                                                                        <td class="text text-center">
+                                                                            <strong>
+                                                                                <span class="span_subtotal"> 
+                                                                                    {{ $transfer_product->subtotal }}
+                                                                                </span>
+                                                                            </strong>
+
+                                                                            <input value="{{ $transfer_product->subtotal }}" readonly name="subtotals[]" type="hidden"  id="subtotal">
+                                                                        </td>
+
+                                                                        <td class="text-center">
+                                                                            <a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    @php
+                                                                        $index++;
+                                                                    @endphp
+                                                                @endforeach
+                                                                
+                                                            </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -294,14 +371,14 @@
                                                         </label>
 
                                                         <div class="col-8">
-                                                            <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
+                                                            <select name="account_id" class="form-control" id="account_id" data-name="Credit A/C">
                                                                 @foreach ($accounts as $account)
                                                                     <option {{ $transfer->bank_account_id == $account->id ? 'SELECTED' : '' }} value="{{ $account->id }}">
                                                                         @php
                                                                             $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
                                                                             $balance = ' BL : '.$account->balance;
                                                                         @endphp
-                                                                        {{ $account->name.$accountType.$balance}}
+                                                                        {{ $account->name.$accountType.$balance }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -314,7 +391,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class=" col-4"><b>Payment Note :</b> </label>
                                                         <div class="col-8">
-                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note" autocomplete="off" value="">
+                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note" autocomplete="off" value="{{ $transfer->payment_note }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -346,6 +423,7 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+
         calculateTotalAmount();
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
@@ -399,7 +477,7 @@
         });
 
         // add Transfer product by searching product code
-        function searchProduct(product_code, warehouse_id){
+        function searchProduct(product_code, warehouse_id) {
 
             $.ajax({
 
@@ -462,7 +540,6 @@
 
                                 if(sameProduct == 0){
 
-                                    var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
                                     var tr = '';
                                     tr += '<tr>';
                                     tr += '<td class="text-start" colspan="2">';
@@ -471,7 +548,7 @@
                                     tr += '<span class="product_variant"></span>'; 
                                     tr += '<span class="product_code">'+' ('+product.product_code+')'+'</span>';
                                     tr += '</a><br/>';
-                                    tr += '<small class="text-muted">Current Stock - '+qty_limit+' ('+product.unit.name+')'+'<small>';
+                                    tr += '<small class="text-muted">Current Stock - '+qty_limit+'/'+product.unit.name+'<small>';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
                                     tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
@@ -486,7 +563,7 @@
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
 
-                                    var unitCostIncTax = parseFloat(product.product_cost_with_tax) / 100 * parseFloat(tax_percent) + parseFloat(product.product_cost_with_tax);
+                                    var unitCostIncTax = parseFloat(product.product_cost_with_tax);
 
                                     tr += '<td class="text text-center">';
                                     tr += '<input readonly name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
@@ -569,7 +646,6 @@
                             
                             if(sameVariant == 0){
 
-                                var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td class="text-start" colspan="2">';
@@ -578,7 +654,7 @@
                                 tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
                                 tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
                                 tr += '</a><br/>';
-                                tr += '<small class="text-muted">Current Stock - '+qty_limit+' ('+variant_product.product.unit.name+')'+'<small>';
+                                tr += '<small class="text-muted">Current Stock - '+qty_limit+'/'+variant_product.product.unit.name+'<small>';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
 
@@ -594,7 +670,8 @@
                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
                                 tr += '</td>';
 
-                                var unitCostIncTax = variant_product.variant_cost_with_tax / 100 * tax_percent + variant_product.variant_cost_with_tax;
+                                var unitCostIncTax = variant_product.variant_cost_with_tax;
+
                                 tr += '<td class="text text-center">';
                                 tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2) +'">';
                                 tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
@@ -740,7 +817,7 @@
                             tr += '<span class="product_variant"></span>'; 
                             tr += '<span class="product_code">'+' ('+product_code+')'+'</span>';
                             tr += '</a><br/>';
-                            tr += '<small class="text-muted">Current Stock - '+singleProductQty+' ('+product_unit+')'+'<small>';
+                            tr += '<small class="text-muted">Current Stock - '+singleProductQty+'/'+product_unit+'<small>';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
                             tr += '<input type="hidden" id="qty_limit" value="'+singleProductQty+'">';
@@ -755,7 +832,8 @@
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
 
-                            var unitCostIncTax = parseFloat(product_cost_inc_tax) / 100 * parseFloat(p_tax_percent) + parseFloat(product_cost_inc_tax);
+                            var unitCostIncTax = parseFloat(product_cost_inc_tax);
+
                             tr += '<td class="text text-center">';
                             tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
                             tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
@@ -873,7 +951,7 @@
                             tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
                             tr += '<span class="product_code">'+'('+variant_code+')'+'</span>';
                             tr += '</a><br/>';
-                            tr += '<small class="text-muted">Current Stock - '+branchVariantQty+' ('+product_unit+')'+'<small>';
+                            tr += '<small class="text-muted">Current Stock - '+branchVariantQty+'/'+product_unit+'<small>';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
 
@@ -889,7 +967,8 @@
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
 
-                            var unitCostIncTax = parseFloat(variant_cost_inc_tax) / 100 * parseFloat(tax_percent) + parseFloat(variant_cost_inc_tax);
+                            var unitCostIncTax = parseFloat(variant_cost_inc_tax);
+
                             tr += '<td class="text text-center">';
                             tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
                             tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
@@ -997,7 +1076,7 @@
         });
 
         //Add purchase request by ajax
-        $('#add_transfer_form').on('submit', function(e){
+        $('#edit_transfer_form').on('submit', function(e){
             e.preventDefault();
 
             var totalItem = $('#total_item').val();
@@ -1013,62 +1092,25 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
-            $('.submit_button').prop('type', 'button');
-
             $.ajax({
                 url:url,
                 type:'post',
                 data: request,
                 success:function(data){
 
-                    $('.submit_button').prop('type', 'sumbit');
-
                     if(!$.isEmptyObject(data.errorMsg)){
 
                         toastr.error(data.errorMsg,'ERROR'); 
                         $('.loading_button').hide();
+                        return;
                     }
 
-                    if(!$.isEmptyObject(data.successMsg)){
+                    $('.loading_button').hide();
+                    toastr.success(data.successMsg); 
+                    window.location = "{{ url()->previous() }}"
 
-                        $('.loading_button').hide();
-
-                        toastr.success(data.successMsg); 
-
-                        $('#add_transfer_form')[0].reset();
-
-                        $('.hidden_sp').val('');
-
-                        $('#transfer_list').empty();
-
-                        calculateTotalAmount();
-                    }else{
-
-                        $('.loading_button').hide();
-
-                        $('#add_transfer_form')[0].reset();
-
-                        $('.hidden_sp').val('');
-
-                        toastr.success(' Transfer stock created successfully.');
-
-                        $('#transfer_list').empty();
-
-                        calculateTotalAmount();
-
-                        $(data).printThis({
-                            debug: false,                   
-                            importCSS: true,                
-                            importStyle: true,          
-                            loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                            removeInline: false, 
-                            printDelay: 1000, 
-                            header: null,        
-                        });
-                    }
                 }, error: function(err) {
 
-                    $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
                     $('.error').html('');
 
@@ -1101,12 +1143,6 @@
 
             $('#search_product').removeClass('is-valid');
         }, 1000);
-
-        $('.submit_button').on('click', function () {
-
-            var value = $(this).val();
-            $('#action').val(value); 
-        });
 
         $(document).keypress(".scanable",function(event){
 

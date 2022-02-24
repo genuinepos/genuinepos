@@ -33,13 +33,13 @@ class TransferStockBranchToBranch extends Model
         return $this->belongsTo(Warehouse::class, 'receiver_warehouse_id');
     }
 
-    public function Transfer_products()
+    public function transfer_products()
     {
-        return $this->hasMany(TransferStockBranchToBranchProducts::class, 'transfer_id');
+        return $this->hasMany(TransferStockBranchToBranchProducts::class, 'id');
     }
 
     public function expense()
     {
-        return $this->hasOne(Expanse::class, 'id', 'transfer_branch_to_branch_id');
+        return $this->hasOne(Expanse::class, 'transfer_branch_to_branch_id');
     }
 }

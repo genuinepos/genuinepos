@@ -11,12 +11,15 @@ class ExpenseUtil
 {
     protected $invoiceVoucherRefIdUtil;
     protected $converter;
+    protected $accountUtil;
     public function __construct(
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
-        Converter $converter
+        Converter $converter,
+        AccountUtil $accountUtil
     ) {
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->accountUtil = $accountUtil;
     }
 
     public function expenseListTable($request)
@@ -251,29 +254,66 @@ class ExpenseUtil
         return $addExpensePayment->id;
     }
 
-    public function updatePayment($expense_payment_id, $request)
+    public function updatePayment($expensePayment, $request, $another_amount = 0)
     {
-        $updateExpensePayment = ExpansePayment::where('id', $expense_payment_id)->first();
-        $updateExpensePayment->account_id = $request->account_id;
-        $updateExpensePayment->payment_method_id = $request->payment_method_id;
-        $updateExpensePayment->paid_amount = $request->paying_amount;
-        $updateExpensePayment->date = $request->date;
-        $updateExpensePayment->report_date = date('Y-m-d', strtotime($request->date));
-        $updateExpensePayment->note = $request->payment_note;
-        $updateExpensePayment->admin_id = auth()->user()->id;
+        $expensePayment->account_id = $request->account_id;
+        $expensePayment->payment_method_id = $request->payment_method_id;
+        $expensePayment->paid_amount = isset($request->paying_amount) ? $request->paying_amount : $another_amount;
+        $expensePayment->date = $request->date;
+        $expensePayment->report_date = date('Y-m-d', strtotime($request->date));
+        $expensePayment->note = $request->payment_note;
+        $expensePayment->admin_id = auth()->user()->id;
 
         if ($request->hasFile('attachment')) {
-            if ($updateExpensePayment->attachment != null) {
-                if (file_exists(public_path('uploads/payment_attachment/' . $updateExpensePayment->attachment))) {
-                    unlink(public_path('uploads/payment_attachment/' . $updateExpensePayment->attachment));
+            if ($expensePayment->attachment != null) {
+                if (file_exists(public_path('uploads/payment_attachment/' . $expensePayment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/' . $expensePayment->attachment));
                 }
             }
             $expensePaymentAttachment = $request->file('attachment');
             $expensePaymentAttachmentName = uniqid() . '-' . '.' . $expensePaymentAttachment->getClientOriginalExtension();
             $expansePaymentAttachment->move(public_path('uploads/payment_attachment/'), $expensePaymentAttachmentName);
-            $updateExpensePayment->attachment = $expensePaymentAttachmentName;
+            $expensePayment->attachment = $expensePaymentAttachmentName;
         }
 
-        $updateExpensePayment->save();
+        $expensePayment->save();
+    }
+
+    public function expenseDelete($deleteExpense)
+    {
+        $storedExpenseAccountId = $deleteExpense->expense_account_id;
+
+        $storedExpensePayments = $deleteExpense->expense_payments;
+
+        if (!is_null($deleteExpense)) {
+
+            $deleteExpense->delete();
+
+            if (count($storedExpensePayments) > 0) {
+
+                foreach ($storedExpensePayments as $payment) {
+
+                    if ($payment->attachment) {
+
+                        if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+
+                            unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                        }
+                    }
+
+                    // Update Bank/Cash-in-hand Balance
+                    if ($payment->account_id) {
+
+                        $this->accountUtil->adjustAccountBalance('debit', $payment->account_id);
+                    }
+                }
+            }
+        }
+
+        // Update Expense A/C Balance
+        if ($storedExpenseAccountId) {
+
+            $this->accountUtil->adjustAccountBalance('credit', $storedExpenseAccountId);
+        }
     }
 }

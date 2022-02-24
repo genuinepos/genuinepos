@@ -24,11 +24,13 @@
                             <div class="form_element">
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
-                                        <div class="col-6">
-                                            <h5>Add Transfer Stock (Business Location To Business Location)</h5>
+                                        <div class="col-10">
+                                            <h5>Add Transfer Stock (Business Location To Business Location)
+                                                || <small class="text-muted">(Save & Print = Ctrl + Enter), (Save = Shift + Enter)</small>
+                                            </h5>
                                         </div>
 
-                                        <div class="col-6">
+                                        <div class="col-2">
                                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
@@ -329,8 +331,8 @@
                         <div class="col-md-12 text-end">
 
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" value="save_and_print" class="btn btn-sm btn-primary submit_button">Save & Print </button>
-                            <button type="submit" value="save" class="btn btn-sm btn-primary submit_button">Save </button>
+                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-sm btn-primary submit_button">Save & Print (Ctrl + Enter) </button>
+                            <button type="submit" id="save" value="save" class="btn btn-sm btn-primary submit_button">Save (Shift + Enter)</button>
                         </div>
                     </div>
                 </div>
@@ -458,16 +460,16 @@
 
                                 if(sameProduct == 0){
 
-                                    var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
                                     var tr = '';
                                     tr += '<tr>';
+
                                     tr += '<td class="text-start" colspan="2">';
                                     tr += '<a href="#" class="text-success" id="edit_product">';
                                     tr += '<span class="product_name">'+product.name+'</span>';
                                     tr += '<span class="product_variant"></span>'; 
                                     tr += '<span class="product_code">'+' ('+product.product_code+')'+'</span>';
                                     tr += '</a><br/>';
-                                    tr += '<small class="text-muted">Current Stock - '+qty_limit+' ('+product.unit.name+')'+'<small>';
+                                    tr += '<small class="text-muted">Current Stock - '+qty_limit+'/'+product.unit.name+'<small>';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
                                     tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
@@ -482,7 +484,7 @@
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
 
-                                    var unitCostIncTax = parseFloat(product.product_cost_with_tax) / 100 * parseFloat(tax_percent) + parseFloat(product.product_cost_with_tax);
+                                    var unitCostIncTax = parseFloat(product.product_cost_with_tax);
 
                                     tr += '<td class="text text-center">';
                                     tr += '<input readonly name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
@@ -493,9 +495,11 @@
                                     tr += '<strong><span class="span_subtotal"> '+parseFloat(unitCostIncTax).toFixed(2)+' </span></strong>'; 
                                     tr += '<input value="'+parseFloat(unitCostIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden"  id="subtotal">';
                                     tr += '</td>';
+
                                     tr += '<td class="text-center">';
                                     tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                                     tr += '</td>';
+
                                     tr += '</tr>';
                                     $('#transfer_list').prepend(tr);
                                     calculateTotalAmount();  
@@ -565,7 +569,6 @@
                             
                             if(sameVariant == 0){
 
-                                var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td class="text-start" colspan="2">';
@@ -574,7 +577,7 @@
                                 tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
                                 tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
                                 tr += '</a><br/>';
-                                tr += '<small class="text-muted">Current Stock - '+qty_limit+' ('+variant_product.product.unit.name+')'+'<small>';
+                                tr += '<small class="text-muted">Current Stock - '+qty_limit+'/'+variant_product.product.unit.name+'<small>';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
 
@@ -590,7 +593,8 @@
                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
                                 tr += '</td>';
 
-                                var unitCostIncTax = variant_product.variant_cost_with_tax / 100 * tax_percent + variant_product.variant_cost_with_tax;
+                                var unitCostIncTax = variant_product.variant_cost_with_tax;
+
                                 tr += '<td class="text text-center">';
                                 tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2) +'">';
                                 tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
@@ -736,7 +740,7 @@
                             tr += '<span class="product_variant"></span>'; 
                             tr += '<span class="product_code">'+' ('+product_code+')'+'</span>';
                             tr += '</a><br/>';
-                            tr += '<small class="text-muted">Current Stock - '+singleProductQty+' ('+product_unit+')'+'<small>';
+                            tr += '<small class="text-muted">Current Stock - '+singleProductQty+'/'+product_unit+'<small>';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
                             tr += '<input type="hidden" id="qty_limit" value="'+singleProductQty+'">';
@@ -751,7 +755,7 @@
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
 
-                            var unitCostIncTax = parseFloat(product_cost_inc_tax) / 100 * parseFloat(p_tax_percent) + parseFloat(product_cost_inc_tax);
+                            var unitCostIncTax = parseFloat(product_cost_inc_tax);
                             tr += '<td class="text text-center">';
                             tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
                             tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
@@ -869,7 +873,7 @@
                             tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
                             tr += '<span class="product_code">'+'('+variant_code+')'+'</span>';
                             tr += '</a><br/>';
-                            tr += '<small class="text-muted">Current Stock - '+branchVariantQty+' ('+product_unit+')'+'<small>';
+                            tr += '<small class="text-muted">Current Stock - '+branchVariantQty+'/'+product_unit+'<small>';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
 
@@ -885,7 +889,7 @@
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
 
-                            var unitCostIncTax = parseFloat(variant_cost_inc_tax) / 100 * parseFloat(tax_percent) + parseFloat(variant_cost_inc_tax);
+                            var unitCostIncTax = parseFloat(variant_cost_inc_tax);
                             tr += '<td class="text text-center">';
                             tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
                             tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
@@ -1023,6 +1027,7 @@
 
                         toastr.error(data.errorMsg,'ERROR'); 
                         $('.loading_button').hide();
+                        return;
                     }
 
                     if(!$.isEmptyObject(data.successMsg)){
@@ -1163,5 +1168,19 @@
             },
             format: _expectedDateFormat,
         });
+
+        document.onkeyup = function () {
+            var e = e || window.event; // for IE to cover IEs window event-object
+
+            if(e.ctrlKey && e.which == 13) {
+
+                $('#save_and_print').click();
+                return false;
+            }else if (e.shiftKey && e.which == 13) {
+
+                $('#save').click();
+                return false;
+            }
+        }
     </script>
 @endpush

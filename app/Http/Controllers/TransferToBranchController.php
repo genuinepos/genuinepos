@@ -190,7 +190,9 @@ class TransferToBranchController extends Controller
     {
         $transfer = TransferStockToBranch::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')
             ->where('id', $transferId)->first();
+            
         $qty_limits = [];
+
         foreach ($transfer->Transfer_products as $transfer_product) {
 
             $productWarehouse = ProductWarehouse::where('warehouse_id', $transfer->warehouse_id)

@@ -516,7 +516,7 @@ class PurchaseController extends Controller
         // update supplier product
         $i = 0;
         foreach ($product_ids as $product_id) {
-            
+
             $variant_id = $variant_ids[$i] != 'noid' ? $variant_ids[$i] : NULL;
 
             $SupplierProduct = SupplierProduct::where('supplier_id', $updatePurchase->supplier_id)
@@ -727,9 +727,11 @@ class PurchaseController extends Controller
     // Search product by code
     public function searchProduct($product_code)
     {
+        $__product_code = str_replace('~', '/', $product_code);
+
         $product = Product::with(['product_variants', 'tax', 'unit'])
             ->where('type', 1)
-            ->where('product_code', $product_code)
+            ->where('product_code', $__product_code)
             ->where('status', 1)->first();
 
         if ($product) {
@@ -737,13 +739,17 @@ class PurchaseController extends Controller
             return response()->json(['product' => $product]);
         } else {
 
-            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $product_code)->first();
+            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
+                ->where('variant_code', $__product_code)
+                ->first();
+
             if ($variant_product) {
+
                 return response()->json(['variant_product' => $variant_product]);
             }
         }
 
-        return $this->nameSearchUtil->nameSearching($product_code);
+        return $this->nameSearchUtil->nameSearching($__product_code);
     }
 
     // delete purchase method

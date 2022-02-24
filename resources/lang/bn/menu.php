@@ -55,8 +55,9 @@ return [
     'sold_product_list' => 'বিক্রিত পণ্যের তালিকা',
     'shipments' => 'চালান',
     // Menu child of Transfer module 
-    'transfer_stock_heading_1' => '<b>গুদাম</b> থেকে <b>ব্যবসার স্থানে</b> স্টক স্থানান্তর করুন।',
-    'transfer_stock_heading_2' => '<b>ব্যবসার অবস্থান</b> থেকে <b>গুদামে</b> স্টক স্থানান্তর করুন।',
+    'transfer_stock_heading_1' => '<strong>গুদাম</strong> থেকে <b>ব্যবসার স্থানে</b> স্টক স্থানান্তর করুন।',
+    'transfer_stock_heading_2' => '<strong>ব্যবসার অবস্থান</strong> থেকে <strong>গুদামে</strong> স্টক স্থানান্তর করুন।',
+    'transfer_stock_heading_3' => '<strong>নিজস্ব ব্যবসা অবস্থান</strong> থেকে <strong>গুদামে</strong> অন্য ব্যবসার অবস্থান।',
     'add_transfer' => 'পণ্য স্থানান্তর করুন',
     'transfer_list' => 'স্থানান্তর তালিকা',
     'receive_stocks' => 'স্টক গ্রহণ',

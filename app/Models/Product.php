@@ -112,7 +112,9 @@ class Product extends Model
     {
         
         $settings = DB::table('general_settings')->select('business')->first();
+
         $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+
         if ($stockAccountingMethod == 1) {
             $ordering = 'asc';
         }else {
@@ -121,5 +123,11 @@ class Product extends Model
 
         return $this->hasOne(PurchaseProduct::class)->where('left_qty', '>', '0')
             ->orderBy('created_at', $ordering)->select('product_id', 'net_unit_cost');
+    }
+
+    public function stock_limit()
+    {
+        return $this->hasOne(ProductBranch::class)->where('branch_id', auth()->user()->branch_id)
+        ->select('id', 'branch_id', 'product_id', 'product_quantity');
     }
 }

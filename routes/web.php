@@ -436,6 +436,24 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
         Route::get('receivable/stock/{sendStockId}', 'WarehouseReceiveStockController@receivableStock')->name('transfer.stocks.to.branch.receive.stock.get.receivable.stock');
         Route::post('process/save/{sendStockId}', 'WarehouseReceiveStockController@receiveProcessSave')->name('transfer.stocks.to.branch.receive.stock.process.save');
     });
+
+    //Transfer Stock Branch To Branch
+    Route::group(['prefix' => 'branch/to/branch'], function ()
+    {
+        Route::get('transfer/list', 'TransferStockBranchToBranchController@transferList')->name('transfer.stock.branch.to.branch.transfer.list');
+        Route::get('create', 'TransferStockBranchToBranchController@create')->name('transfer.stock.branch.to.branch.create');
+        Route::post('store', 'TransferStockBranchToBranchController@store')->name('transfer.stock.branch.to.branch.store');
+        Route::get('edit/{transferId}', 'TransferStockBranchToBranchController@edit')->name('transfer.stock.branch.to.branch.edit');
+        Route::post('update/{transferId}', 'TransferStockBranchToBranchController@update')->name('transfer.stock.branch.to.branch.update');
+        
+        Route::get('receivable/list', 'TransferStockBranchToBranchController@receivableList')->name('transfer.stock.branch.to.branch.receivable.list');
+
+        Route::delete('delete/{transferId}', 'TransferStockBranchToBranchController@delete')->name('transfer.stock.branch.to.branch.delete');
+        
+        Route::get('search/product/{product_code}/{warehouse_id}', 'TransferStockBranchToBranchController@searchProduct');
+        Route::get('check/single/product/stock/{product_id}/{warehouse_id}', 'TransferStockBranchToBranchController@checkSingleProductStock');
+        Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', 'TransferStockBranchToBranchController@checkVariantProductStock');
+    });
 });
 
 //Stock adjustment to branch all route

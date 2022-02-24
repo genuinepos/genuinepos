@@ -50,7 +50,7 @@ class TransferToBranchController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="'.route('transfer.stock.to.branch.show', [$row->id]).'"><i class="far fa-eye me-1 text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item details_button" href="' . route('transfer.stock.to.branch.show', [$row->id]) . '"><i class="far fa-eye me-1 text-primary"></i> View</a>';
                     $html .= '<a class="dropdown-item" href="' . route('transfer.stock.to.branch.edit', $row->id) . '"><i class="far fa-edit me-1 text-primary"></i> Edit</a>';
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('transfer.stock.to.branch.delete', $row->id) . '"><i class="far fa-trash-alt me-1 text-primary"></i> Delete</a>';
                     $html .= '</div>';
@@ -74,7 +74,7 @@ class TransferToBranchController extends Controller
                 ->editColumn('net_total_amount', fn ($row) => $this->converter->format_in_bdt($row->net_total_amount))
                 ->editColumn('status', function ($row) {
                     if ($row->status == 1) {
-                       return '<span class="badge bg-danger">Pending</span>';
+                        return '<span class="badge bg-danger">Pending</span>';
                     } else if ($row->status == 2) {
                         return '<span class="badge bg-warning text-white">Partial</span>';
                     } else if ($row->status == 3) {
@@ -118,12 +118,15 @@ class TransferToBranchController extends Controller
 
         $invoiceId = 1;
         $lastTransfer = DB::table('transfer_stock_to_branches')->orderBy('id', 'desc')->first();
+
         if ($lastTransfer) {
+
             $invoiceId = ++$lastTransfer->id;
         }
 
         $addTransferToBranch = new TransferStockToBranch();
-        $addTransferToBranch->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'TB') . date('my') . $invoiceId;
+        $addTransferToBranch->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'TB') . $invoiceId;
+
         $addTransferToBranch->warehouse_id = $request->warehouse_id;
         $addTransferToBranch->branch_id = auth()->user()->branch_id;
         $addTransferToBranch->total_item = $request->total_item;
@@ -146,6 +149,7 @@ class TransferToBranchController extends Controller
         // Add transfer stock to branch products
         $index2 = 0;
         foreach ($product_ids as $product_id) {
+
             $variant_id = $variant_ids[$index2] != 'noid' ? $variant_ids[$index2] : NULL;
             $addTransferStockToBranchProduct = new TransferStockToBranchProduct();
             $addTransferStockToBranchProduct->transfer_stock_id = $addTransferToBranch->id;
@@ -160,9 +164,11 @@ class TransferToBranchController extends Controller
         }
 
         if ($request->action == 'save') {
+
             session()->flash('successMsg', 'Successfully transfer stock is added');
             return response()->json(['successMsg' => 'Successfully transfer stock is added']);
         } else {
+
             $transfer = TransferStockToBranch::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')->where('id', $addTransferToBranch->id)->first();
             return view('transfer_stock.warehouse_to_branch.save_and_print_template.print', compact('transfer'));
         }
@@ -184,16 +190,23 @@ class TransferToBranchController extends Controller
     {
         $transfer = TransferStockToBranch::with('warehouse', 'branch', 'Transfer_products', 'Transfer_products.product', 'Transfer_products.variant')
             ->where('id', $transferId)->first();
+            
         $qty_limits = [];
+
         foreach ($transfer->Transfer_products as $transfer_product) {
+
             $productWarehouse = ProductWarehouse::where('warehouse_id', $transfer->warehouse_id)
                 ->where('product_id', $transfer_product->product_id)->first();
+
             if ($transfer_product->product_variant_id) {
+
                 $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $transfer_product->product_id)
                     ->where('product_variant_id', $transfer_product->product_variant_id)
                     ->first();
+
                 $qty_limits[] = $productWarehouseVariant->variant_quantity;
             } else {
+
                 $qty_limits[] = $productWarehouse->product_quantity;
             }
         }
@@ -213,7 +226,9 @@ class TransferToBranchController extends Controller
 
         $invoiceId = 1;
         $lastTransfer = DB::table('transfer_stock_to_branches')->orderBy('id', 'desc')->first();
+
         if ($lastTransfer) {
+
             $invoiceId = ++$lastTransfer->id;
         }
 
@@ -221,24 +236,28 @@ class TransferToBranchController extends Controller
 
         // Update is delete in update status
         foreach ($updateTransferToBranch->transfer_products as $transfer_product) {
+
             $transfer_product->is_delete_in_update = 1;
             $transfer_product->save();
         }
 
-        $updateTransferToBranch->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'TB') . date('my') . $invoiceId;
+        $updateTransferToBranch->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'TB') . $invoiceId;
         $updateTransferToBranch->warehouse_id = $request->warehouse_id;
         $updateTransferToBranch->branch_id = auth()->user()->branch_id;
         $updateTransferToBranch->total_item = $request->total_item;
         $updateTransferToBranch->total_send_qty = $request->total_send_quantity;
 
         if ($request->total_send_quantity == $updateTransferToBranch->total_received_qty) {
+
             $updateTransferToBranch->status = 3;
         } elseif (
             $updateTransferToBranch->total_received_qty > 0
             && $updateTransferToBranch->total_received_qty < $request->total_send_quantity
         ) {
+
             $updateTransferToBranch->status = 2;
         } elseif ($updateTransferToBranch->total_received_qty == 0) {
+
             $updateTransferToBranch->status = 1;
         }
 
@@ -261,14 +280,17 @@ class TransferToBranchController extends Controller
         // Add transfer stock to branch products
         $index2 = 0;
         foreach ($product_ids as $product_id) {
+
             $variant_id = $variant_ids[$index2] != 'noid' ? $variant_ids[$index2] : NULL;
             $transferProduct = TransferStockToBranchProduct::where('transfer_stock_id', $updateTransferToBranch->id)->where('product_id')->where('product_variant_id', $variant_id)->first();
             if ($transferProduct) {
+
                 $transferProduct->quantity = $quantities[$index2];
                 $transferProduct->subtotal = $subtotals[$index2];
                 $transferProduct->is_delete_in_update = 0;
                 $transferProduct->save();
             } else {
+
                 $addTransferStockToBranchProduct = new TransferStockToBranchProduct();
                 $addTransferStockToBranchProduct->transfer_stock_id = $updateTransferToBranch->id;
                 $addTransferStockToBranchProduct->product_id = $product_id;
@@ -284,7 +306,9 @@ class TransferToBranchController extends Controller
 
         // Delete not found which was previous
         $delectableTransferProducts = TransferStockToBranchProduct::where('transfer_stock_id', $transferId)->where('is_delete_in_update', 1)->get();
+
         foreach ($delectableTransferProducts as $delectableTransferProduct) {
+
             $delectableTransferProduct->delete();
         }
 
@@ -300,12 +324,14 @@ class TransferToBranchController extends Controller
             ->first();
 
         if (!is_null($deleteTransferToBranch)) {
+
             $storedTransferredProducts = $deleteTransferToBranch->transfer_products;
             $storedBranchId = $deleteTransferToBranch->branch_id;
             $storedWarehouseId = $deleteTransferToBranch->warehouse_id;
             $deleteTransferToBranch->delete();
 
             foreach ($storedTransferredProducts as $transfer_product) {
+
                 $this->productStockUtil->adjustWarehouseStock($transfer_product->product_id, $transfer_product->product_variant_id, $storedWarehouseId);
                 $this->productStockUtil->adjustBranchStock($transfer_product->product_id, $transfer_product->product_variant_id, $storedBranchId);
             }
@@ -317,50 +343,75 @@ class TransferToBranchController extends Controller
     // Product search by product code
     public function productSearch($product_code, $warehouse_id)
     {
-        $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $product_code)->first();
+        $__product_code = str_replace('~', '/', $product_code);
+
+        $product = Product::with(['product_variants', 'tax', 'unit'])
+            ->where('product_code', $__product_code)
+            ->first();
+
         if ($product) {
-            $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_id)->where('product_id', $product->id)->first();
+
+            $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_id)
+                ->where('product_id', $product->id)->first();
+
             if ($productWarehouse) {
+
                 if ($product->type == 2) {
+
                     return response()->json(['errorMsg' => 'Combo product is not transferable.']);
                 } else {
+
                     if ($productWarehouse->product_quantity > 0) {
+
                         return response()->json(['product' => $product, 'qty_limit' => $productWarehouse->product_quantity]);
                     } else {
+
                         return response()->json(['errorMsg' => 'Stock is out of this product of this warehouse']);
                     }
                 }
             } else {
+
                 return response()->json(['errorMsg' => 'This product is not available in this warehouse.']);
             }
         } else {
-            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $product_code)->first();
+
+            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
+                ->where('variant_code', $__product_code)->first();
+
             if ($variant_product) {
+
                 $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_id)->where('product_id', $variant_product->product_id)->first();
 
                 if (is_null($productWarehouse)) {
+
                     return response()->json(['errorMsg' => 'This product is not available in this warehouse']);
                 }
 
-                $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $variant_product->product_id)->where('product_variant_id', $variant_product->id)->first();
+                $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $variant_product->product_id)
+                    ->where('product_variant_id', $variant_product->id)->first();
 
                 if (is_null($productWarehouseVariant)) {
+
                     return response()->json(['errorMsg' => 'This variant is not available in this warehouse']);
                 }
 
                 if ($productWarehouse && $productWarehouseVariant) {
+
                     if ($productWarehouseVariant->variant_quantity > 0) {
+
                         return response()->json(['variant_product' => $variant_product, 'qty_limit' => $productWarehouseVariant->variant_quantity]);
                     } else {
+
                         return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this warehouse']);
                     }
                 } else {
+
                     return response()->json(['errorMsg' => 'This product is not available in this warehouse.']);
                 }
             }
         }
 
-        return $this->nameSearchUtil->nameSearching($product_code);
+        return $this->nameSearchUtil->nameSearching($__product_code);
     }
 
     public function checkWarehouseSingleProduct($product_id, $warehouse_id)

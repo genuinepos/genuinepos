@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use Carbon\Carbon;
 use App\Utils\Converter;
 use App\Models\ExpansePayment;
 use Illuminate\Support\Facades\DB;
@@ -31,21 +32,27 @@ class ExpenseUtil
             ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
 
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
+
                 $query->where('expanses.branch_id', NULL);
             } else {
+
                 $query->where('expanses.branch_id', $request->branch_id);
             }
         }
 
         if ($request->admin_id) {
+
             $query->where('expanses.admin_id', $request->admin_id);
         }
 
         if ($request->from_date) {
+
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('expanses.report_date', $date_range); // Final
         }
 
@@ -59,8 +66,10 @@ class ExpenseUtil
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $expenses = $query->orderBy('expanses.report_date', 'desc');
         } else {
+
             $expenses = $query->where('expanses.branch_id', auth()->user()->branch_id)
                 ->orderBy('expanses.report_date', 'desc');
         }

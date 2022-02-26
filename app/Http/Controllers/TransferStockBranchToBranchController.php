@@ -225,9 +225,6 @@ class TransferStockBranchToBranchController extends Controller
             'receiver_branch_id.required' => 'Receive from field is required',
         ]);
 
-        
-
-        $receiver_branch_id = $request->receiver_branch_id != 'NULL' ? $request->receiver_branch_id : NULL;
         $receiver_branch_id = $request->receiver_branch_id != 'NULL' ? $request->receiver_branch_id : NULL;
 
         if ($receiver_branch_id == $request->sender_branch_id) {

@@ -413,6 +413,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
 
 //Transfer stock to branch all route
 Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::get('/', 'TransferToBranchController@index')->name('transfer.stock.to.branch.index');
     Route::get('show/{transferId}', 'TransferToBranchController@show')->name('transfer.stock.to.branch.show');
     Route::get('transfer/products/{transferId}', 'TransferToBranchController@transferProduct');
@@ -453,6 +454,12 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
         Route::get('search/product/{product_code}/{warehouse_id}', 'TransferStockBranchToBranchController@searchProduct');
         Route::get('check/single/product/stock/{product_id}/{warehouse_id}', 'TransferStockBranchToBranchController@checkSingleProductStock');
         Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', 'TransferStockBranchToBranchController@checkVariantProductStock');
+
+        Route::group(['prefix' => 'receive'], function ()
+        {
+            
+            Route::get('receivable/list', 'TransferBranchToBranchReceive@receivableList')->name('transfer.stock.branch.to.branch.receivable.list');
+        });
     });
 });
 

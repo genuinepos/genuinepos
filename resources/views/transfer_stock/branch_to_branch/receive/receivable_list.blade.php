@@ -13,7 +13,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Transfer Stocks (Business Location To Business Location)</h5>
+                                <h5>Receivable Transfers </h5>
                             </div>
 
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
@@ -27,25 +27,23 @@
                                         <form id="filter_form" class="px-2">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-
+                                                    <div class="col-md-2">
+                                                        <label><strong>Sender Business Location :</strong></label>
+                                                        <select name="branch_id"
+                                                            class="form-control submit_able" id="branch_id" autofocus>
+                                                            <option value="">All</option>
+                                                            
+                                                            @if (auth()->user()->role_type == 3)
                                                                 <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                      
-                                                                @foreach ($branches as $branch)
-                                                                    @if (auth()->user()->branch_id != $branch->id)
-                                                                        <option value="{{ $branch->id }}">
-                                                                            {{ $branch->name . '/' . $branch->branch_code }}
-                                                                        </option>
-                                                                    @endif
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
+                                                            @endif
+
+                                                            @foreach ($branches as $branch)
+                                                                <option value="{{ $branch->id }}">
+                                                                    {{ $branch->name . '/' . $branch->branch_code }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 @endif
 
                                                 <div class="col-md-2">
@@ -100,15 +98,8 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>Transfer List</h6>
+                                    <h6>Receivable Transfer List</h6>
                                 </div>
-
-                                <div class="col-md-2">
-                                    <div class="btn_30_blue float-end">
-                                        <a href="{{ route('transfer.stock.branch.to.branch.create') }}" id="add_btn"><i class="fas fa-plus-square"></i> Add (Ctrl + Enter)</a>
-                                    </div>
-                                </div>
-                               
                             </div>
 
                             <div class="widget_content">
@@ -123,25 +114,24 @@
                                                 <th>Actions</th>
                                                 <th>Date</th>
                                                 <th>Reference ID</th>
-                                                <th>Sender B. Location</th>
-                                                <th>Receiver B.Location</th>
+                                                <th>Send From</th>
                                                 <th>Receive Status</th>
                                                 <th>Total Item</th>
                                                 <th>Send Qty</th>
                                                 <th>Received Qty</th>
                                                 <th>Pending Qty</th>
-                                                <th>Total Transfer Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Total Stock Value({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th colspan="5" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th id="total_item" class="text-white text-end"></th>
                                                 <th id="total_send_qty" class="text-white text-end"></th>
                                                 <th id="total_received_qty" class="text-white text-end"></th>
                                                 <th id="total_pending_qty" class="text-white text-end"></th>
-                                                <th id="transfer_cost" class="text-white text-end"></th>
+                                                <th id="total_stock_value" class="text-white text-end"></th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -182,7 +172,7 @@
             toastr.success('{{ session('successMsg') }}');
         @endif
 
-        var transfer_table = $('.data_tbl').DataTable({
+        var receivable_table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
@@ -198,7 +188,7 @@
 
             "ajax": {
 
-                "url": "{{ route('transfer.stock.branch.to.branch.transfer.list') }}",
+                "url": "{{ route('transfer.stock.branch.to.branch.receivable.list') }}",
 
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
@@ -217,7 +207,6 @@
                 {data: 'date', name: 'date'},
                 {data: 'ref_id', name: 'ref_id'},
                 {data: 'sender_branch', name: 'sender_branch.name'},
-                {data: 'receiver_branch', name: 'receiver_branch.name'},
                 {data: 'receive_status', name: 'receive_status', className: 'text-end'},
                 {data: 'total_item', name: 'total_item', className: 'text-end'},
                 {data: 'total_send_qty', name: 'total_send_qty', className: 'text-end'},
@@ -235,8 +224,8 @@
                 $('#total_received_qty').text(bdFormat(total_received_qty));
                 var total_pending_qty = sum_table_col($('.data_tbl'), 'total_pending_qty');
                 $('#total_pending_qty').text(bdFormat(total_pending_qty));
-                var transfer_cost = sum_table_col($('.data_tbl'), 'transfer_cost');
-                $('#transfer_cost').text(bdFormat(transfer_cost));
+                var total_stock_value = sum_table_col($('.data_tbl'), 'total_stock_value');
+                $('#total_stock_value').text(bdFormat(total_stock_value));
                 $('.data_preloader').hide();
             }
         });
@@ -259,7 +248,7 @@
             e.preventDefault();
 
             $('.data_preloader').show();
-            transfer_table.ajax.reload();
+            receivable_table.ajax.reload();
         });
 
         // Show details modal with data
@@ -295,54 +284,6 @@
             });
         });
 
-        $(document).on('click', '#delete',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            $.confirm({
-
-                'title': 'Delete Confirmation',
-                'content': 'Are you sure?',
-                'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
-                }
-            });
-        });
-
-        //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-
-                    if (!$.isEmptyObject(data.errorMsg)) {
-
-                        toastr.error(data.errorMsg);
-                        return;
-                    }
-
-                    transfer_table.ajax.reload();
-                    toastr.error(data);
-                }, error: function(err) {
-
-                    if (err.status == 0) {
-
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
-                        return;
-                    }else if (err.status == 500) {
-                        
-                        toastr.error('Server Error. Please contact to the support team.'); 
-                        return;
-                    }
-                }
-            });
-        });
     </script>
 
     <script type="text/javascript">
@@ -383,19 +324,5 @@
             },
             format: 'DD-MM-YYYY',
         });
-
-        document.onkeyup = function () {
-            var e = e || window.event; // for IE to cover IEs window event-object
-            // console.log(e);
-            
-            if(e.ctrlKey && e.which == 13) {
-
-                console.log(e);
-                // $('#add_btn').click();
-                window.location = $('#add_btn').attr('href');
-                return false;
-            }
-        }
-
     </script>
 @endpush

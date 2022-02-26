@@ -442,23 +442,30 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
     Route::group(['prefix' => 'branch/to/branch'], function ()
     {
         Route::get('transfer/list', 'TransferStockBranchToBranchController@transferList')->name('transfer.stock.branch.to.branch.transfer.list');
-        Route::get('create', 'TransferStockBranchToBranchController@create')->name('transfer.stock.branch.to.branch.create');
-        Route::post('store', 'TransferStockBranchToBranchController@store')->name('transfer.stock.branch.to.branch.store');
-        Route::get('edit/{transferId}', 'TransferStockBranchToBranchController@edit')->name('transfer.stock.branch.to.branch.edit');
-        Route::post('update/{transferId}', 'TransferStockBranchToBranchController@update')->name('transfer.stock.branch.to.branch.update');
-        
-        Route::get('receivable/list', 'TransferStockBranchToBranchController@receivableList')->name('transfer.stock.branch.to.branch.receivable.list');
 
+        Route::get('create', 'TransferStockBranchToBranchController@create')->name('transfer.stock.branch.to.branch.create');
+
+        Route::post('store', 'TransferStockBranchToBranchController@store')->name('transfer.stock.branch.to.branch.store');
+
+        Route::get('edit/{transferId}', 'TransferStockBranchToBranchController@edit')->name('transfer.stock.branch.to.branch.edit');
+
+        Route::post('update/{transferId}', 'TransferStockBranchToBranchController@update')->name('transfer.stock.branch.to.branch.update');
+      
         Route::delete('delete/{transferId}', 'TransferStockBranchToBranchController@delete')->name('transfer.stock.branch.to.branch.delete');
         
         Route::get('search/product/{product_code}/{warehouse_id}', 'TransferStockBranchToBranchController@searchProduct');
+
         Route::get('check/single/product/stock/{product_id}/{warehouse_id}', 'TransferStockBranchToBranchController@checkSingleProductStock');
+
         Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', 'TransferStockBranchToBranchController@checkVariantProductStock');
 
         Route::group(['prefix' => 'receive'], function ()
         {
-            
-            Route::get('receivable/list', 'TransferBranchToBranchReceive@receivableList')->name('transfer.stock.branch.to.branch.receivable.list');
+            Route::get('receivable/list', 'ReceiveTransferBranchToBranchController@receivableList')->name('transfer.stock.branch.to.branch.receivable.list');
+
+            Route::get('process/to/receive/{transferId}', 'ReceiveTransferBranchToBranchController@processToReceive')->name('transfer.stock.branch.to.branch.ProcessToReceive');
+
+            Route::post('process/to/receive/save/{transferId}', 'ReceiveTransferBranchToBranchController@processToReceiveSave')->name('transfer.stock.branch.to.branch.ProcessToReceive.save');
         });
     });
 });

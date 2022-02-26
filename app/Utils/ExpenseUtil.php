@@ -27,6 +27,7 @@ class ExpenseUtil
     {
         $generalSettings = DB::table('general_settings')->first();
         $expenses = '';
+
         $query = DB::table('expanses')
             ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
             ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
@@ -45,6 +46,11 @@ class ExpenseUtil
         if ($request->admin_id) {
 
             $query->where('expanses.admin_id', $request->admin_id);
+        }
+
+        if ($request->cate_id) {
+
+            $query->where('expanses.category_ids', 'LIKE', '%'. $request->cate_id . '%');
         }
 
         if ($request->from_date) {
@@ -76,6 +82,7 @@ class ExpenseUtil
 
         return DataTables::of($expenses)
             ->addColumn('action', function ($row) {
+                
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
@@ -83,14 +90,17 @@ class ExpenseUtil
                 if (auth()->user()->branch_id == $row->branch_id) :
                     
                     if (auth()->user()->permission->expense['edit_expense'] == '1') :
+
                         $html .= '<a class="dropdown-item" href="' . route('expanses.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     endif;
 
                     if (auth()->user()->permission->expense['delete_expense'] == '1') :
+
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('expanses.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     endif;
 
                     if ($row->due > 0) :
+
                         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('expanses.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                     endif;
                 endif;
@@ -101,6 +111,7 @@ class ExpenseUtil
                 $html .= '</div>';
                 return $html;
             })->editColumn('descriptions', function ($row) use ($generalSettings) {
+
                 $expenseDescriptions = DB::table('expense_descriptions')
                     ->where('expense_id', $row->id)
                     ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
@@ -109,37 +120,52 @@ class ExpenseUtil
                         'expanse_categories.code',
                         'expense_descriptions.amount'
                     )->get();
+
                 $html = '';
+
                 foreach ($expenseDescriptions as $exDescription) {
+
                     $html .= '<b>' . $exDescription->name . '(' . $exDescription->code . '):</b> ' . $exDescription->amount . '</br>';
                 }
+
                 return $html;
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
+
                 return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
             })->editColumn('from',  function ($row) use ($generalSettings) {
+
                 if ($row->branch_name) {
+
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                 } else {
+
                     return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('user_name',  function ($row) {
+
                 return $row->cr_prefix . ' ' . $row->cr_name . ' ' . $row->cr_last_name;
             })
             ->editColumn('payment_status',  function ($row) {
+
                 $html = "";
                 $payable = $row->net_total_amount;
+
                 if ($row->due <= 0) {
+
                     $html .= '<span class="badge bg-success">Paid</span>';
                 } elseif ($row->due > 0 && $row->due < $payable) {
+
                     $html .= '<span class="badge bg-primary text-white">Partial</span>';
                 } elseif ($payable == $row->due) {
+
                     $html .= '<span class="badge bg-danger text-white">Due</span>';
                 }
                 return $html;
             })
             ->editColumn('tax_percent',  function ($row) {
+
                 return $row->tax_percent . '%';
             })
             ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . $this->converter->format_in_bdt($row->net_total_amount) . '</span>')

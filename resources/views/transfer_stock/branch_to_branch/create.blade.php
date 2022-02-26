@@ -1043,7 +1043,7 @@
                         $('#transfer_list').empty();
 
                         calculateTotalAmount();
-                    }else{
+                    } else {
 
                         $('.loading_button').hide();
 

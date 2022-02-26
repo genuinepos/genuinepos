@@ -30,6 +30,7 @@ class TransferStockBranchToBranchController extends Controller
         TransferStockUtil $transferStockUtil,
         Converter $converter
     ) {
+
         $this->nameSearchUtil = $nameSearchUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->transferStockUtil = $transferStockUtil;
@@ -84,10 +85,12 @@ class TransferStockBranchToBranchController extends Controller
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                $transfers = $query->orderBy('transfer_stock_branch_to_branches.report_date');
+                $transfers = $query->orderBy('transfer_stock_branch_to_branches.report_date', 'desc');
             } else {
 
-                $transfers = $query->orderBy('transfer_stock_branch_to_branches.sender_branch_id', auth()->user()->branch_id);
+                $transfers = $query->orderBy('transfer_stock_branch_to_branches.report_date', 'desc')
+                ->where('transfer_stock_branch_to_branches.sender_branch_id', auth()->user()->branch_id)
+                ;
             }
 
             return DataTables::of($transfers)
@@ -198,7 +201,7 @@ class TransferStockBranchToBranchController extends Controller
             ->select('id', 'name', 'account_id')->get();
 
         $warehouses = DB::table('warehouses')
-            ->select('id', 'warehouse_name', 'warehouse_code')->get();
+            ->select('id', 'warehouse_name', 'warehouse_code')->where('branch_id', auth()->user()->branch_id)->get();
 
         $branches = DB::table('branches')
             ->select('id', 'name', 'branch_code')->get();

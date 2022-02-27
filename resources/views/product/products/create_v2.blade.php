@@ -24,8 +24,8 @@
                                     <div class="form_element m-0 mt-4">
                                         <div class="py-2 px-2 form-header">
                                             <div class="row">
-                                                <div class="col-6"><h5>Add Product</h5></div> 
-                                                <div class="col-6">
+                                                <div class="col-8"><h6>Add Product | <small class="text-dark">Save & Another = (Ctrl + Enter), Save = (Shift + Enter) </small></h6></div> 
+                                                <div class="col-4">
                                                     <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                                 </div>
                                             </div>
@@ -297,7 +297,6 @@
                                                     </div>
                                                 </div>
 
-                                        
                                             @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
                                                 <div class="row mt-1">
                                                     <div class="col-md-6">
@@ -554,9 +553,9 @@
                                 <div class="col-md-12 text-end mt-1">
                                     <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
                                     <button type="submit" name="action" value="save_and_new"
-                                        class="btn btn-primary submit_button btn-sm">Save And Add Another</button>
+                                        class="btn btn-primary submit_button btn-sm" id="save_and_new">Save And Add Another</button>
                                     <button type="submit" name="action" value="save"
-                                        class="btn btn-primary submit_button btn-sm">Save</button>
+                                        class="btn btn-primary submit_button btn-sm" id="save">Save</button>
                                 </div>
                             </div>
 
@@ -1626,5 +1625,19 @@
             $('#digital_product').prop('checked', true);
         }
     });
+
+    document.onkeyup = function () {
+        var e = e || window.event; // for IE to cover IEs window event-object
+
+        if(e.ctrlKey && e.which == 13) {
+
+            $('#save_and_new').click();
+            return false;
+        }else if (e.shiftKey && e.which == 13) {
+
+            $('#save').click();
+            return false;
+        }
+    }
 </script>
 @endpush

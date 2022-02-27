@@ -74,7 +74,7 @@
                                             <div class="input-group">
                                                 <label class="col-4">Store In Warehouse : <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, Received stock will be added to Business Location/Shop" class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
-                                                    <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id">
+                                                    <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" autofocus>
                                                         <option value="">None</option>
                                                         @foreach ($warehouses as $w)
                                                             <option {{ $transfer->receiver_warehouse_id == $w->id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>

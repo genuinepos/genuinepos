@@ -110,7 +110,7 @@
                                 @if (auth()->user()->permission->sale['create_add_sale'] == '1')
                                     <div class="col-md-2">
                                         <div class="btn_30_blue float-end">
-                                            <a href="{{ route('sales.create') }}"><i class="fas fa-plus-square"></i> Add</a>
+                                            <a href="{{ route('sales.create') }}" id="add_btn"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
                                         </div>
                                     </div>
                                 @endif
@@ -666,5 +666,17 @@
                 $('#paymentViewModal').modal('show');
             });
         });
+
+        document.onkeyup = function () {
+            var e = e || window.event; // for IE to cover IEs window event-object
+            // console.log(e);
+            
+            if(e.ctrlKey && e.which == 13) {
+
+                // $('#add_btn').click();
+                window.location = $('#add_btn').attr('href');
+                return false;
+            }
+        }
     </script>
 @endpush

@@ -25,7 +25,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Edit Purchase</h5>
+                                            <h6>Edit Purchase | <small class="text-dark"><strong>Save Changes = (Shift + Enter)</strong> </small></h6>
                                         </div>
 
                                         <div class="col-6">
@@ -318,12 +318,12 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area pt-1">
+                <div class="submit_button_area">
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                            <button id="save" class="btn btn-sm btn-primary submit_button float-end">Save Changes (Shift+Enter)</button>
                         </div>
                     </div>
                 </div>

@@ -406,7 +406,6 @@
             
             if(e.ctrlKey && e.which == 13) {
 
-                console.log(e);
                 // $('#add_btn').click();
                 window.location = $('#add_btn').attr('href');
                 return false;

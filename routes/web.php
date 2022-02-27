@@ -977,37 +977,6 @@ Route::get('/test', function () {
     // }
 
     // return 'done';
-
-    $branches = DB::table('product_branches')->select('branch_id')->distinct()->get();
-
-    $branch_ids = [];
-
-    foreach ($branches as $branch) {
-        if (auth()->user()->branch_id != $branch->branch_id) {
-
-            $branch_ids[] = $branch->branch_id ? $branch->branch_id : NULL;
-        }
-    }
-
-    //return $branch_ids;
-
-    return $another_branch_stocks = DB::table('product_branches')
-            ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
-            ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
-            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
-            ->where('product_branches.product_id', 341)
-            ->select(
-                'branches.name as b_name',
-                'branches.branch_code',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-                'product_variants.variant_cost_with_tax',
-                'product_variants.variant_price',
-                'product_branches.product_quantity',
-                'product_branches.total_sale',
-                'product_branch_variants.variant_quantity',
-                'product_branch_variants.total_sale as v_total_sale',
-            )->get();
 });
 
 // All authenticated routes

@@ -1,4 +1,7 @@
 <div class="challan_print_template d-none">
+    <style>
+        @page {size:a4;margin-top: 0.8cm; /*margin-bottom: 35px;*/ margin-left: 4%;margin-right: 4%;}
+    </style>
     <div class="details_area">
         @if ($sale->branch->add_sale_invoice_layout->is_header_less == 0)
             <div class="heading_area">

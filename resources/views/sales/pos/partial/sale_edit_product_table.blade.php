@@ -21,9 +21,7 @@
                 </tr>
             </thead>
 
-            <tbody id="product_list">
-            
-            </tbody>
+            <tbody id="product_list"></tbody>
         </table>
     </div>
 </div>
@@ -42,7 +40,8 @@
         $('.select_area').hide();
         $('.variant_list_area').empty();
         var product_code = $(this).val() ? $(this).val() : 'no_key_word';
-        delay(function() { searchProduct(product_code); }, 200); //sendAjaxical is the name of remote-command
+        var __product_code = product_code.replaceAll('/', '~');
+        delay(function() { searchProduct(__product_code); }, 200); //sendAjaxical is the name of remote-command
     });
 
     function searchProduct(product_code) {

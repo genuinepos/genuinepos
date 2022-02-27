@@ -82,26 +82,24 @@
                 </section>
 
                 <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Net Total :</label>
-                                                <div class="col-8">
-                                                    <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="Receiver note">
-                                                </div>
+                    <div class="row">
+                        <div class="form_element">
+                            <div class="element-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <label class="col-4">Receiver Note:</label>
+                                            <div class="col-8">
+                                                <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="Receiver note">
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Net Total :</label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control">
-                                                </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <label class=" col-4">Net Total :</label>
+                                            <div class="col-8">
+                                                <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control">
                                             </div>
                                         </div>
                                     </div>

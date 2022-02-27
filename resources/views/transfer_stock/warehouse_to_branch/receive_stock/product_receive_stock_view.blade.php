@@ -66,9 +66,7 @@
                                                                     <th class="text-center">Receive Quantity</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="send_stock_list">
-                                                               
-                                                            </tbody>
+                                                            <tbody id="send_stock_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -87,9 +85,9 @@
                             <div class="form_element">
                                 <div class="element-body">
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-4">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Net Total :</label>
+                                                <label for="inputEmail3" class="col-4">Receiver Note :</label>
                                                 <div class="col-8">
                                                     <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="Receiver note">
                                                 </div>
@@ -155,8 +153,10 @@
                     tr += '<input value="'+sendProduct.product_id+'" type="hidden" class="productId-'+sendProduct.product_id+'" id="product_id" name="product_ids[]">';
 
                     if (sendProduct.product_variant_id != null) {
+
                         tr += '<input value="'+sendProduct.product_variant_id+'" type="hidden" class="variantId-'+sendProduct.product_variant_id+'" id="variant_id" name="variant_ids[]">'; 
                     }else{
+                        
                         tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';  
                     }   
                     tr += '<input type="hidden" id="unit" value="'+sendProduct.unit+'">';

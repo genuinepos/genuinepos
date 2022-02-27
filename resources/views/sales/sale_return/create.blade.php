@@ -196,18 +196,24 @@
             type:'get',
             dataType: 'json',
             success:function(sale){
+
                 $('.sale_invoice_id').html(sale.invoice_id); 
                 $('.sale_date').html(sale.date); 
                 $('.sale_customer').html(sale.customer ? sale.customer.name : "Walk-In-Customer"); 
+
                 if (sale.branch != null) {
+
                     $('.sale_branch').html(sale.branch.name + ' - ' + sale.branch.branch_code);
                 }else{
+
                     $('.branch').hide();
                 }
 
                 if (sale.warehouse != null) {
+
                     $('.sale_warehouse').html(sale.warehouse.warehouse_name + ' - ' + sale.warehouse.warehouse_code);
                 }else{
+
                     $('.warehouse').hide();
                 }
 
@@ -224,10 +230,12 @@
                 $('#total_return_discount_amount').val(sale.sale_return != null ? sale.sale_return.return_discount_amount : 0.00);
 
                 if (sale.sale_return) {
+
                     $('#sale_return_account_id').val(sale.sale_return.sale_return_account_id );
                 }
                
                 if (sale.sale_return != null) {
+
                     $.each(sale.sale_return.sale_return_products, function (key, return_product) {
                         var tr = "";
                         tr += '<tr>';
@@ -266,9 +274,12 @@
                         tr += '</tr>';
                         $('#sale_return_list').append(tr);
                     });
+
                     calculateTotalAmount();
                 }else{
+
                     $.each(sale.sale_products, function (key, sale_product) {
+
                         var tr = "";
                         tr += '<tr>';
                         tr += '<td colspan="2" class="text-start">';
@@ -304,6 +315,7 @@
                         tr += '</tr>';
                         $('#sale_return_list').append(tr);
                     });
+
                     calculateTotalAmount();
                 }
             }
@@ -313,14 +325,17 @@
 
      // Calculate total amount functionalitie
      function calculateTotalAmount(){
+
         var quantities = document.querySelectorAll('#return_quantity');
         var subtotals = document.querySelectorAll('#return_subtotal');
   
         // Update Net total Amount
         var netTotalAmount = 0;
         subtotals.forEach(function(subtotal){
+
             netTotalAmount += parseFloat(subtotal.value);
         });
+
         $('.span_net_total_amount').html(parseFloat(netTotalAmount).toFixed(2));
         $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
 
@@ -335,14 +350,18 @@
 
     // Input return discount and clculate total amount
     $(document).on('input', '#return_discount', function(){
+
         var returnDiscount = $(this).val() ? $(this).val() : 0;
         var returnDiscountType = $('#return_discount_type').val();
         var netTotalAmount = $('#net_total_amount').val();
+
         if (returnDiscountType == 1) {
+
             $('.span_total_return_discount_amount').html(parseFloat(returnDiscount).toFixed(2)); 
             $('#total_return_discount_amount').val(parseFloat(returnDiscount).toFixed(2)); 
             calculateTotalAmount();
         }else{
+
             var calsReturnDiscount = parseFloat(netTotalAmount) / 100 * parseFloat(returnDiscount);
             $('.span_total_return_discount_amount').html(parseFloat(calsReturnDiscount).toFixed(2)); 
             $('#total_return_discount_amount').val(parseFloat(calsReturnDiscount).toFixed(2));
@@ -352,14 +371,18 @@
 
     // Input return discount type and clculate total amount
     $(document).on('change', '#return_discount_type', function(){
+
         var returnDiscountType = $(this).val() ? $(this).val() : 0;
         var returnDiscount = $('#return_discount').val() ? $('#return_discount').val() : 0.00;
         var netTotalAmount = $('#net_total_amount').val();
+
         if (returnDiscountType == 1) {
+
             $('.span_total_return_discount_amount').html(parseFloat(returnDiscount).toFixed(2)); 
             $('#total_return_discount_amount').val(parseFloat(returnDiscount).toFixed(2)); 
             calculateTotalAmount();
         } else {
+
             var calsReturnDiscount = parseFloat(netTotalAmount) / 100 * parseFloat(returnDiscount);
             $('.span_total_return_discount_amount').html(parseFloat(calsReturnDiscount).toFixed(2)); 
             $('#total_return_discount_amount').val(parseFloat(calsReturnDiscount).toFixed(2));
@@ -369,16 +392,19 @@
 
     // Return Quantity increase or dicrease and clculate row amount
     $(document).on('input', '#return_quantity', function(){
+
         var return_quantity = $(this).val() ? $(this).val() : 0;
-        console.log(return_quantity);
+
         if (parseFloat(return_quantity) >= 0) {
+
             var tr = $(this).closest('tr');
             var previousReturnQty = tr.find('#previous_return_quantity').val();
             var unit = tr.find('#unit').val();
             var limit = tr.find('#sale_quantity').val();
             var qty_limit = parseFloat(previousReturnQty) + parseFloat(limit);
-            console.log(qty_limit);
+
             if(parseInt(return_quantity) > parseInt(qty_limit)){
+
                 alert('Only '+limit+' '+unit+' is available.');
                 $(this).val(parseFloat(limit).toFixed(2));
                 var unitPrice = tr.find('#unit_price').val();
@@ -387,6 +413,7 @@
                 tr.find('.span_return_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                 calculateTotalAmount();
             }else{
+
                 var unitPrice = tr.find('#unit_price').val();
                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(return_quantity);
                 tr.find('#return_subtotal').val(parseFloat(calcSubtotal).toFixed(2));
@@ -408,11 +435,15 @@
             type:'post',
             data: request,
             success:function(data){
+
                 $('.error').html('');
+
                 if(!$.isEmptyObject(data.errorMsg)){
+
                     toastr.error(data.errorMsg,'ERROR'); 
                     $('.loading_button').hide();
                 }else {
+
                     $('.loading_button').hide();
                     toastr.success('Successfully sale return is addedd.'); 
                     $(data).printThis({
@@ -426,10 +457,12 @@
                     });
                 }
             },error: function(err) {
+
                 $('.loading_button').hide();
                 $('.error').html('');
                 
                 if (err.status == 0) {
+
                     toastr.error('Net Connetion Error. Reload This Page.'); 
                     return;
                 }
@@ -437,6 +470,7 @@
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
 
                 $.each(err.responseJSON.errors, function(key, error) {
+
                     $('.error_' + key + '').html(error[0]);
                 });
             }
@@ -448,6 +482,7 @@
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+    
     new Litepicker({
         singleMode: true,
         element: document.getElementById('date'),

@@ -75,7 +75,10 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-3"><b>Ref ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                <label for="inputEmail3" class=" col-3"><b>Ref ID :</b> 
+                                                    <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i>
+                                                </label>
+
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Reference ID">
                                                 </div>
@@ -98,16 +101,19 @@
                                             <div class="col-md-12">
                                                 <div class="searching_area" style="position: relative;">
                                                     <label for="inputEmail3" class="col-form-label">Item Search</label>
+
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
+                                                            <span class="input-group-text">
+                                                                <i class="fas fa-barcode text-dark input_f"></i>
+                                                            </span>
                                                         </div>
+                                                        
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
                                                     </div>
+
                                                     <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                            
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div> 
                                             </div>
@@ -118,19 +124,17 @@
                                                 <div class="sale-item-inner">
                                                     <div class="table-responsive">
                                                         <table class="table modal-table table-sm">
-                                                            <thead class="staky">
+                                                            <thead>
                                                                 <tr>
                                                                     <th>Product</th>
                                                                     <th></th>
                                                                     <th class="text-center">Quantity</th>
                                                                     <th class="text-center">Unit</th>
                                                                     <th class="text-center">SubTotal</th>
-                                                                    <th><i class="fas fa-trash-alt text-danger"></i></th>
+                                                                    <th><i class="fas fa-trash-alt text-dark"></i></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="transfer_list">
-                                                               
-                                                            </tbody>
+                                                            <tbody id="transfer_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -256,7 +260,9 @@
                 url:"{{ url('transfer/stocks/to/warehouse/sarach/product') }}"+"/"+product_code,
                 dataType: 'json',
                 success:function(product){
+
                     if(!$.isEmptyObject(product.errorMsg)){
+
                         toastr.error(product.errorMsg); 
                         $('#search_product').val("");
                         return;
@@ -336,6 +342,7 @@
                                     calculateTotalAmount();  
                                 }
                             }else{
+
                                 var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                                 var products = product.namedProducts;
                                 var li = "";
@@ -352,6 +359,7 @@
                                 $('#search_product').val('');
                             }
                         }else if(!$.isEmptyObject(product.variant_product)){
+
                             $('.select_area').hide();
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
@@ -387,6 +395,7 @@
                             });
                             
                             if(sameVariant == 0){
+
                                 var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                                 var tr = '';
                                 tr += '<tr>';
@@ -423,27 +432,35 @@
                                 calculateTotalAmount();
                             }    
                         }else if (!$.isEmptyObject(product.namedProducts)) {
+
                             if(product.namedProducts.length > 0){
+
                                 var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                                 var li = "";
                                 var products = product.namedProducts; 
+
                                 $.each(products, function (key, product) {
-                                    var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
-                                    if (product.product_variants.length > 0) {
-                                        $.each(product.product_variants, function(key, variant){
-                                            var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
-                                            var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
-                                            var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
-                                            var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
-                                            li += '<li id="list" class="mt-1">';
-                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
-                                            li +='</li>';
-                                        });
+
+                                    var tax_percent = product.tax_id != null ? product.tax_percent : 0;
+
+                                    if (product.is_variant == 1) {
+
+                                        var tax_amount = parseFloat(product.variant_price/100 * product.tax_percent);
+
+                                        var unitPriceIncTax = (parseFloat(product.variant_price) / 100 * tax_percent) + parseFloat(product.variant_price) ;
+
+                                        li += '<li id="list" class="mt-1">';
+                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit_name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+product.variant_code+'" data-v_price="'+product.variant_price+'" data-v_name="'+product.variant_name+'" data-v_cost_inc_tax="'+product.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                        li +='</li>';
+                                       
                                     }else{
-                                        var tax_amount = parseFloat(product.tax != null ? product.product_price/100 * product.tax.tax_percent : 0);
+
+                                        var tax_amount = parseFloat(product.product_price/100 * product.tax_percent);
+
                                         var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
+
                                         li += '<li class="mt-1">';
-                                        li += '<a class="select_single_product mt-1" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-p_tax_percent="'+tax_percent+'" data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                        li += '<a class="select_single_product mt-1" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit_name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-p_tax_percent="'+tax_percent+'" data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                         li +='</li>';
                                     }
                                 });

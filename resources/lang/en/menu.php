@@ -55,13 +55,15 @@ return [
   'sale_return_list' => 'Sale Return List',
   'shipments' => 'Shipments',
   // Menu child of Transfer module
-  'transfer_stock_heading_1' => 'TRANSFER STOCK FROM <b>WAREHOUSE</b> TO <b>BUSINESS LOCATION</b>',
-  'transfer_stock_heading_2' => 'TRANSFER STOCK FROM <b>BUSINESS LOCATION</b> TO <b>WAREHOUSE</b>',
+  'transfer_stock_heading_1' => 'TRANSFER STOCK FROM <strong>WAREHOUSE</strong> TO <strong> BUSINESS LOCATION</strong>',
+  'transfer_stock_heading_2' => 'TRANSFER STOCK FROM <strong>BUSINESS LOCATION</strong> TO <strong> WAREHOUSE</strong>',
+  'transfer_stock_heading_3' => 'TRANSFER STOCK FROM <strong>OWN BUSINESS LOCATION</strong> TO <strong> ANOTHER BUSINESS LOCATION</strong>',
   'add_transfer' => 'Add Transfer',
   'transfer_list' => 'Transfer List',
   'receive_stocks' => 'Receive Stocks',
   'to_branch' => 'To B.Location',
   'to_warehouse' => 'To Warehouse',
+  'branch_to_branch' => 'B. Location To another B. Location',
   // Menu child of Adjustment module 
   'add_stock_adjustment_from_branch' => 'Add Stock Adjustment <br/>(<small>From B.Location</small>)',
   'add_stock_adjustment_from_warehouse' => 'Add Stock Adjustment <br/>(<small>From warehouse</small>)',

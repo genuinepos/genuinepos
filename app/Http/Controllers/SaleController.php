@@ -46,7 +46,7 @@ class SaleController extends Controller
         CustomerUtil $customerUtil,
         ProductStockUtil $productStockUtil,
         AccountUtil $accountUtil,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil, 
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         PurchaseUtil $purchaseUtil
     ) {
         $this->nameSearchUtil = $nameSearchUtil;
@@ -206,7 +206,7 @@ class SaleController extends Controller
 
     // Add Sale method
     public function store(Request $request)
-    { 
+    {
         $this->validate($request, [
             'status' => 'required',
             'date' => 'required',
@@ -258,7 +258,7 @@ class SaleController extends Controller
         }
 
         if ($request->paying_amount < $request->total_payable_amount && !$request->customer_id) {
-            
+
             return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
         }
 
@@ -520,20 +520,29 @@ class SaleController extends Controller
         ])->where('id', $saleId)->first();
 
         $qty_limits = [];
+
         foreach ($sale->sale_products as $sale_product) {
+
             if ($sale_product->product->is_manage_stock == 0) {
+
                 $qty_limits[] = PHP_INT_MAX;
             } else {
+
                 $productBranch = ProductBranch::where('branch_id', $sale->branch_id)
                     ->where('product_id', $sale_product->product_id)->first();
+
                 if ($sale_product->product->type == 2) {
+
                     $qty_limits[] = 500000;
                 } elseif ($sale_product->product_variant_id) {
+
                     $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $sale_product->product_id)
                         ->where('product_variant_id', $sale_product->product_variant_id)
                         ->first();
+
                     $qty_limits[] = $productBranchVariant->variant_quantity;
                 } else {
+
                     $qty_limits[] = $productBranch->product_quantity;
                 }
             }
@@ -564,7 +573,7 @@ class SaleController extends Controller
         $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
 
         if ($request->product_ids == null) {
-            
+
             return response()->json(['errorMsg' => 'product table is empty']);
         }
 
@@ -690,8 +699,8 @@ class SaleController extends Controller
         }
 
         $deleteNotFoundSaleProducts = SaleProduct::with('purchaseSaleProductChains', 'purchaseSaleProductChains.purchaseProduct')
-        ->where('sale_id', $updateSale->id)
-        ->where('delete_in_update', 1)->get();
+            ->where('sale_id', $updateSale->id)
+            ->where('delete_in_update', 1)->get();
 
         foreach ($deleteNotFoundSaleProducts as $deleteNotFoundSaleProduct) {
 
@@ -706,7 +715,7 @@ class SaleController extends Controller
             $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
 
             foreach ($purchaseSaleProductChains as $purchaseSaleProductChain) {
-                
+
                 $this->purchaseUtil->adjustPurchaseLeftQty($purchaseSaleProductChain->purchaseProduct);
             }
         }
@@ -839,10 +848,11 @@ class SaleController extends Controller
     public function searchProduct($product_code)
     {
         $product_code = (string)$product_code;
+        $__product_code = str_replace('~', '/', $product_code);
         $branch_id = auth()->user()->branch_id;
 
-        $product = Product::with(['product_variants', 'product_variants.updateVariantCost','tax', 'unit', 'updateProductCost'])
-            ->where('product_code', $product_code)
+        $product = Product::with(['product_variants', 'product_variants.updateVariantCost', 'tax', 'unit', 'updateProductCost'])
+            ->where('product_code', $__product_code)
             ->select([
                 'id', 'name', 'type', 'product_code', 'product_price', 'profit', 'product_cost_with_tax', 'thumbnail_photo', 'unit_id', 'tax_id', 'tax_type', 'is_show_emi_on_pos', 'is_manage_stock',
             ])->first();
@@ -887,12 +897,12 @@ class SaleController extends Controller
                 }
             } else {
 
-                return response()->json(['errorMsg' => 'This product is not available in this Location/Shop. ']);
+                return response()->json(['errorMsg' => 'This product is not available in this Location/Shop.']);
             }
         } else {
 
             $variant_product = ProductVariant::with('product', 'updateVariantCost', 'product.tax', 'product.unit')
-                ->where('variant_code', $product_code)
+                ->where('variant_code', $__product_code)
                 ->select([
                     'id', 'product_id', 'variant_name', 'variant_code', 'variant_quantity', 'variant_cost', 'variant_cost_with_tax', 'variant_profit', 'variant_price'
                 ])->first();
@@ -944,14 +954,14 @@ class SaleController extends Controller
                             return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this Location/Shop']);
                         }
                     } else {
-                        
+
                         return response()->json(['errorMsg' => 'This product is not available in this Location/Shop.']);
                     }
                 }
             }
         }
 
-        return $this->nameSearchUtil->nameSearching($product_code);
+        return $this->nameSearchUtil->nameSearching($__product_code);
     }
 
     // Check Branch Single product Stock
@@ -1274,7 +1284,7 @@ class SaleController extends Controller
             return response()->json('Access Denied');
         }
 
-        $deleteSalePayment = SalePayment::with('account', 'customer', 'sale', 'sale.sale_return', 'cashFlow')
+        $deleteSalePayment = SalePayment::with('account', 'customer', 'sale', 'sale.sale_return')
             ->where('id', $paymentId)->first();
 
         if (!is_null($deleteSalePayment)) {
@@ -1282,10 +1292,15 @@ class SaleController extends Controller
             if ($deleteSalePayment->payment_type == 1) {
                 // Update sale 
                 $storedCustomerId = $deleteSalePayment->sale->customer_id;
+
                 $storedSale = $deleteSalePayment->sale;
+
                 $storedAccountId = $deleteSalePayment->account_id;
+
                 if ($deleteSalePayment->attachment != null) {
+
                     if (file_exists(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment))) {
+
                         unlink(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment));
                     }
                 }
@@ -1293,14 +1308,18 @@ class SaleController extends Controller
                 $deleteSalePayment->delete();
 
                 $this->saleUtil->adjustSaleInvoiceAmounts($storedSale);
+
                 if ($storedCustomerId) {
+
                     $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
                 }
 
                 if ($storedAccountId) {
+
                     $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
                 }
             } elseif ($deleteSalePayment->payment_type == 2) {
+
                 $storedCustomerId = $deleteSalePayment->sale->customer_id;
                 $storedSale = $deleteSalePayment->sale;
                 $storedAccountId = $deleteSalePayment->account_id;
@@ -1311,19 +1330,24 @@ class SaleController extends Controller
                 $deleteSalePayment->sale->sale_return->save();
 
                 if ($deleteSalePayment->attachment != null) {
+
                     if (file_exists(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment))) {
+
                         unlink(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment));
                     }
                 }
 
                 $deleteSalePayment->delete();
 
-                $this->saleUtil->adjustSaleInvoiceAmounts('debit', $storedSale);
+                $this->saleUtil->adjustSaleInvoiceAmounts($storedSale);
+
                 if ($storedCustomerId) {
+
                     $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
                 }
 
                 if ($storedAccountId) {
+
                     $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
                 }
             }

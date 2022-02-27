@@ -8,13 +8,13 @@
                             <h4>{{ $sale->branch->add_sale_invoice_layout->header_text }}</h4>
                             <p>
                                 {{ $sale->branch->add_sale_invoice_layout->sub_heading_1 }}
-                            <p/>
+                            </p>
                             <p>
                                 {{ $sale->branch->add_sale_invoice_layout->sub_heading_2 }}
-                            <p/>
+                            </p>
                             <p>
                                 {{ $sale->branch->add_sale_invoice_layout->sub_heading_3 }}
-                            <p/>
+                            </p>
                         </div>
                     </div>
                 </div>

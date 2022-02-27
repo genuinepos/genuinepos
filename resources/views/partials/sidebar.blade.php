@@ -88,17 +88,15 @@
                     </li>
                 @endif
 
-                @if ($warehouseCount > 0)
-                    @if (json_decode($generalSettings->modules, true)['transfer_stock'] == '1')
-                        <li data-menu="transfer" class="{{ request()->is('transfer/stocks*') ? 'menu_active' : '' }}">
-                            <a href="#">
-                                <img src="{{ asset('public/backend/asset/img/icon/transfer.svg') }}">
-                                <p class="title">@lang('menu.transfer')</p>
-                            </a>
-                        </li>
-                    @endif
+                @if (json_decode($generalSettings->modules, true)['transfer_stock'] == '1')
+                    <li data-menu="transfer" class="{{ request()->is('transfer/stocks*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/transfer.svg') }}">
+                            <p class="title">@lang('menu.transfer')</p>
+                        </a>
+                    </li>
                 @endif
-
+                
                 @if (json_decode($generalSettings->modules, true)['stock_adjustment'] == '1')
                     @if (
                         auth()->user()->permission->s_adjust['adjustment_all'] == '1' ||
@@ -817,43 +815,120 @@
                 </div>
             </div>
 
-            @if ($warehouseCount > 0)
-                @if (json_decode($generalSettings->modules, true)['transfer_stock'] == '1')
-                    <div class="sub-menu_t" id="transfer">
-                        <div class="sub-menu-width">
-                            <div class="model__close bg-secondary-2">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <p class="text-muted float-start mt-1"><strong>Stock Transfer Management</strong></p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                    </div>
+            @if (json_decode($generalSettings->modules, true)['transfer_stock'] == '1')
+                <div class="sub-menu_t" id="transfer">
+                    <div class="sub-menu-width">
+                        <div class="model__close bg-secondary-2">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p class="text-muted float-start mt-1"><strong>Stock Transfer Management</strong></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                 </div>
                             </div>
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
-                                        <p>{!! __('menu.transfer_stock_heading_1') !!}</p>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
+                                    <p>{!! __('menu.transfer_stock_heading_1') !!}</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stock.to.branch.create') }}"
+                                            class="bar-link"> <span><i class="fas fa-exchange-alt"></i></span>
+                                        </a>
                                     </div>
+
+                                    <p class="switch_text">@lang('menu.add_transfer')
+                                        <small class="ml-1"><b>(@lang('menu.to_branch'))</small></b>
+                                    </p>
                                 </div>
 
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stock.to.branch.index') }}" class="bar-link">
+                                            <span><i class="fas fa-list-ul"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.transfer_list')</p>
+                                </div>
+
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stocks.to.warehouse.receive.stock.index') }}"
+                                            class="bar-link">
+                                            <span><i class="fas fa-check-double"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.receive_stocks')
+                                        <small class="ml-1"><b>(From B.Location)</small></b>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
+                                    <p>{!! __('menu.transfer_stock_heading_2') !!}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stock.to.warehouse.create') }}" class="bar-link">
+                                            <span><i class="fas fa-exchange-alt"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.add_transfer')
+                                        <small class="ml-1">(@lang('menu.to_warehouse'))</small></p>
+                                </div>
+
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stock.to.warehouse.index') }}" class="bar-link">
+                                            <span><i class="fas fa-list-ul"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.transfer_list') <small class="ml-1">
+                                            (@lang('menu.to_warehouse'))</small>
+                                    </p>
+                                </div>
+
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('transfer.stocks.to.branch.receive.stock.index') }}"
+                                            class="bar-link">
+                                            <span><i class="fas fa-check-double"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.receive_stocks')</p>
+                                </div>
+                            </div>
+
+                            @if ($addons->branches == 1)
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
+                                        <p>{!! __('menu.transfer_stock_heading_3') !!}</p>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
-                                            <a href="{{ route('transfer.stock.to.branch.create') }}"
-                                                class="bar-link"> <span><i class="fas fa-exchange-alt"></i></span>
+                                            <a href="{{ route('transfer.stock.branch.to.branch.create') }}" class="bar-link">
+                                                <span><i class="fas fa-exchange-alt"></i></span>
                                             </a>
                                         </div>
-
-                                        <p class="switch_text">@lang('menu.add_transfer')
-                                            <small class="ml-1"><b>(@lang('menu.to_branch'))</small></b>
-                                        </p>
+                                        <p class="switch_text">@lang('menu.add_transfer')</p>
                                     </div>
 
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
-                                            <a href="{{ route('transfer.stock.to.branch.index') }}" class="bar-link">
+                                            <a href="{{ route('transfer.stock.branch.to.branch.transfer.list') }}" class="bar-link">
                                                 <span><i class="fas fa-list-ul"></i></span>
                                             </a>
                                         </div>
@@ -862,48 +937,7 @@
 
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
-                                            <a href="{{ route('transfer.stocks.to.warehouse.receive.stock.index') }}"
-                                                class="bar-link">
-                                                <span><i class="fas fa-check-double"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.receive_stocks')
-                                            <small class="ml-1"><b>(From B.Location)</small></b>
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <hr>
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
-                                        <p>{!! __('menu.transfer_stock_heading_2') !!}</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('transfer.stock.to.warehouse.create') }}" class="bar-link">
-                                                <span><i class="fas fa-exchange-alt"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.add_transfer')
-                                            <small class="ml-1">(@lang('menu.to_warehouse'))</small></p>
-                                    </div>
-
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('transfer.stock.to.warehouse.index') }}" class="bar-link">
-                                                <span><i class="fas fa-list-ul"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.transfer_list') <small class="ml-1">
-                                                (@lang('menu.to_warehouse'))</small>
-                                        </p>
-                                    </div>
-
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('transfer.stocks.to.branch.receive.stock.index') }}"
+                                            <a href="{{ route('transfer.stock.branch.to.branch.receivable.list') }}"
                                                 class="bar-link">
                                                 <span><i class="fas fa-check-double"></i></span>
                                             </a>
@@ -911,12 +945,12 @@
                                         <p class="switch_text">@lang('menu.receive_stocks')</p>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
-                @endif
+                </div>
             @endif
-
+     
             @if (json_decode($generalSettings->modules, true)['stock_adjustment'] == '1')
                 <div class="sub-menu_t" id="adjustment">
                     <div class="sub-menu-width">
@@ -925,6 +959,7 @@
                                 <div class="col-md-8">
                                     <p class="text-muted float-start mt-1"><strong>Stock Adjustment</strong></p>
                                 </div>
+
                                 <div class="col-md-4">
                                     <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                 </div>
@@ -984,6 +1019,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="container-fluid">
                             <div class="row">
                                 @if (auth()->user()->permission->expense['add_expense'] == '1' )

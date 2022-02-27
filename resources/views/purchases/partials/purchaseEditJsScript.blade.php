@@ -79,7 +79,8 @@
         $('.variant_list_area').empty();
         $('.select_area').hide();
         var product_code = $(this).val();
-        delay(function() { searchProduct(product_code); }, 200); //sendAjaxical is the name of remote-command
+        var __product_code = product_code.replaceAll('/', '~');
+        delay(function() { searchProduct(__product_code); }, 200); //sendAjaxical is the name of remote-command
     });
 
     function searchProduct(product_code){
@@ -1171,4 +1172,14 @@
         },
         format: _expectedDateFormat,
     });
+
+    document.onkeyup = function () {
+        var e = e || window.event; // for IE to cover IEs window event-object
+
+        if (e.shiftKey && e.which == 13) {
+
+            $('#save').click();
+            return false;
+        }
+    }
 </script>

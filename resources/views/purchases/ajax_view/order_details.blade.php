@@ -23,6 +23,7 @@
                              <li><strong>Phone : </strong> {{ $purchase->supplier->phone }}</li>
                          </ul>
                      </div>
+                     
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
                              <li><strong>Purchase From : </strong></li>
@@ -46,6 +47,7 @@
                              </li>
                          </ul>
                      </div>
+
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
                             <li><strong>PO.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>

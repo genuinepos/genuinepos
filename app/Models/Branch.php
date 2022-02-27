@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use App\Models\Sale;
+use App\Models\Warehouse;
 use App\Models\InvoiceLayout;
 use App\Models\InvoiceSchema;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +40,11 @@ class Branch extends Model
     public function product()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function warehouses()
+    {
+        return $this->hasMany(Warehouse::class);
     }
 }
 

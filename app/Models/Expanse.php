@@ -19,7 +19,7 @@ class Expanse extends Model
 
     public function expense_payments()
     {
-        return $this->hasMany(ExpansePayment::class);
+        return $this->hasMany(ExpansePayment::class, 'expanse_id');
     }
 
     public function branch()

@@ -29,7 +29,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Add Sale</h5>
+                                            <h6>Add Sale | <small class="text-dark"><strong>Save & Print = (Ctrl + Enter), Save = (Shift + Enter)</strong> </small></h6>
                                         </div>
 
                                         <div class="col-6">
@@ -442,8 +442,8 @@
                                             <div class="row justify-content-center">
                                                 <div class="col-12 text-end">
                                                     <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                                                    <button type="submit" value="save_and_print" data-status="1" class="btn btn-sm btn-primary submit_button">Final & Print </button>
-                                                    <button type="submit" value="save" data-status="1" class="btn btn-sm btn-primary submit_button">Final</button>
+                                                    <button type="submit" id="save_and_print" value="save_and_print" data-status="1" class="btn btn-sm btn-primary submit_button">Final & Print</button>
+                                                    <button type="submit" id="save" value="save" data-status="1" class="btn btn-sm btn-primary submit_button">Final</button>
                                                 </div>
                                             </div>
                                         </div>

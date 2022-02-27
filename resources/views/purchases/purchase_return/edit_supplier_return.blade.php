@@ -58,13 +58,13 @@
                                                     </div>
                                                 </div>
                                             @else 
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4"><b>Location :</b> </label>
-                                                <div class="col-8">
-                                                    <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
-                                                    <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
+                                                <div class="input-group mt-1">
+                                                    <label for="inputEmail3" class="col-4"><b>Location :</b> </label>
+                                                    <div class="col-8">
+                                                        <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                                        <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
+                                                    </div>
                                                 </div>
-                                            </div>
                                             @endif
                                         </div>
 
@@ -137,9 +137,7 @@
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code">
                                                     </div>
                                                     <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                          
-                                                        </ul>
+                                                        <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div> 
                                             </div>
@@ -256,7 +254,8 @@
             $('.variant_list_area').empty();
             $('.select_area').hide();
             var product_code = $(this).val();
-            delay(function() { searchProduct(product_code); }, 150); //sendAjaxical is the name of remote-command
+            var __product_code = product_code.replaceAll('/', '~');
+            delay(function() { searchProduct(__product_code); }, 150); //sendAjaxical is the name of remote-command
         });
       
         // add purchase product by searching product code

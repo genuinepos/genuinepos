@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Expanse;
 use App\Models\CashFlow;
 use App\Utils\AccountUtil;
@@ -20,6 +19,7 @@ class ExpanseController extends Controller
     protected $expenseUtil;
     protected $accountUtil;
     protected $invoiceVoucherRefIdUtil;
+
     public function __construct(
         ExpenseUtil $expenseUtil,
         AccountUtil $accountUtil,
@@ -35,10 +35,12 @@ class ExpanseController extends Controller
     public function index(Request $request)
     {
         if (auth()->user()->permission->expense['view_expense'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->expenseUtil->expenseListTable($request);
         }
 
@@ -51,10 +53,12 @@ class ExpanseController extends Controller
     public function categoryWiseExpense(Request $request)
     {
         if (auth()->user()->permission->expense['category_wise_expense'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->expenseUtil->categoryWiseExpenseListTable($request);
         }
 
@@ -66,6 +70,7 @@ class ExpanseController extends Controller
     public function create()
     {
         if (auth()->user()->permission->expense['add_expense'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -84,6 +89,7 @@ class ExpanseController extends Controller
             ->get(['accounts.id', 'accounts.name', 'account_type']);
 
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+
         return view('expanses.create', compact('expenseAccounts', 'accounts', 'methods'));
     }
 
@@ -91,12 +97,14 @@ class ExpanseController extends Controller
     public function store(Request $request)
     {
         if (auth()->user()->permission->expense['add_expense'] == '0') {
+
             return response()->json('Access Denied');
         }
 
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['expenses'];
         $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['expanse_payment'];
+
         $this->validate($request, [
             'date' => 'required',
             'ex_account_id' => 'required',
@@ -122,12 +130,14 @@ class ExpanseController extends Controller
         $category_ids = '';
 
         foreach ($request->category_ids as $category_id) {
+
             $category_ids .= $category_id . ', ';
         }
 
         $addExpanse->category_ids = $category_ids;
 
         if ($request->hasFile('attachment')) {
+
             $expanseAttachment = $request->file('attachment');
             $expanseAttachmentName = uniqid() . '-' . '.' . $expanseAttachment->getClientOriginalExtension();
             $expanseAttachment->move(public_path('uploads/expanse_attachment/'), $expanseAttachmentName);
@@ -138,6 +148,7 @@ class ExpanseController extends Controller
 
         $index = 0;
         foreach ($request->category_ids as $category_id) {
+
             $addExDescription = new ExpenseDescription();
             $addExDescription->expense_id = $addExpanse->id;
             $addExDescription->expense_category_id = $category_id;
@@ -157,6 +168,7 @@ class ExpanseController extends Controller
         );
 
         if ($request->paying_amount > 0) {
+
             $addPaymentGetId = $this->expenseUtil->addPaymentGetId(
                 voucher_prefix: $paymentInvoicePrefix,
                 expense_id: $addExpanse->id,
@@ -176,6 +188,7 @@ class ExpanseController extends Controller
 
         $expense = Expanse::with(['expense_descriptions', 'expense_descriptions.category', 'admin'])
             ->where('id', $addExpanse->id)->first();
+
         return view('expanses.ajax_view.expense_print', compact('expense'));
     }
 
@@ -187,40 +200,51 @@ class ExpanseController extends Controller
             return response()->json('Access Denied');
         }
 
-        $deleteExpanse = Expanse::with('expense_payments')->where('id', $expanseId)->first();
-        $storedExpenseAccountId = $deleteExpanse->expense_account_id;
-        $storedExpensePayments = $deleteExpanse->expense_payments;
+        $deleteExpense = Expanse::with('expense_payments')->where('id', $expanseId)->first();
 
-        if (!is_null($deleteExpanse)) {
+        if ($deleteExpense->transfer_branch_to_branch_id) {
 
-            $deleteExpanse->delete();
-
-            if (count($storedPayments) > 0) {
-
-                foreach ($storedPayments as $payment) {
-
-                    if ($payment->attachment) {
-
-                        if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
-
-                            unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
-                        }
-                    }
-
-                    // Update Bank/Cash-in-hand Balance
-                    if ($payment->account_id) {
-
-                        $this->accountUtil->adjustAccountBalance('debit', $storedExpenseAccountId);
-                    }
-                }
-            }
+            return response()->json(
+                'Expense can not be deleted. This expense is belonging a business location to business location transfer.'
+            );
         }
 
-        // Update Expense A/C Balance
-        if ($storedExpenseAccountId) {
+        // $storedExpenseAccountId = $deleteExpanse->expense_account_id;
 
-            $this->accountUtil->adjustAccountBalance('credit', $storedExpenseAccountId);
-        }
+        // $storedExpensePayments = $deleteExpanse->expense_payments;
+
+        // if (!is_null($deleteExpanse)) {
+
+        //     $deleteExpanse->delete();
+
+        //     if (count($storedExpensePayments) > 0) {
+
+        //         foreach ($storedExpensePayments as $payment) {
+
+        //             if ($payment->attachment) {
+
+        //                 if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+
+        //                     unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+        //                 }
+        //             }
+
+        //             // Update Bank/Cash-in-hand Balance
+        //             if ($payment->account_id) {
+
+        //                 $this->accountUtil->adjustAccountBalance('debit', $payment->account_id);
+        //             }
+        //         }
+        //     }
+        // }
+
+        // // Update Expense A/C Balance
+        // if ($storedExpenseAccountId) {
+
+        //     $this->accountUtil->adjustAccountBalance('credit', $storedExpenseAccountId);
+        // }
+
+        $this->expenseUtil->expenseDelete($deleteExpense);
 
         return response()->json('Successfully expanse is deleted');
     }
@@ -233,6 +257,14 @@ class ExpanseController extends Controller
         }
 
         $expense = Expanse::with('expense_descriptions')->where('id', $expenseId)->first();
+
+        if ($expense->transfer_branch_to_branch_id) {
+
+            session()->flash('errorMsg', 'This Expense is not editable from here. Cause this Expense is created by Business Location to Business Location Transfer.');
+
+            return redirect()->back();
+        }
+
         $categories = DB::table('expanse_categories')->get();
         $taxes = DB::table('taxes')->get();
 
@@ -439,21 +471,26 @@ class ExpanseController extends Controller
     public function paymentUpdate(Request $request, $paymentId)
     {
         $updateExpansePayment = ExpansePayment::with('expense')->where('id', $paymentId)->first();
-        $this->expenseUtil->updatePayment($updateExpansePayment->id, $request);
-        $expense = Expanse::where('id', $updateExpansePayment->expanse_id)
-            ->select('id', 'net_total_amount', 'paid', 'due')->first();
 
-        $this->expenseUtil->adjustExpenseAmount($expense);
+        if ($updateExpansePayment) {
 
-        // Update Bank/Cash-In-Hand account Ledger
-        $this->accountUtil->updateAccountLedger(
-            voucher_type_id: 9,
-            date: $request->date,
-            account_id: $request->account_id,
-            trans_id: $updateExpansePayment->id,
-            amount: $request->paying_amount,
-            balance_type: 'debit'
-        );
+            $this->expenseUtil->updatePayment($updateExpansePayment, $request);
+
+            $expense = Expanse::where('id', $updateExpansePayment->expanse_id)
+                ->select('id', 'net_total_amount', 'paid', 'due')->first();
+
+            $this->expenseUtil->adjustExpenseAmount($expense);
+
+            // Update Bank/Cash-In-Hand account Ledger
+            $this->accountUtil->updateAccountLedger(
+                voucher_type_id: 9,
+                date: $request->date,
+                account_id: $request->account_id,
+                trans_id: $updateExpansePayment->id,
+                amount: $request->paying_amount,
+                balance_type: 'debit'
+            );
+        }
 
         return response()->json('Successfully payment is added.');
     }
@@ -464,7 +501,7 @@ class ExpanseController extends Controller
         $deleteExpensePayment = ExpansePayment::where('id', $paymentId)->first();
         $storedAccountId = $deleteExpensePayment->account_id;
         $storedExpenseId = $deleteExpensePayment->expanse_id;
-        
+
         if (!is_null($deleteExpensePayment)) {
             // Update expanse 
             if ($deleteExpensePayment->attachment != null) {
@@ -501,7 +538,7 @@ class ExpanseController extends Controller
 
             $admins = AdminAndUser::select(['id', 'prefix', 'name', 'last_name'])->orderBy('id', 'asc')
                 ->where('branch_id', auth()->user()->branch_id)->get();
-                
+
             return response()->json($admins);
         }
     }

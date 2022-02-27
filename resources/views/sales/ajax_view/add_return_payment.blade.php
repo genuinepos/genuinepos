@@ -53,7 +53,7 @@
             <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark"></i></span>
+                    <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
                 </div>
                 <input type="hidden" id="available_amount" value="{{ $sale->sale_return_due }}">
                 <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="{{ $sale->sale_return_due }}"/>
@@ -65,7 +65,7 @@
             <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark"></i></span>
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                 </div>
                 <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
             </div>
@@ -76,7 +76,7 @@
             <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_id"></i></span>
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
                 </div>
                 <select name="payment_method_id" class="form-control"  id="payment_method_id">
                     @foreach ($methods as $method)
@@ -85,19 +85,19 @@
                         </option>
                     @endforeach
                 </select>
+                <span class="error error_p_payment_method_id"></span>
             </div>
         </div>
     </div>
 
     <div class="form-group row mt-2">
         <div class="col-md-7">
-            <label><strong>Payment Account :</strong> </label>
+            <label><strong>Credit Account :</strong> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
                 </div>
                 <select name="account_id" class="form-control" id="p_account_id">
-                <option value="">None</option>
                     @foreach ($accounts as $account)
                         <option value="{{ $account->id }}">
                             @php
@@ -108,6 +108,7 @@
                         </option>
                     @endforeach
                 </select>
+                <span class="error error_p_account_id"></span>
             </div>
         </div>
 
@@ -119,7 +120,7 @@
 
     <div class="form-group mt-2">
         <label><strong> Payment Note :</strong></label>
-        <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note"></textarea>
+        <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
     </div>
 
     <div class="form-group row mt-3">
@@ -135,10 +136,13 @@
     //sale payment request by ajax
     $('#sale_payment_form').on('submit', function(e) {
         e.preventDefault();
+
         $('.loading_button').show();
         var available_amount = $('#available_amount').val();
         var paying_amount = $('#p_paying_amount').val();
+
         if (parseFloat(paying_amount) > parseFloat(available_amount)) {
+
             $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
             $('.loading_button').hide();
             return;
@@ -154,10 +158,13 @@
             cache: false,
             processData: false,
             success:function(data){
+
                 if(!$.isEmptyObject(data.errorMsg)){
+
                     toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 } else {
+
                     $('.loading_button').hide();
                     $('#paymentModal').modal('hide');
                     $('#paymentViewModal').modal('hide');
@@ -165,15 +172,18 @@
                     toastr.success(data);
                 }
             },error: function(err) {
+
                 $('.loading_button').hide();
                 $('.error').html('');
 
                 if (err.status == 0) {
+
                     toastr.error('Net Connetion Error. Reload This Page.'); 
                     return;
                 }
 
                 $.each(err.responseJSON.errors, function(key, error) {
+
                     $('.error_p_' + key + '').html(error[0]);
                 });
             }

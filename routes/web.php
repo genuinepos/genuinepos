@@ -445,6 +445,8 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
 
         Route::get('create', 'TransferStockBranchToBranchController@create')->name('transfer.stock.branch.to.branch.create');
 
+        Route::get('show/{transferId}', 'TransferStockBranchToBranchController@show')->name('transfer.stock.branch.to.branch.show');
+
         Route::post('store', 'TransferStockBranchToBranchController@store')->name('transfer.stock.branch.to.branch.store');
 
         Route::get('edit/{transferId}', 'TransferStockBranchToBranchController@edit')->name('transfer.stock.branch.to.branch.edit');
@@ -462,6 +464,8 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
         Route::group(['prefix' => 'receive'], function ()
         {
             Route::get('receivable/list', 'ReceiveTransferBranchToBranchController@receivableList')->name('transfer.stock.branch.to.branch.receivable.list');
+
+            Route::get('show/{transferId}', 'ReceiveTransferBranchToBranchController@show')->name('transfer.stock.branch.to.branch.receivable.show');
 
             Route::get('process/to/receive/{transferId}', 'ReceiveTransferBranchToBranchController@processToReceive')->name('transfer.stock.branch.to.branch.ProcessToReceive');
 
@@ -517,6 +521,7 @@ Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Ht
 
 // Expense route group
 Route::group(['prefix' => 'expenses', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::get('/', 'ExpanseController@index')->name('expanses.index');
     Route::get('category/wise/expenses', 'ExpanseController@categoryWiseExpense')->name('expanses.category.wise.expense');
     Route::get('create', 'ExpanseController@create')->name('expanses.create');
@@ -536,6 +541,7 @@ Route::group(['prefix' => 'expenses', 'namespace' => 'App\Http\Controllers'], fu
 
     // Expanse category route group
     Route::group(['prefix' => 'categories'], function () {
+
         Route::get('/', 'ExpanseCategoryController@index')->name('expanses.categories.index');
         Route::get('all/categories', 'ExpanseCategoryController@allCategory')->name('expanses.categories.all.category');
         Route::post('store', 'ExpanseCategoryController@store')->name('expanses.categories.store');
@@ -545,7 +551,9 @@ Route::group(['prefix' => 'expenses', 'namespace' => 'App\Http\Controllers'], fu
 });
 
 Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::group(['prefix' => 'banks'], function () {
+
         Route::get('/', 'BankController@index')->name('accounting.banks.index');
         Route::get('all/banks', 'BankController@allBanks')->name('accounting.banks.all.bank');
         Route::post('store', 'BankController@store')->name('accounting.banks.store');
@@ -554,6 +562,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
     });
 
     Route::group(['prefix' => 'accounts'], function () {
+
         Route::get('/', 'AccountController@index')->name('accounting.accounts.index');
         Route::get('account/book/{accountId}', 'AccountController@accountBook')->name('accounting.accounts.book');
         Route::get('account/ledger/print/{accountId}', 'AccountController@ledgerPrint')->name('accounting.accounts.ledger.print');
@@ -564,6 +573,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
     });
 
     Route::group(['prefix' => 'contras'], function () {
+
         Route::get('/', 'ContraController@index')->name('accounting.contras.index');
         Route::get('create', 'ContraController@create')->name('accounting.contras.create');
         Route::get('show/{contraId}', 'ContraController@show')->name('accounting.contras.show');
@@ -575,6 +585,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
     });
 
     Route::group(['prefix' => '/'], function () {
+
         Route::get('balance/sheet', 'AccountingRelatedSectionController@balanceSheet')->name('accounting.balance.sheet');
         Route::get('balance/sheet/amounts', 'AccountingRelatedSectionController@balanceSheetAmounts')->name('accounting.balance.sheet.amounts');
         Route::get('trial/balance', 'AccountingRelatedSectionController@trialBalance')->name('accounting.trial.balance');
@@ -586,6 +597,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
     });
 
     Route::group(['prefix' => 'assets'], function () {
+
         Route::get('/', 'AssetController@index')->name('accounting.assets.index');
         Route::post('asset/type/store', 'AssetController@assetTypeStore')->name('accounting.assets.asset.type.store');
         Route::get('asset/type/edit/{typeId}', 'AssetController@assetTypeEdit')->name('accounting.assets.asset.type.edit');
@@ -602,7 +614,9 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
     });
 
     Route::group(['prefix' => 'loans'], function () {
+
         Route::group(['prefix' => '/'], function () {
+
             Route::get('/', 'LoanController@index')->name('accounting.loan.index');
             Route::post('store', 'LoanController@store')->name('accounting.loan.store');
             Route::get('show/{loanId}', 'LoanController@show')->name('accounting.loan.show');
@@ -614,6 +628,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         });
 
         Route::group(['prefix' => 'companies'], function () {
+
             Route::get('/', 'LoanCompanyController@index')->name('accounting.loan.companies.index');
             Route::post('store', 'LoanCompanyController@store')->name('accounting.loan.companies.store');
             Route::get('edit/{companyId}', 'LoanCompanyController@edit')->name('accounting.loan.companies.edit');
@@ -622,6 +637,7 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         });
 
         Route::group(['prefix' => 'payments'], function () {
+
             Route::get('due/receive/modal/{company_id}', 'LoanPaymentController@loanAdvanceReceiveModal')->name('accounting.loan.advance.receive.modal');
             Route::post('due/receive/store/{company_id}', 'LoanPaymentController@loanAdvanceReceiveStore')->name('accounting.loan.advance.receive.store');
             Route::get('due/pay/modal/{company_id}', 'LoanPaymentController@loaLiabilityPaymentModal')->name('accounting.loan.liability.payment.modal');
@@ -633,7 +649,9 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
 });
 
 Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::group(['prefix' => 'branches'], function () {
+
         Route::get('/', 'BranchController@index')->name('settings.branches.index');
         Route::get('get/all/branch', 'BranchController@getAllBranch')->name('settings.get.all.branch');
         Route::get('create', 'BranchController@create')->name('settings.branches.create');
@@ -646,6 +664,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     });
 
     Route::group(['prefix' => 'warehouses'], function () {
+
         Route::get('/', 'WarehouseController@index')->name('settings.warehouses.index');
         Route::post('store', 'WarehouseController@store')->name('settings.warehouses.store');
         Route::get('edit/{id}', 'WarehouseController@edit')->name('settings.warehouses.edit');
@@ -654,6 +673,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     });
 
     Route::group(['prefix' => 'units'], function () {
+
         Route::get('/', 'UnitController@index')->name('settings.units.index');
         Route::get('get/all/unit', 'UnitController@getAllUnit')->name('settings.units.get.all.unit');
         Route::post('store', 'UnitController@store')->name('settings.units.store');
@@ -662,6 +682,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     });
 
     Route::group(['prefix' => 'taxes'], function () {
+
         Route::get('/', 'TaxController@index')->name('settings.taxes.index');
         Route::get('get/all/vat', 'TaxController@getAllVat')->name('settings.taxes.get.all.tax');
         Route::post('store', 'TaxController@store')->name('settings.taxes.store');
@@ -670,6 +691,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     });
 
     Route::group(['prefix' => 'general_settings'], function () {
+
         Route::get('/', 'GeneralSettingController@index')->name('settings.general.index');
         Route::post('business/settings', 'GeneralSettingController@businessSettings')->name('settings.business.settings');
         Route::post('tax/settings', 'GeneralSettingController@taxSettings')->name('settings.tax.settings');
@@ -689,6 +711,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     });
 
     Route::group(['prefix' => 'payment_settings'], function () {
+
         Route::get('/', 'PaymentMethodController@index')->name('settings.payment.method.index');
         Route::post('store', 'PaymentMethodController@store')->name('settings.payment.method.store');
         Route::get('edit/{id}', 'PaymentMethodController@edit')->name('settings.payment.method.edit');
@@ -707,7 +730,9 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     });
 
     Route::group(['prefix' => 'invoices'], function () {
+
         Route::group(['prefix' => 'schemas'], function () {
+
             Route::get('/', 'InvoiceSchemaController@index')->name('invoices.schemas.index');
             Route::post('store', 'InvoiceSchemaController@store')->name('invoices.schemas.store');
             Route::get('edit/{schemaId}', 'InvoiceSchemaController@edit')->name('invoices.schemas.edit');
@@ -717,6 +742,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         });
 
         Route::group(['prefix' => 'layouts'], function () {
+
             Route::get('/', 'InvoiceLayoutController@index')->name('invoices.layouts.index');
             Route::get('create', 'InvoiceLayoutController@create')->name('invoices.layouts.create');
             Route::post('/', 'InvoiceLayoutController@store')->name('invoices.layouts.store');
@@ -736,11 +762,13 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     });
 
     Route::group(['prefix' => 'release/note'], function () {
+
         Route::get('/', 'ReleaseNoteController@index')->name('settings.release.note.index');
     });
 });
 
 Route::group(['prefix' => 'users',  'namespace' => 'App\Http\Controllers'], function () {
+
     Route::get('/', 'UserController@index')->name('users.index');
     Route::get('all/users', 'UserController@allUsers')->name('users.all.Users');
     Route::get('create', 'UserController@create')->name('users.create');
@@ -752,6 +780,7 @@ Route::group(['prefix' => 'users',  'namespace' => 'App\Http\Controllers'], func
     Route::get('show/{userId}', 'UserController@show')->name('users.show');
 
     Route::group(['prefix' => 'roles'], function () {
+
         Route::get('/', 'RoleController@index')->name('users.role.index');
         Route::get('all/roles', 'RoleController@allRoles')->name('users.role.all.roles');
         Route::get('create', 'RoleController@create')->name('users.role.create');
@@ -762,6 +791,7 @@ Route::group(['prefix' => 'users',  'namespace' => 'App\Http\Controllers'], func
     });
 
     Route::group(['prefix' => 'profile'], function () {
+
         Route::get('/', 'UserProfileController@index')->name('users.profile.index');
         Route::post('update', 'UserProfileController@update')->name('users.profile.update');
         Route::get('view/{id}', 'UserProfileController@view')->name('users.profile.view');
@@ -778,6 +808,7 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     });
 
     Route::group(['prefix' => 'sales/purchase'], function () {
+
         Route::get('/', 'SalePurchaseReportController@index')->name('reports.sales.purchases.index');
         Route::get('sale/purchase/amounts', 'SalePurchaseReportController@salePurchaseAmounts')->name('reports.profit.sales.purchases.amounts');
         Route::get('filter/sale/purchase/amounts', 'SalePurchaseReportController@filterSalePurchaseAmounts')->name('reports.profit.sales.filter.purchases.amounts');
@@ -785,16 +816,19 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     });
 
     Route::group(['prefix' => 'suppliers'], function () {
+
         Route::get('/', 'SupplierReportController@index')->name('reports.supplier.index');
         Route::get('print', 'SupplierReportController@print')->name('reports.supplier.print');
     });
 
     Route::group(['prefix' => 'customers'], function () {
+
         Route::get('/', 'CustomerReportController@index')->name('reports.customer.index');
         Route::get('print', 'CustomerReportController@print')->name('reports.customer.print');
     });
 
     Route::group(['prefix' => 'stock'], function () {
+
         Route::get('/', 'StockReportController@index')->name('reports.stock.index');
         Route::get('branch/warehouse/{branch_id}', 'StockReportController@branchWarehouses');
         Route::get('print/branch/stocks', 'StockReportController@printBranchStock')->name('reports.stock.print.branch.stock');
@@ -803,44 +837,52 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     });
 
     Route::group(['prefix' => 'stock/adjustments'], function () {
+
         Route::get('/', 'StockAdjustmentReportController@index')->name('reports.stock.adjustments.index');
         Route::get('all/adjustments', 'StockAdjustmentReportController@allAdjustments')->name('reports.stock.adjustments.all');
         Route::get('print', 'StockAdjustmentReportController@print')->name('reports.stock.adjustments.print');
     });
 
     Route::group(['prefix' => 'product/purchases'], function () {
+
         Route::get('/', 'ProductPurchaseReportController@index')->name('reports.product.purchases.index');
         Route::get('search/product/{product_name}', 'ProductPurchaseReportController@searchProduct');
         Route::get('print', 'ProductPurchaseReportController@print')->name('reports.product.purchases.print');
     });
 
     Route::group(['prefix' => 'product/sales'], function () {
+
         Route::get('/', 'ProductSaleReportController@index')->name('reports.product.sales.index');
         Route::get('print', 'ProductSaleReportController@print')->name('reports.product.sales.print');
         Route::get('search/product/{product_name}', 'ProductSaleReportController@searchProduct');
     });
 
     Route::group(['prefix' => 'stock/in/out'], function () {
+
         Route::get('/', 'StockInOutReportController@index')->name('reports.stock.in.out.index');
         Route::get('print', 'StockInOutReportController@print')->name('reports.stock.in.out.print');
     });
 
     Route::group(['prefix' => 'purchase/payments'], function () {
+
         Route::get('/', 'PurchasePaymentReportController@index')->name('reports.purchase.payments.index');
         Route::get('print', 'PurchasePaymentReportController@print')->name('reports.purchase.payments.print');
     });
 
     Route::group(['prefix' => 'sale/payments'], function () {
+
         Route::get('/', 'SalePaymentReportController@index')->name('reports.sale.payments.index');
         Route::get('print', 'SalePaymentReportController@print')->name('reports.sale.payments.print');
     });
 
     Route::group(['prefix' => 'expenses'], function () {
+
         Route::get('/', 'ExpanseReportController@index')->name('reports.expenses.index');
         Route::get('print', 'ExpanseReportController@print')->name('reports.expenses.print');
     });
 
     Route::group(['prefix' => 'cash/registers'], function () {
+
         Route::get('/', 'CashRegisterReportController@index')->name('reports.cash.registers.index');
         Route::get('get', 'CashRegisterReportController@getCashRegisterReport')->name('reports.get.cash.registers');
         Route::get('details/{cashRegisterId}', 'CashRegisterReportController@detailsCashRegister')->name('reports.get.cash.register.details');
@@ -848,43 +890,51 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     });
 
     Route::group(['prefix' => 'sale/representive'], function () {
+
         Route::get('/', 'SaleRepresentiveReportController@index')->name('reports.sale.representive.index');
         Route::get('expenses', 'SaleRepresentiveReportController@SaleRepresentiveExpenseReport')->name('reports.sale.representive.expenses');
     });
 
     Route::group(['prefix' => 'taxes'], function () {
+
         Route::get('/', 'TaxReportController@index')->name('reports.taxes.index');
         Route::get('get', 'TaxReportController@getTaxReport')->name('reports.taxes.get');
     });
 
     Route::group(['prefix' => 'payrolls'], function () {
+
         Route::get('/', 'PayrollReportController@payrollReport')->name('reports.payroll');
         Route::get('print', 'PayrollReportController@payrollReportPrint')->name('reports.payroll.print');
     });
 
     Route::group(['prefix' => 'payroll/payments'], function () {
+
         Route::get('/', 'PayrollPaymentReportController@payrollPaymentReport')->name('reports.payroll.payment');
         Route::get('print', 'PayrollPaymentReportController@payrollPaymentReportPrint')->name('reports.payroll.payment.print');
     });
 
     Route::group(['prefix' => 'attendances'], function () {
+
         Route::get('/', 'AttendanceReportController@attendanceReport')->name('reports.attendance');
         Route::get('print', 'AttendanceReportController@attendanceReportPrint')->name('reports.attendance.print');
     });
 
     Route::group(['prefix' => 'financial'], function () {
+
         Route::get('/', 'FinancialReportControllerReport@index')->name('reports.financial.index');
         Route::get('print', 'FinancialReportControllerReport@print')->name('reports.financial.print');
     });
 });
 
 Route::group(['prefix' => 'short-menus', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::get('modal/form', 'ShortMenuController@showModalForm')->name('short.menus.modal.form');
     Route::get('show', 'ShortMenuController@show')->name('short.menus.show');
     Route::post('store', 'ShortMenuController@store')->name('short.menus.store');
 });
 
 Route::group(['prefix' => 'pos-short-menus', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::get('modal/form', 'PosShortMenuController@showModalForm')->name('pos.short.menus.modal.form');
     Route::get('show', 'PosShortMenuController@show')->name('pos.short.menus.show');
     Route::get('edit/page/show', 'PosShortMenuController@editPageShow')->name('pos.short.menus.edit.page.show');
@@ -894,6 +944,7 @@ Route::group(['prefix' => 'pos-short-menus', 'namespace' => 'App\Http\Controller
 Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
 
 Route::get('maintenance/mode', function () {
+    
     return view('maintenance/maintenance');
 })->name('maintenance.mode');
 

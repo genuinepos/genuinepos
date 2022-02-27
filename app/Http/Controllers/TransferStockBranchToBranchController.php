@@ -15,8 +15,6 @@ use App\Models\TransferStockBranchToBranch;
 use App\Models\TransferStockBranchToBranchProducts;
 use App\Utils\Converter;
 
-use function PHPUnit\Framework\isNull;
-
 class TransferStockBranchToBranchController extends Controller
 {
     protected $nameSearchUtil;
@@ -100,7 +98,7 @@ class TransferStockBranchToBranchController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
 
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item details_button" href="' . route('transfer.stock.branch.to.branch.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
                     if (auth()->user()->branch_id == $row->sender_branch_id) {
 
@@ -480,6 +478,24 @@ class TransferStockBranchToBranchController extends Controller
 
             return response()->json('Transfer deleted successfully.');
         }
+    }
+
+    public function show($transferId)
+    {
+        $transfer = TransferStockBranchToBranch::with(
+            [
+                'sender_branch',
+                'sender_warehouse',
+                'receiver_branch',
+                'receiver_branch',
+                'Transfer_products',
+                'Transfer_products.product',
+                'Transfer_products.variant',
+                'Transfer_products.product.unit'
+            ]
+        )->where('id', $transferId)->first();
+
+        return view('transfer_stock.branch_to_branch.ajax_view.show', compact('transfer'));
     }
 
     public function searchProduct($product_code, $warehouse_id)

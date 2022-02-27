@@ -1186,26 +1186,35 @@ class SaleUtil
             ->editColumn('shipment_status',  function ($row) {
                 $html = "";
                 if ($row->shipment_status == 1) {
+
                     $html .= '<span class="text-primary"><b>Ordered</b></span>';
                 } elseif ($row->shipment_status == 2) {
+
                     $html .= '<span class="text-secondary"><b>Packed</b></span>';
                 } elseif ($row->shipment_status == 3) {
+
                     $html .= '<span class="text-warning"><b>Shipped</b></span>';
                 } elseif ($row->shipment_status == 4) {
+
                     $html .= '<span class="text-success"><b>Delivered</b></span>';
                 } elseif ($row->shipment_status == 5) {
+
                     $html .= '<span class="text-danger"><b>Cancelled</b></span>';
                 }
                 return $html;
             })
             ->editColumn('paid_status', function ($row) {
+
                 $payable = $row->total_payable_amount - $row->sale_return_amount;
                 $html = '';
                 if ($row->due <= 0) {
+
                     $html .= '<span class="text-success"><b>Paid</b></span>';
                 } elseif ($row->due > 0 && $row->due < $payable) {
+
                     $html .= '<span class="text-primary"><b>Partial</b></span>';
                 } elseif ($payable == $row->due) {
+                    
                     $html .= '<span class="text-danger"><b>Due</b></span>';
                 }
                 return $html;
@@ -1217,34 +1226,45 @@ class SaleUtil
     private function filteredQuery($request, $query)
     {
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
+
                 $query->where('sales.branch_id', NULL);
             } else {
+
                 $query->where('sales.branch_id', $request->branch_id);
             }
         }
 
         if ($request->user_id) {
+
             $query->where('sales.admin_id', $request->user_id);
         }
 
         if ($request->customer_id) {
+
             if ($request->customer_id == 'NULL') {
+
                 $query->where('sales.customer_id', NULL);
             } else {
+
                 $query->where('sales.customer_id', $request->customer_id);
             }
         }
 
         if ($request->payment_status) {
+
             if ($request->payment_status == 1) {
+
                 $query->where('sales.due', '=', 0);
             } else {
+
                 $query->where('sales.due', '>', 0);
             }
         }
 
         if ($request->from_date) {
+
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
@@ -1270,7 +1290,12 @@ class SaleUtil
 
         $return = DB::table('sale_returns')->where('sale_id', $sale->id)->first();
         $returnAmount = $return ? $return->total_return_amount : 0;
-        $due = $sale->total_payable_amount - $totalSalePaid->sum('total_paid') - $returnAmount + $totalReturnPaid->sum('total_paid');
+
+        $due = $sale->total_payable_amount 
+        - $totalSalePaid->sum('total_paid') 
+        - $returnAmount 
+        + $totalReturnPaid->sum('total_paid');
+
         $returnDue = $returnAmount
             - ($sale->total_payable_amount - $totalSalePaid->sum('total_paid'))
             - $totalReturnPaid->sum('total_paid');

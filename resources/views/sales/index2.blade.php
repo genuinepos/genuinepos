@@ -339,7 +339,9 @@
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
+
             $.get(url, function(data) {
+
                 $('#sale_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
@@ -351,6 +353,7 @@
            e.preventDefault();
            var url = $(this).attr('href');
             $.get(url, function(data) {
+
                 $('#payment_view_modal_body').html(data);
                 $('#paymentViewModal').modal('show');
             });
@@ -361,7 +364,9 @@
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Add Payment');
+
             $.get(url, function(data) {
+
                 $('#payment-modal-body').html(data);
                 $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
@@ -370,10 +375,13 @@
 
         $(document).on('click', '#add_return_payment', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Pay Return Amount');
+
             $.get(url, function(data) {
+
                 $('.data_preloader').hide();
                 $('#payment-modal-body').html(data);
                 $('#paymentModal').modal('show');
@@ -382,11 +390,14 @@
 
         // show payment edit modal with data
         $(document).on('click', '#edit_payment', function (e) {
+
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Edit Payment');
+
             $.get(url, function(data) {
+
                 $('.data_preloader').hide();
                 $('#payment-modal-body').html(data);
                 $('#paymentModal').modal('show');
@@ -399,7 +410,9 @@
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Edit Return Payment');
+
             $.get(url, function(data) {
+
                 $('.data_preloader').hide();
                 $('#payment-modal-body').html(data);
                 $('#paymentModal').modal('show');
@@ -410,7 +423,9 @@
         $(document).on('click', '#payment_details', function (e) {
            e.preventDefault();
            var url = $(this).attr('href');
+
             $.get(url, function(data) {
+
                 $('.payment_details_area').html(data);
                 $('#paymentDetailsModal').modal('show');
             });
@@ -421,7 +436,9 @@
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
+
             $.get(url, function(data) {
+                
                 $('.data_preloader').hide();
                 $('#edit_shipment_modal_content').html(data);
                 $('#editShipmentModal').modal('show');

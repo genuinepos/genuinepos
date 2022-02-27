@@ -141,6 +141,7 @@
 </form>
 
 <script>
+    
     $('#sale_payment_form').on('submit', function(e){
         e.preventDefault();
         $('.loading_button').show();

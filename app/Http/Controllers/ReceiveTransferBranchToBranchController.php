@@ -75,11 +75,9 @@ class ReceiveTransferBranchToBranchController extends Controller
 
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
-
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item details_button" href="'.route('transfer.stock.branch.to.branch.receivable.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
                     $html .= '<a class="dropdown-item" href="' . route('transfer.stock.branch.to.branch.ProcessToReceive', [$row->id]) . '"><i class="far fa-eye text-primary"></i> Process To Receive</a>';
-
                     $html .= '<a class="dropdown-item" id="send_notification" href="#"><i class="fas fa-envelope text-primary"></i> Send Notification</a>';
                     $html .= '</div>';
                     $html .= '</div>';
@@ -138,6 +136,24 @@ class ReceiveTransferBranchToBranchController extends Controller
 
             compact('branches')
         );
+    }
+
+    public function show($transferId)
+    {
+        $transfer = TransferStockBranchToBranch::with(
+            [
+                'sender_branch',
+                'sender_warehouse',
+                'receiver_branch',
+                'receiver_branch',
+                'Transfer_products',
+                'Transfer_products.product',
+                'Transfer_products.variant',
+                'Transfer_products.product.unit'
+            ]
+        )->where('id', $transferId)->first();
+
+        return view('transfer_stock.branch_to_branch.receive.ajax_view.show', compact('transfer'));
     }
 
     public function ProcessToReceive($transferId)

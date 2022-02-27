@@ -259,7 +259,7 @@
 
             $.get(url, function(data) {
 
-                $('#sale_details').html(data);
+                $('#transfer_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
             });
@@ -269,7 +269,7 @@
         $(document).on('click', '.print_btn',function (e) {
            e.preventDefault();
 
-            var body = $('.sale_print_template').html();
+            var body = $('.transfer_print_template').html();
             var header = $('.heading_area').html();
 
             $(body).printThis({

@@ -209,9 +209,10 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-none"><i
-                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button class="btn btn-sm btn-primary float-end">Save (Ctrl + Enter)</button>
+                        <button type="button" class="btn loading_button d-none">
+                            <i class="fas fa-spinner text-primary"></i><b> Loading...</b>
+                        </button>
+                        <button type="submit" id="save" class="btn btn-sm btn-primary float-end">Save (Ctrl + Enter)</button>
                     </div>
                 </div>
             </form>
@@ -310,5 +311,15 @@
             }
         });
     });
+
+    document.onkeyup = function () {
+        var e = e || window.event; // for IE to cover IEs window event-object
+
+        if(e.ctrlKey && e.which == 13) {
+
+            $('#save').click();
+            return false;
+        }
+    }
 </script>
 @endpush

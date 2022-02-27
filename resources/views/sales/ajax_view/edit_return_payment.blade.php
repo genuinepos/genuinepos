@@ -23,8 +23,10 @@
                     <li><strong>Business Location : </strong>
                         <span>
                             @if ($payment->sale->branch)
+
                                 {{ $payment->sale->branch->name.'/'.$payment->sale->branch->branch_code }}
                             @else
+
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                             @endif
                         </span>  
@@ -54,7 +56,7 @@
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">
-                        <i class="far fa-money-bill-alt text-dark"></i>
+                        <i class="far fa-money-bill-alt text-dark input_i"></i>
                     </span>
                 </div>
                 <input type="hidden" id="available_amount" value="{{ $payment->sale->sale_return_due+$payment->paid_amount }}">
@@ -81,7 +83,7 @@
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">
-                        <i class="fas fa-money-check text-dark input_id"></i>
+                        <i class="fas fa-money-check text-dark input_i"></i>
                     </span>
                 </div>
                 <select name="payment_method_id" class="form-control" id="p_payment_method_id">
@@ -98,7 +100,7 @@
 
     <div class="form-group row mt-2">
         <div class="col-md-7">
-            <label><strong>Payment Account :</strong> </label>
+            <label><strong>Credit Account :</strong> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -120,13 +122,13 @@
 
         <div class="col-md-5">
             <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
-            <input readonly type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
+            <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
         </div>
     </div>
 
     <div class="form-group mt-2">
         <label><strong> Payment Note :</strong></label>
-        <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note">{{ $payment->note }}</textarea>
+        <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note">{{ $payment->note }}</textarea>
     </div>
 
     <div class="form-group row mt-3">

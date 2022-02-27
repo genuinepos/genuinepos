@@ -24,10 +24,10 @@
                             <div class="form_element">
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
-                                        <div class="col-9">
-                                            <h5>Add Transfer Stock (Business Location To Business Location)
+                                        <div class="col-10">
+                                            <h6>Add Transfer Stock (Business Location To Business Location)
                                                 || <small class="text-muted">(Save & Print = Ctrl + Enter), (Save = Shift + Enter)</small>
-                                            </h5>
+                                            </h6>
                                         </div>
 
                                         <div class="col-3">
@@ -1043,7 +1043,7 @@
                         $('#transfer_list').empty();
 
                         calculateTotalAmount();
-                    }else{
+                    } else {
 
                         $('.loading_button').hide();
 

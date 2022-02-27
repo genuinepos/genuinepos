@@ -156,9 +156,11 @@
             processData: false,
             success:function(data){
                 if(!$.isEmptyObject(data.errorMsg)){
+
                     toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 } else {
+
                     $('.loading_button').hide();
                     $('#paymentModal').modal('hide');
                     $('#paymentViewModal').modal('hide');
@@ -166,15 +168,18 @@
                     toastr.success(data);
                 }
             },error: function(err) {
+
                 $('.loading_button').hide();
                 $('.error').html('');
 
                 if (err.status == 0) {
+
                     toastr.error('Net Connetion Error. Reload This Page.'); 
                     return;
                 }
 
                 $.each(err.responseJSON.errors, function(key, error) {
+                    
                     $('.error_p_' + key + '').html(error[0]);
                 });
             }

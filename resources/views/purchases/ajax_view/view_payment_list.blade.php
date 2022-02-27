@@ -134,17 +134,23 @@
                             </td>
 
                             <td>
-                                @if ($payment->payment_type == 1)
-                                    <a href="{{ route('purchases.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
-                                @else
-                                    <a href="{{ route('purchases.return.payment.edit', $payment->id) }}" id="edit_return_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
+                                @if (auth()->user()->branch_id == $purchase->branch_id) {
+
+                                    @if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
+                                        @if ($payment->payment_type == 1)
+                                            <a href="{{ route('purchases.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
+                                        @else
+                                            <a href="{{ route('purchases.return.payment.edit', $payment->id) }}" id="edit_return_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
+                                        @endif
+
+                                        @if ($payment->supplier_payment_id == null)
+                                            <a href="{{ route('purchases.payment.delete', $payment->id) }}" id="delete_payment"
+                                            class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>
+                                        @endif
+                                    @endif
                                 @endif
-                                
+
                                 <a href="{{ route('purchases.payment.details', $payment->id) }}" id="payment_details" class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
-                                @if ($payment->supplier_payment_id == null)
-                                    <a href="{{ route('purchases.payment.delete', $payment->id) }}" id="delete_payment"
-                                    class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>
-                                @endif
                             </td>
                         </tr>
                     @endforeach

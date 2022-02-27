@@ -282,6 +282,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="modal-footer">
                 @if ($sale->created_by == 1)
                     @if (auth()->user()->permission->sale['edit_add_sale'] == '1') 

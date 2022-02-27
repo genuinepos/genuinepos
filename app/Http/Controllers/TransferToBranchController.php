@@ -112,6 +112,7 @@ class TransferToBranchController extends Controller
     {
         $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
         $invoicePrefix = json_decode($prefixSettings->prefix, true)['stock_transfer'];
+        
         $this->validate($request, [
             'warehouse_id' => 'required',
         ]);

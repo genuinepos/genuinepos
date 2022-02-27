@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Expanse;
 use App\Models\CashFlow;
 use App\Utils\AccountUtil;
@@ -36,10 +35,12 @@ class ExpanseController extends Controller
     public function index(Request $request)
     {
         if (auth()->user()->permission->expense['view_expense'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->expenseUtil->expenseListTable($request);
         }
 

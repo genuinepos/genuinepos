@@ -66,8 +66,7 @@
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="from_date" id="datepicker"
                                                             class="form-control from_date date"
@@ -79,8 +78,7 @@
                                                     <label><strong>To Date :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                                     </div>
@@ -313,6 +311,7 @@
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_button', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             sales_table.ajax.reload();
         });
@@ -320,12 +319,15 @@
         // Show details modal with data
         $(document).on('click', '.details_button', function (e) {
             e.preventDefault();
+
             var url = $(this).attr('href');
             $('.data_preloader').show();
+
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(data){
+
                     $('#sale_details').html(data);
                     $('.data_preloader').hide();
                     $('#detailsModal').modal('show');
@@ -336,8 +338,10 @@
         //Show payment view modal with data
         $(document).on('click', '#view_payment', function (e) {
            e.preventDefault();
+
            var url = $(this).attr('href');
             $.get(url, function(data) {
+
                 $('#payment_view_modal_body').html(data);
                 $('#paymentViewModal').modal('show');
             });
@@ -345,10 +349,13 @@
 
         $(document).on('click', '#add_payment', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Add Payment');
+
             $.get(url, function(data) {
+
                 $('#payment-modal-body').html(data);
                 $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
@@ -357,10 +364,28 @@
 
         $(document).on('click', '#add_return_payment', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Pay Return Amount');
+
             $.get(url, function(data) {
+
+                $('.data_preloader').hide();
+                $('#payment-modal-body').html(data);
+                $('#paymentModal').modal('show');
+            });
+        });
+
+        // show payment edit modal with data
+        $(document).on('click', '#edit_return_payment', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+            $('#payment_heading').html('Edit Return Payment');
+
+            $.get(url, function(data) {
+
                 $('.data_preloader').hide();
                 $('#payment-modal-body').html(data);
                 $('#paymentModal').modal('show');
@@ -373,7 +398,9 @@
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Edit Payment');
+
             $.get(url, function(data) {
+
                 $('.data_preloader').hide();
                 $('#payment-modal-body').html(data);
                 $('#paymentModal').modal('show');
@@ -384,64 +411,11 @@
         $(document).on('click', '#payment_details', function (e) {
            e.preventDefault();
            var url = $(this).attr('href');
+
             $.get(url, function(data) {
+
                 $('.payment_details_area').html(data);
                 $('#paymentDetailsModal').modal('show');
-            });
-        });
-
-        //Add sale payment request by ajax
-        $(document).on('submit', '#sale_payment_form', function(e){
-            e.preventDefault();
-            $('.loading_button').show();
-            var available_amount = $('#available_amount').val();
-            var paying_amount = $('#p_amount').val();
-            if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
-                $('.error_p_amount').html('Paying amount must not be greater then due amount.');
-                $('.loading_button').hide();
-                return;
-            }
-
-            var url = $(this).attr('action');
-            var inputs = $('.p_input');
-                $('.error').html('');
-                var countErrorField = 0;
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing want wrong.');
-                return;
-            }
-
-            $.ajax({
-                url:url,
-                type:'post',
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success:function(data){
-                    if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR');
-                        $('.loading_button').hide();
-                    }else{
-                        $('.payment_method').hide();
-                        $('.loading_button').hide();
-                        $('#paymentModal').modal('hide');
-                        $('#paymentViewModal').modal('hide');
-                        sales_table.ajax.reload();
-                        toastr.success(data);
-                    }
-                }
             });
         });
 
@@ -459,7 +433,9 @@
 
         //change sale status requested by ajax
         $(document).on('submit', '#edit_shipment_form',function(e){
+
             e.preventDefault();
+
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $('.loading_button').show();

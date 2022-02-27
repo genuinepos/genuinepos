@@ -220,12 +220,28 @@ class ProductStockUtil
                 ->select(DB::raw('sum(received_qty) as total_qty'))
                 ->groupBy('transfer_stock_to_warehouse_products.product_id')->get();
 
+            $transferredToAnotherLocation = DB::table('transfer_stock_branch_to_branch_products')
+                ->leftJoin('transfer_stock_branch_to_branches', 'transfer_stock_branch_to_branch_products.transfer_id', 'transfer_stock_branch_to_branches.id')
+                ->where('transfer_stock_branch_to_branches.sender_branch_id', $branch_id)
+                ->where('transfer_stock_branch_to_branches.sender_warehouse_id', NULL)
+                ->where('transfer_stock_branch_to_branch_products.product_id', $product_id)
+                ->select(DB::raw('sum(received_qty) as total_qty'))
+                ->groupBy('transfer_stock_branch_to_branch_products.product_id')->get();
+
             $received = DB::table('transfer_stock_to_branch_products')
                 ->leftJoin('transfer_stock_to_branches', 'transfer_stock_to_branch_products.transfer_stock_id', 'transfer_stock_to_branches.id')
                 ->where('transfer_stock_to_branches.branch_id', $branch_id)
                 ->where('transfer_stock_to_branch_products.product_id', $product_id)
                 ->select(DB::raw('sum(received_qty) as total_qty'))
                 ->groupBy('transfer_stock_to_branch_products.product_id')->get();
+
+            $receivedFromAnotherLocation = DB::table('transfer_stock_branch_to_branch_products')
+                ->leftJoin('transfer_stock_branch_to_branches', 'transfer_stock_branch_to_branch_products.transfer_id', 'transfer_stock_branch_to_branches.id')
+                ->where('transfer_stock_branch_to_branches.receiver_branch_id', $branch_id)
+                ->where('transfer_stock_branch_to_branches.receiver_warehouse_id', NULL)
+                ->where('transfer_stock_branch_to_branch_products.product_id', $product_id)
+                ->select(DB::raw('sum(received_qty) as total_qty'))
+                ->groupBy('transfer_stock_branch_to_branch_products.product_id')->get();
 
             $adjustment = DB::table('stock_adjustment_products')
                 ->leftJoin('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
@@ -242,9 +258,11 @@ class ProductStockUtil
                 - $supplierReturn->sum('total_return')
                 - $purchaseReturn->sum('total_return')
                 - $transferred->sum('total_qty')
+                - $transferredToAnotherLocation->sum('total_qty')
                 - $adjustment->sum('total_qty')
                 + $received->sum('total_qty')
                 + $productionQty->sum('total_quantity')
+                + $receivedFromAnotherLocation->sum('total_qty')
                 - $usedProductionQty->sum('total_quantity');
 
             $productBranch = ProductBranch::where('branch_id', $branch_id)->where('product_id', $product_id)->first();
@@ -339,6 +357,15 @@ class ProductStockUtil
                     ->select(DB::raw('sum(received_qty) as total_qty'))
                     ->groupBy('transfer_stock_to_warehouse_products.product_variant_id')->get();
 
+                $transferredToAnotherLocation = DB::table('transfer_stock_branch_to_branch_products')
+                    ->leftJoin('transfer_stock_branch_to_branches', 'transfer_stock_branch_to_branch_products.transfer_id', 'transfer_stock_branch_to_branches.id')
+                    ->where('transfer_stock_branch_to_branches.sender_branch_id', $branch_id)
+                    ->where('transfer_stock_branch_to_branches.sender_warehouse_id', NULL)
+                    ->where('transfer_stock_branch_to_branch_products.product_id', $product_id)
+                    ->where('transfer_stock_branch_to_branch_products.variant_id', $variant_id)
+                    ->select(DB::raw('sum(received_qty) as total_qty'))
+                    ->groupBy('transfer_stock_branch_to_branch_products.variant_id')->get();
+
                 $received = DB::table('transfer_stock_to_branch_products')
                     ->leftJoin('transfer_stock_to_branches', 'transfer_stock_to_branch_products.transfer_stock_id', 'transfer_stock_to_branches.id')
                     ->where('transfer_stock_to_branches.branch_id', $branch_id)
@@ -347,6 +374,15 @@ class ProductStockUtil
                     ->select(DB::raw('sum(received_qty) as total_qty'))
                     ->groupBy('transfer_stock_to_branch_products.product_variant_id')->get();
 
+                $receivedFromAnotherLocation = DB::table('transfer_stock_branch_to_branch_products')
+                    ->leftJoin('transfer_stock_branch_to_branches', 'transfer_stock_branch_to_branch_products.transfer_id', 'transfer_stock_branch_to_branches.id')
+                    ->where('transfer_stock_branch_to_branches.receiver_branch_id', $branch_id)
+                    ->where('transfer_stock_branch_to_branches.receiver_warehouse_id', NULL)
+                    ->where('transfer_stock_branch_to_branch_products.product_id', $product_id)
+                    ->where('transfer_stock_branch_to_branch_products.variant_id', $variant_id)
+                    ->select(DB::raw('sum(received_qty) as total_qty'))
+                    ->groupBy('transfer_stock_branch_to_branch_products.variant_id')->get();
+                
                 $adjustment = DB::table('stock_adjustment_products')
                     ->leftJoin('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
                     ->where('stock_adjustments.branch_id', $branch_id)
@@ -363,9 +399,11 @@ class ProductStockUtil
                     - $supplierReturn->sum('total_return')
                     - $purchaseReturn->sum('total_return')
                     - $transferred->sum('total_qty')
+                    - $transferredToAnotherLocation->sum('total_qty')
                     - $adjustment->sum('total_qty')
                     + $received->sum('total_qty')
                     + $productionQty->sum('total_quantity')
+                    + $receivedFromAnotherLocation->sum('total_qty')
                     - $usedProductionQty->sum('total_quantity');
 
                 $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
@@ -395,6 +433,7 @@ class ProductStockUtil
             ->first();
 
         if ($product->is_manage_stock == 1) {
+
             $productPurchase = DB::table('purchase_products')
                 ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
                 ->where('purchases.warehouse_id', $warehouse_id)
@@ -441,12 +480,26 @@ class ProductStockUtil
                 ->select(DB::raw('sum(received_qty) as total_qty'))
                 ->groupBy('transfer_stock_to_warehouse_products.product_id')->get();
 
+            $receivedFromAnotherLocation = DB::table('transfer_stock_branch_to_branch_products')
+                ->leftJoin('transfer_stock_branch_to_branches', 'transfer_stock_branch_to_branch_products.transfer_id', 'transfer_stock_branch_to_branches.id')
+                ->where('transfer_stock_branch_to_branches.receiver_warehouse_id', $warehouse_id)
+                ->where('transfer_stock_branch_to_branch_products.product_id', $product_id)
+                ->select(DB::raw('sum(received_qty) as total_qty'))
+                ->groupBy('transfer_stock_branch_to_branch_products.product_id')->get();
+
             $transferred = DB::table('transfer_stock_to_branch_products')
                 ->leftJoin('transfer_stock_to_branches', 'transfer_stock_to_branch_products.transfer_stock_id', 'transfer_stock_to_branches.id')
                 ->where('transfer_stock_to_branches.warehouse_id', $warehouse_id)
                 ->where('transfer_stock_to_branch_products.product_id', $product_id)
                 ->select(DB::raw('sum(received_qty) as total_qty'))
                 ->groupBy('transfer_stock_to_branch_products.product_id')->get();
+
+            $transferredToAnotherLocation = DB::table('transfer_stock_branch_to_branch_products')
+                    ->leftJoin('transfer_stock_branch_to_branches', 'transfer_stock_branch_to_branch_products.transfer_id', 'transfer_stock_branch_to_branches.id')
+                    ->where('transfer_stock_branch_to_branches.sender_warehouse_id', $warehouse_id)
+                    ->where('transfer_stock_branch_to_branch_products.product_id', $product_id)
+                    ->select(DB::raw('sum(received_qty) as total_qty'))
+                    ->groupBy('transfer_stock_branch_to_branch_products.product_id')->get();
 
             $adjustment = DB::table('stock_adjustment_products')
                 ->leftJoin('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
@@ -459,9 +512,11 @@ class ProductStockUtil
                 - $purchaseReturn->sum('total_return')
                 - $supplierReturn->sum('total_return')
                 - $transferred->sum('total_qty')
+                - $transferredToAnotherLocation->sum('total_qty')
                 - $adjustment->sum('total_qty')
                 + $received->sum('total_qty')
                 + $productionQty->sum('total_quantity')
+                + $receivedFromAnotherLocation->sum('total_qty')
                 - $usedProductionQty->sum('total_quantity');
 
             $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_id)->where('product_id', $product_id)->first();
@@ -473,6 +528,7 @@ class ProductStockUtil
             $productWarehouse->save();
 
             if ($variant_id) {
+
                 $productPurchase = DB::table('purchase_products')
                     ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
                     ->where('purchases.warehouse_id', $warehouse_id)
@@ -523,6 +579,14 @@ class ProductStockUtil
                     ->select(DB::raw('sum(received_qty) as total_qty'))
                     ->groupBy('transfer_stock_to_warehouse_products.product_variant_id')->get();
 
+                $receivedFromAnotherLocation = DB::table('transfer_stock_branch_to_branch_products')
+                    ->leftJoin('transfer_stock_branch_to_branches', 'transfer_stock_branch_to_branch_products.transfer_id', 'transfer_stock_branch_to_branches.id')
+                    ->where('transfer_stock_branch_to_branches.receiver_warehouse_id', $warehouse_id)
+                    ->where('transfer_stock_branch_to_branch_products.product_id', $product_id)
+                    ->where('transfer_stock_branch_to_branch_products.variant_id', $variant_id)
+                    ->select(DB::raw('sum(received_qty) as total_qty'))
+                    ->groupBy('transfer_stock_branch_to_branch_products.variant_id')->get();
+
                 $transferred = DB::table('transfer_stock_to_branch_products')
                     ->leftJoin('transfer_stock_to_branches', 'transfer_stock_to_branch_products.transfer_stock_id', 'transfer_stock_to_branches.id')
                     ->where('transfer_stock_to_branches.warehouse_id', $warehouse_id)
@@ -530,6 +594,14 @@ class ProductStockUtil
                     ->where('transfer_stock_to_branch_products.product_variant_id', $variant_id)
                     ->select(DB::raw('sum(received_qty) as total_qty'))
                     ->groupBy('transfer_stock_to_branch_products.product_variant_id')->get();
+
+                $transferredToAnotherLocation = DB::table('transfer_stock_branch_to_branch_products')
+                    ->leftJoin('transfer_stock_branch_to_branches', 'transfer_stock_branch_to_branch_products.transfer_id', 'transfer_stock_branch_to_branches.id')
+                    ->where('transfer_stock_branch_to_branches.sender_warehouse_id', $warehouse_id)
+                    ->where('transfer_stock_branch_to_branch_products.product_id', $product_id)
+                    ->where('transfer_stock_branch_to_branch_products.variant_id', $variant_id)
+                    ->select(DB::raw('sum(received_qty) as total_qty'))
+                    ->groupBy('transfer_stock_branch_to_branch_products.variant_id')->get();
 
                 $adjustment = DB::table('stock_adjustment_products')
                     ->leftJoin('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
@@ -543,9 +615,11 @@ class ProductStockUtil
                     - $purchaseReturn->sum('total_return')
                     - $supplierReturn->sum('total_return')
                     - $transferred->sum('total_qty')
+                    - $transferredToAnotherLocation->sum('total_qty')
                     - $adjustment->sum('total_qty')
                     + $received->sum('total_qty')
                     + $productionQty->sum('total_quantity')
+                    + $receivedFromAnotherLocation->sum('total_qty')
                     - $usedProductionQty->sum('total_quantity');
 
                 $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
@@ -618,7 +692,7 @@ class ProductStockUtil
                 ->where('product_id', $product_id)->first();
 
             if ($checkExistsProductInBranch) {
-                
+
                 if ($variant_id) {
 
                     $checkVariantInBranch = DB::table('product_branch_variants')
@@ -651,6 +725,50 @@ class ProductStockUtil
                     $productBranchVariant->product_variant_id = $variant_id;
                     $productBranchVariant->save();
                 }
+            }
+        }
+    }
+
+    public function minusBranchStock($product_id, $variant_id, $quantity, $branch_id)
+    {
+        $productBranch = ProductBranch::where('branch_id', $branch_id)->where('product_id', $product_id)->first();
+
+        if ($productBranch) {
+
+            $productBranch->product_quantity -= abs($quantity);
+            $productBranch->save();
+
+            if ($variant_id) {
+
+                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
+                    ->where('product_variant_id', $variant_id)
+                    ->first();
+
+                $productBranchVariant->variant_quantity -= abs($quantity);
+                $productBranchVariant->save();
+            }
+        }
+    }
+
+    public function minusWarehouseStock($product_id, $variant_id, $quantity, $warehouse_id)
+    {
+        $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_id)
+            ->where('product_id', $product_id)
+            ->first();
+
+        if ($productWarehouse) {
+
+            $productWarehouse->product_quantity -= abs($quantity);
+            $productWarehouse->save();
+
+            if ($variant_id) {
+
+                $productWarehouseVariant = ProductWarehouseVariant::where('product_branch_id', $productBranch->id)
+                    ->where('product_variant_id', $variant_id)
+                    ->first();
+
+                $productWarehouseVariant->variant_quantity -= abs($quantity);
+                $productWarehouseVariant->save();
             }
         }
     }

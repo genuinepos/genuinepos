@@ -20,7 +20,7 @@
                                 <div class="form_element m-0 mt-4">
                                     <div class="py-2 px-2 form-header">
                                         <div class="row">
-                                            <div class="col-6"><h5>Edit Product</h5></div>
+                                            <div class="col-6"><h6>Edit Product | <small class="text-dark"> Save Changes = (Shift + Enter) </small></h6></div>
     
                                             <div class="col-6">
                                                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
@@ -737,7 +737,7 @@
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i
                                         class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
+                                <button type="submit" id="save" class="c-btn btn_blue me-0 float-end submit_button">Save Changes</button>
                                 <button type="reset" data-bs-dismiss="modal"
                                     class="c-btn btn_orange float-end">Close</button>
                             </div>
@@ -1710,6 +1710,7 @@
         }
         getProductVariants();
     @endif
+
     $('#myEditor').cleditor();
 
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
@@ -1737,19 +1738,35 @@
     });
 
     $(document).on('click', '#digital_product',function () {
+
         if ($(this).is(':CHECKED')) {
+
             $('#is_manage_stock').prop('checked', false);
         }else{
+
             $('#is_manage_stock').prop('checked', true);
         }
     });
 
     $(document).on('click', '#is_manage_stock',function () {
+
         if ($(this).is(':CHECKED')) {
+
             $('#digital_product').prop('checked', false);
         }else{
+
             $('#digital_product').prop('checked', true);
         }
     });
+
+    document.onkeyup = function () {
+        var e = e || window.event; // for IE to cover IEs window event-object
+
+        if (e.shiftKey && e.which == 13) {
+
+            $('#save').click();
+            return false;
+        }
+    }
 </script>
 @endpush

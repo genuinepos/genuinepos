@@ -1415,13 +1415,28 @@
         $('#show_cost_section').toggle(500);
     });
 
-    $(document).on('keyup', '.submit_button', function () {
+    // $(document).on('keyup', '.submit_button', function () {
 
+    //     var e = e || window.event; // for IE to cover IEs window event-object
+
+    //     if(e.which == 13) {
+
+    //         $(this).click();
+    //     }
+    // });
+
+    document.onkeyup = function () {
         var e = e || window.event; // for IE to cover IEs window event-object
 
-        if(e.which == 13) {
+        if(e.ctrlKey && e.which == 13) {
 
-            $(this).click();
+            $('#save_and_print').click();
+            return false;
+        }else if (e.shiftKey && e.which == 13) {
+
+            $('#save').click();
+            return false;
         }
-    });
+    }
+
 </script>

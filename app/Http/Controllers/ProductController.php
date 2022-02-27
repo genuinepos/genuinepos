@@ -66,17 +66,24 @@ class ProductController extends Controller
 
             return DataTables::of($products)
                 ->addColumn('action', function ($row) {
+
                     return '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>';
                 })->editColumn('name', function ($row) {
+
                     return Str::limit($row->name, 17);
                 })->rawColumns(['action'])->make(true);
         }
 
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
+
         $categories = DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'desc')->get(['id', 'name']);
+        
         $brands = DB::table('brands')->orderBy('id', 'desc')->get(['id', 'name']);
+        
         $warranties = DB::table('warranties')->orderBy('id', 'desc')->get(['id', 'name']);
+        
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
+
         return view('product.products.create_v2', compact('units', 'categories', 'brands', 'warranties', 'taxes'));
     }
 
@@ -327,9 +334,11 @@ class ProductController extends Controller
             ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
             ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
             ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
-            ->where('product_branches.branch_id', '!=', auth()->user()->branch_id)
+            // ->where('product_branches.branch_id', '!=', auth()->user()->branch_id)
             ->where('product_branches.product_id', $productId)
             ->select(
+                'product_branches.branch_id',
+                'branches.name as b_name',
                 'branches.name as b_name',
                 'branches.branch_code',
                 'product_variants.variant_name',
@@ -343,11 +352,16 @@ class ProductController extends Controller
             )->get();
 
         $won_warehouse_stocks = DB::table('product_warehouses')
+
             ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
             ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
+
             ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
+
             ->where('warehouses.branch_id', auth()->user()->branch_id)
+
             ->where('product_warehouses.product_id', $productId)
+            
             ->select(
                 'warehouses.warehouse_name',
                 'warehouses.warehouse_code',

@@ -1172,4 +1172,14 @@
         },
         format: _expectedDateFormat,
     });
+
+    document.onkeyup = function () {
+        var e = e || window.event; // for IE to cover IEs window event-object
+
+        if (e.shiftKey && e.which == 13) {
+
+            $('#save').click();
+            return false;
+        }
+    }
 </script>

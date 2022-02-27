@@ -1,4 +1,7 @@
 <div class="challan_print_template d-none">
+    <style>
+        @page {size:a4;margin-top: 0.8cm; /*margin-bottom: 35px;*/ margin-left: 4%;margin-right: 4%;}
+    </style>
     <div class="details_area">
         @if ($sale->branch->pos_sale_invoice_layout->is_header_less == 0)
             <div class="heading_area">
@@ -8,13 +11,13 @@
                             <h4>{{ $sale->branch->pos_sale_invoice_layout->header_text }}</h4>
                             <p>
                                 {{ $sale->branch->pos_sale_invoice_layout->sub_heading_1 }}
-                            <p/>
+                            </p>
                             <p>
                                 {{ $sale->branch->pos_sale_invoice_layout->sub_heading_2 }}
-                            <p/>
+                            </p>
                             <p>
                                 {{ $sale->branch->pos_sale_invoice_layout->sub_heading_3 }}
-                            <p/>
+                            </p>
                         </div>
                     </div>
                 </div>

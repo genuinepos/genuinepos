@@ -1,5 +1,8 @@
 @if ($sale->branch->pos_sale_invoice_layout->layout_design == 1)
     <div class="sale_print_template">
+        <style>
+            @page {size:a4;margin-top: 0.8cm;/* margin-bottom: 35px;  */margin-left: 4%;margin-right: 4%;}
+        </style>
         <div class="details_area">
             @if ($sale->branch->pos_sale_invoice_layout->is_header_less == 0)
                 <div class="heading_area">

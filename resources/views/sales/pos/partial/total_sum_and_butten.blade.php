@@ -212,8 +212,14 @@
                     <div class="row">
                         <label class="col-sm-6 col-form-label text-white">Cash Receive:</label>
                         <div class="col-sm-6">
-                            <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
-                                class="form-control pos-amounts" autocomplete="off">
+                            {{-- <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
+                                class="form-control pos-amounts" autocomplete="off"> --}}
+
+                            <div class="input-group"> 
+                                <span class="input-group-text cash_receive_input">>></span>
+                                <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
+                                class="form-control pos-amounts input_i" autocomplete="off">
+                            </div>
                         </div>
                     </div>
 

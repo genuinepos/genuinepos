@@ -9,11 +9,14 @@ $(document).on('submit', '#search_inv_form', function (e) {
         type: 'get',
         data: request,
         success: function (data) {
+
             $('#get_inv_preloader').hide();
             $('#invoice_description').empty();
             if (!$.isEmptyObject(data.errorMsg)) {
+
                 toastr.error(data.errorMsg);
             } else {
+
                 $('#invoice_description').html(data);
             }
         }
@@ -22,11 +25,13 @@ $(document).on('submit', '#search_inv_form', function (e) {
 
 $('#submit_form_btn').on('click', function (e) {
     e.preventDefault();
+
     $('#search_inv_form').submit();
 });
 
 $('#exchange_btn').on('click', function (e) {
     e.preventDefault();
+
     $('#invoice_description').empty(); $('#invoice_id').val('');
 });
 
@@ -35,9 +40,13 @@ $(document).on('input', '#ex_quantity',function () {
     var closestTr = $(this).closest('tr');
     var soldQty = closestTr.find('#sold_quantity').val();
     console.log(soldQty);
+
     if (parseFloat(ex_qty) < 0) {
+
         var sum = parseFloat(soldQty) + parseFloat(ex_qty);
+
         if (sum < 0) {
+
             toastr.error('Exchange quantity subtraction value must not be greater then sold quantity.');
             $(this).val(- parseFloat(soldQty));
         }
@@ -52,6 +61,7 @@ $.ajaxSetup({
 
 $(document).on('submit', '#prepare_to_exchange',function (e) {
     e.preventDefault();
+
     var url = $(this).attr('action');
     var request = $(this).serialize();
     console.log(request);
@@ -60,13 +70,17 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
         type:'post',
         data:request,
         success:function(data){
+
             if (data.ex_items.length == 0) {
+
                 return;
             }
 
             var qty_limits = data.qty_limits;
             var tr = '';
+
             $.each(data.ex_items, function (key, item) {
+
                 var name = item.product.name.substring(0, 30);
                 tr += '<tr>';
                 tr += '<td class="serial">'+(key + 1)+'</td>';
@@ -117,7 +131,11 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
             $('#pos_submit_form')[0].reset();
 
             $('#ex_sale_id').val(data.sale.id);
+
+            $('#order_discount').val(data.sale.order_discount_amount);
+
             //$('#previous_due').val(data.sale.due);
+
             $('#customer_id').val(data.sale.customer_id);
             calculateTotalAmount();
             var exchange_url = $('#exchange_url').val();

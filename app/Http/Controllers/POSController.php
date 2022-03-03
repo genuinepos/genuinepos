@@ -265,7 +265,7 @@ class POSController extends Controller
             );
 
             if ($customer) {
-                
+
                 if (json_decode($settings->reward_poing_settings, true)['enable_cus_point'] == '1') {
 
                     $customer->point = $customer->point - $request->pre_redeemed;
@@ -618,7 +618,7 @@ class POSController extends Controller
                 $addSaleProduct->description = $request->descriptions[$__index];
                 $addSaleProduct->save();
             }
-            
+
             $__index++;
         }
 
@@ -670,7 +670,7 @@ class POSController extends Controller
             }
 
             if ($updateSale->customer_id) {
-        
+
                 // add customer ledger
                 $this->customerUtil->addCustomerLedger(
                     voucher_type_id: 3,
@@ -970,24 +970,39 @@ class POSController extends Controller
     public function exchangeConfirm(Request $request)
     {
         if ($request->action != 1) {
+
             return response()->json(['errorMsg' => 'You can not create another entry when item exchange in going on.']);
         }
 
         $updateSale = Sale::with('customer')->where('id', $request->ex_sale_id)->first();
 
-        if ($request->total_due > 0 && $updateSale->customer_id == NULL) {
+        if (
+            $request->total_due > 0 && 
+            $updateSale->customer_id == NULL
+        ) {
+
             return response()->json([
                 'errorMsg' => 'Listed Customer is required when exchange is due or partial.'
             ]);
         }
 
-        if ($request->total_due > 0 && $request->button_type != 0 && $request->paying_amount == 0) {
+        if (
+            $request->total_due > 0 &&
+            $request->button_type != 0 &&
+            $request->paying_amount == 0
+        ) {
+
             return response()->json(['errorMsg' => 'If you want to sale in full credit, so click credit sale button.']);
         }
 
         $change = $request->change_amount > 0 ? $request->change_amount : 0;
         $updateSale->net_total_amount = $updateSale->net_total_amount + $request->net_total_amount;
         $updateSale->total_payable_amount = $updateSale->total_payable_amount + $request->total_payable_amount;
+        // $updateSale->order_discount_type = 1;
+        // $updateSale->order_discount = $request->order_discount_amount ? $request->order_discount_amount : 0.00;
+        // $updateSale->order_discount_amount = $request->order_discount_amount ? $request->order_discount_amount : 0.00;
+        // $updateSale->order_tax_percent = $request->order_tax ? $request->order_tax : 0.00;
+        // $updateSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0.00;
         //$updateSale->paid = $updateSale->paid + $request->paying_amount - $change;
         //$updateSale->due = $updateSale->due + $request->total_due;
         $updateSale->change_amount = $updateSale->change_amount + $change;
@@ -995,6 +1010,7 @@ class POSController extends Controller
         $updateSale->save();
 
         if ($updateSale->sale_account_id) {
+
             // Update Sales A/C Ledger
             $this->accountUtil->updateAccountLedger(
                 voucher_type_id: 1,
@@ -1042,6 +1058,7 @@ class POSController extends Controller
             if ($saleProduct) {
 
                 if ($saleProduct->ex_status == 1) {
+
                     //$saleProduct->quantity = $saleProduct->quantity + $quantities[$index];
                     $saleProduct->quantity = $quantities[$index];
                     $saleProduct->ex_quantity = $quantities[$index];
@@ -1125,7 +1142,10 @@ class POSController extends Controller
             }
         } else {
 
-            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
+            if ($updateSale->customer_id) {
+
+                $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
+            }
         }
 
         $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);

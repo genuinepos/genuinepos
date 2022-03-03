@@ -1,5 +1,6 @@
 // Calculate total amount functionalities
 function calculateTotalAmount() {
+    
     var indexes = document.querySelectorAll('#index');
     indexes.forEach(function (index) {
         var className = index.getAttribute("class");
@@ -12,6 +13,7 @@ function calculateTotalAmount() {
     // Update Total Item
     var total_item = 0;
     var total_qty = 0;
+
     quantities.forEach(function (qty) {
         total_item += 1;
         total_qty += parseFloat(qty.value)
@@ -24,21 +26,26 @@ function calculateTotalAmount() {
 
     // Update Net total Amount
     var netTotalAmount = 0;
+    
     subtotals.forEach(function (subtotal) {
+
         netTotalAmount += parseFloat(subtotal.value);
     });
 
     $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
 
     if ($('#order_discount_type').val() == 2) {
+
         var orderDisAmount = parseFloat(netTotalAmount) / 100 * parseFloat($('#order_discount').val() ? $('#order_discount').val() : 0);
         $('#order_discount_amount').val(parseFloat(orderDisAmount).toFixed(2));
     } else {
+
         var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0;
         $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
     }
 
     var orderDiscountAmount = $('#order_discount_amount').val() ? $('#order_discount_amount').val() : 0;
+
     // Calc order tax amount
     var orderTax = $('#order_tax').val() ? $('#order_tax').val() : 0;
     var calcOrderTaxAmount = (parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount)) / 100 * parseFloat(orderTax);

@@ -888,21 +888,25 @@
 
     // Input order discount type and clculate total amount
     $(document).on('change', '#order_discount_type', function(){
+
         calculateTotalAmount();
     });
 
     // Input shipment charge and clculate total amount
     $(document).on('input', '#shipment_charge', function(){
+
         calculateTotalAmount();
     });
 
     // chane purchase tax and clculate total amount
     $(document).on('change', '#order_tax', function(){
+
         calculateTotalAmount();
     });
 
     // Input paying amount and clculate due amount
     $(document).on('input', '#paying_amount', function() {
+
         var payingAmount = $(this).val() ? $(this).val() : 0;
         var total_payable_amount = $('#total_payable_amount').val() ? $('#total_payable_amount').val() : 0;
         var calcDueAmount = parseFloat(total_payable_amount) - parseFloat(payingAmount);
@@ -917,6 +921,7 @@
     // Dispose Select area 
     $(document).on('click', '.remove_select_area_btn', function(e){
         e.preventDefault();
+
         $('.select_area').hide();
         document.getElementById('search_product').focus();
     });
@@ -924,6 +929,7 @@
     // Remove product form purchase product list (Table) 
     $(document).on('click', '#remove_product_btn',function(e){
         e.preventDefault();
+
         $(this).closest('tr').remove();
         calculateTotalAmount();
         document.getElementById('search_product').focus();
@@ -933,6 +939,7 @@
     var tableRowIndex = 0;
     $(document).on('click', '#edit_product', function(e) {
         e.preventDefault();
+
         $('#show_cost_section').hide();
         var parentTableRow = $(this).closest('tr');
         tableRowIndex = parentTableRow.index();
@@ -960,19 +967,27 @@
         $('#e_discount_amount').val(unit_discount_amount);
         $('#e_unit_tax').empty();
         $('#e_unit_tax').append('<option value="0.00">No Tax</option>');
+
         taxArray.forEach(function (tax) {
+
             if (tax.tax_percent == unit_tax_percent) {
+
                 $('#e_unit_tax').append('<option SELECTED value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
             }else{
+
                 $('#e_unit_tax').append('<option value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
             }
         });
         $('#e_tax_type').val(unit_tax_type);
         $('#e_unit').empty();
+
         unites.forEach(function (unit) {
+
             if (unit == product_unit) {
+
                 $('#e_unit').append('<option SELECTED value="'+unit+'">'+unit+'</option>');
             }else{
+
                 $('#e_unit').append('<option value="'+unit+'">'+unit+'</option>');
             }
         });
@@ -982,39 +997,52 @@
 
     // Calculate unit discount
     $('#e_unit_discount').on('input', function () {
+
         var discountValue = $(this).val() ? $(this).val() : 0.00;
+
         if ($('#e_unit_discount_type').val() == 1) {
+
             $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
         }else{
-        var unit_price = $('#e_unit_price').val();
-        var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
-        $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
+
+            var unit_price = $('#e_unit_price').val();
+            var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
+            $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
         }
     });
 
     // change unit discount type var productTableRow = 
     $('#e_unit_discount_type').on('change', function () {
+
         var type = $(this).val();
         var discountValue = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
+
         if (type == 1) {
+
             $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
         }else {
-        var unit_price = $('#e_unit_price').val();
-        var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
-        $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
+
+            var unit_price = $('#e_unit_price').val();
+            var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
+            $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
         }
     });
 
     //Update Selling producdt
     $('#update_selling_product').on('submit', function (e) {
         e.preventDefault();
+
         var inputs = $('.edit_input');
         $('.error').html('');  
         var countErrorField = 0;  
+
         $.each(inputs, function(key, val){
+
             var inputId = $(val).attr('id');
             var idValue = $('#'+inputId).val();
+
             if(idValue == ''){
+
                 countErrorField += 1;
                 var fieldName = $('#'+inputId).data('name');
                 $('.error_'+inputId).html(fieldName+' is required.');
@@ -1022,6 +1050,7 @@
         });
 
         if(countErrorField > 0){
+
             return;
         }
 
@@ -1068,13 +1097,16 @@
 
     // change unit price
     $('#e_unit_price').on('input', function () {
+        
         var unit_price = $(this).val() ? $(this).val() : 0.00;
         var discountValue = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
         if ($('#e_unit_discount_type').val() == 1) {
+
             $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
         }else{
-        var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
-        $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
+
+            var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
+            $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
         }
     });
 

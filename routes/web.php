@@ -950,6 +950,7 @@ Route::get('maintenance/mode', function () {
 })->name('maintenance.mode');
 
 Route::get('add-user', function () {
+    
     $addAdmin = new AdminAndUser();
     $addAdmin->prefix = 'Mr.';
     $addAdmin->name = 'Super';
@@ -965,6 +966,7 @@ Route::get('add-user', function () {
 });
 
 Route::get('pin_login', function () {
+
     return view('auth.pin_login');
 });
 

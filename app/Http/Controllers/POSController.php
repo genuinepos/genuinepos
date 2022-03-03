@@ -209,8 +209,8 @@ class POSController extends Controller
         $addSale->year = date('Y');
         $addSale->total_item = $request->total_item;
         $addSale->net_total_amount = $request->net_total_amount;
-        $addSale->order_discount_type = 1;
-        $addSale->order_discount = $request->order_discount_amount ? $request->order_discount_amount : 0.00;
+        $addSale->order_discount_type = $request->order_discount_type;
+        $addSale->order_discount = $request->order_discount ? $request->order_discount : 0.00;
         $addSale->order_discount_amount = $request->order_discount_amount ? $request->order_discount_amount : 0.00;
         $addSale->order_tax_percent = $request->order_tax ? $request->order_tax : 0.00;
         $addSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0.00;

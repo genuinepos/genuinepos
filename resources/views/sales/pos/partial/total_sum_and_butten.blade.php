@@ -1,3 +1,13 @@
+<style>
+    .cash_receive_input{
+      background-color: white;
+      border: 1px solid #ced4da;
+      letter-spacing: -3px!important;
+      padding: 0px 3px 0px 0px!important;
+      font-weight: 700!important;
+    }  
+</style>
+
 <div class="col-lg-3 p-1">
     <div class="pos-right-inner">
         <div class="check-out-woaper">

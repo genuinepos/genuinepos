@@ -42,15 +42,15 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
         Route::delete('delete/{id}', 'TodoController@delete')->name('todo.delete');
     });
 
-    Route::group(['prefix' => 'documents'], function()
-    {
-        Route::get('/', 'DocumentController@index')->name('documents.index');
-        Route::get('show/{id}', 'DocumentController@show')->name('documents.show');
-        Route::post('store', 'DocumentController@store')->name('documents.store');
-        Route::get('edit/{id}', 'DocumentController@edit')->name('documents.edit');
-        Route::post('update/{id}', 'DocumentController@update')->name('documents.update');
-        Route::delete('delete/{id}', 'DocumentController@delete')->name('documents.delete');
-    });
+    // Route::group(['prefix' => 'documents'], function()
+    // {
+    //     Route::get('/', 'DocumentController@index')->name('documents.index');
+    //     Route::get('show/{id}', 'DocumentController@show')->name('documents.show');
+    //     Route::post('store', 'DocumentController@store')->name('documents.store');
+    //     Route::get('edit/{id}', 'DocumentController@edit')->name('documents.edit');
+    //     Route::post('update/{id}', 'DocumentController@update')->name('documents.update');
+    //     Route::delete('delete/{id}', 'DocumentController@delete')->name('documents.delete');
+    // });
 
     Route::group(['prefix' => 'memos'], function()
     {

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -967,7 +968,8 @@ Route::get('pin_login', function () {
     return view('auth.pin_login');
 });
 
-Route::get('/test', function () {
+Route::get('/test1', [DashboardController::class, 'tester']);
+Route::get('/test2', function () {
 
     //return str_pad(10, 10, "0", STR_PAD_LEFT);
     // $purchases = Purchase::all();
@@ -977,6 +979,8 @@ Route::get('/test', function () {
     // }
 
     // return 'done';
+    // return TODAY_DATE;
+    // return $GLOBALS['TODAY_DATE'];
 });
 
 // All authenticated routes

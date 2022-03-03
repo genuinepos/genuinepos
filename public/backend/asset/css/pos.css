@@ -1147,3 +1147,7 @@ div#calculatorModal {
 .pos-body .form-control:hover {
     background: #ddddddf7 !important;
 }
+
+.pos-amounts {
+    height: 26px;
+}

@@ -132,7 +132,18 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
 
             $('#ex_sale_id').val(data.sale.id);
 
-            $('#order_discount').val(data.sale.order_discount_amount);
+            $('#order_discount_type').val(data.sale.order_discount_type);
+
+            if (data.sale.order_discount_type == 1) {
+
+                $('#order_discount').val('-' + data.sale.order_discount);
+            }else{
+
+                $('#order_discount').val(data.sale.order_discount);
+            }
+
+            
+            $('#order_discount_amount').val('-'+data.sale.order_discount_amount);
 
             //$('#previous_due').val(data.sale.due);
 

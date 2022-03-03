@@ -40,6 +40,7 @@ class ProductController extends Controller
         }
 
         if ($request->ajax()) {
+            
             return $this->productUtil->productListTable($request);
         }
 

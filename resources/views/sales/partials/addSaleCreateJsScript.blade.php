@@ -812,9 +812,11 @@
         $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
 
         if ($('#order_discount_type').val() == 2) {
+
             var orderDisAmount = parseFloat(netTotalAmount) /100 * parseFloat($('#order_discount').val() ? $('#order_discount').val() : 0);
             $('#order_discount_amount').val(parseFloat(orderDisAmount).toFixed(2));
         }else{
+            
             var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0;
             $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
         }
@@ -847,15 +849,19 @@
 
     // Quantity increase or dicrease and clculate row amount
     $(document).on('input', '#quantity', function() {
+
         var qty = $(this).val() ? $(this).val() : 0;
         if (qty < 0) {
             $(this).val(0);
         }
         if (parseFloat(qty) >= 0) {
+
             var tr = $(this).closest('tr');
             var qty_limit = tr.find('#qty_limit').val();
             var unit = tr.find('#unit').val();
+
             if(parseInt(qty) > parseInt(qty_limit)){
+
                 toastr.error('Quantity Limit Is - '+qty_limit+' '+unit);
                 $(this).val(qty_limit);
                 var unitPrice = tr.find('#unit_price').val();
@@ -865,6 +871,7 @@
                 calculateTotalAmount();  
                 return;
             }
+
             var unitPrice = tr.find('#unit_price').val();
             var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
             tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
@@ -875,6 +882,7 @@
 
     // Input order discount and clculate total amount
     $(document).on('input', '#order_discount', function(){
+
         calculateTotalAmount();
     });
 

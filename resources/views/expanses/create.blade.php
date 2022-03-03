@@ -18,11 +18,11 @@
                                 <div class="form_element">
                                     <div class="py-2 px-2 form-header">
                                         <div class="row">
-                                            <div class="col-6">
-                                                <h5>Add Expense</h5>
+                                            <div class="col-8">
+                                                <h6>Add Expense | <small class="text-dark"><strong>Save & Print = (Ctrl + Enter), Save = (Shift + Enter)</strong> </small></h6>
                                             </div>
     
-                                            <div class="col-6">
+                                            <div class="col-4">
                                                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
                                         </div>
@@ -400,5 +400,20 @@
             },
             format: _expectedDateFormat,
         });
+
+        document.onkeyup = function () {
+
+            var e = e || window.event; // for IE to cover IEs window event-object
+
+            if(e.ctrlKey && e.which == 13) {
+
+                $('#save_and_print').click();
+                return false;
+            }else if (e.shiftKey && e.which == 13) {
+
+                $('#save').click();
+                return false;
+            }
+        }
     </script>
 @endpush

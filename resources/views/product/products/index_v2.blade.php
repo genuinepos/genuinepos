@@ -11,7 +11,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Products</h5>
+                                <h6>Products</h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
@@ -105,10 +105,12 @@
                                 <div class="col-md-6">
                                     <h6>All Product</h6>
                                 </div>
+                                
                                 @if (auth()->user()->permission->product['product_add'] == '1')
+
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
-                                            <a href="{{ route('products.add.view') }}"><i class="fas fa-plus-square"></i> Add Product</a>
+                                            <a href="{{ route('products.add.view') }}" id="add_btn"><i class="fas fa-plus-square"></i> Add Product (Ctrl+Enter)</a>
                                         </div>
                                     </div>
                                 @endif
@@ -197,6 +199,7 @@
     // Filter toggle
     $('.filter_btn').on('click', function(e) {
         e.preventDefault();
+
         $('.filter_body').toggle(500);
     });
 
@@ -243,29 +246,37 @@
     });
 
     $(document).ready(function() {
+
         $(document).on('change', '.submit_able',
         function() {
+
             product_table.ajax.reload();
         });
     });
 
     $(document).on('ifChanged', '#is_for_sale', function() {
+
         product_table.ajax.reload();
     });
 
     $(document).on('change', '.all', function() {
+
         if ($(this).is(':CHECKED', true)) {
+
             $('.data_id').prop('checked', true);
         } else {
+
             $('.data_id').prop('checked', false);
         }
     });
 
     $(document).on('click', '.details_button', function(e) {
         e.preventDefault();
+
         var url = $(this).attr('href');
         $('.data_preloader').show();
         $.get(url, function (data){
+
             $('#detailsModal').html(data);
             $('.data_preloader').hide();
             $('#detailsModal').modal('show');
@@ -281,9 +292,12 @@
             type: 'get',
             dataType: 'json',
             success: function(data) {
+
                 if (!$.isEmptyObject(data.errorMsg)) {
+
                     toastr.error(data.errorMsg);
                 } else {
+
                     window.location = data;
                 }
             }
@@ -292,8 +306,10 @@
 
     $(document).on('click', '#delete',function(e){
         e.preventDefault();
+
         var url = $(this).attr('href');
         $('#deleted_form').attr('action', url);
+
         $.confirm({
             'title': 'Delete Confirmation',
             'content': 'Are you sure, you want to delete?',
@@ -307,13 +323,16 @@
     //data delete by ajax
     $(document).on('submit', '#deleted_form', function(e) {
         e.preventDefault();
+
         var url = $(this).attr('action');
         var request = $(this).serialize();
+
         $.ajax({
             url: url,
             type: 'post',
             data: request,
             success: function(data) {
+
                 product_table.ajax.reload();
                 toastr.error(data);
             }
@@ -324,11 +343,12 @@
     $(document).on('click', '#change_status', function(e) {
         e.preventDefault();
         var url = $(this).attr('href');
-        console.log(url);
+
         $.ajax({
             url: url,
             type: 'get',
             success: function(data) {
+
                 toastr.success(data);
                 product_table.ajax.reload();
             }
@@ -337,7 +357,9 @@
 
     $(document).on('click', '.multipla_delete_btn',function(e){
         e.preventDefault();
+
         $('#action').val('multiple_delete');
+
         $.confirm({
             'title': 'Delete Confirmation',
             'content': 'Are you sure, you want to delete?',
@@ -350,7 +372,9 @@
 
     $(document).on('click', '.multipla_deactive_btn',function(e){
         e.preventDefault();
+
         $('#action').val('multipla_deactive');
+
         $.confirm({
             'title': 'Deactive Confirmation',
             'content': 'Are you sure to deactive selected all?',
@@ -364,16 +388,21 @@
     //data delete by ajax
     $(document).on('submit', '#multiple_action_form', function(e) {
         e.preventDefault();
+
         var url = $(this).attr('action');
         var request = $(this).serialize();
+
         $.ajax({
             url: url,
             type: 'post',
             data: request,
             success: function(data) {
+
                 if (!$.isEmptyObject(data.errorMsg)) {
+
                     toastr.error(data.errorMsg, 'Attention');
                 } else {
+
                     product_table.ajax.reload();
                     toastr.success(data, 'Attention');
                 }
@@ -419,7 +448,9 @@
 
     // Reduce empty opening stock qty field
     $(document).on('blur', '#quantity', function() {
+
         if ($(this).val() == '') {
+
             $(this).val(parseFloat(0).toFixed(2));
         }
     });
@@ -432,6 +463,7 @@
     });
 
     $(document).on('input', '#quantity', function() {
+
         var qty = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
         var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val() ? tr.find('#unit_cost_inc_tax').val() :
@@ -442,6 +474,7 @@
     });
 
     $(document).on('input', '#unit_cost_inc_tax', function() {
+
         var unit_cost_inc_tax = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
         var qty = tr.find('#quantity').val() ? tr.find('#quantity').val() : 0;
@@ -465,5 +498,16 @@
             header: null,
         });
     });
+
+    document.onkeyup = function () {
+        var e = e || window.event; // for IE to cover IEs window event-object
+        
+        if(e.ctrlKey && e.which == 13) {
+
+            // $('#add_btn').click();
+            window.location = $('#add_btn').attr('href');
+            return false;
+        }
+    }
 </script>
 @endpush

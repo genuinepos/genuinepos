@@ -950,6 +950,7 @@ Route::get('maintenance/mode', function () {
 })->name('maintenance.mode');
 
 Route::get('add-user', function () {
+    
     $addAdmin = new AdminAndUser();
     $addAdmin->prefix = 'Mr.';
     $addAdmin->name = 'Super';
@@ -965,11 +966,11 @@ Route::get('add-user', function () {
 });
 
 Route::get('pin_login', function () {
+
     return view('auth.pin_login');
 });
 
-Route::get('/test1', [DashboardController::class, 'tester']);
-Route::get('/test2', function () {
+Route::get('/test', function () {
 
     //return str_pad(10, 10, "0", STR_PAD_LEFT);
     // $purchases = Purchase::all();

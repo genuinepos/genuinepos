@@ -34,13 +34,17 @@ function calculateTotalAmount() {
 
     $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
 
+    var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0;
+    
+    console.log((- 133 / 100) * parseFloat(orderDiscount));
+
     if ($('#order_discount_type').val() == 2) {
 
-        var orderDisAmount = parseFloat(netTotalAmount) / 100 * parseFloat($('#order_discount').val() ? $('#order_discount').val() : 0);
+        var orderDisAmount = (parseFloat(netTotalAmount) / 100) * parseFloat(orderDiscount);
         $('#order_discount_amount').val(parseFloat(orderDisAmount).toFixed(2));
+        console.log(orderDisAmount);
     } else {
 
-        var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0;
         $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
     }
 
@@ -79,10 +83,34 @@ function calculateTotalAmount() {
     $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
 }
 
+$(document).on('change', '#order_discount_type', function () {
+
+    calculateTotalAmount();
+});
+
+// change purchase tax and calculate total amount
+$(document).on('change', '#order_tax', function () {
+    
+    calculateTotalAmount();
+});
+
+// Input paying amount and calculate due amount
+$(document).on('input', '#paying_amount', function () {
+
+    calculateTotalAmount();
+});
+
+// Input order discount and calculate total amount
+$(document).on('input', '#order_discount', function () {
+
+    calculateTotalAmount();
+});
+
 // Show selling product's update modal
 var tableRowIndex = 0;
 $(document).on('click', '#edit_product', function (e) {
     e.preventDefault();
+
     $('#show_cost_section').hide();
     var parentTableRow = $(this).closest('tr');
     tableRowIndex = parentTableRow.index();
@@ -111,21 +139,30 @@ $(document).on('click', '#edit_product', function (e) {
     $('#e_discount_amount').val(unit_discount_amount);
     $('#e_unit_tax').empty();
     $('#e_unit_tax').append('<option value="0.00">No Tax</option>');
+
     taxArray.forEach(function (tax) {
+
         if (tax.tax_percent == unit_tax_percent) {
+
             $('#e_unit_tax').append('<option SELECTED value="' + tax.tax_percent + '">' + tax
                 .tax_name + '</option>');
         } else {
+
             $('#e_unit_tax').append('<option value="' + tax.tax_percent + '">' + tax.tax_name +
                 '</option>');
         }
     });
+
     $('#e_tax_type').val(tax_type);
+
     $('#e_unit').empty();
     unites.forEach(function (unit) {
+
         if (unit == product_unit) {
+
             $('#e_unit').append('<option SELECTED value="' + unit + '">' + unit + '</option>');
         } else {
+
             $('#e_unit').append('<option value="' + unit + '">' + unit + '</option>');
         }
     });
@@ -139,10 +176,13 @@ $(document).on('submit', '#update_selling_product', function (e) {
     var inputs = $('.edit_input');
     $('.error').html('');
     var countErrorField = 0;
+
     $.each(inputs, function (key, val) {
+
         var inputId = $(val).attr('id');
         var idValue = $('#' + inputId).val();
         if (idValue == '') {
+
             countErrorField += 1;
             var fieldName = $('#' + inputId).data('name');
             $('.error_' + inputId).html(fieldName + ' is required.');
@@ -150,6 +190,7 @@ $(document).on('submit', '#update_selling_product', function (e) {
     });
 
     if (countErrorField > 0) {
+
         return;
     }
 
@@ -174,7 +215,9 @@ $(document).on('submit', '#update_selling_product', function (e) {
 
     var calcUnitPriceWithDiscount = parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount);
     var calcUnitTaxAmount = parseFloat(calcUnitPriceWithDiscount) / 100 * parseFloat(e_unit_tax_percent);
+
     if (e_unit_tax_type == 2) {
+
         var inclusiveTax = 100 + parseFloat(e_unit_tax_percent);
         var calc = parseFloat(calcUnitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
         calcUnitTaxAmount = parseFloat(calcUnitPriceWithDiscount) - parseFloat(calc);
@@ -198,15 +241,20 @@ $(document).on('submit', '#update_selling_product', function (e) {
 
 $(document).on('input', '#quantity', function () {
     var qty = $(this).val() ? $(this).val() : 0;
+
     if (qty < 0) {
+
         $(this).val(0);
     }
 
     if (parseFloat(qty) >= 0) {
+
         var tr = $(this).closest('tr');
         var qty_limit = tr.find('#qty_limit').val();
         var unit = tr.find('#unit').val();
+
         if (parseInt(qty) > parseInt(qty_limit)) {
+
             toastr.error('Quantity Limit Is - ' + qty_limit + ' ' + unit);
             $(this).val(qty_limit);
             var unitPrice = tr.find('#unit_price_inc_tax').val();
@@ -216,6 +264,7 @@ $(document).on('input', '#quantity', function () {
             calculateTotalAmount();
             return;
         }
+
         var unitPrice = tr.find('#unit_price_inc_tax').val();
         var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
         tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
@@ -224,27 +273,16 @@ $(document).on('input', '#quantity', function () {
     }
 });
 
-// change purchase tax and calculate total amount
-$(document).on('change', '#order_tax', function () {
-    calculateTotalAmount();
-});
-
-// Input paying amount and calculate due amount
-$(document).on('input', '#paying_amount', function () {
-    calculateTotalAmount();
-});
-
-// Input order discount and calculate total amount
-$(document).on('input', '#order_discount', function () {
-    calculateTotalAmount();
-});
-
 // Calculate unit discount
 $('#e_unit_discount').on('input', function () {
+
     var discountValue = $(this).val() ? $(this).val() : 0.00;
+
     if ($('#e_unit_discount_type').val() == 1) {
+
         $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
     } else {
+
         var unit_price = $('#e_unit_price').val();
         var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
         $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
@@ -253,11 +291,15 @@ $('#e_unit_discount').on('input', function () {
 
 // change unit discount type var productTableRow
 $('#e_unit_discount_type').on('change', function () {
+
     var type = $(this).val();
     var discountValue = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
+
     if (type == 1) {
+
         $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
     } else {
+
         var unit_price = $('#e_unit_price').val();
         var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
         $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
@@ -266,6 +308,7 @@ $('#e_unit_discount_type').on('change', function () {
 
 // Cash receive by modal input with change value
 $('#modal_paying_amount').on('input', function () {
+
     var totalPayable = $('#total_payable_amount').val();
     // Update purchase due
     var payingAmount = $(this).val() ? $(this).val() : 0;
@@ -282,6 +325,7 @@ $('#modal_paying_amount').on('input', function () {
 // Remove product form purchase product list (Table)
 $(document).on('click', '#remove_product_btn',function(e){
     e.preventDefault();
+
     $(this).closest('tr').remove();
     calculateTotalAmount();
     activeSelectedItems();

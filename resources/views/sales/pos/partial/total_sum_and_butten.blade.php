@@ -1,3 +1,13 @@
+<style>
+    .cash_receive_input{
+      background-color: white;
+      border: 1px solid #ced4da;
+      letter-spacing: -3px!important;
+      padding: 0px 3px 0px 0px!important;
+      font-weight: 700!important;
+    }  
+</style>
+
 <div class="col-lg-3 p-1">
     <div class="pos-right-inner">
         <div class="check-out-woaper">
@@ -202,8 +212,14 @@
                     <div class="row">
                         <label class="col-sm-6 col-form-label text-white">Cash Receive:</label>
                         <div class="col-sm-6">
-                            <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
-                                class="form-control pos-amounts" autocomplete="off">
+                            {{-- <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
+                                class="form-control pos-amounts" autocomplete="off"> --}}
+
+                            <div class="input-group"> 
+                                <span class="input-group-text cash_receive_input">>></span>
+                                <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
+                                class="form-control pos-amounts input_i" autocomplete="off">
+                            </div>
                         </div>
                     </div>
 

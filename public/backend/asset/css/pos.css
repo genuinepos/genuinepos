@@ -343,7 +343,7 @@ a.head-tbl-icon {
 
 .btn-bg {
     border: 1px solid #8a8888;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     background: linear-gradient(#dedede, #444444);
     box-shadow: inset 0 0 5px#ddd;
     padding: 2px;
@@ -353,7 +353,7 @@ a.head-tbl-icon {
     text-align: center;
     line-height: 11px;
     padding: 17px 0px;
-    border-radius: 3px;
+    /* border-radius: 3px; */
     color: #fff;
     transition: 0.3s;
     font-size: 11px;

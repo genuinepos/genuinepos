@@ -28,7 +28,7 @@
                                 <div class="col-md-6">
                                     <div class="btn_30_blue float-end">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                class="fas fa-plus-square"></i> Add</a>
+                                                class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
                                     </div>
 
                                     <div class="btn_30_blue float-end">
@@ -93,7 +93,7 @@
     </div>
 
     <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true"
         aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
@@ -971,5 +971,17 @@
                 }
             }); 
         });
+
+        document.onkeyup = function () {
+            var e = e || window.event; // for IE to cover IEs window event-object
+            //console.log(e);
+            if(e.ctrlKey && e.which == 13) {
+                $('#addModal').modal('show');
+                setTimeout(function () {
+                    $('#name').focus();
+                }, 500);
+                //return false;
+            }
+        }
     </script>
 @endpush

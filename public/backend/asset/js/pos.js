@@ -42,7 +42,6 @@ function cancel() {
                     $('.payment_method').hide();
                     $('#pos_submit_form')[0].reset();
                     calculateTotalAmount();
-                    $('#account_id').val(defaultAccount);
                     toastr.error('Sale has been cancelled.');
                     document.getElementById('search_product').focus();
                     var store_url = $('#store_url').val();

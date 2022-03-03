@@ -49,8 +49,7 @@
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="" class="bg-gren function-card" id="show_stock">
-                                Stock<p>Alt+C</p>
+                            <a href="#" class="bg-gren function-card" id="show_stock">Stock<p>Alt+C</p>
                             </a>
                         </div>
                     </div>
@@ -118,8 +117,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#" class="bg-swit function-card" onclick="cancel(); return false;">
-                                Cancel
-                                <p>Ctrl+M</p>
+                                Cancel <p>Ctrl+M</p>
                             </a>
                         </div>
                     </div>
@@ -130,19 +128,24 @@
                     <div class="row">
                         <label for="inputEmail3" class="col-sm-3 col-form-label text-white"><b>Total:</b></label>
                         <div class="col-sm-9">
-                            <input readonly type="number" class="form-control sp-input" name="net_total_amount" id="net_total_amount" value="0.00">
+                            <input readonly type="number" class="form-control pos-amounts" name="net_total_amount" id="net_total_amount" value="0.00">
                         </div>
                     </div>
 
                     @if (json_decode($generalSettings->pos, true)['is_enabled_order_tax'] == '1')
                         <div class="row">
-                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Vat/Tax:</label>
-                            <div class="col-sm-9 ">
-                                <select name="order_tax" class="form-control" id="order_tax">
+                            <label class="col-sm-3 col-form-label text-white">Vat/Tax:</label>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select name="order_tax" class="form-control pos-amounts" id="order_tax"></select>
+                                    </div>
 
-                                </select>
-                                <input type="number" class="d-none" name="order_tax_amount" id="order_tax_amount"
-                                    value="0.00">
+                                    <div class="col-md-6">
+                                        <input type="number" class="form-control pos-amounts" name="order_tax_amount" id="order_tax_amount"
+                                        value="0.00">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     @else
@@ -152,13 +155,25 @@
 
                     @if (json_decode($generalSettings->pos, true)['is_enabled_discount'] == '1')
                         <div class="row">
-                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Discount:</label>
-                            <div class="col-sm-9 ">
-                                <input name="order_discount" type="number" step="any" class="form-control"
-                                    id="order_discount" value="0.00">
+                            <label class="col-sm-3 col-form-label text-white">Discount:</label>
+                            <div class="col-sm-9">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select name="order_discount_type" id="order_discount_type" class="form-control pos-amounts">
+                                            <option value="1">Fixed(0.00)</option>
+                                            <option value="2">Percent</option>
+                                        </select>
+                                        {{-- <input name="order_discount_type" class="form-control" id="order_discount_type" value="1"> --}}
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <input name="order_discount" type="number" step="any" class="form-control pos-amounts" id="order_discount" value="0.00">
+                                    </div>
+                                </div>
+                                
                                 <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
                                     value="0.00">
-                                <input name="order_discount_type" class="d-none" id="order_discount_type" value="1">
                             </div>
                         </div>
                     @else
@@ -169,14 +184,14 @@
                     @endif
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Pre. Due:</label>
-                        <div class="col-sm-9 ">
-                            <input readonly class="form-control" type="number" step="any" name="previous_due"
+                        <label class="col-sm-3 col-form-label text-white">Pre. Due:</label>
+                        <div class="col-sm-9">
+                            <input readonly class="form-control pos-amounts" type="number" step="any" name="previous_due"
                                 id="previous_due" value="0.00" autocomplete="off">
                         </div>
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Payable:</label>
+                        <label class="col-sm-3 col-form-label text-white">Payable:</label>
                         <div class="col-sm-9 ">
-                            <input readonly class="form-control sp-input" type="number" step="any"
+                            <input readonly class="form-control pos-amounts" type="number" step="any"
                                 name="total_payable_amount" id="total_payable_amount" value="0.00">
                             <input class="d-none" type="number" step="any" name="total_invoice_payable"
                                 id="total_invoice_payable" value="0.00">
@@ -184,26 +199,26 @@
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">Cash Receive:</label>
-                        <div class="col-sm-6 ">
+                        <label class="col-sm-6 col-form-label text-white">Cash Receive:</label>
+                        <div class="col-sm-6">
                             <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
-                                class="form-control" autocomplete="off">
+                                class="form-control pos-amounts" autocomplete="off">
                         </div>
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">Change Amount:</label>
+                        <label class="col-sm-6 col-form-label text-white">Change Amount:</label>
                         <div class="col-sm-6 ">
                             <input readonly type="text" name="change_amount" id="change_amount" value="0.00"
-                                class="form-control">
+                                class="form-control pos-amounts">
                         </div>
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-danger"><b>Due :</b></label>
+                        <label class="col-sm-6 col-form-label text-danger"><b>Due :</b></label>
                         <div class="col-sm-6 ">
                             <input type="text" readonly name="total_due" id="total_due" value="0.00"
-                                class="form-control sp-input text-danger">
+                                class="form-control pos-amounts text-danger">
                         </div>
                     </div>
                 </div>
@@ -241,7 +256,7 @@
 
                         <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">
                             <div class="btn-bg">
-                                <a href="" class="bg-parpal function-card cash-btn" id="submit_btn" data-button_type="1"
+                                <a href="#" class="bg-parpal function-card cash-btn" id="submit_btn" data-button_type="1"
                                     data-action_id="1">
                                     <small><i class="far fa-money-bill-alt"></i> Cash </small>
                                     <p>F10</p>

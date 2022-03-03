@@ -968,8 +968,7 @@ Route::get('pin_login', function () {
     return view('auth.pin_login');
 });
 
-Route::get('/test1', [DashboardController::class, 'tester']);
-Route::get('/test2', function () {
+Route::get('/test', function () {
 
     //return str_pad(10, 10, "0", STR_PAD_LEFT);
     // $purchases = Purchase::all();

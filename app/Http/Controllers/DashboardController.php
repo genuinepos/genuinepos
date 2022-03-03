@@ -8,19 +8,26 @@ use App\Utils\Converter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+define('TODAY_DATE', Carbon::today());
+
 
 class DashboardController extends Controller
 {
-
+    
+    
     protected $converter;
+
     public function __construct(Converter $converter)
     {
-        // define('TODAY', date('Y-m-d'));
-        define('TODAY', Carbon::today());
+        // define('TODAY_DATE', date('Y-m-d'));
         $this->converter = $converter;
         $this->middleware('auth:admin_and_user');
     }
 
+    public function tester()
+    {
+        return TODAY_DATE;
+    }
     // Admin dashboard
     public function index()
     {
@@ -526,39 +533,41 @@ class DashboardController extends Controller
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $sales = $saleQuery->where('sales.status', 1)->whereDate('report_date', TODAY)->get();
-            $purchases = $purchaseQuery->whereDate('report_date', TODAY)->get();
-            $expenses = $expenseQuery->whereDate('report_date', TODAY)->get();
-            $adjustments = $adjustmentQuery->whereDate('report_date_ts', TODAY)->get();
-            $purchaseReturn = $purchaseReturnQuery->whereDate('report_date', TODAY)->get();
-            $saleReturn = $saleReturnQuery->whereDate('report_date', TODAY)->get();
-            $branchTransfer = $branchTransferQuery->whereDate('report_date', TODAY)->get();
-            $warehouseTransfer = $warehouseTransferQuery->whereDate('report_date', TODAY)->get();
-            $payrolls = $payrollQuery->whereDate('hrm_payroll_payments.report_date', TODAY)->get();
+
+            $sales = $saleQuery->where('sales.status', 1)->whereDate('report_date', TODAY_DATE)->get();
+            $purchases = $purchaseQuery->whereDate('report_date', TODAY_DATE)->get();
+            $expenses = $expenseQuery->whereDate('report_date', TODAY_DATE)->get();
+            $adjustments = $adjustmentQuery->whereDate('report_date_ts', TODAY_DATE)->get();
+            $purchaseReturn = $purchaseReturnQuery->whereDate('report_date', TODAY_DATE)->get();
+            $saleReturn = $saleReturnQuery->whereDate('report_date', TODAY_DATE)->get();
+            $branchTransfer = $branchTransferQuery->whereDate('report_date', TODAY_DATE)->get();
+            $warehouseTransfer = $warehouseTransferQuery->whereDate('report_date', TODAY_DATE)->get();
+            $payrolls = $payrollQuery->whereDate('hrm_payroll_payments.report_date', TODAY_DATE)->get();
         } else {
+
             $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
-                ->where('sales.status', 1)->whereDate('report_date', TODAY)->get();
+                ->where('sales.status', 1)->whereDate('report_date', TODAY_DATE)->get();
 
-            $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)->whereDate('report_date', TODAY)->get();
+            $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)->whereDate('report_date', TODAY_DATE)->get();
 
-            $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)->whereDate('report_date', TODAY)->get();
+            $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)->whereDate('report_date', TODAY_DATE)->get();
 
             $adjustments = $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id)
-                ->whereDate('report_date_ts', TODAY)->get();
+                ->whereDate('report_date_ts', TODAY_DATE)->get();
 
             $purchaseReturn = $purchaseReturnQuery->where('purchase_returns.branch_id', auth()->user()->branch_id)
-                ->whereDate('report_date', TODAY)->get();
+                ->whereDate('report_date', TODAY_DATE)->get();
 
             $saleReturn = $saleReturnQuery->where('sale_returns.branch_id', auth()->user()->branch_id)
-                ->whereDate('report_date', TODAY)->get();
+                ->whereDate('report_date', TODAY_DATE)->get();
 
             $branchTransfer = $branchTransferQuery->where('transfer_stock_to_branches.branch_id', auth()->user()->branch_id)
-                ->whereDate('report_date', TODAY)->get();
+                ->whereDate('report_date', TODAY_DATE)->get();
 
             $warehouseTransfer = $warehouseTransferQuery->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id)
-                ->whereDate('report_date', TODAY)->get();
+                ->whereDate('report_date', TODAY_DATE)->get();
 
-            $payrolls = $payrollQuery->whereDate('hrm_payroll_payments.report_date', TODAY)
+            $payrolls = $payrollQuery->whereDate('hrm_payroll_payments.report_date', TODAY_DATE)
                 ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
         }
 
@@ -636,10 +645,10 @@ class DashboardController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $saleProducts = $saleProductQuery->where('sales.status', 1)
-                ->whereDate('sales.report_date', TODAY)->get();
+                ->whereDate('sales.report_date', TODAY_DATE)->get();
         } else {
             $saleProducts = $saleProductQuery->where('sales.status', 1)
-                ->whereDate('sales.report_date', TODAY)->where('sales.branch_id', auth()->user()->branch_id)->get();
+                ->whereDate('sales.report_date', TODAY_DATE)->where('sales.branch_id', auth()->user()->branch_id)->get();
         }
 
         $totalTotalUnitCost = $saleProducts->sum('total_unit_cost');

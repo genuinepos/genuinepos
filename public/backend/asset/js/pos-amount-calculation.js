@@ -36,13 +36,10 @@ function calculateTotalAmount() {
 
     var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0;
     
-    console.log((- 133 / 100) * parseFloat(orderDiscount));
-
     if ($('#order_discount_type').val() == 2) {
 
         var orderDisAmount = (parseFloat(netTotalAmount) / 100) * parseFloat(orderDiscount);
         $('#order_discount_amount').val(parseFloat(orderDisAmount).toFixed(2));
-        console.log(orderDisAmount);
     } else {
 
         $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
@@ -63,6 +60,7 @@ function calculateTotalAmount() {
     var calcInvoicePayable = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge);
 
     $('#total_invoice_payable').val(parseFloat(calcInvoicePayable).toFixed(2));
+
     var ex_inv_payable_amount = $('#ex_inv_payable_amount').val() ? $('#ex_inv_payable_amount').val() : 0;
     var ex_inv_paid = $('#ex_inv_paid').val() ? $('#ex_inv_paid').val() : 0;
     var exchange_item_total_price = $('#exchange_item_total_price').val() ? $('#exchange_item_total_price').val() : 0;
@@ -74,8 +72,10 @@ function calculateTotalAmount() {
         parseFloat(previousDue);
 
     $('#total_payable_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
+
     //$('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
     // Update purchase due
+    
     var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
     var changeAmount = parseFloat(payingAmount) - parseFloat(calcTotalPayableAmount);
     $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));

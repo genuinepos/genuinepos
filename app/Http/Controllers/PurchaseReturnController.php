@@ -519,6 +519,7 @@ class PurchaseReturnController extends Controller
             $addPurchaseReturnProduct->product_variant_id = $variant_id;
             $addPurchaseReturnProduct->return_qty = $request->return_quantities[$__index];
             $addPurchaseReturnProduct->unit = $request->units[$__index];
+            $addPurchaseReturnProduct->unit_cost = $request->unit_costs[$__index];
             $addPurchaseReturnProduct->return_subtotal = $request->return_subtotals[$__index];
             $addPurchaseReturnProduct->save();
             $__index++;

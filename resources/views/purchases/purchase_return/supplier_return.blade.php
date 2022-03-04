@@ -349,8 +349,7 @@
                                     tr += '</td>';
 
                                     tr += '<td class="text">';
-                                    tr += '<b><span class="span_unit_cost">'+product.product_cost_with_tax+'</span></b>'; 
-                                    tr += '<input  name="unit_costs[]" type="hidden" id="unit_cost" value="'+product.product_cost_with_tax+'">';
+                                    tr += '<input name="unit_costs[]" type="number" step="any" class="form-control" id="unit_cost" value="'+product.product_cost_with_tax+'">';
                                     tr += '</td>';
 
                                     tr += '<td class="text"><span class="span_warehouse_stock">'+qty_limit+' ('+product.unit.name+')'+'</span></td>';
@@ -444,8 +443,7 @@
                                 tr += '</td>';
 
                                 tr += '<td class="text">';
-                                tr += '<span class="span_unit_cost">'+variant_product.variant_cost_with_tax+'</span>'; 
-                                tr += '<input readonly name="unit_costs[]" type="hidden" id="unit_cost" value="'+variant_product.variant_cost_with_tax+'">';
+                                tr += '<input name="unit_costs[]" type="number" step="any" class="form-control" id="unit_cost" value="'+variant_product.variant_cost_with_tax+'">';
                                 tr += '</td>';
 
                                 tr += '<td class="text"><span class="span_warehouse_stock">'+qty_limit+' ('+variant_product.product.unit.name+')'+'</span></td>';
@@ -575,7 +573,7 @@
                             tr += '</td>';
 
                             tr += '<td class="text">';
-                            tr += '<span class="span_unit_cost">'+p_cost+'</span>'; 
+                            tr += '<input name="unit_costs[]" type="number" step="any" class="form-control" id="unit_cost" value="'+p_cost+'">';
                             tr += '<input name="unit_costs[]" type="hidden" id="unit_cost" value="'+p_cost+'">';
                             tr += '</td>';
 
@@ -686,8 +684,7 @@
                             tr += '</td>';
 
                             tr += '<td class="text">';
-                            tr += '<span class="span_unit_cost">'+variant_cost+'</span>'; 
-                            tr += '<input name="unit_costs[]" type="hidden" id="unit_cost" value="'+variant_cost+'">';
+                            tr += '<input name="unit_costs[]" type="number" step="any" class="form-control" id="unit_cost" value="'+variant_cost+'">';
                             tr += '</td>';
 
                             tr += '<td class="text"><span class="span_warehouse_stock">'+stock+' ('+product_unit+')'+'</span></td>';

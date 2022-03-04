@@ -22,7 +22,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Add Purchase Return</h5> 
+                                            <h6>Add Purchase Return</h6> 
                                         </div>
 
                                         <div class="col-6">
@@ -67,6 +67,30 @@
                                             </div>
 
                                             <div class="input-group mt-1">
+                                                <label class="col-4"><b>Warehouse :</b></label>
+                                                <div class="col-8">
+                                                    <select class="form-control changeable add_input"
+                                                        name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
+                                                        <option value="">Select Warehouse</option>
+                                                        @foreach ($warehouses as $w)
+                                                            <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <label for="inputEmail3" class="col-4"><b>Date :</b> <span
+                                                    class="text-danger">*</span></label>
+                                                <div class="col-8">
+                                                    <input required type="text" name="date" class="form-control changeable" autocomplete="off"
+                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                                </div>
+                                            </div>
+
+                                            <div class="input-group mt-1">
                                                 <label for="inputEmail3" class="col-4"><b>Return A/C : <span
                                                     class="text-danger">*</span></b></label>
                                                 <div class="col-8">
@@ -79,17 +103,6 @@
                                                         @endforeach
                                                     </select>
                                                     <span class="error error_purchase_return_account_id"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>Date :</b> <span
-                                                    class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control changeable" autocomplete="off"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
                                                 </div>
                                             </div>
                                         </div>
@@ -236,7 +249,8 @@
 
             var timer = 0;
             return function(callback, ms) {
-                clearTimeout (timer);
+
+                clearTimeout(timer);
                 timer = setTimeout(callback, ms);
             };
         })();
@@ -247,39 +261,62 @@
             $('.select_area').hide();
             var product_code = $(this).val();
             var __product_code = product_code.replaceAll('/', '~');
-            delay(function() { searchProduct(__product_code); }, 150); //sendAjaxical is the name of remote-command
+            var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : 'no_id';
+
+            delay(function() { searchProduct(__product_code, warehouse_id); }, 150); //sendAjaxical is the name of remote-command
         });
       
         // add purchase product by searching product code
-        function searchProduct(product_code){
+        function searchProduct(product_code, warehouse_id){
+
             $.ajax({
-                url:"{{url('purchases/returns/search/product/in/branch')}}"+"/"+product_code,  
+
+                url:"{{url('purchases/returns/search/product')}}" + "/" + product_code + "/" + warehouse_id,  
                 dataType: 'json',
+
                 success:function(product){
+
                     if(!$.isEmptyObject(product.errorMsg)){
+
                         toastr.error(product.errorMsg); 
                         return;
                     }
 
                     var qty_limit = product.qty_limit;
-                    if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product) || !$.isEmptyObject(product.namedProducts)){
+
+                    if(
+                        !$.isEmptyObject(product.product) || 
+                        !$.isEmptyObject(product.variant_product) || 
+                        !$.isEmptyObject(product.namedProducts)
+                    ) {
+
                         $('#search_product').addClass('is-valid');
+
                         if(!$.isEmptyObject(product.product)){
+
                             var product = product.product;
+
                             if(product.product_variants.length == 0){
+
                                 $('.select_area').hide();
                                 $('#search_product').val('');
+
                                 product_ids = document.querySelectorAll('#product_id');
                                 var sameProduct = 0;
+
                                 product_ids.forEach(function(input){
+
                                     if(input.value == product.id){
+
                                         sameProduct += 1;
                                         var className = input.getAttribute('class');
                                         // get closest table row for increasing qty and re calculate product amount
                                         var closestTr = $('.'+className).closest('tr');
                                         var presentQty = closestTr.find('#return_quantity').val() ? closestTr.find('#return_quantity').val() : 0;
                                         var qty_limit = closestTr.find('#qty_limit').val();
+
                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
+
                                             alert('Quantity Limit is - '+qty_limit+' '+product.unit.name);
                                             return;
                                         }
@@ -298,6 +335,7 @@
                                 });
 
                                 if(sameProduct == 0){
+
                                     var tr = '';
                                     tr += '<tr>';
                                     tr += '<td class="text">';
@@ -334,35 +372,47 @@
                                     calculateTotalAmount();
                                 }
                             }else{
+
                                 var li = "";
                                 $.each(product.product_variants, function(key, variant){
+
                                     li += '<li>';
                                     li += '<a class="select_variant_product" onclick="variantProduct(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost_with_tax+'" data-v_name="'+variant.variant_name+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'">'+product.name+' ('+variant.variant_name+')'+' - Purchase Price: '+ variant.variant_cost_with_tax +'</a>';
                                     li +='</li>';
                                 });
+
                                 $('.variant_list_area').append(li);
                                 $('.select_area').show();
                                 $('#search_product').val('');
                             }
                         }else if(!$.isEmptyObject(product.variant_product)){
+
                             $('.select_area').hide();
                             $('#search_product').val('');
+
                             var variant_product = product.variant_product;
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
+
                             variant_ids.forEach(function(input){
+
                                 if(input.value != 'noid'){
+
                                     if(input.value == variant_product.id){
+
                                         sameVariant += 1;
                                         var className = input.getAttribute('class');
                                         // get closest table row for increasing qty and re calculate product amount
                                         var closestTr = $('.'+className).closest('tr');
                                         var presentQty = closestTr.find('#return_quantity').val() ? closestTr.find('#return_quantity').val() : 0;
                                         var qty_limit = closestTr.find('#qty_limit').val();
+
                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
+
                                             alert('Quantity Limit is - '+qty_limit+' '+variant_product.product.unit.name);
                                             return;
                                         }
+
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#return_quantity').val(parseFloat(updateQty).toFixed(2));
                                         //Update Subtotal
@@ -377,6 +427,7 @@
                             });
                            
                             if(sameVariant == 0){
+
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td colspan="2" class="text">';
@@ -416,28 +467,34 @@
                                 calculateTotalAmount();
                             }    
                         }else if (!$.isEmptyObject(product.namedProducts)) {
+
                             if(product.namedProducts.length > 0){
+
                                 var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                                 var li = "";
                                 var products = product.namedProducts; 
+
                                 $.each(products, function (key, product) {
-                                    if (product.product_variants.length > 0) {
-                                        $.each(product.product_variants, function(key, variant){
-                                            li += '<li>';
-                                            li += '<a class="select_variant_product" onclick="variantProduct(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-v_code="'+variant.variant_code+'" data-v_cost="'+variant.variant_cost_with_tax+'" data-v_name="'+variant.variant_name+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'">'+product.name+' ('+variant.variant_name+')'+' - Purchase Price : '+variant.variant_cost_with_tax+'</a>';
-                                            li +='</li>';
-                                        });
-                                    }else{
+
+                                    if (product.is_variant == 1) {
+
                                         li += '<li>';
-                                        li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_cost_with_tax+'" data-p_cost="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'">'+product.name+' - Purchase Price : '+product.product_cost_with_tax+'</a>';
+                                        li += '<a class="select_variant_product" onclick="variantProduct(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-unit="'+product.unit_name+'" data-v_code="'+product.variant_code+'" data-v_cost="'+product.variant_cost_with_tax+'" data-v_name="'+product.variant_name+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'">'+product.name+' ('+product.variant_name+')'+' - Purchase Price : '+product.variant_cost_with_tax+'</a>';
+                                        li +='</li>';
+                                    }else{
+
+                                        li += '<li>';
+                                        li += '<a class="select_single_product" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit_name+'" data-p_code="'+product.product_cost_with_tax+'" data-p_cost="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'">'+product.name+' - Purchase Price : '+product.product_cost_with_tax+'</a>';
                                         li +='</li>';
                                     }
                                 });
+
                                 $('.variant_list_area').html(li);
                                 $('.select_area').show();
                             }
                         }
                     } else {
+
                         $('#search_product').addClass('is-invalid');
                     }
                 }
@@ -446,36 +503,50 @@
 
         // select variant product and add purchase table
          function singleProduct(e){
+
             $('.select_area').hide();
             $('#search_product').val('');
             var product_id = e.getAttribute('data-p_id');
+            var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : 'no_id';
+
             var product_name = e.getAttribute('data-p_name');
             var product_unit = e.getAttribute('data-unit');
             var p_code = e.getAttribute('data-p_code');
             var p_cost = e.getAttribute('data-p_cost');
 
             $.ajax({
-                url:"{{url('purchases/returns/check/branch/product/stock')}}"+"/"+product_id,
+
+                url:"{{url('purchases/returns/check/single/product/stock/')}}" + "/" + product_id + "/" + warehouse_id,
                 type:'get',
                 dataType: 'json',
-                success:function(branchQty){
-                    if($.isEmptyObject(branchQty.errorMsg)){
+                success:function(stock){
+
+                    if($.isEmptyObject(stock.errorMsg)){
+
                         var product_ids = document.querySelectorAll('#product_id');
                         var sameProduct = 0;
+
                         product_ids.forEach(function(input){
+
                             if(input.value != 'noid'){
+
                                 if(input.value == product_id){
+
                                     sameProduct += 1;
                                     var className = input.getAttribute('class');
                                     // get closest table row for increasing qty and re calculate product amount
                                     var closestTr = $('.'+className).closest('tr');
                                     var presentQty = closestTr.find('#return_quantity').val() ? closestTr.find('#return_quantity').val() : 0;
                                     var qty_limit = closestTr.find('#qty_limit').val();
+
                                     if(parseFloat(qty_limit) === parseFloat(presentQty)){
+
                                         alert('Quantity Limit is - '+qty_limit+' '+product_unit);
                                         return;
                                     }
+
                                     var updateQty = parseFloat(presentQty) + 1;
+
                                     closestTr.find('#return_quantity').val(parseFloat(updateQty).toFixed(2));
                                     
                                     //Update Subtotal
@@ -490,6 +561,7 @@
                         });
 
                         if(sameProduct == 0){
+
                             var tr = '';
                             tr += '<tr>';
                             tr += '<td class="text">';
@@ -499,7 +571,7 @@
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
-                            tr += '<input type="hidden" id="qty_limit" value="'+branchQty+'">';
+                            tr += '<input type="hidden" id="qty_limit" value="'+stock+'">';
                             tr += '</td>';
 
                             tr += '<td class="text">';
@@ -507,7 +579,7 @@
                             tr += '<input name="unit_costs[]" type="hidden" id="unit_cost" value="'+p_cost+'">';
                             tr += '</td>';
 
-                            tr += '<td class="text"><span class="span_warehouse_stock">'+branchQty+' ('+product_unit+')'+'</span></td>';
+                            tr += '<td class="text"><span class="span_warehouse_stock">'+stock+' ('+product_unit+')'+'</span></td>';
 
                             tr += '<td>';
                             tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control form-control-sm" id="return_quantity">';
@@ -527,7 +599,8 @@
                             calculateTotalAmount();
                         }
                     }else{
-                        toastr.warning(branchVariantQty.errorMsg);   
+
+                        toastr.error(stock.errorMsg);   
                     }
                 }
             });
@@ -535,9 +608,12 @@
 
         // select variant product and add purchase table
          function variantProduct(e){
+
             $('.select_area').hide();
             $('#search_product').val('');
             var product_id = e.getAttribute('data-p_id');
+            var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : 'no_id';
+
             var product_name = e.getAttribute('data-p_name');
             var product_unit = e.getAttribute('data-unit');
             var variant_id = e.getAttribute('data-v_id');
@@ -546,26 +622,40 @@
             var variant_cost = e.getAttribute('data-v_cost');
 
             $.ajax({
-                url:"{{url('purchases/returns/check/branch/variant/qty')}}"+"/"+product_id+"/"+variant_id,
+
+                url:"{{url('purchases/returns/check/variant/product/stock/')}}"+ "/" + product_id+ "/" +variant_id+ "/" + warehouse_id,
+
                 type:'get',
+
                 dataType: 'json',
-                success:function(branchVariantQty){
-                    if($.isEmptyObject(branchVariantQty.errorMsg)) {
+
+                success:function(stock) {
+
+                    if($.isEmptyObject(stock.errorMsg)) {
+
                         var variant_ids = document.querySelectorAll('#variant_id');
                         var sameVariant = 0;
+
                         variant_ids.forEach(function(input){
+
                             if(input.value != 'noid'){
+
                                 if(input.value == variant_id){
+
                                     sameVariant += 1;
                                     var className = input.getAttribute('class');
                                     // get closest table row for increasing qty and re calculate product amount
                                     var closestTr = $('.'+className).closest('tr');
+
                                     var presentQty = closestTr.find('#return_quantity').val() ? closestTr.find('#return_quantity').val() : 0;
                                     var qty_limit = closestTr.find('#qty_limit').val();
+
                                     if(parseFloat(qty_limit) === parseFloat(presentQty)){
+
                                         alert('Quantity Limit is - '+qty_limit+' '+product_unit);
                                         return;
                                     }
+
                                     var updateQty = parseFloat(presentQty) + 1;
                                     closestTr.find('#return_quantity').val(parseFloat(updateQty).toFixed(2));
                                     
@@ -581,8 +671,10 @@
                         });
 
                         if(sameVariant == 0){
+
                             var tr = '';
                             tr += '<tr>';
+
                             tr += '<td class="text">';
                             tr += '<span class="product_name">'+product_name+'</span>';
                             tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
@@ -590,7 +682,7 @@
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
-                            tr += '<input type="hidden" id="qty_limit" value="'+branchVariantQty+'">';
+                            tr += '<input type="hidden" id="qty_limit" value="'+stock+'">';
                             tr += '</td>';
 
                             tr += '<td class="text">';
@@ -598,7 +690,7 @@
                             tr += '<input name="unit_costs[]" type="hidden" id="unit_cost" value="'+variant_cost+'">';
                             tr += '</td>';
 
-                            tr += '<td class="text"><span class="span_warehouse_stock">'+branchVariantQty+' ('+product_unit+')'+'</span></td>';
+                            tr += '<td class="text"><span class="span_warehouse_stock">'+stock+' ('+product_unit+')'+'</span></td>';
 
                             tr += '<td>';
                             tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control form-control-sm" id="return_quantity">';
@@ -618,7 +710,8 @@
                             calculateTotalAmount();
                         }
                     } else {
-                        toastr.error(branchVariantQty.errorMsg);   
+
+                        toastr.error(stock.errorMsg);    
                     }
                 }
             });
@@ -626,10 +719,13 @@
 
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
+
             var subtotals = document.querySelectorAll('#return_subtotal');
             // Update Net total Amount
             var netTotalAmount = 0;
+
             subtotals.forEach(function(subtotal){
+
                 netTotalAmount += parseFloat(subtotal.value);
             });
 
@@ -642,12 +738,15 @@
 
         // Quantity increase or dicrease and clculate row amount
         $(document).on('input', '#return_quantity', function() {
+
             var qty = $(this).val() ? $(this).val() : 0;
             var tr = $(this).closest('tr');
             //Update subtotal 
             var qty_limit = tr.find('#qty_limit').val();
             var unit = tr.find('#unit').val();
+
             if(parseInt(qty) > parseInt(qty_limit)){
+
                 alert('Quantity Limit Is - '+qty_limit+' '+unit);
                 $(this).val(qty_limit);
                 var unitCost = tr.find('#unit_cost').val();
@@ -657,6 +756,7 @@
                 calculateTotalAmount();  
                 return;
             } else{
+
                 var unitCost = tr.find('#unit_cost').val();
                 var calcReturnSubtotal = parseFloat(unitCost) * parseFloat(qty);
                 tr.find('#return_subtotal').val(parseFloat(calcReturnSubtotal).toFixed(2));
@@ -667,6 +767,7 @@
 
         // chane purchase tax and clculate total amount
         $(document).on('change', '#purchase_tax', function() {
+
             var purchaseTax = $(this).val() ? $(this).val() : 0;
             var totalReturnAmount = $('#total_return_amount').val();
             var calcPurchaseTaxAmount = parseFloat(totalReturnAmount) / 100 * parseFloat(purchaseTax);
@@ -678,12 +779,14 @@
         // Dispose Select area 
         $(document).on('click', '.remove_select_area_btn', function(e){
             e.preventDefault();
+
             $('.select_area').hide();
         });
 
         // Remove product form purchase product list (Table) 
         $(document).on('click', '#remove_product_btn',function(e){
             e.preventDefault();
+
             $(this).closest('tr').remove();
             calculateTotalAmount();
         });
@@ -691,6 +794,7 @@
         //Add purchase request by ajax
         $('#add_purchase_return_form').on('submit', function(e){
             e.preventDefault();
+
             $('.loading_button').show();
             $('.submit_button').prop('type', 'button');
             var url = $(this).attr('action');
@@ -698,10 +802,14 @@
                 inputs.removeClass('is-invalid');
                 $('.error').html('');  
                 var countErrorField = 0;  
+
             $.each(inputs, function(key, val){
+
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
+
                 if(idValue == ''){
+
                     countErrorField += 1;
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
@@ -709,6 +817,7 @@
             });
 
             if(countErrorField > 0){
+
                 $('.loading_button').hide();
                 toastr.error('Please check again all form fields.','Some thing want wrong.'); 
                 return;
@@ -722,16 +831,20 @@
                 cache: false,
                 processData: false,
                 success:function(data){
+
                     $('.submit_button').prop('type', 'sumbit');
                     if(!$.isEmptyObject(data.errorMsg)){
+
                         toastr.error(data.errorMsg,'ERROR'); 
                         $('.loading_button').hide();
                     }else{
+
                         $('.loading_button').hide();
                         toastr.success(data); 
                         window.location = "{{ route('purchases.returns.index') }}";
                     }
                 },error: function(err) {
+
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
                     $('.error').html('');
@@ -742,23 +855,29 @@
 
         // Automatic remove searching product is found signal 
         setInterval(function(){
+
             $('#search_product').removeClass('is-invalid');
         }, 500); 
 
         setInterval(function(){
+
             $('#search_product').removeClass('is-valid');
         }, 1000);
 
         $('body').keyup(function(e) {
             e.preventDefault();
+
             if (e.keyCode == 13){  
+
                 $(".selectProduct").click();
                 $('#list').empty();
             }
         });
 
         $(document).keypress(".scanable",function(event){
+
             if (event.which == '10' || event.which == '13') {
+
                 event.preventDefault();
             }
         });
@@ -785,6 +904,12 @@
                 return totalDays - 1;
             },
             format: _expectedDateFormat,
+        });
+
+        $(document).on('change', '#warehouse_id', function () {
+
+            $('#purchase_return_list').empty();
+            calculateTotalAmount();
         });
     </script>
 @endpush

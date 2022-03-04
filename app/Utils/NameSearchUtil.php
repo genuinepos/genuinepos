@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Models\Product;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 
 class NameSearchUtil
@@ -215,5 +216,181 @@ class NameSearchUtil
 
             return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
         }
+    }
+
+    public function searchStockToBranch($product, $product_code, $branch_id)
+    {
+        if ($product) {
+
+            $productBranch = DB::table('product_branches')
+                ->where('branch_id', $branch_id)
+                ->where('product_id', $product->id)
+                ->select('product_quantity')
+                ->first();
+
+            if ($productBranch) {
+
+                if ($product->type == 2) {
+
+                    return response()->json(['errorMsg' => 'Combo product is not transferable.']);
+                } else {
+
+                    if ($productBranch->product_quantity > 0) {
+
+                        return response()->json(
+                            [
+                                'product' => $product,
+                                'qty_limit' => $productBranch->product_quantity
+                            ]
+                        );
+                    } else {
+
+                        return response()->json(['errorMsg' => 'Stock is out of this product in this Business Location/Shop.']);
+                    }
+                }
+            } else {
+
+                return response()->json(['errorMsg' => 'This product is not available in this Business Location/Shop.']);
+            }
+        } else {
+
+            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
+                ->where('variant_code', $product_code)
+                ->select([
+                    'id', 'product_id', 'variant_name', 'variant_code', 'variant_quantity', 'variant_cost', 'variant_cost_with_tax', 'variant_profit', 'variant_price'
+                ])->first();
+
+            if ($variant_product) {
+
+                if ($variant_product) {
+
+                    $productBranch = DB::table('product_branches')
+                        ->where('branch_id', $branch_id)
+                        ->where('product_id', $variant_product->product_id)
+                        ->first();
+
+                    if (is_null($productBranch)) {
+
+                        return response()->json(['errorMsg' => 'This product is not available in this Business Location/Shop.']);
+                    }
+
+                    $productBranchVariant = DB::table('product_branch_variants')
+                        ->where('product_branch_id', $productBranch->id)
+                        ->where('product_id', $variant_product->product_id)
+                        ->where('product_variant_id', $variant_product->id)
+                        ->select('variant_quantity')
+                        ->first();
+
+                    if (is_null($productBranchVariant)) {
+
+                        return response()->json(['errorMsg' => 'This variant is not available in this Business Location/Shop.']);
+                    }
+
+                    if ($productBranch && $productBranchVariant) {
+
+                        if ($productBranchVariant->variant_quantity > 0) {
+
+                            return response()->json([
+                                'variant_product' => $variant_product,
+                                'qty_limit' => $productBranchVariant->variant_quantity
+                            ]);
+                        } else {
+
+                            return response()->json(['errorMsg' => 'Stock is out of this product(variant) from this Business Location/Shop.']);
+                        }
+                    } else {
+
+                        return response()->json(['errorMsg' => 'This product is not available in this Business Location/Shop.']);
+                    }
+                }
+            }
+        }
+
+        return $this->nameSearching($product_code);
+    }
+
+    public function searchStockToWarehouse($product, $product_code, $warehouse_id)
+    {
+        if ($product) {
+
+            $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouse_id)
+                ->where('product_id', $product->id)
+                ->first();
+
+            if ($productWarehouse) {
+
+                if ($product->type == 2) {
+
+                    return response()->json(['errorMsg' => 'Combo product is not transferable.']);
+                } else {
+
+                    if ($productWarehouse->product_quantity > 0) {
+
+                        return response()->json(
+                            [
+                                'product' => $product,
+                                'qty_limit' => $productWarehouse->product_quantity
+                            ]
+                        );
+                    } else {
+
+                        return response()->json(['errorMsg' => 'Stock is out of this product of this warehouse']);
+                    }
+                }
+            } else {
+
+                return response()->json(['errorMsg' => 'This product is not available in this warehouse.']);
+            }
+        } else {
+
+            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
+                ->where('variant_code', $product_code)
+                ->first();
+
+            if ($variant_product) {
+
+                $productWarehouse = DB::table('product_warehouses')
+                    ->where('warehouse_id', $warehouse_id)
+                    ->where('product_id', $variant_product->product_id)
+                    ->first();
+
+                if (is_null($productWarehouse)) {
+
+                    return response()->json(['errorMsg' => 'This product is not available in this warehouse']);
+                }
+
+                $productWarehouseVariant = DB::table('product_warehouse_variants')
+                    ->where('product_warehouse_id', $productWarehouse->id)
+                    ->where('product_id', $variant_product->product_id)
+                    ->where('product_variant_id', $variant_product->id)
+                    ->first();
+
+                if (is_null($productWarehouseVariant)) {
+
+                    return response()->json(['errorMsg' => 'This variant is not available in this warehouse']);
+                }
+
+                if ($productWarehouse && $productWarehouseVariant) {
+
+                    if ($productWarehouseVariant->variant_quantity > 0) {
+
+                        return response()->json(
+                            [
+                                'variant_product' => $variant_product,
+                                'qty_limit' => $productWarehouseVariant->variant_quantity
+                            ]
+                        );
+                    } else {
+
+                        return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this warehouse']);
+                    }
+                } else {
+
+                    return response()->json(['errorMsg' => 'This product is not available in this warehouse.']);
+                }
+            }
+        }
+
+        return $this->nameSearching($product_code);
     }
 }

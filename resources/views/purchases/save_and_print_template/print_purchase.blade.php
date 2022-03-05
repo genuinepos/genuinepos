@@ -26,7 +26,7 @@
         <div class="details_area">
             <div class="heading_area">
                 <div class="row">
-                    <div class="col-md-4 col-sm-4 col-lg-4">
+                    <div class="col-4">
                         @if ($purchase->branch)
                             @if ($purchase->branch->logo != 'default.png')
                                 <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $purchase->branch->logo) }}">
@@ -41,12 +41,14 @@
                             @endif
                         @endif
                     </div>
-                    <div class="col-md-4 col-sm-4 col-lg-4">
+
+                    <div class="col-4">
                         <div class="heading text-center">
                             <h1 class="bill_name">Purchase Bill</h1>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-4 col-lg-4">
+
+                    <div class="col-4">
                         
                     </div>
                 </div>
@@ -54,7 +56,7 @@
 
             <div class="purchase_and_deal_info pt-3">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-4">
                         <ul class="list-unstyled">
                             <li><strong>Supplier :- </strong></li>
                             <li><strong>Namne : </strong>{{ $purchase->supplier->name }}</li>
@@ -63,7 +65,8 @@
                             <li><strong>Phone : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>
                     </div>
-                    <div class="col-lg-4">
+
+                    <div class="col-4">
                         <ul class="list-unstyled">
                             <li><strong>Purchase From : </strong></li>
                             <li>
@@ -74,6 +77,7 @@
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
+                            
                             <li><strong>Stored Location : </strong>
                                 @if ($purchase->warehouse_id )
                                     {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_code }}
@@ -85,6 +89,7 @@
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
+
                             <li><strong>Phone : </strong>
                                 @if ($purchase->branch)
                                     {{ $purchase->branch->phone }}
@@ -96,7 +101,8 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-lg-4">
+
+                    <div class="col-4">
                         <ul class="list-unstyled">
                             <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>

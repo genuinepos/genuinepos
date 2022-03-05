@@ -25,7 +25,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h6>Add Purchase | <small class="text-dark"><strong>Save & Print = (Ctrl + Enter), Save = (Shift + Enter)</strong> </small></h6>
+                                            <h6>Add Purchase | <small class="text-dark">Save & Print = (Ctrl + Enter), Save = (Shift + Enter)</small></h6>
                                         </div>
 
                                         <div class="col-6">

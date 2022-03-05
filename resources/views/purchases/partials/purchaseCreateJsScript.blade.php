@@ -1092,6 +1092,7 @@
 
     // Show add product modal with data
     $('#add_product').on('click', function () {
+        
         $.ajax({
             url:"{{route('purchases.add.product.modal.view')}}",
             type:'get',
@@ -1105,6 +1106,7 @@
     var lastSelectedTr = '';
     var is_prevent_default = 1;
     $(document).on('click', '#select_product', function (e) {
+
         e.preventDefault();
         is_prevent_default = 0;
         var tr = $(this).closest('tr');

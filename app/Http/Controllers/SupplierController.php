@@ -210,28 +210,35 @@ class SupplierController extends Controller
 
             return DataTables::of($purchases)
                 ->addColumn('action', function ($row) {
+
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                             <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
                     if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
+
                         $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'purchased']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
 
                     if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
+
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     }
 
                     $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
                     if (auth()->user()->branch_id == $row->branch_id) {
+
                         if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
+
                             if ($row->due > 0) {
+
                                 $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                             }
 
                             if ($row->purchase_return_due > 0) {
+
                                 $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Return Amount</a>';
                             }
                         }
@@ -249,6 +256,7 @@ class SupplierController extends Controller
                     return $html;
                 })
                 ->editColumn('date', function ($row) {
+
                     return date('d/m/Y', strtotime($row->date));
                 })
                 ->editColumn('invoice_id', function ($row) {
@@ -537,8 +545,11 @@ class SupplierController extends Controller
         if (count($dueInvoices) > 0) {
             $index = 0;
             foreach ($dueInvoices as $dueInvoice) {
+
                 if ($dueInvoice->due > $request->paying_amount) {
+
                     if ($request->paying_amount > 0) {
+
                         $addPurchasePayment = new PurchasePayment();
                         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
@@ -678,6 +689,7 @@ class SupplierController extends Controller
         $supplierPayment->year = date('Y');
 
         if ($request->hasFile('attachment')) {
+
             $PaymentAttachment = $request->file('attachment');
             $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
             $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
@@ -708,10 +720,14 @@ class SupplierController extends Controller
 
         $returnPurchases = Purchase::with(['purchase_return'])->where('purchase_return_due', '>', 0)->get();
         if (count($returnPurchases) > 0) {
+
             $index = 0;
             foreach ($returnPurchases as $returnPurchase) {
+
                 if ($returnPurchase->purchase_return_due > $request->paying_amount) {
+
                     if ($request->paying_amount > 0) {
+
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
 
@@ -742,6 +758,7 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice->save();
 
                         if ($returnPurchase->purchase_return) {
+
                             $returnPurchase->purchase_return->total_return_due -= $request->paying_amount;
                             $returnPurchase->purchase_return->total_return_due_received += $request->paying_amount;
                             $returnPurchase->purchase_return->save();
@@ -751,7 +768,9 @@ class SupplierController extends Controller
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($returnPurchase);
                     }
                 } elseif ($returnPurchase->purchase_return_due == $request->paying_amount) {
+
                     if ($request->paying_amount > 0) {
+
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
 
@@ -781,15 +800,19 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice->save();
 
                         if ($returnPurchase->purchase_return) {
+
                             $returnPurchase->purchase_return->total_return_due -= $request->paying_amount;
                             $returnPurchase->purchase_return->total_return_due_received += $request->paying_amount;
                             $returnPurchase->purchase_return->save();
                         }
+
                         $request->paying_amount -= $request->paying_amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($returnPurchase);
                     }
                 } elseif ($returnPurchase->purchase_return_due < $request->paying_amount) {
+
                     if ($request->paying_amount > 0) {
+
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
 
@@ -819,6 +842,7 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice->save();
 
                         if ($returnPurchase->purchase_return) {
+                            
                             $returnPurchase->purchase_return->total_return_due -= $returnPurchase->purchase_return_due;
                             $returnPurchase->purchase_return->total_return_due_received += $returnPurchase->purchase_return_due;
                             $returnPurchase->purchase_return->save();
@@ -833,15 +857,21 @@ class SupplierController extends Controller
         }
 
         if ($request->paying_amount > 0) {
+
             $dueSupplierReturnInvoices = PurchaseReturn::where('supplier_id', $supplierId)
                 ->where('total_return_due', '>', 0)
                 ->where('purchase_id', NULL)
                 ->get();
+
             if (count($dueSupplierReturnInvoices) > 0) {
+
                 $index = 0;
                 foreach ($dueSupplierReturnInvoices as $dueSupplierReturnInvoice) {
+                    
                     if ($dueSupplierReturnInvoice->total_return_due > $request->paying_amount) {
+
                         if ($request->paying_amount > 0) {
+
                             $dueSupplierReturnInvoice->total_return_due -= $request->paying_amount;
                             $dueSupplierReturnInvoice->total_return_due_received += $request->paying_amount;
                             $dueSupplierReturnInvoice->save();
@@ -868,7 +898,7 @@ class SupplierController extends Controller
 
                             // Add Supplier return Payment invoice
                             $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
-                            $addSupplierPaymentInvoice->supplier_payment_id = $addPurchasePayment->id;
+                            $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
                             $addSupplierPaymentInvoice->supplier_return_id = $dueSupplierReturnInvoice->id;
                             $addSupplierPaymentInvoice->paid_amount = $request->paying_amount;
                             $addSupplierPaymentInvoice->type = 2;
@@ -876,7 +906,9 @@ class SupplierController extends Controller
                             $request->paying_amount -= $request->paying_amount;
                         }
                     } elseif ($dueSupplierReturnInvoice->total_return_due == $request->paying_amount) {
+
                         if ($request->paying_amount > 0) {
+
                             $dueSupplierReturnInvoice->total_return_due -= $request->paying_amount;
                             $dueSupplierReturnInvoice->total_return_due_received += $request->paying_amount;
                             $dueSupplierReturnInvoice->save();
@@ -902,7 +934,7 @@ class SupplierController extends Controller
 
                             // Add Supplier return Payment invoice
                             $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
-                            $addSupplierPaymentInvoice->supplier_payment_id = $addPurchasePayment->id;
+                            $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
                             $addSupplierPaymentInvoice->supplier_return_id = $dueSupplierReturnInvoice->id;
                             $addSupplierPaymentInvoice->paid_amount = $request->paying_amount;
                             $addSupplierPaymentInvoice->type = 2;
@@ -910,7 +942,9 @@ class SupplierController extends Controller
                             $request->paying_amount -= $request->paying_amount;
                         }
                     } elseif ($dueSupplierReturnInvoice->total_return_due < $request->paying_amount) {
+
                         if ($request->paying_amount > 0) {
+
                             $dueSupplierReturnInvoice->total_return_due -=  $dueSupplierReturnInvoice->total_return_due;
                             $dueSupplierReturnInvoice->total_return_due_received +=  $dueSupplierReturnInvoice->total_return_due;
                             $dueSupplierReturnInvoice->save();
@@ -936,7 +970,7 @@ class SupplierController extends Controller
 
                             // Add Supplier return Payment invoice
                             $addSupplierPaymentInvoice = new SupplierPaymentInvoice();
-                            $addSupplierPaymentInvoice->supplier_payment_id = $addPurchasePayment->id;
+                            $addSupplierPaymentInvoice->supplier_payment_id = $supplierPayment->id;
                             $addSupplierPaymentInvoice->supplier_return_id = $dueSupplierReturnInvoice->id;
                             $addSupplierPaymentInvoice->paid_amount = $dueSupplierReturnInvoice->total_return_due;
                             $addSupplierPaymentInvoice->type = 2;

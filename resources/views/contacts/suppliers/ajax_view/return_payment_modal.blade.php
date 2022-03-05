@@ -91,11 +91,12 @@
             <label><strong>Credit Account :</strong> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i
-                            class="fas fa-money-check-alt text-dark input_i"></i></span>
+                    <span class="input-group-text" id="basic-addon1">
+                        <i class="fas fa-money-check-alt text-dark input_i"></i>
+                    </span>
                 </div>
+
                 <select name="account_id" class="form-control" id="p_account_id">
-                    <option value="">None</option>
                     @foreach ($accounts as $account)
                         <option value="{{ $account->id }}">
                             @php
@@ -112,8 +113,7 @@
 
         <div class="col-md-4">
             <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
-            <input type="file" name="attachment" class="form-control" id="attachment"
-                data-name="Date">
+            <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date">
         </div>
     </div>
 

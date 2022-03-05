@@ -15,17 +15,18 @@
         <div class="container-fluid">
             <form id="add_purchase_return_form" action="{{ route('purchases.returns.supplier.return.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
-                <section class="mt-5">
+                <input type="text" name="action" id="action">
+                <section class="mt-3">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
-                                        <div class="col-6">
-                                            <h6>Add Purchase Return</h6> 
+                                        <div class="col-8">
+                                            <h6>Add Purchase Return | <small class="text-muted">Save & Print = (Ctrl + Enter), Save = (Shift + Enter)</small></h6> 
                                         </div>
 
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
@@ -35,7 +36,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Supplier :</b> <span
+                                                <label class=" col-4"><b>Supplier :</b> <span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <select name="supplier_id" class="form-control add_input"
@@ -51,7 +52,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4"><b>B.Location :</b> </label>
+                                                <label class="col-4"><b>B.Location :</b> </label>
                                                 <div class="col-8">
                                                     <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
                                                 </div>
@@ -60,7 +61,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>R. Invoice ID :</b> </label>
+                                                <label class=" col-4"><b>R. Invoice ID :</b> </label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID">
                                                 </div>
@@ -82,7 +83,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>Date :</b> <span
+                                                <label class="col-4"><b>Date :</b> <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <input required type="text" name="date" class="form-control changeable" autocomplete="off"
@@ -91,7 +92,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4"><b>Return A/C : <span
+                                                <label class="col-4"><b>Return A/C : <span
                                                     class="text-danger">*</span></b></label>
                                                 <div class="col-8">
                                                     <select name="purchase_return_account_id" class="form-control add_input"
@@ -109,7 +110,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>Attachment :</b></label>
+                                                <label class="col-4"><b>Attachment :</b></label>
                                                 <div class="col-8">
                                                     <input type="file" class="form-control" name="attachment">
                                                 </div>
@@ -132,10 +133,12 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Item Search</label>
-                                                    <div class="input-group ">
+                                                    <label class="col-form-label">Item Search</label>
+                                                    <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
+                                                            <span class="input-group-text">
+                                                                <i class="fas fa-barcode text-dark input_f"></i>
+                                                            </span>
                                                         </div>
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code">
                                                     </div>
@@ -212,13 +215,17 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="btn btn-sm btn-primary submit_button float-end">Save</button>
-                        </div>
+                <div class="row">
+                    <div class="col-md-12 text-end">
+                        <button type="button" class="btn loading_button d-none">
+                            <i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> 
+                        </button>
+                        <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-primary submit_button">
+                            Save & Print (Ctrl+Enter)
+                        </button>
+                        <button type="submit" id="save" value="2" class="btn btn-sm btn-primary submit_button">
+                            Save (Shift+Enter)
+                        </button>
                     </div>
                 </div>
             </form>
@@ -236,8 +243,11 @@
                 type:'get',
                 dataType: 'json',
                 success:function(taxes){
+
                     $('#purchase_tax').append('<option value="0">No Tax</option>');
+
                     $.each(taxes, function(key, val){
+
                         $('#purchase_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
                     });
                 }
@@ -272,6 +282,7 @@
             $.ajax({
 
                 url:"{{url('purchases/returns/search/product')}}" + "/" + product_code + "/" + warehouse_id,  
+                
                 dataType: 'json',
 
                 success:function(product){
@@ -349,18 +360,18 @@
                                     tr += '</td>';
 
                                     tr += '<td class="text">';
-                                    tr += '<input name="unit_costs[]" type="number" step="any" class="form-control" id="unit_cost" value="'+product.product_cost_with_tax+'">';
+                                    tr += '<input name="unit_costs[]" type="number" step="any" class="form-control" id="unit_cost" value="'+product.product_cost_with_tax+'" autocomplete="off">';
                                     tr += '</td>';
 
                                     tr += '<td class="text"><span class="span_warehouse_stock">'+qty_limit+' ('+product.unit.name+')'+'</span></td>';
                                    
                                     tr += '<td>';
-                                    tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control" id="return_quantity">';
+                                    tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control" id="return_quantity" autocomplete="off">';
                                     tr += '</td>';
                                     
                                     tr += '<td class="text">';
-                                    tr += '<strong><span class="span_return_subtotal">'+product.product_cost_with_tax+' </span></strong>'; 
-                                    tr += '<input value="'+product.product_cost_with_tax+'" readonly name="return_subtotals[]" type="hidden"  id="return_subtotal">';
+                                    tr += '<span class="span_return_subtotal">'+product.product_cost_with_tax+'</span>'; 
+                                    tr += '<input value="'+product.product_cost_with_tax+'" name="return_subtotals[]" type="hidden" id="return_subtotal">';
                                     tr += '</td>';
                                     
                                     tr += '<td>';
@@ -443,17 +454,17 @@
                                 tr += '</td>';
 
                                 tr += '<td class="text">';
-                                tr += '<input name="unit_costs[]" type="number" step="any" class="form-control" id="unit_cost" value="'+variant_product.variant_cost_with_tax+'">';
+                                tr += '<input name="unit_costs[]" type="number" step="any" class="form-control" id="unit_cost" value="'+variant_product.variant_cost_with_tax+'" autocomplete="off">';
                                 tr += '</td>';
 
                                 tr += '<td class="text"><span class="span_warehouse_stock">'+qty_limit+' ('+variant_product.product.unit.name+')'+'</span></td>';
 
                                 tr += '<td>';
-                                tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control text-center form-control-sm" id="return_quantity">';
+                                tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control text-center" id="return_quantity" autocomplete="off">';
                                 tr += '</td>';
 
                                 tr += '<td class="text">';
-                                tr += '<strong><span class="span_return_subtotal">'+variant_product.variant_cost_with_tax+'</span></strong>'; 
+                                tr += '<span class="span_return_subtotal">'+variant_product.variant_cost_with_tax+'</span>'; 
                                 tr += '<input value="'+variant_product.variant_cost_with_tax+'"  name="return_subtotals[]" type="hidden" id="return_subtotal">';
                                 tr += '</td>';
 
@@ -499,8 +510,8 @@
             });
         }
 
-        // select variant product and add purchase table
-         function singleProduct(e){
+        // select Single product and add purchase return table
+        function singleProduct(e){
 
             $('.select_area').hide();
             $('#search_product').val('');
@@ -573,20 +584,18 @@
                             tr += '</td>';
 
                             tr += '<td class="text">';
-                            tr += '<input name="unit_costs[]" type="number" step="any" class="form-control" id="unit_cost" value="'+p_cost+'">';
-                            tr += '<input name="unit_costs[]" type="hidden" id="unit_cost" value="'+p_cost+'">';
+                            tr += '<input required name="unit_costs[]" type="number" step="any" class="form-control" id="unit_cost" value="'+p_cost+'">';
                             tr += '</td>';
 
                             tr += '<td class="text"><span class="span_warehouse_stock">'+stock+' ('+product_unit+')'+'</span></td>';
 
                             tr += '<td>';
-                            tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control form-control-sm" id="return_quantity">';
+                            tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control" id="return_quantity" autocomplete="off">';
                             tr += '</td>';
 
-                            tr += '<td class="text>';
-                            tr += '<strong><span class="span_return_subtotal">'+p_cost+'</span></strong>'; 
-
-                            tr += '<input value="'+p_cost+'" readonly name="return_subtotals[]" type="hidden" id="return_subtotal">';
+                            tr += '<td class="text">';
+                            tr += '<span class="span_return_subtotal">'+p_cost+'</span>'; 
+                            tr += '<input value="'+p_cost+'" name="return_subtotals[]" type="hidden" id="return_subtotal">';
                             tr += '</td>';
 
                             tr += '<td>';
@@ -605,7 +614,7 @@
         };
 
         // select variant product and add purchase table
-         function variantProduct(e){
+        function variantProduct(e){
 
             $('.select_area').hide();
             $('#search_product').val('');
@@ -690,13 +699,12 @@
                             tr += '<td class="text"><span class="span_warehouse_stock">'+stock+' ('+product_unit+')'+'</span></td>';
 
                             tr += '<td>';
-                            tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control form-control-sm" id="return_quantity">';
+                            tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control" id="return_quantity" autocomplete="off">';
                             tr += '</td>';
 
-                            tr += '<td class="text>';
-                            tr += '<strong><span class="span_return_subtotal">'+variant_cost+'</span></strong>'; 
-
-                            tr += '<input value="'+variant_cost+'" readonly name="return_subtotals[]" type="hidden" id="return_subtotal">';
+                            tr += '<td class="text">';
+                            tr += '<span class="span_return_subtotal">' + variant_cost + '</span>'; 
+                            tr += '<input value="'+variant_cost+'" name="return_subtotals[]" type="hidden" id="return_subtotal">';
                             tr += '</td>';
 
                             tr += '<td>';
@@ -727,11 +735,13 @@
             });
 
             var purchaseTaxAmount = $('#purchase_tax_amount').val() ? $('#purchase_tax_amount').val() : 0; 
+
             var calcTotalReturnAmount = parseFloat(netTotalAmount) + parseFloat(purchaseTaxAmount);
+
             $('.span_total_return_amount').html(parseFloat(calcTotalReturnAmount).toFixed(2));
+
             $('#total_return_amount').val(parseFloat(calcTotalReturnAmount).toFixed(2));
         }
-
 
         // Quantity increase or dicrease and clculate row amount
         $(document).on('input', '#return_quantity', function() {
@@ -762,6 +772,22 @@
             } 
         });
 
+        // Return Quantity increase or dicrease and clculate row amount
+        $(document).on('input', '#unit_cost', function(){
+
+            var unitCost = $(this).val() ? $(this).val() : 0;
+
+            var tr = $(this).closest('tr');
+
+            var return_quantity = tr.find('#return_quantity').val() ? tr.find('#return_quantity').val() : 0;
+
+            var calcSubtotal = parseFloat(unitCost) * parseFloat(return_quantity);
+
+            tr.find('#return_subtotal').val(parseFloat(calcSubtotal).toFixed(2));
+            tr.find('.span_return_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
+            calculateTotalAmount();
+        });
+
         // chane purchase tax and clculate total amount
         $(document).on('change', '#purchase_tax', function() {
 
@@ -788,38 +814,19 @@
             calculateTotalAmount();
         });
 
+        $('.submit_button').on('click', function () {
+
+            var value = $(this).val();
+            $('#action').val(value); 
+        });
+
         //Add purchase request by ajax
         $('#add_purchase_return_form').on('submit', function(e){
             e.preventDefault();
 
             $('.loading_button').show();
-            $('.submit_button').prop('type', 'button');
             var url = $(this).attr('action');
-            var inputs = $('.add_input');
-                inputs.removeClass('is-invalid');
-                $('.error').html('');  
-                var countErrorField = 0;  
-
-            $.each(inputs, function(key, val){
-
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-
-                if(idValue == ''){
-
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-                return;
-            }
-
+            $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
                 type:'post',
@@ -828,24 +835,57 @@
                 cache: false,
                 processData: false,
                 success:function(data){
-
+                    
+                    $('.loading_button').hide();
                     $('.submit_button').prop('type', 'sumbit');
+                    $('.error').html('');
+
                     if(!$.isEmptyObject(data.errorMsg)){
 
-                        toastr.error(data.errorMsg,'ERROR'); 
-                        $('.loading_button').hide();
-                    }else{
+                        toastr.error(data.errorMsg,'ERROR');
+                    }else if (data.successMsg) {
 
-                        $('.loading_button').hide();
-                        toastr.success(data); 
-                        window.location = "{{ route('purchases.returns.index') }}";
+                        toastr.success(data.successMsg); 
+                        $('#add_purchase_return_form')[0].reset();
+                        $('#purchase_return_list').empty();
+                    } else{
+
+                        toastr.success('Successfully Purchase return is added.');
+                        $('#add_purchase_return_form')[0].reset();
+                        $('#purchase_return_list').empty();
+
+                        $(data).printThis({
+                            debug: false,                   
+                            importCSS: true,                
+                            importStyle: true,          
+                            loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
+                            removeInline: false, 
+                            printDelay: 1000, 
+                            header: null,        
+                        });
                     }
                 },error: function(err) {
 
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
                     $('.error').html('');
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+
+                    if (err.status == 0) {
+
+                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        return;
+                    } else if(err.status == 500) {
+
+                        toastr.error('Server error. Please contact to the support team.'); 
+                        return;
+                    }
+
+                    toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+
+                        $('.error_' + key + '').html(error[0]);
+                    });
                 }
             });
         });
@@ -884,6 +924,7 @@
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
         _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+
         new Litepicker({
             singleMode: true,
             element: document.getElementById('datepicker'),
@@ -908,5 +949,19 @@
             $('#purchase_return_list').empty();
             calculateTotalAmount();
         });
+
+        document.onkeyup = function () {
+            var e = e || window.event; // for IE to cover IEs window event-object
+
+            if(e.ctrlKey && e.which == 13) {
+
+                $('#save_and_print').click();
+                return false;
+            }else if (e.shiftKey && e.which == 13) {
+
+                $('#save').click();
+                return false;
+            }
+        }
     </script>
 @endpush

@@ -140,145 +140,178 @@
 </div>
 <!-- Details Modal End-->
 
-<!-- Sale print templete-->
+<style>
+    @media print
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+    }
+
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 20px;margin-right: 20px;}
+</style>
+<!-- purchase print templete-->
 <div class="purchase_return_print_template d-none">
     <div class="details_area">
         <div class="heading_area">
             <div class="row">
-                <div class="col-md-12 col-sm-12 col-lg-12">
-                    <div class="heading text-center">
-                        @if ($return->branch)
-                            <h5 class="company_name">
-                                {{ $return->branch->name.'/'.$return->branch->branch_code}}
-                            </h5>
-                            <p class="company_address">
-                                {{ $return->branch->city }}, 
-                                {{ $return->branch->state }}, 
-                                {{ $return->branch->zip_code }},
-                                {{ $return->branch->country }},
-                            </p>
-                            <p class="company_address">Phone : +88-0185226677</p>
-                        @else
-                            <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}(Head Office)</h5>
-                            <p class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-                            <p class="company_address">Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                <div class="col-4">
+                    @if ($return->branch)
+                        @if ($return->branch->logo != 'default.png')
+                            <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $return->branch->logo) }}">
+                        @else 
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch->name }}</span>
                         @endif
-                        <h6 class="bill_name">Purchase Return Details</h6>
+                    @else 
+                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                            <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                        @else 
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                        @endif
+                    @endif
+                </div>
+
+                <div class="col-4">
+                    <div class="heading text-center">
+                        <h5 class="bill_name">Purchase Return Bill</h5>
                     </div>
+                </div>
+
+                <div class="col-4">
+
                 </div>
             </div>
         </div>
 
-        <div class="sale_and_deal_info pt-3">
+        <div class="purchase_return_and_deal_info pt-3">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-6">
                     <ul class="list-unstyled">
                         <li><strong>Return Details : </strong> </li>
-                        <li><strong>PR.Invoice ID : </strong> <span class="return_invoice_id">{{ $return->invoice_id }}</span></li>
-                        <li><strong>Return Date : </strong> <span class="return_date">{{ $return->date }}</span></li>
-                        <li><strong>Supplier Name : </strong> 
-                            {{ $return->purchase ? $return->purchase->supplier->name.' (ID'.$return->purchase->supplier->contact_id.')' : $return->supplier->name.' (ID'.$return->supplier->contact_id.')' }}</span>
+                        
+                        <li><strong>PR.Invoice ID : </strong> 
+                            <span class="return_invoice_id">{{ $return->invoice_id }}</span>
                         </li>
+
+                        <li><strong>Return Date : </strong> 
+                            <span class="return_date">{{ $return->date }}</span>
+                        </li>
+
+                        <li><strong>Supplier Name : </strong> 
+                            {{ $return->supplier ? $return->supplier->name : $return->purchase->supplier->name }}
+                        </li>
+
                         <li><strong>Return Stock Loction : </strong> 
                             @if ($return->warehouse)
-                                {{ $return->warehouse->warehouse_name.'/'.$return->warehouse->warehouse_code }}<b>(WAREHOUSE)</b>
+
+                                {{ $return->warehouse->warehouse_name.'/'.$return->warehouse->warehouse_code }}<b>(WH)</b>
                             @elseif($return->branch)
-                                {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(BL)</b>
+
+                                {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(B.L)</b>
                             @else 
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }}(HO)
+
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(Head Office)</b> 
                             @endif
                         </li>
                     </ul>
                 </div>
-                <div class="col-lg-4">
-                    <ul class="list-unstyled">
-
-                    </ul>
-                </div>
-                <div class="col-lg-4">
-                    <ul class="list-unstyled float-end">
+                
+                <div class="col-6">
+                    <ul class="list-unstyled float-right">
                         <li><strong>Purchase Details : </strong> </li>
-                        <li><strong>P.Invoice No : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
+                        <li><strong>Invoice No : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
                         <li><strong>Date : </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div class="sale_product_table pt-3 pb-3">
-            <table class="table table-sm table-bordered">
+        <div class="purchase_product_table pt-3 pb-3">
+            <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                    <tr>
-                        <th class="text-start" scope="col">SL</th>
-                        <th class="text-start" scope="col">Product</th>
-                        <th class="text-start" scope="col">Unit Price</th>
-                        <th class="text-start" scope="col">Return Quantity</th>
-                        <th class="text-start" scope="col">SubTotal</th>
-                    </tr>
+                        <tr>
+                            <th class="text-start">SL</th>
+                            <th class="text-start">Product</th>
+                            <th class="text-end">Unit Cost</th>
+                            <th class="text-end">Return Quantity</th>
+                            <th class="text-end">SubTotal</th>
+                        </tr>
                     </tr>
                 </thead>
                 <tbody class="purchase_return_print_product_list">
-                    @foreach ($return->purchase_return_products as $return_product)
-                        @if ($return_product->return_qty > 0)
+                    @foreach ($return->purchase_return_products as $purchase_return_product)
+                        @if ($purchase_return_product->return_qty > 0)
                             <tr>
                                 <td class="text-start">{{ $loop->index + 1 }}</td>
+
                                 <td class="text-start">
-                                    {{ $return_product->product->name }}
-                                    @if ($return_product->variant)
-                                        -{{ $return_product->variant->variant_name }}
+                                    {{ $purchase_return_product->product->name }}
+
+                                    @if ($purchase_return_product->variant)
+
+                                        -{{ $purchase_return_product->variant->variant_name }}
                                     @endif
-                                    @if ($return_product->variant)
-                                        ({{ $return_product->variant->variant_code }})
+
+                                    @if ($purchase_return_product->variant)
+
+                                        ({{ $purchase_return_product->variant->variant_code }})
                                     @else   
-                                    ({{ $return_product->product->product_code }}) 
+                                    
+                                        ({{ $purchase_return_product->product->product_code }}) 
                                     @endif
                                 </td>
 
-                                <td class="text-start">
-                                    @if ($return_product->purchase_product)
-                                        {{ $return_product->purchase_product->net_unit_cost }}
-                                    @else
-                                        @if ($return_product->variant)
-                                            {{ $return_product->variant->variant_cost_with_tax }}
-                                        @else
-                                            {{ $return_product->product->product_cost_with_tax }}
-                                        @endif
-                                    @endif
+                                <td class="text-end">
+                                    {{ App\Utils\Converter::format_in_bdt($purchase_return_product->unit_cost) }}
                                 </td>
 
-                                <td class="text-start">
-                                    {{ $return_product->return_qty }} ({{ $return_product->unit }})
+                                <td class="text-end">
+                                    {{ $purchase_return_product->return_qty }} ({{ $purchase_return_product->unit }})
                                 </td>
 
-                                <td class="text-start">
-                                    {{ $return_product->return_subtotal }} 
+                                <td class="text-end">
+                                    {{ $purchase_return_product->return_subtotal }} 
                                 </td>
-                            </tr> 
+                            </tr>
                         @endif
                     @endforeach
                 </tbody>
+
                 <tfoot>
                     <tr>
-                        <th class="text-start" colspan="4">Total Return</th>
-                        <td class="text-start" colspan="2" class="total_return_amount">10000.00</td>
+                        <th colspan="4" class="text-end">Total Return Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                        <td colspan="2" class="text-end">{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}</td>
                     </tr>
 
                     <tr>
-                        <th class="text-start" colspan="4">Total Due</th>
-                        <td class="text-start" colspan="2" class="total_due">10000.00</td>
+                        <th colspan="4" class="text-end">Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                        
+                        <td colspan="2" class="text-end">
+
+                            @if ($return->purchase_id)
+
+                                {{ App\Utils\Converter::format_in_bdt($return->total_return_due) }}
+                            @else 
+                            
+                                CHECK SUPPLIER DUE
+                            @endif
+                        </td>
                     </tr>
                 </tfoot>
             </table>
         </div>
         <br><br>
+
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <h6><strong>Receiver's Signature</strong></h6>
+                    <h6><strong>CHECKED BY</strong></h6>
                 </div>
                 <div class="col-md-6 text-end">
-                    <h6><strong>Signature Of seller</strong></h6>
+                    <h6><strong>APPROVED BY</strong></h6>
                 </div>
             </div>
         </div>
@@ -290,11 +323,12 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <small>Software by <b>SpeedDigit Pvt. Ltd.</b></small>
+        @if (env('PRINT_SD_PURCHASE') == true)
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 </div>
-<!-- Sale print templete end-->

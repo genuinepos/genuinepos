@@ -154,7 +154,7 @@
 
                                 {{ App\Utils\Converter::format_in_bdt($return->total_return_due) }}
                             @else 
-                                CHECK SUPPLIER LIST
+                                CHECK SUPPLIER DUE
                             @endif
                         </td>
                     </tr>

@@ -45,11 +45,13 @@ class PurchaseReturnUtil
         $addPurchaseReturn = new PurchaseReturn();
         $addPurchaseReturn->purchase_id = $purchase->id;
         $addPurchaseReturn->purchase_return_account_id = $request->purchase_return_account_id;
-        $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
+        $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PRI') . $invoiceId;
 
         if ($purchase->warehouse_id) {
+
             $addPurchaseReturn->warehouse_id = $purchase->warehouse_id;
         } else {
+
             $addPurchaseReturn->branch_id = $purchase->branch_id;
         }
 
@@ -57,8 +59,10 @@ class PurchaseReturnUtil
         $addPurchaseReturn->total_return_amount = $request->total_return_amount;
 
         if ($purchaseReturnDue > 0) {
+
             $addPurchaseReturn->total_return_due = $purchaseReturnDue;
         } else {
+
             $addPurchaseReturn->total_return_due = 0;
         }
 
@@ -87,11 +91,14 @@ class PurchaseReturnUtil
         }
 
         foreach ($purchase->purchase_products as $purchase_product) {
+
             $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $purchase_product->product_variant_id);
 
             if ($purchase->warehouse_id) {
+
                 $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $purchase_product->product_variant_id, $purchase->warehouse_id);
             } else {
+
                 $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, $purchase->branch_id);
             }
         }
@@ -131,10 +138,13 @@ class PurchaseReturnUtil
         $purchaseReturnDue = $request->total_return_amount - $purchaseDue;
 
         // Update purchase return
-        $purchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
+        $purchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PRI') . $invoiceId;
+
         if ($purchase->warehouse_id) {
+
             $purchaseReturn->warehouse_id = $purchase->warehouse_id;
         } else {
+
             $purchaseReturn->branch_id = $purchase->branch_id;
         }
 
@@ -142,8 +152,10 @@ class PurchaseReturnUtil
         $purchaseReturn->total_return_amount = $request->total_return_amount;
 
         if ($purchaseReturnDue > 0) {
+
             $purchaseReturn->total_return_due = $purchaseReturnDue - $purchaseReturn->total_return_due_received;
         } else {
+
             $purchaseReturn->total_return_due = 0;
         }
 
@@ -154,6 +166,7 @@ class PurchaseReturnUtil
         // update purchase return products stock
         $index = 0;
         foreach ($purchase_product_ids as $purchase_product_id) {
+
             $returnProduct = PurchaseReturnProduct::where('purchase_return_id', $purchaseReturn->id)
                 ->where('purchase_product_id', $purchase_product_id)->first();
 
@@ -165,17 +178,21 @@ class PurchaseReturnUtil
         }
 
         foreach ($purchase->purchase_products as $purchase_product) {
+
             $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $purchase_product->product_variant_id);
+
             if ($purchase->warehouse_id) {
+
                 $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $purchase_product->product_variant_id, $purchase->warehouse_id);
             } else {
+
                 $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, $purchase->branch_id);
             }
         }
 
         // Update Purchase Return A/C ledger
         $this->accountUtil->updateAccountLedger(
-            voucher_type_id: 2,
+            voucher_type_id: 4,
             date: $request->date,
             account_id: $request->purchase_return_account_id,
             trans_id: $purchaseReturn->id,
@@ -191,7 +208,7 @@ class PurchaseReturnUtil
             trans_id: $purchaseReturn->id,
             amount: $request->total_return_amount
         );
-        
+
         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
     }
 
@@ -208,6 +225,57 @@ class PurchaseReturnUtil
         $purchaseReturn->total_return_due_received = $totalReturnPaid->sum('total_paid');
         $purchaseReturn->total_return_due = $due;
         $purchaseReturn->save();
+    }
+
+    public function getStockLimitProducts($return)
+    {
+        $qty_limits = [];
+
+        foreach ($return->purchase_return_products as $return_product) {
+
+            if ($return->warehouse_id) {
+
+                $productWarehouse = DB::table('product_warehouses')
+                    ->where('warehouse_id', $return->warehouse_id)
+                    ->where('product_id', $return_product->product_id)
+                    ->first();
+
+                if ($return_product->variant_id) {
+
+                    $productWarehouseVariant = DB::table('product_warehouse_variants')
+                        ->where('product_warehouse_id', $productWarehouse->id)
+                        ->where('product_id', $return_product->product_id)
+                        ->where('product_variant_id', $return_product->product_variant_id)
+                        ->first();
+
+                    $qty_limits[] = $productWarehouseVariant->variant_quantity;
+                } else {
+
+                    $qty_limits[] = $productWarehouse->product_quantity;
+                }
+            } else {
+
+                $productBranch = DB::table('product_branches')
+                    ->where('branch_id', $return->branch_id)
+                    ->where('product_id', $return_product->product_id)->first();
+
+                if ($return_product->variant_id) {
+
+                    $productBranchVariant = DB::table('product_branch_variants')
+                        ->where('product_branch_id', $productBranch->id)
+                        ->where('product_id', $return_product->product_id)
+                        ->where('product_variant_id', $return_product->product_variant_id)
+                        ->first();
+
+                    $qty_limits[] = $productBranchVariant->variant_quantity;
+                } else {
+
+                    $qty_limits[] = $productBranch->product_quantity;
+                }
+            }
+        }
+
+        return $qty_limits;
     }
 
     public function adjustSupplierReturnAmounts($purchaseReturn)

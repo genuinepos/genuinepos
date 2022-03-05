@@ -1,10 +1,18 @@
 <?php
 
+use Carbon\Carbon;
+use App\Models\Sale;
+use App\Models\Account;
 use App\Models\Purchase;
+use App\Models\Supplier;
 use App\Utils\AccountUtil;
+use App\Models\SalePayment;
 use App\Models\AdminAndUser;
+use App\Models\AccountBranch;
+use App\Models\AccountLedger;
 use App\Models\CustomerLedger;
 use App\Models\SupplierLedger;
+use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +52,7 @@ Route::post('change-current-password', [ResetPasswordController::class, 'resetCu
 Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], function () {
     // Branch route group
     Route::group(['prefix' => 'categories'], function () {
+
         Route::get('/', 'CategoryController@index')->name('product.categories.index');
         Route::get('form/category', 'CategoryController@getAllFormCategory')->name('product.categories.all.category.form');
         Route::post('store', 'CategoryController@store')->name('product.categories.store');
@@ -53,6 +62,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
     });
 
     Route::group(['prefix' => 'sub-categories'], function () {
+
         Route::get('/', 'SubCategoryController@index')->name('product.subcategories.index');
         Route::post('store', 'SubCategoryController@store')->name('product.subcategories.store');
         Route::post('update', 'SubCategoryController@update')->name('product.subcategories.update');
@@ -62,6 +72,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
     // Brand route group
     Route::group(['prefix' => 'brands'], function () {
+
         Route::get('/', 'BrandController@index')->name('product.brands.index');
         Route::get('all', 'BrandController@getAllBrand')->name('product.brands.all.brand');
         Route::post('store', 'BrandController@store')->name('product.brands.store');
@@ -72,6 +83,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
     // products route group
     Route::group(['prefix' => '/'], function () {
+
         Route::get('all', 'ProductController@allProduct')->name('products.all.product');
         Route::get('view/{productId}', 'ProductController@view')->name('products.view');
         Route::get('get/all/product', 'ProductController@getAllProduct')->name('products.get.all.product');
@@ -100,12 +112,14 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::post('add/warranty', 'ProductController@addWarranty')->name('products.add.warranty');
 
         Route::group(['prefix' => 'import/price/group/products'], function () {
+
             Route::get('export', 'ImportPriceGroupProductController@export')->name('products.export.price.group.products');
         });
     });
 
     // Selling price group route group 
     Route::group(['prefix' => 'selling/price/groups'], function () {
+
         Route::get('/', 'PriceGroupController@index')->name('product.selling.price.groups.index');
         Route::post('store', 'PriceGroupController@store')->name('product.selling.price.groups.store');
         Route::get('edit/{id}', 'PriceGroupController@edit')->name('product.selling.price.groups.edit');
@@ -116,6 +130,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
     // Variants route group
     Route::group(['prefix' => 'variants'], function () {
+
         Route::get('/', 'BulkVariantController@index')->name('product.variants.index');
         Route::get('all', 'BulkVariantController@getAllVariant')->name('product.variants.all.variant');
         Route::post('store', 'BulkVariantController@store')->name('product.variants.store');
@@ -125,6 +140,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
     // Barcode route group
     Route::group(['prefix' => 'barcode'], function () {
+
         Route::get('/', 'BarcodeController@index')->name('barcode.index');
         Route::post('preview', 'BarcodeController@preview')->name('barcode.preview');
         Route::get('supplier/products', 'BarcodeController@supplierProduct')->name('barcode.supplier.get.products');
@@ -142,12 +158,14 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
     // Import product route group
     Route::group(['prefix' => 'imports'], function () {
+
         Route::get('create', 'ProductImportController@create')->name('product.import.create');
         Route::post('store', 'ProductImportController@store')->name('product.import.store');
     });
 
     // Warranty route group
     Route::group(['prefix' => 'warranties'], function () {
+
         Route::get('/', 'WarrantyController@index')->name('product.warranties.index');
         Route::get('all', 'WarrantyController@allWarranty')->name('product.warranties.all.warranty');
         Route::post('store', 'WarrantyController@store')->name('product.warranties.store');
@@ -160,6 +178,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], function () {
     // Supplier route group
     Route::group(['prefix' => 'suppliers'], function () {
+
         Route::get('/', 'SupplierController@index')->name('contacts.supplier.index');
         Route::get('get/all/suppliers', 'SupplierController@getAllSupplier')->name('contacts.supplier.get.all.supplier');
         Route::get('add', 'SupplierController@create')->name('contacts.supplier.create');
@@ -185,6 +204,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::delete('payment/delete/{paymentId}', 'SupplierController@paymentDelete')->name('suppliers.payment.delete');
 
         Route::group(['prefix' => 'import'], function () {
+
             Route::get('/', 'SupplierImportController@create')->name('contacts.suppliers.import.create');
             Route::post('store', 'SupplierImportController@store')->name('contacts.suppliers.import.store');
         });
@@ -192,6 +212,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
 
     // Customers route group
     Route::group(['prefix' => 'customers'], function () {
+
         Route::get('/', 'CustomerController@index')->name('contacts.customer.index');
         Route::get('add', 'CustomerController@create')->name('contacts.customer.create');
         Route::post('store', 'CustomerController@store')->name('contacts.customer.store');
@@ -214,6 +235,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::delete('payment/delete/{paymentId}', 'CustomerController@paymentDelete')->name('customers.payment.delete');
 
         Route::group(['prefix' => 'money/receipt'], function () {
+
             Route::get('/voucher/list/{customerId}', 'MoneyReceiptController@moneyReceiptList')->name('money.receipt.voucher.list');
             Route::get('create/{customerId}', 'MoneyReceiptController@moneyReceiptCreate')->name('money.receipt.voucher.create');
             Route::post('store/{customerId}', 'MoneyReceiptController@store')->name('money.receipt.voucher.store');
@@ -226,6 +248,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         });
 
         Route::group(['prefix' => 'groups'], function () {
+
             Route::get('/', 'CustomerGroupController@index')->name('contacts.customers.groups.index');
             Route::get('all/groups', 'CustomerGroupController@allBanks')->name('contacts.customers.groups.all.group');
             Route::post('store', 'CustomerGroupController@store')->name('contacts.customers.groups.store');
@@ -234,6 +257,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         });
 
         Route::group(['prefix' => 'import'], function () {
+
             Route::get('/', 'CustomerImportController@create')->name('contacts.customers.import.create');
             Route::post('store', 'CustomerImportController@store')->name('contacts.customers.import.store');
         });
@@ -242,6 +266,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
 
 // Purchase route group
 Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::get('v2', 'PurchaseController@index_v2')->name('purchases.index_v2');
     Route::get('product/list', 'PurchaseController@purchaseProductList')->name('purchases.product.list');
     Route::get('po/list', 'PurchaseController@poList')->name('purchases.po.list');
@@ -280,35 +305,49 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::get('payment/list/{purchaseId}', 'PurchaseController@paymentList')->name('purchase.payment.list');
 
     Route::group(['prefix' => '/'], function () {
+
         Route::get('po/process/receive/{purchaseId}', 'PurchaseOrderReceiveController@processReceive')->name('purchases.po.receive.process');
         Route::post('po/process/receive/store/{purchaseId}', 'PurchaseOrderReceiveController@processReceiveStore')->name('purchases.po.receive.process.store');
     });
 
     // Purchase Return route
     Route::group(['prefix' => 'returns'], function () {
+
         Route::get('/', 'PurchaseReturnController@index')->name('purchases.returns.index');
+        
         Route::get('show/{returnId}', 'PurchaseReturnController@show')->name('purchases.returns.show');
+        
         Route::get('add/{purchaseId}', 'PurchaseReturnController@create')->name('purchases.returns.create');
+        
         Route::get('get/purchase/{purchaseId}', 'PurchaseReturnController@getPurchase')->name('purchases.returns.get.purchase');
+        
         Route::post('store/{purchaseId}', 'PurchaseReturnController@store')->name('purchases.returns.store');
+        
         Route::delete('delete/{purchaseReturnId}', 'PurchaseReturnController@delete')->name('purchases.returns.delete');
 
         Route::get('create', 'PurchaseReturnController@supplierReturn')->name('purchases.returns.supplier.return');
+
         Route::get('search/product/{productCode}/{warehouseId}', 'PurchaseReturnController@searchProduct');
-        Route::get('search/product/in/branch/{productCode}', 'PurchaseReturnController@searchProductInBranch');
-        Route::get('check/warehouse/variant/qty/{productId}/{variantId}/{warehouseId}', 'PurchaseReturnController@checkWarehouseProductVariant');
-        Route::get('check/branch/product/stock/{productId}/', 'PurchaseReturnController@checkBranchProductStock');
-        Route::get('check/branch/variant/qty/{productId}/{variantId}', 'PurchaseReturnController@checkBranchProductVariant');
+
+        Route::get('check/single/product/stock/{product_id}/{warehouse_id}', 'PurchaseReturnController@checkSingleProductStock');
+
+        Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', 'PurchaseReturnController@checkVariantProductStock');
+        
         Route::post('supplier/return/store', 'PurchaseReturnController@supplierReturnStore')->name('purchases.returns.supplier.return.store');
+        
         Route::get('supplier/return/edit/{purchaseReturnId}', 'PurchaseReturnController@supplierReturnEdit')->name('purchases.returns.supplier.return.edit');
+        
         Route::get('get/editable/supplierReturn/{purchaseReturnId}', 'PurchaseReturnController@getEditableSupplierReturn')->name('purchases.return.get.editable.supplier.return');
+        
         Route::post('supplier/return/update/{purchaseReturnId}', 'PurchaseReturnController@supplierReturnUpdate')->name('purchases.returns.supplier.return.update');
+        
         Route::post('return/payments/{returnId}', 'PurchaseReturnController@returnPaymentList')->name('purchases.returns.purchase.return.payment.list');
     });
 });
 
 // Sale route group sales/recent/sales
 Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::get('v2', 'SaleController@index2')->name('sales.index2');
     Route::get('pos/list', 'SaleController@posList')->name('sales.pos.list');
     Route::get('product/list', 'SaleController@soldProductList')->name('sales.product.list');
@@ -369,6 +408,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
 
     // Sale return route
     Route::group(['prefix' => 'returns'], function () {
+
         Route::get('/', 'SaleReturnController@index')->name('sales.returns.index');
         Route::get('show/{returnId}', 'SaleReturnController@show')->name('sales.returns.show');
         Route::get('add/{saleId}', 'SaleReturnController@create')->name('sales.returns.create');
@@ -380,6 +420,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
 
     //Pos cash register routes
     Route::group(['prefix' => 'cash/register'], function () {
+
         Route::get('/', 'CashRegisterController@create')->name('sales.cash.register.create');
         Route::post('store', 'CashRegisterController@store')->name('sales.cash.register.store');
         Route::get('close/cash/register/modal/view', 'CashRegisterController@closeCashRegisterModalView')->name('sales.cash.register.close.modal.view');
@@ -390,6 +431,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
 
     // Pos routes
     Route::group(['prefix' => 'pos'], function () {
+
         Route::get('create', 'POSController@create')->name('sales.pos.create');
         Route::get('product/list', 'POSController@posProductList')->name('sales.pos.product.list');
         Route::post('store', 'POSController@store')->name('sales.pos.store');
@@ -477,6 +519,7 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
 
 //Stock adjustment to branch all route
 Route::group(['prefix' => 'stock/adjustments', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::get('/', 'StockAdjustmentController@index')->name('stock.adjustments.index');
     Route::get('show/{adjustmentId}', 'StockAdjustmentController@show')->name('stock.adjustments.show');
     Route::get('create', 'StockAdjustmentController@create')->name('stock.adjustments.create');
@@ -978,10 +1021,6 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
-
-    // return 'done';
-    // return TODAY_DATE;
-    // return $GLOBALS['TODAY_DATE'];
 });
 
 // All authenticated routes

@@ -59,7 +59,7 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="from_date" id="datepicker"
                                                             class="form-control from_date"
@@ -72,7 +72,7 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
                                                     </div>
@@ -106,9 +106,11 @@
                                     <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
+                                    {{-- <table class="display data_tbl data__table"> --}}
+                                    <table class="display data_tbl modal-table table-sm table-striped">
                                         <thead>
                                             <tr>
+                                                <th>Actions</th>
                                                 <th>Date</th>
                                                 <th>Return Invoice ID</th>
                                                 <th>Parent Purchase</th>
@@ -116,9 +118,8 @@
                                                 <th>Location</th>
                                                 <th>Return From</th>
                                                 <th>Payment Status</th>
-                                                <th>Total Amount</th>
+                                                <th>Return Amount</th>
                                                 <th>Payment Due</th>
-                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -215,14 +216,15 @@
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [
-                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [[0, 'asc']],
-            "lengthMenu" : [25, 100, 500, 1000, 2000],
+            // aaSorting: [[0, 'asc']],
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('purchases.returns.index') }}",
                 "data": function(d) {
@@ -238,6 +240,7 @@
                 "searchable": false
             }],
             columns: [
+                {data: 'action'},
                 {data: 'date', name: 'date'},
                 {data: 'invoice_id',name: 'invoice_id'},
                 {data: 'parent_invoice_id',name: 'parent_invoice_id'},
@@ -247,7 +250,7 @@
                 {data: 'payment_status',name: 'payment_status'},
                 {data: 'total_return_amount',name: 'total_return_amount', className: 'text-end'},
                 {data: 'total_return_due',name: 'total_return_due', className: 'text-end'},
-                {data: 'action'},
+                
             ],
         });
 

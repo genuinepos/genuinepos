@@ -184,12 +184,97 @@
                         </div>
                     </div>
                 </section>
+
+                <section class="">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form_element">
+                                <div class="element-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <input readonly name="total_qty" type="number" step="any" class="d-none" id="total_qty" value="0.00">
+                                                        <label class="col-4"><b>Total Item :</b> </label>
+                                                        <div class="col-8">
+                                                            <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label for="inputEmail3" class=" col-4"><b>Return Discount :</b></label>
+                                                        <div class="col-8">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <select name="order_discount_type" class="form-control" id="order_discount_type">
+                                                                        <option value="1">Fixed(0.00)</option>
+                                                                        <option value="2">Percentage(%)</option>
+                                                                    </select>
+                                                                </div>
+        
+                                                                <div class="col-md-6">
+                                                                    <input name="order_discount" type="number" class="form-control" id="order_discount" value="0.00">
+                                                                </div>
+                                                            </div>
+                                                            <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00">
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Return Tax :</b>
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+
+                                                        <div class="col-8">
+                                                            <select name="return_tax" class="form-control" id="return_tax">
+                                                                <option value="0.00">NoTax</option>
+                                                            </select>
+                                                            <input name="return_tax_amount" type="number" step="any" class="d-none" id="return_tax_amount" value="0.00">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form_element">
+                                <div class="element-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <label class="col-4"><b>Net Total Amount :</b></label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="net_total_amount" id="net_total_amount" class="form-control" value="0" placeholder="Net Total Amount">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Return Note :</b></label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="return_note" id="return_note" class="form-control" value="" placeholder="Return Note.">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </form>
         </div>
     </div>
 @endsection
-@push('scripts')
-    @include('sales.partials.addSaleCreateJsScript')
-@endpush
+
 
 

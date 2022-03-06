@@ -832,14 +832,18 @@ class SaleController extends Controller
     public function getAllUser()
     {
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $users = AdminAndUser::with(['role'])
                 ->select(['id', 'prefix',  'name', 'last_name', 'role_type', 'role_id', 'email'])->where('allow_login', 1)->get();
-            return response()->json($users);
+            
+                return response()->json($users);
         } else {
+
             $users = AdminAndUser::with(['role'])->where('branch_id', auth()->user()->branch_id)
                 ->select(['id', 'prefix',  'name', 'last_name', 'role_type', 'role_id', 'email'])
                 ->where('allow_login', 1)
                 ->get();
+
             return response()->json($users);
         }
     }
@@ -1044,6 +1048,7 @@ class SaleController extends Controller
         ]);
 
         if ($request->paying_amount > 0) {
+
             $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
             $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
             $sale = Sale::where('id', $saleId)->first();
@@ -1069,6 +1074,7 @@ class SaleController extends Controller
             );
 
             if ($sale->customer_id) {
+
                 // add customer ledger
                 $this->customerUtil->addCustomerLedger(
                     voucher_type_id: 3,
@@ -1089,6 +1095,7 @@ class SaleController extends Controller
     public function paymentEdit($paymentId)
     {
         if (auth()->user()->permission->sale['sale_payment'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -1108,6 +1115,7 @@ class SaleController extends Controller
     public function paymentUpdate(Request $request, $paymentId)
     {
         if (auth()->user()->permission->sale['sale_payment'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -1122,6 +1130,7 @@ class SaleController extends Controller
         $this->saleUtil->updatePayment($request, $payment);
 
         if ($payment->customer_payment_id == NULL) {
+
             // Update Bank/Cash-In-Hand ledger
             $this->accountUtil->updateAccountLedger(
                 voucher_type_id: 10,
@@ -1171,6 +1180,7 @@ class SaleController extends Controller
     public function returnPaymentAdd(Request $request, $saleId)
     {
         if (auth()->user()->permission->sale['sale_payment'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -1182,8 +1192,10 @@ class SaleController extends Controller
         ]);
 
         if ($request->paying_amount > 0) {
+
             $sale = Sale::with(['sale_return'])->where('id', $saleId)->first();
             if ($sale->sale_return) {
+                
                 $sale->sale_return->total_return_due -= $request->paying_amount;
                 $sale->sale_return->total_return_due_pay += $request->paying_amount;
                 $sale->sale_return->save();

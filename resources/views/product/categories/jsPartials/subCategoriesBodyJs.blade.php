@@ -17,6 +17,7 @@
            { data: 'photo',name: 'photo'},
            {data: 'name',name: 'name'},
            {data: 'parentname',name: 'parentname'},
+           {data: 'description',name: 'description'},
            {data: 'action',name: 'action'},
        ]
    });

@@ -205,7 +205,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Return Discount :</b></label>
+                                                        <label class=" col-4"><b>Return Discount :</b></label>
                                                         <div class="col-8">
                                                             <div class="row">
                                                                 <div class="col-md-6">

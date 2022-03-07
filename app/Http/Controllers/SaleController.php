@@ -469,7 +469,9 @@ class SaleController extends Controller
 
                 return view('sales.save_and_print_template.quotation_print', compact('sale'));
             }
+            
         } else {
+
             if ($request->status == 1) {
 
                 session()->flash('successMsg', 'Sale created successfully');

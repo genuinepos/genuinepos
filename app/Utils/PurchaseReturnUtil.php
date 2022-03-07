@@ -2,7 +2,6 @@
 
 namespace App\Utils;
 
-
 use App\Models\Purchase;
 use App\Utils\PurchaseUtil;
 use App\Models\PurchaseReturn;

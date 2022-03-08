@@ -75,9 +75,10 @@ class SubCategoryController extends Controller
         }
 
         $this->validate($request, [
-            'name' => ['required', Rule::unique('categories')->where(function ($query) {
-                return $query->where('parent_category_id', '!=', NULL);
-            })],
+             // 'name' => ['required', Rule::unique('categories')->where(function ($query) {
+            //     return $query->where('parent_category_id', '!=', NULL);
+            // })],
+            'name' => 'required',
             'parent_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
         ], ['parent_category_id.required' => 'Parent category field is required']);
@@ -113,12 +114,13 @@ class SubCategoryController extends Controller
         }
 
         $this->validate($request, [
-            'name' => ['required', Rule::unique('categories')->where(function ($query) use ($request) {
-                return $query->where('parent_category_id', '!=', NULL)->where('id', '!=', $request->id);
-            })],
+             // 'name' => ['required', Rule::unique('categories')->where(function ($query) {
+            //     return $query->where('parent_category_id', '!=', NULL);
+            // })],
+            'name' => 'required',
             'parent_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
-        ], ['parent_category_id.required' => 'Parent cateogry field is required']);
+        ], ['parent_category_id.required' => 'Parent category field is required']);
 
         $updateCategory = Category::where('id', $request->id)->first();
 

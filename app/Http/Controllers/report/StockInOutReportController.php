@@ -36,30 +36,39 @@ class StockInOutReportController extends Controller
                 ->leftJoin('product_opening_stocks', 'purchase_products.opening_stock_id', 'product_opening_stocks.id');
 
             if ($request->product_id) {
+
                 $query->where('sale_products.product_id', $request->product_id);
             }
 
             if ($request->variant_id) {
+
                 $query->where('sale_products.product_variant_id', $request->variant_id);
             }
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $query->where('sales.branch_id', NULL);
                 } else {
+
                     $query->where('sales.branch_id', $request->branch_id);
                 }
             }
 
             if ($request->customer_id) {
+
                 if ($request->customer_id == 'NULL') {
+
                     $query->where('sales.customer_id', NULL);
                 } else {
+
                     $query->where('sales.customer_id', $request->customer_id);
                 }
             }
 
             if ($request->from_date) {
+
                 $fromDate = date('Y-m-d', strtotime($request->from_date));
                 $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
                 $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
@@ -71,6 +80,8 @@ class StockInOutReportController extends Controller
                 'sales.date',
                 'sales.invoice_id',
                 'products.name',
+                'products.created_at as product_created_at',
+                'products.product_cost_with_tax as unit_cost_inc_tax',
                 'product_variants.variant_name',
                 'sale_products.unit_price_inc_tax',
                 'sale_products.unit',
@@ -89,14 +100,17 @@ class StockInOutReportController extends Controller
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+
                 $stockInOuts = $query->orderBy('sales.report_date', 'desc');
             } else {
+
                 $stockInOuts = $query->where('sales.branch_id', auth()->user()->branch_id)
                     ->orderBy('sales.report_date', 'desc');
             }
 
             return DataTables::of($stockInOuts)
                 ->editColumn('product', function ($row) {
+
                     $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
                     return Str::limit($row->name, 20, '') . $variant;
                 })
@@ -104,13 +118,17 @@ class StockInOutReportController extends Controller
                 ->editColumn('sale', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" id="details" class="text-danger text-hover" title="view" >' . $row->invoice_id . '</a>')
 
                 ->editColumn('date', function ($row) {
+
                     return date('d/m/Y', strtotime($row->date));
                 })
 
                 ->editColumn('branch',  function ($row) use ($generalSettings) {
+
                     if ($row->branch_name) {
+
                         return $row->branch_name;
                     } else {
+
                         return json_decode($generalSettings->business, true)['shop_name'];
                     }
                 })
@@ -118,25 +136,40 @@ class StockInOutReportController extends Controller
                 ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')
 
                 ->editColumn('sold_qty', function ($row) {
+
                     return '<span class="sold_qty" data-value="' . $row->sold_qty . '">' . $row->sold_qty.'/'.$row->unit. '</span>';
                 })
 
                 ->editColumn('customer_name', function ($row) {
+
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
 
                 ->editColumn('stock_in_by', function ($row) {
+                    
                     if ($row->purchase_inv) {
+
                         return 'Purchase: ' . '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="text-danger text-hover" id="details" title="view" >' . $row->purchase_inv . '</a>';
                     } else if ($row->production_voucher_no) {
+
                         return 'Production: ' . '<a href="' . route('manufacturing.productions.show', [$row->production_id]) . '" class="text-danger text-hover" id="details" title="view" >' . $row->production_voucher_no . '</a>';
                     } else if ($row->pos_id) {
+                        
                         return 'Opening Stock';
+                    } else {
+
+                        return 'Non-Manageable-Stock';
                     }
                 })
 
                 ->editColumn('stock_in_date', function ($row) {
-                    return date('d/m/Y', strtotime($row->stock_in_date));
+                    if ($row->stock_in_date) {
+
+                        return date('d/m/Y', strtotime($row->stock_in_date));
+                    }else {
+
+                        return date('d/m/Y', strtotime($row->product_created_at));
+                    }
                 })
 
                 // ->editColumn('stock_in_qty', function ($row) {
@@ -144,7 +177,15 @@ class StockInOutReportController extends Controller
                 // })
 
                 ->editColumn('net_unit_cost', function ($row) {
-                    return '<span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . $row->net_unit_cost . '</span>';
+
+                    if ($row->net_unit_cost) {
+
+                        return '<span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . $row->net_unit_cost . '</span>';
+                    }else {
+
+                        return '<span class="net_unit_cost" data-value="' . $row->unit_cost_inc_tax . '">' . $row->unit_cost_inc_tax . '</span>';
+                    }
+                    
                 })
 
                 ->rawColumns(
@@ -177,6 +218,7 @@ class StockInOutReportController extends Controller
         $stockInOuts = '';
         $fromDate = '';
         $toDate = '';
+
         $query = DB::table('purchase_sale_product_chains')
             ->leftJoin('sale_products', 'purchase_sale_product_chains.sale_product_id', 'sale_products.id')
             ->leftJoin('products', 'sale_products.product_id', 'products.id')
@@ -190,30 +232,39 @@ class StockInOutReportController extends Controller
             ->leftJoin('product_opening_stocks', 'purchase_products.opening_stock_id', 'product_opening_stocks.id');
 
         if ($request->product_id) {
+
             $query->where('sale_products.product_id', $request->product_id);
         }
 
         if ($request->variant_id) {
+
             $query->where('sale_products.product_variant_id', $request->variant_id);
         }
 
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
+
                 $query->where('sales.branch_id', NULL);
             } else {
+
                 $query->where('sales.branch_id', $request->branch_id);
             }
         }
 
         if ($request->customer_id) {
+
             if ($request->customer_id == 'NULL') {
+
                 $query->where('sales.customer_id', NULL);
             } else {
+
                 $query->where('sales.customer_id', $request->customer_id);
             }
         }
 
         if ($request->from_date) {
+
             $fromDate = date('Y-m-d', strtotime($request->from_date));
             $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
             $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
@@ -242,8 +293,10 @@ class StockInOutReportController extends Controller
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+
             $stockInOuts = $query->orderBy('sales.report_date', 'desc')->get();
         } else {
+
             $stockInOuts = $query->where('sales.branch_id', auth()->user()->branch_id)
                 ->orderBy('sales.report_date', 'desc')->get();
         }

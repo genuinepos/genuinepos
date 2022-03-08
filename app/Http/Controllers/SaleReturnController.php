@@ -62,10 +62,12 @@ class SaleReturnController extends Controller
     public function index(Request $request)
     {
         if (auth()->user()->permission->sale['return_access'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             $returns = '';
             $generalSettings = DB::table('general_settings')->first();
             $query = DB::table('sale_returns')
@@ -85,25 +87,31 @@ class SaleReturnController extends Controller
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 $returns = $query->orderBy('id', 'desc');
             } else {
+
                 $returns = $query->where('sale_returns.branch_id', auth()->user()->branch_id)
                     ->orderBy('id', 'desc');
             }
 
             return DataTables::of($returns)
                 ->addColumn('action', function ($row) {
+
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="' . route('sales.returns.show', $row->id) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
                     if (auth()->user()->branch_id == $row->branch_id) {
+
                         $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', $row->sale_id) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.returns.delete', $row->id) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
                         $html .= '<a class="dropdown-item" id="view_payment" href="' . route('sales.returns.payment.list', [$row->sale_id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
                         if ($row->total_return_due > 0) {
+
                             if (auth()->user()->permission->sale['sale_payment'] == '1') {
+
                                 $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->sale_id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amt.</a>';
                             }
                         }
@@ -114,21 +122,27 @@ class SaleReturnController extends Controller
                     return $html;
                 })
                 ->editColumn('date', function ($row) {
+
                     return date('d/m/Y', strtotime($row->date));
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
+
                     return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BL)</b>' : json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
                 })
                 ->editColumn('total_return_amount', fn ($row) => $this->converter->format_in_bdt($row->total_return_amount))
                 ->editColumn('total_return_due', fn ($row) => '<span class="text-danger">' . ($row->total_return_due >= 0 ? $this->converter->format_in_bdt($row->total_return_due) :   0.00) . '</span>')
                 ->editColumn('payment_status', function ($row) {
+
                     if ($row->total_return_due > 0) {
+
                         return '<span class="text-danger"><b>Due</b></span>';
                     } else {
+
                         return '<span class="text-success"><b>Paid</b></span>';
                     }
                 })
                 ->editColumn('customer', function ($row) {
+
                     return $row->cus_name ? $row->cus_name : 'Walk-In-Customer';
                 })
                 ->rawColumns(['action', 'date', 'from', 'total_return_amount', 'total_return_due', 'payment_status'])
@@ -136,6 +150,11 @@ class SaleReturnController extends Controller
         }
 
         return view('sales.sale_return.index');
+    }
+
+    public function createV2()
+    {
+        return view('sales.sale_return.create_v2');
     }
 
     // Show Sale return details
@@ -191,12 +210,15 @@ class SaleReturnController extends Controller
 
         $qty = 0;
         foreach ($return_quantities as $return_quantity) {
+
             if ($return_quantity > 0) {
+
                 $qty += 1;
             }
         }
 
         if ($qty == 0) {
+
             return response()->json(['errorMsg' => "All product`s quantity is 0."]);
         }
 
@@ -207,6 +229,7 @@ class SaleReturnController extends Controller
         $sale = Sale::where('id', $saleId)->first();
 
         if ($saleReturn) {
+
             //Update purchase and supplier purchase return due
             $saleDue = $sale->total_payable_amount - $sale->paid;
             $saleReturnDue = $request->total_return_amount - $saleDue;
@@ -273,6 +296,7 @@ class SaleReturnController extends Controller
                 );
             }
         } else {
+
             $sale->is_return_available = 1;
             //Update sale and customer return due
             $saleDue = $sale->total_payable_amount - $sale->paid;
@@ -290,7 +314,9 @@ class SaleReturnController extends Controller
             $addSaleReturn->return_discount_amount = $request->total_return_discount_amount;
             $addSaleReturn->net_total_amount = $request->net_total_amount;
             $addSaleReturn->total_return_amount = $request->total_return_amount;
+
             if ($saleReturnDue > 0) {
+
                 $addSaleReturn->total_return_due = $saleReturnDue;
             }
 
@@ -303,6 +329,7 @@ class SaleReturnController extends Controller
             // Add sale return products
             $index = 0;
             foreach ($sale_product_ids as $sale_product_id) {
+
                 // Update sale product quantity for adjustment
                 $saleProduct = SaleProduct::where('id', $sale_product_id)->first();
                 $addReturnProduct = new SaleReturnProduct();
@@ -318,6 +345,7 @@ class SaleReturnController extends Controller
             }
 
             foreach ($sale->sale_products as $sale_product) {
+
                 $this->productStockUtil->adjustMainProductAndVariantStock($sale_product->product_id, $sale_product->product_variant_id);
                 $this->productStockUtil->adjustBranchStock($sale_product->product_id, $sale_product->product_variant_id, $sale->branch_id);
             }
@@ -355,6 +383,7 @@ class SaleReturnController extends Controller
         ])->where('sale_id', $saleId)->first();
 
         if ($saleReturn) {
+
             return view('sales.sale_return.save_and_print_template.sale_return_print_view', compact('saleReturn'));
         }
     }
@@ -368,22 +397,28 @@ class SaleReturnController extends Controller
         $storedBranchId = $saleReturn->sale->branch_id;
 
         if ($saleReturn->total_return_due_pay > 0) {
+
             return response()->json(['errorMsg' => "You can not delete this return invoice, cause your have paid some or full amount on this return."]);
         }
 
         $saleReturn->sale->is_return_available = 0;
         $saleReturn->delete();
+
         foreach ($storedReturnedProducts as $return_product) {
+
             $this->productStockUtil->adjustMainProductAndVariantStock($return_product->product_id, $return_product->product_variant_id);
             $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $storedBranchId);
         }
 
         $this->saleUtil->adjustSaleInvoiceAmounts($saleReturn->sale);
+
         if ($saleReturn->sale->customer_id) {
+
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($saleReturn->sale->customer_id);
         }
 
         if ($storedReturnAccountId) {
+
             $this->accountUtil->adjustAccountBalance('debit', $storedReturnAccountId);
         }
 

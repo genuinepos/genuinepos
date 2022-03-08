@@ -893,6 +893,7 @@ class PurchaseUtil
             ->get();
 
         $return = DB::table('purchase_returns')->where('purchase_id', $purchase->id)->first();
+        
         $returnAmount = $return ? $return->total_return_amount : 0;
 
         $due = $purchase->total_purchase_amount - $totalPurchasePaid->sum('total_paid') - $returnAmount + $totalReturnPaid->sum('total_paid');

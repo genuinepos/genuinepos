@@ -787,9 +787,17 @@
                                 </div>
                             @endif
 
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="{{ route('sale.return.create.v2') }}" class="bar-link">
+                                        <span><i class="fas fa-undo"></i></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">Add Sale Return</p>
+                            </div>
+
                             @if (auth()->user()->permission->sale['return_access'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('sales.returns.index') }}" class="bar-link">
                                             <span><i class="fas fa-undo"></i></span>

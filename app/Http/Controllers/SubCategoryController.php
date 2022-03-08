@@ -21,21 +21,27 @@ class SubCategoryController extends Controller
     public function index(Request $request)
     {
         if (auth()->user()->permission->product['categories'] == '0') {
+
             return response()->json('Access Denied');
         }
 
         $img_url = asset('public/uploads/category/');
+
         if ($request->ajax()) {
+
             $subCategories = DB::table('categories')
                 ->join('categories as parentcat', 'parentcat.id', 'categories.parent_category_id')
                 ->select('parentcat.name as parentname', 'categories.*')
                 ->whereNotNull('categories.parent_category_id')->orderBy('id', 'DESC');
+                
             return DataTables::of($subCategories)
                 ->addIndexColumn()
                 ->editColumn('photo', function ($row) use ($img_url) {
+
                     return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $img_url . '/' . $row->photo . '">';
                 })
                 ->addColumn('action', function ($row) {
+
                     // return $action_btn;
                     $html = '<div class="dropdown table-dropdown">';
                     $html .= '<a href="javascript:;" class="action-btn c-edit edit_sub_cate" data-id="' . $row->id . '"><span class="fas fa-edit"></span></a>';
@@ -52,6 +58,7 @@ class SubCategoryController extends Controller
     public function edit($id)
     {
         if (auth()->user()->permission->product['categories'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -63,30 +70,36 @@ class SubCategoryController extends Controller
     public function store(Request $request)
     {
         if (auth()->user()->permission->product['categories'] == '0') {
+
             return response()->json('Access Denied');
         }
 
         $this->validate($request, [
-            'name' => ['required', Rule::unique('categories')->where(function ($query) {
-                return $query->where('parent_category_id', '!=', NULL);
-            })],
+             // 'name' => ['required', Rule::unique('categories')->where(function ($query) {
+            //     return $query->where('parent_category_id', '!=', NULL);
+            // })],
+            'name' => 'required',
             'parent_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
         ], ['parent_category_id.required' => 'Parent category field is required']);
 
         if ($request->file('photo')) {
+
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
             Image::make($categoryPhoto)->resize(250, 250)->save('public/uploads/category/' . $categoryPhotoName);
+
             Category::insert([
                 'name' => $request->name,
+                'description' => $request->description,
                 'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
                 'photo' => $categoryPhotoName
             ]);
         } else {
+
             Category::insert([
                 'name' => $request->name,
-                'parent_category_id' => 'required',
+                'description' => $request->description,
                 'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
             ]);
         }
@@ -96,36 +109,46 @@ class SubCategoryController extends Controller
     public function update(Request $request)
     {
         if (auth()->user()->permission->product['categories'] == '0') {
+
             return response()->json('Access Denied');
         }
 
         $this->validate($request, [
-            'name' => ['required', Rule::unique('categories')->where(function ($query) use ($request) {
-                return $query->where('parent_category_id', '!=', NULL)->where('id', '!=', $request->id);
-            })],
+             // 'name' => ['required', Rule::unique('categories')->where(function ($query) {
+            //     return $query->where('parent_category_id', '!=', NULL);
+            // })],
+            'name' => 'required',
             'parent_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
-        ], ['parent_category_id.required' => 'Parent cateogry field is required']);
+        ], ['parent_category_id.required' => 'Parent category field is required']);
 
         $updateCategory = Category::where('id', $request->id)->first();
 
         if ($request->file('photo')) {
+
             if ($updateCategory->photo !== 'default.png') {
+
                 if (file_exists(public_path('uploads/category/' . $updateCategory->photo))) {
+
                     unlink(public_path('uploads/category/' . $updateCategory->photo));
                 }
             }
+
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
             Image::make($categoryPhoto)->resize(250, 250)->save('public/uploads/category/' . $categoryPhotoName);
+
             $updateCategory->update([
                 'name' => $request->name,
+                'description' => $request->description,
                 'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
                 'photo' => $categoryPhotoName
             ]);
         } else {
+
             $updateCategory->update([
                 'name' => $request->name,
+                'description' => $request->description,
                 'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
             ]);
         }
@@ -137,19 +160,25 @@ class SubCategoryController extends Controller
         return response()->json('Feature is disabled in this demo');
 
         if (auth()->user()->permission->product['categories'] == '0') {
+
             return response()->json('Access Denied');
         }
 
         $deleteCategory = Category::find($categoryId);
+
         if ($deleteCategory->photo !== 'default.png') {
+
             if (file_exists(public_path('uploads/category/' . $deleteCategory->photo))) {
+
                 unlink(public_path('uploads/category/' . $deleteCategory->photo));
             }
         }
 
         if (!is_null($deleteCategory)) {
+
             $deleteCategory->delete();
         }
+
         return response()->json('Subcategory deleted Successfully');
     }
 }

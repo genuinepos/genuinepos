@@ -6,6 +6,11 @@
         <input type="text" name="name" class="form-control " id="e_name" placeholder="Category name" value="{{ $category->name }}"/>
         <span class="error error_e_name"></span>
     </div>
+
+    <div class="form-group mt-1">
+        <label><b>Description :</b> </label>
+        <textarea name="description" class="form-control" cols="30" rows="3" placeholder="Description">{{ $category->description }}</textarea>
+    </div>
    
     <div class="form-group mt-1">
         <label><b>Photo :</b> <small class="text-danger"><b>Photo size 400px * 400px.</b> </small></label> 

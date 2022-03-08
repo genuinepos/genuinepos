@@ -45,6 +45,7 @@ Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controlle
     Route::get('branch/authenticated/users/{branchId}', 'CommonAjaxCallController@branchAuthenticatedUsers');
     Route::get('category/subcategories/{categoryId}', 'CommonAjaxCallController@categorySubcategories');
     Route::get('only/search/product/for/reports/{product_name}', 'CommonAjaxCallController@onlySearchProductForReports');
+    Route::get('search/invoice/{table}/{invoiceId}', 'CommonAjaxCallController@searchInvoiceOrVoucherOrRefId');
 });
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
@@ -1029,6 +1030,7 @@ Route::get('/test', function () {
 
 // All authenticated routes
 Auth::routes();
+
 // Route::get('dbal', function() {
 //     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
 // });

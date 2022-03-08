@@ -27,21 +27,21 @@
     }
     getUnites();
 
-    // Get all taxes for form field
-    var taxArray;
-    function getTaxes(){
+    // // Get all taxes for form field
+    // var taxArray;
+    // function getTaxes(){
 
-        $.get("{{ route('purchases.get.all.taxes') }}", function(taxes) {
+    //     $.get("{{ route('purchases.get.all.taxes') }}", function(taxes) {
 
-            taxArray = taxes;
-            $('#order_tax').append('<option value="0.00">No Tax</option>');
-            $.each(taxes, function(key, val){
+    //         taxArray = taxes;
+    //         $('#order_tax').append('<option value="0.00">No Tax</option>');
+    //         $.each(taxes, function(key, val){
 
-                $('#order_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
-            });
-        });
-    }
-    getTaxes();
+    //             $('#order_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
+    //         });
+    //     });
+    // }
+    // getTaxes();
 
     // Calculate total amount functionalitie
     function calculateTotalAmount(){
@@ -933,16 +933,19 @@
         $('#e_unit_tax').empty();
         $('#e_unit_tax').append('<option value="0.00">No Tax</option>');
 
-        taxArray.forEach(function (tax) {
+        // taxArray.forEach(function (tax) {
 
-            if (tax.tax_percent == unit_tax_percent) {
+        //     if (tax.tax_percent == unit_tax_percent) {
 
-                $('#e_unit_tax').append('<option SELECTED value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
-            } else {
+        //         $('#e_unit_tax').append('<option SELECTED value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
+        //     } else {
 
-                $('#e_unit_tax').append('<option value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
-            }
-        });
+        //         $('#e_unit_tax').append('<option value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
+        //     }
+        // });
+
+        $('#e_unit_tax').val(unit_tax_percent);
+
         $('#e_tax_type').val(unit_tax_type);
         $('#e_unit').empty();
         unites.forEach(function (unit) {

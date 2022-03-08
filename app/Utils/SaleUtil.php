@@ -1522,4 +1522,25 @@ class SaleUtil
             }
         }
     }
+
+    public static function saleStatus()
+    { 
+        return [
+            1 => 'Final',
+            3 => 'Ordered',
+            2 => 'Draft',
+            4 => 'Quotation',
+        ];
+    }
+
+    public static function saleShipmentStatus()
+    {
+        return [
+            1 => 'Ordered',
+            2 => 'Packed',
+            3 => 'Shipped',
+            4 => 'Delivered',
+            5 => 'Cancelled',
+        ];
+    }
 }

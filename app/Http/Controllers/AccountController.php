@@ -213,11 +213,13 @@ class AccountController extends Controller
 
             return DataTables::of($ledgers)
                 ->editColumn('date', function ($row) use ($settings) {
+
                     $dateFormat = json_decode($settings->business, true)['date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->date));
                 })
                 ->editColumn('particulars', function ($row) use ($accountUtil) {
+
                     $type = $accountUtil->voucherType($row->voucher_type);
                     $des = $row->{$type['pur']} ? '/' . $row->{$type['pur']} : '';
                     $receiver_ac = $row->receiver_acn ? '/To:<b>' . $row->receiver_acn . '</b>' : '';
@@ -226,6 +228,7 @@ class AccountController extends Controller
                     //return '<b>' . $type['name'].'</b>';
                 })
                 ->editColumn('voucher_no',  function ($row) use ($accountUtil) {
+                    
                     $type = $accountUtil->voucherType($row->voucher_type);
                     return $row->{$type['voucher_no']};
                 })

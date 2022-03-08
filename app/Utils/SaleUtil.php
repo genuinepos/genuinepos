@@ -492,11 +492,13 @@ class SaleUtil
         }
 
         if (count($storedPayments) > 0) {
+
             foreach ($storedPayments as $payment) {
 
                 if ($payment->attachment) {
 
                     if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                        
                         unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
                     }
                 }
@@ -515,12 +517,17 @@ class SaleUtil
         if ($storeStatus == 1) {
 
             foreach ($storedSaleProducts as $saleProduct) {
+
                 $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
                 $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, $storedBranchId);
 
                 foreach ($saleProduct->purchaseSaleProductChains as $purchaseSaleProductChain) {
-                    $this->purchaseUtil->adjustPurchaseLeftQty($purchaseSaleProductChain->purchaseProduct);
+                    
+                    if ($purchaseSaleProductChain->purchaseProduct) {
+
+                        $this->purchaseUtil->adjustPurchaseLeftQty($purchaseSaleProductChain->purchaseProduct);
+                    }
                 }
             }
         }
@@ -529,6 +536,10 @@ class SaleUtil
 
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
         }
+
+        $count = DB::table('sales')->count();
+
+        if($count == 0) DB::statement('ALTER TABLE sales AUTO_INCREMENT = 1');
     }
 
     public function addSaleTable($request)
@@ -1336,6 +1347,7 @@ class SaleUtil
                 if (count($purchaseProducts) > 0) {
 
                     $sold_qty = $sale_product->quantity;
+
                     foreach ($purchaseProducts as $purchaseProduct) {
 
                         if ($sold_qty > $purchaseProduct->left_qty) {
@@ -1386,6 +1398,12 @@ class SaleUtil
                         }
                     }
                 }
+            }else {
+                
+                $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                $addPurchaseSaleChain->sale_product_id = $sale_product->id;
+                $addPurchaseSaleChain->sold_qty = $sale_product->quantity;
+                $addPurchaseSaleChain->save();
             }
         }
     }

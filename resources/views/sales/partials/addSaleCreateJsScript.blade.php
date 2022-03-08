@@ -1455,16 +1455,6 @@
         $('#show_cost_section').toggle(500);
     });
 
-    // $(document).on('keyup', '.submit_button', function () {
-
-    //     var e = e || window.event; // for IE to cover IEs window event-object
-
-    //     if(e.which == 13) {
-
-    //         $(this).click();
-    //     }
-    // });
-
     document.onkeyup = function () {
         var e = e || window.event; // for IE to cover IEs window event-object
 

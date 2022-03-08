@@ -14,8 +14,13 @@
                     <div class="form-group">
                         <label><b>Name :</b> <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" id="name"
-                                placeholder="Category name" />
+                                placeholder="Category name"/>
                         <span class="error error_name"></span>
+                    </div>
+
+                    <div class="form-group mt-1">
+                        <label><b>Description :</b> </label>
+                        <textarea name="description" class="form-control" cols="30" rows="3" placeholder="Description"></textarea>
                     </div>
 
                     <div class="form-group mt-1">
@@ -65,6 +70,7 @@
                                 <th class="text-black">Serial</th>
                                 <th class="text-black">Photo</th>
                                 <th class="text-black">Name</th>
+                                <th class="text-black">Description</th>
                                 <th class="text-black">Actions</th>
                             </tr>
                         </thead>

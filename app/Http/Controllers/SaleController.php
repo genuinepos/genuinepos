@@ -221,6 +221,33 @@ class SaleController extends Controller
             ->select(['id', 'business', 'prefix', 'send_es_settings'])
             ->first();
 
+        if ($request->customer_id) {
+
+            $customer = DB::table('customers')->where('id', $request->customer_id)
+                ->select('credit_limit', 'total_sale_due')
+                ->first();
+
+            if ($customer->credit_limit == 0 || $customer->credit_limit == NULL) {
+
+                return response()->json(['errorMsg' => 'Customer Credit Limit is 0.']);
+            } else {
+                
+                $request->total_due;
+
+                $__credit_limit = $customer->credit_limit;
+
+                if ($request->total_due > $__credit_limit) {
+                    
+                    return response()->json(['errorMsg' => "Customer Credit Limit is ${__credit_limit}."]);
+                }
+            }
+        }
+
+        if ($request->paying_amount < $request->total_payable_amount && !$request->customer_id) {
+
+            return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
+        }
+
         $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
 
         $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
@@ -255,11 +282,6 @@ class SaleController extends Controller
         if ($request->product_ids == null) {
 
             return response()->json(['errorMsg' => 'product table is empty']);
-        }
-
-        if ($request->paying_amount < $request->total_payable_amount && !$request->customer_id) {
-
-            return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
         }
 
         $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
@@ -470,6 +492,7 @@ class SaleController extends Controller
                 return view('sales.save_and_print_template.quotation_print', compact('sale'));
             }
         } else {
+
             if ($request->status == 1) {
 
                 session()->flash('successMsg', 'Sale created successfully');
@@ -832,14 +855,18 @@ class SaleController extends Controller
     public function getAllUser()
     {
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $users = AdminAndUser::with(['role'])
                 ->select(['id', 'prefix',  'name', 'last_name', 'role_type', 'role_id', 'email'])->where('allow_login', 1)->get();
+
             return response()->json($users);
         } else {
+
             $users = AdminAndUser::with(['role'])->where('branch_id', auth()->user()->branch_id)
                 ->select(['id', 'prefix',  'name', 'last_name', 'role_type', 'role_id', 'email'])
                 ->where('allow_login', 1)
                 ->get();
+
             return response()->json($users);
         }
     }
@@ -1044,6 +1071,7 @@ class SaleController extends Controller
         ]);
 
         if ($request->paying_amount > 0) {
+
             $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
             $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
             $sale = Sale::where('id', $saleId)->first();
@@ -1069,6 +1097,7 @@ class SaleController extends Controller
             );
 
             if ($sale->customer_id) {
+
                 // add customer ledger
                 $this->customerUtil->addCustomerLedger(
                     voucher_type_id: 3,
@@ -1089,6 +1118,7 @@ class SaleController extends Controller
     public function paymentEdit($paymentId)
     {
         if (auth()->user()->permission->sale['sale_payment'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -1108,6 +1138,7 @@ class SaleController extends Controller
     public function paymentUpdate(Request $request, $paymentId)
     {
         if (auth()->user()->permission->sale['sale_payment'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -1122,6 +1153,7 @@ class SaleController extends Controller
         $this->saleUtil->updatePayment($request, $payment);
 
         if ($payment->customer_payment_id == NULL) {
+
             // Update Bank/Cash-In-Hand ledger
             $this->accountUtil->updateAccountLedger(
                 voucher_type_id: 10,
@@ -1171,6 +1203,7 @@ class SaleController extends Controller
     public function returnPaymentAdd(Request $request, $saleId)
     {
         if (auth()->user()->permission->sale['sale_payment'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -1182,8 +1215,10 @@ class SaleController extends Controller
         ]);
 
         if ($request->paying_amount > 0) {
+
             $sale = Sale::with(['sale_return'])->where('id', $saleId)->first();
             if ($sale->sale_return) {
+
                 $sale->sale_return->total_return_due -= $request->paying_amount;
                 $sale->sale_return->total_return_due_pay += $request->paying_amount;
                 $sale->sale_return->save();

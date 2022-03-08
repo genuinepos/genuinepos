@@ -16,6 +16,7 @@
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'photo',name: 'photo'},
             {data: 'name',name: 'name'},
+            {data: 'description',name: 'description'},
             {data: 'action',name: 'action'},
         ],
     });

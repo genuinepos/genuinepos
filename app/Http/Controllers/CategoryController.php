@@ -20,20 +20,26 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         if (auth()->user()->permission->product['categories'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         $img_url = asset('public/uploads/category/');
+
         if ($request->ajax()) {
+
             $categories = DB::table('categories')
                 ->where('parent_category_id', NULL)
                 ->orderBy('id', 'DESC')->get();
+
             return DataTables::of($categories)
                 ->addIndexColumn()
                 ->editColumn('photo', function ($row) use ($img_url) {
+
                     return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $img_url . '/' . $row->photo . '">';
                 })
                 ->addColumn('action', function ($row) {
+
                     $html = '<div class="dropdown table-dropdown">';
                     $html .= '<a href="javascript:;" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
                     $html .= '<a href="' . route('product.categories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
@@ -54,6 +60,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         if (auth()->user()->permission->product['categories'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -65,16 +72,21 @@ class CategoryController extends Controller
         ]);
 
         if ($request->file('photo')) {
+
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
             Image::make($categoryPhoto)->resize(250, 250)->save('public/uploads/category/' . $categoryPhotoName);
+
             Category::insert([
                 'name' => $request->name,
+                'description' => $request->description,
                 'photo' => $categoryPhotoName
             ]);
         } else {
+
             Category::insert([
                 'name' => $request->name,
+                'description' => $request->description,
             ]);
         }
         return response()->json('Category created Successfully');
@@ -83,6 +95,7 @@ class CategoryController extends Controller
     public function edit($categoryId)
     {
         if (auth()->user()->permission->product['categories'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -93,6 +106,7 @@ class CategoryController extends Controller
     public function update(Request $request)
     {
         if (auth()->user()->permission->product['categories'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -106,21 +120,29 @@ class CategoryController extends Controller
         $updateCategory = Category::where('id', $request->id)->first();
 
         if ($request->file('photo')) {
+            
             if ($updateCategory->photo !== 'default.png') {
+
                 if (file_exists(public_path('uploads/category/' . $updateCategory->photo))) {
+
                     unlink(public_path('uploads/category/' . $updateCategory->photo));
                 }
             }
+
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
             Image::make($categoryPhoto)->resize(250, 250)->save('public/uploads/category/' . $categoryPhotoName);
+
             $updateCategory->update([
                 'name' => $request->name,
+                'description' => $request->description,
                 'photo' => $categoryPhotoName
             ]);
         } else {
+            
             $updateCategory->update([
                 'name' => $request->name,
+                'description' => $request->description,
             ]);
         }
         return response()->json('Category updated successfully');
@@ -129,16 +151,22 @@ class CategoryController extends Controller
     public function delete(Request $request, $categoryId)
     {
         if (auth()->user()->permission->product['categories'] == '0') {
+
             return response()->json('Access Denied');
         }
 
         $deleteCategory = Category::find($categoryId);
+
         if ($deleteCategory->photo !== 'default.png') {
+
             if (file_exists(public_path('uploads/category/' . $deleteCategory->photo))) {
+
                 unlink(public_path('uploads/category/' . $deleteCategory->photo));
             }
         }
+
         if (!is_null($deleteCategory)) {
+
             $deleteCategory->delete();
         }
 

@@ -56,12 +56,13 @@
                                                 <th>Business</th>
                                                 <th>Phone</th>
                                                 <th>Group</th>
-                                                <th>Opening Balance({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Total Sale({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Total Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Sale Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Total Return({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Return Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>Credit Limit</th>
+                                                <th>Opening Balance</th>
+                                                <th>Total Sale</th>
+                                                <th>Total Paid</th>
+                                                <th>Sale Due</th>
+                                                <th>Total Return</th>
+                                                <th>Return Due</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -211,18 +212,18 @@
                                 <label><strong>Date Of Birth :</strong></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i
-                                                class="fas fa-calendar-week input_i"></i></span>
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="fas fa-calendar-week input_f"></i>
+                                        </span>
                                     </div>
-                                    <input type="text" name="date_of_birth" class="form-control"
-                                        autocomplete="off">
+                                    <input type="text" name="date_of_birth" id="date_of_birth" class="form-control"
+                                        autocomplete="off" placeholder="YYYY-MM-DD">
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <label><strong>Address :</strong> </label>
-                                <input type="text" name="address" class="form-control"
-                                    placeholder="Address">
+                                <input type="text" name="address" class="form-control" placeholder="Address">
                             </div>
                         </div>
 
@@ -408,6 +409,7 @@
                 {data: 'business_name',name: 'business_name'},
                 {data: 'phone',name: 'phone'},
                 {data: 'group_name', name: 'customer_groups.group_name'},
+                {data: 'credit_limit', name: 'credit_limit'},
                 {data: 'opening_balance',name: 'opening_balance', className: 'text-end'},
                 {data: 'total_sale',name: 'total_sale', className: 'text-end'},
                 {data: 'total_paid',name: 'total_paid', className: 'text-end'},
@@ -416,6 +418,7 @@
                 {data: 'total_sale_return_due',name: 'total_sale_return_due', className: 'text-end'},
                 {data: 'status',name: 'status'},
             ],fnDrawCallback: function() {
+
                 var opening_balance = sum_table_col($('.data_tbl'), 'opening_balance');
                 $('#opening_balance').text(bdFormat(opening_balance));
                 var total_sale = sum_table_col($('.data_tbl'), 'total_sale');
@@ -433,8 +436,11 @@
 
         function sum_table_col(table, class_name) {
             var sum = 0;
+
             table.find('tbody').find('tr').each(function() {
+
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
+
                     sum += parseFloat(
                         $(this).find('.' + class_name).data('value')
                     );
@@ -451,16 +457,21 @@
             // Add category by ajax
             $('#add_customer_form').on('submit', function(e) {
                 e.preventDefault();
+
                 $('.loading_button').show();
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
                 var inputs = $('.add_input');
                 $('.error').html('');
                 var countErrorField = 0;
+
                 $.each(inputs, function(key, val) {
+
                     var inputId = $(val).attr('id');
                     var idValue = $('#' + inputId).val();
+
                     if (idValue == '') {
+
                         countErrorField += 1;
                         var fieldName = $('#' + inputId).data('name');
                         $('.error_' + inputId).html(fieldName + ' is required.');
@@ -468,6 +479,7 @@
                 });
 
                 if (countErrorField > 0) {
+
                     $('.loading_button').hide();
                     return;
                 }
@@ -478,6 +490,7 @@
                     type: 'post',
                     data: request,
                     success: function(data) {
+
                         toastr.success(data);
                         $('#add_customer_form')[0].reset();
                         table.ajax.reload();
@@ -493,48 +506,12 @@
                 e.preventDefault();
                 $('.data_preloader').show();
                 var url = $(this).attr('href');
+
                 $.get(url, function(data) {
+
                     $('#edit-modal-form-body').html(data);
                     $('#editModal').modal('show');
                     $('.data_preloader').hide();
-                });
-            });
-
-            // edit category by ajax
-            $(document).on('submit', '#edit_customer_form',function(e) {
-                e.preventDefault();
-                $('.loading_button').show();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                var inputs = $('.edit_input');
-                $('.error').html('');
-                var countErrorField = 0;
-                $.each(inputs, function(key, val) {
-                    var inputId = $(val).attr('id');
-                    var idValue = $('#' + inputId).val();
-                    if (idValue == '') {
-                        countErrorField += 1;
-                        var fieldName = $('#' + inputId).data('name');
-                        $('.error_' + inputId).html(fieldName + ' is required.');
-                    }
-                });
-
-                if (countErrorField > 0) {
-                    $('.loading_button').hide();
-                    return;
-                }
-
-                $.ajax({
-                    url: url,
-                    type: 'post',
-                    data: request,
-                    success: function(data) {
-                        console.log(data);
-                        toastr.success(data);
-                        $('.loading_button').hide();
-                        table.ajax.reload();
-                        $('#editModal').modal('hide');
-                    }
                 });
             });
 
@@ -563,6 +540,7 @@
                     async: false,
                     data: request,
                     success: function(data) {
+
                         table.ajax.reload();
                         toastr.error(data);
                         $('#deleted_form')[0].reset();
@@ -597,12 +575,14 @@
             // Show Customer payment modal
             $(document).on('click', '#pay_button', function(e) {
                 e.preventDefault();
+
                 var url = $(this).attr('href');
                 $('.data_preloader').show();
                 $.ajax({
                     url: url,
                     type: 'get',
                     success: function(data) {
+
                         $('#payment_modal_body').html(data);
                         $('#paymentModal').modal('show');
                         $('.data_preloader').hide();
@@ -614,12 +594,14 @@
             // Show customer return payment modal
             $(document).on('click', '#pay_return_button', function(e) {
                 e.preventDefault();
+
                 var url = $(this).attr('href');
                 $('.data_preloader').show();
                 $.ajax({
                     url: url,
                     type: 'get',
                     success: function(data) {
+
                         $('#payment_modal_body').html(data);
                         $('#paymentModal').modal('show');
                         $('.data_preloader').hide();
@@ -630,6 +612,7 @@
             //Add Customer payment request by ajax
             $(document).on('submit', '#customer_payment_form', function(e) {
                 e.preventDefault();
+
                 $('.loading_button').show();
                 var available_amount = $('#p_available_amount').val();
                 var paying_amount = $('#p_paying_amount').val();
@@ -650,10 +633,13 @@
                     cache: false,
                     processData: false,
                     success: function(data) {
+
                         if (!$.isEmptyObject(data.errorMsg)) {
+
                             toastr.error(data.errorMsg, 'ERROR');
                             $('.loading_button').hide();
                         } else {
+
                             $('.loading_button').hide();
                             $('#paymentModal').modal('hide');
                             toastr.success(data);
@@ -661,15 +647,18 @@
                         }
                     },
                     error: function(err) {
+
                         $('.loading_button').hide();
                         $('.error').html('');
 
                         if (err.status == 0) {
+
                             toastr.error('Net Connetion Error. Reload This Page.'); 
                             return;
                         }
 
                         $.each(err.responseJSON.errors, function(key, error) {
+
                             $('.error_p_' + key + '').html(error[0]);
                         });
                     }
@@ -697,6 +686,7 @@
                     url: url,
                     type: 'get',
                     success: function(data) {
+
                         $('#money_receipt_modal').html(data);
                         $('#MoneyReciptModal').modal('show');
                     }
@@ -711,6 +701,7 @@
                     url: url,
                     type: 'get',
                     success: function(data) {
+
                         $('#receipt_voucher_list_modal_body').html(data);
                         $('#moneyReceiptListModal').modal('show');
                         $('.data_preloader').hide();
@@ -729,10 +720,12 @@
                     type: 'post',
                     data: request,
                     success: function(data) {
+
                         toastr.success('Successfully money receipt voucher is generated.');
                         $('#MoneyReciptModal').modal('hide');
                         $('#moneyReceiptListModal').modal('hide');
                         $('.loading_button').hide();
+
                         $(data).printThis({
                             debug: false,
                             importCSS: true,
@@ -751,6 +744,7 @@
                 e.preventDefault();
                 var url = $(this).attr('href');
                 $.get(url, function(data) {
+
                     $('#money_receipt_modal').html(data);
                     $('#MoneyReciptModal').modal('show');
                 });
@@ -764,7 +758,7 @@
                     type: 'get',
                     dataType: 'html',
                     success: function(data) {
-                        console.log(data);
+
                         $(data).printThis({
                             debug: false,
                             importCSS: true,
@@ -785,10 +779,12 @@
                 e.preventDefault();
                 var url = $(this).attr('href');
                 $('.receipt_preloader').show();
+
                 $.ajax({
                     url: url,
                     type: 'get',
                     success: function(data) {
+
                         $('#changeReciptStatusModal').html(data);
                         $('#changeReciptStatusModal').modal('show');
                         $('.receipt_preloader').hide();
@@ -803,11 +799,16 @@
                 var request = $(this).serialize();
                 var inputs = $('.vcs_input');
                 $('.error').html('');
+
                 var countErrorField = 0;
+
                 $.each(inputs, function(key, val) {
+
                     var inputId = $(val).attr('id');
                     var idValue = $('#' + inputId).val();
+
                     if (idValue == '') {
+
                         countErrorField += 1;
                         var fieldName = $('#' + inputId).data('name');
                         $('.error_vcs_' + inputId).html(fieldName + ' is required.');
@@ -815,6 +816,7 @@
                 });
 
                 if (countErrorField > 0) {
+
                     $('.loading_button').hide();
                     return;
                 }
@@ -824,6 +826,7 @@
                     type: 'post',
                     data: request,
                     success: function(data) {
+
                         toastr.success(data);
                         $('#changeReciptStatusModal').modal('hide');
                         $('#moneyReceiptListModal').modal('hide');
@@ -834,13 +837,17 @@
 
             $(document).on('click', '#delete_receipt',function(e) {
                 e.preventDefault();
+
                 var url = $(this).attr('href');
-                    var tr = $(this).closest('tr');
-                    $('#receipt_deleted_form').attr('action', url);
+                var tr = $(this).closest('tr');
+
+                $('#receipt_deleted_form').attr('action', url);
+
                 $.confirm({
                     'title': 'Delete Confirmation',
                     'content': 'Are you sure?',
                     'buttons': {
+
                         'Yes': {'class': 'yes btn-danger', 'action': function() {$('#receipt_deleted_form').submit();tr.remove();}},
                         'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                     }
@@ -852,12 +859,14 @@
                 e.preventDefault();
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
+
                 $.ajax({
                     url: url,
                     type: 'post',
                     async: false,
                     data: request,
                     success: function(data) {
+
                         toastr.error(data);
                         $('#receipt_deleted_form')[0].reset();
                     }
@@ -865,9 +874,12 @@
             });
 
             $(document).on('change', '#is_header_less', function() {
+
                 if ($(this).is(':CHECKED', true)) {
+
                     $('.gap-from-top-add').show();
                 } else {
+
                     $('.gap-from-top-add').hide();
                 }
             });
@@ -876,7 +888,9 @@
                 e.preventDefault();
                 $('.data_preloader').show();
                 var url = $(this).attr('href');
+
                 $.get(url, function(data) {
+
                     $('#payment_list').html(data);
                     $('#viewPaymentModal').modal('show');
                     $('.data_preloader').hide();
@@ -887,7 +901,9 @@
                 e.preventDefault();
                 $('.data_preloader').show();
                 var url = $(this).attr('href');
+
                 $.get(url, function(data) {
+
                     $('#payment_details_body').html(data);
                     $('#paymentDatailsModal').modal('show');
                     $('.data_preloader').hide();
@@ -937,6 +953,7 @@
                     async:false,
                     data:request,
                     success:function(data) {
+
                         table.ajax.reload();
                         toastr.error(data);
                         $('#deleted_payment_form')[0].reset();
@@ -958,6 +975,7 @@
                 type:'get',
                 data: {customer_id},
                 success:function(data){
+
                     $('.data_preloader').hide();
                     $(data).printThis({
                         debug: false,                   
@@ -972,12 +990,34 @@
             }); 
         });
 
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('date_of_birth'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'YYYY-MM-DD',
+        });
+
         document.onkeyup = function () {
+
             var e = e || window.event; // for IE to cover IEs window event-object
-            //console.log(e);
+
             if(e.ctrlKey && e.which == 13) {
+
                 $('#addModal').modal('show');
                 setTimeout(function () {
+
                     $('#name').focus();
                 }, 500);
                 //return false;

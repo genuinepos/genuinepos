@@ -103,7 +103,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                 </div>
-                <input type="text" name="date_of_birth" class="form-control"
+                <input type="text" name="date_of_birth" id="e_date_of_birth" class="form-control"
                     autocomplete="off" value="{{ $customer->date_of_birth }}" placeholder="YYYY-MM-DD">
             </div>
         </div>
@@ -146,11 +146,71 @@
 
     <div class="form-group row mt-3">
         <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i
-                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+            <button type="button" class="btn loading_button d-none">
+                <i class="fas fa-spinner text-primary"></i><b> Loading...</b>
+            </button>
             <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
-            <button type="reset" data-bs-dismiss="modal"
-                class="c-btn btn_orange float-end">Close</button>
+            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
         </div>
     </div>
 </form>
+
+<script>
+     // edit category by ajax
+     $('#edit_customer_form').on('submit',function(e) {
+        e.preventDefault();
+        
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        var inputs = $('.edit_input');
+        $('.error').html('');
+        var countErrorField = 0;
+        $.each(inputs, function(key, val) {
+            var inputId = $(val).attr('id');
+            var idValue = $('#' + inputId).val();
+            if (idValue == '') {
+                countErrorField += 1;
+                var fieldName = $('#' + inputId).data('name');
+                $('.error_' + inputId).html(fieldName + ' is required.');
+            }
+        });
+
+        if (countErrorField > 0) {
+            $('.loading_button').hide();
+            return;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
+
+                toastr.success(data);
+                $('.loading_button').hide();
+                table.ajax.reload();
+                $('#editModal').modal('hide');
+            }
+        });
+    });
+
+     new Litepicker({
+        singleMode: true,
+        element: document.getElementById('e_date_of_birth'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'YYYY-MM-DD',
+    });
+</script>

@@ -416,7 +416,11 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
         Route::post('store/{saleId}', 'SaleReturnController@store')->name('sales.returns.store');
         Route::delete('delete/{saleReturnId}', 'SaleReturnController@delete')->name('sales.returns.delete');
         Route::get('payment/list/{saleId}', 'SaleReturnController@returnPaymentList')->name('sales.returns.payment.list');
+
+        Route::get('create/v2', 'SaleReturnController@createV2')->name('sale.return.create.v2');
     });
+
+
 
     //Pos cash register routes
     Route::group(['prefix' => 'cash/register'], function () {

@@ -338,10 +338,10 @@
         $('.data_preloader').show();
         var url = $(this).attr('href');
         $.get(url, function(data) {
+            
             $('#sale_details').html(data);
             $('.data_preloader').hide();
             $('#detailsModal').modal('show');
-            $('.action_hideable').hide();
         });
     });
 

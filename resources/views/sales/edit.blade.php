@@ -15,13 +15,13 @@
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
-            <form id="edit_sale_form" action="{{ route('sales.update', $saleId) }}" enctype="multipart/form-data" method="POST">
+            <form id="edit_sale_form" action="{{ route('sales.update', $sale->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <section class="mt-5">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
-                                <div class="py-2 px-2 form-header">
+                                <div class="py-1 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
                                             <h6>Edit Sale | <small class="text-dark"><strong>Save Changes = (Shift + Enter)</strong> </small></h6>
@@ -40,7 +40,7 @@
                                                 <label class=" col-4"><b>Customer :</b> </label>
                                                 <div class="col-8">
                                                     <div class="input-group width-60">
-                                                        <input readonly type="text" value="{{ $sale->customer ? $sale->customer->customer->name }}" id="customer_name" class="form-control">
+                                                        <input readonly type="text" value="{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}" id="customer_name" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -51,7 +51,6 @@
                                                     <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                 </div>
                                             </div>
-                                         
                                         </div>
 
                                         <div class="col-md-3">
@@ -79,11 +78,7 @@
                                                     <select name="status" class="form-control add_input" data-name="Status"
                                                         id="status">
                                                         <option value="">Select status</option>
-                                                        {{-- <option value="1">Final</option>
-                                                        <option value="2">Draft</option>
-                                                        <option value="4">Quatation</option>
-                                                        <option value="5">Ordered</option> --}}
-                                                        @foreach (App\Utlis\SaleUtil::saleStatus() as $key => $status)
+                                                        @foreach (App\Utils\SaleUtil::saleStatus() as $key => $status)
                                                             <option {{ $sale->status == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $status }}
                                                             </option>
                                                         @endforeach
@@ -149,13 +144,16 @@
                                                 <div class="searching_area" style="position: relative;">
                                                     <label class="col-form-label">Item Search</label>
                                                     <div class="input-group ">
+
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
+                                                            <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
                                                         </div>
+
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
+                                                        
                                                         @if (auth()->user()->permission->product['product_add'] == '1')
                                                             <div class="input-group-prepend">
-                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                             </div> 
                                                         @endif
                                                     </div>
@@ -169,17 +167,19 @@
                                             <div class="col-md-3">
                                                 <label class="col-form-label"></label>
                                                 <div class="input-group ">
+
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text add_button p-1 m-0">Stock</span>
                                                     </div>
-                                                    <input type="text" readonly class="form-control"
+
+                                                    <input type="text" readonly class="form-control text-success stock_quantity"
                                                         autocomplete="off" id="stock_quantity"
                                                         placeholder="Stock Quantity">
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mt-1">
                                             <div class="sale-item-sec">
                                                 <div class="sale-item-inner">
                                                     <div class="table-responsive">
@@ -192,74 +192,78 @@
                                                                     <th>Unit</th>
                                                                     <th class="text-center">Price Inc.Tax</th>
                                                                     <th>SubTotal</th>
-                                                                    <th><i class="fas fa-trash-alt text-danger"></i></th>
+                                                                    <th><i class="fas fa-minus text-dark"></i></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="sale_list">
-                                                                <tr>
-                                                                    <td colspan="2" class="text-start">
-                                                                        <a href="#" class="text-success" id="edit_product">
-                                                                            @php
-                                                                                $variant = $s_product->product_variant_id != null ? ' -'.$product->variant->variant_name : ''; 
-                                                                            @endphp
-                                                                            
-                                                                            <span class="product_name">{{ $s_product->product->name.$variant }}</span>
+                                                                @php $index = 0; @endphp
+                                                                @foreach ($sale->sale_products as $s_product)
+                                                                    <tr>
+                                                                        <td colspan="2" class="text-start">
+                                                                            <a href="#" class="text-success" id="edit_product">
+                                                                                @php
+                                                                                    $variant = $s_product->product_variant_id != null ? ' -'.$s_product->variant->variant_name : ''; 
+                                                                                @endphp
+                                                                                
+                                                                                <span class="product_name">{{ $s_product->product->name.$variant }}</span>
 
-                                                                        </a><br/><input type="{{ $s_product->product->product->is_show_emi_on_pos == 1 ? 'text' : 'hidden'}}" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here." value="{{$s_product->description ? $s_product->description : '' }}">
-                                                                        <input value="{{ $s_product->product_id }}" type="hidden" class="productId-'{{ $s_product->product_id }}" id="product_id" name="product_ids[]">
+                                                                            </a><br/><input type="{{ $s_product->product->is_show_emi_on_pos == 1 ? 'text' : 'hidden'}}" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here." value="{{$s_product->description ? $s_product->description : '' }}">
+                                                                            <input value="{{ $s_product->product_id }}" type="hidden" class="productId-'{{ $s_product->product_id }}" id="product_id" name="product_ids[]">
+                                                        
+                                                                            @if ($s_product->product_variant_id != null)
+                                                        
+                                                                                <input value="{{ $s_product->product_variant_id }}" type="hidden" class="variantId-{{ $s_product->product_variant_id }}" id="variant_id" name="variant_ids[]">
+                                                                            @else
+                                                        
+                                                                                <input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]"> 
+                                                                            @endif
+                                                        
+                                                                            <input type="hidden" id="tax_type" value="{{ $s_product->product->tax_type }}">
+
+                                                                            <input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="{{ $s_product->unit_tax_percent }}">
+
+                                                                            <input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="{{ $s_product->unit_tax_amount }}">
+
+                                                                            <input value="{{ $s_product->unit_discount_type }}" name="unit_discount_types[]" type="hidden" id="unit_discount_type">
+
+                                                                            <input value="{{ $s_product->unit_discount }}" name="unit_discounts[]" type="hidden" id="unit_discount">
+
+                                                                            <input name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount" value="{{ $s_product->unit_discount_amount }}">
+
+                                                                            <input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="{{ $s_product->unit_cost_inc_tax }}">
+
+                                                                            <input type="hidden" id="previous_quantity" value="{{ $s_product->quantity }}">
+
+                                                                            <input type="hidden" id="qty_limit" value="{{ $qty_limits[$index] }}">
+                                                                        </td>
                                                     
-                                                                        @if ($s_product->product_variant_id != null)
-                                                    
-                                                                            <input value="{{ $s_product->product_variant_id }}" type="hidden" class="variantId-{{ $s_product->product_variant_id }}" id="variant_id" name="variant_ids[]">
-                                                                        @else
-                                                    
-                                                                            <input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]"> 
-                                                                        @endif
-                                                    
-                                                                        <input type="hidden" id="tax_type" value="{{ $s_product->product->tax_type }}">
+                                                                        <td>
+                                                                            <input value="{{ $s_product->quantity }}" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">
+                                                                        </td>
 
-                                                                        <input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="{{ $s_product->unit_tax_percent }}">
+                                                                        <td class="text">
+                                                                            <span class="span_unit">{{ $s_product->unit }}</span> 
 
-                                                                        <input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="{{ $s_product->unit_tax_amount }}">
+                                                                            <input  name="units[]" type="hidden" id="unit" value="{{ $s_product->unit }}">
+                                                                        </td>
 
-                                                                        <input value="{{ $s_product->unit_discount_type }}" name="unit_discount_types[]" type="hidden" id="unit_discount_type">
+                                                                        <td>
+                                                                            <input name="unit_prices_exc_tax[]" type="hidden" value="{{ $s_product->unit_price_exc_tax }}" id="unit_price_exc_tax">
 
-                                                                        <input value="{{ $s_product->unit_discount }}" name="unit_discounts[]" type="hidden" id="unit_discount">
+                                                                            <input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="{{ $s_product->unit_price_inc_tax }}">
+                                                                        </td>
+                                                                        
+                                                                        <td class="text text-center">
+                                                                            <strong><span class="span_subtotal">{{ $s_product->subtotal }}</span></strong>
+                                                                            <input value="{{ $s_product->subtotal }}" readonly name="subtotals[]" type="hidden" id="subtotal">
+                                                                        </td>
 
-                                                                        <input name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount" value="{{ $s_product->unit_discount_amount }}">
-
-                                                                        <input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="{{ $s_product->unit_cost_inc_tax }}">
-
-                                                                        <input type="hidden" id="previous_quantity" value="{{ $s_product->quantity }}">
-
-                                                                        <input type="hidden" id="qty_limit" value="0">
-                                                                    </td>
-                                                
-                                                                    <td>
-                                                                        <input value="{{ $s_product->quantity }}" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">
-                                                                    </td>
-
-                                                                    <td class="text">
-                                                                        <span class="span_unit">{{ $s_product->unit }}</span> 
-
-                                                                        <input  name="units[]" type="hidden" id="unit" value="{{ $s_product->unit }}">
-                                                                    </td>
-
-                                                                    <td>
-                                                                        <input name="unit_prices_exc_tax[]" type="hidden" value="{{ $s_product->unit_price_exc_tax }}" id="unit_price_exc_tax">
-
-                                                                        <input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="{{ $s_product->unit_price_inc_tax }}">
-                                                                    </td>
-                                                                    
-                                                                    <td class="text text-center">
-                                                                        <strong><span class="span_subtotal">{{ $s_product->subtotal }}</span></strong>
-                                                                        <input value="{{ $s_product->subtotal }}" readonly name="subtotals[]" type="hidden" id="subtotal">
-                                                                    </td>
-
-                                                                    <td class="text-center">
-                                                                        <a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>
-                                                                    </td>
-                                                                </tr>
+                                                                        <td class="text-center">
+                                                                            <a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    @php $index++; @endphp
+                                                                @endforeach
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -292,16 +296,11 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>Ship Status :</b></label>
+                                                    <label class="col-4"><b>Ship Status :</b></label>
                                                     <div class="col-8">
                                                         <select name="shipment_status" class="form-control" id="shipment_status">
                                                             <option value="">Shipment Status</option>
-                                                            {{-- <option value="1">Ordered</option>
-                                                            <option value="2">Packed</option>
-                                                            <option value="3">Shipped</option>
-                                                            <option value="4">Delivered</option>
-                                                            <option value="5">Cancelled</option> --}}
-                                                            @foreach (App\Utlis\SaleUtil::saleShipmentStatus() as $key => $shipmentStatus)
+                                                            @foreach (App\Utils\SaleUtil::saleShipmentStatus() as $key => $shipmentStatus)
                                                                 <option {{ $sale->shipment_status == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $shipmentStatus }}
                                                                 </option>
                                                              @endforeach
@@ -320,13 +319,31 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label class="col-sm-4">Sale Note :</label>
+                                                    <div class="col-sm-8">
+                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note" value="{{ $sale->sale_note }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label class="col-sm-4">Payment Note:</label>
+                                                    <div class="col-sm-8">
+                                                        <input name="payment_note" type="text" class="form-control" id="payment_note" placeholder="Payment note" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-md-3">
-                                <div class="item-details-sec mb-3">
+                                <div class="item-details-sec mb-3 number-fields">
                                     <div class="content-inner">
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Total Item :</label>
@@ -343,7 +360,7 @@
                                         </div>
 
                                         <div class="row">
-                                            <label class="col-sm-5 col-form-label">Discount:</label>
+                                            <label class="col-sm-5 col-form-label">Discount :</label>
                                             <div class="col-sm-3">
                                                 <select name="order_discount_type" class="form-control" id="order_discount_type">
                                                     <option {{ $sale->order_discount_type == 1 ? 'SELECTED' : '' }} value="1">Fixed</option>
@@ -370,41 +387,97 @@
                                         </div>
 
                                         <div class="row">
-                                            <label class="col-sm-5 col-form-label">Shipment Cost:</label>
+                                            <label class="col-sm-5 col-form-label">Shipment Cost :</label>
                                             <div class="col-sm-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="{{ $sale->shipment_charge }}"> 
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <label class="col-sm-5 col-form-label">Previous Paid :</label>
-                                            <div class="col-sm-7">
-                                                <input class="form-control" type="number" step="any" name="prevoues_paid" id="prevoues_paid" value="{{ $sale->paid }}">
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <label class="col-sm-5 col-form-label">Total Payable:</label>
+                                            <label class="col-sm-5 col-form-label">Total Payable :</label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00">
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <label class="col-sm-5 col-form-label">Sale Note:</label>
-                                            <div class="col-sm-7">
-                                                <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note" value="{{ $sale->sale_note }}">
+                                        <div class="payment_body {{ $sale->status == 1 || $sale->status == 3 ? '' : 'd-none' }}">
+                                            
+                                            <div class="row">
+                                                <label class="col-sm-5 col-form-label">Previous Paid :</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly class="form-control text-success" type="number" step="any" name="previous_paid" id="previous_paid" value="{{ $sale->paid }}">
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="submitBtn">
-                                            <div class="row justify-content-center">
-                                                <div class="col-12 text-end">
-                                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                                                    <button type="submit" id="save" class="btn btn-sm btn-primary submit_button">Save Change </button>
+                                            <div class="row">
+                                                <label class="col-sm-5 col-form-label">CR. Receivable :</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly class="form-control" name="current_receivable" type="number" step="any" id="current_receivable" value="">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label class="col-sm-5 col-form-label">Cash Receive : >></label>
+                                                <div class="col-sm-7">
+                                                    <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
+                                                </div>
+                                            </div>
+
+                                            {{-- <div class="row">
+                                                <label class="col-sm-5 col-form-label">Change :</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00">
+                                                </div>
+                                            </div> --}}
+
+                                            <div class="row">
+                                                <label class="col-sm-5 col-form-label">Paid By :</label>
+                                                <div class="col-sm-7">
+                                                    <select name="payment_method_id" class="form-control" id="payment_method_id">
+                                                        @foreach ($methods as $method)
+                                                            <option value="{{ $method->id }}" 
+                                                                data-account="{{ $method->account_id }}">
+                                                                {{ $method->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label class="col-sm-5 col-form-label">Debit A/C : <span
+                                                    class="text-danger">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
+                                                        @foreach ($accounts as $account)
+                                                            <option value="{{ $account->id }}">
+                                                                @php
+                                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                                    $balance = ' BL : '.$account->balance;
+                                                                @endphp
+                                                                {{ $account->name.$accountType.$balance}}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_account_id"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label class="col-sm-5 col-form-label">Due :</label>
+                                                <div class="col-sm-7">
+                                                    <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="row justify-content-center">
+                                            <div class="col-12 text-end">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
+                                                <button type="submit" id="save" class="btn btn-sm btn-primary submit_button">Save Change </button>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -505,7 +578,6 @@
     </div> 
     <!-- Edit selling product modal End-->
  
-
     @if (auth()->user()->permission->product['product_add'] == '1')
         <!--Add Product Modal--> 
         <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">

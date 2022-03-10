@@ -43,11 +43,14 @@ class SaleUtil
     public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix)
     {
         if ($request->paying_amount > 0) {
+
             $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0.00;
             $paidAmount = $request->paying_amount - $changedAmount;
 
             if ($request->previous_due > 0) {
+
                 if ($paidAmount >= $request->total_invoice_payable) {
+
                     $addPaymentGetId = $this->addPaymentGetId(
                         invoicePrefix: $paymentInvoicePrefix,
                         request: $request,
@@ -498,7 +501,7 @@ class SaleUtil
                 if ($payment->attachment) {
 
                     if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
-                        
+
                         unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
                     }
                 }
@@ -523,7 +526,7 @@ class SaleUtil
                 $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, $storedBranchId);
 
                 foreach ($saleProduct->purchaseSaleProductChains as $purchaseSaleProductChain) {
-                    
+
                     if ($purchaseSaleProductChain->purchaseProduct) {
 
                         $this->purchaseUtil->adjustPurchaseLeftQty($purchaseSaleProductChain->purchaseProduct);
@@ -539,7 +542,7 @@ class SaleUtil
 
         $count = DB::table('sales')->count();
 
-        if($count == 0) DB::statement('ALTER TABLE sales AUTO_INCREMENT = 1');
+        if ($count == 0) DB::statement('ALTER TABLE sales AUTO_INCREMENT = 1');
     }
 
     public function addSaleTable($request)
@@ -554,7 +557,16 @@ class SaleUtil
             ->leftJoin('customers', 'sales.customer_id', 'customers.id');
 
         $query->select(
-            'sales.*',
+            'sales.id',
+            'sales.branch_id',
+            'sales.invoice_id',
+            'sales.date',
+            'sales.total_payable_amount',
+            'sales.sale_return_amount',
+            'sales.sale_return_due',
+            'sales.paid',
+            'sales.due',
+            'sales.is_return_available',
             'branches.name as branch_name',
             'branches.branch_code',
             'customers.name as customer_name',
@@ -838,6 +850,133 @@ class SaleUtil
             ->make(true);
     }
 
+    public function SaleOrderTable($request)
+    {
+        $generalSettings = DB::table('general_settings')->first();
+        $sales = '';
+
+        $userPermission = auth()->user()->permission;
+
+        $query = DB::table('sales')
+            ->leftJoin('branches', 'sales.branch_id', 'branches.id')
+            ->leftJoin('customers', 'sales.customer_id', 'customers.id');
+
+        $query->select(
+            'sales.id',
+            'sales.branch_id',
+            'sales.invoice_id',
+            'sales.date',
+            'sales.total_payable_amount',
+            'sales.paid',
+            'sales.due',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'customers.name as customer_name',
+        );
+
+        if ($userPermission->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $sales = $this->filteredQuery($request, $query)->where('sales.status', 3)
+                ->where('sales.created_by', 1)
+                ->orderBy('sales.report_date', 'desc');
+        } else {
+
+            if ($userPermission->sale['view_own_sale'] == '1') {
+
+                $query->where('sales.admin_id', auth()->user()->id);
+            }
+
+            $sales = $this->filteredQuery($request, $query)->where('sales.branch_id', auth()->user()->branch_id)
+                ->where('sales.status', 3)
+                ->where('created_by', 1)
+                ->orderBy('sales.report_date', 'desc');
+        }
+
+        return DataTables::of($sales)
+            ->addColumn('action', function ($row) use ($userPermission) {
+
+                $html = '<div class="btn-group" role="group">';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+                $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+
+                if (auth()->user()->branch_id == $row->branch_id) {
+
+                    if ($userPermission->sale['sale_payment'] == '1') {
+
+                        if ($row->due > 0) {
+
+                            $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                        }
+                    }
+
+                    if ($userPermission->sale['sale_payment'] == '1') {
+
+                        $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
+                        data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
+                            class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                    }
+
+                    if ($userPermission->sale['edit_add_sale'] == '1') {
+
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    }
+
+                    if ($userPermission->sale['delete_add_sale'] == '1') {
+
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    }
+                }
+
+                // $html .= '<a class="dropdown-item" id="send_notification" href="' . route('sales.notification.form', [$row->id]) . '"><i class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
+                $html .= '</div>';
+                $html .= '</div>';
+                return $html;
+            })
+            ->editColumn('date', function ($row) use ($generalSettings) {
+
+                $__date_format = str_replace('-', '/', json_decode($generalSettings->business, true)['date_format']);
+                return date($__date_format, strtotime($row->date));
+            })
+
+            ->editColumn('from',  function ($row) use ($generalSettings) {
+
+                if ($row->branch_name) {
+
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                } else {
+
+                    return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                }
+            })
+
+            ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
+
+            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
+
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+
+            ->editColumn('due', fn ($row) =>  '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
+
+            ->editColumn('paid_status', function ($row) {
+
+                $payable = $row->total_payable_amount;
+                if ($row->due <= 0) {
+
+                    return '<span class="text-success"><b>Paid</b></span>';
+                } elseif ($row->due > 0 && $row->due < $payable) {
+
+                    return '<span class="text-primary"><b>Partial</b></span>';
+                } elseif ($payable == $row->due) {
+
+                    return '<span class="text-danger"><b>Due</b></span>';
+                }
+            })
+            ->rawColumns(['action', 'date', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'paid_status'])
+            ->make(true);
+    }
+
     public function soldProductListTable($request)
     {
         $generalSettings = DB::table('general_settings')->first();
@@ -849,7 +988,8 @@ class SaleUtil
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id');
+            ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
+            ->where('sales.status', 1);
 
         if ($request->product_id) {
 
@@ -932,7 +1072,7 @@ class SaleUtil
         } else {
 
             if (auth()->user()->permission->sale['view_own_sale'] == '1') {
-                
+
                 $query->where('sales.admin_id', auth()->user()->id);
             }
 
@@ -1047,7 +1187,7 @@ class SaleUtil
                 return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_payable_amount . '</b>';
             })
             ->editColumn('user', function ($row) {
-                
+
                 return $row->u_prefix . ' ' . $row->u_name . ' ' . $row->u_last_name;
             })
             ->setRowAttr([
@@ -1225,7 +1365,7 @@ class SaleUtil
 
                     $html .= '<span class="text-primary"><b>Partial</b></span>';
                 } elseif ($payable == $row->due) {
-                    
+
                     $html .= '<span class="text-danger"><b>Due</b></span>';
                 }
                 return $html;
@@ -1302,10 +1442,10 @@ class SaleUtil
         $return = DB::table('sale_returns')->where('sale_id', $sale->id)->first();
         $returnAmount = $return ? $return->total_return_amount : 0;
 
-        $due = $sale->total_payable_amount 
-        - $totalSalePaid->sum('total_paid') 
-        - $returnAmount 
-        + $totalReturnPaid->sum('total_paid');
+        $due = $sale->total_payable_amount
+            - $totalSalePaid->sum('total_paid')
+            - $returnAmount
+            + $totalReturnPaid->sum('total_paid');
 
         $returnDue = $returnAmount
             - ($sale->total_payable_amount - $totalSalePaid->sum('total_paid'))
@@ -1398,8 +1538,8 @@ class SaleUtil
                         }
                     }
                 }
-            }else {
-                
+            } else {
+
                 $addPurchaseSaleChain = new PurchaseSaleProductChain();
                 $addPurchaseSaleChain->sale_product_id = $sale_product->id;
                 $addPurchaseSaleChain->sold_qty = $sale_product->quantity;
@@ -1523,8 +1663,44 @@ class SaleUtil
         }
     }
 
+    public function getStockLimitProducts($sale)
+    {
+        $qty_limits = [];
+
+        foreach ($sale->sale_products as $sale_product) {
+
+            if ($sale_product->product->is_manage_stock == 0) {
+
+                $qty_limits[] = PHP_INT_MAX;
+            } else {
+
+                $productBranch = DB::table('product_branches')->where('branch_id', $sale->branch_id)
+                    ->where('product_id', $sale_product->product_id)->first();
+
+                if ($sale_product->product->type == 2) {
+
+                    $qty_limits[] = 500000;
+                } elseif ($sale_product->product_variant_id) {
+
+                    $productBranchVariant = DB::table('product_branch_variants')
+                        ->where('product_branch_id', $productBranch->id)
+                        ->where('product_id', $sale_product->product_id)
+                        ->where('product_variant_id', $sale_product->product_variant_id)
+                        ->first();
+
+                    $qty_limits[] = $productBranchVariant->variant_quantity;
+                } else {
+
+                    $qty_limits[] = $productBranch->product_quantity;
+                }
+            }
+        }
+
+        return $qty_limits;
+    }
+
     public static function saleStatus()
-    { 
+    {
         return [
             1 => 'Final',
             3 => 'Ordered',

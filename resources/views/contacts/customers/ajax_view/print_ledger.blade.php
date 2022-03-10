@@ -82,7 +82,7 @@
                             @php
                                 $type = $customerUtil->voucherType($row->voucher_type);
                                 $__ags = $row->ags_sale ? '/' . 'AGS: ' . $row->ags_sale : '';
-                                $particulars = '<b>' . $type['name'] . '</b>' . $__ags . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                                $particulars = '<b>' . $type['name'].($row->sale_status == 3 ? '-Order': ''). '</b>' . $__ags . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
                             @endphp 
 
                             {!! $particulars !!}

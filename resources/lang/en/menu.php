@@ -49,10 +49,12 @@ return [
   'pos_sale_list' => 'Manage POS Sale',
   'pos' => 'POS',
   'pos_list' => 'POS List',
+  'sales_order_list' => 'Sales Order List',
   'draft_list' => 'Draft List',
   'quotation_list' => 'Quotation List',
   'challan_list' => 'Challan List',
   'sale_return_list' => 'Sale Return List',
+  'add_sale_return' => 'Add Sale Return',
   'shipments' => 'Shipments',
   // Menu child of Transfer module
   'transfer_stock_heading_1' => 'TRANSFER STOCK FROM <strong>WAREHOUSE</strong> TO <strong> BUSINESS LOCATION</strong>',

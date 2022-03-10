@@ -39,7 +39,8 @@
                 <ul class="list-unstyled">
                     <li class="sale_due">
                         <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                        <span class="card_text total_due">{{ App\Utils\Converter::format_in_bdt($sale->due) }}</span> </li>
+                        <span class="card_text total_due text-danger">{{ App\Utils\Converter::format_in_bdt($sale->due) }}</span> 
+                    </li>
                 </ul>
             </div>
         </div>
@@ -91,7 +92,7 @@
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-7">
+        <div class="col-md-4">
             <label><strong>Debit Account :</strong> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
@@ -112,7 +113,7 @@
             </div>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-4">
             <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
             <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
         </div>

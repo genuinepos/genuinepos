@@ -1034,12 +1034,15 @@ a.resent-tn:hover {
     .col-sm-6.col-12.btn-section {
         margin-top: 0px !important;
     }
+
     .pos-logo img {
         width: 106px;
     }
+
     .input-sec {
         padding: 0;
     }
+    
     .product-name a {
         font-size: 10px;
     }
@@ -1049,6 +1052,7 @@ a.resent-tn:hover {
     .btn-pos {
         height: 23px;
     }
+
     .function-card {
         padding: 20% 0;
     }
@@ -1058,16 +1062,20 @@ a.resent-tn:hover {
     font-size: 28px !important;
     font-weight: 500 !important;
 }
+
 .big_label {
     font-size: 15px;
     padding-left: 5px;
 }
+
 small.login-user-name span {
     line-height: 13px;
 }
+
 select {
     height: 28px;
 }
+
 .checkout-input-sec input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -1079,21 +1087,26 @@ input[type="number"]::-webkit-outer-spin-button {
     font-weight: 500;
     font-size: 13px;
 }
+
 #order_tax {
     direction: rtl;
     text-align: right;
     font-weight: 800;
 }
+
 /* Specilly used for Firefox */
 input[type="number"] {
     -moz-appearance: textfield;
 }
+
 .ac_item {
     background: #50ffce !important;
 }
+
 .ac_select_area {
     border-right: 3px solid #50ffce !important;
 }
+
 .tbl-head-shortcut-menus {
     overflow-x: hidden;
     overflow-y: hidden;
@@ -1150,4 +1163,13 @@ div#calculatorModal {
 
 .pos-amounts {
     height: 26px;
+}
+
+.description_input {
+    height: 20px;
+    margin-top: 2px;
+}
+
+input#quantity {
+    height: 22px;
 }

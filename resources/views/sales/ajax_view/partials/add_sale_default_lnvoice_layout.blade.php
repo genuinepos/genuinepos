@@ -39,18 +39,18 @@
                           </div>
 
                           <div class="col-md-4 col-sm-4 col-lg-4 text-center">
-                              <h5>{{ $defaultLayout->invoice_heading }}</h5>
+                              <h5 style="text-transform: uppercase;">{{ $sale->status == 1 ? $defaultLayout->invoice_heading : 'SALE ORDER' }}</h5>
                               <h6>
                                   @php
                                       $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                                   @endphp
 
                                   @if ($sale->due <= 0)
-                                      Paid
+                                      PAID
                                   @elseif ($sale->due > 0 && $sale->due < $payable) 
-                                      Partial
+                                      PARTIAL
                                   @elseif($payable==$sale->due)
-                                      Due
+                                      DUE
                                   @endif
                               </h6>
                           </div>
@@ -84,10 +84,12 @@
                                         </p>
 
                                         @if ($defaultLayout->branch_phone)
+
                                             <p><b>Phone</b> : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                                         @endif
 
                                         @if ($defaultLayout->branch_email && json_decode($generalSettings->business, true)['email'])
+                                        
                                             <p><b>Email</b> : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                                         @endif
                                   @endif
@@ -98,6 +100,7 @@
               @endif
               
               @if ($defaultLayout->is_header_less == 1)
+
                   @for ($i = 0; $i < $defaultLayout->gap_from_top; $i++)
                       <br/>
                   @endfor
@@ -110,35 +113,40 @@
                               <li><strong>Customer : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                               </li>
                               @if ($defaultLayout->customer_address)
-                                  <li><strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                                  <li>
+                                      <strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                                   </li>
                               @endif
 
                               @if ($defaultLayout->customer_tax_no)
-                                  <li><strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                  <li>
+                                      <strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                   </li>
                               @endif
 
                               @if ($defaultLayout->customer_phone)
-                                  <li><strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                                  <li>
+                                      <strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                                   </li>
                               @endif
                           </ul>
                       </div>
                       <div class="col-lg-4 text-center">
                           @if ($defaultLayout->is_header_less == 1)
-                              <h5>{{ $defaultLayout->invoice_heading }}</h5>
+
+                              <h5 style="text-transform: uppercase;">{{ $sale->status == 1 ? $defaultLayout->invoice_heading : 'SALE ORDER' }}</h5>
+
                               <h6>
                                   @php
                                       $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                                   @endphp
 
                                   @if ($sale->due <= 0)
-                                      Paid
+                                      PAID
                                   @elseif ($sale->due > 0 && $sale->due < $payable) 
-                                      Partial 
+                                      PARTIAL 
                                   @elseif($payable==$sale->due)
-                                      Due
+                                      DUE
                                   @endif
                               </h6>
                           @endif

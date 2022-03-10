@@ -10,7 +10,7 @@
         .selectProduct {background-color: #ab1c59;color: #fff !important;}
         .input-group-text-sale {font-size: 7px !important;}
         b{font-weight: 500; font-family: Arial, Helvetica, sans-serif;}
-        #display_pre_due{font-weight: 800;}
+        #display_pre_due{font-weight: 600;}
         input[type=number]#quantity::-webkit-inner-spin-button, 
         input[type=number]#quantity::-webkit-outer-spin-button {opacity: 1;margin: 0;}
     </style>
@@ -90,9 +90,10 @@
                                                     <select name="status" class="form-control add_input" data-name="Status"
                                                         id="status">
                                                         <option value="">Select status</option>
-                                                        <option value="1">Final</option>
-                                                        <option value="2">Draft</option>
-                                                        <option value="4">Quatation</option>
+                                                        @foreach (App\Utils\SaleUtil::saleStatus() as $key => $status)
+                                                            <option value="{{ $key }}">{{ $status }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                     <span class="error error_status"></span>
                                                 </div>
@@ -126,9 +127,9 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class="col-6 text-danger"><b>Previous Due :</b></label>
+                                                <label class="col-6"><b>Previous Due :</b></label>
                                                 <div class="col-6">
-                                                    <input readonly type="number" step="any" class="form-control" id="display_pre_due" value="0.00">
+                                                    <input readonly type="number" step="any" class="form-control text-danger" id="display_pre_due" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -206,7 +207,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text add_button p-1 m-0">Stock</span>
                                                     </div>
-                                                    <input type="text" readonly class="form-control"
+                                                    <input type="text" readonly class="form-control text-success stock_quantity"
                                                         autocomplete="off" id="stock_quantity"
                                                         placeholder="Stock Quantity">
                                                 </div>
@@ -322,7 +323,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <div class="item-details-sec mb-3">
+                                <div class="item-details-sec mb-3 number-fields">
                                     <div class="content-inner">
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Total Item :</label>
@@ -370,7 +371,7 @@
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Previous Due :</label>
                                             <div class="col-sm-7">
-                                                <input readonly class="form-control" type="number" step="any" name="previous_due" id="previous_due" value="0.00">
+                                                <input readonly class="form-control text-danger" type="number" step="any" name="previous_due" id="previous_due" value="0.00">
                                             </div>
                                         </div>
                                         
@@ -433,7 +434,7 @@
                                             <div class="row">
                                                 <label class="col-sm-5 col-form-label">Due :</label>
                                                 <div class="col-sm-7">
-                                                    <input readonly type="number" step="any" class="form-control" name="total_due" id="total_due" value="0.00">
+                                                    <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -443,7 +444,7 @@
                                                 <div class="col-12 text-end">
                                                     <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-danger"></i> </button>
                                                     <button type="submit" id="quotation" class="btn btn-sm btn-info text-white submit_button" data-status="4" value="save_and_print">Quotation</button>
-                                                    <button type="submit" id="order" class="btn btn-sm btn-secondary text-white submit_button" data-status="5" value="save_and_print">Order</button>
+                                                    <button type="submit" id="order" class="btn btn-sm btn-secondary text-white submit_button" data-status="3" value="save_and_print">Order</button>
                                                     <button type="submit" id="save_and_print" class="btn btn-sm btn-primary submit_button" data-status="1" value="save_and_print">Final & Print</button>
                                                     <button type="submit" id="save" class="btn btn-sm btn-primary submit_button" data-status="1" value="save">Final</button>
                                                 </div>

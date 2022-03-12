@@ -1,20 +1,6 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Sale;
-use App\Models\Account;
-use App\Models\Purchase;
-use App\Models\Supplier;
-use App\Utils\AccountUtil;
-use App\Models\SalePayment;
 use App\Models\AdminAndUser;
-use App\Models\AccountBranch;
-use App\Models\AccountLedger;
-use App\Models\CustomerLedger;
-use App\Models\SupplierLedger;
-use App\Models\PurchasePayment;
-use App\Models\PurchaseProduct;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +31,7 @@ Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controlle
     Route::get('branch/authenticated/users/{branchId}', 'CommonAjaxCallController@branchAuthenticatedUsers');
     Route::get('category/subcategories/{categoryId}', 'CommonAjaxCallController@categorySubcategories');
     Route::get('only/search/product/for/reports/{product_name}', 'CommonAjaxCallController@onlySearchProductForReports');
+    Route::get('search/final/sale/invoices/{invoiceId}', 'CommonAjaxCallController@searchFinalSaleInvoices');
 });
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
@@ -357,26 +344,25 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::get('packing/Slip/{saleId}', 'SaleController@packingSlip')->name('sales.packing.slip');
     Route::get('drafts', 'SaleController@drafts')->name('sales.drafts');
     Route::get('draft/details/{draftId}', 'SaleController@draftDetails')->name('sales.drafts.details');
+    Route::get('sales/order/list', 'SaleController@salesOrderList')->name('sales.order.list');
     Route::get('quotations', 'SaleController@quotations')->name('sales.quotations');
     Route::get('quotation/details/{quotationId}', 'SaleController@quotationDetails')->name('sales.quotations.details');
     Route::get('create', 'SaleController@create')->name('sales.create');
     Route::post('store', 'SaleController@store')->name('sales.store');
     Route::get('edit/{saleId}', 'SaleController@edit')->name('sales.edit');
-    Route::get('editable/sale/{saleId}', 'SaleController@editableSale')->name('sales.get.editable.sale');
     Route::post('update/{saleId}', 'SaleController@update')->name('sales.update');
     Route::get('get/all/customer', 'SaleController@getAllCustomer')->name('sales.get.all.customer');
     Route::get('customer_info/{customerId}', 'SaleController@customerInfo');
     Route::get('get/all/users', 'SaleController@getAllUser')->name('sales.get.all.users');
     Route::get('get/all/unit', 'SaleController@getAllUnit')->name('sales.get.all.unites');
     Route::get('get/all/tax', 'SaleController@getAllTax')->name('sales.get.all.taxes');
-    Route::get('search/product/{product_code}', 'SaleController@searchProduct');
+    Route::get('search/product/{status}/{product_code}', 'SaleController@searchProduct');
     Route::delete('delete/{saleId}', 'SaleController@delete')->name('sales.delete');
     Route::get('edit/shipment/{saleId}', 'SaleController@editShipment')->name('sales.shipment.edit');
     Route::post('update/shipment/{saleId}', 'SaleController@updateShipment')->name('sales.shipment.update');
     Route::post('change/status/{saleId}', 'SaleController@changeStatus')->name('sales.change.status');
-    Route::get('filter/draft', 'SaleController@filterDraft')->name('sales.filter.draft');
-    Route::get('check/branch/variant/qty/{product_id}/{variant_id}', 'SaleController@checkBranchProductVariant');
-    Route::get('check/single/product/stock/{product_id}', 'SaleController@checkBranchSingleProductStock');
+    Route::get('check/branch/variant/qty/{status}/{product_id}/{variant_id}', 'SaleController@checkBranchProductVariant');
+    Route::get('check/single/product/stock/{status}/{product_id}', 'SaleController@checkBranchSingleProductStock');
 
     Route::get('shipments', 'SaleController@shipments')->name('sales.shipments');
     Route::get('recent/sales', 'SaleController@recentSale')->name('sales.recent.sales');
@@ -419,8 +405,6 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
 
         Route::get('create/v2', 'SaleReturnController@createV2')->name('sale.return.create.v2');
     });
-
-
 
     //Pos cash register routes
     Route::group(['prefix' => 'cash/register'], function () {
@@ -1029,6 +1013,7 @@ Route::get('/test', function () {
 
 // All authenticated routes
 Auth::routes();
+
 // Route::get('dbal', function() {
 //     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
 // });

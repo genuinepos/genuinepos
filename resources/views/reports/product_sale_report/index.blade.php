@@ -276,6 +276,7 @@
     });
 
     $(document).on('click', '#select_product', function (e) {
+        
         e.preventDefault();
         var product_name = $(this).html();
         $('#search_product').val(product_name.trim());
@@ -287,7 +288,9 @@
     });
 
     $('body').keyup(function(e){
+
         if (e.keyCode == 13 || e.keyCode == 9){  
+
             $(".selectProduct").click();
             $('.search_result').hide();
             $('#list').empty();

@@ -394,7 +394,9 @@
                 }
             @endif
             var url = "{{ url('manufacturing/productions/get/process/') }}"+"/"+processId;
+
             $.get(url, function(data) {
+
                 $('#product_id').val(data.product_id);
                 $('#variant_id').val(data.variant_id);
                 $('#output_quantity').val(data.total_output_qty);
@@ -411,41 +413,51 @@
                 var product_id = data.product_id;
                 var variantId = data.variant_id ? data.variant_id : null;
                 var url = "{{ url('manufacturing/productions/get/ingredients') }}"+"/"+processId+"/"+stockWarehouseId;
+
                 $.get(url, function(data) {$('#ingredient_list').html(data);__calculateTotalAmount();});
             });
         });
 
         $(document).on('input', '#output_quantity', function () {
+
             var presentQty = $(this).val() ? $(this).val() : 0;
             var parameterQty = $('#parameter_quantity').val() ? $('#parameter_quantity').val() : 0;
             var meltipilerQty = parseFloat(presentQty) / parseFloat(parameterQty);
             var allTr = $('#ingredient_list').find('tr');
+
             allTr.each(function () {
+
                 var parameterInputQty = $(this).find('#parameter_input_quantity').val();
                 var updateInputQty = parseFloat(meltipilerQty) * parseFloat(parameterInputQty);
                 $(this).find('#input_quantity').val(parseFloat(updateInputQty).toFixed(2));
                 __calculateIngredientsTableAmount($(this));
             });
+
             __calculateTotalAmount();
         });
 
         $(document).on('input', '#wasted_quantity', function () {
+
             __calculateTotalAmount();
         });
 
         $(document).on('input', '#production_cost', function () {
+
             __calculateTotalAmount();
         });
 
         $(document).on('input', '#input_quantity', function () {
+
             var value = $(this).val() ? $(this).val() : 0;
             var tr = $(this).closest('tr');
             tr.find('#parameter_input_quantity').val(parseFloat(value).toFixed(2));
+
             __calculateIngredientsTableAmount(tr);
         });
 
         var errorCount = 0;
         function __calculateIngredientsTableAmount(tr) {
+
             var inputQty = tr.find('#input_quantity').val() ? tr.find('#input_quantity').val() : 0;
             var unitCostIncTax = tr.find('#unit_cost_inc_tax').val();
             var stock_limit = tr.find('#qty_limit').val();
@@ -454,10 +466,13 @@
             var unitName = tr.find('#qty_limit').data('unit');
             var regexp = /^\d+\.\d{0,2}$/;
             tr.find('#input_qty_error').html('');
+
             if (regexp.test(parseFloat(inputQty)) == true) {
+
                 tr.find('#input_qty_error').html('Deciaml value is not allowed.');
                 errorCount++;
             } else if(parseFloat(inputQty) > parseFloat(limitQty)) {
+
                 tr.find('#input_qty_error').html('Quantity exceeds stock quantity!');
                 errorCount++;
             }
@@ -469,9 +484,12 @@
         }
 
         function __calculateTotalAmount(){
+
             var subtotals = document.querySelectorAll('#subtotal');
             var totalIngredientCost = 0;
+
             subtotals.forEach(function(subtotal){
+
                 totalIngredientCost += parseFloat(subtotal.value);
             });
 
@@ -488,13 +506,15 @@
         }
 
         function __productPricingCalculate() {
+
             var total_cost = $('#total_cost').val() ? $('#total_cost').val() : 0;
             var final_output_qty = $('#final_output_quantity').val() ? $('#final_output_quantity').val() : 0;
             var par_unit_cost = parseFloat(total_cost) / parseFloat(final_output_qty);
             var tax_type = $('#tax_type').val();
             var calc_product_cost_tax = parseFloat(par_unit_cost) / 100 * parseFloat(tax_percent);
-            console.log(tax_percent);
+
             if (tax_type == 2) {
+
                 var inclusive_tax_percent = 100 + parseFloat(tax_percent);
                 var calc_tax = parseFloat(par_unit_cost) / parseFloat(inclusive_tax_percent) * 100;
                 calc_product_cost_tax = parseFloat(par_unit_cost) - parseFloat(calc_tax);
@@ -505,7 +525,9 @@
             $('#per_unit_cost_inc_tax').val(parseFloat(per_unit_cost_inc_tax).toFixed(2));
 
             var xMargin = $('#xMargin').val() ? $('#xMargin').val() : 0;
+
             if (xMargin > 0) {
+
                 var calculate_margin = parseFloat(par_unit_cost) / 100 * parseFloat(xMargin);
                 var selling_price = parseFloat(par_unit_cost) + parseFloat(calculate_margin);
                 $('#selling_price').val(parseFloat(selling_price).toFixed(2));
@@ -513,10 +535,12 @@
         }
 
         $('#xMargin').on('input', function() {
+
             __productPricingCalculate();
         });
 
         $(document).on('input', '#selling_price',function() {
+
             var selling_price = $(this).val() ? $(this).val() : 0;
             var par_unit_cost = $('#per_unit_cost_exc_tax').val() ? $('#per_unit_cost_exc_tax').val() : 0;
             var profitAmount = parseFloat(selling_price) - parseFloat(par_unit_cost);
@@ -527,6 +551,7 @@
         });
 
         $('.submit_button').on('click', function () {
+
             var value = $(this).val();
             $('#action_type').val(value);
         });
@@ -534,17 +559,21 @@
         //Add process request by ajax
         $('#update_production_form').on('submit', function(e) {
             e.preventDefault();
+
             errorCount = 0;
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
             var allTr = $('#ingredient_list').find('tr');
+
             allTr.each(function () {
+
                 __calculateIngredientsTableAmount($(this));
             });
 
             if (errorCount > 0) {
+
                 $('.loading_button').hide();
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                 return;
@@ -556,11 +585,15 @@
                 type:'post',
                 data: request,
                 success:function(data){
+
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
+
                     if(!$.isEmptyObject(data.errorMsg)) {
+
                         toastr.error(data.errorMsg);
                     } else if(!$.isEmptyObject(data.successMsg)) {
+
                         toastr.success(data.successMsg);
                         window.location = "{{ url()->previous() }}";
                     }
@@ -568,9 +601,12 @@
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
                     $('.error').html('');
+
                     if (err.status == 0) {
+
                         toastr.error('Net Connetion Error. Reload This Page.'); 
                     }else{
+                        
                         toastr.error('Server error please contact to the support.');
                     }
                 }

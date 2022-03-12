@@ -22,6 +22,7 @@ class ProductSaleReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+
             $generalSettings = DB::table('general_settings')->first();
             $saleProducts = '';
             $query = DB::table('sale_products')
@@ -29,7 +30,8 @@ class ProductSaleReportController extends Controller
                 ->leftJoin('products', 'sale_products.product_id', 'products.id')
                 ->leftJoin('product_variants', 'sale_products.product_variant_id', 'product_variants.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-                ->leftJoin('units', 'products.unit_id', 'units.id');
+                ->leftJoin('units', 'products.unit_id', 'units.id')
+                ->where('sales.status', 1);
 
             if ($request->product_id) {
                 $query->where('sale_products.product_id', $request->product_id);
@@ -119,7 +121,8 @@ class ProductSaleReportController extends Controller
             ->leftJoin('products', 'sale_products.product_id', 'products.id')
             ->leftJoin('product_variants', 'sale_products.product_variant_id', 'product_variants.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id');
+            ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->where('sales.status', 1);
 
         if ($request->product_id) {
             $query->where('sale_products.product_id', $request->product_id);

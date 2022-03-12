@@ -26,9 +26,13 @@
                                 @endif
                             @endif
                         </div>
+                        
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="middle_header_text text-center">
-                                <h6>{{ $sale->branch->add_sale_invoice_layout->invoice_heading }}</h6>
+                                <h5 style="text-transform: uppercase;">
+                                    {{ $sale->status == 1 ? $sale->branch->add_sale_invoice_layout->invoice_heading : 'SALE ORDER' }}
+                                </h5>
+
                                 <h6>
                                     @php
                                         $payable = $sale->total_payable_amount - $sale->sale_return_amount;
@@ -100,18 +104,18 @@
                     <div class="col-lg-4 text-center">
                         @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
                             <div class="middle_header_text text-center">
-                                <h5>{{ $sale->branch->add_sale_invoice_layout->invoice_heading }}</h5>
+                                <h5 style="text-transform: uppercase;">{{ $sale->status == 1 ? $sale->branch->add_sale_invoice_layout->invoice_heading : 'SALE ORDER' }}</h5>
                                 <h6>
                                     @php
                                         $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                                     @endphp
 
                                     @if ($sale->due <= 0)
-                                        Paid
+                                        PAID
                                     @elseif ($sale->due > 0 && $sale->due < $payable) 
-                                        Partial
+                                        PARTIAL
                                     @elseif($payable==$sale->due)
-                                        Due
+                                        DUE
                                     @endif
                                 </h6>
                             </div>
@@ -121,7 +125,7 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> Invoice No : </strong> {{ $sale->invoice_id }}</li>
+                            <li><strong> {{ $sale->status == 1 ? 'Invoice' : 'Order' }} No : </strong> {{ $sale->invoice_id }}</li>
                             <li><strong> Date : {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' .date($timeFormat ,strtotime($sale->time)) }}</strong></li>
                             <li><strong> Entered By : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                         </ul>

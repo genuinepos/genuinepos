@@ -399,7 +399,8 @@
                                 </div>
                             @endif
                         </div>
-                        <hr>
+
+                        <hr class="p-0 m-0 my-1">
 
                         <div class="row">
                             @if (auth()->user()->permission->product['selling_price_group'] == '1')
@@ -471,7 +472,9 @@
                                     </div>
                                 @endif
                             </div>
-                            <hr>
+
+                            <hr class="p-0 m-0 my-1">
+
                             <div class="row">
                                 @if (auth()->user()->permission->contact['customer_all'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -507,7 +510,9 @@
                                     </div>
                                 @endif
                             </div>
-                            <hr>
+
+                            <hr class="p-0 m-0 my-1">
+
                         </div>
                     </div>
                 </div>
@@ -566,7 +571,9 @@
                                         <p class="switch_text">@lang('menu.po_list')</p>
                                     </div>
                                 </div>
-                                <hr>
+
+                                <hr class="p-0 m-0 my-1">
+
                                 <div class="row">
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
@@ -646,7 +653,9 @@
                                                 <p class="switch_text">@lang('menu.po_list')</p>
                                             </div>
                                         </div>
-                                        <hr>
+
+                                        <hr class="p-0 m-0 my-1">
+
                                         <div class="row">
                                             @if (auth()->user()->permission->purchase['purchase_return'] == '1')
                                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -693,8 +702,11 @@
                     </div>
                     <div class="container-fluid">
                         <div class="row">
+
                             @if (json_decode($generalSettings->modules, true)['add_sale'] == '1')
+
                                 @if (auth()->user()->permission->sale['create_add_sale'])
+
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('sales.create') }}" class="bar-link">
@@ -706,6 +718,7 @@
                                 @endif
                                 
                                 @if (auth()->user()->permission->sale['view_add_sale'])
+
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('sales.index2') }}" class="bar-link">
@@ -732,11 +745,13 @@
                             @endif
                         </div>
 
-                        <hr>
+                        <hr class="p-0 m-0 my-1">
 
                         <div class="row">
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
+
                                 @if (auth()->user()->permission->sale['pos_add'] == '1')
+
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('sales.pos.create') }}" class="bar-link">
@@ -748,6 +763,7 @@
                                 @endif
 
                                 @if (auth()->user()->permission->sale['pos_all'] == '1')
+
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('sales.pos.list') }}" class="bar-link">
@@ -760,12 +776,20 @@
                             @endif
                         </div>
 
-                        <hr>
+                        <hr class="p-0 m-0 my-1">
 
                         <div class="row">
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="{{ route('sales.order.list') }}" class="bar-link">
+                                        <span><i class="fa fa-file-alt"></i></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.sales_order_list')</p>
+                            </div>
+                           
                             @if (auth()->user()->permission->sale['sale_draft'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('sales.drafts') }}" class="bar-link">
                                             <span><i class="fas fa-drafting-compass"></i></span>
@@ -776,34 +800,13 @@
                             @endif
 
                             @if (auth()->user()->permission->sale['sale_quotation'] == '1')
-                                <div
-                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('sales.quotations') }}" class="bar-link">
                                             <span><i class="fas fa-quote-right"></i></span>
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.quotation_list')</p>
-                                </div>
-                            @endif
-
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('sale.return.create.v2') }}" class="bar-link">
-                                        <span><i class="fas fa-undo"></i></span>
-                                    </a>
-                                </div>
-                                <p class="switch_text">Add Sale Return</p>
-                            </div>
-
-                            @if (auth()->user()->permission->sale['return_access'] == '1')
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('sales.returns.index') }}" class="bar-link">
-                                            <span><i class="fas fa-undo"></i></span>
-                                        </a>
-                                    </div>
-                                    <p class="switch_text">@lang('menu.sale_return_list')</p>
                                 </div>
                             @endif
 
@@ -816,6 +819,30 @@
                                         </a>
                                     </div>
                                     <p class="switch_text">@lang('menu.shipments')</p>
+                                </div>
+                            @endif
+                        </div>
+
+                        <hr class="p-0 m-0 my-1">
+
+                        <div class="row">
+                            @if (auth()->user()->permission->sale['return_access'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('sale.return.create.v2') }}" class="bar-link">
+                                            <span><i class="fas fa-undo"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.add_sale_return')</p>
+                                </div>
+
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('sales.returns.index') }}" class="bar-link">
+                                            <span><i class="fas fa-undo"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.sale_return_list')</p>
                                 </div>
                             @endif
                         </div>
@@ -878,7 +905,8 @@
                                 </div>
                             </div>
 
-                            <hr>
+                            <hr class="p-0 m-0 my-1">
+
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
                                     <p>{!! __('menu.transfer_stock_heading_2') !!}</p>
@@ -918,7 +946,7 @@
                             </div>
 
                             @if ($addons->branches == 1)
-                                <hr>
+                                <hr class="p-0 m-0 my-1">
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
                                         <p>{!! __('menu.transfer_stock_heading_3') !!}</p>
@@ -1052,7 +1080,9 @@
                                     </div>
                                 @endif
                             </div>
-                            <hr>
+
+                            <hr class="p-0 m-0 my-1">
+
                             <div class="row">
                                 @if (auth()->user()->permission->expense['view_expense'] == '1' )
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -1115,7 +1145,9 @@
                                         <p class="switch_text">@lang('menu.accounts')</p>
                                     </div>
                                 </div>
-                                <hr>
+
+                                <hr class="p-0 m-0 my-1">
+
                                 <div class="row">
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
@@ -1144,7 +1176,9 @@
                                         <p class="switch_text">@lang('menu.contra')</p>
                                     </div>
                                 </div>
-                                <hr>
+
+                                <hr class="p-0 m-0 my-1">
+
                                 <div class="row">
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
@@ -1217,7 +1251,9 @@
                                 </div>
                             @endif
                         </div>
-                        <hr>
+
+                        <hr class="p-0 m-0 my-1">
+
                         <div class="row">
                             @if (auth()->user()->permission->user['role_add'] == '1')
                                 <div
@@ -1243,7 +1279,9 @@
                                 </div>
                             @endif
                         </div>
-                        <hr>
+
+                        <hr class="p-0 m-0 my-1">
+
                     </div>
                 </div>
             </div>
@@ -1309,7 +1347,9 @@
                                     </div>
                                 @endif
                             </div>
-                            <hr>
+
+                            <hr class="p-0 m-0 my-1">
+
                             <div class="row">
                                 @if (auth()->user()->permission->hrms['attendance'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
@@ -1377,7 +1417,9 @@
                                     </div>
                                 @endif
                             </div>
-                            <hr>
+
+                            <hr class="p-0 m-0 my-1">
+
                         </div>
                     </div>
                 </div>

@@ -18,32 +18,41 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-lg-4">
+
                             @if ($sale->branch->add_sale_invoice_layout->show_shop_logo == 1)
+
                                 @if ($sale->branch->logo != 'default.png')
+
                                     <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                 @else 
+
                                     <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                                 @endif
                             @endif
                         </div>
+
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="middle_header_text text-center">
-                                <h5>{{ $sale->branch->add_sale_invoice_layout->invoice_heading }}</h5>
+                                <h5 style="text-transform: uppercase;">
+                                    {{ $sale->status == 1 ? $sale->branch->add_sale_invoice_layout->invoice_heading : 'SALE ORDER' }}
+                                </h5>
+
                                 <h6>
                                     @php
                                         $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                                     @endphp
 
                                     @if ($sale->due <= 0)
-                                        Paid
+                                        PAID
                                     @elseif ($sale->due > 0 && $sale->due < $payable) 
-                                        Partial
+                                        PARTIAL
                                     @elseif($payable==$sale->due)
-                                        Due
+                                        DUE
                                     @endif
                                 </h6>
                             </div>
                         </div>
+
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="heading text-end">
                                 @if ($sale->branch)
@@ -57,15 +66,20 @@
                                     </p>
 
                                     @if ($sale->branch->add_sale_invoice_layout->branch_phone)
+
                                         <p><b>Phone</b> : {{ $sale->branch->phone }}</p>
                                     @endif
 
                                     @if ($sale->branch->add_sale_invoice_layout->branch_email)
+
                                         <p><b>Email</b> : {{ $sale->branch->email }}</p>
                                     @endif
-                                @else 
+                                @else
+
                                     <h6 class="company_name" style="text-transform: uppercase;">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                    </h6>
+
                                     <p class="company_address">
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }},<br>
                                     </p>
@@ -117,17 +131,19 @@
                     <div class="col-lg-4">
                         @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
                             <div class="middle_header_text text-center">
-                                <h5>{{ $sale->branch->add_sale_invoice_layout->invoice_heading }}</h5>
+                                <h5 style="text-transform: uppercase;">
+                                    {{ $sale->status == 1 ? $sale->branch->add_sale_invoice_layout->invoice_heading : 'SALE ORDER' }}</h5>
                                 <h6>
                                     @php
                                         $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                                     @endphp
+
                                     @if ($sale->due <= 0)
-                                        Paid
+                                        PAID
                                     @elseif ($sale->due > 0 && $sale->due < $payable) 
-                                        Partial
+                                        PARTIAL
                                     @elseif($payable==$sale->due)
-                                        Due
+                                        DUE
                                     @endif
                                 </h6>
                             </div>

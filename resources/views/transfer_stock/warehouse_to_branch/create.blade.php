@@ -432,27 +432,31 @@
                                 productTable();
                             }    
                         }else if (!$.isEmptyObject(product.namedProducts)) {
+
                             if(product.namedProducts.length > 0){
+
                                 var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                                 var li = "";
                                 var products = product.namedProducts; 
+
                                 $.each(products, function (key, product) {
-                                    var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
-                                    if (product.product_variants.length > 0) {
-                                        $.each(product.product_variants, function(key, variant){
-                                            var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
-                                            var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
-                                            var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
-                                            var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
-                                            li += '<li id="list" class="mt-1">';
-                                            li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit.name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
-                                            li +='</li>';
-                                        });
-                                    }else{
-                                        var tax_amount = parseFloat(product.tax != null ? product.product_price/100 * product.tax.tax_percent : 0);
+
+                                    var tax_percent = product.tax_id != null ? product.tax_percent : 0;
+                                    if (product.is_variant == 1) {
+
+                                        var tax_amount = parseFloat(product.tax_id != null ? product.variant_price/100 * product.tax.tax_percent : 0.00);
+                                        var unitPriceIncTax = (parseFloat(product.variant_price) / 100 * tax_percent) + parseFloat(product.variant_price) ;
+                                        
+                                        li += '<li id="list" class="mt-1">';
+                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit_name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                        li +='</li>';
+                                    } else {
+
+                                        var tax_amount = parseFloat(product.tax_id != null ? product.product_price/100 * product.tax_percent : 0);
                                         var unitPriceIncTax = (parseFloat(product.product_price) / 100 * tax_percent) + parseFloat(product.product_price);
+
                                         li += '<li class="mt-1">';
-                                        li += '<a class="select_single_product mt-1" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-p_tax_percent="'+tax_percent+'" data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                        li += '<a class="select_single_product mt-1" onclick="singleProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit_name+'" data-p_code="'+product.product_code+'" data-p_price_exc_tax="'+product.product_price+'" data-p_tax_percent="'+tax_percent+'" data-p_tax_amount="'+tax_amount+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;"  src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                         li +='</li>';
                                     }
                                 });
@@ -462,6 +466,7 @@
                             }
                         }
                     }else{
+
                         $('#search_product').addClass('is-invalid');
                     }
                 }
@@ -499,12 +504,16 @@
                 type:'get',
                 dataType: 'json',
                 success:function(singleProductQty){
+
                     if($.isEmptyObject(singleProductQty.errorMsg)){
+
                         var product_ids = document.querySelectorAll('#product_id');
                         var sameProduct = 0;
+
                         product_ids.forEach(function(input){
-                            console.log(input.value);
+
                             if(input.value == product_id){
+
                                 sameProduct += 1;
                                 var className = input.getAttribute('class');
                                 // get closest table row for increasing qty and re calculate product amount
@@ -512,10 +521,13 @@
                                 var presentQty = closestTr.find('#quantity').val();
                                 var qty_limit = closestTr.find('#qty_limit').val();
                                 console.log('pq - '+presentQty+', ql - '+qty_limit);
+
                                 if(parseFloat(qty_limit)  === parseFloat(presentQty)){
+
                                     toastr.error('Quantity Limit is - '+qty_limit+' '+product_unit); 
                                     return;
                                 }
+
                                 var updateQty = parseFloat(presentQty) + 1;
                                 closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                 
@@ -526,7 +538,9 @@
                                 closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                                 closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
                                 calculateTotalAmount();
+
                                 if (keyName == 9) {
+
                                     closestTr.find('#quantity').focus();
                                     closestTr.find('#quantity').select();
                                     keyName = 1;
@@ -737,7 +751,9 @@
                 var tr = $(this).closest('tr');
                 var qty_limit = tr.find('#qty_limit').val();
                 var unit = tr.find('#unit').val();
+
                 if(parseInt(qty) > parseInt(qty_limit)){
+
                     toastr.error('Quantity Limit Is - '+qty_limit+' '+unit);
                     $(this).val(qty_limit);
                     var unitPrice = tr.find('#unit_price').val();

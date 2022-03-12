@@ -90,7 +90,9 @@
             url:"{{url('purchases/search/product')}}"+"/"+product_code,
             dataType: 'json',
             success:function(product){
+
                 if (!$.isEmptyObject(product.errorMsg)) {
+                    
                     toastr.error(product.errorMsg);
                     $('#search_product').val('');
                     return;
@@ -1096,16 +1098,16 @@
 
                     @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
                         tr += '<td>';
-                        tr += '<input value="'+product.profit_margin+'" type="text" name="profits[]" class="form-control" id="profit">';
+                        tr += '<input value="'+product.product.profit+'" type="text" name="profits[]" class="form-control" id="profit">';
                         tr += '</td>';
                     
                         tr += '<td>';
-                        tr += '<input value="'+product.selling_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price">';
+                        tr += '<input value="'+product.product.product_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price">';
                         tr += '</td>';
                     @endif 
 
                     tr += '<td>';
-                    tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>';
+                    tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash"></span></a>';
                     tr += '</td>';
                     
                     tr += '</tr>';

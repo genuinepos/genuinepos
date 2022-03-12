@@ -38,7 +38,7 @@
                 <ul class="list-unstyled">
                     <li class="sale_due">
                         <strong>Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                        <span>{{ $sale->sale_return_due }}</span> 
+                        <span class="text-end">{{ $sale->sale_return_due }}</span> 
                     </li>
                 </ul>
             </div>
@@ -91,7 +91,7 @@
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-7">
+        <div class="col-md-4">
             <label><strong>Credit Account :</strong> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
@@ -112,7 +112,7 @@
             </div>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-4">
             <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
             <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
         </div>

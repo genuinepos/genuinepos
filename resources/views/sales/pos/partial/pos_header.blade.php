@@ -3,8 +3,8 @@
     .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 100%;z-index: 9999999;padding: 0;left: 0%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
     .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
     .select_area ul li a {color: #464343;text-decoration: none;font-size: 12px;padding: 2px 3px;display: block;line-height: 15px;border: 1px solid #968e92;font-weight: 400;}
-    .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
-    .selectProduct {background-color: #ab1c59;color: #fff !important;}
+    .select_area ul li a:hover {background-color: #999396;color: #fff;}
+    .selectProduct {background-color: #746e70!important;color: #fff !important;}
     .text-info {color: #0795a5 !important;}
 </style>
 
@@ -325,22 +325,27 @@
     $(document).on('click', '#reedem_point_button', function (e) {
         e.preventDefault();
         if (rp_settings.enable_rp == '1') {
+
             if ($('#customer_id').val()) {
+
                 var earned_point = $('#earned_point').val() ? $('#earned_point').val() : 0;
                 $('#available_point').val(parseFloat(earned_point));
                 $('#redeem_amount').val('');
                 $('#total_redeem_point').val('')
                 $('#pointReedemModal').modal('show');
             }else{
+
                 toastr.error('Select customer first.');
                 return;
             }
         }else{
+
             toastr.error('Reaward pointing system is disabled.');
         }
     });
 
     $(document).on('input', '#total_redeem_point', function () {
+
         var redeeming_point = $(this).val();
         var __point_amount = parseFloat(redeeming_point) * parseFloat(rp_settings.redeem_amount_per_unit_rp);
         $('#redeem_amount').val(parseFloat(__point_amount));
@@ -348,26 +353,32 @@
 
     $(document).on('click', '#redeem_btn',function(e) {
         e.preventDefault();
+
         var available_point = $('#available_point').val() ? $('#available_point').val() : 0;
         var total_redeem_point = $('#total_redeem_point').val() ? $('#total_redeem_point').val() : 0;
         var redeem_amount = $('#redeem_amount').val() ? $('#redeem_amount').val() : 0;
+
         if (parseFloat(total_redeem_point) > parseFloat(available_point)) {
+
             toastr.error('Only '+available_point+' points is available.');
             return;
         }
 
         var total_invoice_payable = $('#total_invoice_payable').val();
         if (rp_settings.min_order_total_for_redeem && total_invoice_payable < parseFloat(rp_settings.min_order_total_for_redeem)) {
+            
             toastr.error('Minimum order amount is '+rp_settings.min_order_total_for_redeem+' to redeem the points.');
             return;
         }
 
         if (rp_settings.min_redeem_point && parseFloat(total_redeem_point) < parseFloat(rp_settings.min_redeem_point)) {
+            
             toastr.error('Minimum redeem points is '+rp_settings.min_redeem_point);
             return;
         }
 
         if (rp_settings.max_redeem_point && parseFloat(total_redeem_point) > parseFloat(rp_settings.max_redeem_point)) {
+            
             toastr.error('Maximum redeem points is '+rp_settings.max_redeem_point);
             return;
         }
@@ -393,18 +404,22 @@
     });
 
     $('#addCustomer').on('click', function () {
+
         $.get("{{ route('sales.pos.add.quick.customer.modal') }}", function(data) {
+
             $('#add_customer_modal_body').html(data);
             $('#addCustomerModal').modal('show');
         });
     });
 
     @if (auth()->user()->permission->product['product_add'] == '1')
+
         $('#add_product').on('click', function() {
             $.ajax({
                 url:"{{ route('sales.add.product.modal.view') }}",
                 type:'get',
                 success:function(data){
+
                     $('#add_product_body').html(data);
                     $('#addProductModal').modal('show');
                 }
@@ -422,6 +437,7 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
+
                     toastr.success('Successfully product is added.');
                     $.ajax({
                         url:"{{url('sales/pos/get/recent/product')}}"+"/"+data.id,
@@ -439,10 +455,13 @@
                     });
                 },
                 error: function(err) {
+
                     $('.loading_button').hide();
                     toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                     $('.error').html('');
+
                     $.each(err.responseJSON.errors, function(key, error) {
+
                         $('.error_sale_' + key + '').html(error[0]);
                     });
                 }
@@ -456,12 +475,15 @@
     });
 
     function allSuspends() {
+        
         $('#suspendedSalesModal').modal('show');
         $('#suspend_preloader').show();
+
         $.ajax({
             url:"{{ route('sales.pos.suspended.list') }}",
             async:true,
             success:function(data){
+
                 $('#suspended_sale_list').html(data);
                 $('#suspend_preloader').hide();
             }

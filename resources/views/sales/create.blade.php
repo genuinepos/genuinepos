@@ -3,14 +3,15 @@
     <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
     <style>
         .input-group-text {font-size: 12px !important;}
-        .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 88.3%;z-index: 9999999;padding: 0;left: 6%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
-        .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
-        .select_area ul li a {color: #000000;text-decoration: none;font-size: 11px;padding: 4px 3px;display: block;border: 1px solid lightgray; margin-top: 3px;}
-        .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
-        .selectProduct {background-color: #ab1c59;color: #fff !important;}
+        .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 88.3%;z-index: 9999999;padding: 0;left: 6%;display: none;border: 1px solid #706a6d;margin-top: 1px;border-radius: 0px;}
+        .select_area ul {list-style: none;margin-bottom: 0;padding: 0px 2px;}
+        .select_area ul li a {color: #000000;text-decoration: none;font-size: 11px;padding: 2px 2px;display: block;border: 1px solid lightgray; margin: 2px 0px;}
+        .select_area ul li a:hover {background-color: #999396;color: #fff;}
+        .selectProduct {background-color: #746e70!important;color: #fff !important;}
         .input-group-text-sale {font-size: 7px !important;}
         b{font-weight: 500; font-family: Arial, Helvetica, sans-serif;}
-        #display_pre_due{font-weight: 800;}
+        .border_red { border: 1px solid red!important; }
+        #display_pre_due{font-weight: 600;}
         input[type=number]#quantity::-webkit-inner-spin-button, 
         input[type=number]#quantity::-webkit-outer-spin-button {opacity: 1;margin: 0;}
     </style>
@@ -28,11 +29,11 @@
                             <div class="form_element">
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
-                                        <div class="col-6">
-                                            <h6>Add Sale | <small class="text-dark"><strong>Save & Print = (Ctrl + Enter), Save = (Shift + Enter)</strong> </small></h6>
+                                        <div class="col-8">
+                                            <h6>Add Sale | <small class="shortcut-key-info">Save & Print = (Ctrl + Enter), Save = (Shift + Enter), Quotation = (Ctrl + Q), Order = (Alt + R), Go To Cash Receive = (Alt + C)</small></h6>
                                         </div>
 
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
@@ -42,7 +43,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Customer :</b> </label>
+                                                <label class=" col-4"><b>Customer :</b> </label>
                                                 <div class="col-8">
                                                     <div class="input-group width-60">
                                                         <select name="customer_id" class="form-control" id="customer_id">
@@ -59,7 +60,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"> <b>B. Location :</b> </label>
+                                                <label class=" col-4"> <b>B. Location :</b> </label>
                                                 <div class="col-8">
                                                     <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                 </div>
@@ -68,14 +69,14 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                <label class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID" autocomplete="off">
                                                 </div>
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Attachment : <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc. Max Attachment Size 2MB." class="fas fa-info-circle tp"></i></b></label>
+                                                <label class="col-4"><b>Attachment : <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc. Max Attachment Size 2MB." class="fas fa-info-circle tp"></i></b></label>
                                                 <div class="col-8">
                                                     <input type="file" name="attachment" class="form-control">
                                                 </div>
@@ -84,22 +85,22 @@
 
                                         <div class="col-md-2">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"> <b>Status : <span
+                                                <label class="col-4"> <b>Status : <span
                                                     class="text-danger">*</span></b></label>
                                                 <div class="col-8">
                                                     <select name="status" class="form-control add_input" data-name="Status"
                                                         id="status">
                                                         <option value="">Select status</option>
-                                                        <option value="1">Final</option>
-                                                        <option value="2">Draft</option>
-                                                        <option value="4">Quatation</option>
+                                                        @foreach (App\Utils\SaleUtil::saleStatus() as $key => $status)
+                                                            <option value="{{ $key }}">{{ $status }}</option>
+                                                        @endforeach
                                                     </select>
                                                     <span class="error error_status"></span>
                                                 </div>
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Date : <span
+                                                <label class=" col-4"><b>Date : <span
                                                     class="text-danger">*</span></b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control add_input" data-name="Date"
@@ -111,7 +112,7 @@
 
                                         <div class="col-md-2">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-6"><b>Inv. Schema :</b></label>
+                                                <label class="col-6"><b>Inv. Schema :</b></label>
                                                 <div class="col-6">
                                                     <select name="invoice_schema" class="form-control"
                                                         id="invoice_schema">
@@ -126,16 +127,16 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-6 text-danger"><b>Previous Due :</b></label>
+                                                <label class="col-6"><b>Previous Due :</b></label>
                                                 <div class="col-6">
-                                                    <input readonly type="number" step="any" class="form-control" id="display_pre_due" value="0.00">
+                                                    <input readonly type="number" step="any" class="form-control text-danger" id="display_pre_due" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-2">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-5"><b>Price Group :</b></label>
+                                                <label class="col-5"><b>Price Group :</b></label>
                                                 <div class="col-7">
                                                     <select name="price_group_id" class="form-control"
                                                         id="price_group_id">
@@ -148,7 +149,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-5"><b>Sales A/C : <span
+                                                <label class="col-5"><b>Sales A/C : <span
                                                     class="text-danger">*</span></b></label>
                                                 <div class="col-7">
                                                     <select name="sale_account_id" class="form-control add_input"
@@ -206,7 +207,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text add_button p-1 m-0">Stock</span>
                                                     </div>
-                                                    <input type="text" readonly class="form-control"
+                                                    <input type="text" readonly class="form-control text-success stock_quantity"
                                                         autocomplete="off" id="stock_quantity"
                                                         placeholder="Stock Quantity">
                                                 </div>
@@ -243,7 +244,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Ship Details :</b></label>
+                                                    <label class=" col-4"><b>Ship Details :</b></label>
                                                     <div class="col-8">
                                                         <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
                                                     </div>
@@ -252,7 +253,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Ship Address :</b></label>
+                                                    <label class=" col-4"><b>Ship Address :</b></label>
                                                     <div class="col-8">
                                                         <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="Shipment Address"> 
                                                     </div>
@@ -261,7 +262,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Ship Status :</b></label>
+                                                    <label class=" col-4"><b>Ship Status :</b></label>
                                                     <div class="col-8">
                                                         <select name="shipment_status" class="form-control" id="shipment_status">
                                                             <option value="">Shipment Status</option>
@@ -279,7 +280,7 @@
                                         <div class="row mt-1">
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Delivered To :</b></label>
+                                                    <label class=" col-4"><b>Delivered To :</b></label>
                                                     <div class="col-8">
                                                         <input name="delivered_to" type="text" class="form-control" id="delivered_to" placeholder="Delivered To"> 
                                                     </div>
@@ -288,7 +289,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Sale Note:</b></label>
+                                                    <label class=" col-4"><b>Sale Note:</b></label>
                                                     <div class="col-8">
                                                         <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note">
                                                     </div>
@@ -297,7 +298,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Payment Note :</b></label>
+                                                    <label class=" col-4"><b>Payment Note :</b></label>
                                                     <div class="col-8">
                                                         <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note">
                                                     </div>
@@ -311,8 +312,8 @@
                                     <div class="content-inner">
                                         <div class="row no-gutters">
                                             <ul class="list-unstyled add_sale_ex_btn">
-                                                <li><button value="save_and_print" class="btn btn-sm btn-info text-white submit_button" data-status="4">Quotation</button></li>
-                                                <li><button value="save_and_print" class="btn btn-sm btn-warning text-white submit_button" data-status="2">Draft</button></li>
+                                                {{-- <li><button value="save_and_print" class="btn btn-sm btn-info text-white submit_button" data-status="4">Quotation</button></li>--}}
+                                                <li><button value="save_and_print" class="btn btn-sm btn-warning text-white submit_button" data-status="2">Draft</button></li> 
                                                 <li><button type="button" class="btn btn-sm btn-secondary text-white resent-tn">Recent Transection</button></li>
                                                 <li><button type="button" class="btn btn-sm btn-success text-white show_stock">Show Stock</button></li>
                                             </ul>
@@ -322,24 +323,24 @@
                             </div>
 
                             <div class="col-md-3">
-                                <div class="item-details-sec mb-3">
+                                <div class="item-details-sec mb-3 number-fields">
                                     <div class="content-inner">
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Total Item :</label>
+                                            <label class="col-sm-5 col-form-label">Total Item :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="0.00">
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Net Total :</label>
+                                            <label class="col-sm-5 col-form-label">Net Total :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="0.00">
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Discount:</label>
+                                            <label class="col-sm-5 col-form-label">Discount:</label>
                                             <div class="col-sm-3">
                                                 <select name="order_discount_type" class="form-control" id="order_discount_type">
                                                     <option value="1">Fixed</option>
@@ -353,7 +354,7 @@
                                         </div>
 
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Order Tax :</label>
+                                            <label class="col-sm-5 col-form-label">Order Tax :</label>
                                             <div class="col-sm-7">
                                                 <select name="order_tax" class="form-control" id="order_tax"></select>
                                                 <input type="number" step="any" class="d-none" name="order_tax_amount" id="order_tax_amount" value="0.00">
@@ -361,21 +362,21 @@
                                         </div>
 
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Shipment Cost:</label>
+                                            <label class="col-sm-5 col-form-label">Shipment Cost:</label>
                                             <div class="col-sm-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="0.00"> 
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Previous Due :</label>
+                                            <label class="col-sm-5 col-form-label">Previous Due :</label>
                                             <div class="col-sm-7">
-                                                <input readonly class="form-control" type="number" step="any" name="previous_due" id="previous_due" value="0.00">
+                                                <input readonly class="form-control text-danger" type="number" step="any" name="previous_due" id="previous_due" value="0.00">
                                             </div>
                                         </div>
                                         
                                         <div class="row">
-                                            <label for="inputEmail3" class="col-sm-5 col-form-label">Total Payable:</label>
+                                            <label class="col-sm-5 col-form-label">Total Payable:</label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00">
                                                 <input class="d-none" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00">
@@ -384,21 +385,21 @@
                                         
                                         <div class="payment_body">
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Cash Receive: >></label>
+                                                <label class="col-sm-5 col-form-label">Cash Receive: >></label>
                                                 <div class="col-sm-7">
                                                     <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Change :</label>
+                                                <label class="col-sm-5 col-form-label">Change :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00">
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Paid By :</label>
+                                                <label class="col-sm-5 col-form-label">Paid By :</label>
                                                 <div class="col-sm-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                         @foreach ($methods as $method)
@@ -412,7 +413,7 @@
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Debit A/C : <span
+                                                <label class="col-sm-5 col-form-label">Debit A/C : <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-sm-7">
                                                     <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
@@ -431,9 +432,9 @@
                                             </div>
 
                                             <div class="row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Due :</label>
+                                                <label class="col-sm-5 col-form-label">Due :</label>
                                                 <div class="col-sm-7">
-                                                    <input readonly type="number" step="any" class="form-control" name="total_due" id="total_due" value="0.00">
+                                                    <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -441,9 +442,11 @@
                                         <div class="submitBtn">
                                             <div class="row justify-content-center">
                                                 <div class="col-12 text-end">
-                                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                                                    <button type="submit" id="save_and_print" value="save_and_print" data-status="1" class="btn btn-sm btn-primary submit_button">Final & Print</button>
-                                                    <button type="submit" id="save" value="save" data-status="1" class="btn btn-sm btn-primary submit_button">Final</button>
+                                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-danger"></i> </button>
+                                                    <button type="submit" id="quotation" class="btn btn-sm btn-info text-white submit_button" data-status="4" value="save_and_print">Quotation</button>
+                                                    <button type="submit" id="order" class="btn btn-sm btn-secondary text-white submit_button" data-status="3" value="save_and_print">Order</button>
+                                                    <button type="submit" id="save_and_print" class="btn btn-sm btn-primary submit_button" data-status="1" value="save_and_print">Final & Print</button>
+                                                    <button type="submit" id="save" class="btn btn-sm btn-primary submit_button" data-status="1" value="save">Final</button>
                                                 </div>
                                             </div>
                                         </div>

@@ -348,6 +348,7 @@ class CustomerController extends Controller
                     'customer_ledgers.credit',
                     'customer_ledgers.running_balance',
                     'sales.invoice_id as sale_inv_id',
+                    'sales.status as sale_status',
                     'sales.sale_note as sale_par',
                     'sale_returns.invoice_id as return_inv_id',
                     'sale_returns.date as sale_return_par',
@@ -381,7 +382,7 @@ class CustomerController extends Controller
                 ->editColumn('particulars', function ($row) use ($customerUtil) {
                     $type = $customerUtil->voucherType($row->voucher_type);
                     $__agp = $row->ags_sale ? '/' . 'AGS:<b>' . $row->ags_sale . '</b>' : '';
-                    return '<b>' . $type['name'] . '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                    return '<b>' . $type['name'] .($row->sale_status == 3 ? '-Order': ''). '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
                 })
 
                 ->editColumn('voucher_no', function ($row) use ($customerUtil) {
@@ -424,6 +425,7 @@ class CustomerController extends Controller
                 'customer_ledgers.running_balance',
                 'sales.invoice_id as sale_inv_id',
                 'sales.sale_note as sale_par',
+                'sales.status as sale_status',
                 'sale_returns.invoice_id as return_inv_id',
                 'sale_returns.date as sale_return_par',
                 'sale_payments.invoice_id as sale_payment_voucher',

@@ -2,14 +2,21 @@
 @push('stylesheets')
     <style>
         .data_preloader{top:2.3%}
+         /* .search_area{position: relative;}  */
+        /* .invoice_search_result{position: relative;} */
         /* Search Product area style */
-        .selectProduct {background-color: #ab1c59;color: #fff !important;}
-        .search_area{position: relative;}
-        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px;
-            margin-top: 1px;}
-        .search_result ul li {width: 100%; border: 1px solid lightgray; margin-top: 3px;}
-        .search_result ul li a {color: #6b6262;font-size: 12px; display: block; padding: 3px;}
-        .search_result ul li a:hover {color: white;background-color: #ab1c59;}
+        .selected_invoice {background-color: #645f61;color: #fff !important;}
+        .invoice_search_result {position: absolute; width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 3px;margin-top: 1px;}
+        .invoice_search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 2px;}
+        .invoice_search_result ul li a {color: #6b6262;font-size: 10px;display: block;padding: 0px 3px;}
+        .invoice_search_result ul li a:hover {color: white;background-color: #ada9a9;}
+
+        .search_result {position: absolute;width: 67%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 3px;margin-top: 1px;}
+        .selectProduct {background-color: #645f61;color: #fff !important;}
+        .search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 2px;}
+        .search_result ul li a {color: #6b6262;font-size: 10px;display: block;padding: 2px;}
+        .search_result ul li a:hover {color: white;background-color: #ada9a9;}
+        .element-body {overflow: initial!important;}
         /* Search Product area style end */
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -42,13 +49,15 @@
                                             <div class="input-group">
                                                 <label class=" col-4"><b>Sale INV. ID :</b> </label>
                                                 <div class="col-8">
-                                                    <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control" placeholder="Sale Invoice ID" autocomplete="off">
-                                                    <input type="hidden" name="sale_id" id="sale_id" class="resetable" value="">
+                                                    <div style="position: relative;">
+                                                        <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control" placeholder="Sale Invoice ID" autocomplete="off">
+                                                        <input type="hidden" name="sale_id" id="sale_id" class="resetable" value="">
 
-                                                    <div class="search_result d-none">
-                                                        <ul id="list" class="list-unstyled">
+                                                        <div class="invoice_search_result d-none">
+                                                            <ul id="invoice_list" class="list-unstyled">
 
-                                                        </ul>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -282,49 +291,51 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    
     <script>
+        var ul = '';
+        var selectObjClassName = '';
 
         $(document).on('click', '#sale_invoice_id', function () {
-
+            
+            ul = document.getElementById('invoice_list')
+            selectObjClassName = 'selected_invoice';
             $(this).val('');
             $('#sale_id').val('');
         });
 
         $('#sale_invoice_id').on('input', function () {
 
-            $('.search_result').hide();
+            $('.invoice_search_result').hide();
 
             var invoice_id = $(this).val();
 
             if (invoice_id === '') {
 
-                $('.search_result').hide();
+                $('.invoice_search_result').hide();
                 $('#sale_id').val('');;
                 return;
             }
 
-            var table = 'sales';
-
             $.ajax({
-                url:"{{ url('common/ajax/call/search/invoice') }}" + "/" + table + "/" +invoice_id,
+                url:"{{ url('common/ajax/call/search/final/sale/invoices') }}" + "/" +invoice_id,
                 async:true,
                 type:'get',
                 success:function(data){
 
                     if (!$.isEmptyObject(data.noResult)) {
 
-                        $('.search_result').hide();
+                        $('.invoice_search_result').hide();
                     }else{
 
-                        $('.search_result').show();
-                        $('#list').html(data);
+                        $('.invoice_search_result').show();
+                        $('#invoice_list').html(data);
                     }
                 }
             });
         });
 
-        $(document).on('click', '#select_invoice', function (e) {
+        $(document).on('click', '#selected_invoice', function (e) {
             e.preventDefault();
             
             var sale_invoice_id = $(this).html();
@@ -335,25 +346,33 @@
 
             $('#sale_id').val(sale_id);
 
-            $('.search_result').hide();
+            $('.invoice_search_result').hide();
         });
 
-        $('body').keyup(function(e){
+        $(document).on('keyup', 'body', function(e){
 
-            if (e.keyCode == 13 || e.keyCode == 9){  
+            console.log(window.event.which);
 
-                $(".selectProduct").click();
-                $('.search_result').hide();
+            if (e.keyCode == 13){  
+
+                $(".selected_invoice").click();
+                $('.invoice_search_result').hide();
                 $('#list').empty();
             }
         });
 
-        $(document).on('mouseenter', '#list>li>a',function () {
+        // $(document).on('click', 'body', function(e){
 
-            $('#list>li>a').removeClass('selectProduct');
-            $(this).addClass('selectProduct');
-        });
+        //     setTimeout(function () {
+
+        //         $('.search_result').hide();
+        //         $('#list').empty();
+        //     }, 200)
+        // });
+
+        
     </script>
+    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.custom.js"></script>
 @endpush
 
 

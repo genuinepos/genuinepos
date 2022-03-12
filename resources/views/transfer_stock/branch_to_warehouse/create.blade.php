@@ -270,16 +270,21 @@
 
                     var qty_limit = product.qty_limit;
                     if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product) || !$.isEmptyObject(product.namedProducts)){
+
                         $('#search_product').addClass('is-valid');
                         if(!$.isEmptyObject(product.product)){
+
                             var product = product.product;
                             if(product.product_variants.length == 0){
+
                                 $('.select_area').hide();
                                 $('#search_product').val('');
                                 product_ids = document.querySelectorAll('#product_id');
                                 var sameProduct = 0;
                                 product_ids.forEach(function(input){
+
                                     if(input.value == product.id){
+
                                         sameProduct += 1;
                                         var className = input.getAttribute('class');
                                         // get closest table row for increasing qty and re calculate product amount
@@ -304,6 +309,7 @@
                                 });
 
                                 if(sameProduct == 0){
+                                    
                                     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
                                     var tr = '';
                                     tr += '<tr>';
@@ -348,6 +354,7 @@
                                 var li = "";
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
                                 $.each(product.product_variants, function(key, variant){
+
                                     var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
                                     var unitPriceIncTax = (parseFloat(variant.variant_price) / 100 * tax_percent) + parseFloat(variant.variant_price) ;
                                     li += '<li id="list" class="mt-1">';
@@ -368,15 +375,20 @@
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
+
                                 if(input.value != 'noid'){
+
                                     if(input.value == variant_product.id){
+
                                         sameVariant += 1;
                                         var className = input.getAttribute('class');
                                         // get closest table row for increasing qty and re calculate product amount
                                         var closestTr = $('.'+className).closest('tr');
                                         var presentQty = closestTr.find('#quantity').val();
                                         var qty_limit = closestTr.find('#qty_limit').val();
+
                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
+
                                             alert('Quantity Limit is - '+qty_limit+' '+variant_product.product.unit.name);
                                             return;
                                         }

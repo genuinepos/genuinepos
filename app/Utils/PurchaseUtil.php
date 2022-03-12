@@ -335,7 +335,7 @@ class PurchaseUtil
         }
 
         if ($request->branch_id) {
-            
+
             if ($request->branch_id == 'NULL') {
 
                 $query->where('purchases.branch_id', NULL);
@@ -779,7 +779,6 @@ class PurchaseUtil
 
                     $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Return Amount</a>';
                 }
-
             }
 
             if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
@@ -796,7 +795,7 @@ class PurchaseUtil
 
                 $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
             }
-            
+
             // $html .= '<a class="dropdown-item" id="change_status" href="' . route('purchases.change.status.modal', $row->id) . '"><i class="far fa-edit text-primary"></i> Update Status</a>';
         }
 
@@ -840,15 +839,26 @@ class PurchaseUtil
         return $html;
     }
 
-    public function updateProductAndVariantPrice($productId, $variant_id, $unit_cost_with_discount, $net_unit_cost, $profit, $selling_price, $isEditProductPrice)
-    {
+    public function updateProductAndVariantPrice(
+        $productId,
+        $variant_id,
+        $unit_cost_with_discount,
+        $net_unit_cost,
+        $profit,
+        $selling_price,
+        $isEditProductPrice,
+        $isLastEntry
+    ) {
         $updateProduct = Product::where('id', $productId)->first();
         $updateProduct->is_purchased = 1;
-        
+
         if ($updateProduct->is_variant == 0) {
 
-            $updateProduct->product_cost = $unit_cost_with_discount;
-            $updateProduct->product_cost_with_tax = $net_unit_cost;
+            if ($isLastEntry == 1) {
+
+                $updateProduct->product_cost = $unit_cost_with_discount;
+                $updateProduct->product_cost_with_tax = $net_unit_cost;
+            }
 
             if ($isEditProductPrice == '1') {
 
@@ -864,8 +874,12 @@ class PurchaseUtil
             $updateVariant = ProductVariant::where('id', $variant_id)
                 ->where('product_id', $productId)
                 ->first();
-            $updateVariant->variant_cost = $unit_cost_with_discount;
-            $updateVariant->variant_cost_with_tax = $net_unit_cost;
+
+            if ($isLastEntry == 1) {
+
+                $updateVariant->variant_cost = $unit_cost_with_discount;
+                $updateVariant->variant_cost_with_tax = $net_unit_cost;
+            }
 
             if ($isEditProductPrice == '1') {
 
@@ -893,10 +907,13 @@ class PurchaseUtil
             ->get();
 
         $return = DB::table('purchase_returns')->where('purchase_id', $purchase->id)->first();
-        
+
         $returnAmount = $return ? $return->total_return_amount : 0;
 
-        $due = $purchase->total_purchase_amount - $totalPurchasePaid->sum('total_paid') - $returnAmount + $totalReturnPaid->sum('total_paid');
+        $due = $purchase->total_purchase_amount
+            - $totalPurchasePaid->sum('total_paid')
+            - $returnAmount
+            + $totalReturnPaid->sum('total_paid');
 
         $returnDue = $returnAmount
             - ($purchase->total_purchase_amount - $totalPurchasePaid->sum('total_paid'))

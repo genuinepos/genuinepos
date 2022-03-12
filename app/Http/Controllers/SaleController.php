@@ -59,10 +59,12 @@ class SaleController extends Controller
     public function index2(Request $request)
     {
         if (auth()->user()->permission->sale['view_add_sale'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->saleUtil->addSaleTable($request);
         }
 
@@ -74,10 +76,12 @@ class SaleController extends Controller
     public function posList(Request $request)
     {
         if (auth()->user()->permission->sale['pos_all'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->saleUtil->posSaleTable($request);
         }
 
@@ -102,6 +106,7 @@ class SaleController extends Controller
     public function soldProductList(Request $request)
     {
         if ($request->ajax()) {
+
             return $this->saleUtil->soldProductListTable($request);
         }
 
@@ -230,7 +235,12 @@ class SaleController extends Controller
             ->select(['id', 'business', 'prefix', 'send_es_settings'])
             ->first();
 
-        if ($request->customer_id && $request->status == 1) {
+        if ($request->status == 3 && !$request->customer_id) {
+
+            return response()->json(['errorMsg' => 'Listed customer is required for sales order.']);
+        }
+
+        if ($request->customer_id && ($request->status == 1 || $request->status == 3)) {
 
             $customer = DB::table('customers')->where('id', $request->customer_id)
                 ->select('credit_limit', 'total_sale_due')
@@ -600,9 +610,7 @@ class SaleController extends Controller
             'sale_products.product.comboProducts'
         ])->where('id', $saleId)->first();
 
-        if ($updateSale->customer_id && $request->status == 1) {
-
-           
+        if ($updateSale->customer_id && ($request->status == 1 || $request->status == 3)) {
 
             // if ($customer->credit_limit == 0 || $customer->credit_limit == NULL) {
 
@@ -622,12 +630,12 @@ class SaleController extends Controller
             if ($request->total_due > 0) {
 
                 $customer = DB::table('customers')->where('id', $updateSale->customer_id)
-                ->select('credit_limit', 'total_sale_due')
-                ->first();
+                    ->select('credit_limit', 'total_sale_due')
+                    ->first();
 
                 $presentDue = $customer->total_sale_due + $request->total_due;
                 $__credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
-                
+
                 $msg_1 = 'Customer does not have any credit limit.';
                 $msg_2 = "Customer Credit Limit is ${__credit_limit}.";
 
@@ -717,7 +725,9 @@ class SaleController extends Controller
         foreach ($request->product_ids as $product_id) {
 
             $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
-            $saleProduct = SaleProduct::where('sale_id', $updateSale->id)->where('product_id', $product_id)
+            
+            $saleProduct = SaleProduct::where('sale_id', $updateSale->id)
+                ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
 
             if ($saleProduct) {

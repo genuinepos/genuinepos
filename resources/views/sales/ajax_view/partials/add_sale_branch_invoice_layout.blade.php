@@ -66,15 +66,20 @@
                                     </p>
 
                                     @if ($sale->branch->add_sale_invoice_layout->branch_phone)
+
                                         <p><b>Phone</b> : {{ $sale->branch->phone }}</p>
                                     @endif
 
                                     @if ($sale->branch->add_sale_invoice_layout->branch_email)
+
                                         <p><b>Email</b> : {{ $sale->branch->email }}</p>
                                     @endif
-                                @else 
+                                @else
+
                                     <h6 class="company_name" style="text-transform: uppercase;">
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                    </h6>
+
                                     <p class="company_address">
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }},<br>
                                     </p>

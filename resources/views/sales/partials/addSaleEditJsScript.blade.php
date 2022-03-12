@@ -2,6 +2,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     calculateTotalAmount();
+
     // Get all price group
     var price_groups = '';
     function getPriceGroupProducts(){
@@ -243,6 +244,7 @@
 
                                 tr += '<td>';
                                 tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                                tr += '<p class="text-danger" id="stock_error"></p>';
                                 tr += '</td>';
                                 tr += '<td class="text">';
                                 tr += '<span class="span_unit">'+ product.unit.name +'</span>'; 
@@ -394,6 +396,7 @@
 
                             tr += '<td>';
                             tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                            tr += '<p class="text-danger" id="stock_error"></p>';
                             tr += '</td>';
                             tr += '<td class="text">';
                             tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
@@ -632,6 +635,7 @@
 
                         tr += '<td>';
                         tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                        tr += '<p class="text-danger" id="stock_error"></p>';
                         tr += '</td>';
                         tr += '<td class="text">';
                         tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
@@ -806,6 +810,7 @@
 
                         tr += '<td>';
                         tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                        tr += '<p class="text-danger" id="stock_error"></p>';
                         tr += '</td>';
                         tr += '<td class="text">';
                         tr += '<span class="span_unit">'+product_unit+'</span>'; 
@@ -1112,27 +1117,36 @@
         }
     });
 
-    // var stockErrors = 0;
-    // function __chackStockLimitation(tr) {
+    var stockErrors = 0;
+    function __chackStockLimitation(tr) {
 
-    //     var quantity = tr.find('#quantity').val() ? tr.find('#quantity').val() : 0;
+        var quantity = tr.find('#quantity').val() ? tr.find('#quantity').val() : 0;
   
-    //     var stock_limit = tr.find('#qty_limit').val();
- 
-    //     var unitName = tr.find('#qty_limit').data('unit');
+        var previous_qty = tr.find('#previous_quantity').val();
+
+        var stock_limit = tr.find('#qty_limit').val();
+
+        var __stock_limit = parseFloat(previous_qty) + parseFloat(stock_limit);
+
+        var unitName = tr.find('#qty_limit').data('unit');
    
-    //     tr.find('#input_qty_error').html('');
+        tr.find('#stock_error').html('');
+        tr.find('#quantity').removeClass('border_red');
 
-    //      if(parseFloat(quantity) > parseFloat(stock_limit)) {
+        if(parseFloat(quantity) > parseFloat(__stock_limit)) {
 
-    //         tr.find('#input_qty_error').html('Only '+stock_limit+' is available.');
-    //         stockErrors++;
-    //     }
-    // }
+            tr.find('#stock_error').html('Only '+ stock_limit +' is available.');
+            tr.find('#quantity').addClass('border_red');
+            tr.find('#quantity').focus();
+            stockErrors++;
+        }
+    }
 
     //Add purchase request by ajax
     $('#edit_sale_form').on('submit', function(e){
         e.preventDefault();
+        stockErrors = 0;
+        var status = $('#status').val();
 
         var totalItem = $('#total_item').val();
 
@@ -1142,23 +1156,27 @@
             return;
         }
 
-        // var allTr = $('#ingredient_list').find('tr');
-        // allTr.each(function (key, tr) {
+        var allTr = $('#sale_list').find('tr');
 
-        //     __chackStockLimitation(tr);
-        // });
+        if (status == 1) {
 
-        // if (stockErrors > 0) {
+            allTr.each(function () {
 
-        //     $('.loading_button').hide();
-        //     toastr.error('Stock Limitation Error.', 'Some thing want wrong.');
-        //     return;
-        // }
+                __chackStockLimitation($(this));
+            });
+        }
+
+        if (status == 1 && stockErrors > 0) {
+
+            $('.loading_button').hide();
+            toastr.error('Stock Limitation Error.', 'Some thing want wrong.');
+            return;
+        }
 
         var current_receivable = $('#current_receivable').val() ? $('#current_receivable').val() : 0;
         var paying_amount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
 
-        if (parseFloat(paying_amount) > parseFloat(current_receivable)) {
+        if (parseFloat(paying_amount) > 0 && parseFloat(paying_amount) > parseFloat(current_receivable)) {
             
             toastr.error('Received amount must not be greater then current receivable amount.'); 
             return;
@@ -1194,6 +1212,10 @@
                 if (err.status == 0) {
 
                     toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }else if (err.status == 500) {
+
+                    toastr.error('Server error. Please contact to the support team.'); 
                     return;
                 }
 
@@ -1327,17 +1349,23 @@
 
         if (e.keyCode == 13 || e.keyCode == 9){  
 
+            if ($(".selectProduct").attr('href') == undefined) {
+
+                return;
+            }
+
             $(".selectProduct").click();
+            
             $('#list').empty();
             keyName = e.keyCode;
         }
     });
 
-    $(document).on('mouseenter', '#list>li>a',function () {
+    // $(document).on('mouseenter', '#list>li>a',function () {
 
-        $('#list>li>a').removeClass('selectProduct');
-        $(this).addClass('selectProduct');
-    });
+    //     $('#list>li>a').removeClass('selectProduct');
+    //     $(this).addClass('selectProduct');
+    // });
 
     $(document).on('click', '#show_cost_button', function () {
 

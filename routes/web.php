@@ -1,20 +1,6 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Sale;
-use App\Models\Account;
-use App\Models\Purchase;
-use App\Models\Supplier;
-use App\Utils\AccountUtil;
-use App\Models\SalePayment;
 use App\Models\AdminAndUser;
-use App\Models\AccountBranch;
-use App\Models\AccountLedger;
-use App\Models\CustomerLedger;
-use App\Models\SupplierLedger;
-use App\Models\PurchasePayment;
-use App\Models\PurchaseProduct;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -45,7 +31,7 @@ Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controlle
     Route::get('branch/authenticated/users/{branchId}', 'CommonAjaxCallController@branchAuthenticatedUsers');
     Route::get('category/subcategories/{categoryId}', 'CommonAjaxCallController@categorySubcategories');
     Route::get('only/search/product/for/reports/{product_name}', 'CommonAjaxCallController@onlySearchProductForReports');
-    Route::get('search/invoice/{table}/{invoiceId}', 'CommonAjaxCallController@searchInvoiceOrVoucherOrRefId');
+    Route::get('search/final/sale/invoices/{invoiceId}', 'CommonAjaxCallController@searchFinalSaleInvoices');
 });
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');

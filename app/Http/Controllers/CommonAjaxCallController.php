@@ -50,9 +50,9 @@ class CommonAjaxCallController extends Controller
         }
     }
 
-    public function searchInvoiceOrVoucherOrRefId($table, $invoiceId)
+    public function searchFinalSaleInvoices($invoiceId)
     {
-        $invoices = DB::table($table)
+        $invoices = DB::table('sales')
             ->where('branch_id', auth()->user()->branch_id)
             ->where('status', 1)->where('invoice_id', 'like', "%{$invoiceId}%")
             ->select('id', 'invoice_id')->get();

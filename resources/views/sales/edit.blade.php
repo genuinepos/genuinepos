@@ -8,6 +8,7 @@
         .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
         .selectProduct {background-color: #ab1c59;color: #fff !important;}
         .input-group-text-sale {font-size: 7px !important;}
+        .border_red { border: 1px solid red!important; }
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
     <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
@@ -231,14 +232,23 @@
                                                                             <input name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount" value="{{ $s_product->unit_discount_amount }}">
 
                                                                             <input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="{{ $s_product->unit_cost_inc_tax }}">
+                                                                            
+                                                                            @php
+                                                                                $previous_sold_quantity = 0;
+                                                                                if ($sale->status == 1) {
 
-                                                                            <input type="hidden" id="previous_quantity" value="{{ $s_product->quantity }}">
+                                                                                    $previous_sold_quantity = $s_product->quantity;
+                                                                                }
+                                                                            @endphp
+
+                                                                            <input type="hidden" id="previous_quantity" value="{{ $previous_sold_quantity }}">
 
                                                                             <input type="hidden" id="qty_limit" value="{{ $qty_limits[$index] }}">
                                                                         </td>
                                                     
                                                                         <td>
                                                                             <input value="{{ $s_product->quantity }}" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">
+                                                                            <p class="text-danger" id="stock_error"></p>
                                                                         </td>
 
                                                                         <td class="text">

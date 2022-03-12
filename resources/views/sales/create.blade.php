@@ -3,13 +3,14 @@
     <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
     <style>
         .input-group-text {font-size: 12px !important;}
-        .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 88.3%;z-index: 9999999;padding: 0;left: 6%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
-        .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
-        .select_area ul li a {color: #000000;text-decoration: none;font-size: 11px;padding: 4px 3px;display: block;border: 1px solid lightgray; margin-top: 3px;}
-        .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
-        .selectProduct {background-color: #ab1c59;color: #fff !important;}
+        .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 88.3%;z-index: 9999999;padding: 0;left: 6%;display: none;border: 1px solid #706a6d;margin-top: 1px;border-radius: 0px;}
+        .select_area ul {list-style: none;margin-bottom: 0;padding: 0px 2px;}
+        .select_area ul li a {color: #000000;text-decoration: none;font-size: 11px;padding: 2px 2px;display: block;border: 1px solid lightgray; margin: 2px 0px;}
+        .select_area ul li a:hover {background-color: #999396;color: #fff;}
+        .selectProduct {background-color: #746e70!important;color: #fff !important;}
         .input-group-text-sale {font-size: 7px !important;}
         b{font-weight: 500; font-family: Arial, Helvetica, sans-serif;}
+        .border_red { border: 1px solid red!important; }
         #display_pre_due{font-weight: 600;}
         input[type=number]#quantity::-webkit-inner-spin-button, 
         input[type=number]#quantity::-webkit-outer-spin-button {opacity: 1;margin: 0;}
@@ -28,11 +29,11 @@
                             <div class="form_element">
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
-                                        <div class="col-6">
-                                            <h6>Add Sale | <small class="text-dark"><strong>Save & Print = (Ctrl + Enter), Save = (Shift + Enter)</strong> </small></h6>
+                                        <div class="col-8">
+                                            <h6>Add Sale | <small class="shortcut-key-info">Save & Print = (Ctrl + Enter), Save = (Shift + Enter), Quotation = (Ctrl + Q), Order = (Alt + R), Go To Cash Receive = (Alt + C)</small></h6>
                                         </div>
 
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
@@ -75,7 +76,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class=" col-4"><b>Attachment : <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc. Max Attachment Size 2MB." class="fas fa-info-circle tp"></i></b></label>
+                                                <label class="col-4"><b>Attachment : <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc. Max Attachment Size 2MB." class="fas fa-info-circle tp"></i></b></label>
                                                 <div class="col-8">
                                                     <input type="file" name="attachment" class="form-control">
                                                 </div>
@@ -91,8 +92,7 @@
                                                         id="status">
                                                         <option value="">Select status</option>
                                                         @foreach (App\Utils\SaleUtil::saleStatus() as $key => $status)
-                                                            <option value="{{ $key }}">{{ $status }}
-                                                            </option>
+                                                            <option value="{{ $key }}">{{ $status }}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="error error_status"></span>

@@ -11,6 +11,7 @@ class NameSearchUtil
     public function nameSearching($keyword)
     {
         $namedProducts = '';
+
         $namedProducts = DB::table('product_branches')
             ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
             ->leftJoin('products', 'product_branches.product_id', 'products.id')
@@ -92,7 +93,7 @@ class NameSearchUtil
         }
     }
 
-    public function checkBranchSingleProductStock($product_id, $branch_id)
+    public function checkBranchSingleProductStock($product_id, $branch_id, $status = NULL)
     {
         $product = DB::table('products')
             ->where('id', $product_id)->select('id', 'is_manage_stock')
@@ -103,16 +104,23 @@ class NameSearchUtil
             return response()->json(PHP_INT_MAX);
         }
 
-        $productBranch = DB::table('product_branches')->where('product_id', $product_id)->where('branch_id', $branch_id)->first();
+        $productBranch = DB::table('product_branches')
+            ->where('product_id', $product_id)
+            ->where('branch_id', $branch_id)->first();
 
         if ($productBranch) {
+
+            if ($status == 2 || $status == 3 || $status == 4) {
+
+                return response()->json($productBranch->product_quantity);
+            }
 
             if ($productBranch->product_quantity > 0) {
 
                 return response()->json($productBranch->product_quantity);
             } else {
 
-                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop/branch']);
+                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop/branch.']);
             }
         } else {
 
@@ -120,7 +128,7 @@ class NameSearchUtil
         }
     }
 
-    public function checkBranchVariantProductStock($product_id, $variant_id, $branch_id)
+    public function checkBranchVariantProductStock($product_id, $variant_id, $branch_id, $status = NULL)
     {
         $product = DB::table('products')
             ->where('id', $product_id)->select('id', 'is_manage_stock')
@@ -131,7 +139,7 @@ class NameSearchUtil
             return response()->json(PHP_INT_MAX);
         }
 
-         $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product_id)->first();
+        $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product_id)->first();
 
         if ($productBranch) {
 
@@ -141,6 +149,11 @@ class NameSearchUtil
                 ->where('product_variant_id', $variant_id)->first();
 
             if ($productBranchVariant) {
+
+                if ($status == 2 || $status == 3 || $status == 4) {
+
+                    return response()->json($productBranch->product_quantity);
+                }
 
                 if ($productBranchVariant->variant_quantity > 0) {
 
@@ -218,9 +231,19 @@ class NameSearchUtil
         }
     }
 
-    public function searchStockToBranch($product, $product_code, $branch_id)
+    public function searchStockToBranch($product, $product_code, $branch_id, $status = NULL)
     {
         if ($product) {
+
+            if ($product->is_manage_stock == 0) {
+
+                return response()->json(
+                    [
+                        'product' => $product,
+                        'qty_limit' => PHP_INT_MAX
+                    ]
+                );
+            }
 
             $productBranch = DB::table('product_branches')
                 ->where('branch_id', $branch_id)
@@ -230,9 +253,19 @@ class NameSearchUtil
 
             if ($productBranch) {
 
+                if ($status == 2 || $status == 3 || $status == 4) {
+
+                    return response()->json(
+                        [
+                            'product' => $product,
+                            'qty_limit' => $productBranch ? $productBranch->product_quantity : 0,
+                        ]
+                    );
+                }
+
                 if ($product->type == 2) {
 
-                    return response()->json(['errorMsg' => 'Combo product is not transferable.']);
+                    return response()->json(['errorMsg' => 'Combo product is not sellable in this demo']);
                 } else {
 
                     if ($productBranch->product_quantity > 0) {
@@ -245,22 +278,38 @@ class NameSearchUtil
                         );
                     } else {
 
-                        return response()->json(['errorMsg' => 'Stock is out of this product in this Business Location/Shop.']);
+                        return response()->json(['errorMsg' => 'Stock is out of this product of this Location/Shop']);
                     }
                 }
             } else {
 
-                return response()->json(['errorMsg' => 'This product is not available in this Business Location/Shop.']);
+                return response()->json(['errorMsg' => 'This product is not available in this Location/Shop.']);
             }
         } else {
 
-            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
+            $variant_product = ProductVariant::with('product', 'updateVariantCost', 'product.tax', 'product.unit')
                 ->where('variant_code', $product_code)
                 ->select([
-                    'id', 'product_id', 'variant_name', 'variant_code', 'variant_quantity', 'variant_cost', 'variant_cost_with_tax', 'variant_profit', 'variant_price'
+                    'id',
+                    'product_id',
+                    'variant_name',
+                    'variant_code',
+                    'variant_quantity',
+                    'variant_cost',
+                    'variant_cost_with_tax',
+                    'variant_profit',
+                    'variant_price'
                 ])->first();
 
             if ($variant_product) {
+
+                if ($variant_product->product->is_manage_stock == 0) {
+
+                    return response()->json([
+                        'variant_product' => $variant_product,
+                        'qty_limit' => PHP_INT_MAX
+                    ]);
+                }
 
                 if ($variant_product) {
 
@@ -271,7 +320,7 @@ class NameSearchUtil
 
                     if (is_null($productBranch)) {
 
-                        return response()->json(['errorMsg' => 'This product is not available in this Business Location/Shop.']);
+                        return response()->json(['errorMsg' => 'This product is not available in this Location/Shop']);
                     }
 
                     $productBranchVariant = DB::table('product_branch_variants')
@@ -283,10 +332,20 @@ class NameSearchUtil
 
                     if (is_null($productBranchVariant)) {
 
-                        return response()->json(['errorMsg' => 'This variant is not available in this Business Location/Shop.']);
+                        return response()->json(['errorMsg' => 'This variant is not available in this Location/Shop']);
                     }
 
                     if ($productBranch && $productBranchVariant) {
+
+                        if ($status == 2 || $status == 3 || $status == 4) {
+            
+                            return response()->json(
+                                [
+                                    'variant_product' => $variant_product,
+                                    'qty_limit' => $productBranchVariant ? $productBranchVariant->variant_quantity : 0,
+                                ]
+                            );
+                        }
 
                         if ($productBranchVariant->variant_quantity > 0) {
 
@@ -296,11 +355,11 @@ class NameSearchUtil
                             ]);
                         } else {
 
-                            return response()->json(['errorMsg' => 'Stock is out of this product(variant) from this Business Location/Shop.']);
+                            return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this Location/Shop']);
                         }
                     } else {
 
-                        return response()->json(['errorMsg' => 'This product is not available in this Business Location/Shop.']);
+                        return response()->json(['errorMsg' => 'This product is not available in this Location/Shop.']);
                     }
                 }
             }

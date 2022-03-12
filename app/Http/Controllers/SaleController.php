@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Utils\Util;
 use App\Models\Sale;
 use App\Utils\SmsUtil;
-use App\Models\Account;
 use App\Models\Product;
 use App\Utils\SaleUtil;
-use App\Models\CashFlow;
 use App\Models\Customer;
 use App\Jobs\SaleMailJob;
 use App\Models\SalePayment;
@@ -17,10 +15,7 @@ use App\Models\AdminAndUser;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Utils\NameSearchUtil;
-use App\Models\CustomerLedger;
-use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
-use App\Models\ProductBranchVariant;
 use App\Utils\AccountUtil;
 use App\Utils\CustomerUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
@@ -64,10 +59,12 @@ class SaleController extends Controller
     public function index2(Request $request)
     {
         if (auth()->user()->permission->sale['view_add_sale'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->saleUtil->addSaleTable($request);
         }
 
@@ -79,10 +76,12 @@ class SaleController extends Controller
     public function posList(Request $request)
     {
         if (auth()->user()->permission->sale['pos_all'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->saleUtil->posSaleTable($request);
         }
 
@@ -91,9 +90,23 @@ class SaleController extends Controller
         return view('sales.pos.index', compact('branches', 'customers'));
     }
 
+    public function salesOrderList(Request $request)
+    {
+        if ($request->ajax()) {
+
+            return $this->saleUtil->SaleOrderTable($request);
+        }
+
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        $customers = DB::table('customers')->get(['id', 'name', 'phone']);
+
+        return view('sales.orders', compact('branches', 'customers'));
+    }
+
     public function soldProductList(Request $request)
     {
         if ($request->ajax()) {
+
             return $this->saleUtil->soldProductListTable($request);
         }
 
@@ -154,6 +167,7 @@ class SaleController extends Controller
     public function quotations(Request $request)
     {
         if ($request->ajax()) {
+
             return $this->saleUtil->saleQuotationTable($request);
         }
 
@@ -221,29 +235,36 @@ class SaleController extends Controller
             ->select(['id', 'business', 'prefix', 'send_es_settings'])
             ->first();
 
-        if ($request->customer_id) {
+        if ($request->status == 3 && !$request->customer_id) {
+
+            return response()->json(['errorMsg' => 'Listed customer is required for sales order.']);
+        }
+
+        if ($request->customer_id && ($request->status == 1 || $request->status == 3)) {
 
             $customer = DB::table('customers')->where('id', $request->customer_id)
                 ->select('credit_limit', 'total_sale_due')
                 ->first();
 
-            if ($customer->credit_limit == 0 || $customer->credit_limit == NULL) {
+            if ($request->total_due > 0) {
 
-                return response()->json(['errorMsg' => 'Customer Credit Limit is 0.']);
-            } else {
-                
-                $request->total_due;
-
-                $__credit_limit = $customer->credit_limit;
+                $__credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
+                $msg_1 = 'Customer does not have any credit limit.';
+                $msg_2 = "Customer Credit Limit is ${__credit_limit}.";
+                $__show_msg = $customer->credit_limit ? $msg_2 : $msg_1;
 
                 if ($request->total_due > $__credit_limit) {
-                    
-                    return response()->json(['errorMsg' => "Customer Credit Limit is ${__credit_limit}."]);
+
+                    return response()->json(['errorMsg' => $__show_msg]);
                 }
             }
         }
 
-        if ($request->paying_amount < $request->total_payable_amount && !$request->customer_id) {
+        if (
+            $request->paying_amount < $request->total_payable_amount &&
+            !$request->customer_id &&
+            ($request->status == 1 || $request->status == 3)
+        ) {
 
             return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
         }
@@ -264,6 +285,7 @@ class SaleController extends Controller
             )->first();
 
         $invoicePrefix = '';
+
         if ($request->invoice_schema) {
 
             $invoicePrefix = $request->invoice_schema;
@@ -324,7 +346,7 @@ class SaleController extends Controller
         // Update customer due
         $invoicePayable = 0;
 
-        if ($request->status == 1) {
+        if ($request->status == 1 || $request->status == 3) {
 
             $changedAmount = $request->change_amount > 0 ? $request->change_amount : 0;
             $paidAmount = $request->paying_amount - $changedAmount;
@@ -423,13 +445,16 @@ class SaleController extends Controller
             'admin'
         ])->where('id', $addSale->id)->first();
 
-        if ($request->status == 1) {
+        if ($request->status == 1 || $request->status == 3) {
 
             $this->saleUtil->__getSalePaymentForAddSaleStore(
                 $request,
                 $sale,
                 $paymentInvoicePrefix
             );
+        }
+
+        if ($request->status == 1) {
 
             $__index = 0;
             foreach ($request->product_ids as $product_id) {
@@ -474,7 +499,7 @@ class SaleController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            if ($request->status == 1) {
+            if ($request->status == 1 || $request->status == 3) {
 
                 return view('sales.save_and_print_template.sale_print', compact(
                     'sale',
@@ -513,25 +538,12 @@ class SaleController extends Controller
     public function edit($saleId)
     {
         if (auth()->user()->permission->sale['edit_add_sale'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
-        $saleId = $saleId;
-        $sale = Sale::where('id', $saleId)->select(['id', 'date', 'branch_id'])->first();
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get();
 
-        $saleAccounts = DB::table('account_branches')
-            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->where('accounts.account_type', 5)
-            ->get(['accounts.id', 'accounts.name']);
-
-        return view('sales.edit', compact('saleId', 'sale', 'price_groups', 'saleAccounts'));
-    }
-
-    // Get editable sale
-    public function editableSale($saleId)
-    {
         $sale = Sale::with([
             'sale_products',
             'customer',
@@ -542,42 +554,33 @@ class SaleController extends Controller
             'sale_products.product.comboProducts.product_variant',
         ])->where('id', $saleId)->first();
 
-        $qty_limits = [];
+        $qty_limits = $this->saleUtil->getStockLimitProducts($sale);
 
-        foreach ($sale->sale_products as $sale_product) {
+        $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
 
-            if ($sale_product->product->is_manage_stock == 0) {
+        $saleAccounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->where('accounts.account_type', 5)
+            ->get(['accounts.id', 'accounts.name']);
 
-                $qty_limits[] = PHP_INT_MAX;
-            } else {
+        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
 
-                $productBranch = ProductBranch::where('branch_id', $sale->branch_id)
-                    ->where('product_id', $sale_product->product_id)->first();
+        $accounts = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
+            ->orderBy('accounts.account_type', 'asc')
+            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-                if ($sale_product->product->type == 2) {
-
-                    $qty_limits[] = 500000;
-                } elseif ($sale_product->product_variant_id) {
-
-                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $sale_product->product_id)
-                        ->where('product_variant_id', $sale_product->product_variant_id)
-                        ->first();
-
-                    $qty_limits[] = $productBranchVariant->variant_quantity;
-                } else {
-
-                    $qty_limits[] = $productBranch->product_quantity;
-                }
-            }
-        }
-
-        return response()->json(['sale' => $sale, 'qty_limits' => $qty_limits]);
+        return view('sales.edit', compact('sale', 'price_groups', 'saleAccounts', 'taxes', 'qty_limits', 'methods', 'accounts'));
     }
 
     // Update Sale 
     public function update(Request $request, $saleId)
     {
         if (auth()->user()->permission->sale['edit_add_sale'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -600,11 +603,6 @@ class SaleController extends Controller
             return response()->json(['errorMsg' => 'product table is empty']);
         }
 
-        $this->validate($request, [
-            'status' => 'required',
-            'date' => 'required',
-        ]);
-
         $updateSale = Sale::with([
             'sale_products',
             'sale_products.product',
@@ -612,9 +610,56 @@ class SaleController extends Controller
             'sale_products.product.comboProducts'
         ])->where('id', $saleId)->first();
 
+        if ($updateSale->customer_id && ($request->status == 1 || $request->status == 3)) {
+
+            // if ($customer->credit_limit == 0 || $customer->credit_limit == NULL) {
+
+            //     return response()->json(['errorMsg' => 'Customer Credit Limit is 0.']);
+            // } else {
+
+            //     $presentDue = $customer->total_sale_due + $request->total_due;
+
+            //     $__credit_limit = $customer->credit_limit;
+
+            //     if ($presentDue > $__credit_limit) {
+
+            //         return response()->json(['errorMsg' => "Customer has some previous due and customer Credit Limit is ${__credit_limit}."]);
+            //     }
+            // }
+
+            if ($request->total_due > 0) {
+
+                $customer = DB::table('customers')->where('id', $updateSale->customer_id)
+                    ->select('credit_limit', 'total_sale_due')
+                    ->first();
+
+                $presentDue = $customer->total_sale_due + $request->total_due;
+                $__credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
+
+                $msg_1 = 'Customer does not have any credit limit.';
+                $msg_2 = "Customer Credit Limit is ${__credit_limit}.";
+
+                $__show_msg = $customer->credit_limit ? $msg_2 : $msg_1;
+
+                if ($presentDue > $__credit_limit) {
+
+                    return response()->json(['errorMsg' => $__show_msg]);
+                }
+            }
+        }
+
+        if (
+            $request->paying_amount < $request->current_receivable &&
+            !$updateSale->customer_id &&
+            ($request->status == 1 || $request->status == 3)
+        ) {
+
+            return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
+        }
+
         if ($updateSale->status == 1 && $request->status != 1) {
 
-            return response()->json(['errorMsg' => 'Final sale you can not update to quotation, draft.']);
+            return response()->json(['errorMsg' => 'Final sale you can not update to quotation, draft, order.']);
         }
 
         foreach ($updateSale->sale_products as $sale_product) {
@@ -649,7 +694,7 @@ class SaleController extends Controller
         $updateSale->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updateSale->save();
 
-        if ($updateSale->status == 1) {
+        if ($updateSale->status == 1 ||  $request->status == 3) {
 
             // Update Sales A/C Ledger
             $this->accountUtil->updateAccountLedger(
@@ -665,6 +710,7 @@ class SaleController extends Controller
 
                 // Update customer ledger
                 $this->customerUtil->updateCustomerLedger(
+
                     voucher_type_id: 1,
                     customer_id: $updateSale->customer_id,
                     date: $request->date,
@@ -679,7 +725,9 @@ class SaleController extends Controller
         foreach ($request->product_ids as $product_id) {
 
             $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
-            $saleProduct = SaleProduct::where('sale_id', $updateSale->id)->where('product_id', $product_id)
+            
+            $saleProduct = SaleProduct::where('sale_id', $updateSale->id)
+                ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
 
             if ($saleProduct) {
@@ -745,14 +793,8 @@ class SaleController extends Controller
 
         if ($request->status == 1) {
 
-            $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
-            $customer = Customer::where('id', $updateSale->customer_id)->first();
-            if ($customer) {
-
-                $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
-            }
-
             $sale_products = DB::table('sale_products')->where('sale_id', $updateSale->id)->get();
+
             foreach ($sale_products as $saleProduct) {
 
                 $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
@@ -770,6 +812,50 @@ class SaleController extends Controller
             $this->saleUtil->updatePurchaseSaleProductChain($sale, $stockAccountingMethod);
         }
 
+        if ($request->status == 1 || $request->status == 3) {
+
+            if ($request->paying_amount > 0) {
+
+                $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+                $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+                $sale = Sale::where('id', $saleId)->first();
+
+                // Add sale payment
+                $addPaymentGetId = $this->saleUtil->addPaymentGetId(
+                    invoicePrefix: $paymentInvoicePrefix,
+                    request: $request,
+                    payingAmount: $request->paying_amount,
+                    invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                    saleId: $sale->id,
+                    customerPaymentId: NULL
+                );
+
+                // Add bank/cash-in-hand A/C ledger
+                $this->accountUtil->addAccountLedger(
+                    voucher_type_id: 10,
+                    date: $request->date,
+                    account_id: $request->account_id,
+                    trans_id: $addPaymentGetId,
+                    amount: $request->paying_amount,
+                    balance_type: 'debit'
+                );
+
+                if ($sale->customer_id) {
+
+                    // add customer ledger
+                    $this->customerUtil->addCustomerLedger(
+                        voucher_type_id: 3,
+                        customer_id: $sale->customer_id,
+                        date: $request->date,
+                        trans_id: $addPaymentGetId,
+                        amount: $request->paying_amount
+                    );
+                }
+            }
+
+            $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
+        }
+
         if ($request->status == 1) {
 
             session()->flash('successMsg', 'Sale updated successfully');
@@ -778,6 +864,10 @@ class SaleController extends Controller
 
             session()->flash('successMsg', 'Sale draft updated successfully');
             return response()->json(['successMsg' => 'Sale draft updated successfully']);
+        } elseif ($request->status == 3) {
+
+            session()->flash('successMsg', 'Sale order updated successfully');
+            return response()->json(['successMsg' => 'Sale order updated successfully']);
         } elseif ($request->status == 4) {
 
             session()->flash('successMsg', 'Sale quotation updated successfully');
@@ -789,8 +879,10 @@ class SaleController extends Controller
     public function delete(Request $request, $saleId)
     {
         if (auth()->user()->permission->sale['delete_add_sale'] == '0') {
+
             return response()->json('Access Denied');
         }
+
         $this->saleUtil->deleteSale($request, $saleId);
         return response()->json('Sale deleted successfully');
     }
@@ -872,7 +964,7 @@ class SaleController extends Controller
     }
 
     // Search product by code
-    public function searchProduct($product_code)
+    public function searchProduct($status, $product_code)
     {
         $product_code = (string)$product_code;
         $__product_code = str_replace('~', '/', $product_code);
@@ -902,131 +994,19 @@ class SaleController extends Controller
                 'is_manage_stock',
             ])->first();
 
-        if ($product) {
-
-            if ($product->is_manage_stock == 0) {
-
-                return response()->json(
-                    [
-                        'product' => $product,
-                        'qty_limit' => PHP_INT_MAX
-                    ]
-                );
-            }
-
-            $productBranch = DB::table('product_branches')
-                ->where('branch_id', $branch_id)
-                ->where('product_id', $product->id)
-                ->select('product_quantity')
-                ->first();
-
-            if ($productBranch) {
-
-                if ($product->type == 2) {
-
-                    return response()->json(['errorMsg' => 'Combo product is not sellable in this demo']);
-                } else {
-
-                    if ($productBranch->product_quantity > 0) {
-
-                        return response()->json(
-                            [
-                                'product' => $product,
-                                'qty_limit' => $productBranch->product_quantity
-                            ]
-                        );
-                    } else {
-
-                        return response()->json(['errorMsg' => 'Stock is out of this product of this Location/Shop']);
-                    }
-                }
-            } else {
-
-                return response()->json(['errorMsg' => 'This product is not available in this Location/Shop.']);
-            }
-        } else {
-
-            $variant_product = ProductVariant::with('product', 'updateVariantCost', 'product.tax', 'product.unit')
-                ->where('variant_code', $__product_code)
-                ->select([
-                    'id',
-                    'product_id',
-                    'variant_name',
-                    'variant_code',
-                    'variant_quantity',
-                    'variant_cost',
-                    'variant_cost_with_tax',
-                    'variant_profit',
-                    'variant_price'
-                ])->first();
-
-            if ($variant_product) {
-
-                if ($variant_product->product->is_manage_stock == 0) {
-
-                    return response()->json([
-                        'variant_product' => $variant_product,
-                        'qty_limit' => PHP_INT_MAX
-                    ]);
-                }
-
-                if ($variant_product) {
-
-                    $productBranch = DB::table('product_branches')
-                        ->where('branch_id', $branch_id)
-                        ->where('product_id', $variant_product->product_id)
-                        ->first();
-
-                    if (is_null($productBranch)) {
-
-                        return response()->json(['errorMsg' => 'This product is not available in this Location/Shop']);
-                    }
-
-                    $productBranchVariant = DB::table('product_branch_variants')
-                        ->where('product_branch_id', $productBranch->id)
-                        ->where('product_id', $variant_product->product_id)
-                        ->where('product_variant_id', $variant_product->id)
-                        ->select('variant_quantity')
-                        ->first();
-
-                    if (is_null($productBranchVariant)) {
-
-                        return response()->json(['errorMsg' => 'This variant is not available in this Location/Shop']);
-                    }
-
-                    if ($productBranch && $productBranchVariant) {
-
-                        if ($productBranchVariant->variant_quantity > 0) {
-
-                            return response()->json([
-                                'variant_product' => $variant_product,
-                                'qty_limit' => $productBranchVariant->variant_quantity
-                            ]);
-                        } else {
-
-                            return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this Location/Shop']);
-                        }
-                    } else {
-
-                        return response()->json(['errorMsg' => 'This product is not available in this Location/Shop.']);
-                    }
-                }
-            }
-        }
-
-        return $this->nameSearchUtil->nameSearching($__product_code);
+        return $this->nameSearchUtil->searchStockToBranch($product, $__product_code, $branch_id, $status);
     }
 
     // Check Branch Single product Stock
-    public function checkBranchSingleProductStock($product_id)
+    public function checkBranchSingleProductStock($status, $product_id)
     {
-        return $this->nameSearchUtil->checkBranchSingleProductStock($product_id, auth()->user()->branch_id);
+        return $this->nameSearchUtil->checkBranchSingleProductStock($product_id, auth()->user()->branch_id, $status);
     }
 
     // Check Branch variant product Stock 
-    public function checkBranchProductVariant($product_id, $variant_id)
+    public function checkBranchProductVariant($status, $product_id, $variant_id)
     {
-        return $this->nameSearchUtil->checkBranchVariantProductStock($product_id, $variant_id, auth()->user()->branch_id);
+        return $this->nameSearchUtil->checkBranchVariantProductStock($product_id, $variant_id, auth()->user()->branch_id, $status);
     }
 
     public function editShipment($saleId)
@@ -1165,7 +1145,9 @@ class SaleController extends Controller
             );
 
             $this->saleUtil->adjustSaleInvoiceAmounts($payment->sale);
+
             if ($payment->sale->customer_id) {
+
                 // Update customer ledger
                 $this->customerUtil->updateCustomerLedger(
                     voucher_type_id: 3,
@@ -1184,6 +1166,7 @@ class SaleController extends Controller
     public function returnPaymentModal($saleId)
     {
         if (auth()->user()->permission->sale['sale_payment'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -1217,6 +1200,7 @@ class SaleController extends Controller
         if ($request->paying_amount > 0) {
 
             $sale = Sale::with(['sale_return'])->where('id', $saleId)->first();
+
             if ($sale->sale_return) {
 
                 $sale->sale_return->total_return_due -= $request->paying_amount;
@@ -1243,6 +1227,7 @@ class SaleController extends Controller
             $this->saleUtil->adjustSaleInvoiceAmounts($sale);
 
             if ($sale->customer_id) {
+
                 // add customer ledger
                 $this->customerUtil->addCustomerLedger(
                     voucher_type_id: 4,
@@ -1312,6 +1297,7 @@ class SaleController extends Controller
             );
 
             if ($updateSalePayment->sale->customer_id) {
+
                 // Update customer ledger
                 $this->customerUtil->updateCustomerLedger(
                     voucher_type_id: 4,
@@ -1342,6 +1328,7 @@ class SaleController extends Controller
     public function paymentDelete(Request $request, $paymentId)
     {
         if (auth()->user()->permission->sale['sale_payment'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -1349,6 +1336,7 @@ class SaleController extends Controller
             ->where('id', $paymentId)->first();
 
         if (!is_null($deleteSalePayment)) {
+
             //Update customer due 
             if ($deleteSalePayment->payment_type == 1) {
                 // Update sale 

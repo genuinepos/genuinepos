@@ -93,14 +93,14 @@
                                      <tr class="bg-primary">
                                          <th class="text-white text-start">Product</th>
                                          <th class="text-white text-start">Quantity</th>
-                                         <th class="text-white text-start">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Before Discount)</th>
-                                         <th class="text-white text-start">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                         <th class="text-white text-start">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (Before Tax)</th>
-                                         <th class="text-white text-start">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }}) (Before Tax)</th>
+                                         <th class="text-white text-start">Unit Cost(Before Discount)</th>
+                                         <th class="text-white text-start">Unit Discount</th>
+                                         <th class="text-white text-start">Unit Cost(Before Tax)</th>
+                                         <th class="text-white text-start">SubTotal (Before Tax)</th>
                                          <th class="text-white text-start">Tax(%)</th>
-                                         <th class="text-white text-start">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) (After Tax)</th>
-                                         <th class="text-white text-start">Unit Selling({{ json_decode($generalSettings->business, true)['currency'] }}) Price</th>
-                                         <th class="text-white text-start">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                         <th class="text-white text-start">Unit Cost(After Tax)</th>
+                                         <th class="text-white text-start">Unit Selling Price</th>
+                                         <th class="text-white text-start">SubTotal</th>
                                          <th class="text-white text-start">Lot Number</th>
                                      </tr>
                                  </thead>
@@ -121,7 +121,7 @@
                                             <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->subtotal) }}</td>
                                             <td class="text-start">{{ $product->unit_tax.'('.$product->unit_tax_percent.'%)' }}</td>
                                             <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->net_unit_cost) }} </td>
-                                            <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->selling_price) }}</td>
+                                            <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->product->product_price) }}</td>
                                             
                                             <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->line_total) }}</td>
                                             <td class="text-start">{{ $product->lot_no ? $product->lot_no : '' }}</td>

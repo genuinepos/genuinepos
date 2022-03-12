@@ -108,6 +108,7 @@ class SaleReturnController extends Controller
                         $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', $row->sale_id) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.returns.delete', $row->id) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
                         $html .= '<a class="dropdown-item" id="view_payment" href="' . route('sales.returns.payment.list', [$row->sale_id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
+
                         if ($row->total_return_due > 0) {
 
                             if (auth()->user()->permission->sale['sale_payment'] == '1') {
@@ -237,7 +238,7 @@ class SaleReturnController extends Controller
             // Update Sale return
             $saleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
             $saleReturn->sale_return_account_id = $request->sale_return_account_id;
-           
+
             $saleReturn->return_discount_type = $request->return_discount_type;
             $saleReturn->return_discount = $request->return_discount;
             $saleReturn->return_discount_amount = $request->total_return_discount_amount;
@@ -270,7 +271,7 @@ class SaleReturnController extends Controller
             }
 
             foreach ($sale->sale_products as $sale_product) {
-                
+
                 $this->productStockUtil->adjustMainProductAndVariantStock($sale_product->product_id, $sale_product->product_variant_id);
                 $this->productStockUtil->adjustBranchStock($sale_product->product_id, $sale_product->product_variant_id, $sale->branch_id);
             }

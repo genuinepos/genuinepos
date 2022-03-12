@@ -49,4 +49,20 @@ class CommonAjaxCallController extends Controller
             return response()->json(['noResult' => 'no result']);
         }
     }
+
+    public function searchFinalSaleInvoices($invoiceId)
+    {
+        $invoices = DB::table('sales')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->where('status', 1)->where('invoice_id', 'like', "%{$invoiceId}%")
+            ->select('id', 'invoice_id')->get();
+
+        if (count($invoices) > 0) {
+
+            return view('common_ajax_view.invoice_search_list', compact('invoices'));
+        } else {
+
+            return response()->json(['noResult' => 'no result']);
+        }
+    }
 }

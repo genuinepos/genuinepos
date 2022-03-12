@@ -26,16 +26,20 @@
         $('.select_area').hide();
         var product_code = $(this).val();
         var __product_code = product_code.replaceAll('/', '~');
-        delay(function() { searchProduct(__product_code); }, 200); //sendAjaxical is the name of remote-command
+        var status = $('#status').val() ? $('#status').val() : 'no_status';
+        delay(function() { searchProduct(status, __product_code); }, 200); //sendAjaxical is the name of remote-command
     });
 
-    function searchProduct(product_code) {
+    function searchProduct(status, product_code) {
+
         $('#search_product').focus();
         var price_group_id = $('#price_group_id').val();
+       
         $.ajax({
-            url:"{{ url('sales/search/product') }}"+"/"+product_code,
+            url:"{{ url('sales/search/product') }}" + "/"+ status + "/" + product_code,
             dataType: 'json',
             success:function(product){
+
                 if(!$.isEmptyObject(product.errorMsg || product_code == '')){
 
                     toastr.error(product.errorMsg); 
@@ -46,6 +50,7 @@
                 }
 
                 var qty_limit = product.qty_limit;
+
                 if(
                     !$.isEmptyObject(product.product) 
                     || !$.isEmptyObject(product.variant_product) 
@@ -53,9 +58,11 @@
                 ) {
 
                     $('#search_product').addClass('is-valid');
+
                     if(!$.isEmptyObject(product.product)){
 
                         var product = product.product;
+
                         if(product.product_variants.length == 0){
 
                             $('.select_area').hide();
@@ -79,10 +86,16 @@
                                     var closestTr = $('.'+className).closest('tr');
                                     var presentQty = closestTr.find('#quantity').val();
                                     var qty_limit = closestTr.find('#qty_limit').val();
-                                    if(parseFloat(qty_limit) == parseFloat(presentQty)){
-                                        toastr.error('Quantity Limit is - '+qty_limit+' '+product.unit.name);
-                                        return;
+
+                                    if (status == 'no_status' || status == 1) {
+
+                                        if(parseFloat(qty_limit) == parseFloat(presentQty)){
+
+                                            toastr.error('Quantity Limit is - '+qty_limit+' '+product.unit.name);
+                                            return;
+                                        }
                                     }
+                                    
                                     var updateQty = parseFloat(presentQty) + 1;
                                     closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                     
@@ -116,6 +129,7 @@
 
                                 var tax_amount = parseFloat(price / 100 * tax_percent);
                                 var unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
+
                                 if (product.tax_type == 2) {
 
                                     var inclusiveTax = 100 + parseFloat(tax_percent)
@@ -212,6 +226,7 @@
                             $('#search_product').val('');
                         }
                     }else if(!$.isEmptyObject(product.variant_product)){
+
                         $('.select_area').hide();
                         $('#search_product').val('');
 
@@ -237,10 +252,16 @@
                                     var closestTr = $('.'+className).closest('tr');
                                     var presentQty = closestTr.find('#quantity').val();
                                     var qty_limit = closestTr.find('#qty_limit').val();
-                                    if(parseFloat(qty_limit) == parseFloat(presentQty)){
-                                        toastr.error('Quantity Limit is - '+qty_limit+' '+variant_product.product.unit.name);
-                                        return;
+
+                                    if (status == 'no_status' || status == 1) {
+
+                                        if(parseFloat(qty_limit) == parseFloat(presentQty)){
+
+                                            toastr.error('Quantity Limit is - '+qty_limit+' '+variant_product.product.unit.name);
+                                            return;
+                                        }
                                     }
+
                                     var updateQty = parseFloat(presentQty) + 1;
                                     closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                     
@@ -259,6 +280,7 @@
 
                             var price = 0;
                             var __price = price_groups.filter(function (value) {
+
                                 return value.price_group_id == price_group_id && value.product_id == variant_product.product.id && value.variant_id == variant_product.id;
                             });
 
@@ -326,7 +348,7 @@
                             calculateTotalAmount();
                         }    
                     }else if (!$.isEmptyObject(product.namedProducts)) {
-
+                        
                         if(product.namedProducts.length > 0){
 
                             var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
@@ -422,10 +444,14 @@
     var keyName = 1;
     function singleProduct(e){
 
+        var status = $('#status').val() ? $('#status').val() : 'no_status';
+
         var price_group_id = $('#price_group_id').val();
         $('.select_area').hide();
         $('#search_product').val('');
+
         if (keyName == 13 || keyName == 1) {
+
             document.getElementById('search_product').focus();
         }
 
@@ -443,7 +469,7 @@
         $('#search_product').val('');
 
         $.ajax({
-            url:"{{ url('sales/check/single/product/stock/') }}"+"/"+product_id,
+            url:"{{ url('sales/check/single/product/stock/') }}"+"/"+ status +"/"+product_id,
             type:'get',
             dataType: 'json',
             success:function(singleProductQty) {
@@ -457,6 +483,7 @@
                     
                     var product_ids = document.querySelectorAll('#product_id');
                     var sameProduct = 0;
+
                     product_ids.forEach(function(input){
 
                         if(input.value == product_id){
@@ -468,10 +495,13 @@
                             var presentQty = closestTr.find('#quantity').val();
                             var qty_limit = closestTr.find('#qty_limit').val();
 
-                            if(parseFloat(qty_limit) === parseFloat(presentQty)){
+                            if (status == 'no_status' || status == 1) {
 
-                                toastr.error('Quantity Limit is - '+qty_limit+' '+product_unit);
-                                return;
+                                if(parseFloat(qty_limit) === parseFloat(presentQty)){
+
+                                    toastr.error('Quantity Limit is - '+qty_limit+' '+product_unit);
+                                    return;
+                                }
                             }
 
                             var updateQty = parseFloat(presentQty) + 1;
@@ -530,6 +560,7 @@
 
                         tr += '<td>';
                         tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                        tr += '<p class="text-danger" id="stock_error"></p>';
                         tr += '</td>';
                         tr += '<td class="text">';
                         tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
@@ -578,8 +609,11 @@
     // select variant product and add purchase table
     function salectVariant(e){
 
+        var status = $('#status').val() ? $('#status').val() : 'no_status';
+
         var price_group_id = $('#price_group_id').val();
         var url_param_price_group_id = $('#price_group_id').val() ? $('#price_group_id').val() : 'no-price-group';
+        
         if (keyName == 13 || keyName == 1) {
 
             document.getElementById('search_product').focus();
@@ -603,7 +637,7 @@
         var description = e.getAttribute('data-description');
 
         $.ajax({
-            url:"{{url('sales/check/branch/variant/qty/')}}"+"/"+product_id+"/"+variant_id,
+            url:"{{url('sales/check/branch/variant/qty/')}}"+ "/" + status + "/" + product_id + "/" +variant_id,
             type:'get',
             dataType: 'json',
             success:function(branchVariantQty){
@@ -618,6 +652,7 @@
                     var variant_ids = document.querySelectorAll('#variant_id');
                     var sameVariant = 0;
                     variant_ids.forEach(function(input){
+
                         if(input.value != 'noid'){
 
                             if(input.value == variant_id){
@@ -628,10 +663,16 @@
                                 var closestTr = $('.'+className).closest('tr');
                                 var presentQty = closestTr.find('#quantity').val();
                                 var qty_limit = closestTr.find('#qty_limit').val();
-                                if(parseFloat(qty_limit)  === parseFloat(presentQty)){
-                                    toastr.error('Quantity Limit is - '+qty_limit+' '+product_unit);
-                                    return;
+
+                                if (status == 'no_status' || status == 1) {
+
+                                    if(parseFloat(qty_limit) === parseFloat(presentQty)){
+
+                                        toastr.error('Quantity Limit is - '+qty_limit+' '+product_unit);
+                                        return;
+                                    }
                                 }
+                                
                                 var updateQty = parseFloat(presentQty) + 1;
                                 closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                 //Update Subtotal
@@ -689,6 +730,7 @@
 
                         tr += '<td>';
                         tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                        tr += '<p class="text-danger" id="stock_error"></p>';
                         tr += '</td>';
                         tr += '<td class="text">';
                         tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
@@ -734,29 +776,41 @@
     }
 
     $('#customer_id').on('change', function () {
+
         $('#previous_due').val(parseFloat(0).toFixed(2));
         $('#display_pre_due').val(parseFloat(0).toFixed(2));
         var id = $(this).val(); 
+
         var url = "{{ url('sales/customer_info') }}"+'/'+id;
+
         if(id != 0){
+
             $.get(url, function(customer) {
+
                 if (customer) {
+
                     $('#display_pre_due').val(customer.total_sale_due);
                     $('#previous_due').val(customer.total_sale_due);
+
                     if (customer.pay_term != null && customer.pay_term_number != null) {
+
                         $('#pay_term').val(customer.pay_term);
                         $('#pay_term_number').val(customer.pay_term_number);
                     }else{
+
                         $('#pay_term').val('');
                         $('#pay_term_number').val('');
                     }
                 }else{
+
                     $('#pay_term').val('');
                     $('#pay_term_number').val('');
                 }
+
                 calculateTotalAmount();
             });
         }else{
+
             calculateTotalAmount();
         }
     });
@@ -780,11 +834,15 @@
         $.ajax({
             url:"{{route('purchases.get.all.taxes')}}",
             success:function(taxes){
+
                 taxArray = taxes;
                 $('#order_tax').append('<option value="">No Tax</option>');
+
                 $.each(taxes, function(key, val){
+
                     $('#order_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
                 });
+
                 $('#order_tax').val("{{json_decode($generalSettings->sale, true)['default_tax_id'] != 'null' ? json_decode($generalSettings->sale, true)['default_tax_id'] : '' }}");
             }
         });
@@ -793,11 +851,14 @@
 
     // Calculate total amount functionalitie
     function calculateTotalAmount(){
+
         var quantities = document.querySelectorAll('#quantity');
         var subtotals = document.querySelectorAll('#subtotal');
         // Update Total Item
+
         var total_item = 0;
         quantities.forEach(function(qty){
+
             total_item += 1;
         });
 
@@ -806,6 +867,7 @@
         // Update Net total Amount
         var netTotalAmount = 0;
         subtotals.forEach(function(subtotal){
+
             netTotalAmount += parseFloat(subtotal.value);
         });
 
@@ -836,9 +898,16 @@
 
         $('#total_invoice_payable').val(parseFloat(calcInvoicePayable).toFixed(2));
 
-        var calcTotalPayableAmount = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge) + parseFloat(previousDue);
+        var calcTotalPayableAmount = parseFloat(netTotalAmount) 
+                                    - parseFloat(orderDiscountAmount) 
+                                    + parseFloat(calcOrderTaxAmount) 
+                                    + parseFloat(shipmentCharge) 
+                                    + parseFloat(previousDue);
+        
         $('#total_payable_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
+
         //$('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
+        
         // Update purchase due
         var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
         var changeAmount = parseFloat(payingAmount) - parseFloat(calcTotalPayableAmount);
@@ -850,26 +919,34 @@
     // Quantity increase or dicrease and clculate row amount
     $(document).on('input', '#quantity', function() {
 
+        var status = $('#status').val() ? $('#status').val() : 'no_status';
+
         var qty = $(this).val() ? $(this).val() : 0;
+
         if (qty < 0) {
+
             $(this).val(0);
         }
+
         if (parseFloat(qty) >= 0) {
 
             var tr = $(this).closest('tr');
             var qty_limit = tr.find('#qty_limit').val();
             var unit = tr.find('#unit').val();
 
-            if(parseInt(qty) > parseInt(qty_limit)){
+            if (status == 'no_status' || status == 1) {
 
-                toastr.error('Quantity Limit Is - '+qty_limit+' '+unit);
-                $(this).val(qty_limit);
-                var unitPrice = tr.find('#unit_price').val();
-                var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
-                tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-                tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount();  
-                return;
+                if(parseInt(qty) > parseInt(qty_limit)){
+
+                    toastr.error('Quantity Limit Is - '+qty_limit+' '+unit);
+                    $(this).val(qty_limit);
+                    var unitPrice = tr.find('#unit_price').val();
+                    var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
+                    tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
+                    tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
+                    calculateTotalAmount();  
+                    return;
+                }
             }
 
             var unitPrice = tr.find('#unit_price').val();
@@ -907,15 +984,17 @@
     // Input paying amount and clculate due amount
     $(document).on('input', '#paying_amount', function() {
 
-        var payingAmount = $(this).val() ? $(this).val() : 0;
-        var total_payable_amount = $('#total_payable_amount').val() ? $('#total_payable_amount').val() : 0;
-        var calcDueAmount = parseFloat(total_payable_amount) - parseFloat(payingAmount);
+        // var payingAmount = $(this).val() ? $(this).val() : 0;
+        // var total_payable_amount = $('#total_payable_amount').val() ? $('#total_payable_amount').val() : 0;
+        // var calcDueAmount = parseFloat(total_payable_amount) - parseFloat(payingAmount);
 
-        var changeAmount = parseFloat(payingAmount) - parseFloat(total_payable_amount);
-        $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
+        // var changeAmount = parseFloat(payingAmount) - parseFloat(total_payable_amount);
+        // $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
 
-        $('.label_total_due').html(parseFloat(calcDueAmount).toFixed(2));
-        $('#total_due').val(parseFloat(calcDueAmount).toFixed(2));
+        // $('.label_total_due').html(parseFloat(calcDueAmount).toFixed(2));
+        // $('#total_due').val(parseFloat(calcDueAmount).toFixed(2));
+
+        calculateTotalAmount();
     });
 
     // Dispose Select area 
@@ -978,6 +1057,7 @@
                 $('#e_unit_tax').append('<option value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
             }
         });
+
         $('#e_tax_type').val(unit_tax_type);
         $('#e_unit').empty();
 
@@ -1076,11 +1156,14 @@
 
         var calcUnitPriceWithDiscount = parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount);
         var calsUninTaxAmount = parseFloat(calcUnitPriceWithDiscount) / 100 * parseFloat(e_unit_tax_percent);
+
         if (e_unit_tax_type == 2) {
+
             var inclusiveTax = 100 + parseFloat(e_unit_tax_percent);
             var calc = parseFloat(calcUnitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
             calsUninTaxAmount = parseFloat(calcUnitPriceWithDiscount) - parseFloat(calc);
         }
+
         productTableRow.find('#unit_tax_percent').val(parseFloat(e_unit_tax_percent).toFixed(2));
         productTableRow.find('#tax_type').val(e_unit_tax_type);
         productTableRow.find('#unit_tax_amount').val(parseFloat(calsUninTaxAmount).toFixed(2));
@@ -1100,6 +1183,7 @@
         
         var unit_price = $(this).val() ? $(this).val() : 0.00;
         var discountValue = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
+
         if ($('#e_unit_discount_type').val() == 1) {
 
             $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
@@ -1110,9 +1194,35 @@
         }
     });
 
+    var stockErrors = 0;
+    function __chackStockLimitation(tr) {
+
+        var quantity = tr.find('#quantity').val() ? tr.find('#quantity').val() : 0;
+  
+        var stock_limit = tr.find('#qty_limit').val();
+
+        var unitName = tr.find('#qty_limit').data('unit');
+   
+        tr.find('#stock_error').html('');
+        tr.find('#quantity').removeClass('border_red');
+
+        if(parseFloat(quantity) > parseFloat(stock_limit)) {
+
+            tr.find('#stock_error').html('Only '+ stock_limit +' is available.');
+            tr.find('#quantity').addClass('border_red');
+            tr.find('#quantity').focus();
+            stockErrors++;
+        }
+    }
+
     //Add purchase request by ajax
     $('#add_sale_form').on('submit', function(e){
         e.preventDefault();
+
+        stockErrors = 0;
+
+        var status = $('#status').val();
+
         $('.loading_button').show();
         var url = $(this).attr('action');
 
@@ -1122,6 +1232,23 @@
 
             $('.loading_button').hide();
             toastr.error('Product table is empty.'); 
+            return;
+        }
+
+        var allTr = $('#sale_list').find('tr');
+
+        if (status == 1) {
+
+            allTr.each(function () {
+
+                __chackStockLimitation($(this));
+            });
+        }
+
+        if (status == 1 && stockErrors > 0) {
+
+            $('.loading_button').hide();
+            toastr.error('Stock Limitation Error.', 'Some thing want wrong.');
             return;
         }
 
@@ -1136,6 +1263,8 @@
             success:function(data){
 
                 $('.submit_button').prop('type', 'sumbit');
+                $('.error').html('');
+
                 if(!$.isEmptyObject(data.errorMsg)){
 
                     toastr.error(data.errorMsg); 
@@ -1285,15 +1414,50 @@
     @endif
 
     $('#status').on('change', function () {
-        if ($(this).val() == 1) {
-            $('.payment_body').show();
-        } else{
-            $('.payment_body').hide();
-        }
+
+        var status = $(this).val();
+        afterChangeStatusAcivity(status);
     });
 
+    function afterChangeStatusAcivity(status) {
+        $('#quotation').show();
+        $('#order').show();
+        $('#save').show();
+        $('#save_and_print').show();
+        $('.payment_body').show();
+
+        if (status == 1) {
+
+            $('#quotation').hide();
+            $('#order').hide();
+            $('.payment_body').show();
+            
+        } else if(status == 4){
+
+            $('.payment_body').hide();
+            $('#save').hide();
+            $('#save_and_print').hide();
+            $('#order').hide();
+        }else if(status == 3){
+
+            $('#quotation').hide();
+            $('.payment_body').show();
+            $('#save').hide();
+            $('#save_and_print').hide();
+        }else if(status == 2){
+
+            $('#quotation').show();
+            $('#order').hide();
+            $('.payment_body').hide();
+            $('#save').hide();
+            $('#save_and_print').hide();
+        }
+    }
+
     $(document).keypress(".scanable",function(event){
+
         if (event.which == '10' || event.which == '13') {
+
             event.preventDefault();
         }
     });
@@ -1302,19 +1466,29 @@
     $('#order_discount').val(parseFloat("{{json_decode($generalSettings->sale, true)['default_sale_discount']}}").toFixed(2));
     
     $('body').keyup(function(e){
+
         if (e.keyCode == 13 || e.keyCode == 9){  
+
+            if ($(".selectProduct").attr('href') == undefined) {
+
+                return;
+            }
+           
             $(".selectProduct").click();
+            
             $('#list').empty();
             keyName = e.keyCode;
         }
     });
 
-    $(document).on('mouseenter', '#list>li>a',function () {
-        $('#list>li>a').removeClass('selectProduct');
-        $(this).addClass('selectProduct');
-    });
+    // $(document).on('mouseenter', '#list>li>a',function () {
+
+    //     $('#list>li>a').removeClass('selectProduct');
+    //     $(this).addClass('selectProduct');
+    // });
 
     function afterCreateSale() {
+
         $('.loading_button').hide();
         $('.hidden').val(parseFloat(0).toFixed(2)); 
         $('#previous_due').html(parseFloat(0).toFixed(2)); 
@@ -1322,24 +1496,29 @@
         $('#add_sale_form')[0].reset();
         $('#sale_list').empty();
         document.getElementById('search_product').focus();
+        afterChangeStatusAcivity(status);
     }
 
     $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
 
     $(document).on('blur', '#paying_amount', function () {
+
         var value = $(this).val();
-        console.log(value);
+
         if (value == "") {
+
             $(this).val(parseFloat(0).toFixed(2));
         }
     });
 
     $(document).on('click', '.resent-tn',function (e) {
         e.preventDefault();
+
         showRecentTransectionModal();
     });
 
     function showRecentTransectionModal() {
+
         recentSales();
         $('#recentTransModal').modal('show');
         $('.tab_btn').removeClass('tab_active');
@@ -1347,11 +1526,14 @@
     }
 
     function recentSales() {
+
         $('#recent_trans_preloader').show();
+
         $.ajax({
             url:"{{route('sales.recent.sales')}}",
             type:'get',
             success:function(data){
+
                 $('#transection_list').html(data);
                 $('#recent_trans_preloader').hide();
             }
@@ -1360,6 +1542,7 @@
 
     $(document).on('click', '#tab_btn', function(e) {
         e.preventDefault();
+
         $('#recent_trans_preloader').show();
         var url = $(this).attr('href');
 
@@ -1367,6 +1550,7 @@
             url:url,
             type:'get',
             success:function(data){
+
                 $('#transection_list').html(data);
                 $('#recent_trans_preloader').hide();
             }
@@ -1377,12 +1561,15 @@
     });
 
     $(document).on('click', '.show_stock', function (e) {
+
         $('#stock_preloader').show();
         $('#showStockModal').modal('show');
+
         $.ajax({
             url:"{{route('sales.pos.branch.stock')}}",
             type:'get',
             success:function(data){
+
                 $('#stock_modal_body').html(data);
                 $('#stock_preloader').hide();
             }
@@ -1392,7 +1579,9 @@
     $(document).on('click', '#only_print', function (e) {
         e.preventDefault();
         var url = $(this).attr('href');
+
         $.get(url, function(data) {
+
             $(data).printThis({
                 debug: false,                   
                 importCSS: true,                
@@ -1411,6 +1600,7 @@
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+
     new Litepicker({
         singleMode: true,
         element: document.getElementById('date'),
@@ -1431,6 +1621,7 @@
     });
 
     $('#payment_method_id').on('change', function () {
+
         var account_id = $(this).find('option:selected').data('account');
         setDefaultAccount(account_id);
     });
@@ -1456,15 +1647,34 @@
     });
 
     document.onkeyup = function () {
+
         var e = e || window.event; // for IE to cover IEs window event-object
-
+        console.log(e);
         if(e.ctrlKey && e.which == 13) {
-
+            
             $('#save_and_print').click();
             return false;
         }else if (e.shiftKey && e.which == 13) {
 
             $('#save').click();
+            return false;
+        }else if (e.ctrlKey && e.which == 81) {
+
+            $('#quotation').click();
+            return false;
+        } else if (e.altKey && e.which == 82) {
+
+            $('#order').click();
+            return false;
+        }else if (e.altKey && e.which == 67) {
+
+            $('#paying_amount').focus();
+            $('#paying_amount').select();
+            return false;
+        }else if (e.which == 27) {
+            
+            $('.variant_list_area').empty();
+            $('.select_area').hide();
             return false;
         }
     }

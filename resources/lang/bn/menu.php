@@ -48,10 +48,12 @@ return [
     'pos_sale_list' => 'পিওএস বিক্রয় পরিচালনা',
     'pos' => 'পিওএস',
     'pos_list' => 'পিওএস তালিকা',
+    'sales_order_list' => 'বিক্রয় আদেশ তালিকা',
     'draft_list' => 'খসড়া তালিকা',
     'quotation_list' => 'উদ্ধৃতি তালিকা',
     'challan_list' => 'চালান তালিকা',
-    'sale_return_list' => 'বিক্রয় রিটার্ন তালিকা',
+    'sale_return_list' => 'বিক্রয় ফেরত তালিকা',
+    'add_sale_return' => 'বিক্রয় ফেরত যোগ করুন',
     'sold_product_list' => 'বিক্রিত পণ্যের তালিকা',
     'shipments' => 'চালান',
     // Menu child of Transfer module 

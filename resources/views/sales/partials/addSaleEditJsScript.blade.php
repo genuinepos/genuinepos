@@ -1,12 +1,15 @@
 <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+    calculateTotalAmount();
+
     // Get all price group
     var price_groups = '';
     function getPriceGroupProducts(){
         $.ajax({
             url:"{{route('sales.product.price.groups')}}",
             success:function(data){
+
                 price_groups = data;
             }
         });
@@ -27,30 +30,16 @@
     }
     getUnites();
 
-    // Get all taxes for form field
-    var taxArray;
-    function getTaxes(){
-
-        $.get("{{ route('purchases.get.all.taxes') }}", function(taxes) {
-
-            taxArray = taxes;
-            $('#order_tax').append('<option value="0.00">No Tax</option>');
-            $.each(taxes, function(key, val){
-
-                $('#order_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
-            });
-        });
-    }
-    getTaxes();
-
     // Calculate total amount functionalitie
     function calculateTotalAmount(){
 
         var quantities = document.querySelectorAll('#quantity');
         var subtotals = document.querySelectorAll('#subtotal');
+
         // Update Total Item
         var total_item = 0;
         quantities.forEach(function(qty){
+            
             total_item += 1;
         });
 
@@ -59,6 +48,7 @@
         // Update Net total Amount
         var netTotalAmount = 0;
         subtotals.forEach(function(subtotal){
+            
             netTotalAmount += parseFloat(subtotal.value);
         });
 
@@ -68,7 +58,7 @@
 
             var orderDisAmount = parseFloat(netTotalAmount) /100 * parseFloat($('#order_discount').val() ? $('#order_discount').val() : 0);
             $('#order_discount_amount').val(parseFloat(orderDisAmount).toFixed(2));
-        }else{
+        } else {
 
             var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0
             $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
@@ -77,13 +67,30 @@
         // Calc order tax amount
         var orderDiscountAmount = $('#order_discount_amount').val() ? $('#order_discount_amount').val() : 0;
         var orderTax = $('#order_tax').val() ? $('#order_tax').val() : 0;
-        var calcOrderTaxAmount = (parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount)) / 100 * parseFloat(orderTax) ;
+        var calcOrderTaxAmount = (parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount)) / 100 * parseFloat(orderTax);
         $('#order_tax_amount').val(parseFloat(calcOrderTaxAmount).toFixed(2));
         
         // Update Total payable Amount
         var shipmentCharge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
-        var calcTotalPayableAmount = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge);
+
+        var calcTotalPayableAmount = parseFloat(netTotalAmount) 
+                                    - parseFloat(orderDiscountAmount) 
+                                    + parseFloat(calcOrderTaxAmount) 
+                                    + parseFloat(shipmentCharge);
+                                    // - parseFloat(previous_paid)
+
         $('#total_payable_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
+
+        var previous_paid = $('#previous_paid').val();
+
+        var currentReceivable = parseFloat(calcTotalPayableAmount) - parseFloat(previous_paid);
+
+        $('#current_receivable').val(parseFloat(currentReceivable).toFixed(2));
+
+        var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
+
+        var calcCurrentDue = parseFloat(currentReceivable) - parseFloat(payingAmount);
+        $('#total_due').val(parseFloat(calcCurrentDue >= 0 ? calcCurrentDue : 0).toFixed(2));
     }
 
     var delay = (function() {
@@ -103,18 +110,20 @@
         $('.select_area').hide();
         var product_code = $(this).val();
         var __product_code = product_code.replaceAll('/', '~');
-        delay(function() { searchProduct(__product_code); }, 200); //sendAjaxical is the name of remote-command
+        var status = $('#status').val() ? $('#status').val() : 'no_status';
+
+        delay(function() { searchProduct(status, __product_code); }, 200); //sendAjaxical is the name of remote-command
     });
 
     // add Sale product by searching product code
-    function searchProduct(product_code){
+    function searchProduct(status, product_code){
 
         $('#search_product').focus();
         var price_group_id = $('#price_group_id').val();
         $('.variant_list_area').empty();
         $('.select_area').hide();
         $.ajax({
-            url:"{{ url('sales/search/product') }}"+"/"+product_code,
+            url:"{{ url('sales/search/product') }}"+"/"+status+"/"+product_code,
             dataType: 'json',
             success:function(product){
 
@@ -127,7 +136,11 @@
 
                 var qty_limit = product.qty_limit;
                 
-                if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product) || !$.isEmptyObject(product.namedProducts)){
+                if(
+                    !$.isEmptyObject(product.product) || 
+                    !$.isEmptyObject(product.variant_product) || 
+                    !$.isEmptyObject(product.namedProducts)
+                ){
 
                     $('#search_product').addClass('is-valid');
                     if(!$.isEmptyObject(product.product)){
@@ -137,6 +150,7 @@
 
                             $('.select_area').hide();
                             $('#search_product').val('');
+                            
                             if (product.is_manage_stock == 1) {
 
                                 $('#stock_quantity').val(parseFloat(qty_limit).toFixed(2));
@@ -158,10 +172,13 @@
                                     var limit = closestTr.find('#qty_limit').val()
                                     var qty_limit = parseFloat(previousQty) + parseFloat(limit);
 
-                                    if(parseFloat(qty_limit) == parseFloat(presentQty)){
+                                    if (status == 'no_status' || status == 1) {
 
-                                        alert('Quantity exceeds stock quantity!');
-                                        return;
+                                        if(parseFloat(qty_limit) == parseFloat(presentQty)){
+
+                                            alert('Quantity exceeds stock quantity!');
+                                            return;
+                                        }
                                     }
 
                                     var updateQty = parseFloat(presentQty) + 1;
@@ -227,6 +244,7 @@
 
                                 tr += '<td>';
                                 tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                                tr += '<p class="text-danger" id="stock_error"></p>';
                                 tr += '</td>';
                                 tr += '<td class="text">';
                                 tr += '<span class="span_unit">'+ product.unit.name +'</span>'; 
@@ -235,7 +253,7 @@
 
                                 tr += '<td>';
                                 tr += '<input readonly name="unit_prices_exc_tax[]" type="hidden"  id="unit_price_exc_tax" value="'+ parseFloat(price).toFixed(2) +'">';
-                                tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+ parseFloat(unitPriceIncTax).toFixed(2) +'">';
+                                tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+ parseFloat(unitPriceIncTax).toFixed(2) +'">';
                                 tr += '</td>';
 
                                 tr += '<td class="text text-center">';
@@ -308,10 +326,13 @@
                                     var limit = closestTr.find('#qty_limit').val()
                                     var qty_limit = parseFloat(previousQty) + parseFloat(limit);
 
-                                    if(parseFloat(qty_limit) == parseFloat(presentQty)){
+                                    if (status == 'no_status' || status == 1) {
 
-                                        alert('Quantity exceeds stock quantity!');
-                                        return;
+                                        if(parseFloat(qty_limit) == parseFloat(presentQty)){
+
+                                            alert('Quantity exceeds stock quantity!');
+                                            return;
+                                        }
                                     }
 
                                     var updateQty = parseFloat(presentQty) + 1;
@@ -374,7 +395,8 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center form-control-sm" id="quantity">';
+                            tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                            tr += '<p class="text-danger" id="stock_error"></p>';
                             tr += '</td>';
                             tr += '<td class="text">';
                             tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
@@ -383,7 +405,7 @@
 
                             tr += '<td>';
                             tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+parseFloat(price).toFixed(2)+'" id="unit_price_exc_tax">';
-                            tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2) +'">';
+                            tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2) +'">';
                             tr += '</td>';
 
                             tr += '<td class="text text-center">';
@@ -495,6 +517,8 @@
     var keyName = '';
     function singleProduct(e){
 
+        var status = $('#status').val() ? $('#status').val() : 'no_status';
+        console.log({status});
         var price_group_id = $('#price_group_id').val();
         $('.select_area').hide();
         $('#search_product').val('');
@@ -517,7 +541,7 @@
         var description = e.getAttribute('data-description');
     
         $.ajax({
-            url:"{{ url('sales/check/single/product/stock/') }}"+"/"+product_id,
+            url:"{{ url('sales/check/single/product/stock/') }}"+"/"+status+"/"+product_id,
             async:true,
             type:'get',
             dataType: 'json',
@@ -544,10 +568,13 @@
                             var presentQty = closestTr.find('#quantity').val();
                             var qty_limit = closestTr.find('#qty_limit').val();
 
-                            if(parseFloat(qty_limit)  === parseFloat(presentQty)){
+                            if (status == 'no_status' || status == 1) {
 
-                                alert('Quantity exceeds stock quantity!');
-                                return;
+                                if(parseFloat(qty_limit)  === parseFloat(presentQty)){
+
+                                    alert('Quantity exceeds stock quantity!');
+                                    return;
+                                }
                             }
 
                             var updateQty = parseFloat(presentQty) + 1;
@@ -608,6 +635,7 @@
 
                         tr += '<td>';
                         tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                        tr += '<p class="text-danger" id="stock_error"></p>';
                         tr += '</td>';
                         tr += '<td class="text">';
                         tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
@@ -656,6 +684,8 @@
     // select variant product and add purchase table
     function salectVariant(e){
 
+        var status = $('#status').val() ? $('#status').val() : 'no_status';
+
         var price_group_id = $('#price_group_id').val();
 
         if (keyName == 13 || keyName == 1) {
@@ -682,7 +712,7 @@
         var description = e.getAttribute('data-description');
 
         $.ajax({
-            url:"{{ url('sales/check/branch/variant/qty/') }}"+"/"+product_id+"/"+variant_id,
+            url:"{{ url('sales/check/branch/variant/qty/') }}"+"/"+status+"/"+product_id+"/"+variant_id,
             async:true,
             type:'get',
             dataType: 'json',
@@ -713,11 +743,15 @@
                                 var limit = closestTr.find('#qty_limit').val()
                                 var qty_limit = parseFloat(previousQty) + parseFloat(limit);
 
-                                if(parseFloat(qty_limit)  === parseFloat(presentQty)){
+                                if (status == 'no_status' || status == 1) {
 
-                                    alert('Quantity exceeds stock quantity!');
-                                    return;
+                                    if(parseFloat(qty_limit)  === parseFloat(presentQty)) {
+
+                                        alert('Quantity exceeds stock quantity!');
+                                        return;
+                                    }
                                 }
+
                                 var updateQty = parseFloat(presentQty) + 1;
                                 closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                 
@@ -776,6 +810,7 @@
 
                         tr += '<td>';
                         tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                        tr += '<p class="text-danger" id="stock_error"></p>';
                         tr += '</td>';
                         tr += '<td class="text">';
                         tr += '<span class="span_unit">'+product_unit+'</span>'; 
@@ -794,7 +829,7 @@
                             unitPriceIncTax = parseFloat(price) + parseFloat(__tax_amount);
                         }
 
-                        tr += '<input readonly name="unit_prices[]" type="text" class="form-control form-control-sm text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
+                        tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
                         tr += '</td>';
                         tr += '<td class="text text-center">';
                         tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>'; 
@@ -824,6 +859,8 @@
     // Quantity increase or dicrease and clculate row amount
     $(document).on('input', '#quantity', function(){
 
+        var status = $('#status').val() ? $('#status').val() : 'no_status';
+
         var qty = $(this).val() ? $(this).val() : 0;
 
         if (parseFloat(qty) >= 0) {
@@ -833,16 +870,19 @@
             var limit = tr.find('#qty_limit').val()
             var qty_limit = parseFloat(previousQty) + parseFloat(limit);
 
-            if(parseInt(qty) > parseInt(qty_limit)){
+            if (status == 'no_status' || status == 1) {
 
-                alert('Quantity exceeds stock quantity!');
-                $(this).val(parseFloat(qty_limit).toFixed(2));
-                var unitPrice = tr.find('#unit_price').val();
-                var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
-                tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-                tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount();  
-                return;
+                if(parseInt(qty) > parseInt(qty_limit)){
+
+                    alert('Quantity exceeds stock quantity!');
+                    $(this).val(parseFloat(qty_limit).toFixed(2));
+                    var unitPrice = tr.find('#unit_price').val();
+                    var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
+                    tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
+                    tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
+                    calculateTotalAmount();  
+                    return;
+                }
             }
 
             var unitPrice = tr.find('#unit_price').val();
@@ -879,23 +919,30 @@
 
     // Input paying amount and clculate due amount
     $(document).on('input', '#paying_amount', function(){
+        calculateTotalAmount();
+    });
 
-        var payingAmount = $(this).val() ? $(this).val() : 0;
-        var total_purchase_amount = $('#total_payable_amount').val() ? $('#total_payable_amount').val() : 0;
-        var calcDueAmount = parseFloat(total_purchase_amount) - parseFloat(payingAmount);
-        $('.label_total_due').html(parseFloat(calcDueAmount).toFixed(2));
-        $('#total_due').val(parseFloat(calcDueAmount).toFixed(2));
+    $(document).on('blur', '#paying_amount', function () {
+
+        var value = $(this).val();
+
+        if (value == "") {
+
+            $(this).val(parseFloat(0).toFixed(2));
+        }
     });
 
     // Dispose Select area 
     $(document).on('click', '.remove_select_area_btn', function(e){
         e.preventDefault();
+
         $('.select_area').hide();
     });
 
     // Remove product form purchase product list (Table) 
     $(document).on('click', '#remove_product_btn',function(e){
         e.preventDefault();
+
         $(this).closest('tr').remove();
         calculateTotalAmount();
     });
@@ -930,21 +977,12 @@
         $('#e_unit_discount_type').val(unit_discount_type);
         $('#e_unit_discount').val(unit_discount);
         $('#e_discount_amount').val(unit_discount_amount);
-        $('#e_unit_tax').empty();
-        $('#e_unit_tax').append('<option value="0.00">No Tax</option>');
 
-        taxArray.forEach(function (tax) {
+        $('#e_unit_tax').val(unit_tax_percent);
 
-            if (tax.tax_percent == unit_tax_percent) {
-
-                $('#e_unit_tax').append('<option SELECTED value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
-            } else {
-
-                $('#e_unit_tax').append('<option value="'+tax.tax_percent+'">'+tax.tax_name+'</option>');
-            }
-        });
         $('#e_tax_type').val(unit_tax_type);
         $('#e_unit').empty();
+
         unites.forEach(function (unit) {
 
             if (unit == product_unit) {
@@ -1004,6 +1042,7 @@
 
             var inputId = $(val).attr('id');
             var idValue = $('#'+inputId).val();
+
             if(idValue == ''){
 
                 countErrorField += 1;
@@ -1071,22 +1110,75 @@
         if ($('#e_unit_discount_type').val() == 1) {
 
             $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
-        }else{
+        } else {
 
             var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
             $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
         }
     });
 
+    var stockErrors = 0;
+    function __chackStockLimitation(tr) {
+
+        var quantity = tr.find('#quantity').val() ? tr.find('#quantity').val() : 0;
+  
+        var previous_qty = tr.find('#previous_quantity').val();
+
+        var stock_limit = tr.find('#qty_limit').val();
+
+        var __stock_limit = parseFloat(previous_qty) + parseFloat(stock_limit);
+
+        var unitName = tr.find('#qty_limit').data('unit');
+   
+        tr.find('#stock_error').html('');
+        tr.find('#quantity').removeClass('border_red');
+
+        if(parseFloat(quantity) > parseFloat(__stock_limit)) {
+
+            tr.find('#stock_error').html('Only '+ stock_limit +' is available.');
+            tr.find('#quantity').addClass('border_red');
+            tr.find('#quantity').focus();
+            stockErrors++;
+        }
+    }
+
     //Add purchase request by ajax
     $('#edit_sale_form').on('submit', function(e){
         e.preventDefault();
+        stockErrors = 0;
+        var status = $('#status').val();
 
         var totalItem = $('#total_item').val();
 
         if (parseFloat(totalItem) == 0) {
 
             toastr.error('Product table is empty.','Some thing want wrong.'); 
+            return;
+        }
+
+        var allTr = $('#sale_list').find('tr');
+
+        if (status == 1) {
+
+            allTr.each(function () {
+
+                __chackStockLimitation($(this));
+            });
+        }
+
+        if (status == 1 && stockErrors > 0) {
+
+            $('.loading_button').hide();
+            toastr.error('Stock Limitation Error.', 'Some thing want wrong.');
+            return;
+        }
+
+        var current_receivable = $('#current_receivable').val() ? $('#current_receivable').val() : 0;
+        var paying_amount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
+
+        if (parseFloat(paying_amount) > 0 && parseFloat(paying_amount) > parseFloat(current_receivable)) {
+            
+            toastr.error('Received amount must not be greater then current receivable amount.'); 
             return;
         }
 
@@ -1110,7 +1202,7 @@
 
                     $('.loading_button').hide();
                     toastr.success(data.successMsg); 
-                    window.location = "{{route('sales.index2')}}";
+                    window.location = "{{ url()->previous() }}";
                 }
             },error: function(err) {
 
@@ -1121,6 +1213,10 @@
 
                     toastr.error('Net Connetion Error. Reload This Page.'); 
                     return;
+                }else if (err.status == 500) {
+
+                    toastr.error('Server error. Please contact to the support team.'); 
+                    return;
                 }
 
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
@@ -1129,7 +1225,6 @@
 
                     $('.error_' + key + '').html(error[0]);
                 });
-            
             }
         });
     });
@@ -1152,97 +1247,8 @@
         $('#action').val(value); 
     });
 
-    // Get editable data by ajax
-    function getEditableSale(){
-
-        $.ajax({
-            url:"{{route('sales.get.editable.sale', $saleId)}}",
-            type:'get',
-            dataType: 'json',
-            success:function(sale){
-
-                var qty_limits = sale.qty_limits;
-                
-                var sale = sale.sale;
-                $('#invoice_id').val(sale.invoice_id);
-                $('#status').val(sale.status);
-                $('#date').val(sale.date);
-                $('#pay_term').val(sale.pay_term);
-                $('#pay_term_number').val(sale.pay_term_number);
-                $('#customer_name').val(sale.customer_id == null ? 'Walk-In-Customer' : sale.customer.name + '('+sale.customer.phone+')');
-                $('#order_discount_type').val(sale.order_discount_type);
-                $('#order_discount').val(sale.order_discount);
-        
-                $('#order_discount_amount').val(sale.order_discount_amount);
-                $('#order_tax').val(sale.order_tax_percent);
-                $('#order_tax_amount').val(sale.order_tax_amount);
-                $('#shipment_details').val(sale.shipment_details);
-                $('#shipment_address').val(sale.shipment_address);
-                $('#shipment_charge').val(sale.shipment_charge);
-                $('#shipment_status').val(sale.shipment_status);
-                $('#delivered_to').val(sale.delivered_to);
-                $('#sale_note').val(sale.sale_note);
-
-                $.each(sale.sale_products, function (key, product) {
-
-                    var tr = '';
-                    tr += '<tr>';
-                    tr += '<td colspan="2" class="text-start">';
-                    tr += '<a href="#" class="text-success" id="edit_product">';
-                        var variant = product.product_variant_id != null ? ' -'+product.variant.variant_name+'- ' : '';
-                    tr += '<span class="product_name">'+product.product.name+variant+'</span>';
-                    tr += '</a><br/><input type="'+(product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here." value="'+(product.description ? product.description : '')+'">';
-                    tr += '<input value="'+product.product_id+'" type="hidden" class="productId-'+product.product_id+'" id="product_id" name="product_ids[]">';
-
-                    if (product.product_variant_id != null) {
-
-                        tr += '<input value="'+product.product_variant_id+'" type="hidden" class="variantId-'+product.product_variant_id+'" id="variant_id" name="variant_ids[]">'; 
-                    }else{
-
-                        tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';  
-                    }   
-
-                    tr += '<input type="hidden" id="tax_type" value="'+product.product.tax_type+'">';
-                    tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+product.unit_tax_percent+'">';
-                    tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+product.unit_tax_amount+'">';
-                    tr += '<input value="'+product.unit_discount_type+'" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
-                    tr += '<input value="'+product.unit_discount+'" name="unit_discounts[]" type="hidden" id="unit_discount">';
-                    tr += '<input value="'+product.unit_discount_amount+'" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
-                    tr += '<input value="'+product.unit_cost_inc_tax+'" name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax">';
-                    tr += '<input type="hidden" id="previous_quantity" value="'+product.quantity+'">';
-                    tr += '<input type="hidden" id="qty_limit" value="'+qty_limits[key]+'">';
-                    tr += '</td>';
-
-                    tr += '<td>';
-                    tr += '<input value="'+product.quantity+'" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                    tr += '</td>';
-                    tr += '<td class="text">';
-                    tr += '<span class="span_unit">'+product.unit+'</span>'; 
-                    tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit+'">';
-                    tr += '</td>';
-                    tr += '<td>';
-                    
-                    tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+product.unit_price_exc_tax+'" id="unit_price_exc_tax">';
-                    tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+product.unit_price_inc_tax+'">';
-                    tr += '</td>';
-                    tr += '<td class="text text-center">';
-                    tr += '<strong><span class="span_subtotal">'+product.subtotal+'</span></strong>'; 
-                    tr += '<input value="'+product.subtotal+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
-                    tr += '</td>';
-                    tr += '<td class="text-center">';
-                    tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
-                    tr += '</td>';
-                    tr += '</tr>';
-                    $('#sale_list').append(tr);
-                });
-                calculateTotalAmount();
-
-            }
-        });
-    }
-    getEditableSale();
-
     @if (auth()->user()->permission->product['product_add'] == '1')
+
         $('#add_product').on('click', function () {
 
             $.ajax({
@@ -1306,7 +1312,7 @@
         });
     @endif
     
-    $(document).keypress(".scanable",function(event){
+    $(document).keypress(".scanable",function(event) {
 
         if (event.which == '10' || event.which == '13') {
 
@@ -1314,21 +1320,52 @@
         }
     });
 
+    $('#status').on('change', function () {
+
+        var status = $(this).val();
+        afterChangeStatusAcivity(status);
+    });
+
+    function afterChangeStatusAcivity(status) {
+        $('.payment_body').show();
+
+        if (status == 1) {
+
+            $('.payment_body').show();
+            
+        } else if(status == 4){
+
+            $('.payment_body').hide();
+        }else if(status == 3){
+
+            $('.payment_body').show();
+        }else if(status == 2){
+
+            $('.payment_body').hide();
+        }
+    }
+
     $('body').keyup(function(e){
 
         if (e.keyCode == 13 || e.keyCode == 9){  
 
+            if ($(".selectProduct").attr('href') == undefined) {
+
+                return;
+            }
+
             $(".selectProduct").click();
+            
             $('#list').empty();
             keyName = e.keyCode;
         }
     });
 
-    $(document).on('mouseenter', '#list>li>a',function () {
+    // $(document).on('mouseenter', '#list>li>a',function () {
 
-        $('#list>li>a').removeClass('selectProduct');
-        $(this).addClass('selectProduct');
-    });
+    //     $('#list>li>a').removeClass('selectProduct');
+    //     $(this).addClass('selectProduct');
+    // });
 
     $(document).on('click', '#show_cost_button', function () {
 
@@ -1360,6 +1397,7 @@
     });
 
     document.onkeyup = function () {
+        
         var e = e || window.event; // for IE to cover IEs window event-object
 
         if (e.shiftKey && e.which == 13) {

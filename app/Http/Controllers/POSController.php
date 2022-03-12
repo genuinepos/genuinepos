@@ -195,6 +195,7 @@ class POSController extends Controller
         if ($request->action == 5) {
 
             $holdInvoice = Sale::where('branch_id', auth()->user()->branch_id)->where('status', 5)->where('admin_id', auth()->user()->id)->get();
+            
             if ($holdInvoice->count() == 5) {
 
                 return response()->json(['errorMsg' => 'You can hold only 5 invoices.']);
@@ -451,11 +452,13 @@ class POSController extends Controller
         foreach ($invoiceProducts as $sale_product) {
 
             if ($sale_product->product->is_manage_stock == 0) {
+
                 $qty_limits[] = PHP_INT_MAX;
             } else {
 
                 $productBranch = DB::table('product_branches')->where('branch_id', $sale_product->sale->branch_id)
                     ->where('product_id', $sale_product->product_id)->first();
+
                 if ($sale_product->product->type == 2) {
 
                     $qty_limits[] = 500000;
@@ -792,9 +795,12 @@ class POSController extends Controller
             ->where('branch_id', $branch_id)
             ->where('product_id', $product_id)
             ->first();
+
         if ($product->product_quantity > 0) {
+
             return view('sales.pos.ajax_view.recent_product_view', compact('product'));
         } else {
+
             return response()->json([
                 'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this branch/shop.'
             ]);
@@ -927,13 +933,17 @@ class POSController extends Controller
 
         $index = 0;
         foreach ($ex_quantities as $ex_quantity) {
+
             $__ex_qty = $ex_quantity ? $ex_quantity : 0;
             $soldProduct = SaleProduct::where('id', $product_row_ids[$index])->first();
+
             if ($__ex_qty != 0) {
+
                 $soldProduct->ex_quantity = $__ex_qty;
                 $soldProduct->ex_status = 1;
                 $soldProduct->save();
             } else {
+
                 $soldProduct->ex_status = 0;
                 $soldProduct->save();
             }
@@ -946,16 +956,22 @@ class POSController extends Controller
 
         $qty_limits = [];
         foreach ($ex_items as $sale_product) {
+
             $productBranch = ProductBranch::where('branch_id', $sale_product->sale->branch_id)
                 ->where('product_id', $sale_product->product_id)->first();
+
             if ($sale_product->product->type == 2) {
+
                 $qty_limits[] = 500000;
             } elseif ($sale_product->product_variant_id) {
+
                 $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)->where('product_id', $sale_product->product_id)
                     ->where('product_variant_id', $sale_product->product_variant_id)
                     ->first();
+
                 $qty_limits[] = $productBranchVariant->variant_quantity;
             } else {
+
                 $qty_limits[] = $productBranch->product_quantity;
             }
         }
@@ -1131,6 +1147,7 @@ class POSController extends Controller
             );
 
             if ($updateSale->customer_id) {
+
                 // add customer ledger
                 $this->customerUtil->updateCustomerLedger(
                     voucher_type_id: 3,
@@ -1199,6 +1216,7 @@ class POSController extends Controller
 
                     $calc_point = $total_amount / $amount_for_unit_rp;
                     $__net_point = (int)$calc_point;
+                    
                     if ($max_rp_per_order && $__net_point > $max_rp_per_order) {
 
                         return $max_rp_per_order;
@@ -1207,7 +1225,7 @@ class POSController extends Controller
                         return $__net_point;
                     }
                 } else {
-
+                    
                     return 0;
                 }
             } else {

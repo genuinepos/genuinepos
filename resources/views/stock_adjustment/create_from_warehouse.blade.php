@@ -57,7 +57,9 @@
                                                 <div class="col-8">
                                                     <select name="adjustment_account_id" class="form-control add_input"
                                                         id="adjustment_account_id" data-name="Stock Adjustiment A/C">
+
                                                         @foreach ($stockAdjustmentAccounts as $stockAdjustmentAccount)
+
                                                             <option value="{{ $stockAdjustmentAccount->id }}">
                                                                 {{ $stockAdjustmentAccount->name }}
                                                             </option>
@@ -123,7 +125,7 @@
                                                     <label for="inputEmail3" class="col-form-label">Item Search</label>
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
+                                                            <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="search_product"
                                                             class="form-control scanable" autocomplete="off"
@@ -180,8 +182,7 @@
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Total Item :</b></label>
                                                             <div class="col-8">
-                                                                <input readonly type="number" step="any" name="total_item" class="form-control"
-                                                                    id="total_item" value="0.00">
+                                                                <input readonly type="number" step="any" name="total_item" class="form-control" id="total_item" value="0.00">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -190,8 +191,7 @@
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class=" col-4"><b>Net Total Amount :</b> </label>
                                                             <div class="col-8">
-                                                                <input readonly type="number" class="form-control" step="any" step="any"
-                                                                    name="net_total_amount" id="net_total_amount" value="0.00">
+                                                                <input readonly type="number" class="form-control" step="any" step="any" name="net_total_amount" id="net_total_amount" value="0.00">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -231,7 +231,9 @@
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
+
                                                                 @foreach ($methods as $method)
+
                                                                     <option value="{{ $method->id }}" 
                                                                         data-account="{{ $method->account_id }}">
                                                                         {{ $method->name }}
@@ -248,6 +250,7 @@
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
                                                                 @foreach ($accounts as $account)
+
                                                                     <option value="{{ $account->id }}">
                                                                         @php
                                                                             $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
@@ -289,18 +292,23 @@
     <script>
          // Calculate total amount functionalitie
          function calculateTotalAmount(){
+
              var quantities = document.querySelectorAll('#quantity');
              var subtotals = document.querySelectorAll('#subtotal');
              // Update Total Item
              var total_item = 0;
+
              quantities.forEach(function(qty){
+
                  total_item += 1;
              });
 
              $('#total_item').val(parseFloat(total_item));
              // Update Net total Amount
+
              var netTotalAmount = 0;
              subtotals.forEach(function(subtotal){
+
                  netTotalAmount += parseFloat(subtotal.value);
              });
              $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
@@ -308,231 +316,273 @@
  
          // add purchase product by searching product code
          $('#search_product').on('input', function(e){
-             $('.variant_list_area').empty();
-             $('.select_area').hide();
-             var keyword = $(this).val();
-             var warehouse_id = $('#warehouse_id').val();
-             if(warehouse_id == ""){
-                 $('#search_product').val("");
-                 alert('Warehouse field must not be empty.');
-                 return;
-             }
+
+            $('.variant_list_area').empty();
+            $('.select_area').hide();
+            var keyword = $(this).val();
+
+            var __keyword = keyword.replaceAll('/', '~');
+            var warehouse_id = $('#warehouse_id').val();
+
+            if(warehouse_id == ""){
+
+                $('#search_product').val("");
+                alert('Warehouse field must not be empty.');
+                return;
+            }
              
-             $.ajax({
+            $.ajax({
                 url:"{{url('stock/adjustments/search/product/in/warehouse')}}"+"/"+keyword+"/"+warehouse_id,
                  dataType: 'json',
                  success:function(product){
-                     if(!$.isEmptyObject(product.errorMsg)){
+
+                    if(!$.isEmptyObject(product.errorMsg)){
+
                         toastr.error(product.errorMsg); 
                         $('#search_product').val("");
                         return;
-                     }
+                    }
  
-                     var qty_limit = product.qty_limit;
-                     if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product) || !$.isEmptyObject(product.namedProducts)){
-                         $('#search_product').addClass('is-valid');
-                         if(!$.isEmptyObject(product.product)){
-                             var product = product.product;
-                             if(product.product_variants.length == 0){
-                                 $('.select_area').hide();
-                                 $('#search_product').val('');
-                                 product_ids = document.querySelectorAll('#product_id');
-                                 var sameProduct = 0;
-                                 product_ids.forEach(function(input){
-                                     if(input.value == product.id){
-                                         sameProduct += 1;
-                                         var className = input.getAttribute('class');
-                                         // get closest table row for increasing qty and re calculate product amount
-                                         var closestTr = $('.'+className).closest('tr');
-                                         var presentQty = closestTr.find('#quantity').val();
-                                         var qty_limit = closestTr.find('#qty_limit').val();
-                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
-                                             toastr.error('Quantity Limit is - '+qty_limit+' '+product.unit.name);
-                                             return;
-                                         }
-                                         var updateQty = parseFloat(presentQty) + 1;
-                                         closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                         
-                                         //Update Subtotal
-                                         var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
-                                         var calcSubtotal = parseFloat(unitCostIncTax) * parseFloat(updateQty);
-                                         closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-                                         closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                                         calculateTotalAmount();
-                                         return;
-                                     }
-                                 });
- 
-                                 if(sameProduct == 0){
-                                     var tr = '';
-                                     tr += '<tr>';
-                                     tr += '<td colspan="2" class="text">';
-                                     tr += '<a href="#" class="text-success" id="edit_product">';
-                                     tr += '<span class="product_name">'+product.name+'</span>';
-                                     tr += '<span class="product_variant"></span>'; 
-                                     
-                                     tr += '<span class="product_code">'+'('+product.product_code+')'+'</span>';
-                                     tr += '</a>';
-                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.product_id+'" id="product_id" name="product_ids[]">';
- 
-                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';  
-                                     
-                                     tr += '<input readonly name="unit_costs_inc_tax[]" type="hidden"  id="unit_cost_inc_tax" value="'+product.product_cost_with_tax+'">';
-                                     tr += '<input type="hidden" id="previous_quantity" value="0.00">';
-                                     tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
-                                     tr += '</td>';
- 
-                                     tr += '<td>';
-                                     tr += '<div class="input-group">';
-                                     tr += '<div class="input-group-prepend">';
-                                     tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                                     tr += '</div>';
-                                     tr += '<input value="1" required name="quantities[]" type="text" class="form-control text-center" id="quantity">';
-                                     tr += '<div class="input-group-prepend">';
-                                     tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                                     tr += '</div>';
-                                     tr += '</div>';
-                                     tr += '</td>';
-                                     tr += '<td class="text">';
-                                     tr += '<span class="span_unit">'+product.unit.name+'</span>'; 
-                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
-                                     tr += '</td>';
-                                     
-                                     tr += '<td class="text">';
-                                     tr += '<strong><span class="span_unit_cost_inc_tax">'+product.product_cost_with_tax+'</span></strong>'; 
-                                     tr += '</td>';
- 
-                                     tr += '<td class="text text-center">';
-                                     tr += '<strong><span class="span_subtotal">'+product.product_cost_with_tax+'</span></strong>'; 
-                                     tr += '<input value="'+product.product_cost_with_tax+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
-                                     tr += '</td>';
- 
-                                     tr += '<td class="text-start">';
-                                     tr += '<a href="" id="remove_product_btn"><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
-                                     tr += '</td>';
-                                     tr += '</tr>';
-                                     $('#product_list').prepend(tr);
-                                     calculateTotalAmount(); 
-                                 }
-                             }else{
-                                 var li = "";
-                                 var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
-                                 $.each(product.product_variants, function(key, variant){
-                                     li += '<li class="mt-1">';
-                                     li += '<a class="select_variant_product" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-v_code="'+variant.variant_code+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" data-v_name="'+variant.variant_name+'" href="#"><img style="width:25px; height:25px;"src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+'</a>';
-                                     li +='</li>';
-                                 });
-                                 $('.variant_list_area').html(li);
-                                 $('.select_area').show();
-                                 $('#search_product').val('');
-                             }
-                         }else if(!$.isEmptyObject(product.variant_product)){
-                             $('.select_area').hide();
-                             $('#search_product').val('');
-                             var variant_product = product.variant_product;
-                             console.log(variant_product); 
-                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
-                             var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0); 
-                             var variant_ids = document.querySelectorAll('#variant_id');
-                             var sameVariant = 0;
-                             variant_ids.forEach(function(input){
-                                 if(input.value != 'noid'){
-                                     if(input.value == variant_product.id){
-                                         sameVariant += 1;
-                                         var className = input.getAttribute('class');
-                                         // get closest table row for increasing qty and re calculate product amount
-                                         var closestTr = $('.'+className).closest('tr');
-                                         var presentQty = closestTr.find('#quantity').val();
-                                         var qty_limit = closestTr.find('#qty_limit').val();
-                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
+                    var qty_limit = product.qty_limit;
+                    if(
+                        !$.isEmptyObject(product.product) || 
+                        !$.isEmptyObject(product.variant_product) || 
+                        !$.isEmptyObject(product.namedProducts)
+                    ){
+
+                        $('#search_product').addClass('is-valid');
+
+                        if(!$.isEmptyObject(product.product)){
+
+                            var product = product.product;
+
+                            if(product.product_variants.length == 0){
+
+                                $('.select_area').hide();
+                                $('#search_product').val('');
+                                product_ids = document.querySelectorAll('#product_id');
+                                var sameProduct = 0;
+
+                                product_ids.forEach(function(input){
+
+                                    if(input.value == product.id){
+
+                                        sameProduct += 1;
+                                        var className = input.getAttribute('class');
+                                        // get closest table row for increasing qty and re calculate product amount
+                                        var closestTr = $('.'+className).closest('tr');
+                                        var presentQty = closestTr.find('#quantity').val();
+                                        var qty_limit = closestTr.find('#qty_limit').val();
+
+                                        if(parseFloat(qty_limit) == parseFloat(presentQty)){
+
+                                            toastr.error('Quantity Limit is - '+qty_limit+' '+product.unit.name);
+                                            return;
+                                        }
+
+                                        var updateQty = parseFloat(presentQty) + 1;
+                                        closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
+                                        
+                                        //Update Subtotal
+                                        var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
+                                        var calcSubtotal = parseFloat(unitCostIncTax) * parseFloat(updateQty);
+                                        closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
+                                        closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
+                                        calculateTotalAmount();
+                                        return;
+                                    }
+                                });
+
+                                if(sameProduct == 0){
+
+                                    var tr = '';
+                                    tr += '<tr>';
+                                    tr += '<td colspan="2" class="text">';
+                                    tr += '<a href="#" class="text-success" id="edit_product">';
+                                    tr += '<span class="product_name">'+product.name+'</span>';
+                                    tr += '<span class="product_variant"></span>'; 
+                                    
+                                    tr += '<span class="product_code">'+'('+product.product_code+')'+'</span>';
+                                    tr += '</a>';
+                                    tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.product_id+'" id="product_id" name="product_ids[]">';
+
+                                    tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';  
+                                    
+                                    tr += '<input readonly name="unit_costs_inc_tax[]" type="hidden"  id="unit_cost_inc_tax" value="'+product.product_cost_with_tax+'">';
+                                    tr += '<input type="hidden" id="previous_quantity" value="0.00">';
+                                    tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
+                                    tr += '</td>';
+
+                                    tr += '<td>';
+                                    tr += '<div class="input-group">';
+                                    tr += '<div class="input-group-prepend">';
+                                    tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
+                                    tr += '</div>';
+                                    tr += '<input value="1" required name="quantities[]" type="text" class="form-control text-center" id="quantity">';
+                                    tr += '<div class="input-group-prepend">';
+                                    tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
+                                    tr += '</div>';
+                                    tr += '</div>';
+                                    tr += '</td>';
+                                    tr += '<td class="text">';
+                                    tr += '<span class="span_unit">'+product.unit.name+'</span>'; 
+                                    tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
+                                    tr += '</td>';
+                                    
+                                    tr += '<td class="text">';
+                                    tr += '<strong><span class="span_unit_cost_inc_tax">'+product.product_cost_with_tax+'</span></strong>'; 
+                                    tr += '</td>';
+
+                                    tr += '<td class="text text-center">';
+                                    tr += '<strong><span class="span_subtotal">'+product.product_cost_with_tax+'</span></strong>'; 
+                                    tr += '<input value="'+product.product_cost_with_tax+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
+                                    tr += '</td>';
+
+                                    tr += '<td class="text-start">';
+                                    tr += '<a href="" id="remove_product_btn"><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
+                                    tr += '</td>';
+                                    tr += '</tr>';
+                                    $('#product_list').prepend(tr);
+                                    calculateTotalAmount(); 
+                                }
+                            }else{
+
+                                var li = "";
+                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+
+                                $.each(product.product_variants, function(key, variant){
+
+                                    li += '<li class="mt-1">';
+                                    li += '<a class="select_variant_product" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-v_code="'+variant.variant_code+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" data-v_name="'+variant.variant_name+'" href="#"><img style="width:25px; height:25px;"src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+'</a>';
+                                    li +='</li>';
+                                });
+                                $('.variant_list_area').html(li);
+                                $('.select_area').show();
+                                $('#search_product').val('');
+                            }
+                        }else if(!$.isEmptyObject(product.variant_product)){
+
+                            $('.select_area').hide();
+                            $('#search_product').val('');
+                            var variant_product = product.variant_product;
+
+                            var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
+
+                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0); 
+
+                            var variant_ids = document.querySelectorAll('#variant_id');
+                            var sameVariant = 0;
+                            variant_ids.forEach(function(input){
+
+                                if(input.value != 'noid'){
+
+                                    if(input.value == variant_product.id){
+
+                                        sameVariant += 1;
+                                        var className = input.getAttribute('class');
+                                        // get closest table row for increasing qty and re calculate product amount
+                                        var closestTr = $('.'+className).closest('tr');
+                                        var presentQty = closestTr.find('#quantity').val();
+                                        var qty_limit = closestTr.find('#qty_limit').val();
+
+                                        if(parseFloat(qty_limit) == parseFloat(presentQty)){
+
                                             toastr.error('Quantity Limit is - '+qty_limit+' '+variant_product.product.unit.name);  
-                                             return;
-                                         }
-                                         var updateQty = parseFloat(presentQty) + 1;
-                                         closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                         
-                                         //Update Subtotal
-                                         var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
-                                         var calcSubtotal = parseFloat(unitCostIncTax) * parseFloat(updateQty);
-                                         closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-                                         closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                                         calculateTotalAmount();
-                                         return;
-                                     }
-                                 }    
-                             });
-                            
-                             if(sameVariant == 0){
-                                 var tr = '';
-                                 tr += '<tr>';
-                                 tr += '<td colspan="2">';
-                                 tr += '<a href="#" class="text-success" id="edit_product">';
-                                 tr += '<span class="product_name">'+variant_product.product.name+'</span>';
-                                 tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
-                                 tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
-                                 tr += '</a>';
-                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
-                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
-                                 tr += '<input readonly name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(variant_product.variant_cost_with_tax).toFixed(2) +'">';
-                                 tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
-                                 tr += '</td>';
- 
-                                 tr += '<td>';
-                                 tr += '<div class="input-group">';
-                                 tr += '<div class="input-group-prepend">';
-                                 tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                                 tr += '</div>';
-                                 tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                                 tr += '<div class="input-group-prepend">';
-                                 tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                                 tr += '</div>';
-                                 tr += '</div>';
-                                 tr += '</td>';
-                                 tr += '<td class="text text-center">';
-                                 tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
-                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
-                                 tr += '</td>';
- 
-                                 tr += '<td class="text">';
-                                 tr += '<strong><span class="span_unit_cost_inc_tax">'+parseFloat(variant_product.variant_cost_with_tax).toFixed(2)+'</span></strong>'; 
-                                 tr += '</td>';
- 
-                                 tr += '<td class="text text-center">';
-                                 tr += '<strong><span class="span_subtotal">'+parseFloat(variant_product.variant_cost_with_tax).toFixed(2)+'</span></strong>'; 
-                                 tr += '<input value="'+parseFloat(variant_product.variant_cost_with_tax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
-                                 tr += '</td>';
-                                 tr += '<td class="text-start">';
-                                 tr += '<a href="" id="remove_product_btn"><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
-                                 tr += '</td>';
-                                 tr += '</tr>';
-                                 $('#product_list').append(tr);
-                                 calculateTotalAmount();
-                             }    
-                         }else if (!$.isEmptyObject(product.namedProducts)) {
-                             if(product.namedProducts.length > 0){
-                                 var li = "";
-                                 var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
-                                 var products = product.namedProducts; 
-                                 $.each(products, function (key, product) {
-                                     if (product.product_variants.length > 0) {
-                                         $.each(product.product_variants, function(key, variant){
-                                             li += '<li class="mt-1">';
-                                             li += '<a class="select_variant_product" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-v_code="'+variant.variant_code+'" data-v_cost_inc_tax="'+variant.variant_cost_with_tax+'" data-v_name="'+variant.variant_name+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+'</a>';
-                                             li +='</li>';
-                                         });
-                                     }else{
-                                         li += '<li class="mt-1">';
-                                         li += '<a class="select_single_product" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit.name+'" data-p_code="'+product.product_code+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+'</a>';
-                                         li +='</li>';
-                                     }
-                                 });
-                                 
-                                 $('.variant_list_area').html(li);
-                                 $('.select_area').show();
-                             }
-                         }
+                                            return;
+                                        }
+
+                                        var updateQty = parseFloat(presentQty) + 1;
+                                        closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
+                                        
+                                        //Update Subtotal
+                                        var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
+                                        var calcSubtotal = parseFloat(unitCostIncTax) * parseFloat(updateQty);
+                                        closestTr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
+                                        closestTr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
+                                        calculateTotalAmount();
+                                        return;
+                                    }
+                                }    
+                            });
+                        
+                            if(sameVariant == 0){
+
+                                var tr = '';
+                                tr += '<tr>';
+                                tr += '<td colspan="2">';
+                                tr += '<a href="#" class="text-success" id="edit_product">';
+                                tr += '<span class="product_name">'+variant_product.product.name+'</span>';
+                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
+                                tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
+                                tr += '</a>';
+                                tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
+                                tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
+                                tr += '<input readonly name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(variant_product.variant_cost_with_tax).toFixed(2) +'">';
+                                tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
+                                tr += '</td>';
+
+                                tr += '<td>';
+                                tr += '<div class="input-group">';
+                                tr += '<div class="input-group-prepend">';
+                                tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
+                                tr += '</div>';
+                                tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
+                                tr += '<div class="input-group-prepend">';
+                                tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
+                                tr += '</div>';
+                                tr += '</div>';
+                                tr += '</td>';
+                                tr += '<td class="text text-center">';
+                                tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
+                                tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
+                                tr += '</td>';
+
+                                tr += '<td class="text">';
+                                tr += '<strong><span class="span_unit_cost_inc_tax">'+parseFloat(variant_product.variant_cost_with_tax).toFixed(2)+'</span></strong>'; 
+                                tr += '</td>';
+
+                                tr += '<td class="text text-center">';
+                                tr += '<strong><span class="span_subtotal">'+parseFloat(variant_product.variant_cost_with_tax).toFixed(2)+'</span></strong>'; 
+                                tr += '<input value="'+parseFloat(variant_product.variant_cost_with_tax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
+                                tr += '</td>';
+                                tr += '<td class="text-start">';
+                                tr += '<a href="" id="remove_product_btn"><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
+                                tr += '</td>';
+                                tr += '</tr>';
+                                $('#product_list').append(tr);
+                                calculateTotalAmount();
+                            }    
+                        }else if (!$.isEmptyObject(product.namedProducts)) {
+
+                            if(product.namedProducts.length > 0){
+
+                                var li = "";
+                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var products = product.namedProducts; 
+
+                                $.each(products, function (key, product) {
+
+                                    if (product.is_variant == 1) {
+
+                                        li += '<li class="mt-1">';
+                                        li += '<a class="select_variant_product" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-unit="'+product.unit_name+'" data-v_code="'+product.variant_code+'" data-v_cost_inc_tax="'+product.variant_cost_with_tax+'" data-v_name="'+product.variant_name+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Unit Cost: '+product.variant_cost_with_tax+'</a>';
+                                        li +='</li>';
+                                        
+                                    }else{
+
+                                        li += '<li class="mt-1">';
+                                        li += '<a class="select_single_product" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-unit="'+product.unit_name+'" data-p_code="'+product.product_code+'" data-p_cost_inc_tax="'+product.product_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' ('+product.product_code+')'+' - Unit Cost: '+product.product_cost_with_tax+'</a>';
+                                        li +='</li>';
+                                    }
+                                });
+                                
+                                $('.variant_list_area').html(li);
+                                $('.select_area').show();
+                            }
+                        }
                      }else{
-                         $('#search_product').addClass('is-invalid');
+
+                        $('#search_product').addClass('is-invalid');
                      }
                  }
              });
@@ -558,11 +608,13 @@
  
              $.ajax({
                 
-                url:"{{url('stock/adjustments/check/single/product/stock/in/warehouse')}}"+"/"+product_id+"/"+warehouse_id,
+                url:"{{url('stock/adjustments/check/single/product/stock/in/warehouse/')}}"+"/"+product_id+"/"+warehouse_id,
                 type:'get',
                 dataType: 'json',
                 success:function(singleProductQty){
+
                      if($.isEmptyObject(singleProductQty.errorMsg)){
+
                          var product_ids = document.querySelectorAll('#product_id');
                          var sameProduct = 0;
                          product_ids.forEach(function(input){

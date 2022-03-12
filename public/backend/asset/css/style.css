@@ -1564,3 +1564,9 @@ table.display tbody tr:hover {
     margin-top: 10px;
     font-size: 12px;
 }
+
+.number-fields input {font-weight: 600;font-size: 11px;}
+
+.stock_quantity {font-weight: 600;font-size: 12px;}
+
+.shortcut-key-info{font-size: 9px!important;color: gray;}

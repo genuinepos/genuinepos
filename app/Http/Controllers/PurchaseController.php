@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 use App\Utils\NameSearchUtil;
 use App\Models\ProductVariant;
 use App\Models\PurchaseReturn;
-use App\Models\SupplierLedger;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
@@ -593,18 +592,17 @@ class PurchaseController extends Controller
                 $__xMargin = isset($request->profits) ? $profits[$loop] : 0;
                 $__sale_price = isset($request->selling_prices) ? $selling_prices[$loop] : 0;
 
-                if ($updatePurchase->is_last_created == 1) {
-
-                    $this->purchaseUtil->updateProductAndVariantPrice(
-                        $productId,
-                        $variant_id,
-                        $unit_costs_with_discount[$loop],
-                        $net_unit_costs[$loop],
-                        $__xMargin,
-                        $__sale_price,
-                        $isEditProductPrice
-                    );
-                }
+                $this->purchaseUtil->updateProductAndVariantPrice(
+                    $productId,
+                    $variant_id,
+                    $unit_costs_with_discount[$loop],
+                    $net_unit_costs[$loop],
+                    $__xMargin,
+                    $__sale_price,
+                    $isEditProductPrice,
+                    $updatePurchase->is_last_created
+                );
+             
                 $loop++;
             }
         }
@@ -618,10 +616,12 @@ class PurchaseController extends Controller
         // deleted not getting previous product
         $deletedUnusedPurchaseOrPoProducts = '';
         if ($editType == 'ordered') {
+
             $deletedUnusedPurchaseOrPoProducts = PurchaseOrderProduct::where('purchase_id', $updatePurchase->id)
                 ->where('delete_in_update', 1)
                 ->get();
         } else {
+            
             $deletedUnusedPurchaseOrPoProducts = PurchaseProduct::where('purchase_id', $updatePurchase->id)
                 ->where('delete_in_update', 1)
                 ->get();

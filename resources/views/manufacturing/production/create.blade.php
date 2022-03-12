@@ -417,10 +417,13 @@
             var unitName = tr.find('#qty_limit').data('unit');
             var regexp = /^\d+\.\d{0,2}$/;
             tr.find('#input_qty_error').html('');
+            
             if (regexp.test(parseFloat(inputQty)) == true) {
+
                 tr.find('#input_qty_error').html('Deciaml value is not allowed.');
                 errorCount++;
             } else if(parseFloat(inputQty) > parseFloat(limitQty)) {
+
                 tr.find('#input_qty_error').html('Only '+limitQty+' '+unitName+' is available.');
                 errorCount++;
             } 
@@ -504,10 +507,12 @@
 
             var allTr = $('#ingredient_list').find('tr');
             allTr.each(function () {
+
                 __calculateIngredientsTableAmount($(this));
             });
 
             if (errorCount > 0) {
+
                 $('.loading_button').hide();
                 toastr.error('Please check again all form fields.', 'Some thing want wrong.');
                 return;

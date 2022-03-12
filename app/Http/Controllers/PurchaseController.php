@@ -242,7 +242,10 @@ class PurchaseController extends Controller
             $i++;
         }
 
-        $updateLastCreated = Purchase::where('is_last_created', 1)->select('id', 'is_last_created')->first();
+        $updateLastCreated = Purchase::where('is_last_created', 1)
+            ->where('branch_id', auth()->user()->branch_id)
+            ->select('id', 'is_last_created')
+            ->first();
 
         if ($updateLastCreated) {
 
@@ -372,7 +375,8 @@ class PurchaseController extends Controller
                     $net_unit_costs[$loop],
                     $__xMargin,
                     $__sale_price,
-                    $isEditProductPrice
+                    $isEditProductPrice,
+                    $addPurchase->is_last_created
                 );
 
                 $loop++;
@@ -472,10 +476,12 @@ class PurchaseController extends Controller
         $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
 
         if (isset($request->warehouse_id)) {
+            
             $this->validate($request, ['warehouse_id' => 'required']);
         }
 
         if (!isset($request->product_ids)) {
+
             return response()->json(['errorMsg' => 'Product table is empty.']);
         }
 
@@ -495,19 +501,23 @@ class PurchaseController extends Controller
 
         // update product and variant quantity for adjustment
         foreach ($updatePurchase->purchase_products as $purchase_product) {
+
             $SupplierProduct = SupplierProduct::where('supplier_id', $updatePurchase->supplier_id)
                 ->where('product_id', $purchase_product->product_id)
                 ->where('product_variant_id', $purchase_product->product_variant_id)
                 ->first();
 
             if ($SupplierProduct) {
+
                 $SupplierProduct->label_qty -= (float)$purchase_product->quantity;
                 $SupplierProduct->save();
             }
         }
 
         $purchaseOrOrderProducts = $editType == 'purchased' ? $updatePurchase->purchase_products : $updatePurchase->purchase_order_products;
+        
         foreach ($purchaseOrOrderProducts as $purchaseOrOrderProduct) {
+
             $purchaseOrOrderProduct->delete_in_update = 1;
             $purchaseOrOrderProduct->save();
         }
@@ -602,14 +612,16 @@ class PurchaseController extends Controller
                     $isEditProductPrice,
                     $updatePurchase->is_last_created
                 );
-             
+
                 $loop++;
             }
         }
 
         if ($editType == 'purchased') {
+
             $this->purchaseUtil->updatePurchaseProduct($request, $isEditProductPrice, $updatePurchase->id);
         } else {
+
             $this->purchaseUtil->updatePurchaseOrderProduct($request, $isEditProductPrice, $updatePurchase->id);
         }
 
@@ -621,42 +633,54 @@ class PurchaseController extends Controller
                 ->where('delete_in_update', 1)
                 ->get();
         } else {
-            
+
             $deletedUnusedPurchaseOrPoProducts = PurchaseProduct::where('purchase_id', $updatePurchase->id)
                 ->where('delete_in_update', 1)
                 ->get();
         }
 
         if (count($deletedUnusedPurchaseOrPoProducts) > 0) {
+
             foreach ($deletedUnusedPurchaseOrPoProducts as $deletedPurchaseProduct) {
+
                 $storedProductId = $deletedPurchaseProduct->product_id;
                 $storedVariantId = $deletedPurchaseProduct->product_variant_id;
                 $deletedPurchaseProduct->delete();
                 // Adjust deleted product stock
                 $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
+
                 if (isset($request->warehouse_id)) {
+
                     $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId, $request->warehouse_id);
                 } else {
+
                     $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
                 }
             }
         }
 
         if ($editType == 'purchased') {
+
             $purchase_products = DB::table('purchase_products')->where('purchase_id', $updatePurchase->id)->get();
             foreach ($purchase_products as $purchase_product) {
+
                 $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $purchase_product->product_variant_id);
+
                 if (isset($request->warehouse_id)) {
+
                     $this->productStockUtil->addWarehouseProduct($purchase_product->product_id, $purchase_product->product_variant_id, $request->warehouse_id);
                     $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $purchase_product->product_variant_id, $request->warehouse_id);
                 } else {
+
                     $this->productStockUtil->addBranchProduct($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
                     $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $purchase_product->product_variant_id, auth()->user()->branch_id);
                 }
             }
 
             if (isset($request->warehouse_id) && $request->warehouse_id != $storedWarehouseId) {
+
                 foreach ($storePurchaseProducts as $PurchaseProduct) {
+
                     $this->productStockUtil->adjustWarehouseStock($PurchaseProduct->product_id, $PurchaseProduct->product_variant_id, $storedWarehouseId);
                 }
             }

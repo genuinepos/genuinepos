@@ -1220,7 +1220,9 @@ class PurchaseController extends Controller
         if (!is_null($deletePurchasePayment)) {
             $storedAccountId = $deletePurchasePayment->account_id;
             if ($deletePurchasePayment->attachment != null) {
+
                 if (file_exists(public_path('uploads/payment_attachment/' . $deletePurchasePayment->attachment))) {
+                    
                     unlink(public_path('uploads/payment_attachment/' . $deletePurchasePayment->attachment));
                 }
             }

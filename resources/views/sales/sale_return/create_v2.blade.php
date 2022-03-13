@@ -144,7 +144,7 @@
                                             <div class="col-md-4">
                                                 <div class="searching_area" style="position: relative;">
                                                     <label class="col-form-label">Select Item</label>
-                                                    <select disabled class="form-control" id="product">
+                                                    <select disabled class="form-control" id="sale_products">
                                                         <option value="">Select Item</option>
                                                     </select>
                                                 </div>
@@ -302,6 +302,8 @@
             selectObjClassName = 'selected_invoice';
             $(this).val('');
             $('#sale_id').val('');
+            $('#sale_products').prop('disabled', true);
+            $('#search_product').prop('disabled', false);
         });
 
         $('#sale_invoice_id').on('input', function () {
@@ -313,7 +315,9 @@
             if (invoice_id === '') {
 
                 $('.invoice_search_result').hide();
-                $('#sale_id').val('');;
+                $('#sale_id').val('');
+                $('#sale_products').prop('disabled', true);
+                $('#search_product').prop('disabled', false);
                 return;
             }
 
@@ -347,11 +351,30 @@
             $('#sale_id').val(sale_id);
 
             $('.invoice_search_result').hide();
+
+            $.ajax({
+                url:"{{ url('common/ajax/call/get/sale/products') }}" + "/" +sale_id,
+                async:true,
+                type:'get',
+                success:function(sale_products){
+
+                    $('#sale_products').prop('disabled', false);
+                    $('#search_product').prop('disabled', true);
+
+                    $('#sale_products').empty();
+                    $('#sale_products').append('<option value="">Select Item</option>');
+  
+                    $.each(sale_products, function(key, sale_product){
+
+                        $('#sale_products').append(
+                            '<option value="'+sale_product.product_id+'" data-variant_id="'+sale_product.variant_id+'" data-sale_id="'+sale_product.sale_id+'" data-unit_price="'+sale_product.unit_price+'" data-sale_quantity="'+sale_product.quantity+'">'+sale_product.product_name+'</option>'
+                        );
+                    })
+                }
+            });
         });
 
         $(document).on('keyup', 'body', function(e){
-
-            console.log(window.event.which);
 
             if (e.keyCode == 13){  
 
@@ -370,11 +393,17 @@
         //     }, 200)
         // });
 
-        
+        $(document).on('change', '#sale_products', function () {
+            
+            var productInfoObj = {
+                sale_id : $(this).find(':selected').data('sale_id'),
+                product_id : $(this).val(),
+                variant_id : $(this).find(':selected').data('variant_id'),
+                unit_price : $(this).find(':selected').data('unit_price'),
+                sale_quantity : $(this).find(':selected').data('sale_quantity'),
+            } 
+        });
+
     </script>
     <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.custom.js"></script>
 @endpush
-
-
-
-

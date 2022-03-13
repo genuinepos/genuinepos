@@ -45,7 +45,7 @@ class CommonAjaxCallController extends Controller
 
             return view('reports.product_purchase_report.ajax_view.search_result', compact('products'));
         } else {
-            
+
             return response()->json(['noResult' => 'no result']);
         }
     }
@@ -64,5 +64,23 @@ class CommonAjaxCallController extends Controller
 
             return response()->json(['noResult' => 'no result']);
         }
+    }
+
+    public function getSaleProducts($saleId)
+    {
+        return DB::table('sale_products')
+            ->where('sale_products.sale_id', $saleId)
+            ->leftJoin('products', 'sale_products.product_id', 'products.id')
+            ->leftJoin('product_variants', 'sale_products.product_variant_id', 'product_variants.id')
+            ->select(
+                'sale_products.id',
+                'sale_products.sale_id',
+                'sale_products.product_id',
+                'sale_products.product_variant_id as variant_id',
+                'sale_products.unit_price_inc_tax as unit_price',
+                'sale_products.quantity',
+                'products.name as product_name',
+                'product_variants.variant_name',
+            )->get();
     }
 }

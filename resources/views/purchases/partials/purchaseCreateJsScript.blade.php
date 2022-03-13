@@ -258,11 +258,11 @@
                                 @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
 
                                     tr += '<td>';
-                                    tr += '<input value="'+product.profit+'" type="text" name="profits[]" class="form-control" id="profit" autocomplete="off">';
+                                    tr += '<input value="'+product.profit+'" type="number" step="any" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                                     tr += '</td>';
                                 
                                     tr += '<td>';
-                                    tr += '<input value="'+product.product_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
+                                    tr += '<input type="number" step="any" value="'+product.product_price+'" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                                     tr += '</td>';
                                 @endif
 
@@ -445,11 +445,11 @@
                             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
 
                                 tr += '<td>';
-                                tr += '<input value="'+variant_product.variant_profit+'" type="text" name="profits[]" class="form-control" id="profit" autocomplete="off">';
+                                tr += '<input type="number" step="any" value="'+variant_product.variant_profit+'" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                                 tr += '</td>';
                             
                                 tr += '<td>';
-                                tr += '<input value="'+variant_product.variant_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
+                                tr += '<input type="number" step="any"  value="'+variant_product.variant_price+'" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                                 tr += '</td>';
                             @endif
 
@@ -608,11 +608,11 @@
 
             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
                 tr += '<td>';
-                tr += '<input value="'+product_profit+'" type="text" name="profits[]" class="form-control" id="profit" autocomplete="off">';
+                tr += '<input type="number" step="any" value="'+product_profit+'" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                 tr += '</td>';
             
                 tr += '<td>';
-                tr += '<input value="'+product_price+'" type="text" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
+                tr += '<input type="number" step="any" value="'+product_price+'" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                 tr += '</td>';
             @endif
 
@@ -770,11 +770,11 @@
             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
 
                 tr += '<td>';
-                tr += '<input value="'+variant_profit+'" type="text" name="profits[]" class="form-control" type="number" id="profit" autocomplete="off">';
+                tr += '<input type="number" step="any" value="'+variant_profit+'" name="profits[]" class="form-control" type="number" id="profit" autocomplete="off">';
                 tr += '</td>';
         
                 tr += '<td class="text-right">';
-                tr += '<input value="'+variant_price+'" type="number" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
+                tr += '<input type="number" step="any" value="'+variant_price+'" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                 tr += '</td>';
             @endif
 

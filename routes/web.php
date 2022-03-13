@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\DashboardController;
+use App\Models\ProductBranch;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -32,6 +33,7 @@ Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controlle
     Route::get('category/subcategories/{categoryId}', 'CommonAjaxCallController@categorySubcategories');
     Route::get('only/search/product/for/reports/{product_name}', 'CommonAjaxCallController@onlySearchProductForReports');
     Route::get('search/final/sale/invoices/{invoiceId}', 'CommonAjaxCallController@searchFinalSaleInvoices');
+    Route::get('get/sale/products/{saleId}', 'CommonAjaxCallController@getSaleProducts');
 });
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
@@ -1009,6 +1011,8 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
+    
+    return 'done';
 });
 
 // All authenticated routes

@@ -1262,6 +1262,7 @@ class PurchaseController extends Controller
             }
 
             if ($storedAccountId) {
+                
                 $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
             }
         }

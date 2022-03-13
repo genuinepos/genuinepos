@@ -44,6 +44,7 @@ class NameSearchUtil
                 'product_variants.variant_code',
                 'product_variants.variant_cost',
                 'product_variants.variant_cost_with_tax',
+                'product_variants.variant_profit',
                 'product_variants.variant_price',
                 'units.name as unit_name',
             )

@@ -36,6 +36,7 @@ class ProductController extends Controller
     public function allProduct(Request $request)
     {
         if (auth()->user()->permission->product['product_all'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -55,6 +56,7 @@ class ProductController extends Controller
     public function create(Request $request)
     {
         if (auth()->user()->permission->product['product_add'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -323,7 +325,7 @@ class ProductController extends Controller
                 'product_branch_variants.variant_quantity',
                 'product_branch_variants.total_sale as v_total_sale',
                 'product_branch_variants.total_purchased as v_total_purchased',
-                'product_branch_variants.total_purchased as v_total_opening_stock',
+                'product_branch_variants.total_opening_stock as v_total_opening_stock',
                 'product_branch_variants.total_adjusted as v_total_adjusted',
                 'product_branch_variants.total_transferred as v_total_transferred',
                 'product_branch_variants.total_received as v_total_received',

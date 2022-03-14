@@ -442,6 +442,16 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
         Route::post('prepare/exchange', 'POSController@prepareExchange')->name('sales.pos.prepare.exchange');
         Route::post('exchange/confirm', 'POSController@exchangeConfirm')->name('sales.pos.exchange.confirm');
     });
+
+    //Sale discount routes
+    Route::group(['prefix' => 'discounts'], function () {
+
+        Route::get('/', 'DiscountController@index')->name('sales.discounts.index');
+        Route::post('store', 'DiscountController@store')->name('sales.discounts.store');
+        Route::get('edit/{discountId}', 'DiscountController@edit')->name('sales.discounts.edit');
+        Route::post('update/{discountId}', 'DiscountController@update')->name('sales.discounts.update');
+        Route::delete('delete/{discountId}', 'DiscountController@delete')->name('sales.discounts.delete');
+    });
 });
 
 //Transfer stock to branch all route
@@ -628,6 +638,8 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
         Route::get('cash/flow/amounts', 'AccountingRelatedSectionController@cashFlowAmounts')->name('accounting.cash.flow.amounts');
         Route::get('filter/cash/flow', 'AccountingRelatedSectionController@filterCashflows')->name('accounting.filter.cash.flow');
         Route::get('print/cash/flow', 'AccountingRelatedSectionController@printCashflow')->name('accounting.print.cash.flow');
+        Route::get('profit/loss/account', 'AccountingRelatedSectionController@profitLossAccount')->name('accounting.profit.loss.account');
+        Route::get('profit/loss/account/amounts', 'AccountingRelatedSectionController@profitLossAccountAmounts')->name('accounting.profit.loss.account.amounts');
     });
 
     Route::group(['prefix' => 'assets'], function () {
@@ -833,7 +845,9 @@ Route::group(['prefix' => 'users',  'namespace' => 'App\Http\Controllers'], func
 });
 
 Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report'], function () {
+
     Route::group(['prefix' => 'profit/loss'], function () {
+
         Route::get('/', 'ProfitLossReportController@index')->name('reports.profit.loss.index');
         Route::get('sale/purchase/profit', 'ProfitLossReportController@salePurchaseProfit')->name('reports.profit.sale.purchase.profit');
         Route::get('filter/sale/purchase/profit/filter', 'ProfitLossReportController@filterSalePurchaseProfit')->name('reports.profit.filter.sale.purchase.profit');
@@ -1011,8 +1025,13 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
-    
-    return 'done';
+
+    return DB::table('expanses')
+    ->leftJoin('accounts', 'expanses.expense_account_id', 'accounts.id')
+    ->where('accounts.account_type', 7)
+    ->select(DB::raw('SUM(net_total_amount) as total_di_expense'))->get();
+
+    //return 'done';
 });
 
 // All authenticated routes

@@ -158,6 +158,7 @@
     <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
     <script>
         $('.select2').select2();
+        
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [ 

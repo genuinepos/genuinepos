@@ -13,53 +13,66 @@ class NetProfitLossAccount
         $directIncome = 0;
         $indirectIncome = 0;
 
-        $totalSaleAndOrderTax = $this->totalSaleAndOrderTax($request);
+        $totalSaleAmounts = $this->totalSaleAmounts($request);
         $closingStock = $this->closingStock($request);
         $openingStock = $this->openingStock($request);
         $stockAdjustments = $this->stockAdjustments($request);
-        $totalPurchasesAndOrderTax = $this->totalPurchasesAndOrderTax($request);
+        $totalPurchasesAmounts = $this->totalPurchasesAmounts($request);
         $totalSoldItemUnitCost = $this->totalSoldItemUnitCost($request);
 
         $individualProductSaleTax = $this->individualProductSaleTax($request);
         $directExpense = $this->directExpense($request);
         $indirectExpense  = $this->indirectExpense($request);
+        $totalSaleReturn  = $this->totalSaleReturn($request);
+        $totalPurchaseReturn  = $this->totalPurchaseReturn($request);
 
-        $netProfit = $totalSaleAndOrderTax->sum('total_sale')
+        $grossProfit = $totalSaleAmounts->sum('total_sale')
+            + ($closingStock - $openingStock->sum('total_ops_value'))
+            - $totalPurchasesAmounts->sum('total_purchase')
+            - $directExpense->sum('total_di_expense')
+            // - $totalSoldItemUnitCost->sum('total_unit_cost')
+            - $totalSaleReturn->sum('total_sale_return')
+            + $totalPurchaseReturn->sum('total_purchase_return');
+
+        $netProfit = $grossProfit
             // + ($closingStock - $openingStock->sum('total_ops_value'))
             + $stockAdjustments->sum('total_recovered')
-            - $totalPurchasesAndOrderTax->sum('total_purchase')
             // - $totalSoldItemUnitCost->sum('total_unit_cost')
-            - $totalSaleAndOrderTax->sum('total_sale_order_tax')
+            - $totalSaleAmounts->sum('total_sale_order_tax')
             - $individualProductSaleTax->sum('total_sale_pro_tax')
-            - $directExpense->sum('total_di_expense')
             - $indirectExpense->sum('total_indi_expense')
             - $stockAdjustments->sum('total_adjusted');
 
-        $netProfitBeforeTax = $totalSaleAndOrderTax->sum('total_sale')
+        $netProfitBeforeTax = $grossProfit
             // + ($closingStock - $openingStock->sum('total_ops_value'))
             + $stockAdjustments->sum('total_recovered')
-            - $totalPurchasesAndOrderTax->sum('total_purchase')
+            - $totalPurchasesAmounts->sum('total_purchase')
             // - $totalSoldItemUnitCost->sum('total_unit_cost')
             - $directExpense->sum('total_di_expense')
             - $indirectExpense->sum('total_indi_expense')
             - $stockAdjustments->sum('total_adjusted');
 
-        $tax_payable = $totalSaleAndOrderTax->sum('total_sale_order_tax')
+        $tax_payable = $totalSaleAmounts->sum('total_sale_order_tax')
             + $individualProductSaleTax->sum('total_sale_pro_tax');
 
         return [
-            'total_sale' => $totalSaleAndOrderTax->sum('total_sale'),
+            'total_sale' => $totalSaleAmounts->sum('total_sale'),
             'opening_stock' => $openingStock->sum('total_ops_value'),
             'closing_stock' => $closingStock,
-            'total_purchase' => $totalPurchasesAndOrderTax->sum('total_purchase'),
+            'total_purchase' => $totalPurchasesAmounts->sum('total_purchase'),
             'total_unit_cost' => $totalSoldItemUnitCost->sum('total_unit_cost'),
+            'total_sale_order_tax' => $totalSaleAmounts->sum('total_sale_order_tax'),
+            'individual_product_sale_tax' => $individualProductSaleTax->sum('total_sale_pro_tax'),
+            'total_sale_return' => $totalSaleReturn->sum('total_sale_return'),
+            'total_purchase_return' => $totalPurchaseReturn->sum('total_purchase_return'),
 
-            'total_sale_order_tax' => $totalSaleAndOrderTax->sum('total_sale_order_tax'),
+            'total_sale_order_tax' => $totalSaleAmounts->sum('total_sale_order_tax'),
             'total_sale_pro_tax' => $individualProductSaleTax->sum('total_sale_pro_tax'),
             'total_direct_expense' => $directExpense->sum('total_di_expense'),
             'total_indirect_expense' => $indirectExpense->sum('total_indi_expense'),
             'total_adjusted' => $stockAdjustments->sum('total_adjusted'),
             'total_adjusted_recovered' => $stockAdjustments->sum('total_recovered'),
+            'gross_profit' => $grossProfit,
             'net_profit' => $netProfit,
             'net_profit_before_tax' => $netProfitBeforeTax,
             'tax_payable' => $tax_payable,
@@ -116,13 +129,14 @@ class NetProfitLossAccount
         return $purchaseProduct->sum('total_value') - $saleProducts->sum('total_value');
     }
 
-    public function totalPurchasesAndOrderTax($request = null)
+    public function totalPurchasesAmounts($request = null)
     {
         $purchases = '';
 
         $purchasesQ = DB::table('purchases')
             ->select(
                 DB::raw('SUM(total_purchase_amount) as total_purchase'),
+                DB::raw('SUM(purchase_tax_amount) as total_pur_order_tax'),
                 DB::raw('SUM(purchase_tax_amount) as total_pur_order_tax'),
             );
 
@@ -155,13 +169,14 @@ class NetProfitLossAccount
         }
     }
 
-    public function totalSaleAndOrderTax($request = null)
+    public function totalSaleAmounts($request = null)
     {
         $sales = '';
         $salesQ = DB::table('sales')
             ->select(
                 DB::raw('SUM(total_payable_amount) as total_sale'),
                 DB::raw('SUM(order_tax_amount) as total_sale_order_tax'),
+                DB::raw('SUM(shipment_charge) as total_shipment_charge'),
             );
 
         if (isset($request->branch_id) && $request->branch_id) {
@@ -420,5 +435,87 @@ class NetProfitLossAccount
         }
 
         return $totalSoldItemUnitCost;
+    }
+
+    public function totalSaleReturn($request = null){
+
+        $totalSaleReturn = '';
+        $totalSaleReturnQuery = DB::table('sale_returns')
+            ->select(
+                DB::raw('SUM(sale_returns.total_return_amount) as total_sale_return')
+            );
+
+        if (isset($request->branch_id) && $request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $totalSaleReturnQuery->where('sale_returns.branch_id', NULL);
+            } else {
+
+                $totalSaleReturnQuery->where('sale_returns.branch_id', $request->branch_id);
+            }
+        }
+
+        if (isset($request->from_date) && $request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $totalSaleReturnQuery->whereBetween('sale_returns.report_date', $date_range);
+        }
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $totalSaleReturn = $totalSaleReturnQuery->get();
+        } else {
+
+            $totalSaleReturn = $totalSaleReturnQuery
+                ->where('sale_returns.branch_id', auth()->user()->branch_id)
+                ->get();
+        }
+
+        return $totalSaleReturn;
+    }
+
+    public function totalPurchaseReturn($request = null){
+
+        $totalPurchaseReturn = '';
+        $totalPurchaseReturnQuery = DB::table('purchase_returns')
+            ->select(
+                DB::raw('SUM(purchase_returns.total_return_amount) as total_purchase_return')
+            );
+
+        if (isset($request->branch_id) && $request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $totalPurchaseReturnQuery->where('purchase_returns.branch_id', NULL);
+            } else {
+
+                $totalPurchaseReturnQuery->where('purchase_returns.branch_id', $request->branch_id);
+            }
+        }
+
+        if (isset($request->from_date) && $request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $totalPurchaseReturnQuery->whereBetween('purchase_returns.report_date', $date_range);
+        }
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $totalPurchaseReturn = $totalPurchaseReturnQuery->get();
+        } else {
+
+            $totalPurchaseReturn = $totalPurchaseReturnQuery
+                ->where('purchase_returns.branch_id', auth()->user()->branch_id)
+                ->get();
+        }
+
+        return $totalPurchaseReturn;
     }
 }

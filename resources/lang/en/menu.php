@@ -56,6 +56,7 @@ return [
   'sale_return_list' => 'Sale Return List',
   'add_sale_return' => 'Add Sale Return',
   'shipments' => 'Shipments',
+  'discounts' => 'Discounts',
   // Menu child of Transfer module
   'transfer_stock_heading_1' => 'TRANSFER STOCK FROM <strong>WAREHOUSE</strong> TO <strong> BUSINESS LOCATION</strong>',
   'transfer_stock_heading_2' => 'TRANSFER STOCK FROM <strong>BUSINESS LOCATION</strong> TO <strong> WAREHOUSE</strong>',
@@ -85,6 +86,7 @@ return [
   'balance_sheet' => 'Balance Sheet',
   'trial_balance' => 'Trial Balance',
   'cash_flow' => 'Cash Flow',
+  'profit_loss_account' => 'Profit/Loss Account',
   // Menu child of Setup module  
   'branches' => 'Business Locations',
   'warehouses' => 'Warehouses',
@@ -124,7 +126,7 @@ return [
   'memo' => 'Memo',
   'message' => 'Message',
   // Menu child of Report module  
-  'profit_loss' => 'Profit/Loss Report',
+  'profit_loss' => 'Daily Profit/Loss Report',
   'purchase_sale' => 'Purchase & Sale',
   'tax_report' => 'Tax Report',
   'supplier_report' => 'Supplier Report',

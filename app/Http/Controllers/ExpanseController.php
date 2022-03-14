@@ -116,6 +116,7 @@ class ExpanseController extends Controller
         // Add expanse
         $addExpanse = new Expanse();
         $addExpanse->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanses'), 5, "0", STR_PAD_LEFT);
+        $addExpanse->expense_account_id = $request->ex_account_id;
         $addExpanse->branch_id = auth()->user()->branch_id;
         $addExpanse->tax_percent = $request->tax ? $request->tax : 0;
         $addExpanse->total_amount = $request->total_amount;

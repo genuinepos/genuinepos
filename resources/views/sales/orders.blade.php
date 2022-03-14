@@ -290,10 +290,9 @@
                 {data: 'from', name: 'branches.name'},
                 {data: 'customer', name: 'customers.name'},
                 {data: 'paid_status', name: 'paid_status', className: 'text-end'},
-                {data: 'due', name: 'due', className: 'text-end'},
                 {data: 'total_payable_amount', name: 'total_payable_amount', className: 'text-end'},
                 {data: 'paid', name: 'paid', className: 'text-end'},
-             
+                {data: 'due', name: 'due', className: 'text-end'},
             ],fnDrawCallback: function() {
                 var total_payable_amount = sum_table_col($('.data_tbl'), 'total_payable_amount');
                 $('#total_payable_amount').text(bdFormat(total_payable_amount));

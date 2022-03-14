@@ -126,7 +126,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="gross_profit_area">
-                        <h6 class="text-muted m-0">Gross Profit : 
+                        <h6 class="text-muted m-0">Total Daily Profit : 
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
                             <span class="{{ $grossProfit < 0 ? 'text-danger' : '' }}">{{ App\Utils\Converter::format_in_bdt($grossProfit) }}</span></h6>
                             <p class="text-muted m-0">Gross Profit (Total Sale + Total Stock Adjustment Recovered)

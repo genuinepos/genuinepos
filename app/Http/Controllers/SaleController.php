@@ -725,7 +725,7 @@ class SaleController extends Controller
         foreach ($request->product_ids as $product_id) {
 
             $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
-            
+
             $saleProduct = SaleProduct::where('sale_id', $updateSale->id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();

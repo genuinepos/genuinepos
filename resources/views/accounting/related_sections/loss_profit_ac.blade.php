@@ -2,7 +2,7 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
-@section('title', 'Cash Flow Statements - ')
+@section('title', 'Profit Loss A/C - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -13,7 +13,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="far fa-money-bill-alt"></span>
-                                <h5>Cash Flow Statements</h5>
+                                <h5>Profit Loss Account</h5>
                             </div>
 
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
@@ -92,7 +92,7 @@
 
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Cash Flow Statements</h6>
+                                    <h6>Profit Loss A/C Information</h6>
                                 </div>
                             </div>
 
@@ -109,14 +109,8 @@
                                                         <tbody>
                                                             {{-- Cash Flow from operations --}}
                                                             <tr>
-                                                                <th class="text-start" colspan="2">
-                                                                    <strong>CASH FLOW FROM OPERATIONS :</strong>
-                                                                </th>
-                                                            </tr>
-
-                                                            <tr>
                                                                 <td class="text-start">
-                                                                <em>Net Profit Before Tax :</em> 
+                                                                <em>Total Sale :</em> 
                                                                 </td>
 
                                                                 <td class="text-start">
@@ -126,47 +120,67 @@
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                <em>Customer Balance : </em>  
+                                                                <em>Purchase Return :</em> 
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <em>- 0.00</em>    
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                <em>Current Stock Value : </em> 
-                                                                </td>
-
-                                                                <td class="text-start">
-                                                                    <em>0.00</em>    
+                                                                <em>0.00</em> 
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                    <em>Current Asset :</em>  
+                                                                <em>Total Purchase : </em>  
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <em>0.00</em>    
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                <em>Current Liability :</em>  
-                                                                </td>
-
-                                                                <td class="text-start">
-                                                                    <em>0.00</em>    
+                                                                    <em>(0.00)</em>    
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                <em>Tax Payable :</em>  
+                                                                <em>Sale Retun : </em> 
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>(0.00)</em>    
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                <em>Direct Expense :</em>  
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>(0.00)</em>     
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                <em>Total Production Cost :</em>  
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>(0.00)</em>     
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                <em>Opening Stock :</em>  
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>(0.00)</em>     
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                <em>Closing Stock :</em>  
                                                                 </td>
 
                                                                 <td class="text-start">
@@ -174,79 +188,90 @@
                                                                 </td>
                                                             </tr>
 
-                                                            <tr class="bg-info">
-                                                                <td class="text-start text-white">
-                                                                    <b>Total Operations : </b>  
-                                                                </td>
+                                                            <tr>
+                                                                <th class="text-end">
+                                                                    <em>Gross Profit :</em>   
+                                                                </th>
 
-                                                                <td class="text-start text-white">
-                                                                    <b>0.00</b>  
+                                                                <td class="text-start">
+                                                                    <b><em>0.00</em></b>  
                                                                 </td>
                                                             </tr>
                                                         
                                                             {{-- Cash Flow from investing --}}
                                                             <tr>
                                                                 <th class="text-start" colspan="2">
-                                                                    <strong>CASH FLOW FROM INVESTING :</strong>
+                                                                    <strong>NET PROFIT LOSS INFORNATION :</strong>
                                                                 </th>
                                                             </tr>
                                                             
                                                             <tr>
                                                                 <td class="text-start">
-                                                                    <em>FIXED ASSET :</em> 
+                                                                    <em>Gross Profit :</em> 
                                                                 </td>
-                                                                <td class="text-start">0.00</td>
+                                                                <td class="text-start"><em>0.00</em> </td>
                                                             </tr>
 
-                                                            <tr class="bg-info">
-                                                                <td class="text-start text-white">
-                                                                    <b><em>Total Investing :</em>  </b>  
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                    <em>Total Stock Adjustment :</em>  
                                                                 </td>
 
-                                                                <td class="text-start text-white">
-                                                                    <b><em>0.00</em> </b>  
+                                                                <td class="text-start">
+                                                                    <em>(0.00)</em>    
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                    <em>Total Adjustment Recovered :</em>  
+                                                                </td>
+                                    
+                                                                <td class="text-start">
+                                                                    <em>0.00</em>    
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                    <em>Total Sale Order Tax :</em>  
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>(0.00)</em>    
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                <em>Item Sold Indivitual Tax :</em>  
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>(0.00)</em>    
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                   <em>Indirect Expense :</em>   
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>0.00</em> 
                                                                 </td>
                                                             </tr> 
 
-                                                            {{-- Cash Flow from financing --}}
                                                             <tr>
-                                                                <th class="text-start" colspan="2">
-                                                                    <strong>CASH FLOW FROM FINANCING :</strong>
+                                                                <th class="text-end">
+                                                                    <em>Net Profit :</em>
                                                                 </th>
-                                                            </tr>
-                                                            
-                                                            <tr>
+
                                                                 <td class="text-start">
-                                                                    <em>Capital A/C :</em> 
-                                                                </td>
-                                                                <td class="text-start">0.00</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Loan And Advance :</em> 
-                                                                </td>
-                                                                <td class="text-start">0.00</td>
-                                                            </tr>
-
-                                                            <tr class="bg-info">
-                                                                <td class="text-start text-white">
-                                                                    <b><em>Total financing :</em>  </b>  
-                                                                </td>
-
-                                                                <td class="text-start text-white">
                                                                     <b><em>0.00</em> </b>  
                                                                 </td>
                                                             </tr> 
                                                         </tbody>
-                                                        <tfoot>
-                                                            <tr class="bg-secondary">
-                                                                <th class="text-start text-white"><strong>Total Cash Flow : ({{ json_decode($generalSettings->business, true)['currency'] }} )</strong> </th>
-                                                                <th class="text-start text-white">
-                                                                    <span class="total_cash_flow">0.00</span>
-                                                                </th>    
-                                                            </tr>
-                                                        </tfoot>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -267,53 +292,56 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    function getCashFlow() {
+    function getProfitLoss() {
+
        $('.data_preloader').show();
        var branch_id = $('#branch_id').val();
        var from_date = $('.from_date').val();
        var to_date = $('.to_date').val();
+
        $.ajax({
-           url:"{{ route('accounting.cash.flow.amounts') }}",
+           url:"{{ route('accounting.profit.loss.account.amounts') }}",
            type: 'GET',
            data : {branch_id, from_date, to_date},
            success:function(data){
+
                $('#data-list').html(data);
                $('.data_preloader').hide();
            }
        });
     }
-    getCashFlow();
+    getProfitLoss();
 
     //Print purchase Payment report
     $(document).on('submit', '#filter_cash_flow', function (e) {
         e.preventDefault();
-        getCashFlow();
+        getProfitLoss();
     });
 
-    //Print purchase Payment report
-    $(document).on('click', '#print_report', function (e) {
-        e.preventDefault();
-        var url = "{{ route('accounting.print.cash.flow') }}";
-        var branch_id = $('#branch_id').val();
-        var from_date = $('.from_date').val();
-        var to_date = $('.to_date').val();
-        $.ajax({
-            url:url,
-            type:'get',
-            data: {branch_id, from_date, to_date},
-            success:function(data) {
-                $(data).printThis({
-                    debug: false,
-                    importCSS: true,
-                    importStyle: true,
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
-                    removeInline: false,
-                    printDelay: 700,
-                    header: null,
-                });
-            }
-        });
-    });
+    // //Print purchase Payment report
+    // $(document).on('click', '#print_report', function (e) {
+    //     e.preventDefault();
+    //     var url = "{{ route('accounting.print.cash.flow') }}";
+    //     var branch_id = $('#branch_id').val();
+    //     var from_date = $('.from_date').val();
+    //     var to_date = $('.to_date').val();
+    //     $.ajax({
+    //         url:url,
+    //         type:'get',
+    //         data: {branch_id, from_date, to_date},
+    //         success:function(data) {
+    //             $(data).printThis({
+    //                 debug: false,
+    //                 importCSS: true,
+    //                 importStyle: true,
+    //                 loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+    //                 removeInline: false,
+    //                 printDelay: 700,
+    //                 header: null,
+    //             });
+    //         }
+    //     });
+    // });
 </script>
 
 <script type="text/javascript">

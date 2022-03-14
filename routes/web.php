@@ -453,6 +453,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
         Route::post('store', 'DiscountController@store')->name('sales.discounts.store');
         Route::get('edit/{discountId}', 'DiscountController@edit')->name('sales.discounts.edit');
         Route::post('update/{discountId}', 'DiscountController@update')->name('sales.discounts.update');
+        Route::get('change/status/{discountId}', 'DiscountController@changeStatus')->name('sales.discounts.change.status');
         Route::delete('delete/{discountId}', 'DiscountController@delete')->name('sales.discounts.delete');
     });
 });

@@ -3,38 +3,103 @@
 namespace App\Http\Controllers;
 
 use App\Models\Discount;
+use App\Utils\Converter;
 use Illuminate\Http\Request;
 use App\Models\DiscountProduct;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class DiscountController extends Controller
 {
+    public $converter;
+
+    public function __construct(Converter $converter)
+    {
+        $this->converter = $converter;
+
+        $this->middleware('auth:admin_and_user');
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
 
-            $discounts = DB::table('discounts')->where('branch_id', auth()->user()->branch_id)->get();
+            $generalSettings = DB::table('general_settings')->first();
+
+            $discounts = DB::table('discounts')->where('branch_id', auth()->user()->branch_id)
+                ->leftJoin('brands', 'discounts.brand_id', 'brands.id')
+                ->leftJoin('categories', 'discounts.category_id', 'categories.id')
+                ->leftJoin('branches', 'discounts.branch_id', 'branches.id')
+
+                ->select('discounts.*', 'brands.name as b_name', 'categories.name as cate_name', 'branches.name as b_name', 'branches.branch_code')
+                ->get();
 
             return DataTables::of($discounts)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="javascript:;" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('product.categories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+
+                    $html = '<div class="btn-group" role="group">';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+               
+                   
+                    $html .= '<a class="dropdown-item" href="' . route('sales.discounts.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                   
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.discounts.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                        
+                    $html .= '<a href="' . route('sales.discounts.change.status', [$row->id]) . '" class="dropdown-item" id="change_status" title="change_status">Change Status</a>';
+
+                    $html .= '</div>';
                     $html .= '</div>';
                     return $html;
                 })
-                ->editColumn('date', function ($row) use ($generalSettings) {
+                
+                ->editColumn('start_at', function ($row) use ($generalSettings) {
 
                     $__date_format = str_replace('-', '/', json_decode($generalSettings->business, true)['date_format']);
-                    return date($__date_format, strtotime($row->date));
+                    return date($__date_format, strtotime($row->start_at));
                 })
-                ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name . ' (' . $row->b_branch . ')' : 'Not Applicable')
-                ->editColumn('account_type', fn ($row) => '<b>' . $this->util->accountType($row->account_type) . '</b>')
-                ->editColumn('branch', fn ($row) => '<b>' . ($row->branch_name ? $row->branch_name . '/' . $row->branch_code : json_decode($generalSettings->business, true)['shop_name']) . '</b>')
-                ->editColumn('opening_balance', fn ($row) => $this->converter->format_in_bdt($row->opening_balance))
-                ->editColumn('balance', fn ($row) => $this->converter->format_in_bdt($row->balance))
-                ->rawColumns(['action', 'ac_number', 'bank', 'account_type', 'branch', 'opening_balance', 'balance'])
+                ->editColumn('end_at', function ($row) use ($generalSettings) {
+
+                    $__date_format = str_replace('-', '/', json_decode($generalSettings->business, true)['date_format']);
+                    return date($__date_format, strtotime($row->end_at));
+                })
+                ->editColumn('branch', function ($row) use ($generalSettings) {
+
+                    if ($row->b_name) {
+
+                        return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                    } else {
+
+                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                    }
+                })
+                ->editColumn('discount_type', function ($row) {
+
+                    return $row->discount_type == 1 ? 'FIXED' : 'PERCENTAGE';
+                })
+                ->editColumn('status', function ($row) {
+
+                    return $row->is_active == 1 ? '<span class="badge badge-sm bg-success">Active</span>' : '<span class="badge badge-sm bg-danger">Deactivated</span>';
+                })
+                ->editColumn('products', function ($row) {
+                    
+                    $products = DB::table('discount_products')
+                        ->where('discount_products.discount_id', $row->id)
+                        ->leftJoin('products', 'discount_products.product_id', 'products.id')
+                        ->select('products.name', 'products.product_code')->get();
+
+                    $list = '';
+                    foreach ($products as $product) {
+                        
+                        $list .= $product->name.'('.$product->product_code.'),<br/> ';
+                    }
+
+                    return $list;
+                })
+
+                ->editColumn('discount_amount', fn ($row) => $this->converter->format_in_bdt($row->discount_amount))
+                ->rawColumns(['action', 'start_at', 'end_at', 'branch', 'discount_type', 'is_active', 'status', 'products'])
                 ->make(true);
         }
 
@@ -72,6 +137,8 @@ class DiscountController extends Controller
         $addDiscount->discount_type = $request->discount_type;
         $addDiscount->discount_amount = $request->discount_amount;
         $addDiscount->price_group_id = $request->price_group_id;
+        $addDiscount->is_active = isset($request->is_active) ? 1 : 0;
+        $addDiscount->apply_in_customer_group = isset($request->apply_in_customer_group) ? 1 : 0;
         $addDiscount->save();
 
         if (count($request->product_ids) > 0) {
@@ -91,5 +158,34 @@ class DiscountController extends Controller
         }
 
         return response()->json('Discount created successfully');
+    }
+
+    public function delete($discountId)
+    {
+        $deleteDiscount = Discount::where('id', $discountId)->first();
+
+        if (!is_null($deleteDiscount)) {
+            
+            $deleteDiscount->delete();
+        }
+
+        return response()->json('Discount deleted successfully');
+    }
+
+    public function changeStatus($discountId)
+    {
+        $discount = Discount::where('id', $discountId)->first();
+
+        if ($discount->is_active == 1) {
+            
+            $discount->is_active = 0;
+            $discount->save();
+        }else {
+            
+            $discount->is_active = 1;
+            $discount->save();
+        }
+
+        return response()->json('Discount status has been changed successfully');
     }
 }

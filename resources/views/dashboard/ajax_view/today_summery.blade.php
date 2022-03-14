@@ -141,7 +141,7 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Today Gross Profit :</th>
+                            <th class="text-start">Today Daily Profit :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($todayProfit) }}</td>
                         </tr>
                     </tbody>

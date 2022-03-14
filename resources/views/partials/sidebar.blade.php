@@ -846,6 +846,21 @@
                                 </div>
                             @endif
                         </div>
+
+                        <hr class="p-0 m-0 my-1">
+
+                        <div class="row">
+                            @if (auth()->user()->permission->sale['return_access'] == '1')
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('sales.discounts.index') }}" class="bar-link">
+                                            <span><i class="fas fa-percentage"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.discounts')</p>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1205,6 +1220,15 @@
                                             </a>
                                         </div>
                                         <p class="switch_text">@lang('menu.cash_flow')</p>
+                                    </div>
+                                    
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('accounting.profit.loss.account') }}" class="bar-link">
+                                                <span><i class="fas fa-chart-line"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.profit_loss_account')</p>
                                     </div>
                                 </div>
                             </div>
@@ -1705,7 +1729,7 @@
                                     <p class="switch_text">@lang('menu.profit_loss')</p>
                                 </div>
                             @endif
-
+                                
                             @if (auth()->user()->permission->report['purchase_sale_report'] == '1')
                                 <div
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">

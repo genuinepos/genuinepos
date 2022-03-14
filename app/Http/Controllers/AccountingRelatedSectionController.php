@@ -474,4 +474,20 @@ class AccountingRelatedSectionController extends Controller
             )
         );
     }
+
+    public function profitLossAccount()
+    {
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        return view('accounting.related_sections.loss_profit_ac', compact('branches'));
+    }
+
+    public function profitLossAccountAmounts(Request $request)
+    {
+        $netProfitLossAccount = $this->netProfitLossAccount->netLossProfit($request);
+
+        return view(
+            'accounting.related_sections.ajax_view.profit_loss_ac_ajax_view',
+            compact('netProfitLossAccount',)
+        );
+    }
 }

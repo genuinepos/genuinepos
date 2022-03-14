@@ -19,10 +19,13 @@ Route::get('dashboard/purchase/due', 'App\Http\Controllers\DashboardController@p
 Route::get('dashboard/today/summery', 'App\Http\Controllers\DashboardController@todaySummery')->name('dashboard.today.summery');
 
 Route::get('route-list', function () {
+
     if (env('APP_DEBUG') === true) {
+
         Artisan::call('route:list --columns=Method,URI,Name,Action');
         return '<pre>' . Artisan::output() . '</pre>';
     } else {
+        
         echo '<h1>Access Denied</h1>';
         return null;
     }

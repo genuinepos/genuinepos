@@ -117,10 +117,12 @@ class AccountController extends Controller
     public function accountBook(Request $request, $accountId)
     {
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             $settings = DB::table('general_settings')->first();
 
             $accountUtil = $this->accountUtil;
@@ -195,14 +197,17 @@ class AccountController extends Controller
                 )->orderBy('account_ledgers.date', 'asc');
 
             if ($request->transaction_type) {
+
                 $query->where('account_ledgers.amount_type', $request->transaction_type); // Final
             }
 
             if ($request->voucher_type) {
+
                 $query->where('account_ledgers.voucher_type', $request->voucher_type); // Final
             }
 
             if ($request->from_date) {
+
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
                 $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
@@ -228,7 +233,7 @@ class AccountController extends Controller
                     //return '<b>' . $type['name'].'</b>';
                 })
                 ->editColumn('voucher_no',  function ($row) use ($accountUtil) {
-                    
+
                     $type = $accountUtil->voucherType($row->voucher_type);
                     return $row->{$type['voucher_no']};
                 })
@@ -253,6 +258,7 @@ class AccountController extends Controller
         ]);
 
         if ($request->account_type == 2) {
+
             $this->validate($request, [
                 'bank_id' => 'required',
                 'account_number' => 'required',
@@ -276,7 +282,9 @@ class AccountController extends Controller
         ]);
 
         if ($request->account_type == 2) {
+
             foreach ($request->business_location as $branch_id) {
+
                 AccountBranch::insert(
                     [
                         'branch_id' => $branch_id != 'NULL' ? $branch_id : NULL,
@@ -285,6 +293,7 @@ class AccountController extends Controller
                 );
             }
         } else {
+
             AccountBranch::insert(
                 [
                     'branch_id' => auth()->user()->branch_id,

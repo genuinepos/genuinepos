@@ -154,7 +154,6 @@
                                     - $totalTransferShipmentCost;
                     @endphp
 
-              
                     <div class="gross_profit_area">
                         <h6 class="text-muted m-0">Total Daily Profit : 
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
@@ -163,8 +162,6 @@
                             <b>-</b> ( Sold Product Total Unit Cost + Total Sale Return + Total Sale Order Tax + Total Stock Adjustment + Total Expense + Total transfer shipping charge + Total Payroll + Total Production Cost )</p>
                     </div>
                 </div> 
-
-               
             </div>
         </div>
     </div>

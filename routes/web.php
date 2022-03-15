@@ -25,7 +25,7 @@ Route::get('route-list', function () {
         Artisan::call('route:list --columns=Method,URI,Name,Action');
         return '<pre>' . Artisan::output() . '</pre>';
     } else {
-        
+
         echo '<h1>Access Denied</h1>';
         return null;
     }
@@ -306,15 +306,15 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::group(['prefix' => 'returns'], function () {
 
         Route::get('/', 'PurchaseReturnController@index')->name('purchases.returns.index');
-        
+
         Route::get('show/{returnId}', 'PurchaseReturnController@show')->name('purchases.returns.show');
-        
+
         Route::get('add/{purchaseId}', 'PurchaseReturnController@create')->name('purchases.returns.create');
-        
+
         Route::get('get/purchase/{purchaseId}', 'PurchaseReturnController@getPurchase')->name('purchases.returns.get.purchase');
-        
+
         Route::post('store/{purchaseId}', 'PurchaseReturnController@store')->name('purchases.returns.store');
-        
+
         Route::delete('delete/{purchaseReturnId}', 'PurchaseReturnController@delete')->name('purchases.returns.delete');
 
         Route::get('create', 'PurchaseReturnController@supplierReturn')->name('purchases.returns.supplier.return');
@@ -324,15 +324,15 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
         Route::get('check/single/product/stock/{product_id}/{warehouse_id}', 'PurchaseReturnController@checkSingleProductStock');
 
         Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', 'PurchaseReturnController@checkVariantProductStock');
-        
+
         Route::post('supplier/return/store', 'PurchaseReturnController@supplierReturnStore')->name('purchases.returns.supplier.return.store');
-        
+
         Route::get('supplier/return/edit/{purchaseReturnId}', 'PurchaseReturnController@supplierReturnEdit')->name('purchases.returns.supplier.return.edit');
-        
+
         Route::get('get/editable/supplierReturn/{purchaseReturnId}', 'PurchaseReturnController@getEditableSupplierReturn')->name('purchases.return.get.editable.supplier.return');
-        
+
         Route::post('supplier/return/update/{purchaseReturnId}', 'PurchaseReturnController@supplierReturnUpdate')->name('purchases.returns.supplier.return.update');
-        
+
         Route::post('return/payments/{returnId}', 'PurchaseReturnController@returnPaymentList')->name('purchases.returns.purchase.return.payment.list');
     });
 });
@@ -486,8 +486,7 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
     });
 
     //Transfer Stock Branch To Branch
-    Route::group(['prefix' => 'branch/to/branch'], function ()
-    {
+    Route::group(['prefix' => 'branch/to/branch'], function () {
         Route::get('transfer/list', 'TransferStockBranchToBranchController@transferList')->name('transfer.stock.branch.to.branch.transfer.list');
 
         Route::get('create', 'TransferStockBranchToBranchController@create')->name('transfer.stock.branch.to.branch.create');
@@ -499,17 +498,16 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
         Route::get('edit/{transferId}', 'TransferStockBranchToBranchController@edit')->name('transfer.stock.branch.to.branch.edit');
 
         Route::post('update/{transferId}', 'TransferStockBranchToBranchController@update')->name('transfer.stock.branch.to.branch.update');
-      
+
         Route::delete('delete/{transferId}', 'TransferStockBranchToBranchController@delete')->name('transfer.stock.branch.to.branch.delete');
-        
+
         Route::get('search/product/{product_code}/{warehouse_id}', 'TransferStockBranchToBranchController@searchProduct');
 
         Route::get('check/single/product/stock/{product_id}/{warehouse_id}', 'TransferStockBranchToBranchController@checkSingleProductStock');
 
         Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', 'TransferStockBranchToBranchController@checkVariantProductStock');
 
-        Route::group(['prefix' => 'receive'], function ()
-        {
+        Route::group(['prefix' => 'receive'], function () {
             Route::get('receivable/list', 'ReceiveTransferBranchToBranchController@receivableList')->name('transfer.stock.branch.to.branch.receivable.list');
 
             Route::get('show/{transferId}', 'ReceiveTransferBranchToBranchController@show')->name('transfer.stock.branch.to.branch.receivable.show');
@@ -1001,7 +999,7 @@ Route::get('maintenance/mode', function () {
 })->name('maintenance.mode');
 
 Route::get('add-user', function () {
-    
+
     $addAdmin = new AdminAndUser();
     $addAdmin->prefix = 'Mr.';
     $addAdmin->name = 'Super';
@@ -1030,7 +1028,30 @@ Route::get('/test', function () {
     //     $p->save();
     // }
 
-    //return 'done';
+    // $cashInHandAmounts = DB::table('account_branches')
+    //     ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+    //     ->whereIn('accounts.account_type', [1, 2])
+    //     ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+    //     ->where('account_branches.branch_id', auth()->user()->branch_id)
+    //     ->select(
+    //         'accounts.account_type',
+    //         DB::raw('SUM(account_ledgers.debit) as total_debit'),
+    //         DB::raw('SUM(account_ledgers.credit) as total_credit')
+    //     )->groupBy('accounts.account_type')
+    //     ->get();
+
+    // $balance = [];
+
+    // foreach ($cashInHandAmounts as $cashInHandAmount) {
+
+    //     if ($cashInHandAmount->account_type == 1) {
+
+    //         $balance['cash_in_hand_balance'] = $cashInHandAmount->total_debit - $cashInHandAmount->total_credit;
+    //     } else {
+
+    //         $balance['bank_account_balance'] = $cashInHandAmount->total_debit - $cashInHandAmount->total_credit;
+    //     }
+    // }
 });
 
 // All authenticated routes

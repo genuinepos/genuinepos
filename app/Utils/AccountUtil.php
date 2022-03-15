@@ -145,7 +145,7 @@ class AccountUtil
             9 => ['name' => 'Expense Payment', 'voucher_no' => 'exp_payment_voucher', 'id' => 'expense_payment_id', 'amt' => 'credit', 'pur' => 'expense_payment_pur'],
             10 => ['name' => 'Receive Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'debit', 'pur' => 'sale_payment_pur'],
             11 => ['name' => 'Purchase Payment', 'voucher_no' => 'pur_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'credit', 'pur' => 'purchase_payment_pur'],
-            12 => ['name' => 'Sale Return Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'credit', 'pur' => 'sr_payment_pur'],
+            12 => ['name' => 'Sale Return Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'credit', 'pur' => 'sale_payment_pur'],
             13 => ['name' => 'Loan&Liabilities', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit', 'pur' => 'loan_pur'],
             14 => ['name' => 'Loan&Advance', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit', 'pur' => 'loan_pur'],
             15 => ['name' => 'Loan Liability Payment', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'credit', 'pur' => 'loan_pay_pur'],

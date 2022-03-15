@@ -1026,11 +1026,6 @@ Route::get('/test', function () {
     //     $p->save();
     // }
 
-    return DB::table('expanses')
-    ->leftJoin('accounts', 'expanses.expense_account_id', 'accounts.id')
-    ->where('accounts.account_type', 7)
-    ->select(DB::raw('SUM(net_total_amount) as total_di_expense'))->get();
-
     //return 'done';
 });
 

@@ -45,8 +45,10 @@
                                             <tr class="text-start">
                                                 <th>Name</th>
                                                 <th>Business Location</th>
+                                                <th>Status</th>
                                                 <th>Start At</th>
                                                 <th>End At</th>
+                                                <th>Discount Type</th>
                                                 <th>Discount Amount</th>
                                                 <th>Priority</th>
                                                 <th>Brand</th>
@@ -219,7 +221,7 @@
 
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Edit Discount</h6>
@@ -241,47 +243,46 @@
             allowClear: true
         });
 
-        // var table = $('.data_tbl').DataTable({
-        //     dom: "lBfrtip",
-        //     buttons: [
-        //         {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
-        //         {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
-        //     ],
-        //     "processing": true,
-        //     "serverSide": true,
-        //     aaSorting: [[0, 'asc']],
-        //     ajax: "{{ route('sales.discounts.index') }}",
-        //     "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
-        //     "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-        //     columnDefs: [{"targets": [0, 7],"orderable": false,"searchable": false}],
-        //     columns: [
-        //         {data: 'action',name: 'action'},
-        //         {data: 'contact_id',name: 'contact_id'},
-        //         {data: 'name',name: 'name'},
-        //         {data: 'business_name',name: 'business_name'},
-        //         {data: 'phone',name: 'phone'},
-        //         {data: 'group_name', name: 'customer_groups.group_name'},
-        //         {data: 'credit_limit', name: 'credit_limit'},
-        //         {data: 'opening_balance',name: 'opening_balance', className: 'text-end'},
-        //         {data: 'total_sale',name: 'total_sale', className: 'text-end'},
-        //         {data: 'total_paid',name: 'total_paid', className: 'text-end'},
-        //         {data: 'total_sale_due',name: 'total_sale_due', className: 'text-end'},
-        //         {data: 'total_return',name: 'total_return', className: 'text-end'},
-        //         {data: 'total_sale_return_due',name: 'total_sale_return_due', className: 'text-end'},
-        //         {data: 'status',name: 'status'},
-        //     ]
-        // });
+        var table = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+            ],
+            "processing": true,
+            "serverSide": true,
+            aaSorting: [[0, 'asc']],
+            ajax: "{{ route('sales.discounts.index') }}",
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            columnDefs: [{"targets": [2, 10, 11],"orderable": false,"searchable": false}],
+            columns: [
+               
+                {data: 'name',name: 'discounts.name'},
+                {data: 'branch',name: 'branches.name'},
+                {data: 'status',name: 'status'},
+                {data: 'start_at',name: 'discounts.start_at'},
+                {data: 'end_at',name: 'discounts.end_at'},
+                {data: 'discount_type', name: 'discount_type'},
+                {data: 'discount_amount', name: 'discounts.discount_amount'},
+                {data: 'priority',name: 'priority'},
+                {data: 'b_name',name: 'brands.name'},
+                {data: 'cate_name',name: 'categories.name'},
+                {data: 'products',name: 'products'},
+                {data: 'action',name: 'action'},
+            ]
+        });
 
-            $('#product_ids').on('change', function () {
+        $('#product_ids').on('change', function () {
 
-                if ($(this).val().length > 0) {
+            if ($(this).val().length > 0) {
 
-                    $('.brand_category_area').hide();
-                }else{
+                $('.brand_category_area').hide();
+            }else{
 
-                    $('.brand_category_area').show();
-                }
-            });
+                $('.brand_category_area').show();
+            }
+        });
 
         // Setup ajax for csrf token.
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
@@ -305,10 +306,11 @@
 
                         toastr.success(data);
                         $('#add_discount_form')[0].reset();
-                        // table.ajax.reload();
+                        table.ajax.reload();
                         $('.loading_button').hide();
                         $('#addModal').modal('hide');
                         $('.submit_button').prop('type', 'submit');
+                        $('.brand_category_area').show();
                     },error: function(err) {
                     
                         $('.submit_button').prop('type', 'sumbit');

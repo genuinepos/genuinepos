@@ -162,6 +162,7 @@ class AccountingRelatedSectionController extends Controller
     
             $variantProductStockValue = $variantProductStockValueQuery->get();
         } else {
+            
             $totalCashInHand = $totalCashInHandQuery->where('account_branches.branch_id', auth()->user()->branch_id)
             ->get();
 

@@ -221,7 +221,7 @@
 
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Edit Discount</h6>
@@ -310,6 +310,7 @@
                         $('.loading_button').hide();
                         $('#addModal').modal('hide');
                         $('.submit_button').prop('type', 'submit');
+                        $('.brand_category_area').show();
                     },error: function(err) {
                     
                         $('.submit_button').prop('type', 'sumbit');

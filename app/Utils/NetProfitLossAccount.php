@@ -57,9 +57,13 @@ class NetProfitLossAccount
 
         return [
             'total_sale' => $totalSaleAmounts->sum('total_sale'),
+            'total_sale_paid' => $totalSaleAmounts->sum('total_paid'),
+            'total_sale_due' => $totalSaleAmounts->sum('total_due'),
             'opening_stock' => $openingStock->sum('total_ops_value'),
             'closing_stock' => $closingStock,
             'total_purchase' => $totalPurchasesAmounts->sum('total_purchase'),
+            'total_purchase_paid' => $totalPurchasesAmounts->sum('total_paid'),
+            'total_purchase_due' => $totalPurchasesAmounts->sum('total_due'),
             'total_unit_cost' => $totalSoldItemUnitCost->sum('total_unit_cost'),
             'total_sale_order_tax' => $totalSaleAmounts->sum('total_sale_order_tax'),
             'individual_product_sale_tax' => $individualProductSaleTax->sum('total_sale_pro_tax'),
@@ -136,6 +140,8 @@ class NetProfitLossAccount
         $purchasesQ = DB::table('purchases')
             ->select(
                 DB::raw('SUM(total_purchase_amount) as total_purchase'),
+                DB::raw('SUM(paid) as total_paid'),
+                DB::raw('SUM(due) as total_due'),
                 DB::raw('SUM(purchase_tax_amount) as total_pur_order_tax'),
                 DB::raw('SUM(purchase_tax_amount) as total_pur_order_tax'),
             );
@@ -175,6 +181,8 @@ class NetProfitLossAccount
         $salesQ = DB::table('sales')
             ->select(
                 DB::raw('SUM(total_payable_amount) as total_sale'),
+                DB::raw('SUM(paid) as total_paid'),
+                DB::raw('SUM(due) as total_due'),
                 DB::raw('SUM(order_tax_amount) as total_sale_order_tax'),
                 DB::raw('SUM(shipment_charge) as total_shipment_charge'),
             );

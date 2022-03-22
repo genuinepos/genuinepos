@@ -23,7 +23,7 @@
                             <div class="col-md-12">
                                 <div class="sec-name">
                                     <div class="col-md-12">
-                                        <form id="filter_cash_flow" class="px-2">
+                                        <form id="filter_financial_report" class="px-2">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -158,16 +158,6 @@
                                                             </tr>
 
                                                             <tr>
-                                                                <td class="text-start">
-                                                                <em>Total Sale Return Due :</em>  
-                                                                </td>
-
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>   
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
                                                                 <th class="text-start bg-secondary text-white" colspan="2">
                                                                     <strong>PURCHASE :</strong>
                                                                 </th>
@@ -196,16 +186,6 @@
                                                             <tr>
                                                                 <td class="text-start">
                                                                     <em>Total Purchase Return :</em>
-                                                                </td>
-
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr> 
-
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Purchase Return Due :</em>
                                                                 </td>
 
                                                                 <td class="text-start">
@@ -429,56 +409,56 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // function getFinancialReport() {
+    function getFinancialReport() {
 
-    //    $('.data_preloader').show();
-    //    var branch_id = $('#branch_id').val();
-    //    var from_date = $('.from_date').val();
-    //    var to_date = $('.to_date').val();
+       $('.data_preloader').show();
+       var branch_id = $('#branch_id').val();
+       var from_date = $('.from_date').val();
+       var to_date = $('.to_date').val();
 
-    //    $.ajax({
-    //        url:"",
-    //        type: 'GET',
-    //        data : {branch_id, from_date, to_date},
-    //        success:function(data){
+        $.ajax({
+            url:"{{ route('reports.financial.amounts') }}",
+            type: 'GET',
+            data : {branch_id, from_date, to_date},
+            success:function(data){
 
-    //            $('#data-list').html(data);
-    //            $('.data_preloader').hide();
-    //        }
-    //    });
-    // }
-    // getFinancialReport();
-
-    // //Print purchase Payment report
-    // $(document).on('submit', '#filter_cash_flow', function (e) {
-    //     e.preventDefault();
-    //     getFinancialReport();
-    // });
+                $('#data-list').html(data);
+                $('.data_preloader').hide();
+            }
+        });
+    }
+    getFinancialReport();
 
     // //Print purchase Payment report
-    // $(document).on('click', '#print_report', function (e) {
-    //     e.preventDefault();
-    //     var url = "{{ route('accounting.print.cash.flow') }}";
-    //     var branch_id = $('#branch_id').val();
-    //     var from_date = $('.from_date').val();
-    //     var to_date = $('.to_date').val();
-    //     $.ajax({
-    //         url:url,
-    //         type:'get',
-    //         data: {branch_id, from_date, to_date},
-    //         success:function(data) {
-    //             $(data).printThis({
-    //                 debug: false,
-    //                 importCSS: true,
-    //                 importStyle: true,
-    //                 loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
-    //                 removeInline: false,
-    //                 printDelay: 700,
-    //                 header: null,
-    //             });
-    //         }
-    //     });
-    // });
+    $(document).on('submit', '#filter_financial_report', function (e) {
+        e.preventDefault();
+        getFinancialReport();
+    });
+
+    //Print financial report
+    $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        var url = "{{ route('reports.financial.report.print') }}";
+        var branch_id = $('#branch_id').val();
+        var from_date = $('.from_date').val();
+        var to_date = $('.to_date').val();
+        $.ajax({
+            url:url,
+            type:'get',
+            data: {branch_id, from_date, to_date},
+            success:function(data) {
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
+                });
+            }
+        });
+    });
 </script>
 
 <script type="text/javascript">

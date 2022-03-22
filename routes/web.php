@@ -972,7 +972,9 @@ Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report
     Route::group(['prefix' => 'financial'], function () {
 
         Route::get('/', 'FinancialReportControllerReport@index')->name('reports.financial.index');
-        Route::get('print', 'FinancialReportControllerReport@print')->name('reports.financial.print');
+        Route::get('amounts', 'FinancialReportControllerReport@financialAmounts')->name('reports.financial.amounts');
+        Route::get('filter/amounts', 'FinancialReportControllerReport@filterFinancialAmounts')->name('reports.financial.filter.amounts');
+        Route::get('report/print', 'FinancialReportControllerReport@print')->name('reports.financial.report.print');
     });
 });
 
@@ -1028,30 +1030,18 @@ Route::get('/test', function () {
     //     $p->save();
     // }
 
-    // $cashInHandAmounts = DB::table('account_branches')
-    //     ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-    //     ->whereIn('accounts.account_type', [1, 2])
-    //     ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
-    //     ->where('account_branches.branch_id', auth()->user()->branch_id)
-    //     ->select(
-    //         'accounts.account_type',
-    //         DB::raw('SUM(account_ledgers.debit) as total_debit'),
-    //         DB::raw('SUM(account_ledgers.credit) as total_credit')
-    //     )->groupBy('accounts.account_type')
-    //     ->get();
+    $array1 = [
+        'total_sale' => 100,
+        'total_purchase' => 100,
+    ];
 
-    // $balance = [];
+    $array2 = [
+        'total_expense' => 2010,
+    ];
 
-    // foreach ($cashInHandAmounts as $cashInHandAmount) {
+    return array_merge( $array1, $array2);
 
-    //     if ($cashInHandAmount->account_type == 1) {
-
-    //         $balance['cash_in_hand_balance'] = $cashInHandAmount->total_debit - $cashInHandAmount->total_credit;
-    //     } else {
-
-    //         $balance['bank_account_balance'] = $cashInHandAmount->total_debit - $cashInHandAmount->total_credit;
-    //     }
-    // }
+    
 });
 
 // All authenticated routes

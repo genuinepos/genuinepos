@@ -572,7 +572,7 @@ class SaleUtil
             'customers.name as customer_name',
         );
 
-        if ($userPermission->role_type == 1 || auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             $sales = $this->filteredQuery($request, $query)->where('sales.status', 1)
                 ->where('sales.created_by', 1)

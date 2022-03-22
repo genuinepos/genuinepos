@@ -25,6 +25,7 @@ class NetProfitLossAccount
         $indirectExpense  = $this->indirectExpense($request);
         $totalSaleReturn  = $this->totalSaleReturn($request);
         $totalPurchaseReturn  = $this->totalPurchaseReturn($request);
+        $transferShipmentCost  = $this->transferShipmentCost($request = null);
 
         $grossProfit = $totalSaleAmounts->sum('total_sale')
             // + ($closingStock - $openingStock->sum('total_ops_value'))
@@ -80,6 +81,7 @@ class NetProfitLossAccount
             'net_profit' => $netProfit,
             'net_profit_before_tax' => $netProfitBeforeTax,
             'tax_payable' => $tax_payable,
+            'total_transfer_cost' => $transferShipmentCost,
         ];
     }
 
@@ -179,6 +181,7 @@ class NetProfitLossAccount
     {
         $sales = '';
         $salesQ = DB::table('sales')
+            ->whereIn('sales.status', [1, 3])
             ->select(
                 DB::raw('SUM(total_payable_amount) as total_sale'),
                 DB::raw('SUM(paid) as total_paid'),
@@ -445,7 +448,8 @@ class NetProfitLossAccount
         return $totalSoldItemUnitCost;
     }
 
-    public function totalSaleReturn($request = null){
+    public function totalSaleReturn($request = null)
+    {
 
         $totalSaleReturn = '';
         $totalSaleReturnQuery = DB::table('sale_returns')
@@ -486,7 +490,8 @@ class NetProfitLossAccount
         return $totalSaleReturn;
     }
 
-    public function totalPurchaseReturn($request = null){
+    public function totalPurchaseReturn($request = null)
+    {
 
         $totalPurchaseReturn = '';
         $totalPurchaseReturnQuery = DB::table('purchase_returns')
@@ -525,5 +530,52 @@ class NetProfitLossAccount
         }
 
         return $totalPurchaseReturn;
+    }
+
+    public function transferShipmentCost($request = null)
+    {
+        $transferStBranchQuery = DB::table('transfer_stock_to_branches')
+            ->select(DB::raw('sum(shipping_charge) as b_total_shipment_charge'));
+
+        $transferStWarehouseQuery = DB::table('transfer_stock_to_warehouses')
+            ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
+
+            
+        if (isset($request->branch_id) && $request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', NULL);
+                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', NULL);
+            } else {
+
+                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', $request->branch_id);
+                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', $request->branch_id);
+            }
+        }
+
+        if (isset($request->from_date) && $request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+
+            $transferStBranchQuery->whereBetween('transfer_stock_to_branches.report_date', $date_range);
+            $transferStWarehouseQuery->whereBetween('transfer_stock_to_warehouses.report_date', $date_range);
+        }
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $transferStBranch = $transferStBranchQuery->get();
+            $transferStWarehouse = $transferStWarehouseQuery->get();
+        } else {
+
+           
+            $transferStBranch = $transferStBranchQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $transferStWarehouse = $transferStWarehouseQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+        }
+
+        return $totalTransferShipmentCost = $transferStBranch->sum('b_total_shipment_charge') + $transferStWarehouse->sum('w_total_shipment_charge');
     }
 }

@@ -36,11 +36,12 @@ class FinancialReportControllerReport extends Controller
     {
      
         $allFinancialAmounts = $this->financialAmountsUtil->allFinancialAmounts($request);
-        
+        $from_date = $request->from_date;
         return view(
             'reports.financial_report.ajax_view.financial_amounts',
             compact(
                 'allFinancialAmounts',
+                'from_date',
             )
         );
     }

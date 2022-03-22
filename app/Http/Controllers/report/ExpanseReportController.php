@@ -23,6 +23,7 @@ class ExpanseReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+
             $converter = $this->converter;
             $generalSettings = DB::table('general_settings')->first();
             $expenses = '';
@@ -31,7 +32,9 @@ class ExpanseReportController extends Controller
                 ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $query->where('expanses.branch_id', NULL);
                 } else {
                     $query->where('expanses.branch_id', $request->branch_id);
@@ -39,6 +42,7 @@ class ExpanseReportController extends Controller
             }
 
             if ($request->admin_id) {
+                
                 $query->where('expanses.admin_id', $request->admin_id);
             }
 

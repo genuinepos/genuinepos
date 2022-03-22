@@ -25,20 +25,19 @@
                                                 <form id="filter_form" class="px-2">
                                                     <div class="form-group row">
                                                     
-                                                                <div class="col-md-2">
-                                                                    <label><strong>Business Location :</strong></label>
-                                                                    <select name="branch_id"
-                                                                        class="form-control submit_able" id="branch_id" autofocus>
-                                                                        <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                        @foreach ($branches as $branch)
-                                                                            <option value="{{ $branch->id }}">
-                                                                                {{ $branch->name . '/' . $branch->branch_code }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
+                                                        <div class="col-md-2">
+                                                            <label><strong>Business Location :</strong></label>
+                                                            <select name="branch_id"
+                                                                class="form-control submit_able" id="branch_id" autofocus>
+                                                                <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
                                                         
-
                                                         <div class="col-md-2">
                                                             <label><strong></strong></label>
                                                             <div class="input-group">

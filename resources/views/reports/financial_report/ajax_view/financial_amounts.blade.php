@@ -142,16 +142,18 @@
                             </th>
                         </tr>
 
-                        <tr>
-                            <td class="text-start">
-                                <em>Closing Stock :</em>
-                            </td>
+                        @if (!$from_date)
+                            <tr>
+                                <td class="text-start">
+                                    <em>Closing Stock (<small>Non-filterable by Date</small>) :</em>
+                                </td>
 
-                            <td class="text-end">
-                                <b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['closing_stock']) }}</em> </b>  
-                            </td>
-                        </tr>
-
+                                <td class="text-end">
+                                    <b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['closing_stock']) }}</em> </b>  
+                                </td>
+                            </tr>
+                        @endif
+                        
                         <tr>
                             <td class="text-start">
                                 <em>Total Stock Adjustment :</em>

@@ -168,7 +168,7 @@
                                                                 </td>
                                                             </tr>
 
-                                                            <tr>
+                                                            {{-- <tr>
                                                                 <td class="text-start">
                                                                 <em>Opening Stock :</em>  
                                                                 </td>
@@ -186,7 +186,7 @@
                                                                 <td class="text-start">
                                                                     <em>0.00</em>     
                                                                 </td>
-                                                            </tr>
+                                                            </tr> --}}
 
                                                             <tr>
                                                                 <th class="text-end">

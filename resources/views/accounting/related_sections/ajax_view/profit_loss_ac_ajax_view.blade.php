@@ -67,7 +67,7 @@
                             </tr>
                         @endif
                         
-                        <tr>
+                        {{-- <tr>
                             <td class="text-start">
                             <em>Opening Stock :</em>  
                             </td>
@@ -85,7 +85,7 @@
                             <td class="text-start">
                                 <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['closing_stock']) }}</em>     
                             </td>
-                        </tr>
+                        </tr> --}}
 
                         <tr>
                             <th class="text-end">

@@ -571,9 +571,11 @@
         var variant_ids = document.querySelectorAll('#variant_id');
         var sameVariant = 0;
         variant_ids.forEach(function(input){
-            console.log(input.value);
+           
             if(input.value != 'noid'){
+
                 if(input.value == variant_id){
+
                     sameVariant += 1;
                     var className = input.getAttribute('class');
                     // get closest table row for increasing qty and re calculate product amount
@@ -602,7 +604,9 @@
                     var calcLineTotal = parseFloat(calsNetUnitCost) * parseFloat(updateQty);
                     var lineTotal = closestTr.find('#line_total').val(parseFloat(calcLineTotal));
                     calculateTotalAmount();
+
                     if (keyName == 9) {
+
                         closestTr.find('#quantity').focus();
                         closestTr.find('#quantity').select();
                         keyName = 1;
@@ -613,6 +617,7 @@
         });
 
         if(sameVariant == 0){
+
             var tr = '';
             tr += '<tr class="text-start">';
             tr += '<td>';
@@ -625,10 +630,14 @@
             tr += '<td>';
             tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
             tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
+
             unites.forEach(function(unit) {
+
                 if (product_unit == unit) {
+
                     tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
                 } else {
+
                     tr += '<option value="'+unit+'">'+unit+'</option>';   
                 }
             })
@@ -637,9 +646,12 @@
 
             tr += '<td>';
             tr += '<input value="'+variant_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost">';
+
             @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
+
                 tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="">';
             @endif
+
             tr += '</td>';
             tr += '<td>';
             tr += '<input value="0.00" required name="unit_discounts[]" type="number" class="form-control" id="unit_discount">';
@@ -669,6 +681,7 @@
             tr += '</td>';
 
             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
+
                 tr += '<td>';
                 tr += '<input value="'+variant_profit+'" type="text" name="profits[]" class="form-control" type="number" id="profit">';
                 tr += '</td>';
@@ -739,14 +752,23 @@
         var calcLineTotal = parseFloat(calcNetUnitCost) * parseFloat(quantity);
         var lineTotal = tr.find('#line_total').val(parseFloat(calcLineTotal).toFixed(2));
 
-        // Update selling price
-        var profit = tr.find('#profit').val();
-        var calcProfit = parseFloat(calcUnitCostWithDiscount) / 100 * parseFloat(profit) + parseFloat(calcUnitCostWithDiscount);
-        var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
+        // Update profit 
+        // var profitMargin = tr.find('#profit').val();
+        // var calcProfit = parseFloat(calcUnitCostWithDiscount) / 100 * parseFloat(profitMargin) + parseFloat(calcUnitCostWithDiscount);
+        // var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
+
+        var selling_price = tr.find('#selling_price').val() ? tr.find('#selling_price').val() : 0;
+        var profitAmount = parseFloat(selling_price) - parseFloat(calcUnitCostWithDiscount);
+        var __cost = parseFloat(calcUnitCostWithDiscount) > 0 ? parseFloat(calcUnitCostWithDiscount) : parseFloat(profitAmount);
+        var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
+        var __calcProfit = calcProfit ? calcProfit : 0;
+        tr.find('#profit').val(parseFloat(__calcProfit).toFixed(2));
+
         calculateTotalAmount();
     });
 
     $(document).on('input', '#selling_price',function() {
+
         var selling_price = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
         var product_cost = tr.find('#unit_cost_with_discount').val() ? tr.find('#unit_cost_with_discount').val() : 0;
@@ -784,20 +806,30 @@
         var lineTotal = tr.find('#line_total').val(parseFloat(calcLineTotal).toFixed(2));
 
         // Update profit 
-        var profitMargin = tr.find('#profit').val();
-        var calcProfit = parseFloat(calcUnitCostWithDiscount) / 100 * parseFloat(profitMargin) + parseFloat(calcUnitCostWithDiscount);
-        var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
+        // var profitMargin = tr.find('#profit').val();
+        // var calcProfit = parseFloat(calcUnitCostWithDiscount) / 100 * parseFloat(profitMargin) + parseFloat(calcUnitCostWithDiscount);
+        // var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
+
+        var selling_price = tr.find('#selling_price').val() ? tr.find('#selling_price').val() : 0;
+        var profitAmount = parseFloat(selling_price) - parseFloat(calcUnitCostWithDiscount);
+        var __cost = parseFloat(calcUnitCostWithDiscount) > 0 ? parseFloat(calcUnitCostWithDiscount) : parseFloat(profitAmount);
+        var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
+        var __calcProfit = calcProfit ? calcProfit : 0;
+        tr.find('#profit').val(parseFloat(__calcProfit).toFixed(2));
         calculateTotalAmount();
     });
 
     $(document).on('blur', '#unit_discount', function(){
+        
         if ($(this).val() == '') {
+
             $(this).val(parseFloat(0).toFixed(2));
         }
     });
 
     // Input profit margin and clculate row amount
     $(document).on('input', '#profit', function(){
+
         var profit = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
         
@@ -810,6 +842,7 @@
 
      // Input profit margin and clculate row amount
      $(document).on('input', '#selling_price', function(){
+
         var price = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
         
@@ -821,7 +854,9 @@
     });
 
     $(document).on('blur', '#profit', function(){
+
         if ($(this).val() == '') {
+
             $(this).val(parseFloat(0).toFixed(2));
         }
     });
@@ -831,10 +866,13 @@
         var orderDiscount = $(this).val() ? $(this).val() : 0;
         var orderDiscountType = $('#order_discount_type').val();
         var netTotalAmount = $('#net_total_amount').val();
+
         if (orderDiscountType == 1) {
+
             $('.label_order_discount_amount').html(parseFloat(orderDiscount).toFixed(2)); 
             $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2)); 
         }else{
+
             var calsOrderDiscount = parseFloat(netTotalAmount) / 100 * parseFloat(orderDiscount);
             $('.label_order_discount_amount').html(parseFloat(calsOrderDiscount).toFixed(2)); 
             $('#order_discount_amount').val(parseFloat(calsOrderDiscount).toFixed(2));
@@ -1089,7 +1127,7 @@
 
                     tr += '<td>';
                     tr += '<input type="hidden" value="'+unit_cost_inc_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
-                    tr += '<input value="'+product.net_unit_cost+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
+                    tr += '<input readonly value="'+product.net_unit_cost+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
                     tr += '</td>';
 
                     tr += '<td>';

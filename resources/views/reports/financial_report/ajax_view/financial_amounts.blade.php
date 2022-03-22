@@ -192,7 +192,17 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Total Gross Profit :</em>
+                                <em>Daily Profit :</em>
+                            </td>
+
+                            <td class="text-end">
+                                <b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['daily_profit']) }}</em> </b>  
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-start">
+                                <em>Gross Profit :</em>
                             </td>
 
                             <td class="text-end">
@@ -202,7 +212,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Total Net Profit :</em>
+                                <em>Net Profit :</em>
                             </td>
 
                             <td class="text-end">

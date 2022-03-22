@@ -9,21 +9,21 @@ use App\Utils\NetProfitLossAccount;
 class FinancialAmountsUtil
 {
     protected $netProfitLossAccount;
- 
+
     public function __construct(
         NetProfitLossAccount $netProfitLossAccount,
     ) {
 
         $this->netProfitLossAccount = $netProfitLossAccount;
     }
-    
+
     public function allFinancialAmounts($request = NULL): array
     {
         $cashAndBankBalance = $this->cashAndBankBalance($request);
         // $salesSaleReturnAmount = $this->salesSaleReturnAmount($request);
         // $purchaseAndPurchaseReturnAmount = $this->purchaseAndPurchaseReturnAmount($request);
         // $expensesAmounts = $this->expensesAmounts($request);
- 
+
         $netProfitLossAccountAmounts = $this->netProfitLossAccount->netLossProfit($request);
 
         $anotherAmounts = [];
@@ -31,6 +31,19 @@ class FinancialAmountsUtil
         $anotherAmounts['fixed_asset_balance'] = $this->fixedAssetBalance($request);
         $anotherAmounts['cash_in_hand'] = $cashAndBankBalance['cash_in_hand_balance'];
         $anotherAmounts['bank_account'] = $cashAndBankBalance['bank_account_balance'];
+
+        $dailyProfit = $netProfitLossAccountAmounts['total_sale']
+            + $netProfitLossAccountAmounts['total_adjusted_recovered']
+            - $netProfitLossAccountAmounts['total_unit_cost']
+            - $netProfitLossAccountAmounts['total_direct_expense']
+            - $netProfitLossAccountAmounts['total_indirect_expense']
+            - $netProfitLossAccountAmounts['total_adjusted']
+            - $netProfitLossAccountAmounts['total_sale_order_tax']
+            - $netProfitLossAccountAmounts['total_sale_pro_tax']
+            - $netProfitLossAccountAmounts['total_sale_return']
+            - $netProfitLossAccountAmounts['total_transfer_cost'];
+
+        $anotherAmounts['daily_profit'] = $dailyProfit;
 
         return array_merge($netProfitLossAccountAmounts, $anotherAmounts);
     }

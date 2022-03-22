@@ -27,7 +27,7 @@ class NetProfitLossAccount
         $totalPurchaseReturn  = $this->totalPurchaseReturn($request);
 
         $grossProfit = $totalSaleAmounts->sum('total_sale')
-            + ($closingStock - $openingStock->sum('total_ops_value'))
+            // + ($closingStock - $openingStock->sum('total_ops_value'))
             - $totalPurchasesAmounts->sum('total_purchase')
             - $directExpense->sum('total_di_expense')
             // - $totalSoldItemUnitCost->sum('total_unit_cost')

@@ -232,7 +232,7 @@ class NameSearchUtil
         }
     }
 
-    public function searchStockToBranch($product, $product_code, $branch_id, $status = NULL)
+    public function searchStockToBranch($product, $product_code, $branch_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL)
     {
         if ($product) {
 
@@ -241,7 +241,8 @@ class NameSearchUtil
                 return response()->json(
                     [
                         'product' => $product,
-                        'qty_limit' => PHP_INT_MAX
+                        'qty_limit' => PHP_INT_MAX,
+                        'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
                     ]
                 );
             }
@@ -260,6 +261,7 @@ class NameSearchUtil
                         [
                             'product' => $product,
                             'qty_limit' => $productBranch ? $productBranch->product_quantity : 0,
+                            'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
                         ]
                     );
                 }
@@ -274,7 +276,8 @@ class NameSearchUtil
                         return response()->json(
                             [
                                 'product' => $product,
-                                'qty_limit' => $productBranch->product_quantity
+                                'qty_limit' => $productBranch->product_quantity,
+                                'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
                             ]
                         );
                     } else {
@@ -308,7 +311,8 @@ class NameSearchUtil
 
                     return response()->json([
                         'variant_product' => $variant_product,
-                        'qty_limit' => PHP_INT_MAX
+                        'qty_limit' => PHP_INT_MAX,
+                        'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
                     ]);
                 }
 
@@ -339,11 +343,12 @@ class NameSearchUtil
                     if ($productBranch && $productBranchVariant) {
 
                         if ($status == 2 || $status == 3 || $status == 4) {
-            
+
                             return response()->json(
                                 [
                                     'variant_product' => $variant_product,
                                     'qty_limit' => $productBranchVariant ? $productBranchVariant->variant_quantity : 0,
+                                    'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
                                 ]
                             );
                         }
@@ -352,7 +357,8 @@ class NameSearchUtil
 
                             return response()->json([
                                 'variant_product' => $variant_product,
-                                'qty_limit' => $productBranchVariant->variant_quantity
+                                'qty_limit' => $productBranchVariant->variant_quantity,
+                                'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
                             ]);
                         } else {
 
@@ -452,5 +458,78 @@ class NameSearchUtil
         }
 
         return $this->nameSearching($product_code);
+    }
+
+    public function productDiscount($product_id, $price_group_id, $brand_id, $category_id)
+    {
+        $presentDate = date('Y-m-d');
+
+        $__price_group_id = $price_group_id != 'no_id' ? $price_group_id : NULL;
+        $__category_id = $category_id ? $category_id : 'no_id';
+        $__brand_id = $brand_id ? $brand_id : 'no_id';
+
+        $discount = '';
+
+        $discountProductWise = DB::table('discount_products')
+            ->where('discount_products.product_id', $product_id)
+            ->leftJoin('discounts', 'discount_products.discount_id', 'discounts.id')
+            ->where('discounts.branch_id', auth()->user()->branch_id)
+            ->where('discounts.is_active', 1)
+            ->where('discounts.price_group_id', $__price_group_id)
+            ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`')
+            ->orderBy('discounts.priority', 'desc')
+            ->first();
+
+        if ($discountProductWise) {
+
+            return $this->setDiscount($discountProductWise);
+        }
+
+        $discountBrandCategoryWise = DB::table('discounts')
+            ->where('discounts.branch_id', auth()->user()->branch_id)
+            ->where('discounts.is_active', 1)
+            ->where('discounts.price_group_id', $__price_group_id)
+            // ->where('discounts.brand_id', $__brand_id)
+            // ->where('discounts.category_id', $__category_id)
+            ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`')
+            ->orderBy('discounts.priority', 'desc')
+            ->first();
+
+        if (!$discountBrandCategoryWise) {
+
+            return $this->setDiscount(NULL);
+        }
+
+        if ($discountBrandCategoryWise->brand_id && $discountBrandCategoryWise->category_id) {
+
+            if ($discountBrandCategoryWise->brand_id == $__brand_id && $discountBrandCategoryWise->category_id == $__category_id) {
+
+                return $this->setDiscount($discountBrandCategoryWise);
+            } 
+        } elseif (!$discountBrandCategoryWise->brand_id && $discountBrandCategoryWise->category_id) {
+
+            if ($discountBrandCategoryWise->category_id == $__category_id) {
+
+                return $this->setDiscount($discountBrandCategoryWise);
+            }
+        } elseif ($discountBrandCategoryWise->brand_id && !$discountBrandCategoryWise->category_id) {
+
+            if ($discountBrandCategoryWise->brand_id == $__brand_id) {
+
+                return $this->setDiscount($discountBrandCategoryWise);
+            }
+        }
+
+        return $this->setDiscount(NULL);
+    }
+
+    public function setDiscount($discount)
+    {
+        $discountDetails = [];
+        $discountDetails['discount_type'] = isset($discount->discount_type) ? $discount->discount_type : 1;
+        $discountDetails['discount_amount'] = isset($discount->discount_amount) ? $discount->discount_amount : 0;
+        //$discountDetails['apply_in_customer_group'] = isset($discount->apply_in_customer_group) ? $discount->apply_in_customer_group : 0;
+
+        return $discountDetails;
     }
 }

@@ -964,11 +964,13 @@ class SaleController extends Controller
     }
 
     // Search product by code
-    public function searchProduct($status, $product_code)
+    public function searchProduct($status, $product_code, $price_group_id)
     {
         $product_code = (string)$product_code;
         $__product_code = str_replace('~', '/', $product_code);
         $branch_id = auth()->user()->branch_id;
+        $__price_group_id = $price_group_id == 'no_id' ? NULL : $price_group_id;
+        $is_allowed_discount = true;
 
         $product = Product::with([
             'product_variants',
@@ -994,7 +996,7 @@ class SaleController extends Controller
                 'is_manage_stock',
             ])->first();
 
-        return $this->nameSearchUtil->searchStockToBranch($product, $__product_code, $branch_id, $status);
+        return $this->nameSearchUtil->searchStockToBranch($product, $__product_code,  $branch_id, $status, $is_allowed_discount, $__price_group_id);
     }
 
     // Check Branch Single product Stock

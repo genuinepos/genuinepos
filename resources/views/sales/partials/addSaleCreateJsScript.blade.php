@@ -16,6 +16,7 @@
     var delay = (function() {
         var timer = 0;
         return function(callback, ms) {
+            
             clearTimeout (timer);
             timer = setTimeout(callback, ms);
         };
@@ -27,16 +28,17 @@
         var product_code = $(this).val();
         var __product_code = product_code.replaceAll('/', '~');
         var status = $('#status').val() ? $('#status').val() : 'no_status';
-        delay(function() { searchProduct(status, __product_code); }, 200); //sendAjaxical is the name of remote-command
+        var __price_group_id = $('#price_group_id').val() ? $('#price_group_id').val() : 'no_id';
+        delay(function() { searchProduct(status, __product_code, __price_group_id); }, 200); //sendAjaxical is the name of remote-command
     });
 
-    function searchProduct(status, product_code) {
+    function searchProduct(status, product_code, __price_group_id) {
 
         $('#search_product').focus();
         var price_group_id = $('#price_group_id').val();
        
         $.ajax({
-            url:"{{ url('sales/search/product') }}" + "/"+ status + "/" + product_code,
+            url:"{{ url('sales/search/product') }}" + "/"+ status + "/" + product_code + "/" + __price_group_id,
             dataType: 'json',
             success:function(product){
 

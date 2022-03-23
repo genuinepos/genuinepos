@@ -361,7 +361,7 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::get('get/all/users', 'SaleController@getAllUser')->name('sales.get.all.users');
     Route::get('get/all/unit', 'SaleController@getAllUnit')->name('sales.get.all.unites');
     Route::get('get/all/tax', 'SaleController@getAllTax')->name('sales.get.all.taxes');
-    Route::get('search/product/{status}/{product_code}', 'SaleController@searchProduct');
+    Route::get('search/product/{status}/{product_code}/{price_group_id}', 'SaleController@searchProduct');
     Route::delete('delete/{saleId}', 'SaleController@delete')->name('sales.delete');
     Route::get('edit/shipment/{saleId}', 'SaleController@editShipment')->name('sales.shipment.edit');
     Route::post('update/shipment/{saleId}', 'SaleController@updateShipment')->name('sales.shipment.update');
@@ -1029,18 +1029,6 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
-
-    $array1 = [
-        'total_sale' => 100,
-        'total_purchase' => 100,
-    ];
-
-    $array2 = [
-        'total_expense' => 2010,
-    ];
-
-    return array_merge( $array1, $array2);
-
     
 });
 

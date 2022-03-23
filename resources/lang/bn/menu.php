@@ -56,7 +56,7 @@ return [
     'add_sale_return' => 'বিক্রয় ফেরত যোগ করুন',
     'sold_product_list' => 'বিক্রিত পণ্যের তালিকা',
     'shipments' => 'চালান',
-    'discounts' => 'ছাড়',
+    'discounts' => 'অফার পরিচালনা করুন',
     // Menu child of Transfer module 
     'transfer_stock_heading_1' => '<strong>গুদাম</strong> থেকে <b>ব্যবসার স্থানে</b> স্টক স্থানান্তর করুন।',
     'transfer_stock_heading_2' => '<strong>ব্যবসার অবস্থান</strong> থেকে <strong>গুদামে</strong> স্টক স্থানান্তর করুন।',

@@ -56,7 +56,7 @@ return [
   'sale_return_list' => 'Sale Return List',
   'add_sale_return' => 'Add Sale Return',
   'shipments' => 'Shipments',
-  'discounts' => 'Discounts',
+  'discounts' => 'Manage Offers',
   // Menu child of Transfer module
   'transfer_stock_heading_1' => 'TRANSFER STOCK FROM <strong>WAREHOUSE</strong> TO <strong> BUSINESS LOCATION</strong>',
   'transfer_stock_heading_2' => 'TRANSFER STOCK FROM <strong>BUSINESS LOCATION</strong> TO <strong> WAREHOUSE</strong>',

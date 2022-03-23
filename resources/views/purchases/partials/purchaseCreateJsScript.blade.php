@@ -205,6 +205,7 @@
                                 tr += '<td>';
                                 tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
                                 tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
+
                                 unites.forEach(function(unit) {
 
                                     if (product.unit.name == unit) {
@@ -215,6 +216,7 @@
                                         tr += '<option value="'+unit+'">'+unit+'</option>';   
                                     }
                                 });
+                                
                                 tr += '</select>';
                                 tr += '</td>';
 
@@ -741,7 +743,7 @@
 
             tr += '</td>';
             tr += '<td>';
-            tr += '<input readonly value="0.00" required name="unit_discounts[]" type="number" class="form-control" id="unit_discount">';
+            tr += '<input value="0.00" required name="unit_discounts[]" type="number" class="form-control" id="unit_discount">';
             tr += '</td>';
 
             tr += '<td>';
@@ -844,9 +846,17 @@
         var lineTotal = tr.find('#line_total').val(parseFloat(calcLineTotal).toFixed(2));
 
         // Update selling price
-        var profit = tr.find('#profit').val();
-        var calcProfit = parseFloat(calcUnitCostWithDiscount) / 100 * parseFloat(profit) + parseFloat(calcUnitCostWithDiscount);
-        var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
+        // var profit = tr.find('#profit').val();
+        // var calcProfit = parseFloat(calcUnitCostWithDiscount) / 100 * parseFloat(profit) + parseFloat(calcUnitCostWithDiscount);
+        // var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
+
+        var selling_price = tr.find('#selling_price').val() ? tr.find('#selling_price').val() : 0;
+        var profitAmount = parseFloat(selling_price) - parseFloat(calcUnitCostWithDiscount);
+        var __cost = parseFloat(calcUnitCostWithDiscount) > 0 ? parseFloat(calcUnitCostWithDiscount) : parseFloat(profitAmount);
+        var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
+        var __calcProfit = calcProfit ? calcProfit : 0;
+        tr.find('#profit').val(parseFloat(__calcProfit).toFixed(2));
+
         calculateTotalAmount();
     });
 
@@ -890,9 +900,16 @@
         var lineTotal = tr.find('#line_total').val(parseFloat(calcLineTotal).toFixed(2));
 
         // Update profit 
-        var profitMargin = tr.find('#profit').val();
-        var calcProfit = parseFloat(calcUnitCostWithDiscount) / 100 * parseFloat(profitMargin) + parseFloat(calcUnitCostWithDiscount);
-        var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
+        // var profitMargin = tr.find('#profit').val();
+        // var calcProfit = parseFloat(calcUnitCostWithDiscount) / 100 * parseFloat(profitMargin) + parseFloat(calcUnitCostWithDiscount);
+        // var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
+
+        var selling_price = tr.find('#selling_price').val() ? tr.find('#selling_price').val() : 0;
+        var profitAmount = parseFloat(selling_price) - parseFloat(calcUnitCostWithDiscount);
+        var __cost = parseFloat(calcUnitCostWithDiscount) > 0 ? parseFloat(calcUnitCostWithDiscount) : parseFloat(profitAmount);
+        var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
+        var __calcProfit = calcProfit ? calcProfit : 0;
+        tr.find('#profit').val(parseFloat(__calcProfit).toFixed(2));
         calculateTotalAmount();
     });
 

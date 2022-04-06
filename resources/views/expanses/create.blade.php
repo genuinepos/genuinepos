@@ -207,7 +207,7 @@
                         @csrf
                         <div class="form-group">
                             <label><b>Name</b> : <span class="text-danger">*</span></label>
-                            <input required type="text" name="name" class="form-control add_input" data-name="Bank name" id="name" placeholder="Expense Category Name"/>
+                            <input required type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="Expense Category Name"/>
                             <span class="error error_ex_name"></span>
                         </div>
 

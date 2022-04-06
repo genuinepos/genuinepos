@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ExpanseCategory;
+use App\Utils\Util;
 use Illuminate\Support\Facades\DB;
 
 class ExpanseCategoryController extends Controller
 {
+    
     public function __construct()
     {
         $this->middleware('auth:admin_and_user');
@@ -57,9 +59,11 @@ class ExpanseCategoryController extends Controller
         ]);
 
         $updateCategory = ExpanseCategory::where('id', $request->id)->first();
+
         $updateCategory->update([
             'name' => $request->name,
         ]);
+
         return response()->json('Expanse category updated successfully');
     }
 
@@ -67,7 +71,9 @@ class ExpanseCategoryController extends Controller
     {
         //return $categoryId;
         $deleteCategory = ExpanseCategory::find($categoryId);
+
         if (!is_null($deleteCategory)) {
+
             $deleteCategory->delete();
         }
         return response()->json('Expanse category deleted successfully');

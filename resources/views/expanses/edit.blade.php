@@ -164,14 +164,19 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
                                                     <div class="col-8">
-                                                        <select name="tax" class="form-control" id="tax"></select>
+                                                        <select name="tax" class="form-control" id="tax">
+                                                            <option value="0.00">NoTax</option>
+                                                            @foreach ($taxes as $tax)
+                                                                <option {{ $tax->tax_percent == $tax->tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Net Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</b>  </label>
+                                                    <label for="inputEmail3" class=" col-4"><b>Net Total : </b>  </label>
                                                     <div class="col-8">
                                                         <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00">
                                                     </div>
@@ -186,14 +191,12 @@
                 </section>
 
                 <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="submit-area py-3 mb-4">
-                                    <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                    <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="submit-area py-3 mb-4">
+                                <button type="button" class="btn loading_button d-none"><i
+                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
                             </div>
                         </div>
                     </div>
@@ -221,27 +224,12 @@
         }
         setExpanseCategory();
 
-        function getTaxes(){
-            $.ajax({
-                url:"{{route('purchases.get.all.taxes')}}",
-                async:false,
-                type:'get',
-                dataType: 'json',
-                success:function(taxes){
-                    taxArray = taxes;
-                    $('#tax').append('<option value="">NoTax</option>');
-                    $.each(taxes, function(key, val){
-                        $('#tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
-                    });
-                }
-            });
-        }
-        getTaxes();
-
          // Calculate amount
          function calculateAmount() {
             var indexs = document.querySelectorAll('#index');
+
             indexs.forEach(function(index) {
+
                 var className = index.getAttribute("class");
                 var rowIndex = $('.' + className).closest('tr').index();
                 $('.' + className).closest('tr').find('.serial').html(rowIndex + 1);
@@ -250,6 +238,7 @@
             var amounts = document.querySelectorAll('#amount');
             totalAmount = 0;
             amounts.forEach(function(amount){
+
                 totalAmount += parseFloat(amount.value ? amount.value : 0);
             });
 
@@ -265,19 +254,23 @@
         calculateAmount();
 
         $(document).on('input', '#amount',function () {
+
             calculateAmount();
         });
 
         $('#tax').on('change', function () {
+
             calculateAmount();
         });
 
         $('#paying_amount').on('input', function () {
+
             calculateAmount();
         });
 
         $(document).on('click', '#remove_btn', function (e) {
             e.preventDefault();
+
             $(this).closest('tr').remove();
             calculateAmount();
         });
@@ -285,16 +278,21 @@
         //Add purchase request by ajax
         $('#edit_expanse_form').on('submit', function(e){
             e.preventDefault();
+            
             $('.loading_button').show();
             var url = $(this).attr('action');
             var inputs = $('.add_input');
                 inputs.removeClass('is-invalid');
                 $('.error').html('');  
                 var countErrorField = 0;  
+
             $.each(inputs, function(key, val){
+
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
+
                 if(idValue == ''){
+
                     countErrorField += 1;
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
@@ -302,6 +300,7 @@
             });
 
             if(countErrorField > 0){
+
                 $('.loading_button').hide();
                 toastr.error('Please check again all form fields.'); 
                 return;
@@ -315,13 +314,15 @@
                 cache: false,
                 processData: false,
                 success:function(data){
-                    console.log(data);
+
                     if(!$.isEmptyObject(data.errorMsg)){
+
                         toastr.error(data.errorMsg,'ERROR'); 
                         $('.loading_button').hide();
                     }
 
                     if(!$.isEmptyObject(data.successMsg)){
+
                         $('.loading_button').hide();
                         toastr.success(data.successMsg); 
                         window.location = "{{route('expanses.index')}}";
@@ -344,6 +345,7 @@
             html += '<select required name="category_ids[]" class="form-control">';
             html += '<option value="">Select Expense Category</option>';
                 $.each(ex_categories, function (key, val) {
+
                     html += '<option value="'+val.id+'">'+val.name+' ('+val.code+')'+'</option>';
                 });
             html += '</select>';

@@ -697,7 +697,6 @@ Route::group(['prefix' => 'expenses', 'namespace' => 'App\Http\Controllers'], fu
     Route::post('update/{expenseId}', 'ExpanseController@update')->name('expanses.update');
     Route::delete('delete/{expanseId}', 'ExpanseController@delete')->name('expanses.delete');
     Route::get('all/categories', 'ExpanseController@allCategories')->name('expanses.all.categories');
-    Route::get('all/admins', 'ExpanseController@allAdmins')->name('expanses.all.admins');
     Route::get('payment/modal/{expenseId}', 'ExpanseController@paymentModal')->name('expanses.payment.modal');
     Route::post('payment/{expenseId}', 'ExpanseController@payment')->name('expanses.payment');
     Route::get('payment/view/{expenseId}', 'ExpanseController@paymentView')->name('expanses.payment.view');
@@ -705,6 +704,7 @@ Route::group(['prefix' => 'expenses', 'namespace' => 'App\Http\Controllers'], fu
     Route::get('payment/edit/{paymentId}', 'ExpanseController@paymentEdit')->name('expanses.payment.edit');
     Route::post('payment/update/{paymentId}', 'ExpanseController@paymentUpdate')->name('expanses.payment.update');
     Route::delete('payment/delete/{paymentId}', 'ExpanseController@paymentDelete')->name('expanses.payment.delete');
+    Route::post('add/quick/expense/category', 'ExpanseController@addQuickExpenseCategory')->name('expanses.add.quick.expense.category');
 
     // Expanse category route group
     Route::group(['prefix' => 'categories'], function () {

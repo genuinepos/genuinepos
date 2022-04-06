@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Utils\Util;
 use App\Models\Expanse;
 use App\Models\CashFlow;
 use App\Utils\AccountUtil;
@@ -11,9 +12,9 @@ use Illuminate\Http\Request;
 use App\Models\ExpansePayment;
 use App\Models\ExpanseCategory;
 use App\Models\ExpenseDescription;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
+use App\Utils\InvoiceVoucherRefIdUtil;
 
 class ExpanseController extends Controller
 {
@@ -21,17 +22,19 @@ class ExpanseController extends Controller
     protected $accountUtil;
     protected $invoiceVoucherRefIdUtil;
     protected $userActivityLogUtil;
-
+    protected $util;
     public function __construct(
         ExpenseUtil $expenseUtil,
         AccountUtil $accountUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
-        UserActivityLogUtil $userActivityLogUtil
+        UserActivityLogUtil $userActivityLogUtil,
+        Util $util
     ) {
         $this->expenseUtil = $expenseUtil;
         $this->accountUtil = $accountUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
+        $this->util = $util;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -78,6 +81,11 @@ class ExpanseController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        $users = DB::table('admin_and_users')->where('branch_id', auth()->user()->branch_id)
+            ->select('id', 'prefix', 'name', 'last_name')->get();
+
+        $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
+
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->whereIn('accounts.account_type', [1, 2])
@@ -94,7 +102,7 @@ class ExpanseController extends Controller
 
         $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
 
-        return view('expanses.create', compact('expenseAccounts', 'accounts', 'methods'));
+        return view('expanses.create', compact('expenseAccounts', 'accounts', 'methods', 'users', 'taxes'));
     }
 
     // Store Expanse
@@ -220,11 +228,7 @@ class ExpanseController extends Controller
             );
         }
 
-        $this->userActivityLogUtil->addLog(
-            action: 3,
-            subject_type: 15,
-            data_obj: $deleteExpense
-        );
+        $this->userActivityLogUtil->addLog(action: 3, subject_type: 15, data_obj: $deleteExpense);
 
         $this->expenseUtil->expenseDelete($deleteExpense);
 
@@ -242,14 +246,14 @@ class ExpanseController extends Controller
 
         if ($expense->transfer_branch_to_branch_id) {
 
-            session()->flash('errorMsg', 'This Expense is not editable from here. Cause this Expense is created by Business Location to Business Location Transfer.');
+            session()->flash('errorMsg', 'Can not be edited. Expense is created by Business Location to Business Location Transfer.');
 
             return redirect()->back();
         }
 
         $categories = DB::table('expanse_categories')->get();
-        $taxes = DB::table('taxes')->get();
 
+        $taxes = DB::table('taxes')->get();
 
         $users = DB::table('admin_and_users')
             ->where('branch_id', auth()->user()->branch_id)
@@ -319,11 +323,7 @@ class ExpanseController extends Controller
 
         $adjustedExpense = $this->expenseUtil->adjustExpenseAmount($updateExpanse);
 
-        $this->userActivityLogUtil->addLog(
-            action: 3,
-            subject_type: 15,
-            data_obj: $adjustedExpense
-        );
+        $this->userActivityLogUtil->addLog(action: 3, subject_type: 15, data_obj: $adjustedExpense);
 
         $exDescriptions = ExpenseDescription::where('expense_id', $updateExpanse->id)->get();
 
@@ -518,20 +518,8 @@ class ExpanseController extends Controller
         return response()->json('Successfully payment is deleted.');
     }
 
-    // Get all form user **requested by ajax**
-    public function allAdmins()
+    public function addQuickExpenseCategory(Request $request)
     {
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-            $admins = AdminAndUser::select(['id', 'prefix', 'name', 'last_name'])->orderBy('id', 'asc')->get();
-
-            return response()->json($admins);
-        } else {
-
-            $admins = AdminAndUser::select(['id', 'prefix', 'name', 'last_name'])->orderBy('id', 'asc')
-                ->where('branch_id', auth()->user()->branch_id)->get();
-
-            return response()->json($admins);
-        }
+        return $this->util->addQuickExpenseCategory($request);
     }
 }

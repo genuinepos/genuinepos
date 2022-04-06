@@ -8,55 +8,53 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
+                        
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-university"></span>
                                 <h5>Banks</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Banks</h6>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
+                    <div class="row margin_row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-6">
+                                    <h6>All Banks</h6>
                                 </div>
 
-                                <div class="widget_content">
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">SL</th>
-                                                    <th class="text-start">Bank Name</th>
-                                                    <th class="text-start">Branch Name</th>
-                                                    <th class="text-start">Address</th>
-                                                    <th class="text-start">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
+                                <div class="col-md-6">
+                                    <div class="btn_30_blue float-end">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
+                                                class="fas fa-plus-square"></i> Add</a>
                                     </div>
                                 </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start">SL</th>
+                                                <th class="text-start">Bank Name</th>
+                                                <th class="text-start">Branch Name</th>
+                                                <th class="text-start">Address</th>
+                                                <th class="text-start">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>

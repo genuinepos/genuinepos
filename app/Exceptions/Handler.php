@@ -52,9 +52,11 @@ class Handler extends ExceptionHandler
 
         $class = get_class($exception);
         switch ($class) {
+
             case 'Illuminate\Auth\AuthenticationException':
             $guard = Arr::get($exception->guards(), 0);
             switch ($guard) {
+                
                 case 'admin_and_user':
                     $login = 'login';
                 break;

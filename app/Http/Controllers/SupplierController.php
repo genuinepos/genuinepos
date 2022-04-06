@@ -510,6 +510,7 @@ class SupplierController extends Controller
         $supplierPayment->year = date('Y');
 
         if ($request->hasFile('attachment')) {
+
             $PaymentAttachment = $request->file('attachment');
             $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
             $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
@@ -543,6 +544,7 @@ class SupplierController extends Controller
             ->get();
 
         if (count($dueInvoices) > 0) {
+
             $index = 0;
             foreach ($dueInvoices as $dueInvoice) {
 
@@ -577,7 +579,9 @@ class SupplierController extends Controller
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
                 } elseif ($dueInvoice->due == $request->paying_amount) {
+
                     if ($request->paying_amount > 0) {
+
                         $addPurchasePayment = new PurchasePayment();
                         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPV') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);;
                         $addPurchasePayment->purchase_id = $dueInvoice->id;
@@ -604,7 +608,9 @@ class SupplierController extends Controller
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
                 } elseif ($dueInvoice->due < $request->paying_amount) {
+
                     if ($dueInvoice->due > 0) {
+
                         $addPurchasePayment = new PurchasePayment();
 
                         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'PPV') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);
@@ -719,6 +725,7 @@ class SupplierController extends Controller
         );
 
         $returnPurchases = Purchase::with(['purchase_return'])->where('purchase_return_due', '>', 0)->get();
+        
         if (count($returnPurchases) > 0) {
 
             $index = 0;

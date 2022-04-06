@@ -26,7 +26,7 @@
                             </a>
                         </div>
 
-                        <div class="row mt-1">
+                        <div class="row">
                             <div class="card">
                                 <div class="tab_list_area">
                                     <ul class="list-unstyled">
@@ -44,7 +44,7 @@
                         </div>
                         
                         <div class="tab_contant branch_stock">
-                            <div class="row mt-1">
+                            <div class="row">
                                 <div class="card py-2">
                                     <div class="col-md-12">
                                         <form id="branch_stock_filter_form" class="px-2">
@@ -116,8 +116,11 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-6 mt-3">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="branch_stock_print_report"><i class="fas fa-print "></i> Print</a>
+                                                        <div class="col-md-6">
+                                                            <label></label>
+                                                            <div class="input-group">
+                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i> Print</a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -162,7 +165,7 @@
                         </div>
                         
                         <div class="tab_contant warehouse_stock d-none">
-                            <div class="row mt-1">
+                            <div class="row">
                                 <div class="card py-2">
                                     <div class="col-md-12">
                                         <form id="warehouse_stock_filter_form" class="px-2">
@@ -415,12 +418,14 @@
     $(document).on('change', '#w_branch_id', function () {
         var branch_id = $(this).val();
         $.ajax({
-            url:"{{ url('reports/stock/branch/warehouse') }}"+"/"+branch_id,
+            url:"{{ url('common/ajax/call/branch/warehouse') }}"+"/"+branch_id,
             type:'get',
             success:function(data){
+
                 $('#warehouse_id').empty();
                 $('#warehouse_id').append('<option value="">All</option>');
                 $.each(data, function (key, val) {
+
                     $('#warehouse_id').append('<option value="'+val.id+'">'+val.warehouse_name+'/'+val.warehouse_code+'</option>');
                 });
             }

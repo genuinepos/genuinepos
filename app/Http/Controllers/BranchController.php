@@ -23,7 +23,9 @@ class BranchController extends Controller
     public function index()
     {
         $addons = DB::table('addons')->select('branches')->first();
+        
         if ($addons->branches == 0) {
+
             abort(403, 'Access Forbidden.');
         }
 

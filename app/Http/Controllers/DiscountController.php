@@ -42,7 +42,6 @@ class DiscountController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
-
                     $html .= '<a class="dropdown-item" href="' . route('sales.discounts.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.discounts.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
@@ -128,6 +127,15 @@ class DiscountController extends Controller
             "discount_amount"  => "required",
         ]);
 
+        if (
+            !isset($request->product_ids) &&
+            $request->brand_id == '' &&
+            $request->category_id == ''
+        ) {
+
+            return response()->json(['errorMsg' => 'Please select a brand or category.']);
+        }
+
         $addDiscount = new Discount();
         $addDiscount->branch_id = auth()->user()->branch_id;
         $addDiscount->name = $request->name;
@@ -141,7 +149,7 @@ class DiscountController extends Controller
         $addDiscount->apply_in_customer_group = isset($request->apply_in_customer_group) ? 1 : 0;
         $addDiscount->save();
 
-        if (count($request->product_ids) > 0) {
+        if (isset($request->product_ids) && count($request->product_ids) > 0) {
 
             foreach ($request->product_ids as $product_id) {
 
@@ -154,10 +162,11 @@ class DiscountController extends Controller
 
             $addDiscount->brand_id = $request->brand_id;
             $addDiscount->category_id = $request->category_id;
+
             $addDiscount->save();
         }
 
-        return response()->json('Discount created successfully');
+        return response()->json('Offer created successfully');
     }
 
     public function edit($discountId)
@@ -204,7 +213,7 @@ class DiscountController extends Controller
         $updateDiscount->apply_in_customer_group = isset($request->apply_in_customer_group) ? 1 : 0;
         $updateDiscount->save();
 
-        if (count($request->product_ids) > 0) {
+        if (isset($request->product_ids) && count($request->product_ids) > 0) {
 
             $updateDiscount->brand_id = NULL;
             $updateDiscount->category_id = NULL;
@@ -227,7 +236,7 @@ class DiscountController extends Controller
                 }
             }
         } else {
-            
+
             foreach ($updateDiscount->discountProducts as $discountProduct) {
 
                 $discountProduct->delete();
@@ -242,11 +251,11 @@ class DiscountController extends Controller
         $deleteDiscountProducts = DiscountProduct::where('discount_id', $updateDiscount->id)->where('is_delete_in_update', 1)->get();
 
         foreach ($deleteDiscountProducts as $deleteDiscountProduct) {
-            
+
             $deleteDiscountProduct->delete();
         }
 
-        return response()->json('Discount updated successfully');
+        return response()->json('Offer updated successfully');
     }
 
     public function delete($discountId)
@@ -258,7 +267,7 @@ class DiscountController extends Controller
             $deleteDiscount->delete();
         }
 
-        return response()->json('Discount deleted successfully');
+        return response()->json('Offer deleted successfully');
     }
 
     public function changeStatus($discountId)
@@ -275,6 +284,6 @@ class DiscountController extends Controller
             $discount->save();
         }
 
-        return response()->json('Discount status has been changed successfully');
+        return response()->json('Offer status has been changed successfully');
     }
 }

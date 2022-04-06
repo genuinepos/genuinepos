@@ -10,10 +10,12 @@
                 <div class="border-class">
                     <div class="main__content">
                         <div class="sec-name">
+                            
                             <div class="name-head">
                                 <span class="fas fa-money-bill"></span>
                                 <h5>Expense Report</h5>
                             </div>
+
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
@@ -110,31 +112,33 @@
                                                 <th class="text-start">B.Location</th>
                                                 <th class="text-start">Expanse For</th>
                                                 <th class="text-start">Payment Status</th>
-                                                <th class="text-start">Tax({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                <th class="text-start">Net Total({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                <th class="text-start">Paid({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                <th class="text-start">Payment Due({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                <th class="text-start">Tax</th>
+                                                <th class="text-start">Net Total</th>
+                                                <th class="text-start">Paid</th>
+                                                <th class="text-start">Payment Due</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
                                                 <th></th>
                                                 <th></th>
                                                 <th></th>
                                                 <th></th>
+
                                                 <th class="text-start text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                                 <th class="text-start text-white">
                                                     <span id="tax_amount"></span>
                                                 </th>
+
                                                 <th class="text-start text-white">
                                                     <span id="net_total"></span>
                                                 </th>
+
                                                 <th class="text-start text-white">
                                                     <span id="paid"></span>
                                                 </th>
+
                                                 <th class="text-start text-white">
                                                     <span id="due"></span>
                                                 </th>

@@ -68,11 +68,11 @@
                                                         <thead>
                                                             <tr class="text-start">
                                                                 <th>Customer</th>
-                                                                <th>Opening Balance Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                                                                <th>Total Sale({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                                                                <th>Total Paid({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                                                                <th>Total Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                                                                <th>Total Return Due({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                                                                <th>Opening Balance Due</th>
+                                                                <th>Total Sale</th>
+                                                                <th>Total Paid</th>
+                                                                <th>Total Due</th>
+                                                                <th>Total Return Due</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>

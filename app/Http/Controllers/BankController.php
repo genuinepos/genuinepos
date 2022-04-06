@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bank;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
 
 class BankController extends Controller
 {
-    public function __construct()
+    protected $userActivityLogUtil;
+    public function __construct(UserActivityLogUtil $userActivityLogUtil)
     {
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
     
@@ -16,8 +19,10 @@ class BankController extends Controller
     public function index()
     {
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
+
         return view('accounting.banks.index');
     }
 
@@ -36,11 +41,17 @@ class BankController extends Controller
             'branch_name' => 'required',
         ]);
 
-        Bank::insert([
+        $addBank = Bank::create([
             'name' => $request->name,
             'branch_name' => $request->branch_name,
             'address' => $request->address,
         ]);
+
+        $this->userActivityLogUtil->addLog(
+            action: 1,
+            subject_type: 16,
+            data_obj: $addBank
+        );
         
         return response()->json('Bank created successfully');
     }
@@ -59,6 +70,12 @@ class BankController extends Controller
             'branch_name' => $request->branch_name,
             'address' => $request->address,
         ]);
+
+        $this->userActivityLogUtil->addLog(
+            action: 2,
+            subject_type: 16,
+            data_obj: $updateBank
+        );
         
         return response()->json('Bank updated successfully');
     }
@@ -66,8 +83,22 @@ class BankController extends Controller
     public function delete(Request $request, $bankId)
     {
         return response()->json('Feature is disabled in this demo');
+
         $deleteBank = Bank::find($bankId);
+        
         if (!is_null($deleteBank)) {
+
+            if(count($deleteBank->accounts) > 0) {
+
+                return response()->json('Can not be deleted, This bank has one or more account.');
+            }
+
+            $this->userActivityLogUtil->addLog(
+                action: 3,
+                subject_type: 16,
+                data_obj: $deleteBank
+            );
+
             $deleteBank->delete();  
         }
  

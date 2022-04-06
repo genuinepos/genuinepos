@@ -40,11 +40,14 @@ class ProductionController extends Controller
     public function index(Request $request)
     {
         if (auth()->user()->permission->manufacturing['production_view'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        
         if ($request->ajax()) {
+
             return $this->productionUtil->productionList($request);
         }
         return view('manufacturing.production.index', compact('branches'));
@@ -110,7 +113,8 @@ class ProductionController extends Controller
             'process_id.required' => 'Please select the product',
         ]);
 
-        if (isset($request->store_warehouse_id) && isset($request->stock_warehouse_id)) {
+        if (isset($request->store_warehouse_count) && isset($request->stock_warehouse_count)) {
+
             $this->validate($request, [
                 'store_warehouse_id' => 'required',
                 'stock_warehouse_id' => 'required',
@@ -118,6 +122,7 @@ class ProductionController extends Controller
         }
 
         if (!isset($request->product_ids)) {
+
             return response()->json(['errorMsg' => 'Ingredients list must not be empty.']);
         }
 
@@ -136,9 +141,11 @@ class ProductionController extends Controller
         $addProduction->warehouse_id = isset($request->store_warehouse_id) ? $request->store_warehouse_id : NULL;
         $addProduction->production_account_id = $request->production_account_id;
 
-        if (isset($request->stock_warehouse_id)) {
+        if (isset($request->stock_warehouse_count)) {
+
             $addProduction->stock_warehouse_id = $request->stock_warehouse_id;
         } else {
+            
             $addProduction->stock_branch_id = auth()->user()->branch_id;
         }
 
@@ -201,7 +208,8 @@ class ProductionController extends Controller
                     if (isset($request->is_final)) {
 
                         $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
-                        if (isset($request->stock_warehouse_id)) {
+                        
+                        if (isset($request->stock_warehouse_count)) {
 
                             $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $request->stock_warehouse_id);
                         } else {
@@ -223,7 +231,7 @@ class ProductionController extends Controller
 
             $this->productStockUtil->adjustMainProductAndVariantStock($request->product_id, $request->variant_id);
 
-            if (isset($request->store_warehouse_id)) {
+            if (isset($request->store_warehouse_count)) {
 
                 $this->productStockUtil->addWarehouseProduct($request->product_id, $request->variant_id, $request->stock_warehouse_id);
                 $this->productStockUtil->adjustWarehouseStock($request->product_id, $request->variant_id, $request->store_warehouse_id);
@@ -329,11 +337,13 @@ class ProductionController extends Controller
     public function update(Request $request, $productionId)
     {
         if (auth()->user()->permission->manufacturing['production_edit'] == '0') {
+
             return response()->json('Access Denied');
         }
 
         $tax_id = NULL;
         if ($request->tax_id) {
+
             $tax_id = explode('-', $request->tax_id)[0];
         }
 
@@ -347,7 +357,7 @@ class ProductionController extends Controller
             'production_account_id.required' => 'Production A/C is required',
         ]);
 
-        if (isset($request->store_warehouse_id) && isset($request->stock_warehouse_id)) {
+        if (isset($request->store_warehouse_count) && isset($request->stock_warehouse_count)) {
 
             $this->validate($request, [
                 'store_warehouse_id' => 'required',
@@ -474,7 +484,7 @@ class ProductionController extends Controller
 
         $this->productStockUtil->adjustMainProductAndVariantStock($updateProduction->product_id, $updateProduction->variant_id);
 
-        if (isset($request->store_warehouse_id)) {
+        if (isset($request->store_warehouse_count)) {
 
             $this->productStockUtil->adjustWarehouseStock($updateProduction->product_id, $updateProduction->variant_id, $request->store_warehouse_id);
 

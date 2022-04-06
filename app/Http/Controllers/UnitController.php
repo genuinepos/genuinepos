@@ -4,16 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
+
 class UnitController extends Controller
 {
-    public function __construct()
+    protected $userActivityLogUtil;
+    public function __construct(UserActivityLogUtil $userActivityLogUtil)
     {
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
     public function index()
     {
         if (auth()->user()->permission->product['units'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -29,6 +34,7 @@ class UnitController extends Controller
     public function store(Request $request)
     {
         if (auth()->user()->permission->product['units'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -41,6 +47,11 @@ class UnitController extends Controller
         $addUnit->name = $request->name;
         $addUnit->code_name = $request->code;
         $addUnit->save();
+
+        if ($addUnit) {
+
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 23, data_obj: $addUnit);
+        }
  
         return response()->json('Successfully branch is added');
     }
@@ -48,6 +59,7 @@ class UnitController extends Controller
     public function update(Request $request)
     {
         if (auth()->user()->permission->product['units'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -60,6 +72,12 @@ class UnitController extends Controller
         $updateUnit->name = $request->name;
         $updateUnit->code_name = $request->code;
         $updateUnit->save();
+
+        if ($updateUnit) {
+
+            $this->userActivityLogUtil->addLog(action: 2, subject_type: 23, data_obj: $updateUnit);
+        }
+
         return response()->json('Successfully unit is updated');
     }
 
@@ -68,11 +86,16 @@ class UnitController extends Controller
         return response()->json('Feature is disabled in this demo');
 
         if (auth()->user()->permission->product['units'] == '0') {
+
             return response()->json('Access Denied');
         }
 
         $deleteUnit = Unit::where('id', $unitId)->first();
+
         if (!is_null($deleteUnit)) {
+
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: 23, data_obj: $deleteUnit);
+
             $deleteUnit->delete();
         }
         return response()->json('Successfully unit is deleted'); 

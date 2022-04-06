@@ -130,14 +130,14 @@
                         </div>
 
                         <div class="btn-sec">
-                            <a href="{{ route('sales.pos.suspended.list') }}" class="pos-btn status" id="suspends"><i class="fas text-warning fa-pause"></i></a>
-                            <a href="" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal">
+                            <a href="{{ route('sales.pos.suspended.list') }}" class="pos-btn status" id="suspends" tabindex="-1"><i class="fas text-warning fa-pause"></i></a>
+                            <a href="" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal" tabindex="-1">
                                 <span class="fas fa-calculator"></span>
                             </a>
                             {{-- <a href="" class="pos-btn"><span class="fas fa-briefcase"></span></a>
                             <a href="" class="pos-btn text-danger"><span class="fas fa-times"></span></a> --}}
-                            <a href="" class="pos-btn"><span class="fas fa-bell"></span></a>
-                            <a href="" class="pos-btn" id="pos_exit_button"><span class="fas fa-backward"></span></a>
+                            <a href="" class="pos-btn" tabindex="-1"><span class="fas fa-bell"></span></a>
+                            <a href="" class="pos-btn" id="pos_exit_button" tabindex="-1"><span class="fas fa-backward"></span></a>
                         </div>
                     </div>
                 </div>
@@ -185,11 +185,15 @@
                     url:"{{url('sales/pos/get/recent/product')}}"+"/"+data.id,
                     type:'get',
                     success:function(data){
+
                         $('.loading_button').hide();
                         $('#addProductModal').modal('hide');
+
                         if (!$.isEmptyObject(data.errorMsg)) {
+
                             toastr.error(data.errorMsg);
                         }else{
+
                             $('#product_list').prepend(data);
                             calculateTotalAmount();
                         }
@@ -197,10 +201,12 @@
                 });
             },
             error: function(err) {
+
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
                 $('.error').html('');
                 $.each(err.responseJSON.errors, function(key, error) {
+
                     $('.error_sale_' + key + '').html(error[0]);
                 });
             }
@@ -213,12 +219,14 @@
     });
 
     function allSuspends() {
+
         $('#suspendedSalesModal').modal('show');
         $('#suspend_preloader').show();
         $.ajax({
             url:"{{ route('sales.pos.suspended.list') }}",
             async:true,
             success:function(data){
+                
                 $('#suspended_sale_list').html(data);
                 $('#suspend_preloader').hide();
             }

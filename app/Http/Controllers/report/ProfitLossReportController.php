@@ -295,59 +295,6 @@ class ProfitLossReportController extends Controller
         );
     }
 
-    // By profit method. Ex: product wise, category wise, branch wise, invoice wise etc.
-    public function profitBy(Request $request)
-    {
-        //return 'pb-'.$profit_by.', bpr- '.$by_profit_range;
-        //return $request->by_profit_range;
-        $by_profit_range = $request->by_profit_range;
-        $form_date = '';
-        $to_date = '';
-        if ($by_profit_range != 'current_year') {
-            $by_profit_range = explode('-', trim($request->by_profit_range));
-            $form_date = date('Y-m-d', strtotime($by_profit_range[0] . ' -1 days'));
-            $to_date = date('Y-m-d', strtotime($by_profit_range[1] . ' +1 days'));
-            //return $form_date . ' - ' . $to_date;
-        }
-
-        if ($request->profit_by == 'by_product') {
-            $products = DB::table('products')->where('number_of_sale', '>', 0)->get();
-            return view(
-                'reports.profit_loss_report.ajax_view.profit_by_product',
-                compact('products', 'by_profit_range', 'form_date', 'to_date')
-            );
-        } elseif ($request->profit_by == 'by_category') {
-
-            $categories = Category::with('products')->get();
-            return view('reports.profit_loss_report.ajax_view.profit_by_category', compact('categories', 'by_profit_range', 'form_date', 'to_date'));
-        } elseif ($request->profit_by == 'by_brand') {
-
-            $brands = Brand::with('products')->get();
-            return view('reports.profit_loss_report.ajax_view.profit_by_brand', compact('brands', 'by_profit_range', 'form_date', 'to_date'));
-        } elseif ($request->profit_by == 'by_branch') {
-
-            $branches = Branch::all();
-            return view('reports.profit_loss_report.ajax_view.profit_by_branch', compact('branches', 'by_profit_range', 'form_date', 'to_date'));
-        } elseif ($request->profit_by == 'by_invoice') {
-
-            $by_profit_range = $request->by_profit_range;
-            if ($by_profit_range != 'current_year') {
-
-                $by_profit_range = explode('-', trim($request->by_profit_range));
-                $form_date = date('Y-m-d', strtotime($by_profit_range[0] . ' -1 days'));
-                $to_date = date('Y-m-d', strtotime($by_profit_range[1] . ' +1 days'));
-                $invoices = Sale::with(['sale_products'])->where('status', 1)
-                    ->whereBetween('report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00'])->get();
-                return view('reports.profit_loss_report.ajax_view.profit_by_invoice', compact('invoices'));
-            } else {
-
-                $invoices = Sale::with(['sale_products'])->where('status', 1)
-                    ->whereYear('report_date', date('Y'))->get();
-                return view('reports.profit_loss_report.ajax_view.profit_by_invoice', compact('invoices'));
-            }
-        }
-    }
-
     // Print Profit Loss method
     public function printProfitLoss(Request $request)
     {

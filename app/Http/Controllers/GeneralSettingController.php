@@ -21,24 +21,22 @@ class GeneralSettingController extends Controller
     public function index()
     {
         if (auth()->user()->permission->setup['g_settings'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         $bussinessSettings = General_setting::first();
+
         $months = Month::select(['id', 'month'])->get();
         $currencies = Currency::all();
         $units = Unit::all();
-        $taxes = Tax::all();
         $timezones = DB::table('timezones')->get();
-        $price_groups = DB::table('price_groups')->where('status', 'Active')->get();
+
         return view('settings.general_settings.index', compact(
             'bussinessSettings',
             'months',
             'currencies',
-            'units',
-            'taxes',
             'timezones',
-            'price_groups'
         ));
     }
 
@@ -47,18 +45,24 @@ class GeneralSettingController extends Controller
     {
         $updateBusinessSettings = General_setting::first();
         $business_logo = null;
+
         if ($request->hasFile('business_logo')) {
+
             if (json_decode($updateBusinessSettings->business, true)['business_logo'] != null) {
+
                 $bLogo = json_decode($updateBusinessSettings->business, true)['business_logo'];
                 if (file_exists(public_path('uploads/business_logo/' . $bLogo))) {
+
                     unlink(public_path('uploads/business_logo/' . $bLogo));
                 }
             }
+
             $logo = $request->file('business_logo');
             $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
             $logo->move(public_path('uploads/business_logo/'), $logoName);
             $business_logo = $logoName;
         } else {
+
             $business_logo = json_decode($updateBusinessSettings->business, true)['business_logo'] != null ? json_decode($updateBusinessSettings->business, true)['business_logo'] : null;
         }
 
@@ -98,77 +102,6 @@ class GeneralSettingController extends Controller
         $updateTaxSettings->tax = json_encode($taxSettings);
         $updateTaxSettings->save();
         return response()->json('Tax settings updated successfully');
-    }
-
-    // Add tax settings
-    public function productSettings(Request $request)
-    {
-        $updateProductSettings = General_setting::first();
-        $productSettings = [
-            'product_code_prefix' => $request->product_code_prefix,
-            'default_unit_id' => $request->default_unit_id,
-            'is_enable_brands' => isset($request->is_enable_brands) ? 1 : 0,
-            'is_enable_categories' => isset($request->is_enable_categories) ? 1 : 0,
-            'is_enable_sub_categories' => isset($request->is_enable_sub_categories) ? 1 : 0,
-            'is_enable_price_tax' => isset($request->is_enable_price_tax) ? 1 : 0,
-            'is_enable_warranty' => isset($request->is_enable_warranty) ? 1 : 0,
-        ];
-
-        $updateProductSettings->product = json_encode($productSettings);
-        $updateProductSettings->save();
-        return response()->json('Product settings updated successfully');
-    }
-
-    // Add tax settings
-    public function saleSettings(Request $request)
-    {
-        $updateSaleSettings = General_setting::first();
-        $saleSettings = [
-            'default_sale_discount' => $request->default_sale_discount,
-            'default_tax_id' => $request->default_tax_id,
-            'sales_cmsn_agnt' => $request->sales_cmsn_agnt,
-            'default_price_group_id' => $request->default_price_group_id,
-        ];
-
-        $updateSaleSettings->sale = json_encode($saleSettings);
-        $updateSaleSettings->save();
-        return response()->json('Sale settings updated successfully');
-    }
-
-    // Add tax settings
-    public function posSettings(Request $request)
-    {
-        $updatePosSettings = General_setting::first();
-        $posSettings = [
-            'is_enabled_multiple_pay' => isset($request->is_enabled_multiple_pay) ? 1 : 0,
-            'is_enabled_draft' => isset($request->is_enabled_draft) ? 1 : 0,
-            'is_enabled_quotation' => isset($request->is_enabled_quotation) ? 1 : 0,
-            'is_enabled_suspend' => isset($request->is_enabled_suspend) ? 1 : 0,
-            'is_enabled_discount' => isset($request->is_enabled_discount) ? 1 : 0,
-            'is_enabled_order_tax' => isset($request->is_enabled_order_tax) ? 1 : 0,
-            'is_show_recent_transactions' => isset($request->is_show_recent_transactions) ? 1 : 0,
-            'is_enabled_credit_full_sale' => isset($request->is_enabled_credit_full_sale) ? 1 : 0,
-            'is_enabled_hold_invoice' => isset($request->is_enabled_hold_invoice) ? 1 : 0,
-        ];
-
-        $updatePosSettings->pos = json_encode($posSettings);
-        $updatePosSettings->save();
-        return response()->json('POS settings updated successfully');
-    }
-
-    // Update purchase setting
-    public function purchaseSettings(Request $request)
-    {
-        $updatePurchaseSettings = General_setting::first();
-        $purchaseSettings = [
-            'is_edit_pro_price' => isset($request->is_edit_pro_price) ? 1 : 0,
-            'is_enable_status' => isset($request->is_enable_status) ? 1 : 0,
-            'is_enable_lot_no' => isset($request->is_enable_lot_no) ? 1 : 0,
-        ];
-
-        $updatePurchaseSettings->purchase = json_encode($purchaseSettings);
-        $updatePurchaseSettings->save();
-        return response()->json('Purchase settings updated successfully.');
     }
 
     public function dashboardSettings(Request $request)

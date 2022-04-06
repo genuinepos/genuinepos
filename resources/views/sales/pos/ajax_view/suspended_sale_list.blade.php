@@ -14,11 +14,11 @@
 
                         <div class="row mt-1">
                             <div class="col-md-3 offset-3">
-                                <a href="{{ route('sales.pos.edit', $sale->id) }}" class="a btn btn-sm btn-primary">Edit</a>
+                                <a href="{{ route('sales.pos.edit', $sale->id) }}" class="a btn btn-sm btn-primary" tabindex="-1">Edit</a>
                             </div>
 
                             <div class="col-md-3">
-                                <a id="delete" href="{{ route('sales.delete', $sale->id) }}" class="a btn btn-sm btn-danger">Delete</a>
+                                <a id="delete" href="{{ route('sales.delete', $sale->id) }}" class="a btn btn-sm btn-danger" tabindex="-1">Delete</a>
                             </div>
                         </div>
                     </div>

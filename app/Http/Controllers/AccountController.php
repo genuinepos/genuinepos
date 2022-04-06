@@ -13,6 +13,7 @@ use App\Models\AccountType;
 use Illuminate\Http\Request;
 use App\Models\AccountBranch;
 use App\Models\AccountLedger;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -21,11 +22,18 @@ class AccountController extends Controller
     protected $accountUtil;
     protected $util;
     protected $converter;
-    public function __construct(AccountUtil $accountUtil, Util $util, Converter $converter)
-    {
+    protected $userActivityLogUtil;
+
+    public function __construct(
+        AccountUtil $accountUtil,
+        Util $util,
+        Converter $converter,
+        UserActivityLogUtil $userActivityLogUtil
+    ) {
         $this->accountUtil = $accountUtil;
         $this->util = $util;
         $this->converter = $converter;
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -46,14 +54,18 @@ class AccountController extends Controller
                 ->leftJoin('branches', 'account_branches.branch_id', 'branches.id');
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $query->where('account_branches.branch_id', NULL);
                 } else {
+
                     $query->where('account_branches.branch_id', $request->branch_id);
                 }
             }
 
             if ($request->account_type) {
+
                 $query = $query->where('accounts.account_type', $request->account_type);
             }
 
@@ -71,14 +83,17 @@ class AccountController extends Controller
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 $accounts = $query->orderBy('accounts.account_type', 'asc');
             } else {
+
                 $accounts = $query->where('account_branches.branch_id', auth()->user()->branch_id)
                     ->orderBy('accounts.account_type', 'asc');
             }
 
             return DataTables::of($accounts)
                 ->addIndexColumn()
+
                 ->addColumn('action', function ($row) {
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
@@ -91,13 +106,21 @@ class AccountController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
+
                 ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'Not Applicable')
+
                 ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name . ' (' . $row->b_branch . ')' : 'Not Applicable')
+
                 ->editColumn('account_type', fn ($row) => '<b>' . $this->util->accountType($row->account_type) . '</b>')
+
                 ->editColumn('branch', fn ($row) => '<b>' . ($row->branch_name ? $row->branch_name . '/' . $row->branch_code : json_decode($generalSettings->business, true)['shop_name']) . '</b>')
+
                 ->editColumn('opening_balance', fn ($row) => $this->converter->format_in_bdt($row->opening_balance))
+
                 ->editColumn('balance', fn ($row) => $this->converter->format_in_bdt($row->balance))
+
                 ->rawColumns(['action', 'ac_number', 'bank', 'account_type', 'branch', 'opening_balance', 'balance'])
+
                 ->make(true);
         }
 
@@ -105,13 +128,6 @@ class AccountController extends Controller
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         return view('accounting.accounts.index', compact('banks', 'branches'));
     }
-
-    // public function edit($accountId)
-    // {
-    //     $account = DB::table('accounts')->where('id', $accountId)->first();
-    //     $banks = DB::table('banks')->get();
-    //     return view('accounting.accounts.ajax_view.edit_account', compact('account', 'banks'));
-    // }
 
     //Get account book
     public function accountBook(Request $request, $accountId)
@@ -312,6 +328,16 @@ class AccountController extends Controller
         $accountLedger->running_balance = $openingBalance;
         $accountLedger->save();
 
+        $account = DB::table('accounts')->where('id', $addAccountGetId)
+            ->select('name', 'account_number', 'opening_balance', 'balance')
+            ->first();
+
+        $this->userActivityLogUtil->addLog(
+            action: 1,
+            subject_type: 17,
+            data_obj: $account
+        );
+
         return response()->json('Account created successfully');
     }
 
@@ -332,6 +358,7 @@ class AccountController extends Controller
         ]);
 
         if ($request->account_type == 2) {
+
             $this->validate($request, [
                 'bank_id' => 'required',
                 'account_number' => 'required',
@@ -344,7 +371,9 @@ class AccountController extends Controller
 
         // update account branches
         if ($updateAccount->account_type == 2) {
+
             foreach ($updateAccount->accountBranches as $accountBranch) {
+
                 $accountBranch->is_delete_in_update = 1;
                 $accountBranch->save();
             }
@@ -362,9 +391,12 @@ class AccountController extends Controller
         ]);
 
         if ($request->account_type == 2) {
+
             foreach ($request->business_location as $branch) {
+
                 $branch_id = $branch != 'NULL' ? $branch : NULL;
                 $accountBranch = AccountBranch::where('account_id', $updateAccount->id)->where('branch_id', $branch_id)->first();
+
                 if ($accountBranch) {
 
                     $accountBranch->is_delete_in_update = 0;
@@ -383,6 +415,7 @@ class AccountController extends Controller
 
         // Delete unused account branch row
         $accountBranches = AccountBranch::where('account_id', $updateAccount->id)->where('is_delete_in_update', 1)->get();
+
         foreach ($accountBranches as $accountBranch) {
 
             $accountBranch->delete();
@@ -402,6 +435,16 @@ class AccountController extends Controller
         $updateAccountLedger->running_balance = $runningBalance;
         $updateAccountLedger->save();
 
+        $account = DB::table('accounts')->where('id', $id)
+            ->select('name', 'account_number', 'opening_balance', 'balance')
+            ->first();
+
+        $this->userActivityLogUtil->addLog(
+            action: 2,
+            subject_type: 17,
+            data_obj: $account
+        );
+
         return response()->json('Account updated successfully');
     }
 
@@ -415,6 +458,13 @@ class AccountController extends Controller
         }
 
         if (!is_null($deleteAccount)) {
+
+            $this->userActivityLogUtil->addLog(
+                action: 3,
+                subject_type: 17,
+                data_obj: $deleteAccount
+            );
+
             $deleteAccount->delete();
         }
 

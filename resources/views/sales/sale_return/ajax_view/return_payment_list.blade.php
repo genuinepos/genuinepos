@@ -12,10 +12,11 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong>Customer : </strong>
-                        {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                        {{ $return->customer ? $return->customer->name : 'Walk-In-Customer' }}
                     </li>
+
                     <li><strong>Business : </strong>
-                        {{ $sale->customer ? $sale->customer->business_name : '' }}
+                        {{ $return->customer ? $return->customer->business_name : '' }}
                     </li>
                 </ul>
             </div>
@@ -24,11 +25,15 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Invoice ID : </strong>{{ $sale->invoice_id }}</li>
+                    <li><strong> Return Invoice ID : </strong>{{ $return->invoice_id }}</li>
+                    <li><strong>Return Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($return->date)) }}</li>
                     <li><strong>Business Location: </strong>
-                        @if ($sale->branch)
-                            {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
+
+                        @if ($return->branch)
+
+                            {{ $return->branch->name . '/' . $return->branch->branch_code }}
                         @else
+
                             {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
                             Office</b>)
                         @endif
@@ -40,11 +45,14 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}
-                        </strong>{{ App\Utils\Converter::format_in_bdt($sale->sale_return_amount) }}</li>
-                    <li><strong>Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                        </strong>{{ App\Utils\Converter::format_in_bdt($sale->sale_return_due) }}</li>
-                    <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) }}</li>
+                    <li>
+                        <strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}
+                        </strong>{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
+                    </li>
+                    <li>
+                        <strong>Total Paid/Refunded Amount : {{ json_decode($generalSettings->business, true)['currency'] }}
+                        </strong>{{ App\Utils\Converter::format_in_bdt($return->total_return_due_pay) }}
+                    </li>
                 </ul>
             </div>
         </div>
@@ -62,27 +70,29 @@
                     <th class="text-white text-start">Date</th>
                     <th class="text-white text-start">Voucher No</th>
                     <th class="text-white text-start">Method</th>
-                    <th class="text-white text-start">Payment Type</th>
                     <th class="text-white text-start">Account</th>
-                    <th class="text-white text-end">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-white text-end">Amount</th>
                     <th class="text-white text-start">Action</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">
-                @if (count($payments) > 0)
-                    @foreach ($payments as $payment)
+                @if (count($return->payments) > 0)
+                    @foreach ($return->payments as $payment)
                         <tr data-info="{{ $payment }}">
                             <td class="text-start">
                                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
                             </td>
+
                             <td class="text-start">{{ $payment->invoice_id }}</td>
                             
-                            <td class="text-start">{{ $payment->pay_mode }}</td>
-                            <td class="text-start">{{ $payment->payment_type == 1 ? 'Sale due' : 'Return due' }}</td>
+                            <td class="text-start">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode  }}</td>
+                            
                             <td class="text-start">{{ $payment->account ? $payment->account->name.' (A/C :'.$payment->account->account_number.')' : 'N/A' }}</td>
+                            
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>
+
                             <td>
                                 <a href="{{ route('sales.return.payment.edit', $payment->id) }}"
                                         id="edit_return_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>

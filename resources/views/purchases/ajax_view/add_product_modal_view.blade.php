@@ -261,7 +261,7 @@
                     toastr.error('Server error please contact to the support.');
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
                 
                 $.each(err.responseJSON.errors, function(key, error) {
 

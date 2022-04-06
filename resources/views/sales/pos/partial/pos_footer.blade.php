@@ -6,7 +6,7 @@
         </div>
         @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '1')
             <div class="pos-foot-con d-inline-block position-absolute" style="right: 10px; top: 10px;">
-                <a href="#" class="resent-tn"><span class="fas fa-clock"></span> Recent Transaction</a>
+                <a href="#" class="resent-tn" tabindex="-1"><span class="fas fa-clock"></span> Recent Transaction</a>
             </div>
         @endif
     </div>
@@ -36,7 +36,7 @@
                     <div class="col-2 text-center">
                         <div class="footer_trasc_btn">
                             @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '1')
-                                <a href="#" class="resent-tn"><span class="fas fa-clock"></span></a>
+                                <a href="#" class="resent-tn" tabindex="-1"><span class="fas fa-clock"></span></a>
                             @endif
                         </div>
                     </div>
@@ -49,10 +49,12 @@
 <script>
     $(document).on('click', '.resent-tn',function (e) {
         e.preventDefault();
+        
         showRecentTransectionModal();
     });
 
     function showRecentTransectionModal() {
+
         recentSales();
         $('#recentTransModal').modal('show');
         $('.tab_btn').removeClass('tab_active');
@@ -60,11 +62,14 @@
     }
 
     function recentSales() {
+
         $('#recent_trans_preloader').show();
         $.ajax({
-            url:"{{url('sales/pos/recent/sales')}}",
+            url:"{{url('common/ajax/call/recent/sales/2')}}",
             type:'get',
+
             success:function(data){
+
                 $('#transection_list').html(data);
                 $('#recent_trans_preloader').hide();
             }
@@ -80,6 +85,7 @@
             url:url,
             type:'get',
             success:function(data){
+
                 $('#transection_list').html(data);
                 $('#recent_trans_preloader').hide();
             }

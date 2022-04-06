@@ -11,8 +11,9 @@
                         <span class="head_invoice_id">{{ $sale->invoice_id }}</span>
                     </strong>)
                 </h5>
-                <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                    class="fas fa-times"></span></a>
+                <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1">
+                    <span class="fas fa-times"></span>
+                </a>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -271,7 +272,7 @@
             </div>
             <div class="modal-footer">
                 @if (auth()->user()->permission->sale['pos_edit'] == '1') 
-                    <a class="btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}"> Edit</a>
+                    <a class="btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}" tabindex="-1"> Edit</a>
                 @endif
               
                 @if (auth()->user()->permission->sale['shipment_access'] == '1') 

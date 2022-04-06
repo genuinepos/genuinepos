@@ -201,8 +201,10 @@ class ProductSaleReportController extends Controller
             ->get();
 
         if (count($products) > 0) {
+
             return view('reports.product_sale_report.ajax_view.search_result', compact('products'));
         } else {
+            
             return response()->json(['noResult' => 'no result']);
         }
     }

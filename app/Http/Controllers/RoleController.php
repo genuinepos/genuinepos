@@ -174,6 +174,8 @@ class RoleController extends Controller
             'customer_edit' => isset($request->customer_edit) ? 1 : 0,
             'customer_delete' => isset($request->customer_delete) ? 1 : 0,
             'customer_group' => isset($request->customer_group) ? 1 : 0,
+            'customer_report' => isset($request->customer_report) ? 1 : 0,
+            'supplier_report' => isset($request->supplier_report) ? 1 : 0,
         ];
 
         return $permissions;
@@ -195,6 +197,8 @@ class RoleController extends Controller
             'warranties' => isset($request->warranties) ? 1 : 0,
             'selling_price_group' => isset($request->selling_price_group) ? 1 : 0,
             'generate_barcode' => isset($request->generate_barcode) ? 1 : 0,
+            'stock_report' => isset($request->stock_report) ? 1 : 0,
+            'stock_in_out_report' => isset($request->stock_in_out_report) ? 1 : 0,
         ];
 
         return $permissions;
@@ -211,6 +215,9 @@ class RoleController extends Controller
             'purchase_payment' => isset($request->purchase_payment) ? 1 : 0,
             'purchase_return' => isset($request->purchase_return) ? 1 : 0,
             'status_update' => isset($request->status_update) ? 1 : 0,
+            'purchase_sale_report' => isset($request->purchase_sale_report) ? 1 : 0,
+            'pro_purchase_report' => isset($request->pro_purchase_report) ? 1 : 0,
+            'purchase_payment_report' => isset($request->purchase_payment_report) ? 1 : 0,
         ];
 
         return $permissions;
@@ -224,6 +231,7 @@ class RoleController extends Controller
             'adjustment_add_from_location' => isset($request->adjustment_add_from_location) ? 1 : 0,
             'adjustment_add_from_warehouse' => isset($request->adjustment_add_from_warehouse) ? 1 : 0,
             'adjustment_delete' => isset($request->adjustment_delete) ? 1 : 0,
+            'stock_adjustment_report' => isset($request->stock_adjustment_report) ? 1 : 0,
         ];
 
         return $permissions;
@@ -239,6 +247,7 @@ class RoleController extends Controller
             'delete_expense' => isset($request->delete_expense) ? 1 : 0,
             'expense_category' => isset($request->expense_category) ? 1 : 0,
             'category_wise_expense' => isset($request->category_wise_expense) ? 1 : 0,
+            'expanse_report' => isset($request->expanse_report) ? 1 : 0,
         ];
 
         return $permissions;
@@ -267,6 +276,12 @@ class RoleController extends Controller
             'view_product_cost_is_sale_screed' => isset($request->view_product_cost_is_sale_screed) ? 1 : 0,
             'view_own_sale' => isset($request->view_own_sale) ? 1 : 0,
             'return_access' => isset($request->return_access) ? 1 : 0,
+            'sale_statements' => isset($request->sale_statements) ? 1 : 0,
+            'sale_return_statements' => isset($request->sale_return_statements) ? 1 : 0,
+            'pro_sale_report' => isset($request->pro_sale_report) ? 1 : 0,
+            'sale_payment_report' => isset($request->sale_payment_report) ? 1 : 0,
+            'c_register_report' => isset($request->c_register_report) ? 1 : 0,
+            'sale_representative_report' => isset($request->sale_representative_report) ? 1 : 0,
         ];
 
         return $permissions;
@@ -288,25 +303,8 @@ class RoleController extends Controller
     private function reportPermission($request)
     {
         $permissions = [
-            'loss_profit_report' => isset($request->loss_profit_report) ? 1 : 0,
-            'purchase_sale_report' => isset($request->purchase_sale_report) ? 1 : 0,
             'tax_report' => isset($request->tax_report) ? 1 : 0,
-            'customer_report' => isset($request->customer_report) ? 1 : 0,
-            'supplier_report' => isset($request->supplier_report) ? 1 : 0,
-            'stock_report' => isset($request->stock_report) ? 1 : 0,
-            'stock_adjustment_report' => isset($request->stock_adjustment_report) ? 1 : 0,
-            'pro_purchase_report' => isset($request->pro_purchase_report) ? 1 : 0,
-            'pro_sale_report' => isset($request->pro_sale_report) ? 1 : 0,
-            'purchase_payment_report' => isset($request->purchase_payment_report) ? 1 : 0,
-            'sale_payment_report' => isset($request->sale_payment_report) ? 1 : 0,
-            'expanse_report' => isset($request->expanse_report) ? 1 : 0,
-            'c_register_report' => isset($request->c_register_report) ? 1 : 0,
-            'sale_representative_report' => isset($request->sale_representative_report) ? 1 : 0,
-            'payroll_report' => isset($request->payroll_report) ? 1 : 0,
-            'payroll_payment_report' => isset($request->payroll_payment_report) ? 1 : 0,
-            'attendance_report' => isset($request->attendance_report) ? 1 : 0,
             'production_report' => isset($request->production_report) ? 1 : 0,
-            'financial_report' => isset($request->financial_report) ? 1 : 0,
         ];
 
         return $permissions;
@@ -362,6 +360,9 @@ class RoleController extends Controller
             'holiday' => isset($request->holiday) ? 1 : 0,
             'department' => isset($request->department) ? 1 : 0,
             'designation' => isset($request->designation) ? 1 : 0,
+            'payroll_report' => isset($request->payroll_report) ? 1 : 0,
+            'payroll_payment_report' => isset($request->payroll_payment_report) ? 1 : 0,
+            'attendance_report' => isset($request->attendance_report) ? 1 : 0,
         ];
 
         return $permissions;

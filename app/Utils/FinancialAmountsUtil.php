@@ -20,6 +20,7 @@ class FinancialAmountsUtil
     public function allFinancialAmounts($request = NULL): array
     {
         $cashAndBankBalance = $this->cashAndBankBalance($request);
+        $loanAmounts = $this->loanAmounts($request);
         // $salesSaleReturnAmount = $this->salesSaleReturnAmount($request);
         // $purchaseAndPurchaseReturnAmount = $this->purchaseAndPurchaseReturnAmount($request);
         // $expensesAmounts = $this->expensesAmounts($request);
@@ -44,7 +45,13 @@ class FinancialAmountsUtil
             - $netProfitLossAccountAmounts['total_transfer_cost'];
 
         $anotherAmounts['daily_profit'] = $dailyProfit;
-
+        $anotherAmounts['total_loan_and_advance'] = $loanAmounts['total_loan_and_advance'];
+        $anotherAmounts['total_loan_and_advance_due'] = $loanAmounts['total_loan_and_advance_due'];
+        $anotherAmounts['total_loan_and_advance_received'] = $loanAmounts['total_loan_and_advance_received'];
+        $anotherAmounts['total_loan_and_liability'] = $loanAmounts['total_loan_and_liability'];
+        $anotherAmounts['total_loan_and_liability_due'] = $loanAmounts['total_loan_and_liability_due'];
+        $anotherAmounts['total_loan_and_liability_paid'] = $loanAmounts['total_loan_and_liability_paid'];
+      
         return array_merge($netProfitLossAccountAmounts, $anotherAmounts);
     }
 
@@ -154,176 +161,56 @@ class FinancialAmountsUtil
         return $fixedAssetDebitCredit->sum('total_debit') - $fixedAssetDebitCredit->sum('total_credit');
     }
 
-    // public function salesSaleReturnAmount($request)
-    // {
-    //     $sales = '';
-    //     $saleReturns = '';
-    //     $salesQ = DB::table('sales');
-    //     $saleReturnsQ = DB::table('sale_returns');
+    public function loanAmounts($request)
+    {
+        //DB::raw('sum(case when due > 0 then due end) as total_due')
+        $loans = '';
+        $loanQ = DB::table('loans');
+        
+        if (isset($request->branch_id) && $request->branch_id) {
 
-    //     if (isset($request->branch_id) && $request->branch_id) {
+            if ($request->branch_id == 'NULL') {
 
-    //         if ($request->branch_id == 'NULL') {
+                $loanQ->where('loans.branch_id', NULL);
+            } else {
 
-    //             $salesQ->where('sales.branch_id', NULL);
-    //             $saleReturnsQ->where('sale_returns.branch_id', NULL);
-    //         } else {
+                $loanQ->where('loans.branch_id', $request->branch_id);
+            }
+        }
 
-    //             $salesQ->where('sales.branch_id', $request->branch_id);
-    //             $saleReturnsQ->where('sale_returns.branch_id', $request->branch_id);
-    //         }
-    //     }
+        if (isset($request->from_date) && $request->from_date) {
 
-    //     if (isset($request->from_date) && $request->from_date) {
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $loanQ->whereBetween('loans.report_date', $date_range);
+        }
 
-    //         $from_date = date('Y-m-d', strtotime($request->from_date));
-    //         $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-    //         $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-    //         $salesQ->whereBetween('sales.report_date', $date_range);
-    //         $saleReturnsQ->whereBetween('sale_returns.report_date', $date_range);
-    //     }
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-    //     if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            $loanQ;
+        } else {
 
-    //         $salesQ->whereIn('status', [1, 3]);
-    //         $saleReturnsQ->select(DB::raw('SUM(total_return_amount) as total_return'));
-    //     } else {
+            $loanQ->where('loans.branch_id', auth()->user()->branch_id)
+                ->groupBy('loans.id');
+        }
 
-    //         $salesQ->where('sales.branch_id', auth()->user()->branch_id)
-    //             ->whereIn('status', [1, 3]);
+        $loans = $loanQ->select(
+            DB::raw('sum(case when loans.type = 1 then loan_amount end) as total_loan_and_advance'),
+            DB::raw('sum(case when loans.type = 1 then due end) as total_loan_and_advance_due'),
+            DB::raw('sum(case when loans.type = 1 then total_receive end) as total_loan_and_advance_received'),
+            DB::raw('sum(case when loans.type = 2 then loan_amount end) as total_loan_and_liability'),
+            DB::raw('sum(case when loans.type = 2 then due end) as total_loan_and_liability_due'),
+            DB::raw('sum(case when loans.type = 2 then total_paid end) as total_loan_and_liability_paid'),
+        )->get();
 
-    //         $saleReturnsQ->where('sale_returns.branch_id', auth()->user()->branch_id)
-    //             ->select(DB::raw('SUM(total_return_amount) as total_return'));
-    //     }
-
-    //     $sales = $salesQ->select(
-    //         DB::raw('SUM(sales.total_payable_amount) as total_sale'),
-    //         DB::raw('SUM(sales.paid) as total_paid'),
-    //         DB::raw('SUM(sales.due) as total_due')
-    //     )->get();
-
-    //     $saleReturns = $saleReturnsQ->get();
-
-    //     $amounts = [
-    //         'total_sale' => $sales->sum('total_sale'),
-    //         'total_paid' => $sales->sum('total_paid'),
-    //         'total_due' => $sales->sum('total_due'),
-    //         'total_return' => $saleReturns->sum('total_return'),
-    //     ];
-    // }
-
-    // public function purchaseAndPurchaseReturnAmount($request)
-    // {
-    //     $purchases = '';
-    //     $purchaseReturns = '';
-    //     $purchasesQ = DB::table('purchases');
-    //     $purchaseReturnsQ = DB::table('purchase_returns');
-
-    //     if (isset($request->branch_id) && $request->branch_id) {
-
-    //         if ($request->branch_id == 'NULL') {
-
-    //             $purchasesQ->where('purchases.branch_id', NULL);
-    //             $purchaseReturnsQ->where('purchase_returns.branch_id', NULL);
-    //         } else {
-
-    //             $purchasesQ->where('purchases.branch_id', $request->branch_id);
-    //             $purchaseReturnsQ->where('purchase_returns.branch_id', $request->branch_id);
-    //         }
-    //     }
-
-    //     if (isset($request->from_date) && $request->from_date) {
-
-    //         $from_date = date('Y-m-d', strtotime($request->from_date));
-    //         $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-    //         $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-    //         $purchasesQ->whereBetween('purchases.report_date', $date_range);
-    //         $purchaseReturnsQ->whereBetween('purchase_returns.report_date', $date_range);
-    //     }
-
-    //     if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-    //         $purchasesQ->whereIn('purchase_status', [1, 3]);
-    //         $purchaseReturnsQ->select(DB::raw('SUM(total_return_amount) as total_return'));
-    //     } else {
-
-    //         $salesQ->where('purchases.branch_id', auth()->user()->branch_id)
-    //             ->whereIn('status', [1, 3]);
-
-    //         $saleReturnsQ->where('purchases.branch_id', auth()->user()->branch_id)
-    //             ->select(DB::raw('SUM(total_return_amount) as total_return'));
-    //     }
-
-    //     $sales = $salesQ->select(
-    //         DB::raw('SUM(purchases.total_purchase_amount) as total_purchase'),
-    //         DB::raw('SUM(purchases.paid) as total_paid'),
-    //         DB::raw('SUM(purchases.due) as total_due')
-    //     )->get();
-
-    //     $saleReturns = $saleReturnsQ->get();
-
-    //     $amounts = [
-    //         'total_purchase' => $sales->sum('total_purchase'),
-    //         'total_paid' => $sales->sum('total_paid'),
-    //         'total_due' => $sales->sum('total_due'),
-    //         'total_return' => $saleReturns->sum('total_return'),
-    //     ];
-    // }
-
-    // public function expensesAmounts($request)
-    // {
-    //     $expenses = '';
-    //     $expensesQ = DB::table('expanses')
-    //         ->leftJoin('accounts', 'expanses.expense_account_id', 'accounts.id')
-    //         ->whereIn('accounts.account_type', [7, 8]);
-
-    //     if (isset($request->branch_id) && $request->branch_id) {
-
-    //         if ($request->branch_id == 'NULL') {
-
-    //             $expensesQ->where('expanses.branch_id', NULL);
-    //         } else {
-
-    //             $expensesQ->where('expanses.branch_id', $request->branch_id);
-    //         }
-    //     }
-
-    //     if (isset($request->from_date) && $request->from_date) {
-
-    //         $from_date = date('Y-m-d', strtotime($request->from_date));
-    //         $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-    //         $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-    //         $expensesQ->whereBetween('expanses.report_date', $date_range);
-    //     }
-
-    //     if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-    //         $expenses = $expensesQ->select(
-    //             'accounts.account_type',
-    //             DB::raw('SUM(expanses.net_total_amount) as total_expense'),
-    //         )->groupBy('accounts.account_type')->get();
-    //     } else {
-
-    //         $expenses = $expensesQ->where('expanses.branch_id', auth()->user()->branch_id)
-    //         ->select(
-    //             'accounts.account_type',
-    //             DB::raw('SUM(expanses.net_total_amount) as total_expense'),
-    //         )->groupBy('accounts.account_type')->get();
-    //     }
-
-    //     $amountArray = [];
-
-    //     foreach ($expenses as $expense) {
-
-    //         if ($$expense->account_type == 7) {
-
-    //             $amountArray['direct_expense'] = $expense->total_expense;
-    //         } else {
-
-    //             $amountArray['indirect_expense'] = $cashInHandAmount->total_expense;
-    //         }
-    //     }
-
-    //     return $amountArray;
-    // }
+        return [
+            'total_loan_and_advance' => $loans->sum('total_loan_and_advance') ? $loans->sum('total_loan_and_advance') : 0,
+            'total_loan_and_advance_due' => $loans->sum('total_loan_and_advance_due') ? $loans->sum('total_loan_and_advance_due') : 0,
+            'total_loan_and_advance_received' => $loans->sum('total_loan_and_advance_received') ? $loans->sum('total_loan_and_advance_received') : 0,
+            'total_loan_and_liability' => $loans->sum('total_loan_and_liability') ? $loans->sum('total_loan_and_liability') : 0,
+            'total_loan_and_liability_due' => $loans->sum('total_loan_and_liability_due') ? $loans->sum('total_loan_and_liability_due') : 0,
+            'total_loan_and_liability_paid' => $loans->sum('total_loan_and_liability_paid') ? $loans->sum('total_loan_and_liability_paid') : 0,
+        ];
+    }
 }

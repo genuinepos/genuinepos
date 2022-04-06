@@ -5,16 +5,20 @@
             <h3>
                 <b>
                     @if ($customerPayment->branch)
+
                         {{ $customerPayment->branch->name . '/' . $customerPayment->branch->branch_code }}
                     @else
+
                         {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
                     @endif
                 </b>
             </h3>
             <h6>
                 @if ($customerPayment->branch)
+
                     {{ $customerPayment->branch->city . ', ' . $customerPayment->branch->state . ', ' . $customerPayment->branch->zip_code . ', ' . $customerPayment->branch->country }}
                 @else
+
                     {{ json_decode($generalSettings->business, true)['address'] }}
                 @endif
             </h6>
@@ -91,7 +95,7 @@
     <div class="row">
         <div class="col-12">
             <div class="heading_area">
-                <p><b>PAYMENT AGAINST INVOICES :</b></p>
+                <p><b>{{ $customerPayment->type == 1 ? 'RECEIVED AGAINST INVOICES :' : 'PAYMENT AGAINST RETURN INVOICES :' }} </b></p>
             </div>
         </div>
         <div class="col-12">
@@ -105,11 +109,20 @@
                 </thead>
                 <tbody>
                     @foreach ($customerPayment->customer_payment_invoices as $pi)
-                        <tr>
-                            <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale->date)) }}</td>
-                            <td class="text-start">{{ $pi->sale->invoice_id }}</h6></td>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $pi->paid_amount }}</td>
-                        </tr>
+                        @if ($pi->type == 1)
+                            <tr>
+                                <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale->date)) }}</td>
+                                <td class="text-start">{{ $pi->sale->invoice_id }}</h6></td>
+                                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $pi->paid_amount }}</td>
+                            </tr>
+                        @else 
+                            <tr>
+                                <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale_return->date)) }}</td>
+                                <td class="text-start">{{ $pi->sale_return->invoice_id }}</h6></td>
+                                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $pi->paid_amount }}</td>
+                            </tr>
+                        @endif
+                        
                     @endforeach
                 </tbody>
             </table>

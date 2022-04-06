@@ -313,7 +313,9 @@
         function sum_table_col(table, class_name) {
             var sum = 0;
             table.find('tbody').find('tr').each(function() {
+
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    
                     sum += parseFloat(
                         $(this).find('.' + class_name).data('value')
                     );
@@ -331,18 +333,6 @@
                 $('#purchase_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
-            })
-        });
-
-        // Show change status modal and pass actual link in the change status form
-        $(document).on('click', '#change_status', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-            var url = $(this).attr('href');
-            $.get(url, function(data) {
-                $("#change_status_modal_body").html(data);
-                $('#changeStatusModal').modal('show');
-                $('.data_preloader').hide();
             })
         });
 
@@ -372,31 +362,6 @@
                 success: function(data) {
                     table.ajax.reload();
                     toastr.error(data);
-                },error: function(err) {
-                    if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
-                    }else{
-                        toastr.error('Server Error. Please contact to the support team.'); 
-                    }
-                }
-            });
-        });
-
-        //change purchase status requested by ajax
-        $(document).on('submit', '#change_purchase_status_form', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $('.loading_button').show();
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: request,
-                success: function(data) {
-                    table.ajax.reload();
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                    $('#changeStatusModal').modal('hide');
                 },error: function(err) {
                     if (err.status == 0) {
                         toastr.error('Net Connetion Error. Reload This Page.'); 

@@ -161,10 +161,12 @@
         var unit_id = "{{ $product['unit_id'] }}";
         var unites = [];
         function getUnites(){
+
             $.ajax({
                 url:"{{ route('purchases.get.all.unites') }}",
                 success:function(units){
                     $.each(units, function(key, unit){
+
                         $('#unit_id').append('<option '+(unit.id == unit_id ? 'SELECTED' : '')+' value="'+unit.id+'">'+unit.name+'</option>');
                         unites.push({id : unit.id, name : unit.name}); 
                     });
@@ -174,6 +176,7 @@
         getUnites();
 
         $('#search_product').on('input', function(e) {
+
             $('.variant_list_area').empty();
             $('.select_area').hide();
             var product_code = $(this).val();
@@ -181,34 +184,44 @@
         });
 
         var delay = (function() {
+
             var timer = 0;
             return function(callback, ms) { clearTimeout (timer); timer = setTimeout(callback, ms);};
         })();
 
         function searchProduct(product_code){
+
             $('.variant_list_area').empty();
             $('.select_area').hide();
             $.ajax({
                 url:"{{url('purchases/search/product')}}"+"/"+product_code,
                 dataType: 'json',
                 success:function(product){
+
                     if (!$.isEmptyObject(product.errorMsg)) {
+
                         toastr.error(product.errorMsg);
                         $('#search_product').val('');
                         return;
                     } 
 
                     if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product) || !$.isEmptyObject(product.namedProducts)) {
+                        
                         $('#search_product').addClass('is-valid');
+
                         if(!$.isEmptyObject(product.product)){
+
                             var product = product.product;
                             if(product.product_variants.length == 0) {
+
                                 $('.select_area').hide();
                                 $('#search_product').val('');
                                 product_ids = document.querySelectorAll('#product_id');
                                 var sameProduct = 0;
                                 product_ids.forEach(function(input){
+
                                     if(input.value == product.id){
+
                                         sameProduct += 1;
                                         var className = input.getAttribute('class');
                                         var closestTr = $('.'+className).closest('tr');
@@ -227,6 +240,7 @@
                                 });
 
                                 if(sameProduct == 0){
+
                                     var tr = '';
                                     tr += '<tr class="text-start">';
                                     tr += '<td>';
@@ -243,9 +257,12 @@
                                     tr += '<td>';
                                     tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                                         unites.forEach(function(unit) {
+
                                             if (product.unit.id == unit.id) {
+
                                                 tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
                                             }else{
+
                                                 tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
                                             }
                                         })
@@ -269,6 +286,7 @@
                                     __calculateTotalAmount();  
                                 }
                             } else {
+
                                 var li = "";
                                 $.each(product.product_variants, function(key, variant){
                                     li += '<li>';
@@ -364,6 +382,7 @@
                                         tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
                                     }
                                 });
+
                                 tr += '</select>';
                                 tr += '</td>';
 
@@ -385,6 +404,7 @@
                             }    
                         }
                     }else{
+                        
                         $('#search_product').addClass('is-invalid');
                     }
                 }
@@ -454,6 +474,7 @@
 
                 tr += '<td>';
                 tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
+
                 unites.forEach(function(unit) {
 
                     if (productUnit == unit.id) {
@@ -464,6 +485,7 @@
                         tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
                     }
                 });
+
                 tr += '</select>';
                 tr += '</td>';
 
@@ -511,6 +533,7 @@
             var variantCode = e.getAttribute('data-v_code');
             var variantCost = e.getAttribute('data-v_cost'); 
             variant_id = document.querySelectorAll('#variant_id');
+
             __calculateTotalAmount();
             var sameVariant = 0;
 

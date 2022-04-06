@@ -29,9 +29,11 @@
         // Add category by ajax
         $(document).on('submit', '#add_category_form', function(e) {
             e.preventDefault();
+
             $('.loading_button').show();
             var url = $(this).attr('action');
             $('.submit_button').prop('type', 'button');
+
             $.ajax({
                 url: url,
                 type: 'post',
@@ -40,6 +42,7 @@
                 cache: false,
                 processData: false,
                 success: function(data) {
+                    
                     $('.error').html('');
                     toastr.success(data);
                     $('#add_category_form')[0].reset();
@@ -47,14 +50,19 @@
                     $('.submit_button').prop('type', 'submit');
                     table.ajax.reload();
                 },error: function(err) {
+
                     $('.loading_button').hide();
                     $('.error').html('');
                     $('.submit_button').prop('type', 'submit');
+
                     if (err.status == 0) {
+
                         toastr.error('Net Connetion Error. Reload This Page.'); 
                         return;
                     }
+
                     $.each(err.responseJSON.errors, function(key, error) {
+
                         $('.error_' + key + '').html(error[0]);
                     });
                 }

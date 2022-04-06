@@ -16,6 +16,7 @@ use App\Models\StockAdjustmentProduct;
 use App\Models\StockAdjustmentRecover;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\NameSearchUtil;
+use App\Utils\UserActivityLogUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockAdjustmentController extends Controller
@@ -25,13 +26,15 @@ class StockAdjustmentController extends Controller
     protected $invoiceVoucherRefIdUtil;
     protected $accountUtil;
     protected $nameSearchUtil;
+    protected $userActivityLogUtil;
 
     public function __construct(
         ProductStockUtil $productStockUtil,
         Converter $converter,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         AccountUtil $accountUtil,
-        NameSearchUtil $nameSearchUtil
+        NameSearchUtil $nameSearchUtil,
+        UserActivityLogUtil $userActivityLogUtil
     ) {
 
         $this->productStockUtil = $productStockUtil;
@@ -39,6 +42,7 @@ class StockAdjustmentController extends Controller
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->accountUtil = $accountUtil;
         $this->nameSearchUtil = $nameSearchUtil;
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -239,7 +243,7 @@ class StockAdjustmentController extends Controller
     // Store Stock Adjustment
     public function store(Request $request)
     {
-        if (isset($request->warehouse_id)) {
+        if (isset($request->warehouse_count)) {
 
             if (auth()->user()->permission->s_adjust['adjustment_add_from_warehouse'] == '0') {
 
@@ -263,7 +267,7 @@ class StockAdjustmentController extends Controller
             'account_id.required' => 'Debit A/C is required.'
         ]);
 
-        if (isset($request->warehouse_id)) {
+        if (isset($request->warehouse_count)) {
 
             $this->validate($request, [
                 'warehouse_id' => 'required',
@@ -287,7 +291,7 @@ class StockAdjustmentController extends Controller
 
         // Add Stock adjustment.
         $addStockAdjustment = new StockAdjustment();
-        $addStockAdjustment->warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
+        $addStockAdjustment->warehouse_id = isset($request->warehouse_count) ? $request->warehouse_id : NULL;
         $addStockAdjustment->branch_id = auth()->user()->branch_id;
 
         $addStockAdjustment->invoice_id = $request->invoice_id ? $request->invoice_id : $invoiceId;
@@ -304,6 +308,22 @@ class StockAdjustmentController extends Controller
         $addStockAdjustment->admin_id = auth()->user()->id;
         $addStockAdjustment->reason = $request->reason;
         $addStockAdjustment->save();
+
+        if (isset($request->warehouse_count)) {
+
+            $this->userActivityLogUtil->addLog(
+                action: 1,
+                subject_type: 14,
+                data_obj: $addStockAdjustment
+            );
+        } else {
+
+            $this->userActivityLogUtil->addLog(
+                action: 1,
+                subject_type: 13,
+                data_obj: $addStockAdjustment
+            );
+        }
 
         // Add Purchase A/C Ledger
         $this->accountUtil->addAccountLedger(
@@ -379,23 +399,47 @@ class StockAdjustmentController extends Controller
         ])->where('id', $adjustmentId)->first();
 
         if (!is_null($deleteAdjustment)) {
+
             $storedWarehouseId = $deleteAdjustment->warehouse_id;
             $storedBranchId = $deleteAdjustment->branch_id;
             $storedStockAdjustmentAccountId = $deleteAdjustment->stock_adjustment_account_id;
             $storedAccountId = $deleteAdjustment->recover ? $deleteAdjustment->recover->account_id : NULL;
             $storedAdjustmentProducts = $deleteAdjustment->adjustment_products;
+
+            if (isset($storedWarehouseId)) {
+
+                $this->userActivityLogUtil->addLog(
+                    action: 3,
+                    subject_type: 14,
+                    data_obj: $deleteAdjustment
+                );
+            } else {
+    
+                $this->userActivityLogUtil->addLog(
+                    action: 3,
+                    subject_type: 13,
+                    data_obj: $deleteAdjustment
+                );
+            }
+
             $deleteAdjustment->delete();
+
             foreach ($storedAdjustmentProducts as $adjustment_product) {
+
                 // Update product qty for adjustment
                 $this->productStockUtil->adjustMainProductAndVariantStock($adjustment_product->product_id, $adjustment_product->product_variant_id);
+                
                 if ($storedWarehouseId) {
+
                     $this->productStockUtil->adjustWarehouseStock($adjustment_product->product_id, $adjustment_product->product_variant_id, $storedWarehouseId);
                 } else {
+
                     $this->productStockUtil->adjustBranchStock($adjustment_product->product_id, $adjustment_product->product_variant_id, $storedBranchId);
                 }
             }
 
             if ($storedStockAdjustmentAccountId) {
+
                 $this->accountUtil->adjustAccountBalance(
                     balanceType: 'credit',
                     account_id: $storedStockAdjustmentAccountId
@@ -403,6 +447,7 @@ class StockAdjustmentController extends Controller
             }
 
             if ($storedAccountId) {
+
                 $this->accountUtil->adjustAccountBalance(
                     balanceType: 'debit',
                     account_id: $storedAccountId
@@ -477,79 +522,17 @@ class StockAdjustmentController extends Controller
 
     public function checkSingleProductStockInWarehouse($product_id, $warehouse_id)
     {
-        // $productWarehouse = ProductWarehouse::where('product_id', $product_id)->where('warehouse_id', $warehouse_id)->first();
-
-        // if ($productWarehouse) {
-
-        //     if ($productWarehouse->product_quantity > 0) {
-
-        //         return response()->json($productWarehouse->product_quantity);
-        //     } else {
-
-        //         return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this Warehouse']);
-        //     }
-        // } else {
-
-        //     return response()->json(['errorMsg' => 'This product is not available in this Warehouse.']);
-        // }
-
         return $this->nameSearchUtil->checkWarehouseSingleProduct($product_id, $warehouse_id);
     }
 
     public function checkVariantProductStockInWarehouse($product_id, $variant_id, $warehouse_id)
     {
         return $this->nameSearchUtil->checkWarehouseProductVariant($product_id, $variant_id, $warehouse_id);
-        // $productWarehouse = DB::table('product_warehouses')
-        //     ->where('warehouse_id', $warehouse_id)
-        //     ->where('product_id', $product_id)->first();
-
-        // if ($productWarehouse) {
-
-        //     $productWarehouseVariant = DB::table('product_warehouse_variants')
-        //         ->where('product_warehouse_id', $productWarehouse->id)
-        //         ->where('product_id', $product_id)
-        //         ->where('product_variant_id', $variant_id)->first();
-
-        //     if ($productWarehouseVariant) {
-
-        //         if ($productWarehouseVariant->variant_quantity > 0) {
-
-        //             return response()->json($productWarehouseVariant->variant_quantity);
-        //         } else {
-
-        //             return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this warehouse']);
-        //         }
-        //     } else {
-
-        //         return response()->json(['errorMsg' => 'This variant is not available in this warehouse.']);
-        //     }
-        // } else {
-
-        //     return response()->json(['errorMsg' => 'This variant is not available in this warehouse.']);
-        // }
     }
 
     public function checkSingleProductStock($product_id)
     {
         $branch_id = auth()->user()->branch_id;
-
-        // $productBranch = ProductBranch::where('product_id', $product_id)
-        //     ->where('branch_id', $branch_id)
-        //     ->first();
-
-        // if ($productBranch) {
-
-        //     if ($productBranch->product_quantity > 0) {
-
-        //         return response()->json($productBranch->product_quantity);
-        //     } else {
-
-        //         return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop/branch']);
-        //     }
-        // } else {
-
-        //     return response()->json(['errorMsg' => 'This product is not available in this shop/branch.']);
-        // }
 
         return $this->nameSearchUtil->checkBranchSingleProductStock($product_id, $branch_id);
     }
@@ -559,32 +542,5 @@ class StockAdjustmentController extends Controller
         $branch_id = auth()->user()->branch_id;
 
         return $this->nameSearchUtil->checkBranchVariantProductStock($product_id, $variant_id, $branch_id);
-
-        // $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product_id)->first();
-
-        // if ($productBranch) {
-
-        //     $productBranchVariant = DB::table('product_branch_variants')
-        //         ->where('product_branch_id', $productBranch->id)
-        //         ->where('product_id', $product_id)
-        //         ->where('product_variant_id', $variant_id)->first();
-
-        //     if ($productBranchVariant) {
-
-        //         if ($productBranchVariant->variant_quantity > 0) {
-
-        //             return response()->json($productBranchVariant->variant_quantity);
-        //         } else {
-
-        //             return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop']);
-        //         }
-        //     } else {
-
-        //         return response()->json(['errorMsg' => 'This variant is not available in this branch/shop.']);
-        //     }
-        // } else {
-
-        //     return response()->json(['errorMsg' => 'This product is not available in this branch/shop.']);
-        // }
     }
 }

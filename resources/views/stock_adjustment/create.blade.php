@@ -878,7 +878,7 @@
 
              if (parseFloat(totalItem) == 0) {
 
-                 toastr.error('Product table is empty.','Some thing want wrong.'); 
+                 toastr.error('Product table is empty.','Some thing went wrong.'); 
                  return;
              }
  
@@ -916,7 +916,7 @@
                         return;
                     }
 
-                    toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
 
                     $.each(err.responseJSON.errors, function(key, error) {
 

@@ -941,14 +941,19 @@
             processData: false,
             success:function(data){
                 if(!$.isEmptyObject(data.errorMsg)){
+
                     toastr.error(data.errorMsg,'ERROR'); 
                     $('.loading_button').hide();
                 } else {
+
                     $('.loading_button').hide();
                     toastr.success(data); 
+
                     @if ($editType == 'purchased') 
+
                         window.location = "{{route('purchases.index_v2')}}";
                     @else 
+                    
                         window.location = "{{route('purchases.po.list')}}";
                     @endif
                 }
@@ -957,13 +962,15 @@
                 $('.error').html('');
                 
                 if (err.status == 0) {
+
                     toastr.error('Net Connetion Error. Reload This Page.'); 
                     return;
-                }else if (err.status == 5) {
+                }else if (err.status == 500) {
+
                     toastr.error('Server error. Please contact the support team.');
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+                toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
 
                 $.each(err.responseJSON.errors, function(key, error) {
                     $('.error_' + key + '').html(error[0]);
@@ -973,10 +980,12 @@
     });
 
     setInterval(function(){
+        
         $('#search_product').removeClass('is-invalid');
     }, 500); 
 
     setInterval(function(){
+
         $('#search_product').removeClass('is-valid');
     }, 1000);
 
@@ -986,6 +995,7 @@
             url:"{{route('purchases.add.product.modal.view')}}",
             type:'get',
             success:function(data){
+
                 $('#add_product_body').html(data);
                 $('#addProductModal').modal('show');
             }
@@ -995,6 +1005,7 @@
     var lastSelectedTr = '';
     $(document).on('click', '#select_product', function (e) {
         e.preventDefault();
+
         is_prevent_default = 0;
         var tr = $(this).closest('tr');
         lastSelectedTr = tr;
@@ -1007,6 +1018,7 @@
     });
 
     $(document).on('click', '#add_description', function () {
+
         var value = $('#product_description').val();
         lastSelectedTr.find('#description').val(value);
         $('#product_description').val('');
@@ -1014,13 +1026,17 @@
     });
 
     $(document).keypress(".scanable",function(event){
+
         if (event.which == '10' || event.which == '13') {
+
             event.preventDefault();
         }
     });
 
     $('body').keyup(function(e){
+
         if (e.keyCode == 13 || e.keyCode == 9){  
+
             $(".selectProduct").click();
             $('#list').empty();
             keyName = e.keyCode;

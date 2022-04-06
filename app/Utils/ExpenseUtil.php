@@ -261,6 +261,8 @@ class ExpenseUtil
         $expense->paid = $totalExpensePaid->sum('total_paid');
         $expense->due = $due;
         $expense->save();
+
+        return $expense;
     }
 
     public function addPaymentGetId($voucher_prefix, $expense_id, $request, $another_amount = 0)

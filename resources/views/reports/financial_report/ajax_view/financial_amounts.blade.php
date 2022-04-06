@@ -180,16 +180,6 @@
                             </th>
                         </tr>
 
-                        {{-- <tr>
-                            <td class="text-start">
-                                <em>Total Daily Profit :</em>
-                            </td>
-
-                            <td class="text-start">
-                                <b><em>0.00</em> </b>  
-                            </td>
-                        </tr> --}}
-
                         <tr>
                             <td class="text-start">
                                 <em>Daily Profit :</em>
@@ -248,42 +238,6 @@
 
                         <tr>
                             <th class="text-start bg-secondary text-white" colspan="2">
-                                <strong>LOAN & LIABILITIES :</strong>
-                            </th>
-                        </tr>
-
-                        <tr>
-                            <td class="text-start">
-                                <em>Total Loan Liabilities :</em>
-                            </td>
-
-                            <td class="text-end">
-                                <b><em>0.00</em> </b>  
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="text-start">
-                                <em>Total Loan & Liabilities Due Paid :</em>
-                            </td>
-
-                            <td class="text-end">
-                                <b><em>0.00</em> </b>  
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="text-start">
-                                <em>Payable Loan & Liabilities Due :</em>
-                            </td>
-
-                            <td class="text-end">
-                                <b><em>0.00</em> </b>  
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-start bg-secondary text-white" colspan="2">
                                 <strong>LOAN & ADVANCE :</strong>
                             </th>
                         </tr>
@@ -294,7 +248,7 @@
                             </td>
 
                             <td class="text-end">
-                                <b><em>0.00</em> </b>  
+                                <b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['total_loan_and_advance']) }}</em></b>  
                             </td>
                         </tr>
 
@@ -304,21 +258,55 @@
                             </td>
 
                             <td class="text-end">
-                                <b><em>0.00</em> </b>  
+                                <b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['total_loan_and_advance_received']) }}</em> </b>  
                             </td>
                         </tr>
-
+                        
                         <tr>
                             <td class="text-start">
                                 <em>Receivable Loan & Advance Due :</em>
                             </td>
 
                             <td class="text-end">
-                                <b><em>0.00</em> </b>  
+                                <b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['total_loan_and_advance_due']) }}</em> </b>  
                             </td>
                         </tr>
 
-                  
+                        <tr>
+                            <th class="text-start bg-secondary text-white" colspan="2">
+                                <strong>LOAN & LIABILITIES :</strong>
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <td class="text-start">
+                                <em>Total Loan Liabilities :</em>
+                            </td>
+
+                            <td class="text-end">
+                                <b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['total_loan_and_liability']) }}</em> </b>  
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-start">
+                                <em>Total Loan & Liabilities Due Paid :</em>
+                            </td>
+
+                            <td class="text-end">
+                                <b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['total_loan_and_liability_paid']) }}</em> </b>  
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-start">
+                                <em>Payable Loan & Liabilities Due :</em>
+                            </td>
+
+                            <td class="text-end">
+                                <b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['total_loan_and_liability_due']) }}</em> </b>  
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </td>

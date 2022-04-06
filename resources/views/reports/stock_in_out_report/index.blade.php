@@ -270,7 +270,6 @@
         }
 
         $.ajax({
-            // url:"{{ url('reports/product/purchases/search/product') }}"+"/"+product_name,
             url:"{{ url('common/ajax/call/only/search/product/for/reports') }}"+"/"+product_name,
             async:true,
             type:'get',

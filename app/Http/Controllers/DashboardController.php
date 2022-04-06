@@ -13,8 +13,6 @@ define('TODAY_DATE', Carbon::today());
 
 class DashboardController extends Controller
 {
-    
-    
     protected $converter;
 
     public function __construct(Converter $converter)

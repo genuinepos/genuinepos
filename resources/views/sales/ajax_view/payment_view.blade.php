@@ -80,18 +80,25 @@
                             <td>{{ $payment->payment_type == 1 ? 'Sale due' : 'Return due' }}</td>
                             <td>{{ $payment->account ? $payment->account->name : 'Cash-In-Hand' }}</td>
                             <td>
+
                                 @if ($payment->payment_type == 1)
+
                                     <a href="{{ route('sales.payment.edit', $payment->id) }}" id="edit_payment"
                                         class="btn-sm"><i class="fas fa-edit text-info"></i></a>
                                 @else
-                                    <a href="{{ route('sales.return.payment.edit', $payment->id) }}"
-                                        id="edit_return_payment" class="btn-sm"><i
-                                            class="fas fa-edit text-info"></i></a>
+                                    @if ($payment->sale_id)
+
+                                        <a href="{{ route('sales.return.payment.edit', $payment->id) }}" id="edit_return_payment" class="btn-sm">
+                                            <i class="fas fa-edit text-info"></i>
+                                        </a>
+                                    @endif
                                 @endif
 
                                 <a href="{{ route('sales.payment.details', $payment->id) }}" id="payment_details"
                                     class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
+
                                 @if ($payment->customer_payment_id == null)
+                                
                                     <a href="{{ route('sales.payment.delete', $payment->id) }}" id="delete_payment"
                                     class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>
                                 @endif

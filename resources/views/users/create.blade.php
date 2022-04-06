@@ -576,15 +576,19 @@
             type: 'post',
             data: request,
             success: function(data) {
+
                 toastr.success(data);
                 $('.loading_button').hide();
                 window.location = "{{ route('users.index') }}";
             },
             error: function(err) {
+
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
                 $('.error').html('');
+
                 $.each(err.responseJSON.errors, function(key, error) {
+
                     $('.error_' + key + '').html(error[0]);
                 });
             }
@@ -592,11 +596,14 @@
     });
 
     $('#allow_login').on('click', function () {
+        
         if ($(this).is(':CHECKED', true)) {
+
             $('.auth_field_area').show();
             $('.access_branch').show();
             $('.belonging_branch').hide();
         }else{
+
             $('.auth_field_area').hide();
             $('.access_branch').hide();
             $('.belonging_branch').show();

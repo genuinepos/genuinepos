@@ -6,7 +6,7 @@
     <tr>
         <td class="serial text-start">1</td>
         <td class="text-start">
-            <a class="product-name text-info" id="edit_product" href="#">{{ $product->product->name }}</a> <br/>
+            <a class="product-name text-info" id="edit_product" href="#" tabindex="-1">{{ $product->product->name }}</a> <br/>
             <input type="{{ ($product->product->is_show_emi_on_pos == 1 ? 'text' : 'hidden') }}" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info."> 
             <input value="{{ $product->product_id }}" type="hidden" class="productId-{{ $product->product_id }}" id="product_id" name="product_ids[]">
             <input input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">
@@ -46,7 +46,7 @@
             <b><span class="span_subtotal">{{ bcadd($unitPriceIncTax, 0, 2) }}</span></b>
         </td>
         <td>
-            <a href="#" class="action-btn c-delete" id="remove_product_btn"><span class="fas fa-trash "></span></a>
+            <a href="#" class="action-btn c-delete" id="remove_product_btn" tabindex="-1"><span class="fas fa-trash "></span></a>
         </td>
     </tr>
 

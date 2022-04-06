@@ -12,6 +12,7 @@ use App\Models\ExpansePayment;
 use App\Models\ExpanseCategory;
 use App\Models\ExpenseDescription;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 
 class ExpanseController extends Controller
@@ -19,15 +20,18 @@ class ExpanseController extends Controller
     protected $expenseUtil;
     protected $accountUtil;
     protected $invoiceVoucherRefIdUtil;
+    protected $userActivityLogUtil;
 
     public function __construct(
         ExpenseUtil $expenseUtil,
         AccountUtil $accountUtil,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
+        UserActivityLogUtil $userActivityLogUtil
     ) {
         $this->expenseUtil = $expenseUtil;
         $this->accountUtil = $accountUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -147,6 +151,12 @@ class ExpanseController extends Controller
 
         $addExpanse->save();
 
+        $this->userActivityLogUtil->addLog(
+            action: 1,
+            subject_type: 15,
+            data_obj: $addExpanse
+        );
+
         $index = 0;
         foreach ($request->category_ids as $category_id) {
 
@@ -210,40 +220,11 @@ class ExpanseController extends Controller
             );
         }
 
-        // $storedExpenseAccountId = $deleteExpanse->expense_account_id;
-
-        // $storedExpensePayments = $deleteExpanse->expense_payments;
-
-        // if (!is_null($deleteExpanse)) {
-
-        //     $deleteExpanse->delete();
-
-        //     if (count($storedExpensePayments) > 0) {
-
-        //         foreach ($storedExpensePayments as $payment) {
-
-        //             if ($payment->attachment) {
-
-        //                 if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
-
-        //                     unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
-        //                 }
-        //             }
-
-        //             // Update Bank/Cash-in-hand Balance
-        //             if ($payment->account_id) {
-
-        //                 $this->accountUtil->adjustAccountBalance('debit', $payment->account_id);
-        //             }
-        //         }
-        //     }
-        // }
-
-        // // Update Expense A/C Balance
-        // if ($storedExpenseAccountId) {
-
-        //     $this->accountUtil->adjustAccountBalance('credit', $storedExpenseAccountId);
-        // }
+        $this->userActivityLogUtil->addLog(
+            action: 3,
+            subject_type: 15,
+            data_obj: $deleteExpense
+        );
 
         $this->expenseUtil->expenseDelete($deleteExpense);
 
@@ -287,6 +268,7 @@ class ExpanseController extends Controller
     public function update(Request $request, $expenseId)
     {
         if (auth()->user()->permission->expense['edit_expense'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -310,8 +292,11 @@ class ExpanseController extends Controller
         $updateExpanse->admin_id = $request->admin_id;
 
         if ($request->hasFile('attachment')) {
+
             if ($updateExpanse->attachment != null) {
+
                 if (file_exists(public_path('uploads/expanse_attachment/' . $updateExpanse->attachment))) {
+
                     unlink(public_path('uploads/expanse_attachment/' . $updateExpanse->attachment));
                 }
             }
@@ -332,7 +317,13 @@ class ExpanseController extends Controller
 
         $updateExpanse->save();
 
-        $this->expenseUtil->adjustExpenseAmount($updateExpanse);
+        $adjustedExpense = $this->expenseUtil->adjustExpenseAmount($updateExpanse);
+
+        $this->userActivityLogUtil->addLog(
+            action: 3,
+            subject_type: 15,
+            data_obj: $adjustedExpense
+        );
 
         $exDescriptions = ExpenseDescription::where('expense_id', $updateExpanse->id)->get();
 

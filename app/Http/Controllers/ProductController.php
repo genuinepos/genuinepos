@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Utils\ProductUtil;
 use App\Models\BulkVariant;
 use Illuminate\Support\Str;
 use App\Models\ComboProduct;
@@ -10,14 +11,15 @@ use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\ProductVariant;
+use App\Models\General_setting;
+use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
+use App\Utils\ProductStockUtil;
 use App\Models\PriceGroupProduct;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
-use App\Models\PurchaseProduct;
-use App\Utils\ProductStockUtil;
-use App\Utils\ProductUtil;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -25,10 +27,15 @@ class ProductController extends Controller
 {
     protected $productUtil;
     protected $productStockUtil;
-    public function __construct(ProductUtil $productUtil, ProductStockUtil $productStockUtil)
-    {
+    protected $userActivityLogUtil;
+    public function __construct(
+        ProductUtil $productUtil,
+        ProductStockUtil $productStockUtil,
+        UserActivityLogUtil $userActivityLogUtil
+    ) {
         $this->productUtil = $productUtil;
         $this->productStockUtil = $productStockUtil;
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -41,7 +48,7 @@ class ProductController extends Controller
         }
 
         if ($request->ajax()) {
-            
+
             return $this->productUtil->productListTable($request);
         }
 
@@ -49,6 +56,7 @@ class ProductController extends Controller
         $brands = DB::table('brands')->get(['id', 'name']);
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
         $taxes = DB::table('taxes')->get(['id', 'tax_name']);
+
         return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxes'));
     }
 
@@ -61,6 +69,7 @@ class ProductController extends Controller
         }
 
         if ($request->ajax()) {
+
             $products = DB::table('product_branches')
                 ->leftJoin('products', 'product_branches.product_id', 'products.id')
                 ->select('products.id', 'products.name', 'products.product_cost', 'products.product_price')
@@ -80,11 +89,11 @@ class ProductController extends Controller
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
 
         $categories = DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'desc')->get(['id', 'name']);
-        
+
         $brands = DB::table('brands')->orderBy('id', 'desc')->get(['id', 'name']);
-        
+
         $warranties = DB::table('warranties')->orderBy('id', 'desc')->get(['id', 'name']);
-        
+
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
 
         return view('product.products.create_v2', compact('units', 'categories', 'brands', 'warranties', 'taxes'));
@@ -231,9 +240,9 @@ class ProductController extends Controller
                     $addVariant->save();
 
                     $this->productStockUtil->addBranchProduct(
-                        product_id : $addProduct->id, 
-                        variant_id : $addVariant->id, 
-                        branch_id : auth()->user()->branch_id
+                        product_id: $addProduct->id,
+                        variant_id: $addVariant->id,
+                        branch_id: auth()->user()->branch_id
                     );
 
                     $index++;
@@ -243,10 +252,10 @@ class ProductController extends Controller
                 $addProduct->save();
 
                 $this->productStockUtil->addBranchProduct(
-                    product_id : $addProduct->id, 
-                    variant_id : NULL, 
-                    branch_id : auth()->user()->branch_id,
-                    force_add : 1
+                    product_id: $addProduct->id,
+                    variant_id: NULL,
+                    branch_id: auth()->user()->branch_id,
+                    force_add: 1
                 );
             }
         }
@@ -279,6 +288,11 @@ class ProductController extends Controller
                 $index++;
                 $addComboProducts->save();
             }
+        }
+
+        if ($addProduct) {
+
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 26, data_obj: $addProduct);
         }
 
         session()->flash('successMsg', 'Product create Successfully');
@@ -364,7 +378,7 @@ class ProductController extends Controller
             ->where('warehouses.branch_id', auth()->user()->branch_id)
 
             ->where('product_warehouses.product_id', $productId)
-            
+
             ->select(
                 'warehouses.warehouse_name',
                 'warehouses.warehouse_code',
@@ -400,26 +414,29 @@ class ProductController extends Controller
         // Add Opening Stock and update branch stock
         $index = 0;
         foreach ($request->product_ids as $product_id) {
+
             $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
             $openingStock = ProductOpeningStock::where('branch_id', $branch_id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
 
             if ($openingStock) {
+
                 $this->productUtil->updateOpeningStock(
-                    openingStock : $openingStock,
-                    unit_cost_inc_tax : $request->unit_costs_inc_tax[$index],
-                    quantity : $request->quantities[$index],
-                    subtotal : $request->subtotals[$index]
+                    openingStock: $openingStock,
+                    unit_cost_inc_tax: $request->unit_costs_inc_tax[$index],
+                    quantity: $request->quantities[$index],
+                    subtotal: $request->subtotals[$index]
                 );
             } else {
+
                 $this->productUtil->addOpeningStock(
-                    branch_id : $branch_id,
-                    product_id : $product_id,
-                    variant_id : $variant_id,
-                    unit_cost_inc_tax : $request->unit_costs_inc_tax[$index],
-                    quantity : $request->quantities[$index],
-                    subtotal : $request->subtotals[$index]
+                    branch_id: $branch_id,
+                    product_id: $product_id,
+                    variant_id: $variant_id,
+                    unit_cost_inc_tax: $request->unit_costs_inc_tax[$index],
+                    quantity: $request->quantities[$index],
+                    subtotal: $request->subtotals[$index]
                 );
             }
 
@@ -449,6 +466,7 @@ class ProductController extends Controller
                 'product_variants.variant_cost as v_cost',
                 'product_variants.variant_cost_with_tax as v_cost_inc_tax',
             )->get();
+
         return view('product.products.ajax_view.opening_stock_modal_view', compact('products'));
     }
 
@@ -470,6 +488,7 @@ class ProductController extends Controller
                 'product_variants.id as v_id',
                 'taxes.tax_percent'
             )->get();
+
         return view('product.products.add_price_group', compact('products', 'type', 'priceGroups', 'product_name'));
     }
 
@@ -478,14 +497,19 @@ class ProductController extends Controller
         $variant_ids = $request->variant_ids;
         $index = 0;
         foreach ($request->product_ids as $product_id) {
+
             foreach ($request->group_prices as $key => $group_price) {
+
                 (float)$__group_price = $group_price[$product_id][$variant_ids[$index]];
                 $__variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
                 $updatePriceGroup = PriceGroupProduct::where('price_group_id', $key)->where('product_id', $product_id)->where('variant_id', $__variant_id)->first();
+
                 if ($updatePriceGroup) {
+
                     $updatePriceGroup->price = $__group_price != null ? $__group_price : NULL;
                     $updatePriceGroup->save();
                 } else {
+
                     $addPriceGroup = new PriceGroupProduct();
                     $addPriceGroup->price_group_id = $key;
                     $addPriceGroup->product_id = $product_id;
@@ -498,8 +522,10 @@ class ProductController extends Controller
         }
 
         if ($request->action_type == 'save') {
+
             return response()->json(['saveMessage' =>  'Product price group updated Successfully']);
         } else {
+
             return response()->json(['saveAndAnotherMsg' =>  'Product price group updated Successfully']);
         }
     }
@@ -511,6 +537,7 @@ class ProductController extends Controller
             ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
             ->select('products.*', 'taxes.tax_percent')
             ->first();
+
         $categories = DB::table('categories')->get();
         $units = DB::table('units')->get();
         $brands = DB::table('brands')->get();
@@ -537,7 +564,9 @@ class ProductController extends Controller
     {
         $updateProduct = Product::with(['product_variants', 'ComboProducts'])->where('id', $productId)->first();
         $tax_id = NULL;
+
         if ($request->tax_id) {
+
             $tax_id = explode('-', $request->tax_id)[0];
         }
 
@@ -577,16 +606,12 @@ class ProductController extends Controller
         $updateProduct->custom_field_2 = $request->custom_field_2;
         $updateProduct->custom_field_3 = $request->custom_field_3;
 
-        //upload multiple photo for e-commerce
-        // if ($request->file('image')) {
-        //     if (count($request->file('image')) > 2) {
-        //         return response()->json(['errorMsg' => 'You can upload only 2 product images.']);
-        //     }
-        // }
-
         if ($request->file('image')) {
+
             if (count($request->file('image')) > 0) {
+
                 foreach ($request->file('image') as $image) {
+
                     $productImage = $image;
                     $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
                     Image::make($productImage)->resize(250, 250)->save('public/uploads/product/' . $productImageName);
@@ -599,6 +624,7 @@ class ProductController extends Controller
         }
 
         if ($updateProduct->type == 1) {
+
             $this->validate(
                 $request,
                 [
@@ -650,65 +676,66 @@ class ProductController extends Controller
                         'variant_image.*' => 'sometimes|image|max:2048',
                     ],
                 );
+
                 $updateProduct->save();
 
-                $variant_ids = $request->variant_ids;
-                $variant_combinations = $request->variant_combinations;
-                $variant_codes = $request->variant_codes;
-                $variant_costings = $request->variant_costings;
-                $variant_costings_with_tax = $request->variant_costings_with_tax;
-                $variant_profits = $request->variant_profits;
-                $variant_prices_exc_tax = $request->variant_prices_exc_tax;
-                $variant_images = $request->variant_image;
                 $index = 0;
-                foreach ($variant_combinations as $value) {
+                foreach ($request->variant_combinations as $value) {
 
-                    $updateVariant = ProductVariant::where('id', $variant_ids[$index])->first();
+                    $updateVariant = ProductVariant::where('id', $request->variant_ids[$index])->first();
+
                     if ($updateVariant) {
+
                         $updateVariant->variant_name = $value;
-                        $updateVariant->variant_code = $variant_codes[$index];
-                        $updateVariant->variant_cost = $variant_costings[$index];
-                        $updateVariant->variant_cost_with_tax = $variant_costings_with_tax[$index];
-                        $updateVariant->variant_profit = $variant_profits[$index];
-                        $updateVariant->variant_price = $variant_prices_exc_tax[$index];
+                        $updateVariant->variant_code = $request->variant_codes[$index];
+                        $updateVariant->variant_cost = $request->variant_costings[$index];
+                        $updateVariant->variant_cost_with_tax = $request->variant_costings_with_tax[$index];
+                        $updateVariant->variant_profit = $request->variant_profits[$index];
+                        $updateVariant->variant_price = $request->variant_prices_exc_tax[$index];
                         $updateVariant->delete_in_update = 0;
 
                         if (isset($variant_images[$index])) {
+
                             if ($updateVariant->variant_image != null) {
+
                                 if (file_exists(public_path('uploads/product/variant_image/' . $updateVariant->variant_image))) {
+
                                     unlink(public_path('uploads/product/thumbnail/' . $updateVariant->variant_image));
                                 }
                             }
 
-                            $variantImage = $variant_images[$index];
+                            $variantImage = $request->variant_images[$index];
                             $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
                             Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
                             $updateVariant->variant_image = $variantImageName;
                         }
-                        $updateVariant->save();
 
+                        $updateVariant->save();
                     } else {
+
                         $addVariant = new ProductVariant();
                         $addVariant->product_id = $updateProduct->id;
                         $addVariant->variant_name = $value;
-                        $addVariant->variant_code = $variant_codes[$index];
-                        $addVariant->variant_cost = $variant_costings[$index];
-                        $addVariant->variant_cost_with_tax = $variant_costings_with_tax[$index];
-                        $addVariant->variant_profit = $variant_profits[$index];
-                        $addVariant->variant_price = $variant_prices_exc_tax[$index];
+                        $addVariant->variant_code = $request->variant_codes[$index];
+                        $addVariant->variant_cost = $request->variant_costings[$index];
+                        $addVariant->variant_cost_with_tax = $request->variant_costings_with_tax[$index];
+                        $addVariant->variant_profit = $request->variant_profits[$index];
+                        $addVariant->variant_price = $request->variant_prices_exc_tax[$index];
 
-                        if (isset($variant_images[$index])) {
-                            $variantImage = $variant_images[$index];
+                        if (isset($request->variant_images[$index])) {
+
+                            $variantImage = $request->variant_images[$index];
                             $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
                             Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
                             $addVariant->variant_image = $variantImageName;
                         }
+
                         $addVariant->save();
 
                         $this->productStockUtil->addBranchProduct(
-                            product_id : $updateProduct->id, 
-                            variant_id : $addVariant->id, 
-                            branch_id : auth()->user()->branch_id
+                            product_id: $updateProduct->id,
+                            variant_id: $addVariant->id,
+                            branch_id: auth()->user()->branch_id
                         );
                     }
 
@@ -716,31 +743,40 @@ class ProductController extends Controller
                 }
 
                 $deleteNotFoundVariants = ProductVariant::where('delete_in_update', 1)->get();
+
                 foreach ($deleteNotFoundVariants as $deleteNotFoundVariant) {
+
                     if ($deleteNotFoundVariant->variant_image != null) {
+
                         if (file_exists(public_path('uploads/product/variant_image/' . $updateVariant->variant_image))) {
+
                             unlink(public_path('uploads/product/thumbnail/' . $updateVariant->variant_image));
                         }
                     }
+
                     $deleteNotFoundVariant->delete();
                 }
             } else {
+
                 $updateProduct->save();
 
                 $this->productStockUtil->addBranchProduct(
-                    product_id : $updateProduct->id, 
-                    variant_id : NULL, 
-                    branch_id : auth()->user()->branch_id
+                    product_id: $updateProduct->id,
+                    variant_id: NULL,
+                    branch_id: auth()->user()->branch_id
                 );
             }
         }
 
         if ($updateProduct->type == 2) {
+
             if ($request->product_ids == null) {
+
                 return response()->json(['errorMsg' => 'You have selected combo product but there is no product at all']);
             }
 
             foreach ($updateProduct->ComboProducts as $ComboProduct) {
+
                 $ComboProduct->delete_in_update = 1;
                 $ComboProduct->save();
             }
@@ -784,6 +820,11 @@ class ProductController extends Controller
             $deleteNotFoundComboProduct->delete();
         }
 
+        if ($updateProduct) {
+
+            $this->userActivityLogUtil->addLog(action: 2, subject_type: 26, data_obj: $updateProduct);
+        }
+
         session()->flash('successMsg', 'Successfully product is updated');
         return response()->json('Successfully product is updated');
     }
@@ -804,28 +845,43 @@ class ProductController extends Controller
         )->where('id', $productId)->first();
 
         if (!is_null($deleteProduct)) {
+
             if ($deleteProduct->thumbnail_photo !== 'default.png') {
+
                 if (file_exists(public_path('uploads/product/thumbnail/' . $deleteProduct->thumbnail_photo))) {
+
                     unlink(public_path('uploads/product/thumbnail/' . $deleteProduct->thumbnail_photo));
                 }
             }
 
             if ($deleteProduct->product_images->count() > 0) {
+
                 foreach ($deleteProduct->product_images as $product_image) {
+
                     if (file_exists(public_path('uploads/product/' . $product_image->image))) {
+
                         unlink(public_path('uploads/product/' . $product_image->image));
                     }
                 }
             }
 
             if ($deleteProduct->product_variants->count() > 0) {
+
                 foreach ($deleteProduct->product_variants as $product_variant) {
+
                     if ($product_variant->variant_image) {
+
                         if (file_exists(public_path('uploads/product/variant_image/' . $product_variant->variant_image))) {
+
                             unlink(public_path('uploads/product/variant_image/' . $product_variant->variant_image));
                         }
                     }
                 }
+            }
+
+            if ($deleteProduct) {
+
+                $this->userActivityLogUtil->addLog(action: 3, subject_type: 26, data_obj: $updateProduct);
             }
 
             $deleteProduct->delete();
@@ -839,7 +895,9 @@ class ProductController extends Controller
         if ($request->data_ids == null) {
             return response()->json(['errorMsg' => 'You did not select any product.']);
         }
+
         if ($request->action == 'multiple_delete') {
+
             //     foreach($request->data_ids as $data_id){
             //         $deleteProduct = Product::with(['product_images', 'product_variants'])->where('id', $data_id)->get();
             //         if (!is_null($deleteProduct)) {
@@ -872,7 +930,9 @@ class ProductController extends Controller
 
             return response()->json('Multiple delete feature is disabled in this demo');
         } elseif ($request->action == 'multipla_deactive') {
+
             foreach ($request->data_ids as $data_id) {
+
                 $product = Product::where('id', $data_id)->first();
                 $product->status = 0;
                 $product->save();
@@ -886,10 +946,12 @@ class ProductController extends Controller
     {
         $statusChange = Product::where('id', $productId)->first();
         if ($statusChange->status == 1) {
+
             $statusChange->status = 0;
             $statusChange->save();
             return response()->json('Successfully Product is deactivated');
         } else {
+
             $statusChange->status = 1;
             $statusChange->save();
             return response()->json('Successfully Product is activated');
@@ -907,8 +969,10 @@ class ProductController extends Controller
     {
         $product = Product::with(['product_variants', 'tax', 'unit'])->where('product_code', $productCode)->first();
         if ($product) {
+
             return response()->json(['product' => $product]);
         } else {
+
             $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $productCode)->first();
             return response()->json(['variant_product' => $variant_product]);
         }
@@ -917,9 +981,12 @@ class ProductController extends Controller
     public function chackPurchaseAndGenerateBarcode($productId)
     {
         $supplierProducts = SupplierProduct::where('product_id', $productId)->get();
+
         if ($supplierProducts->count() > 0) {
+
             return response()->json(route('products.generate.product.barcode', $productId));
         } else {
+
             return response()->json(['errorMsg' => 'This product yet to be purchased.']);
         }
     }
@@ -954,5 +1021,30 @@ class ProductController extends Controller
         $variants = BulkVariant::with(['bulk_variant_child'])->get();
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
         return view('product.products.ajax_view.form_part', compact('type', 'variants', 'taxes'));
+    }
+
+    public function settings()
+    {
+        $units = DB::table('units')->select('id', 'name', 'code_name')->get();
+        return view('product.settings.index', compact('units'));
+    }
+
+    public function settingsStore(Request $request)
+    {
+        $updateProductSettings = General_setting::first();
+
+        $productSettings = [
+            'product_code_prefix' => $request->product_code_prefix,
+            'default_unit_id' => $request->default_unit_id,
+            'is_enable_brands' => isset($request->is_enable_brands) ? 1 : 0,
+            'is_enable_categories' => isset($request->is_enable_categories) ? 1 : 0,
+            'is_enable_sub_categories' => isset($request->is_enable_sub_categories) ? 1 : 0,
+            'is_enable_price_tax' => isset($request->is_enable_price_tax) ? 1 : 0,
+            'is_enable_warranty' => isset($request->is_enable_warranty) ? 1 : 0,
+        ];
+
+        $updateProductSettings->product = json_encode($productSettings);
+        $updateProductSettings->save();
+        return response()->json('Product settings updated successfully');
     }
 }

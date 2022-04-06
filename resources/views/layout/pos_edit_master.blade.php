@@ -393,8 +393,10 @@
 
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
+
             var indexs = document.querySelectorAll('#index');
             indexs.forEach(function(index) {
+
                 var className = index.getAttribute("class");
                 var rowIndex = $('.' + className).closest('tr').index();
                 $('.' + className).closest('tr').find('.serial').html(rowIndex + 1);
@@ -405,6 +407,7 @@
             // Update Total Item
             var total_item = 0;
             quantities.forEach(function(qty){
+
                 total_item += 1;
             });
 
@@ -413,15 +416,18 @@
             // Update Net total Amount
             var netTotalAmount = 0;
             subtotals.forEach(function(subtotal){
+
                 netTotalAmount += parseFloat(subtotal.value);
             });
 
             $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
 
             if ($('#order_discount_type').val() == 2) {
+
                 var orderDisAmount = parseFloat(netTotalAmount) /100 * parseFloat($('#order_discount').val() ? $('#order_discount').val() : 0);
                 $('#order_discount_amount').val(parseFloat(orderDisAmount).toFixed(2));
             }else{
+                
                 var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0;
                 $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
             }
@@ -453,13 +459,16 @@
         }
 
         $(document).keypress(".scanable",function(event){
+
             if (event.which == '10' || event.which == '13') {
+
                 event.preventDefault();
             }
         });
 
         var tableRowIndex = 0;
         $(document).on('click', '#delete',function(e){
+
             e.preventDefault();
             var parentTableRow = $(this).closest('tr');
             tableRowIndex = parentTableRow.index();  
@@ -481,6 +490,7 @@
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();
+
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
@@ -488,6 +498,7 @@
                 type:'post',
                 data:request,
                 success:function(data){
+
                     pickHoldInvoice();
                     toastr.error(data);
                     var productTableRow = $('#transection_list tr:nth-child(' + (tableRowIndex + 1) + ')').remove();
@@ -512,11 +523,6 @@
                 }
             });
         });
-
-        // $('#search_product').on('blur', function () {
-        //     $('.select_area').hide();
-        //     $('.variant_list_area').empty();
-        // });
     </script>
     @stack('js')
 </body>

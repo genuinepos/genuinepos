@@ -19,11 +19,13 @@ use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
+use App\Models\General_setting;
 use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Models\CashRegisterTransaction;
+use App\Utils\UserActivityLogUtil;
 
 class POSController extends Controller
 {
@@ -34,6 +36,7 @@ class POSController extends Controller
     protected $accountUtil;
     protected $productStockUtil;
     protected $invoiceVoucherRefIdUtil;
+    protected $userActivityLogUtil;
     public function __construct(
         SaleUtil $saleUtil,
         SmsUtil $smsUtil,
@@ -41,7 +44,8 @@ class POSController extends Controller
         CustomerUtil $customerUtil,
         AccountUtil $accountUtil,
         ProductStockUtil $productStockUtil,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
+        UserActivityLogUtil $userActivityLogUtil
     ) {
         $this->saleUtil = $saleUtil;
         $this->smsUtil = $smsUtil;
@@ -50,6 +54,7 @@ class POSController extends Controller
         $this->accountUtil = $accountUtil;
         $this->productStockUtil = $productStockUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -195,7 +200,7 @@ class POSController extends Controller
         if ($request->action == 5) {
 
             $holdInvoice = Sale::where('branch_id', auth()->user()->branch_id)->where('status', 5)->where('admin_id', auth()->user()->id)->get();
-            
+
             if ($holdInvoice->count() == 5) {
 
                 return response()->json(['errorMsg' => 'You can hold only 5 invoices.']);
@@ -237,6 +242,11 @@ class POSController extends Controller
 
                     $addSale->paid = $request->total_invoice_payable;
                     $addSale->due = 0.00;
+                } elseif ($request->paying_amount == 0 && $request->total_payable_amount < 0) {
+
+                    $addSale->paid = $request->paying_amount;
+                    $calcDue = $request->total_payable_amount;
+                    $addSale->due = $request->total_payable_amount;
                 } elseif ($paidAmount < $request->total_invoice_payable) {
 
                     $addSale->paid = $request->paying_amount;
@@ -350,6 +360,8 @@ class POSController extends Controller
             $this->saleUtil->addPurchaseSaleProductChain($sale, $stockAccountingMethod);
 
             $this->saleUtil->__getSalePaymentForAddSaleStore($request, $sale, $paymentInvoicePrefix);
+
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 7, data_obj: $sale);
         }
 
         // Add cash register transaction
@@ -692,7 +704,7 @@ class POSController extends Controller
         // Update customer due
         if ($request->action == 1) {
 
-            $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
+            $adjustedSale = $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
 
             if ($updateSale->customer_id) {
 
@@ -700,6 +712,8 @@ class POSController extends Controller
             }
 
             $this->saleUtil->updatePurchaseSaleProductChain($sale, $stockAccountingMethod);
+
+            $this->userActivityLogUtil->addLog(action: 2, subject_type: 7, data_obj: $adjustedSale);
         }
 
         $previous_due = 0;
@@ -735,46 +749,6 @@ class POSController extends Controller
         }
     }
 
-    // Get all recent sales ** requested by ajax **
-    public function recentSales()
-    {
-        $sales = Sale::with('customer')->where('branch_id', auth()->user()->branch_id)
-            ->where('admin_id', auth()->user()->id)
-            ->where('status', 1)
-            ->where('created_by', 2)
-            ->where('is_return_available', 0)
-            ->orderBy('id', 'desc')
-            ->limit(10)
-            ->get();
-        return view('sales.pos.ajax_view.recent_sale_list', compact('sales'));
-    }
-
-    // Get all recent quotations ** requested by ajax **
-    public function recentQuotations()
-    {
-        $quotations = Sale::where('branch_id', auth()->user()->branch_id)
-            ->where('admin_id', auth()->user()->id)
-            ->where('status', 4)
-            ->where('created_by', 2)
-            ->orderBy('id', 'desc')
-            ->limit(10)
-            ->get();
-        return view('sales.pos.ajax_view.recent_quotation_list', compact('quotations'));
-    }
-
-    // Get all recent drafts ** requested by ajax **
-    public function recentDrafts()
-    {
-        $drafts = Sale::with('customer')->where('branch_id', auth()->user()->branch_id)
-            ->where('admin_id', auth()->user()->id)
-            ->where('status', 2)
-            ->where('created_by', 2)
-            ->orderBy('id', 'desc')
-            ->limit(10)
-            ->get();
-        return view('sales.pos.ajax_view.recent_draft_list', compact('drafts'));
-    }
-
     // Get all suspended sales ** requested by ajax **
     public function suspendedList()
     {
@@ -802,7 +776,7 @@ class POSController extends Controller
         } else {
 
             return response()->json([
-                'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this branch/shop.'
+                'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this Location/Shop.'
             ]);
         }
     }
@@ -915,8 +889,10 @@ class POSController extends Controller
         ])->where('invoice_id', $request->invoice_id)->first();
 
         if ($sale) {
+
             return view('sales.pos.ajax_view.exchange_able_invoice', compact('sale'));
         } else {
+
             return response()->json(['errorMsg' => 'Invoice Not Fount']);
         }
     }
@@ -987,13 +963,13 @@ class POSController extends Controller
     {
         if ($request->action != 1) {
 
-            return response()->json(['errorMsg' => 'You can not create another entry when item exchange in going on.']);
+            return response()->json(['errorMsg' => 'Can not create another entry when item exchange in going on.']);
         }
 
         $updateSale = Sale::with('customer')->where('id', $request->ex_sale_id)->first();
 
         if (
-            $request->total_due > 0 && 
+            $request->total_due > 0 &&
             $updateSale->customer_id == NULL
         ) {
 
@@ -1216,7 +1192,7 @@ class POSController extends Controller
 
                     $calc_point = $total_amount / $amount_for_unit_rp;
                     $__net_point = (int)$calc_point;
-                    
+
                     if ($max_rp_per_order && $__net_point > $max_rp_per_order) {
 
                         return $max_rp_per_order;
@@ -1225,7 +1201,7 @@ class POSController extends Controller
                         return $__net_point;
                     }
                 } else {
-                    
+
                     return 0;
                 }
             } else {
@@ -1236,5 +1212,30 @@ class POSController extends Controller
 
             return 0;
         }
+    }
+
+    public function settings()
+    {
+        return view('sales.pos.settings.index');
+    }
+
+    public function settingsStore(Request $request)
+    {
+        $updatePosSettings = General_setting::first();
+        $posSettings = [
+            'is_enabled_multiple_pay' => isset($request->is_enabled_multiple_pay) ? 1 : 0,
+            'is_enabled_draft' => isset($request->is_enabled_draft) ? 1 : 0,
+            'is_enabled_quotation' => isset($request->is_enabled_quotation) ? 1 : 0,
+            'is_enabled_suspend' => isset($request->is_enabled_suspend) ? 1 : 0,
+            'is_enabled_discount' => isset($request->is_enabled_discount) ? 1 : 0,
+            'is_enabled_order_tax' => isset($request->is_enabled_order_tax) ? 1 : 0,
+            'is_show_recent_transactions' => isset($request->is_show_recent_transactions) ? 1 : 0,
+            'is_enabled_credit_full_sale' => isset($request->is_enabled_credit_full_sale) ? 1 : 0,
+            'is_enabled_hold_invoice' => isset($request->is_enabled_hold_invoice) ? 1 : 0,
+        ];
+
+        $updatePosSettings->pos = json_encode($posSettings);
+        $updatePosSettings->save();
+        return response()->json('POS settings updated successfully');
     }
 }

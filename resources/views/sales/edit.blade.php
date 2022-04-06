@@ -8,7 +8,7 @@
         .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
         .selectProduct {background-color: #ab1c59;color: #fff !important;}
         .input-group-text-sale {font-size: 7px !important;}
-        .border_red { border: 1px solid red!important; }
+        .border_red {border: 1px solid red!important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
     <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
@@ -173,9 +173,7 @@
                                                         <span class="input-group-text add_button p-1 m-0">Stock</span>
                                                     </div>
 
-                                                    <input type="text" readonly class="form-control text-success stock_quantity"
-                                                        autocomplete="off" id="stock_quantity"
-                                                        placeholder="Stock Quantity">
+                                                    <input type="text" readonly class="form-control text-success stock_quantity" id="stock_quantity" placeholder="Stock Quantity" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -188,7 +186,6 @@
                                                             <thead class="staky">
                                                                 <tr>
                                                                     <th class="text-start">Product</th>
-                                                                    <th></th>
                                                                     <th class="text-center">Quantity</th>
                                                                     <th>Unit</th>
                                                                     <th class="text-center">Price Inc.Tax</th>
@@ -260,12 +257,12 @@
                                                                         <td>
                                                                             <input name="unit_prices_exc_tax[]" type="hidden" value="{{ $s_product->unit_price_exc_tax }}" id="unit_price_exc_tax">
 
-                                                                            <input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="{{ $s_product->unit_price_inc_tax }}">
+                                                                            <input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="{{ $s_product->unit_price_inc_tax }}" tabindex="-1">
                                                                         </td>
                                                                         
                                                                         <td class="text text-center">
                                                                             <strong><span class="span_subtotal">{{ $s_product->subtotal }}</span></strong>
-                                                                            <input value="{{ $s_product->subtotal }}" readonly name="subtotals[]" type="hidden" id="subtotal">
+                                                                            <input value="{{ $s_product->subtotal }}" readonly name="subtotals[]" type="hidden" id="subtotal" tabindex="-1">
                                                                         </td>
 
                                                                         <td class="text-center">
@@ -358,14 +355,14 @@
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Total Item :</label>
                                             <div class="col-sm-7">
-                                                <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="{{ $sale->total_item }}">
+                                                <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="{{ $sale->total_item }}" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Net Total :</label>
                                             <div class="col-sm-7">
-                                                <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="{{ $sale->net_total_amount }}">
+                                                <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="{{ $sale->net_total_amount }}" tabindex="-1">
                                             </div>
                                         </div>
 
@@ -406,7 +403,7 @@
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Total Payable :</label>
                                             <div class="col-sm-7">
-                                                <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00">
+                                                <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
@@ -415,14 +412,14 @@
                                             <div class="row">
                                                 <label class="col-sm-5 col-form-label">Previous Paid :</label>
                                                 <div class="col-sm-7">
-                                                    <input readonly class="form-control text-success" type="number" step="any" name="previous_paid" id="previous_paid" value="{{ $sale->paid }}">
+                                                    <input readonly class="form-control text-success" type="number" step="any" name="previous_paid" id="previous_paid" value="{{ $sale->paid }}" tabindex="-1">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <label class="col-sm-5 col-form-label">CR. Receivable :</label>
                                                 <div class="col-sm-7">
-                                                    <input readonly class="form-control" name="current_receivable" type="number" step="any" id="current_receivable" value="">
+                                                    <input readonly class="form-control" name="current_receivable" type="number" step="any" id="current_receivable" value="" tabindex="-1">
                                                 </div>
                                             </div>
 
@@ -476,7 +473,7 @@
                                             <div class="row">
                                                 <label class="col-sm-5 col-form-label">Due :</label>
                                                 <div class="col-sm-7">
-                                                    <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00">
+                                                    <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -487,7 +484,6 @@
                                                 <button type="submit" id="save" class="btn btn-sm btn-primary submit_button">Save Change </button>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -523,7 +519,7 @@
 
                         <div class="form-group">
                             <label> <strong>Quantity</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity"/>
+                            <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" tabindex="-1"/>
                             <span class="error error_e_quantity"></span>
                         </div>
 
@@ -573,9 +569,7 @@
 
                         <div class="form-group mt-1">
                             <label><strong>Sale Unit</strong> :</label>
-                            <select class="form-control" id="e_unit">
-
-                            </select>
+                            <select class="form-control" id="e_unit"></select>
                         </div>
 
                         <div class="form-group text-end mt-3">

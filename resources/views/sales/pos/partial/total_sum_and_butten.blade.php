@@ -26,7 +26,7 @@
                                         toastr.error('Creating draft is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-orange function-card">Draft<p>F2</p>
+                                class="bg-orange function-card" tabindex="-1">Draft<p>F2</p>
                             </a>
                         </div>
                     </div>
@@ -44,14 +44,14 @@
                                         toastr.error('Creating quotaion is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-orange function-card">Quotation<p>F4</p>
+                                class="bg-orange function-card" tabindex="-1">Quotation<p>F4</p>
                             </a>
                         </div>
                     </div>
                     
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" class="bg-orange function-card" id="exchange_btn" data-bs-toggle="modal" data-bs-target="#exchangeModal">
+                            <a href="#" class="bg-orange function-card" id="exchange_btn" data-bs-toggle="modal" data-bs-target="#exchangeModal" tabindex="-1">
                                 Exchange<p>F6</p>
                             </a>
                         </div>
@@ -59,7 +59,7 @@
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" class="bg-gren function-card" id="show_stock">Stock<p>Alt+C</p>
+                            <a href="#" class="bg-gren function-card" id="show_stock" tabindex="-1">Stock<p>Alt+C</p>
                             </a>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                                         toastr.error('Hold invoice is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-gren function-card">Hold Invoice<p>F8</p>
+                                class="bg-gren function-card" tabindex="-1">Hold Invoice<p>F8</p>
                             </a>
                         </div>
                     </div>
@@ -93,14 +93,14 @@
                                         toastr.error('Hold invoice is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-gren function-card">Pick Hold <p>F9</p>
+                                class="bg-gren function-card" tabindex="-1">Pick Hold <p>F9</p>
                             </a>
                         </div>
                     </div>
               
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="{{ route('settings.general.index') }}" class="bg-swit function-card">
+                            <a href="{{ route('settings.general.index') }}" class="bg-swit function-card" tabindex="-1">
                                 Setup <p>Ctrl+Q</p>
                             </a>
                         </div>
@@ -119,26 +119,27 @@
                                         toastr.error('Suspend is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-swit function-card">Suspend<p>Alt+A</p>
+                                class="bg-swit function-card" tabindex="-1">Suspend<p>Alt+A</p>
                             </a>
                         </div>
                     </div>
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" class="bg-swit function-card" onclick="cancel(); return false;">
+                            <a href="#" class="bg-swit function-card" onclick="cancel(); return false;" tabindex="-1">
                                 Cancel <p>Ctrl+M</p>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="wrapper_input_btn">
                 <div class="checkout-input-sec">
                     <div class="row">
                         <label for="inputEmail3" class="col-sm-3 col-form-label text-white"><b>Total:</b></label>
                         <div class="col-sm-9">
-                            <input readonly type="number" class="form-control pos-amounts" name="net_total_amount" id="net_total_amount" value="0.00">
+                            <input readonly type="number" class="form-control pos-amounts" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
                         </div>
                     </div>
 
@@ -162,13 +163,13 @@
                                 </div>
                                 
                                 <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
-                                    value="0.00">
+                                    value="0.00" tabindex="-1">
                             </div>
                         </div>
                     @else
-                        <input name="order_discount" type="hidden" id="order_discount" value="0.00">
+                        <input name="order_discount" type="hidden" id="order_discount" value="0.00" tabindex="-1">
                         <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
-                            value="0.00">
+                            value="0.00" tabindex="-1">
                         <input name="order_discount_type" class="d-none" id="order_discount_type" value="1">
                     @endif
 
@@ -189,23 +190,25 @@
                             </div>
                         </div>
                     @else
-                        <input name="order_tax" type="hidden" id="order_tax" value="0.00">
-                        <input type="hidden" name="order_tax_amount" id="order_tax_amount" value="0.00">
+                        <input name="order_tax" type="hidden" id="order_tax" value="0.00" tabindex="-1">
+                        <input type="hidden" name="order_tax_amount" id="order_tax_amount" value="0.00" tabindex="-1">
                     @endif
 
                     <div class="row">
                         <label class="col-sm-3 col-form-label text-white">Pre. Due:</label>
+
                         <div class="col-sm-9">
                             <input readonly class="form-control pos-amounts" type="number" step="any" name="previous_due"
-                                id="previous_due" value="0.00" autocomplete="off">
+                                id="previous_due" value="0.00" tabindex="-1">
                         </div>
+
                         <label class="col-sm-3 col-form-label text-white">Payable:</label>
                         <div class="col-sm-9 ">
                             <input readonly class="form-control pos-amounts" type="number" step="any"
-                                name="total_payable_amount" id="total_payable_amount" value="0.00">
+                                name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
                                 
                             <input class="d-none" type="number" step="any" name="total_invoice_payable"
-                                id="total_invoice_payable" value="0.00">
+                                id="total_invoice_payable" value="0.00" tabindex="-1">
                         </div>
                     </div>
 
@@ -227,7 +230,7 @@
                         <label class="col-sm-6 col-form-label text-white">Change Amount:</label>
                         <div class="col-sm-6 ">
                             <input readonly type="text" name="change_amount" id="change_amount" value="0.00"
-                                class="form-control pos-amounts">
+                                class="form-control pos-amounts" tabindex="-1">
                         </div>
                     </div>
 
@@ -235,7 +238,7 @@
                         <label class="col-sm-6 col-form-label text-danger"><b>Due :</b></label>
                         <div class="col-sm-6 ">
                             <input type="text" readonly name="total_due" id="total_due" value="0.00"
-                                class="form-control pos-amounts text-danger">
+                                class="form-control pos-amounts text-danger" tabindex="-1">
                         </div>
                     </div>
                 </div>
@@ -254,17 +257,17 @@
                                             toastr.error('Full credit sale is disabled.');
                                         "
                                     @endif
-                                ><i class="fas fa-check"></i> Credit Sale</a>
+                                    tabindex="-1"><i class="fas fa-check"></i> Credit Sale</a>
                             </div>
                     
                             <div class="btn-bg">
-                                <a href="#" class="bg-parpal btn-pos" id="reedem_point_button">Reedem Point</a>
+                                <a href="#" class="bg-parpal btn-pos" id="reedem_point_button" tabindex="-1">Reedem Point</a>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">
                             <div class="btn-bg">
-                                <a href="#" class="bg-parpal function-card other_payment_method">
+                                <a href="#" class="bg-parpal function-card other_payment_method" tabindex="-1">
                                     <small><i class="fas fa-credit-card"></i> Other Method</small>
                                     <p>Ctrl+B</p>
                                 </a>
@@ -274,7 +277,7 @@
                         <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">
                             <div class="btn-bg">
                                 <a href="#" class="bg-parpal function-card cash-btn" id="submit_btn" data-button_type="1"
-                                    data-action_id="1">
+                                    data-action_id="1" tabindex="-1">
                                     <small><i class="far fa-money-bill-alt"></i> Cash </small>
                                     <p>F10</p>
                                 </a>

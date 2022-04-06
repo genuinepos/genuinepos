@@ -48,6 +48,7 @@
 
                                         <div class="col-md-2">
                                             @if (count($warehouses) > 0)
+                                            <input type="hidden" value="YES" name="store_warehouse_count">
                                                 <label > <b>Store Location : </b> <span
                                                     class="text-danger">*</span></label>
                                                 <select class="form-control changeable add_input"
@@ -57,7 +58,7 @@
                                                         <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                                     @endforeach
                                                 </select>
-                                                <span class="error error_warehouse_id"></span>
+                                                <span class="error error_store_warehouse_id"></span>
                                             @else
                                                 <label><b>Store Location :</b> </label>
                                                 <input readonly type="text" name="store_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}"/>
@@ -77,7 +78,8 @@
 
                                         <div class="col-md-2">
                                             @if (count($warehouses) > 0)
-                                                <label > <b>Ingredials Stock Location : </b> <span
+                                                <input type="hidden" value="YES" name="stock_warehouse_count">
+                                                <label> <b>Ingredials Stock Location : </b> <span
                                                     class="text-danger">*</span></label>
                                                 <select class="form-control changeable add_input"
                                                     name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id">
@@ -514,7 +516,7 @@
             if (errorCount > 0) {
 
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
                 return;
             }
 
@@ -558,7 +560,7 @@
                         return;
                     }
                     
-                    toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
 
                     $.each(err.responseJSON.errors, function(key, error) {
                         $('.error_' + key + '').html(error[0]);

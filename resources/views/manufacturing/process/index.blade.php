@@ -131,11 +131,11 @@
 
                             <div class="form-group row mt-3">
                                 <div class="col-md-12">
-                                    <button type="button" class="btn loading_button d-none"><i
-                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                    <button type="button" class="btn loading_button d-none">
+                                        <i class="fas fa-spinner text-primary"></i><b> Loading...</b>
+                                    </button>
                                     <button type="submit" class="c-btn me-0 btn_blue float-end submit_button">Save</button>
-                                    <button type="reset" data-bs-dismiss="modal"
-                                        class="c-btn btn_orange float-end">Close</button>
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                                 </div>
                             </div>
                         </form>
@@ -190,8 +190,11 @@
         //Show process view modal with data
         $(document).on('click', '#view', function (e) {
            e.preventDefault();
+
            var url = $(this).attr('href');
+
             $.get(url, function(data) {
+
                 $('#view-modal-content').html(data);
                 $('#viewModal').modal('show');
             });
@@ -199,8 +202,10 @@
 
         $(document).on('click', '#delete',function(e){ 
             e.preventDefault(); 
+
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);   
+
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure to delete?',
@@ -214,13 +219,16 @@
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();
+
             var url = $(this).attr('action');
             var request = $(this).serialize();
+
             $.ajax({
                 url:url,
                 type:'post',
                 data:request,
                 success:function(data){
+
                     table.ajax.reload();
                     toastr.error(data);
                 }
@@ -228,9 +236,12 @@
         });
 
         $(document).on('change', '.all', function() {
+
             if ($(this).is(':CHECKED', true)) {
+
                 $('.data_id').prop('checked', true);
             } else {
+
                 $('.data_id').prop('checked', false);
             }
         });

@@ -500,7 +500,7 @@
                 },
                 error: function(err) {
                     $('.loading_button').hide();
-                    toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
                     $('.error').html('');
                     $.each(err.responseJSON.errors, function(key, error) {
                         //console.log(key);
@@ -534,7 +534,7 @@
                 error: function(err) {
                     $('.loading_button').hide();
                     toastr.error('Please check again all form fields.',
-                        'Some thing want wrong.');
+                        'Some thing went wrong.');
                     $('.error').html('');
                     $('.form-control').removeClass('is-invalid');
                     $.each(err.responseJSON.errors, function(key, error) {

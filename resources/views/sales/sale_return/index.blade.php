@@ -9,7 +9,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-undo-alt"></span>
@@ -20,49 +19,47 @@
                         </div>
                     </div>
 
-                    <!-- =========================================top section button=================== -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All Sale Returns </h6>
-                                    </div>
+               
+                    <div class="row margin_row mt-1">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>Sale Return List </h6>
                                 </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">Actions</th>
-                                                    <th class="text-start">Date</th>
-                                                    <th class="text-start">Invoice ID</th>
-                                                    <th class="text-start">Parent Sale</th>
-                                                    <th class="text-start">Customer Name</th>
-                                                    <th class="text-start">From</th>
-                                                    <th class="text-start">Payment Status</th>
-                                                    <th class="text-start">Total Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                    <th class="text-start">Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start">Actions</th>
+                                                <th class="text-start">Date</th>
+                                                <th class="text-start">Invoice ID</th>
+                                                <th class="text-start">Parent Sale</th>
+                                                <th class="text-start">Customer Name</th>
+                                                <th class="text-start">From</th>
+                                                {{-- <th class="text-start">Payment Status</th> --}}
+                                                <th class="text-start">Total Returned Amount</th>
+                                                {{-- <th class="text-start">Payment Due</th> --}}
+                                                <th class="text-start">Refunded Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -136,7 +133,7 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        var table = $('.data_tbl').DataTable({
+        var sales_table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [ 
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -145,19 +142,26 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [[1, 'asc']],
+            // aaSorting: [[1, 'asc']],
             ajax: "{{ route('sales.returns.index') }}",
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            columnDefs: [{
+                "targets": [0, 6,],
+                "orderable": false,
+                "searchable": false
+            }],
             columns: [
                 {data: 'action'},
                 {data: 'date', name: 'date'},
-                {data: 'invoice_id',name: 'invoice_id'},
-                {data: 'parent_invoice_id',name: 'parent_invoice_id'},
-                {data: 'customer',name: 'customer'},
-                {data: 'from',name: 'from'},
-                {data: 'payment_status',name: 'payment_status'},
-                {data: 'total_return_amount',name: 'total_return_amount', className: 'text-end'},
-                {data: 'total_return_due',name: 'total_return_due', className: 'text-end'},
+                {data: 'invoice_id', name: 'sale_returns.invoice_id'},
+                {data: 'parent_invoice_id', name: 'sales.invoice_id'},
+                {data: 'customer', name: 'customers.name'},
+                {data: 'from', name: 'branches.name'},
+                // {data: 'payment_status', name: 'payment_status'},
+                {data: 'total_return_amount', name: 'total_return_amount', className: 'text-end'},
+                // {data: 'total_return_due', name: 'total_return_due', className: 'text-end'},
+                 {data: 'total_return_due_pay', name: 'total_return_due_pay', className: 'text-end'},
             ],
         });
 
@@ -165,7 +169,9 @@
             e.preventDefault();
             var url = $(this).attr('href');
             $('.data_preloader').show();
+
             $.get(url, function(data) {
+
                 $('#sale_return_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
@@ -177,66 +183,12 @@
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Pay Return Amount');
+
             $.get(url, function(data) {
+
                 $('.data_preloader').hide();
                 $('#payment-modal-body').html(data); 
                 $('#paymentModal').modal('show'); 
-            });
-        });
-
-        //Add sale payment request by ajax
-        $(document).on('submit', '#sale_payment_form', function(e) {
-            e.preventDefault();
-            $('.loading_button').show();
-            $('.submit_button').prop('type', 'button');
-            var available_amount = $('#available_amount').val();
-            var paying_amount = $('#p_amount').val();
-            if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
-                $('.error_p_amount').html('Paying amount must not be greater then due amount.');
-                $('.loading_button').hide();
-                return;
-            }
-
-            var url = $(this).attr('action');
-            var inputs = $('.p_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
-            $.each(inputs, function(key, val) {
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing want wrong.'); 
-                return;
-            }
-
-            $.ajax({
-                url:url,
-                type:'post',
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success:function(data){
-                    $('.submit_button').prop('type', 'submit');
-                    if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR'); 
-                        $('.loading_button').hide();
-                    } else {
-                        $('.loading_button').hide();
-                        $('#paymentModal').modal('hide');
-                        $('#paymentViewModal').modal('hide');
-                        table.ajax.reload();
-                        toastr.success(data); 
-                    }
-                }
             });
         });
 
@@ -244,7 +196,9 @@
         $(document).on('click', '#view_payment', function (e) {
            e.preventDefault();
            var url = $(this).attr('href');
+
             $.get(url, function(data) {
+
                 $('#payment_view_modal_body').html(data);
                 $('#paymentViewModal').modal('show');
             });
@@ -254,7 +208,9 @@
         $(document).on('click', '#payment_details', function (e) {
            e.preventDefault();
            var url = $(this).attr('href');
+
             $.get(url, function(data) {
+
                 $('.payment_details_area').html(data);
                 $('#paymentDetailsModal').modal('show');
             });
@@ -263,10 +219,13 @@
         // show payment edit modal with data
         $(document).on('click', '#edit_return_payment', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Edit Return Payment');
+
             $.get(url, function(data) {
+
                 $('.data_preloader').hide();
                 $('#payment-modal-body').html(data); 
                 $('#paymentModal').modal('show'); 
@@ -276,7 +235,8 @@
         $(document).on('click', '#delete',function(e) {
             e.preventDefault(); 
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);     
+
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -297,10 +257,14 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    table.ajax.reload();
+
+                    sales_table.ajax.reload();
+
                     if (!$.isEmptyObject(data.errorMsg)) {
+
                         toastr.error(data.errorMsg);
                     } else {
+
                         toastr.error(data);
                     }
                 }
@@ -310,6 +274,7 @@
         // Make print
         $(document).on('click', '.print_btn',function (e) {
            e.preventDefault(); 
+
             var body = $('.sale_return_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
@@ -329,6 +294,7 @@
             var body = $('.sale_payment_print_area').html();
             var header = $('.print_header').html();
             var footer = $('.signature_area').html();
+
             $(body).printThis({
                 debug: false,                   
                 importCSS: true,                
@@ -344,7 +310,9 @@
         $(document).on('click', '#delete_payment',function(e){
             e.preventDefault(); 
             var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);       
+
+            $('#payment_deleted_form').attr('action', url);    
+
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -365,7 +333,8 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    table.ajax.reload();
+
+                    sales_table.ajax.reload();
                     toastr.error(data);
                     $('#paymentViewModal').modal('hide');
                 }

@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Sale;
 use App\Models\Account;
 use App\Models\Customer;
+use App\Models\SaleReturn;
 use App\Models\PaymentMethod;
 use App\Models\CustomerLedger;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,11 @@ class SalePayment extends Model
     public function sale()
     {
         return $this->belongsTo(Sale::class, 'sale_id');
+    }
+
+    public function sale_return()
+    {
+        return $this->belongsTo(SaleReturn::class, 'sale_return_id');
     }
 
     public function account()

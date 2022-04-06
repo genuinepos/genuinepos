@@ -244,7 +244,7 @@
                 {data: 'date', name: 'date'},
                 {data: 'reference_no', name: 'reference_no'},
                 {data: 'from', name: 'branches.name'},
-                {data: 'product', name: 'product.name'},
+                {data: 'product', name: 'products.name'},
                 {data: 'status', name: 'productions.is_final'},
                 {data: 'unit_cost_inc_tax', name: 'unit_cost_inc_tax', className: 'text-end'},
                 {data: 'price_exc_tax', name: 'price_exc_tax', className: 'text-end'},
@@ -253,6 +253,7 @@
                 {data: 'production_cost', name: 'production_cost', className: 'text-end'},
                 {data: 'total_cost', name: 'total_cost', className: 'text-end'},
             ],fnDrawCallback: function() {
+
                 var total_final_quantity = sum_table_col($('.data_tbl'), 'total_final_quantity');
                 $('#total_final_quantity').text(bdFormat(total_final_quantity));
                 var total_ingredient_cost = sum_table_col($('.data_tbl'), 'total_ingredient_cost');
@@ -268,7 +269,9 @@
         function sum_table_col(table, class_name) {
             var sum = 0;
             table.find('tbody').find('tr').each(function() {
+
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
+
                     sum += parseFloat(
                         $(this).find('.' + class_name).data('value')
                     );
@@ -278,16 +281,20 @@
         }
 
         @if ($addons->branches == 1)
+
             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+            
                 $(document).on('change', '#branch_id', function () {
                     var branch_id = $(this).val();
                     $.ajax({
-                        url:"{{ url('reports/stock/branch/warehouse') }}"+"/"+branch_id,
+                        url:"{{ url('common/ajax/call/branch/warehouse') }}"+"/"+branch_id,
                         type:'get',
                         success:function(data){
+
                             $('#warehouse_id').empty();
                             $('#warehouse_id').append('<option value="">All</option>');
                             $.each(data, function (key, val) {
+
                                 $('#warehouse_id').append('<option value="'+val.id+'">'+val.warehouse_name+'/'+val.warehouse_code+'</option>');
                             });
                         }

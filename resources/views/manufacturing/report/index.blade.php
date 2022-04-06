@@ -278,7 +278,7 @@
                 {data: 'date', name: 'date'},
                 {data: 'reference_no', name: 'reference_no'},
                 {data: 'from', name: 'branches.name'},
-                {data: 'product', name: 'product.name'},
+                {data: 'product', name: 'products.name'},
                 {data: 'status', name: 'productions.is_final'},
                 {data: 'unit_cost_inc_tax', name: 'unit_cost_inc_tax', className: 'text-end'},
                 {data: 'price_exc_tax', name: 'price_exc_tax', className: 'text-end'},
@@ -289,6 +289,7 @@
                 {data: 'production_cost', name: 'production_cost', className: 'text-end'},
                 {data: 'total_cost', name: 'total_cost', className: 'text-end'},
             ],fnDrawCallback: function() {
+
                 var quantity = sum_table_col($('.data_tbl'), 'quantity');
                 $('#quantity').text(bdFormat(quantity));
                 var wasted_quantity = sum_table_col($('.data_tbl'), 'wasted_quantity');
@@ -308,7 +309,9 @@
         function sum_table_col(table, class_name) {
             var sum = 0;
             table.find('tbody').find('tr').each(function() {
+
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
+
                     sum += parseFloat(
                         $(this).find('.' + class_name).data('value')
                     );
@@ -318,16 +321,21 @@
         }
 
         @if ($addons->branches == 1)
+
             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+
                 $(document).on('change', '#branch_id', function () {
+
                     var branch_id = $(this).val();
                     $.ajax({
-                        url:"{{ url('reports/stock/branch/warehouse') }}"+"/"+branch_id,
+                        url:"{{ url('common/ajax/call/branch/warehouse') }}"+"/"+branch_id,
                         type:'get',
                         success:function(data){
+
                             $('#warehouse_id').empty();
                             $('#warehouse_id').append('<option value="">All</option>');
                             $.each(data, function (key, val) {
+
                                 $('#warehouse_id').append('<option value="'+val.id+'">'+val.warehouse_name+'/'+val.warehouse_code+'</option>');
                             });
                         }
@@ -339,6 +347,7 @@
         //Submit filter form by select input changing
         $(document).on('click', '#filter_button', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             production_table.ajax.reload();
         });
@@ -349,6 +358,7 @@
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $.get(url, function(data) {
+
                 $('#production_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
@@ -358,6 +368,7 @@
         // Make print
         $(document).on('click', '.print_btn', function(e) {
             e.preventDefault();
+
             var body = $('.production_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
@@ -371,62 +382,72 @@
             });
         });
 
-            //Submit filter form by date-range field blur 
-    $(document).on('click', '#search_product', function () {
-        $(this).val('');
-        $('#product_id').val('');
-        $('#variant_id').val('');
-    });
-
-    $('#search_product').on('input', function () {
-        $('.search_result').hide();
-        $('#list').empty();
-        var product_name = $(this).val();
-        if (product_name === '') {
-            $('.search_result').hide();
+        //Submit filter form by date-range field blur 
+        $(document).on('click', '#search_product', function () {
+            $(this).val('');
             $('#product_id').val('');
             $('#variant_id').val('');
-            return;
-        }
-
-        $.ajax({
-            url:"{{ url('reports/product/purchases/search/product') }}"+"/"+product_name,
-            async:true,
-            type:'get',
-            success:function(data){
-                if (!$.isEmptyObject(data.noResult)) {
-                    $('.search_result').hide();
-                }else{
-                    $('.search_result').show();
-                    $('#list').html(data);
-                }
-            }
         });
-    });
 
-    $(document).on('click', '#select_product', function (e) {
-        e.preventDefault();
-        var product_name = $(this).html();
-        $('#search_product').val(product_name.trim());
-        var product_id = $(this).data('p_id');
-        var variant_id = $(this).data('v_id');
-        $('#product_id').val(product_id);
-        $('#variant_id').val(variant_id);
-        $('.search_result').hide();
-    });
+        $('#search_product').on('input', function () {
 
-    $('body').keyup(function(e) {
-        if (e.keyCode == 13 || e.keyCode == 9){  
-            $(".selectProduct").click();
             $('.search_result').hide();
             $('#list').empty();
-        }
-    });
+            var product_name = $(this).val();
 
-    $(document).on('mouseenter', '#list>li>a',function () {
-        $('#list>li>a').removeClass('selectProduct');
-        $(this).addClass('selectProduct');
-    });
+            if (product_name === '') {
+
+                $('.search_result').hide();
+                $('#product_id').val('');
+                $('#variant_id').val('');
+                return;
+            }
+
+            $.ajax({
+                url:"{{ url('reports/product/purchases/search/product') }}"+"/"+product_name,
+                async:true,
+                type:'get',
+                success:function(data){
+
+                    if (!$.isEmptyObject(data.noResult)) {
+
+                        $('.search_result').hide();
+                    }else{
+
+                        $('.search_result').show();
+                        $('#list').html(data);
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#select_product', function (e) {
+            e.preventDefault();
+
+            var product_name = $(this).html();
+            $('#search_product').val(product_name.trim());
+            var product_id = $(this).data('p_id');
+            var variant_id = $(this).data('v_id');
+            $('#product_id').val(product_id);
+            $('#variant_id').val(variant_id);
+            $('.search_result').hide();
+        });
+
+        $('body').keyup(function(e) {
+
+            if (e.keyCode == 13 || e.keyCode == 9){  
+
+                $(".selectProduct").click();
+                $('.search_result').hide();
+                $('#list').empty();
+            }
+        });
+
+        $(document).on('mouseenter', '#list>li>a',function () {
+
+            $('#list>li>a').removeClass('selectProduct');
+            $(this).addClass('selectProduct');
+        });
    </script>
 
     <script type="text/javascript">
@@ -444,6 +465,7 @@
                 other: 'nights'
             },
             tooltipNumber: (totalDays) => {
+                
                 return totalDays - 1;
             },
             format: 'DD-MM-YYYY'

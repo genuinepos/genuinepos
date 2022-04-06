@@ -45,6 +45,7 @@
                                             </div>
 
                                             @if ($purchase->warehouse_id)
+                                                <input name="warehouse_count" value="YES" type="hidden"/>
                                                 <div class="input-group mt-1">
                                                     <label class="col-4"><b>Warehouse :</b><span
                                                         class="text-danger">*</span></label>

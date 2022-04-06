@@ -1570,3 +1570,9 @@ table.display tbody tr:hover {
 .stock_quantity {font-weight: 600;font-size: 12px;}
 
 .shortcut-key-info{font-size: 9px!important;color: gray;}
+
+.bold_input_field{font-weight: 600;}
+
+.text_color_updated {
+    color: #eaad22!important;
+}

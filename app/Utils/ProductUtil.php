@@ -253,7 +253,6 @@ class ProductUtil
         $addRowInPurchaseProductTable->quantity = $quantity;
         $addRowInPurchaseProductTable->left_qty = $quantity;
         $addRowInPurchaseProductTable->line_total = $subtotal;
-        $addRowInPurchaseProductTable->left_qty = $quantity;
         $addRowInPurchaseProductTable->created_at = date('Y-m-d H:i:s');
         $addRowInPurchaseProductTable->branch_id = auth()->user()->branch_id;
         $addRowInPurchaseProductTable->save();

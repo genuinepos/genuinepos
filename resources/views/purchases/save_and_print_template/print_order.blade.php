@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h1 class="bill_name">Purchase Order Bill</h1>
+                            <h4 class="bill_name">PURCHASE ORDER BILL</h4>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
@@ -172,7 +172,7 @@
                 </div>
 
                 <div class="col-6">
-                    <table class="table table-sm table-bordered">
+                    <table class="table modal-table table-sm table-bordered">
                         <thead>
                             <tr>
                                 <th colspan="11" class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>

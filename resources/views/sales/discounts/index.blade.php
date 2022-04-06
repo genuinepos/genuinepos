@@ -13,7 +13,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-people-arrows"></span>
-                                <h5>Discounts</h5>
+                                <h5>Manage Offer</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
@@ -23,7 +23,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
-                                    <h6>Discount List</h6>
+                                    <h6>Offer List</h6>
                                 </div>
 
                                 <div class="col-md-6">
@@ -43,7 +43,7 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr class="text-start">
-                                                <th>Name</th>
+                                                <th>Offer Name</th>
                                                 <th>Business Location</th>
                                                 <th>Status</th>
                                                 <th>Start At</th>
@@ -78,7 +78,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Discount</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Add Offer</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -91,7 +91,7 @@
                             <div class="col-md-12">
                                 <label><strong>Name :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control add_input"
-                                    data-name="Discount name" id="name" placeholder="Discount name" />
+                                    data-name="Discount name" id="name" placeholder="Offer name" />
                                 <span class="error error_name"></span>
                             </div>
                         </div>
@@ -108,13 +108,13 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
                                 <label><strong>Start At :</strong> </label>
-                                <input type="text" name="start_at" id="start_at" class="form-control add_input">
+                                <input type="text" name="start_at" id="start_at" class="form-control add_input" autocomplete="off">
                                 <span class="error error_start_at"></span>
                             </div>
 
                             <div class="col-md-6">
                                 <label><strong>End At :</strong></label>
-                                <input type="text" name="end_at" id="end_at" class="form-control add_input">
+                                <input type="text" name="end_at" id="end_at" class="form-control add_input" autocomplete="off">
                                 <span class="error error_end_at"></span>
                             </div>
                         </div>
@@ -123,8 +123,8 @@
                             <div class="col-md-12">
                                 <label><strong>Products :</strong> </label>
                                 <select name="product_ids[]" class="form-control select2" multiple="multiple" id="product_ids">
+                                   
                                     @foreach ($products as $product)
-                                        
                                         <option value="{{ $product->id }}">{{ $product->name.' ('.$product->product_code.')' }}</option>
                                     @endforeach
                                 </select>
@@ -135,6 +135,7 @@
                             <div class="col-md-6">
                                 <label><strong>Brand :</strong> </label>
                                 <select name="brand_id" id="brand_id" class="form-control add_input">
+                                    <option value="">Please select </option>
                                     @foreach ($brands as $brand)
                                         <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                     @endforeach
@@ -144,6 +145,7 @@
                             <div class="col-md-6">
                                 <label><strong>Category :</strong></label>
                                 <select name="category_id" id="category_id" class="form-control add_input">
+                                    <option value="">Please select </option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
@@ -224,7 +226,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Discount</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Offer</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>

@@ -1,13 +1,13 @@
 <?php
 
+use App\Models\Bank;
+use App\Utils\Converter;
 use App\Models\AdminAndUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\DashboardController;
-use App\Models\ProductBranch;
 
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
@@ -37,6 +37,12 @@ Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controlle
     Route::get('only/search/product/for/reports/{product_name}', 'CommonAjaxCallController@onlySearchProductForReports');
     Route::get('search/final/sale/invoices/{invoiceId}', 'CommonAjaxCallController@searchFinalSaleInvoices');
     Route::get('get/sale/products/{saleId}', 'CommonAjaxCallController@getSaleProducts');
+    Route::get('customer_info/{customerId}', 'CommonAjaxCallController@customerInfo');
+    Route::get('recent/sales/{create_by}', 'CommonAjaxCallController@recentSale');
+    Route::get('recent/quotations/{create_by}', 'CommonAjaxCallController@recentQuotations');
+    Route::get('recent/drafts/{create_by}', 'CommonAjaxCallController@recentDrafts');
+    Route::get('branch/warehouse/{branch_id}', 'CommonAjaxCallController@branchWarehouses');
+    Route::get('branch/allow/login/users/{branchId}', 'CommonAjaxCallController@branchAllowLoginUsers');
 });
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
@@ -73,7 +79,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::get('edit/{id}', 'BrandController@edit')->name('product.brands.edit');
     });
 
-    // products route group
+    // Products route group
     Route::group(['prefix' => '/'], function () {
 
         Route::get('all', 'ProductController@allProduct')->name('products.all.product');
@@ -102,6 +108,8 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::post('add/brand', 'ProductController@addBrand')->name('products.add.brand');
         Route::post('add/unit', 'ProductController@addUnit')->name('products.add.unit');
         Route::post('add/warranty', 'ProductController@addWarranty')->name('products.add.warranty');
+        Route::get('settings', 'ProductController@settings')->name('products.settings');
+        Route::post('settings/store', 'ProductController@settingsStore')->name('products.settings.store');
 
         Route::group(['prefix' => 'import/price/group/products'], function () {
 
@@ -163,6 +171,23 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::post('store', 'WarrantyController@store')->name('product.warranties.store');
         Route::post('update', 'WarrantyController@update')->name('product.warranties.update');
         Route::delete('delete/{warrantyId}', 'WarrantyController@delete')->name('product.warranties.delete');
+    });
+
+    Route::group(['prefix' => 'reports', 'namespace' => 'report'], function () {
+
+        Route::group(['prefix' => 'stock'], function () {
+
+            Route::get('/', 'StockReportController@index')->name('reports.stock.index');
+            Route::get('print/branch/stocks', 'StockReportController@printBranchStock')->name('reports.stock.print.branch.stock');
+            Route::get('warehouse/stock', 'StockReportController@warehouseStock')->name('reports.stock.warehouse.stock');
+            Route::get('all/parent/categories', 'StockReportController@allParentCategories')->name('reports.stock.all.parent.categories');
+        });
+
+        Route::group(['prefix' => 'stock/in/out'], function () {
+
+            Route::get('/', 'StockInOutReportController@index')->name('reports.stock.in.out.index');
+            Route::get('print', 'StockInOutReportController@print')->name('reports.stock.in.out.print');
+        });
     });
 });
 
@@ -254,6 +279,21 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
             Route::post('store', 'CustomerImportController@store')->name('contacts.customers.import.store');
         });
     });
+
+    Route::group(['prefix' => 'reports', 'namespace' => 'report'], function () {
+
+        Route::group(['prefix' => 'suppliers'], function () {
+
+            Route::get('/', 'SupplierReportController@index')->name('reports.supplier.index');
+            Route::get('print', 'SupplierReportController@print')->name('reports.supplier.print');
+        });
+
+        Route::group(['prefix' => 'customers'], function () {
+
+            Route::get('/', 'CustomerReportController@index')->name('reports.customer.index');
+            Route::get('print', 'CustomerReportController@print')->name('reports.customer.print');
+        });
+    });
 });
 
 // Purchase route group
@@ -275,8 +315,6 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::get('get/all/tax', 'PurchaseController@getAllTax')->name('purchases.get.all.taxes');
     Route::get('search/product/{product_code}', 'PurchaseController@searchProduct');
     Route::delete('delete/{purchaseId}', 'PurchaseController@delete')->name('purchase.delete');
-    Route::get('change/status/modal/{purchaseId}', 'PurchaseController@changeStatusModal')->name('purchases.change.status.modal');
-    Route::post('change/status/{purchaseId}', 'PurchaseController@changeStatus')->name('purchases.change.status');
     Route::post('add/supplier', 'PurchaseController@addSupplier')->name('purchases.add.supplier');
     Route::get('add/product/modal/view', 'PurchaseController@addProductModalVeiw')->name('purchases.add.product.modal.view');
     Route::post('add/product', 'PurchaseController@addProduct')->name('purchases.add.product');
@@ -295,6 +333,8 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::get('payment/details/{paymentId}', 'PurchaseController@paymentDetails')->name('purchases.payment.details');
     Route::delete('payment/delete/{paymentId}', 'PurchaseController@paymentDelete')->name('purchases.payment.delete');
     Route::get('payment/list/{purchaseId}', 'PurchaseController@paymentList')->name('purchase.payment.list');
+    Route::get('settings', 'PurchaseController@settings')->name('purchase.settings');
+    Route::post('settings/store', 'PurchaseController@settingsStore')->name('purchase.settings.store');
 
     Route::group(['prefix' => '/'], function () {
 
@@ -335,6 +375,35 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
 
         Route::post('return/payments/{returnId}', 'PurchaseReturnController@returnPaymentList')->name('purchases.returns.purchase.return.payment.list');
     });
+
+    Route::group(['prefix' => 'reports', 'namespace' => 'report'], function () {
+
+        Route::group(['prefix' => 'purchase/statements'], function () {
+
+            Route::get('/', 'PurchaseStatementController@index')->name('reports.purchases.statement.index');
+            Route::get('print', 'PurchaseStatementController@print')->name('reports.purchases.statement.print');
+        });
+
+        Route::group(['prefix' => 'product/purchases'], function () {
+
+            Route::get('/', 'ProductPurchaseReportController@index')->name('reports.product.purchases.index');
+            Route::get('print', 'ProductPurchaseReportController@print')->name('reports.product.purchases.print');
+        });
+
+        Route::group(['prefix' => 'purchase/payments'], function () {
+
+            Route::get('/', 'PurchasePaymentReportController@index')->name('reports.purchase.payments.index');
+            Route::get('print', 'PurchasePaymentReportController@print')->name('reports.purchase.payments.print');
+        });
+
+        Route::group(['prefix' => 'sales/purchase'], function () {
+
+            Route::get('/', 'SalePurchaseReportController@index')->name('reports.sales.purchases.index');
+            Route::get('sale/purchase/amounts', 'SalePurchaseReportController@salePurchaseAmounts')->name('reports.profit.sales.purchases.amounts');
+            Route::get('filter/sale/purchase/amounts', 'SalePurchaseReportController@filterSalePurchaseAmounts')->name('reports.profit.sales.filter.purchases.amounts');
+            Route::get('print', 'SalePurchaseReportController@printSalePurchase')->name('reports.sales.purchases.print');
+        });
+    });
 });
 
 // Sale route group sales/recent/sales
@@ -357,7 +426,6 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::get('edit/{saleId}', 'SaleController@edit')->name('sales.edit');
     Route::post('update/{saleId}', 'SaleController@update')->name('sales.update');
     Route::get('get/all/customer', 'SaleController@getAllCustomer')->name('sales.get.all.customer');
-    Route::get('customer_info/{customerId}', 'SaleController@customerInfo');
     Route::get('get/all/users', 'SaleController@getAllUser')->name('sales.get.all.users');
     Route::get('get/all/unit', 'SaleController@getAllUnit')->name('sales.get.all.unites');
     Route::get('get/all/tax', 'SaleController@getAllTax')->name('sales.get.all.taxes');
@@ -366,13 +434,10 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::get('edit/shipment/{saleId}', 'SaleController@editShipment')->name('sales.shipment.edit');
     Route::post('update/shipment/{saleId}', 'SaleController@updateShipment')->name('sales.shipment.update');
     Route::post('change/status/{saleId}', 'SaleController@changeStatus')->name('sales.change.status');
-    Route::get('check/branch/variant/qty/{status}/{product_id}/{variant_id}', 'SaleController@checkBranchProductVariant');
-    Route::get('check/single/product/stock/{status}/{product_id}', 'SaleController@checkBranchSingleProductStock');
+    Route::get('check/branch/variant/qty/{status}/{product_id}/{variant_id}/{price_group_id}', 'SaleController@checkBranchProductVariant');
+    Route::get('check/single/product/stock/{status}/{product_id}/{price_group_id}', 'SaleController@checkBranchSingleProductStock');
 
     Route::get('shipments', 'SaleController@shipments')->name('sales.shipments');
-    Route::get('recent/sales', 'SaleController@recentSale')->name('sales.recent.sales');
-    Route::get('recent/quotations', 'SaleController@recentQuotations')->name('sales.recent.quotations');
-    Route::get('recent/drafts', 'SaleController@recentDrafts')->name('sales.recent.drafts');
 
     // Sale payment route
     Route::get('payment/{saleId}', 'SaleController@paymentModal')->name('sales.payment.modal');
@@ -397,18 +462,26 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
 
     Route::get('notification/form/{saleId}', 'SaleController@getNotificationForm')->name('sales.notification.form');
 
+    Route::get('settings', 'SaleController@settings')->name('sales.add.sale.settings');
+    Route::post('settings/store', 'SaleController@settingsStore')->name('sales.add.sale.settings.store');
+
     // Sale return route
     Route::group(['prefix' => 'returns'], function () {
 
         Route::get('/', 'SaleReturnController@index')->name('sales.returns.index');
         Route::get('show/{returnId}', 'SaleReturnController@show')->name('sales.returns.show');
-        Route::get('add/{saleId}', 'SaleReturnController@create')->name('sales.returns.create');
-        Route::get('get/sale/{saleId}', 'SaleReturnController@getSale')->name('sales.returns.get.sale');
-        Route::post('store/{saleId}', 'SaleReturnController@store')->name('sales.returns.store');
-        Route::delete('delete/{saleReturnId}', 'SaleReturnController@delete')->name('sales.returns.delete');
-        Route::get('payment/list/{saleId}', 'SaleReturnController@returnPaymentList')->name('sales.returns.payment.list');
 
-        Route::get('create/v2', 'SaleReturnController@createV2')->name('sale.return.create.v2');
+        Route::delete('delete/{saleReturnId}', 'SaleReturnController@delete')->name('sales.returns.delete');
+        Route::get('payment/list/{returnId}', 'SaleReturnController@returnPaymentList')->name('sales.returns.payment.list');
+
+        Route::group(['prefix' => 'random'], function () {
+
+            Route::get('create', 'RandomSaleReturnController@create')->name('sale.return.random.create');
+            Route::post('store', 'RandomSaleReturnController@store')->name('sale.return.random.store');
+            Route::get('edit/{returnId}', 'RandomSaleReturnController@edit')->name('sale.return.random.edit');
+            Route::post('update/{returnId}', 'RandomSaleReturnController@update')->name('sale.return.random.update');
+            Route::get('search/product/{product_code}', 'RandomSaleReturnController@searchProduct');
+        });
     });
 
     //Pos cash register routes
@@ -432,9 +505,6 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
         Route::get('edit/{saleId}', 'POSController@edit')->name('sales.pos.edit');
         Route::get('invoice/products/{saleId}', 'POSController@invoiceProducts')->name('sales.pos.invoice.products');
         Route::post('update', 'POSController@update')->name('sales.pos.update');
-        Route::get('recent/sales', 'POSController@recentSales');
-        Route::get('recent/quotations', 'POSController@recentQuotations');
-        Route::get('recent/drafts', 'POSController@recentDrafts');
         Route::get('suspended/sale/list', 'POSController@suspendedList')->name('sales.pos.suspended.list');
         Route::get('branch/stock', 'POSController@branchStock')->name('sales.pos.branch.stock');
         Route::get('add/customer/modal', 'POSController@addQuickCustomerModal')->name('sales.pos.add.quick.customer.modal');
@@ -444,6 +514,8 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
         Route::get('search/exchangeable/invoice', 'POSController@searchExchangeableInv')->name('sales.pos.serc.ex.inv');
         Route::post('prepare/exchange', 'POSController@prepareExchange')->name('sales.pos.prepare.exchange');
         Route::post('exchange/confirm', 'POSController@exchangeConfirm')->name('sales.pos.exchange.confirm');
+        Route::get('settings', 'POSController@settings')->name('sales.pos.settings');
+        Route::post('settings/store', 'POSController@settingsStore')->name('sales.pos.settings.store');
     });
 
     //Sale discount routes
@@ -455,6 +527,47 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
         Route::post('update/{discountId}', 'DiscountController@update')->name('sales.discounts.update');
         Route::get('change/status/{discountId}', 'DiscountController@changeStatus')->name('sales.discounts.change.status');
         Route::delete('delete/{discountId}', 'DiscountController@delete')->name('sales.discounts.delete');
+    });
+
+    Route::group(['prefix' => 'reports', 'namespace' => 'report'], function () {
+
+        Route::group(['prefix' => 'sold/products'], function () {
+
+            Route::get('/', 'ProductSaleReportController@index')->name('reports.product.sales.index');
+            Route::get('print', 'ProductSaleReportController@print')->name('reports.product.sales.print');
+        });
+
+        Route::group(['prefix' => 'received/payments'], function () {
+
+            Route::get('/', 'SalePaymentReportController@index')->name('reports.sale.payments.index');
+            Route::get('print', 'SalePaymentReportController@print')->name('reports.sale.payments.print');
+        });
+
+        Route::group(['prefix' => 'cash/registers'], function () {
+
+            Route::get('/', 'CashRegisterReportController@index')->name('reports.cash.registers.index');
+            Route::get('get', 'CashRegisterReportController@getCashRegisterReport')->name('reports.get.cash.registers');
+            Route::get('details/{cashRegisterId}', 'CashRegisterReportController@detailsCashRegister')->name('reports.get.cash.register.details');
+            Route::get('report/print', 'CashRegisterReportController@reportPrint')->name('reports.get.cash.register.report.print');
+        });
+
+        Route::group(['prefix' => 'sale/representative'], function () {
+
+            Route::get('/', 'SaleRepresentiveReportController@index')->name('reports.sale.representive.index');
+            Route::get('expenses', 'SaleRepresentiveReportController@SaleRepresentiveExpenseReport')->name('reports.sale.representive.expenses');
+        });
+
+        Route::group(['prefix' => 'sale/statements'], function () {
+
+            Route::get('/', 'SaleStatementController@index')->name('reports.sale.statement.index');
+            Route::get('print', 'SaleStatementController@print')->name('reports.sale.statement.print');
+        });
+
+        Route::group(['prefix' => 'return/statements'], function () {
+
+            Route::get('/', 'SaleReturnStatementController@index')->name('reports.sale.return.statement.index');
+            Route::get('print', 'SaleReturnStatementController@print')->name('reports.sale.return.statement.print');
+        });
     });
 });
 
@@ -508,6 +621,7 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
         Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', 'TransferStockBranchToBranchController@checkVariantProductStock');
 
         Route::group(['prefix' => 'receive'], function () {
+
             Route::get('receivable/list', 'ReceiveTransferBranchToBranchController@receivableList')->name('transfer.stock.branch.to.branch.receivable.list');
 
             Route::get('show/{transferId}', 'ReceiveTransferBranchToBranchController@show')->name('transfer.stock.branch.to.branch.receivable.show');
@@ -536,6 +650,13 @@ Route::group(['prefix' => 'stock/adjustments', 'namespace' => 'App\Http\Controll
     Route::get('check/variant/product/stock/{product_id}/{variant_id}', 'StockAdjustmentController@checkVariantProductStock');
     Route::get('check/variant/product/stock/in/warehouse/{product_id}/{variant_id}/{warehouse_id}', 'StockAdjustmentController@checkVariantProductStockInWarehouse');
     Route::delete('delete/{adjustmentId}', 'StockAdjustmentController@delete')->name('stock.adjustments.delete');
+
+    Route::group(['prefix' => 'reports/stock/adjustments', 'namespace' => 'report'], function () {
+
+        Route::get('/', 'StockAdjustmentReportController@index')->name('reports.stock.adjustments.index');
+        Route::get('all/adjustments', 'StockAdjustmentReportController@allAdjustments')->name('reports.stock.adjustments.all');
+        Route::get('print', 'StockAdjustmentReportController@print')->name('reports.stock.adjustments.print');
+    });
 });
 
 //Transfer stock to warehouse all route
@@ -593,6 +714,12 @@ Route::group(['prefix' => 'expenses', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('store', 'ExpanseCategoryController@store')->name('expanses.categories.store');
         Route::post('update', 'ExpanseCategoryController@update')->name('expanses.categories.update');
         Route::delete('delete/{categoryId}', 'ExpanseCategoryController@delete')->name('expanses.categories.delete');
+    });
+
+    Route::group(['prefix' => 'report/expenses', 'namespace' => 'report'], function () {
+
+        Route::get('/', 'ExpanseReportController@index')->name('reports.expenses.index');
+        Route::get('print', 'ExpanseReportController@print')->name('reports.expenses.print');
     });
 });
 
@@ -692,6 +819,25 @@ Route::group(['prefix' => 'accounting', 'namespace' => 'App\Http\Controllers'], 
             Route::post('due/pay/store/{company_id}', 'LoanPaymentController@loanLiabilityPaymentStore')->name('accounting.loan.liability.payment.store');
             Route::get('payment/list/{company_id}', 'LoanPaymentController@paymentList')->name('accounting.loan.payment.list');
             Route::delete('delete/{payment_id}', 'LoanPaymentController@delete')->name('accounting.loan.payment.delete');
+        });
+    });
+
+    Route::group(['prefix' => 'reports', 'namespace' => 'report'], function () {
+
+        Route::group(['prefix' => 'daily/profit/loss'], function () {
+
+            Route::get('/', 'ProfitLossReportController@index')->name('reports.profit.loss.index');
+            Route::get('sale/purchase/profit', 'ProfitLossReportController@salePurchaseProfit')->name('reports.profit.sale.purchase.profit');
+            Route::get('filter/sale/purchase/profit/filter', 'ProfitLossReportController@filterSalePurchaseProfit')->name('reports.profit.filter.sale.purchase.profit');
+            Route::get('print', 'ProfitLossReportController@printProfitLoss')->name('reports.profit.loss.print');
+        });
+
+        Route::group(['prefix' => 'financial'], function () {
+
+            Route::get('/', 'FinancialReportControllerReport@index')->name('reports.financial.index');
+            Route::get('amounts', 'FinancialReportControllerReport@financialAmounts')->name('reports.financial.amounts');
+            Route::get('filter/amounts', 'FinancialReportControllerReport@filterFinancialAmounts')->name('reports.financial.filter.amounts');
+            Route::get('report/print', 'FinancialReportControllerReport@print')->name('reports.financial.report.print');
         });
     });
 });
@@ -848,133 +994,15 @@ Route::group(['prefix' => 'users',  'namespace' => 'App\Http\Controllers'], func
 
 Route::group(['prefix' => 'reports', 'namespace' => 'App\Http\Controllers\report'], function () {
 
-    Route::group(['prefix' => 'profit/loss'], function () {
-
-        Route::get('/', 'ProfitLossReportController@index')->name('reports.profit.loss.index');
-        Route::get('sale/purchase/profit', 'ProfitLossReportController@salePurchaseProfit')->name('reports.profit.sale.purchase.profit');
-        Route::get('filter/sale/purchase/profit/filter', 'ProfitLossReportController@filterSalePurchaseProfit')->name('reports.profit.filter.sale.purchase.profit');
-        Route::get('by', 'ProfitLossReportController@profitBy');
-        Route::get('print', 'ProfitLossReportController@printProfitLoss')->name('reports.profit.loss.print');
-    });
-
-    Route::group(['prefix' => 'sales/purchase'], function () {
-
-        Route::get('/', 'SalePurchaseReportController@index')->name('reports.sales.purchases.index');
-        Route::get('sale/purchase/amounts', 'SalePurchaseReportController@salePurchaseAmounts')->name('reports.profit.sales.purchases.amounts');
-        Route::get('filter/sale/purchase/amounts', 'SalePurchaseReportController@filterSalePurchaseAmounts')->name('reports.profit.sales.filter.purchases.amounts');
-        Route::get('print', 'SalePurchaseReportController@printSalePurchase')->name('reports.sales.purchases.print');
-    });
-
-    Route::group(['prefix' => 'suppliers'], function () {
-
-        Route::get('/', 'SupplierReportController@index')->name('reports.supplier.index');
-        Route::get('print', 'SupplierReportController@print')->name('reports.supplier.print');
-    });
-
-    Route::group(['prefix' => 'customers'], function () {
-
-        Route::get('/', 'CustomerReportController@index')->name('reports.customer.index');
-        Route::get('print', 'CustomerReportController@print')->name('reports.customer.print');
-    });
-
-    Route::group(['prefix' => 'stock'], function () {
-
-        Route::get('/', 'StockReportController@index')->name('reports.stock.index');
-        Route::get('branch/warehouse/{branch_id}', 'StockReportController@branchWarehouses');
-        Route::get('print/branch/stocks', 'StockReportController@printBranchStock')->name('reports.stock.print.branch.stock');
-        Route::get('warehouse/stock', 'StockReportController@warehouseStock')->name('reports.stock.warehouse.stock');
-        Route::get('all/parent/categories', 'StockReportController@allParentCategories')->name('reports.stock.all.parent.categories');
-    });
-
-    Route::group(['prefix' => 'stock/adjustments'], function () {
-
-        Route::get('/', 'StockAdjustmentReportController@index')->name('reports.stock.adjustments.index');
-        Route::get('all/adjustments', 'StockAdjustmentReportController@allAdjustments')->name('reports.stock.adjustments.all');
-        Route::get('print', 'StockAdjustmentReportController@print')->name('reports.stock.adjustments.print');
-    });
-
-    Route::group(['prefix' => 'product/purchases'], function () {
-
-        Route::get('/', 'ProductPurchaseReportController@index')->name('reports.product.purchases.index');
-        Route::get('search/product/{product_name}', 'ProductPurchaseReportController@searchProduct');
-        Route::get('print', 'ProductPurchaseReportController@print')->name('reports.product.purchases.print');
-    });
-
-    Route::group(['prefix' => 'product/sales'], function () {
-
-        Route::get('/', 'ProductSaleReportController@index')->name('reports.product.sales.index');
-        Route::get('print', 'ProductSaleReportController@print')->name('reports.product.sales.print');
-        Route::get('search/product/{product_name}', 'ProductSaleReportController@searchProduct');
-    });
-
-    Route::group(['prefix' => 'stock/in/out'], function () {
-
-        Route::get('/', 'StockInOutReportController@index')->name('reports.stock.in.out.index');
-        Route::get('print', 'StockInOutReportController@print')->name('reports.stock.in.out.print');
-    });
-
-    Route::group(['prefix' => 'purchase/payments'], function () {
-
-        Route::get('/', 'PurchasePaymentReportController@index')->name('reports.purchase.payments.index');
-        Route::get('print', 'PurchasePaymentReportController@print')->name('reports.purchase.payments.print');
-    });
-
-    Route::group(['prefix' => 'sale/payments'], function () {
-
-        Route::get('/', 'SalePaymentReportController@index')->name('reports.sale.payments.index');
-        Route::get('print', 'SalePaymentReportController@print')->name('reports.sale.payments.print');
-    });
-
-    Route::group(['prefix' => 'expenses'], function () {
-
-        Route::get('/', 'ExpanseReportController@index')->name('reports.expenses.index');
-        Route::get('print', 'ExpanseReportController@print')->name('reports.expenses.print');
-    });
-
-    Route::group(['prefix' => 'cash/registers'], function () {
-
-        Route::get('/', 'CashRegisterReportController@index')->name('reports.cash.registers.index');
-        Route::get('get', 'CashRegisterReportController@getCashRegisterReport')->name('reports.get.cash.registers');
-        Route::get('details/{cashRegisterId}', 'CashRegisterReportController@detailsCashRegister')->name('reports.get.cash.register.details');
-        Route::get('report/print', 'CashRegisterReportController@reportPrint')->name('reports.get.cash.register.report.print');
-    });
-
-    Route::group(['prefix' => 'sale/representive'], function () {
-
-        Route::get('/', 'SaleRepresentiveReportController@index')->name('reports.sale.representive.index');
-        Route::get('expenses', 'SaleRepresentiveReportController@SaleRepresentiveExpenseReport')->name('reports.sale.representive.expenses');
-    });
-
     Route::group(['prefix' => 'taxes'], function () {
 
         Route::get('/', 'TaxReportController@index')->name('reports.taxes.index');
         Route::get('get', 'TaxReportController@getTaxReport')->name('reports.taxes.get');
     });
 
-    Route::group(['prefix' => 'payrolls'], function () {
+    Route::group(['prefix' => 'user/activities/log'], function () {
 
-        Route::get('/', 'PayrollReportController@payrollReport')->name('reports.payroll');
-        Route::get('print', 'PayrollReportController@payrollReportPrint')->name('reports.payroll.print');
-    });
-
-    Route::group(['prefix' => 'payroll/payments'], function () {
-
-        Route::get('/', 'PayrollPaymentReportController@payrollPaymentReport')->name('reports.payroll.payment');
-        Route::get('print', 'PayrollPaymentReportController@payrollPaymentReportPrint')->name('reports.payroll.payment.print');
-    });
-
-    Route::group(['prefix' => 'attendances'], function () {
-
-        Route::get('/', 'AttendanceReportController@attendanceReport')->name('reports.attendance');
-        Route::get('print', 'AttendanceReportController@attendanceReportPrint')->name('reports.attendance.print');
-    });
-
-    Route::group(['prefix' => 'financial'], function () {
-
-        Route::get('/', 'FinancialReportControllerReport@index')->name('reports.financial.index');
-        Route::get('amounts', 'FinancialReportControllerReport@financialAmounts')->name('reports.financial.amounts');
-        Route::get('filter/amounts', 'FinancialReportControllerReport@filterFinancialAmounts')->name('reports.financial.filter.amounts');
-        Route::get('report/print', 'FinancialReportControllerReport@print')->name('reports.financial.report.print');
+        Route::get('/', 'UserActivityLogReportController@index')->name('reports.user.activities.log.index');
     });
 });
 
@@ -1030,6 +1058,10 @@ Route::get('/test', function () {
     //     $p->save();
     // }
     
+    $query = "CAST(total_sale_due AS DECIMAL(22,2)) DESC";
+    $cus = DB::table('customers')->where('id', 140)->orderByRaw($query)->first();
+
+    return $__filtered_date = gettype($cus->total_sale_due);
 });
 
 // All authenticated routes

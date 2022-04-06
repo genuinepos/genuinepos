@@ -26,9 +26,11 @@
        // Add Subcategory by ajax
        $('#add_sub_category_form').on('submit', function(e) {
            e.preventDefault();
+
            $('.loading_button').show();
            var url = $(this).attr('action');
            $('.submit_button').prop('type', 'button');
+
            $.ajax({
                url: url,
                type: 'post',
@@ -37,6 +39,7 @@
                cache: false,
                processData: false,
                success: function(data) {
+
                    toastr.success(data);
                    $('#add_sub_category_form')[0].reset();
                    $('.loading_button').hide();
@@ -44,14 +47,19 @@
                    $('.submit_button').prop('type', 'submit');
                    $('.error').html('');
                },error: function(err) {
+
                     $('.submit_button').prop('type', 'submit');
                     $('.loading_button').hide();
                     $('.error').html('');
+                    
                     if (err.status == 0) {
+
                         toastr.error('Net Connetion Error. Reload This Page.'); 
                         return;
                     }
+
                     $.each(err.responseJSON.errors, function(key, error) {
+
                         $('.error_sub_' + key + '').html(error[0]);
                     });
                }

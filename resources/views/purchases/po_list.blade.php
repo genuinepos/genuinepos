@@ -503,7 +503,7 @@
 
             if (countErrorField > 0) {
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
                 return;
             }
 

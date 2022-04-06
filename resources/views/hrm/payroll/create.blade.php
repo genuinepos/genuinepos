@@ -595,7 +595,7 @@
             error: function(err) {
                 $('.loading_button').hide();
                 toastr.error('Please check again all form fields.',
-                    'Some thing want wrong.');
+                    'Some thing went wrong.');
                 $('.error').html('');
                 $.each(err.responseJSON.errors, function(key, error) {
                     //console.log(key);

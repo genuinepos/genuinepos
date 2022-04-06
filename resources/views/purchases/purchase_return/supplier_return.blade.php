@@ -880,7 +880,7 @@
                         return;
                     }
 
-                    toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
 
                     $.each(err.responseJSON.errors, function(key, error) {
 

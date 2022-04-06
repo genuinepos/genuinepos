@@ -56,7 +56,7 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="from_date" id="datepicker"
                                                             class="form-control from_date"
@@ -69,7 +69,7 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                                    class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
                                                     </div>
@@ -190,79 +190,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row mt-1">
-                            <div class="by_profit_area">
-                                <div class="filter_form mb-1">
-                                    <form id="filter_by_profit_form" action="" method="get">
-                                        @csrf
-                                        <input type="hidden" id="profit_by" name="profit_by">
-                                        <div class="row">
-                                            <div class="col-md-3 offset-md-9">
-                                                <label><strong>Date Range :</strong></label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
-                                                    </div>
-                                                    <input readonly type="text" name="by_profit_range" id="by_profit_range" class="form-control submit_able_input2 daterange" autocomplete="off">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-            
-                                <div class="card">
-                                    <div class="card-body">
-                                        <!--begin: Datatable-->
-                                        <div class="tab_list_area">
-                                            <ul class="list-unstyled">
-                                                <li><a id="tab_btn" data-by="by_product" class="tab_btn tab_active" href=""><i
-                                                            class="fas fa-info-circle"></i> Profit By Product</a></li>
-                                                <li><a id="tab_btn" data-by="by_category" class="tab_btn" href=""><i class="fas fa-scroll"></i>
-                                                        Profit by Category</a></li>
-                                                <li><a id="tab_btn" data-by="by_brand" class="tab_btn" href=""><i
-                                                            class="fas fa-shopping-bag"></i> Profit By Brand</a></li>
-                                                <li><a id="tab_btn" data-by="by_branch" class="tab_btn" href=""><i
-                                                                class="far fa-folder-open"></i> Profit By Branch</a></li>            
-                                                <li><a id="tab_btn" data-by="by_invoice" class="tab_btn" href=""><i
-                                                            class="far fa-folder-open"></i> Profit By Invoice</a></li>
-                                            </ul>
-                                        </div>
-            
-                                        <div class="tab_contant">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="by_profit_table">
-                                                        <div class="data_preloader" id="by_profit_preloader">
-                                                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                                        </div>
-                                                        <div class="table-responsive" id="by_profit_list">
-                                                            <table class="table" id="kt_datatable">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Product</th>
-                                                                        <th>Gross Profit</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>Product Name</td>
-                                                                        <td>
-                                                                            {{ json_decode($generalSettings->business, true)['currency'] }} 0.00
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>  
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -325,44 +252,6 @@
                 });
             }
         }); 
-    });
-
-    function by_profit_data() {
-        $('#by_profit_preloader').show();
-        var profit_by = $('#profit_by').val();
-        if (profit_by == '') {
-            profit_by = 'by_product';
-        }
-
-        var by_profit_range = $('#by_profit_range').val();
-        if (by_profit_range == '') {
-            by_profit_range = 'current_year';
-        }
-
-        $.ajax({
-            url:"{{url('reports/profit/loss/by')}}",
-            type:'get',
-            data:{profit_by: profit_by, by_profit_range : by_profit_range},
-            success:function(data) {
-                $('#by_profit_list').html(data);
-                $('#by_profit_preloader').hide();
-            }
-        });
-    }
-    by_profit_data();
-
-    $(document).on('click', '#tab_btn', function(e) {
-        e.preventDefault();
-        $('.tab_btn').removeClass('tab_active');
-        var by_profit = $(this).data('by');
-        $('#profit_by').val(by_profit);
-        $(this).addClass('tab_active');
-        by_profit_data();
-    });
-
-    $(document).on('submit', '#filter_by_profit_form', function(e) {
-        e.preventDefault();
-        by_profit_data();
     });
 </script>
 

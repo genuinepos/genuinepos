@@ -21,43 +21,43 @@
             <div class="col-lg-4 col-sm-12 col-12 logo-sec">
                 <div class="pos-logo">
                     @if (auth()->user()->branch)
-                    @if (auth()->user()->branch->logo != 'default.png')
-                    <img style="height: auto;width: 99%"
-                        src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                        @if (auth()->user()->branch->logo != 'default.png')
+                            <img style="height: auto;width: 99%"
+                            src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                        @else
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
+                            auth()->user()->branch->name }}</span>
+                        @endif
                     @else
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
-                        auth()->user()->branch->name }}</span>
-                    @endif
-                    @else
-                    @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                    <img style="height: auto;width: 99%"
-                        src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
-                        alt="logo" class="logo__img">
-                    @else
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
-                        json_decode($generalSettings->business, true)['shop_name'] }}</span>
-                    @endif
+                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                        <img style="height: auto;width: 99%"
+                            src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
+                            alt="logo" class="logo__img">
+                        @else
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
+                            json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                        @endif
                     @endif
                 </div>
             </div>
 
             <div class="col-lg-8 col-sm-12 col-12 address">
                 @if ($openedCashRegister->branch)
-                <p class="store-name">
-                    {{ $openedCashRegister->branch->name.'-'.$openedCashRegister->branch->branch_code }}
-                </p>
-                <p class="address-name">
-                    {{ $openedCashRegister->branch->city ? $openedCashRegister->branch->city.', ' : ''}}
-                    {{ $openedCashRegister->branch->state ? $openedCashRegister->branch->state.', ' : ''}}
-                    {{ $openedCashRegister->branch->country ? ', '.$openedCashRegister->branch->country : ''}}
-                </p>
+                    <p class="store-name">
+                        {{ $openedCashRegister->branch->name.'-'.$openedCashRegister->branch->branch_code }}
+                    </p>
+                    <p class="address-name">
+                        {{ $openedCashRegister->branch->city ? $openedCashRegister->branch->city.', ' : ''}}
+                        {{ $openedCashRegister->branch->state ? $openedCashRegister->branch->state.', ' : ''}}
+                        {{ $openedCashRegister->branch->country ? ', '.$openedCashRegister->branch->country : ''}}
+                    </p>
                 @else
-                <p class="store-name">
-                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
-                </p>
-                <p class="address-name">
-                    {{ Str::limit(json_decode($generalSettings->business, true)['address'], 45) }}
-                </p>
+                    <p class="store-name">
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
+                    </p>
+                    <p class="address-name">
+                        {{ Str::limit(json_decode($generalSettings->business, true)['address'], 45) }}
+                    </p>
                 @endif
                 <small class="login-user-name">
                     <span class="text-highlight">Loggedin : </span> {{ auth()->user()->prefix.' '.auth()->user()->name.'
@@ -65,13 +65,13 @@
                     <span>
                         <span class="text-highlight">C.Register : </span>
                         @if ($openedCashRegister->admin)
-                        @if ($openedCashRegister->admin->role_type == 1)
-                        Super-Admin.
-                        @elseif($openedCashRegister->admin->role_type == 2)
-                        Admin.
-                        @else
-                        {{ $openedCashRegister->admin->role->name }}.
-                        @endif
+                            @if ($openedCashRegister->admin->role_type == 1)
+                                Super-Admin.
+                            @elseif($openedCashRegister->admin->role_type == 2)
+                                Admin.
+                            @else
+                                {{ $openedCashRegister->admin->role->name }}.
+                            @endif
                         @endif
                     </span>
                     <span> <span class="text-highlight">Cash Counter : </span> {{ $openedCashRegister->cash_counter ?
@@ -93,7 +93,7 @@
                                     <select name="customer_id" class="form-control form-select" id="customer_id">
                                         <option value="">Walk-In-Customer</option>
                                         @foreach ($customers as $customer)
-                                        <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')'
+                                            <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')'
                                             }}</option>
                                         @endforeach
                                     </select>
@@ -129,13 +129,13 @@
                                         <span class="input-group-text valus">Point</span>
                                     </div>
                                     <input readonly type="number" step="any" class="form-control" name="earned_point"
-                                        id="earned_point">
+                                        id="earned_point" tabindex="-1">
 
                                     <div class="input-group-prepend ms-1">
                                         <span class="input-group-text valus"> = {{
                                             json_decode($generalSettings->business, true)['currency'] }}</span>
                                     </div>
-                                    <input readonly type="text" class="form-control" id="trial_point_amount">
+                                    <input readonly type="text" class="form-control" id="trial_point_amount" tabindex="-1">
                                 </div>
                              
 
@@ -143,7 +143,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text valus">SQ</span>
                                     </div>
-                                    <input type="text" class="form-control" id="stock_quantity">
+                                    <input readonly type="text" class="form-control" id="stock_quantity" tabindex="-1">
 
                                     <div class="input-group-prepend ms-1">
                                         <select name="price_group_id" class="form-control" id="price_group_id">
@@ -165,8 +165,8 @@
 
                         <div class="btn-sec">
                             {{-- Shortcut Manual --}}
-                            <a href="#" class="pos-btn position-relative" id="readDocument" title="Shortcut button list"><i
-                                    class="fas fa-file-alt"></i>
+                            <a href="#" class="pos-btn position-relative" id="readDocument" title="Shortcut button list" tabindex="-1">
+                                <i class="fas fa-file-alt"></i>
                                 <div class="position-absolute doc">
                                     <ul class="p-2 pt-3">
                                         <li>
@@ -205,13 +205,15 @@
                                 </div>
                             </a>
 
-                            <a href="#" class="pos-btn status" id="suspends"><i class="fas text-warning fa-pause"></i></a>
+                            <a href="#" class="pos-btn status" id="suspends" title="Suspended Invoice" tabindex="-1">
+                                <i class="fas text-warning fa-pause"></i>
+                            </a>
 
-                            <a href="#" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
+                            <a href="#" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal" tabindex="-1">
                                 <span class="fas fa-calculator"></span>
                             </a>
 
-                            <a href="#" class="pos-btn" id="hard_reload">
+                            <a href="#" class="pos-btn" id="hard_reload" tabindex="-1">
                                 <span class="fas fa-redo-alt"></span>
                             </a>
 
@@ -256,17 +258,22 @@
                             </div>
 
                             @if (auth()->user()->permission->register['register_view'] == '1')
-                            <a href="#" class="pos-btn text-info" id="cash_register_details" title="Register Details"><i
+                                <a href="#" class="pos-btn text-info" id="cash_register_details" title="Register Details" tabindex="-1"><i
                                     class="fas fa-cash-register"></i></a>
                             @endif
 
                             @if (auth()->user()->permission->register['register_close'] == '1')
-                            <a href="#" class="pos-btn text-danger" id="close_register" title="Close Register"><span
-                                    class="fas fa-times"></span></a>
+                                <a href="#" class="pos-btn text-danger" id="close_register" title="Close Register" tabindex="-1">
+                                    <span class="fas fa-times"></span></a>
                             @endif
 
-                            <a href="" class="pos-btn"><span class="fas fa-bell"></span></a>
-                            <a href="" class="pos-btn" id="pos_exit_button"><span class="fas fa-backward"></span></a>
+                            <a href="#" class="pos-btn" tabindex="-1">
+                                <span class="fas fa-bell"></span>
+                            </a>
+
+                            <a href="#" class="pos-btn" id="pos_exit_button" tabindex="-1">
+                                <span class="fas fa-backward"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -296,6 +303,7 @@
     }
 
     $('#customer_id').on('change', function () {
+        
         var customerId = $(this).val();
         $('#previous_due').val(parseFloat(0).toFixed(2));
         $('#earned_point').val(0);
@@ -307,14 +315,20 @@
         $('#order_discount').val(parseFloat(calcDiscount).toFixed(2));
         $('#order_discount_amount').val(parseFloat(calcDiscount).toFixed(2));
         $('#pre_redeemed_amount').val(0);
-        var url = "{{ url('sales/customer_info') }}"+'/'+customerId;
+
+        var url = "{{ url('common/ajax/call/customer_info') }}"+'/'+customerId;
+
         $.get(url, function(data) {
+
             $('#previous_due').val(data.total_sale_due);
+
             if (rp_settings.enable_rp == '1') {
+
                 $('#earned_point').val(data.point);
                 var __point_amount = parseFloat(data.point) * parseFloat(rp_settings.redeem_amount_per_unit_rp);
                 $('#trial_point_amount').val(parseFloat(__point_amount).toFixed(2));
             }
+
             calculateTotalAmount();
         });
 
@@ -457,7 +471,7 @@
                 error: function(err) {
 
                     $('.loading_button').hide();
-                    toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
                     $('.error').html('');
 
                     $.each(err.responseJSON.errors, function(key, error) {

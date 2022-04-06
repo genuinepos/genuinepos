@@ -8,6 +8,7 @@ use App\Models\Supplier;
 use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
 use App\Models\SupplierLedger;
+use App\Models\ExpanseCategory;
 use App\Models\PurchaseProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
@@ -19,7 +20,7 @@ class Util
     protected $supplierUtil;
     protected $customerUtil;
     protected $productUtil;
-    
+
     public function __construct(
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         SupplierUtil $supplierUtil,
@@ -57,7 +58,10 @@ class Util
         $l = 6;
         $b = 0;
         $code = '';
-        while ($b < $l) {$code .= rand(1, 9);$b++;}
+        while ($b < $l) {
+            $code .= rand(1, 9);
+            $b++;
+        }
 
         $addProduct->type = 1;
         $addProduct->name = $request->name;
@@ -199,7 +203,7 @@ class Util
     {
         $addProduct = new Product();
         $tax_id = NULL;
-        
+
         if ($request->tax_id) {
 
             $tax_id = explode('-', $request->tax_id)[0];
@@ -249,6 +253,32 @@ class Util
         return response()->json($addProduct);
     }
 
+    public function addQuickExpenseCategory($request)
+    {
+        $request->validate(
+            [
+                'name' => 'required',
+            ],
+        );
+
+        $lastExpenseCategory = DB::table('expanse_categories')->orderBy('id', 'desc')->first();
+        $code = 0;
+        if ($lastExpenseCategory) {
+
+            $code = ++$lastExpenseCategory->id;
+        } else {
+
+            $code = 1;
+        }
+
+        $addExpenseCategory = ExpanseCategory::create([
+            'name' => $request->name,
+            'code' => $request->code ? $request->code : $code,
+        ]);
+
+        return response()->json($addExpenseCategory);
+    }
+
     public static function stockAccountingMethods()
     {
         return [
@@ -261,7 +291,7 @@ class Util
     {
         return self::stockAccountingMethods()[$index];
     }
-    
+
     public static function accountType($index)
     {
         $types = [
@@ -336,7 +366,7 @@ class Util
                     return $key != 2;
                 }, ARRAY_FILTER_USE_BOTH);
             }
-        }else {
+        } else {
             return $data;
         }
     }

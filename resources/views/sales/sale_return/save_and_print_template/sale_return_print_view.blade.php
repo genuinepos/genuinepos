@@ -1,3 +1,16 @@
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
+<style>
+    @media print
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+    }
+
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 20px;margin-right: 20px;}
+</style>
  <!-- Sale print templete-->
  <div class="sale_return_print_template">
     <div class="details_area">
@@ -30,9 +43,9 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>Return Details : </strong> </li>
-                        <li><strong>Invoice ID : </strong>{{ $saleReturn->invoice }}</li>
+                        <li><strong>Invoice ID : </strong>{{ $saleReturn->invoice_id }}</li>
                         <li><strong>Return Date : </strong>{{ $saleReturn->date }}</li>
-                        <li><strong>Customer Name : </strong>{{ $saleReturn->sale->customer ? $saleReturn->sale->customer->name : 'Walk-In-Customer' }}</li>
+                        <li><strong>Customer Name : </strong>{{ $saleReturn->customer ? $saleReturn->customer->name : 'Walk-In-Customer' }}</li>
                         <li><strong>Stock Location : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}</li>
                     </ul>
                 </div>
@@ -46,9 +59,9 @@
                         <li>
                             <strong>Sale Details </strong> </li>
                         <li>
-                            <strong>Invoice No : </strong> {{ $saleReturn->sale->invoice_id }}
+                            <strong>Invoice No : </strong> {{ $saleReturn->sale ? $saleReturn->sale->invoice_id : '' }}
                         </li>
-                        <li><strong>Date : </strong>  {{ $saleReturn->sale->date }} </li>
+                        <li><strong>Date : </strong>  {{ $saleReturn->sale ? $saleReturn->sale->date : '' }} </li>
                     </ul>
                 </div>
             </div>
@@ -69,59 +82,64 @@
                 </thead>
                 <tbody class="sale_return_print_product_list">
                     @foreach ($saleReturn->sale_return_products as $sale_return_product)
-                        @if ($sale_return_product->return_qty > 0)
-                            <tr>
-                                <td class="text-start">{{ $loop->index + 1 }}</td>
-                                <td class="text-start">
-                                    {{ $sale_return_product->sale_product->product->name }}
-                                    @if ($sale_return_product->sale_product->variant)
-                                        -{{ $sale_return_product->sale_product->variant->variant_name }}
-                                    @endif
-                                    @if ($sale_return_product->sale_product->variant)
-                                        ({{ $sale_return_product->sale_product->variant->variant_code }})
-                                    @else   
-                                    ({{ $sale_return_product->sale_product->product->product_code }}) 
-                                    @endif
-                                </td>
-                                <td class="text-start">
-                                    {{ $sale_return_product->sale_product->unit_price_inc_tax  }}
-                                </td>
-                                <td class="text-start">
-                                    {{ $sale_return_product->return_qty }} ({{ $sale_return_product->unit }})
-                                </td>
-                                <td class="text-start">
-                                    {{ $sale_return_product->return_subtotal }} 
-                                </td>
-                            </tr>
-                        @endif
+            
+                        <tr>
+                            <td class="text-start">{{ $loop->index + 1 }}</td>
+                            <td class="text-start">
+                                {{ $sale_return_product->product->name }}
+
+                                @if ($sale_return_product->variant)
+
+                                    -{{ $sale_return_product->variant->variant_name }}
+                                @endif
+
+                                @if ($sale_return_product->variant)
+
+                                    ({{ $sale_return_product->variant->variant_code }})
+                                @else   
+
+                                ({{ $sale_return_product->product->product_code }}) 
+                                @endif
+                            </td>
+                            <td class="text-start">
+                                {{ App\Utils\Converter::format_in_bdt($sale_return_product->unit_price_inc_tax) }}
+                            </td>
+                            <td class="text-start">
+                                {{ $sale_return_product->return_qty }} ({{ $sale_return_product->unit }})
+                            </td>
+                            <td class="text-start">
+                                {{ App\Utils\Converter::format_in_bdt($sale_return_product->return_subtotal) }} 
+                            </td>
+                        </tr>
                     @endforeach
-                    
                 </tbody>
                 <tfoot>
                     <tr>
                         <td class="text-start" colspan="4"><strong>Net Total Amount :</strong></td>
-                        <td class="text-start" colspan="2" class="net_total">{{ $saleReturn->net_total_amount }}</td>
+                        <td class="text-start" colspan="2" class="net_total">{{ App\Utils\Converter::format_in_bdt($saleReturn->net_total_amount) }}</td>
                     </tr>
+
                     <tr>
                         <th class="text-start" colspan="4">Return Discount</th>
                         <td class="text-start" colspan="2" class="return_discount">
                             @if ($saleReturn->return_discount_type == 1)
+
                                 {{ $saleReturn->return_discount_amount }} (Fixed)
                             @else  
-                                {{ $saleReturn->return_discount_amount }} ({{ $saleReturn->return_discount}}%)
+
+                                {{ App\Utils\Converter::format_in_bdt($saleReturn->return_discount_amount) }} ({{ $saleReturn->return_discount}}%)
                             @endif
-                            
                         </td>
                     </tr>
                     
                     <tr>
-                        <th class="text-start" colspan="4">Grand Total</th>
-                        <td class="text-start" colspan="2" class="total_return_amount">{{ $saleReturn->total_return_amount }}</td>
+                        <th class="text-start" colspan="4">Total Return Total</th>
+                        <td class="text-start" colspan="2" class="total_return_amount">{{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_amount) }}</td>
                     </tr>
 
                     <tr>
-                        <th class="text-start" colspan="4">Total Due</th>
-                        <td class="text-start" colspan="2" class="total_due">{{ $saleReturn->sale->sale_return_due }}</td>
+                        <th class="text-start" colspan="4">Total Refunded Amount</th>
+                        <td class="text-start" colspan="2" class="total_due">{{ $saleReturn->total_return_due_pay }}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -133,6 +151,7 @@
                 <div class="col-md-6">
                     <h6><strong>Receiver's Signature</strong></h6>
                 </div>
+
                 <div class="col-md-6 text-end">
                     <h6><strong>Signature Of seller</strong></h6>
                 </div>
@@ -142,7 +161,7 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <small>Powered by <strong>SpeedDigit Pvt. Ltd.</strong></small>
+                    <small>Software by <strong>SpeedDigit Pvt. Ltd.</strong></small>
                 </div>
             </div>
         </div>

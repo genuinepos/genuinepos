@@ -14,6 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\TransferStockBranchToBranch;
 use App\Models\TransferStockBranchToBranchProducts;
 use App\Utils\Converter;
+use App\Utils\UserActivityLogUtil;
 
 class TransferStockBranchToBranchController extends Controller
 {
@@ -21,18 +22,21 @@ class TransferStockBranchToBranchController extends Controller
     protected $invoiceVoucherRefIdUtil;
     protected $transferStockUtil;
     protected $converter;
+    protected $userActivityLogUtil;
 
     public function __construct(
         NameSearchUtil $nameSearchUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         TransferStockUtil $transferStockUtil,
-        Converter $converter
+        Converter $converter,
+        UserActivityLogUtil $userActivityLogUtil
     ) {
 
         $this->nameSearchUtil = $nameSearchUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->transferStockUtil = $transferStockUtil;
         $this->converter = $converter;
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -274,6 +278,12 @@ class TransferStockBranchToBranchController extends Controller
             }
         }
 
+        $this->userActivityLogUtil->addLog(
+            action: 1,
+            subject_type: 12,
+            data_obj: $addTransfer
+        );
+
         if ($request->transfer_cost > 0) {
 
             $this->transferStockUtil->addExpenseFromTransferStock($request, $addTransfer->id);
@@ -446,6 +456,12 @@ class TransferStockBranchToBranchController extends Controller
             }
         }
 
+        $this->userActivityLogUtil->addLog(
+            action: 2,
+            subject_type: 12,
+            data_obj: $updateTransfer
+        );
+
         // Delete not found which was previous
         $delectableTransferProducts = TransferStockBranchToBranchProducts::where('transfer_id', $transferId)
             ->where('is_delete_in_update', 1)->get();
@@ -469,10 +485,16 @@ class TransferStockBranchToBranchController extends Controller
 
         if ($deleteTransfer->received_qty > 0) {
             
-            return response()->json(['errorMsg' => 'Transfer can not be deleted. Cause one or more quantity has all ready been received from this transfer.']);
+            return response()->json(['errorMsg' => 'Transfer can not be deleted. Cause one or more quantity has already been received from this transfer.']);
         }
 
         if (!is_null($deleteTransfer)) {
+
+            $this->userActivityLogUtil->addLog(
+                action: 3,
+                subject_type: 12,
+                data_obj: $deleteTransfer
+            );
 
             $this->transferStockUtil->deleteTransferBranchToBranch($deleteTransfer);
 

@@ -237,13 +237,6 @@ class StockReportController extends Controller
         }
     }
 
-    // Get all parent Category
-    public function branchWarehouses($branch_id)
-    {
-        $branch_id = $branch_id == 'NULL' ? NULL : $branch_id;
-        return Warehouse::where('branch_id', $branch_id)->orderBy('id', 'DESC')->get();
-    }
-
     // Print Branch Stock
     public function printBranchStock(Request $request)
     {

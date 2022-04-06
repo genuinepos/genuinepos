@@ -31,7 +31,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Supplier :</b><span
+                                                <label class=" col-4"><b>Supplier :</b><span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <input readonly type="text" id="supplier_name" class="form-control" value="{{ $purchase->supplier->name.' ('.$purchase->supplier->phone.')' }}">
@@ -40,7 +40,7 @@
 
                                             @if ($purchase->warehouse_id)
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class="col-4"><b>Warehouse :</b><span
+                                                    <label class="col-4"><b>Warehouse :</b><span
                                                         class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <select class="form-control changeable add_input"
@@ -55,7 +55,7 @@
                                                 </div>
                                             @else 
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><span
+                                                    <label class="col-4"><span
                                                         class="text-danger">*</span> <b>B.Location :</b> </label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}">
@@ -66,7 +66,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>PO.Invoice ID :</b></label>
+                                                <label class="col-4"><b>PO.Invoice ID :</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Order Invoice ID" autocomplete="off" value="{{ $purchase->invoice_id }}">
                                                 </div>
@@ -75,7 +75,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-2"><b>Date :</b></label>
+                                                <label class=" col-2"><b>Date :</b></label>
                                                 <div class="col-8">
                                                     <input required type="text" name="date" class="form-control changeable"
                                                          id="datepicker" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) }}">
@@ -85,7 +85,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-3"><b>Status :</b></label>
+                                                <label class="col-3"><b>Status :</b></label>
                                                 <div class="col-8">
                                                     <select class="form-control changeable" name="purchase_status" id="purchase_status">
                                                         <option value="3">Ordered</option>
@@ -164,66 +164,68 @@
                 </section>
 
                 <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form_element">
                                 <div class="element-body">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <input type="hidden" name="total_pending" id="total_pending" value="{{ $purchase->po_pending_qty }}">
-                                            <input type="hidden" name="total_received" id="total_received" value="{{ $purchase->po_received_qty }}">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Discount :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input readonly name="order_discount_amount" type="number" step="any" class="form-control" id="order_discount_amount" value="{{ $purchase->order_discount_amount }}"> 
+                                        <div class="col-md-12">
+                                            
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <label class=" col-4"><b>Total Item :</b> </label>
+                                                        <div class="col-8">
+                                                            <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $purchase->total_item }}" tabindex="-1">
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
-                                                <div class="col-8">
-                                                    <input readonly name="purchase_tax_amount" type="text" class="form-control" id="purchase_tax_amount" value="{{ $purchase->purchase_tax_amount.'('.$purchase->purchase_tax_percent.'%)' }}">
+                                                <div class="col-md-12">
+                                                    <input type="hidden" name="total_pending" id="total_pending" value="{{ $purchase->po_pending_qty }}" tabindex="-1">
+                                                    <input type="hidden" name="total_received" id="total_received" value="{{ $purchase->po_received_qty }}" tabindex="-1">
+                                                    <div class="input-group mt-1">
+                                                        <label class=" col-4"><b>Order Discount :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <div class="col-8">
+                                                            <input readonly name="order_discount_amount" type="number" step="any" class="form-control" id="order_discount_amount" value="{{ $purchase->order_discount_amount }}" tabindex="-1"> 
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Ship Cost :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input readonly name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="{{ $purchase->shipment_charge }}"> 
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Order Tax :</b> </label>
+                                                        <div class="col-8">
+                                                            <input readonly name="purchase_tax_amount" type="text" class="form-control" id="purchase_tax_amount" value="{{ $purchase->purchase_tax_amount.'('.$purchase->purchase_tax_percent.'%)' }}" tabindex="-1">
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Total Item :</b> </label>
-                                                <div class="col-8">
-                                                    <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $purchase->total_item }}">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class=" col-4"><b>Shipment Cost :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <div class="col-8">
+                                                            <input readonly name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="{{ $purchase->shipment_charge }}" tabindex="-1"> 
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Paid :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $purchase->paid }}">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Total Payable :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <div class="col-8">
+                                                            <input readonly name="total_purchase_amount" type="number" step="any" class="form-control" value="{{ $purchase->total_purchase_amount }}" tabindex="-1">
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Net Total :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input readonly name="total_purchase_amount" type="number" step="any" class="form-control" value="{{ $purchase->total_purchase_amount }}">
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Due :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" step="any" name="due" id="due" class="form-control" value="{{ $purchase->due }}">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class=" col-4"><b>Previous Paid :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <div class="col-8">
+                                                            <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $purchase->paid }}" tabindex="-1">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -231,67 +233,82 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element m-0">
+                        <div class="col-md-6">
+                            <div class="form_element">
                                 <div class="element-body">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Paying :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <label class=" col-4"><b>Current Due :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <div class="col-8">
+                                                            <input readonly type="number" step="any" name="due" id="due" class="form-control text-danger bold_input_field" value="{{ $purchase->due }}" tabindex="-1">
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Pay Note :</b> </label>
-                                                <div class="col-8">
-                                                    <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class=" col-4"><b>Paying Amount : </b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
+                                                        <div class="col-8">
+                                                            <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>Pay Method :</b> </label>
-                                                <div class="col-8">
-                                                    <select name="payment_method" class="form-control" id="payment_method">
-                                                        <option value="Cash">Cash</option>
-                                                        <option value="Advanced">Advanced</option>
-                                                        <option value="Cheque">Cheque</option>
-                                                        <option value="Card">Card</option>
-                                                        <option value="Bank-Transfer">Bank-Transter</option>
-                                                        <option value="Other">Other</option>
-                                                        <option value="Custom">Custom Field</option>
-                                                    </select>
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Pay Method :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="payment_method_id" class="form-control" id="payment_method_id">
+                                                                @foreach ($methods as $method)
+                                                                    <option value="{{ $method->id }}" 
+                                                                        data-account="{{ $method->account_id }}">
+                                                                        {{ $method->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>Account :</b> </label>
-                                                <div class="col-8">
-                                                    <select name="account_id" class="form-control" id="account_id">
-                                                        <option value="">None</option>
-                                                        @foreach ($accounts as $ac)
-                                                            <option value="{{ $ac->id }}">{{ $ac->name.' (A/C: '.$ac->account_number.')' }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Account :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="account_id" class="form-control" id="account_id">
+                                                                @foreach ($accounts as $account)
+                                                                    <option value="{{ $account->id }}">
+                                                                        @php
+                                                                            $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                                            $balance = ' BL : '.$account->balance;
+                                                                        @endphp
+                                                                        {{ $account->name.$accountType.$balance}}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Total Due :</b></label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" step="any" class="form-control" name="purchase_due" id="purchase_due" value="0.00">
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label  class=" col-4"><b>Total Due :</b></label>
+                                                        <div class="col-8">
+                                                            <input readonly type="number" step="any" class="form-control text-danger bold_input_field" name="purchase_due" id="purchase_due" value="{{ $purchase->due }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Pay Note :</b> </label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -302,12 +319,12 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area pt-1">
+                <div class="submit_button_area">
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                            <button class="btn btn-sm btn-primary submit_button float-end">Save Changes</button>
                         </div>
                     </div>
                 </div>
@@ -319,15 +336,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         function calulateTotalReceiveAndPendingQty() {
+
             var pending_quantities = document.querySelectorAll('#pending_quantity');
             var received_quantities = document.querySelectorAll('#received_quantity');
+
             var total_pending = 0;
             pending_quantities.forEach(function(qty){
+
                 total_pending += parseFloat(qty.value) ? parseFloat(qty.value) : 0;
             });
 
             var total_received = 0;
             received_quantities.forEach(function(qty){
+
                 total_received += parseFloat(qty.value) ? parseFloat(qty.value) : 0;
             });
 
@@ -336,16 +357,20 @@
         }
 
         $(document).on('input', '#received_quantity', function(){
+
             var received_qty = $(this).val() ? $(this).val() : 0;
             if (parseFloat(received_qty) >= 0) {
+
                 var tr = $(this).closest('tr');
                 var ordered_quantity = tr.find('#ordered_quantity').val();
                 var unit = tr.find('#unit').val();
                 var pending_qty = parseInt(ordered_quantity) - parseFloat(received_qty);
                 tr.find('#pending_quantity').val(parseFloat(pending_qty).toFixed(2));
                 calulateTotalReceiveAndPendingQty();
+
                 if(parseInt(received_qty) > parseInt(ordered_quantity)){
-                    alert('Only - '+ ordered_quantity +' '+unit+' is available.');
+
+                    alert('Only - ' + ordered_quantity + ' ' + unit + ' is available.');
                     $(this).val(ordered_quantity);
                     tr.find('#pending_quantity').val(parseFloat(0).toFixed(2));
                     calulateTotalReceiveAndPendingQty();
@@ -357,6 +382,7 @@
         //Add receive request by ajax
         $('#receive_form').on('submit', function(e){
             e.preventDefault();
+
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
@@ -365,16 +391,20 @@
                 type:'post',
                 data: request,
                 success:function(data){
+                    
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
                     toastr.success(data);
                     window.location = "{{route('purchases.po.list')}}";
                 }, error: function(err) {
+
                     $('.loading_button').hide();
                     $('.error').html('');
                     if (err.status == 0) {
+
                         toastr.error('Net Connetion Error. Reload This Page.'); 
                     } else {
+
                         toastr.error('Server error please contact to the support.');
                     }
                 }
@@ -383,6 +413,7 @@
 
         // Input paying amount and clculate due amount
         $(document).on('input', '#paying_amount', function(){
+
             var payingAmount = $(this).val() ? $(this).val() : 0;
             var due = $('#due').val() ? $('#due').val() : 0;
             var calcDueAmount = parseFloat(due) - parseFloat(payingAmount);

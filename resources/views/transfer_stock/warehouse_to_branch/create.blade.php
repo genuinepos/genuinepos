@@ -790,7 +790,7 @@
             e.preventDefault();
             var totalItem = $('#total_item').val();
             if (parseFloat(totalItem) == 0) {
-                toastr.error('Transfer product table is empty.','Some thing want wrong.'); 
+                toastr.error('Transfer product table is empty.','Some thing went wrong.'); 
                 return;
             }
             $('.loading_button').show();
@@ -812,7 +812,7 @@
 
             if(countErrorField > 0){
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing want wrong.'); 
+                toastr.error('Please check again all form fields.','Some thing went wrong.'); 
                 return;
             }
 

@@ -153,6 +153,7 @@ class ProductStockUtil
             ->first();
 
         if ($product->is_manage_stock == 1) {
+            
             $productOpeningStock = DB::table('product_opening_stocks')
                 ->where('product_opening_stocks.branch_id', $branch_id)
                 ->where('product_id', $product_id)

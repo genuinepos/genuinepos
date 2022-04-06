@@ -44,6 +44,7 @@
 
                                         <div class="col-md-2">
                                             @if ($production->warehouse_id)
+                                                <input type="hidden" value="YES" name="store_warehouse_count">
                                                 <label> <b>Store Location : </b> <span
                                                     class="text-danger">*</span></label>
                                                 <select class="form-control changeable add_input"
@@ -56,7 +57,7 @@
                                                 <span class="error error_warehouse_id"></span>
                                             @else
                                                 <label><b>Store Location :</b> </label>
-                                                <input readonly type="text" name="store_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}"/>
+                                                <input readonly type="text" name="store_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}" tabindex="-1"/>
                                             @endif
                                         </div>
 
@@ -73,16 +74,16 @@
                                         <div class="col-md-2">
                                             @if ($production->stock_warehouse_id)
                                                 <label > <b>Ingredials Stock Location : </b> <span class="text-danger">*</span></label>
-                                                <input readonly type="text" value="{{ $production->stock_werehouse->warehouse_name.'/'.$production->stock_werehouse->warehouse_code }}">
+                                                <input readonly type="text" class="form-control" value="{{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}" tabindex="-1">
                                             @else
                                                 <label><b>Ingredials Stock Location :</b> </label>
-                                                <input readonly type="text" name="stock_branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}"/>
+                                                <input readonly type="text" name="stock_branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}" tabindex="-1"/>
                                             @endif
                                         </div>
 
                                         <div class="col-md-2">
                                             <label><b>Product :</b> <span class="text-danger">*</span></label>
-                                            <input readonly type="text" value="{{ $production->product->name }} {{ $production->variant ? $production->variant->variant_name : '' }}" class="form-control">
+                                            <input readonly type="text" value="{{ $production->product->name }} {{ $production->variant ? $production->variant->variant_name : '' }}" class="form-control" tabindex="-1">
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +135,7 @@
                                                                             }
                                                                         }else {
                                                                             if ($production->stock_warehouse_id) {
-                                                                                $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouseId)
+                                                                                $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $production->stock_warehouse_id)
                                                                                 ->where('product_id', $ingredient->product_id)->first();
                                                                                 $stock = $productWarehouse ? $productWarehouse->product_quantity : 0;
                                                                             } else {
@@ -233,7 +234,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>Final Output Qty :</b></label>
                                                 <div class="col-md-8">
-                                                    <input readonly type="text" step="any" class="form-control" name="final_output_quantity" id="final_output_quantity" value="{{ $production->total_final_quantity }}">
+                                                    <input readonly type="text" step="any" class="form-control" name="final_output_quantity" id="final_output_quantity" value="{{ $production->total_final_quantity }}" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -255,7 +256,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>Total Production Cost :</b></label>
                                                 <div class="col-md-8">
-                                                    <input readonly type="number" step="any" name="total_cost" class="form-control" id="total_cost" value="{{ $production->total_cost }}">
+                                                    <input readonly type="number" step="any" name="total_cost" class="form-control" id="total_cost" value="{{ $production->total_cost }}" tabindex="-1">
                                                 </div>
                                             </div> 
                                         </div>
@@ -311,7 +312,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>Cost(Inc.Tax) :</b></label>
                                                 <div class="col-md-8">
-                                                    <input readonly type="text" name="per_unit_cost_inc_tax" id="per_unit_cost_inc_tax" class="form-control" placeholder="Par Unit Cost Inc.Tax" autocomplete="off" value="{{ $production->unit_cost_inc_tax }}">
+                                                    <input readonly type="text" name="per_unit_cost_inc_tax" id="per_unit_cost_inc_tax" class="form-control" placeholder="Par Unit Cost Inc.Tax" autocomplete="off" value="{{ $production->unit_cost_inc_tax }}" tabindex="-1" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -575,7 +576,7 @@
             if (errorCount > 0) {
 
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.');
+                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
                 return;
             }
 

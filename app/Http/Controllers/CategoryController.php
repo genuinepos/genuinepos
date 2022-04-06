@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -11,8 +12,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
 {
-    public function __construct()
+    protected $userActivityLogUtil;
+    public function __construct(UserActivityLogUtil $userActivityLogUtil)
     {
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -71,23 +74,30 @@ class CategoryController extends Controller
             'photo' => 'sometimes|image|max:2048',
         ]);
 
+        $addCategory = '';
+
         if ($request->file('photo')) {
 
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
             Image::make($categoryPhoto)->resize(250, 250)->save('public/uploads/category/' . $categoryPhotoName);
 
-            Category::insert([
+            $addCategory = Category::create([
                 'name' => $request->name,
                 'description' => $request->description,
                 'photo' => $categoryPhotoName
             ]);
         } else {
 
-            Category::insert([
+            $addCategory = Category::create([
                 'name' => $request->name,
                 'description' => $request->description,
             ]);
+        }
+
+        if ($addCategory) {
+
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 20, data_obj: $addCategory);
         }
         return response()->json('Category created Successfully');
     }
@@ -120,7 +130,7 @@ class CategoryController extends Controller
         $updateCategory = Category::where('id', $request->id)->first();
 
         if ($request->file('photo')) {
-            
+
             if ($updateCategory->photo !== 'default.png') {
 
                 if (file_exists(public_path('uploads/category/' . $updateCategory->photo))) {
@@ -139,12 +149,15 @@ class CategoryController extends Controller
                 'photo' => $categoryPhotoName
             ]);
         } else {
-            
+
             $updateCategory->update([
                 'name' => $request->name,
                 'description' => $request->description,
             ]);
         }
+
+        $this->userActivityLogUtil->addLog(action: 2, subject_type: 20, data_obj: $updateCategory);
+
         return response()->json('Category updated successfully');
     }
 
@@ -166,6 +179,8 @@ class CategoryController extends Controller
         }
 
         if (!is_null($deleteCategory)) {
+
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: 20, data_obj: $deleteCategory);
 
             $deleteCategory->delete();
         }

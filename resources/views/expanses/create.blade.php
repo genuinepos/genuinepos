@@ -85,7 +85,16 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0">
                                     <div class="heading_area">
-                                        <p class="text-primary m-0 p-0 ps-1"><b>Descriptions</b></p>
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <p class="text-muted m-0 p-0 ps-1 float-start mt-1"><b>Descriptions</b></p>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <a href="" class="text-primary m-0 p-0 ps-1 float-end me-1"><b>Add New Category</b></a>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="element-body">
                                         <div class="row">
@@ -333,7 +342,7 @@
                     $('.loading_button').hide();
                     $('.submit_button').prop('type', 'submit');
                     toastr.error('Please check again all form fields.',
-                        'Some thing want wrong.');
+                        'Some thing went wrong.');
                     $('.error').html('');
                     $.each(err.responseJSON.errors, function(key, error) {
                         $('.error_' + key + '').html(error[0]);

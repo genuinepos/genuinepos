@@ -62,7 +62,7 @@
                                             <div class="input-group mt-1">
                                                 <label class=" col-4"> <b>B. Location :</b> </label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
+                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -129,7 +129,7 @@
                                             <div class="input-group mt-1">
                                                 <label class="col-6"><b>Previous Due :</b></label>
                                                 <div class="col-6">
-                                                    <input readonly type="number" step="any" class="form-control text-danger" id="display_pre_due" value="0.00">
+                                                    <input readonly type="number" step="any" class="form-control text-danger" id="display_pre_due" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -209,7 +209,7 @@
                                                     </div>
                                                     <input type="text" readonly class="form-control text-success stock_quantity"
                                                         autocomplete="off" id="stock_quantity"
-                                                        placeholder="Stock Quantity">
+                                                        placeholder="Stock Quantity" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -222,7 +222,6 @@
                                                             <thead class="staky">
                                                                 <tr>
                                                                     <th class="text-start">Product</th>
-                                                                    <th></th>
                                                                     <th class="text-center">Quantity</th>
                                                                     <th>Unit</th>
                                                                     <th class="text-center">Price Inc.Tax</th>
@@ -313,7 +312,7 @@
                                         <div class="row no-gutters">
                                             <ul class="list-unstyled add_sale_ex_btn">
                                                 {{-- <li><button value="save_and_print" class="btn btn-sm btn-info text-white submit_button" data-status="4">Quotation</button></li>--}}
-                                                <li><button value="save_and_print" class="btn btn-sm btn-warning text-white submit_button" data-status="2">Draft</button></li> 
+                                                <li><button value="save_and_print" class="btn btn-sm btn-primary text-white submit_button" data-status="2">Draft</button></li> 
                                                 <li><button type="button" class="btn btn-sm btn-secondary text-white resent-tn">Recent Transection</button></li>
                                                 <li><button type="button" class="btn btn-sm btn-success text-white show_stock">Show Stock</button></li>
                                             </ul>
@@ -328,14 +327,14 @@
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Total Item :</label>
                                             <div class="col-sm-7">
-                                                <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="0.00">
+                                                <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Net Total :</label>
                                             <div class="col-sm-7">
-                                                <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="0.00">
+                                                <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
@@ -349,7 +348,7 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <input name="order_discount" type="number" step="any" class="form-control" id="order_discount" value="0.00"> 
-                                                <input name="order_discount_amount" step="any" type="number" class="d-none" id="order_discount_amount" value="0.00"> 
+                                                <input name="order_discount_amount" step="any" type="number" class="d-none" id="order_discount_amount" value="0.00" tabindex="-1"> 
                                             </div>
                                         </div>
 
@@ -371,15 +370,15 @@
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Previous Due :</label>
                                             <div class="col-sm-7">
-                                                <input readonly class="form-control text-danger" type="number" step="any" name="previous_due" id="previous_due" value="0.00">
+                                                <input readonly class="form-control text-danger" type="number" step="any" name="previous_due" id="previous_due" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
                                         
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Total Payable:</label>
                                             <div class="col-sm-7">
-                                                <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00">
-                                                <input class="d-none" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00">
+                                                <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
+                                                <input class="d-none" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
                                         
@@ -394,7 +393,7 @@
                                             <div class="row">
                                                 <label class="col-sm-5 col-form-label">Change :</label>
                                                 <div class="col-sm-7">
-                                                    <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00">
+                                                    <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
 
@@ -423,7 +422,7 @@
                                                                     $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
                                                                     $balance = ' BL : '.$account->balance;
                                                                 @endphp
-                                                                {{ $account->name.$accountType.$balance}}
+                                                                {{ $account->name . $accountType . $balance}}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -434,7 +433,7 @@
                                             <div class="row">
                                                 <label class="col-sm-5 col-form-label">Due :</label>
                                                 <div class="col-sm-7">
-                                                    <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00">
+                                                    <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -499,13 +498,13 @@
 
                         <div class="form-group">
                             <label> <strong>Quantity</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity"/>
+                            <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" tabindex="-1"/>
                             <span class="error error_e_quantity"></span>
                         </div>
 
                         <div class="form-group mt-1">
                             <label> <strong>Unit Price Exc.Tax</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" step="any" {{ auth()->user()->permission->sale['edit_price_sale_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price"/>
+                            <input type="number" step="any" {{ auth()->user()->permission->sale['edit_price_sale_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" />
                             <span class="error error_e_unit_price"></span>
                         </div>
 
@@ -586,15 +585,15 @@
                     <div class="tab_list_area">
                         <ul class="list-unstyled">
                             <li>
-                                <a id="tab_btn" class="tab_btn tab_active text-white" href="{{route('sales.recent.sales')}}"><i class="fas fa-info-circle"></i> Final</a>
+                                <a id="tab_btn" class="tab_btn tab_active text-white" href="{{url('common/ajax/call/recent/sales/1')}}"><i class="fas fa-info-circle"></i> Final</a>
                             </li>
 
                             <li>
-                                <a id="tab_btn" class="tab_btn text-white" href="{{route('sales.recent.quotations')}}"><i class="fas fa-scroll"></i>Quotation</a>
+                                <a id="tab_btn" class="tab_btn text-white" href="{{url('common/ajax/call/recent/quotations/1')}}"><i class="fas fa-scroll"></i>Quotation</a>
                             </li>
 
                             <li>
-                                <a id="tab_btn" class="tab_btn text-white" href="{{route('sales.recent.drafts')}}"><i class="fas fa-shopping-bag"></i> Draft</a>
+                                <a id="tab_btn" class="tab_btn text-white" href="{{url('common/ajax/call/recent/drafts/1')}}"><i class="fas fa-shopping-bag"></i> Draft</a>
                             </li>
                         </ul>
                     </div>

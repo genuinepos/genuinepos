@@ -3,9 +3,9 @@
         <div class="category-sec col-lg-4 col-4">
             <div class="left-cat-pos">
                 <div class="all-cat">
-                    <a href="" data-id="" class="cat-button">All</a>
+                    <a href="#" data-id="" class="cat-button" tabindex="-1">All</a>
                     @foreach ($categories as $cate)
-                        <a href="#" data-id="{{ $cate->id }}" class="cat-button">{{ $cate->name }}</a>
+                        <a href="#" data-id="{{ $cate->id }}" class="cat-button" tabindex="-1">{{ $cate->name }}</a>
                     @endforeach
                 </div>
             </div>
@@ -17,7 +17,7 @@
                         <div class="cat-ban-sec">
                             <div class="row">
                                 <div class="col-6">
-                                    <select name="category_id" id="category_id" class="form-select form-control cat-bg-1 common_submitable">
+                                    <select name="category_id" id="category_id" class="form-select form-control cat-bg-1 common_submitable" tabindex="-1">
                                         <option value="">All Categories</option>
                                         @foreach ($categories as $cate)
                                             <option value="{{ $cate->id }}">{{ $cate->name }}</option>
@@ -26,7 +26,7 @@
                                 </div>
 
                                 <div class="col-6">
-                                    <select id="brand_id" id="brand_id" class="form-select form-control cat-bg-2 bg common_submitable">
+                                    <select id="brand_id" id="brand_id" class="form-select form-control cat-bg-2 bg common_submitable" tabindex="-1">
                                         <option value="">All Brands</option>
                                         @foreach ($brands as $brand)
                                             <option value="{{ $brand->id }}">{{ $brand->name }}</option>

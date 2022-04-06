@@ -450,7 +450,6 @@ class NetProfitLossAccount
 
     public function totalSaleReturn($request = null)
     {
-
         $totalSaleReturn = '';
         $totalSaleReturnQuery = DB::table('sale_returns')
             ->select(
@@ -472,7 +471,6 @@ class NetProfitLossAccount
 
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $totalSaleReturnQuery->whereBetween('sale_returns.report_date', $date_range);
         }
@@ -514,7 +512,6 @@ class NetProfitLossAccount
 
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $totalPurchaseReturnQuery->whereBetween('purchase_returns.report_date', $date_range);
         }
@@ -558,7 +555,6 @@ class NetProfitLossAccount
 
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
 
             $transferStBranchQuery->whereBetween('transfer_stock_to_branches.report_date', $date_range);

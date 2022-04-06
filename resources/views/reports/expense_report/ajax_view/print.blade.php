@@ -9,13 +9,6 @@
     }
 
     @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 4%;margin-right: 4%;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed; top: 0;}
-    .footer {position: fixed;bottom: 0;}
-    .noBorder {border: 0px !important;}
-    tr.noBorder td {border: 0px !important;}
-    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
 @php
     $totalExpense = 0;
@@ -63,9 +56,9 @@
                     <th class="text-start">Description</th>
                     <th class="text-start">B.Location</th>
                     <th class="text-start">Expense For</th>
-                    <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-start">Paid({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-start">Due({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-start">Total Amount</th>
+                    <th class="text-start">Paid</th>
+                    <th class="text-start">Due</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">

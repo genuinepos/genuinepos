@@ -12,25 +12,29 @@ use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
 use App\Models\PurchaseProduct;
 use App\Utils\ProductStockUtil;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseSaleProductChain;
 use Yajra\DataTables\Facades\DataTables;
 
 class SaleUtil
 {
-    public $customerUtil;
-    public $productStockUtil;
-    public $accountUtil;
-    public $converter;
-    public $invoiceVoucherRefIdUtil;
-    public $purchaseUtil;
+    protected $customerUtil;
+    protected $productStockUtil;
+    protected $accountUtil;
+    protected $converter;
+    protected $invoiceVoucherRefIdUtil;
+    protected $purchaseUtil;
+    protected $userActivityLogUtil;
+
     public function __construct(
         CustomerUtil $customerUtil,
         ProductStockUtil $productStockUtil,
         AccountUtil $accountUtil,
         Converter $converter,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
-        PurchaseUtil $purchaseUtil
+        PurchaseUtil $purchaseUtil,
+        UserActivityLogUtil $userActivityLogUtil
     ) {
         $this->customerUtil = $customerUtil;
         $this->productStockUtil = $productStockUtil;
@@ -38,6 +42,7 @@ class SaleUtil
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->purchaseUtil = $purchaseUtil;
+        $this->userActivityLogUtil = $userActivityLogUtil;
     }
 
     public function __getSalePaymentForAddSaleStore($request, $addSale, $paymentInvoicePrefix)
@@ -313,6 +318,7 @@ class SaleUtil
                 );
 
                 if ($request->customer_id) {
+
                     $this->customerUtil->addCustomerLedger(
                         voucher_type_id: 3,
                         customer_id: $request->customer_id,
@@ -340,6 +346,7 @@ class SaleUtil
         $__invoiceId = str_pad($invoiceId, 5, "0", STR_PAD_LEFT);
 
         $sale = DB::table('sales')->where('id', $saleId)->select('customer_id')->first();
+
         $addSalePayment = new SalePayment();
         $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV') . str_pad($__invoiceId, 5, "0", STR_PAD_LEFT);
         $addSalePayment->sale_id = $saleId;
@@ -396,13 +403,14 @@ class SaleUtil
         $payment->save();
     }
 
-    public function saleReturnPaymentGetId($request, $sale, $customer_payment_id)
+    public function saleReturnPaymentGetId($request, $sale, $customer_payment_id, $sale_return_id)
     {
         // Add sale return payment
         $addSalePayment = new SalePayment();
         $addSalePayment->invoice_id = 'SRPV' . $this->invoiceVoucherRefIdUtil->getLastId('sale_payments');
-        $addSalePayment->sale_id = $sale->id;
-        $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
+        $addSalePayment->sale_id = $sale ? $sale->id : NULL;
+        $addSalePayment->sale_return_id = $sale_return_id;
+        $addSalePayment->customer_id = $sale ? $sale->customer_id : $request->customer_id;
         $addSalePayment->account_id = $request->account_id;
         $addSalePayment->payment_method_id = $request->payment_method_id;
         $addSalePayment->customer_payment_id = $customer_payment_id;
@@ -417,11 +425,13 @@ class SaleUtil
         $addSalePayment->admin_id = auth()->user()->id;
 
         if ($request->hasFile('attachment')) {
+
             $salePaymentAttachment = $request->file('attachment');
             $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
             $addSalePayment->attachment = $salePaymentAttachmentName;
         }
+
         $addSalePayment->save();
 
         return $addSalePayment->id;
@@ -440,11 +450,15 @@ class SaleUtil
         $payment->note = $request->note;
 
         if ($request->hasFile('attachment')) {
+
             if ($payment->attachment != null) {
+
                 if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+
                     unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
                 }
             }
+
             $salePaymentAttachment = $request->file('attachment');
             $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
@@ -452,6 +466,17 @@ class SaleUtil
         }
 
         $payment->save();
+    }
+
+    public function adjustSaleReturnAmounts($sale_return)
+    {
+        $saleReturnPayments = DB::table('sale_payments')->where('sale_return_id', $sale_return->id)
+            ->select(DB::raw('SUM(paid_amount) as total_paid'))->get();
+
+        $returnDue = $sale_return->total_return_amount - $saleReturnPayments->sum('total_paid');
+        $sale_return->total_return_due = $returnDue;
+        $sale_return->total_return_due_pay = $saleReturnPayments->sum('total_paid');
+        $sale_return->save();
     }
 
     public function deleteSale($request, $saleId)
@@ -474,6 +499,12 @@ class SaleUtil
         $storedPayments = $deleteSale->sale_payments;
         $storedSaleProducts = $deleteSale->sale_products;
         $storeStatus = $deleteSale->status;
+
+        if ($deleteSale->status == 1 || $deleteSale->status == 3) {
+
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: $deleteSale->status == 1 ? 7 : 8, data_obj: $deleteSale);
+        }
+
         $deleteSale->delete();
 
         if ($storedSaleAccountId) {
@@ -634,11 +665,6 @@ class SaleUtil
                         }
                     }
 
-                    if ($userPermission->sale['return_access'] == '1') {
-
-                        $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', [$row->id]) . '"><i class="fas fa-undo-alt text-primary"></i> Sale Return</a>';
-                    }
-
                     if ($userPermission->sale['edit_add_sale'] == '1') {
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
@@ -778,12 +804,6 @@ class SaleUtil
 
                             $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                         }
-                    }
-
-                    if (auth()->user()->permission->sale['return_access'] == '1') {
-
-                        $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', [$row->id]) . '"><i
-                                    class="fas fa-undo-alt text-primary"></i> Sale Return</a>';
                     }
 
                     if (auth()->user()->permission->sale['pos_edit'] == '1') {
@@ -1440,6 +1460,7 @@ class SaleUtil
             ->get();
 
         $return = DB::table('sale_returns')->where('sale_id', $sale->id)->first();
+
         $returnAmount = $return ? $return->total_return_amount : 0;
 
         $due = $sale->total_payable_amount
@@ -1456,6 +1477,8 @@ class SaleUtil
         $sale->sale_return_amount = $returnAmount;
         $sale->sale_return_due = $returnDue > 0 ? $returnDue : 0;
         $sale->save();
+
+        return $sale;
     }
 
     public function addPurchaseSaleProductChain($sale, $stockAccountingMethod)

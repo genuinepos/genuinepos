@@ -37,9 +37,11 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>Warehouse :</b> <span
-                                                    class="text-danger">*</span> </label>
+                                                <label class="col-4"><b>Warehouse :</b> 
+                                                    <span class="text-danger">*</span> 
+                                                </label>
                                                 <div class="col-8">
+                                                    <input type="hidden" name="warehouse_count" value="YES">
                                                     <select class="form-control changeable add_input"
                                                         name="warehouse_id" data-name="Warehouse" id="warehouse_id" autofocus>
                                                         <option value="">Select Warehouse</option>
@@ -52,8 +54,9 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class="col-4"><b>Adjust. A/C : <span
-                                                    class="text-danger">*</span></b></label>
+                                                <label class="col-4"><b>Adjust. A/C : 
+                                                    <span class="text-danger">*</span></b>
+                                                </label>
                                                 <div class="col-8">
                                                     <select name="adjustment_account_id" class="form-control add_input"
                                                         id="adjustment_account_id" data-name="Stock Adjustiment A/C">
@@ -72,7 +75,11 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Voucher No :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i></label>
+
+                                                <label class=" col-4"><b>Voucher No :</b> 
+                                                    <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i>
+                                                </label>
+
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id"
                                                         class="form-control" placeholder="Voucher No">
@@ -82,8 +89,10 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Adjust. Date :</b> <span
-                                                    class="text-danger">*</span> </label>
+                                                <label class=" col-4"><b>Adjust. Date :</b> 
+                                                    <span class="text-danger">*</span> 
+                                                </label>
+
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
                                                     <span class="error error_date"></span>
@@ -93,8 +102,10 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"> <b>Type :</b> <span
-                                                    class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i></label>
+                                                <label class=" col-4"> <b>Type :</b> <span class="text-danger">*</span> 
+                                                    <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i>
+                                                </label>
+
                                                 <div class="col-8">
                                                     <select name="type" data-name="Adjustment type"
                                                         class="form-control add_input" title="Select branch" id="type">
@@ -122,17 +133,21 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Item Search</label>
+                                                    <label class="col-form-label">Item Search</label>
                                                     <div class="input-group ">
+
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
+                                                            <span class="input-group-text">
+                                                                <i class="fas fa-barcode text-dark input_f"></i>
+                                                            </span>
                                                         </div>
+
                                                         <input type="text" name="search_product"
                                                             class="form-control scanable" autocomplete="off"
                                                             id="search_product"
                                                             placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                                        
                                                     </div>
+
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>
                                                     </div>
@@ -180,7 +195,7 @@
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
                                                         <div class="input-group">
-                                                            <label for="inputEmail3" class="col-4"><b>Total Item :</b></label>
+                                                            <label class="col-4"><b>Total Item :</b></label>
                                                             <div class="col-8">
                                                                 <input readonly type="number" step="any" name="total_item" class="form-control" id="total_item" value="0.00">
                                                             </div>
@@ -189,7 +204,7 @@
                                                
                                                     <div class="input-group mt-1">
                                                         <div class="input-group">
-                                                            <label for="inputEmail3" class=" col-4"><b>Net Total Amount :</b> </label>
+                                                            <label class="col-4"><b>Net Total Amount :</b> </label>
                                                             <div class="col-8">
                                                                 <input readonly type="number" class="form-control" step="any" step="any" name="net_total_amount" id="net_total_amount" value="0.00">
                                                             </div>
@@ -197,7 +212,7 @@
                                                     </div>
         
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Reason :</b></label>
+                                                        <label class=" col-4"><b>Reason :</b></label>
                                                         <div class="col-8">
                                                             <input type="text" name="reason" class="form-control"
                                                                 autocomplete="off" placeholder="Reason">
@@ -876,7 +891,7 @@
             e.preventDefault();
             var totalItem = $('#total_item').val();
             if (parseFloat(totalItem) == 0) {
-                toastr.error('Product table is empty.','Some thing want wrong.'); 
+                toastr.error('Product table is empty.','Some thing went wrong.'); 
                 return;
             }
 
@@ -899,7 +914,7 @@
 
             if(countErrorField > 0){
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing want wrong.'); 
+                toastr.error('Please check again all form fields.','Some thing went wrong.'); 
                 return;
             }
             
@@ -926,7 +941,7 @@
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+                toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
 
                 $.each(err.responseJSON.errors, function(key, error) {
                     $('.error_' + key + '').html(error[0]);

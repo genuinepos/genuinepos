@@ -4,13 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Warranty;
 use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
 
 class WarrantyController extends Controller
 {
+    protected $userActivityLogUtil;
+    public function __construct(UserActivityLogUtil $userActivityLogUtil)
+    {
+        $this->userActivityLogUtil = $userActivityLogUtil;
+        $this->middleware('auth:admin_and_user');
+    }
+    
     // Warranty main page/index page
     public function index()
     {
         if (auth()->user()->permission->product['warranties'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -28,6 +37,7 @@ class WarrantyController extends Controller
     public function store(Request $request)
     {
         if (auth()->user()->permission->product['warranties'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -36,13 +46,18 @@ class WarrantyController extends Controller
             'duration' => 'required',
         ]);
 
-        Warranty::insert([
+        $addWarranty = Warranty::create([
             'name' => $request->name,
             'type' => $request->type,
             'duration' => $request->duration,
             'duration_type' => $request->duration_type,
             'description' => $request->description,
         ]);
+
+        if ($addWarranty) {
+
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 25, data_obj: $addWarranty);
+        }
 
         return response()->json('Warranty is created Successfully');
     }
@@ -51,6 +66,7 @@ class WarrantyController extends Controller
     public function update(Request $request)
     {
         if (auth()->user()->permission->product['warranties'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -60,6 +76,7 @@ class WarrantyController extends Controller
         ]);
 
         $updateWarranty = Warranty::where('id', $request->id)->first();
+
         $updateWarranty->update([
             'name' => $request->name,
             'type' => $request->type,
@@ -67,6 +84,12 @@ class WarrantyController extends Controller
             'duration_type' => $request->duration_type,
             'description' => $request->description,
         ]);
+
+        if ($updateWarranty) {
+
+            $this->userActivityLogUtil->addLog(action: 2, subject_type: 25, data_obj: $updateWarranty);
+        }
+
         return response()->json('Warranty updated successfully');
     }
 
@@ -74,11 +97,16 @@ class WarrantyController extends Controller
     public function delete(Request $request, $warrantyId)
     {
         if (auth()->user()->permission->product['warranties'] == '0') {
+
             return response()->json('Access Denied');
         }
         
         $deleteWarranty = Warranty::find($warrantyId);
+
         if (!is_null($deleteWarranty)) {
+
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: 25, data_obj: $deleteWarranty);
+
             $deleteWarranty->delete();
         }
         return response()->json('Warranty deleted successfully');

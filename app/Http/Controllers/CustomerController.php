@@ -9,6 +9,7 @@ use App\Utils\SaleUtil;
 use App\Models\CashFlow;
 use App\Models\Customer;
 use App\Utils\Converter;
+use App\Models\SaleReturn;
 use App\Utils\AccountUtil;
 use App\Models\SalePayment;
 use App\Utils\CustomerUtil;
@@ -18,6 +19,7 @@ use App\Models\CustomerPayment;
 use Illuminate\Support\Facades\DB;
 use App\Models\CustomerPaymentInvoice;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\UserActivityLogUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class CustomerController extends Controller
@@ -26,25 +28,35 @@ class CustomerController extends Controller
     public $accountUtil;
     public $converter;
     public $invoiceVoucherRefIdUtil;
+    public $userActivityLogUtil;
     public $saleUtil;
 
-    public function __construct(CustomerUtil $customerUtil, AccountUtil $accountUtil, Converter $converter, SaleUtil $saleUtil, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
-    {
+    public function __construct(
+        CustomerUtil $customerUtil,
+        AccountUtil $accountUtil,
+        Converter $converter,
+        SaleUtil $saleUtil,
+        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
+        UserActivityLogUtil $userActivityLogUtil,
+    ) {
         $this->customerUtil = $customerUtil;
         $this->accountUtil = $accountUtil;
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->saleUtil = $saleUtil;
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
     public function index(Request $request)
     {
         if (auth()->user()->permission->contact['customer_all'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->customerUtil->customerListTable();
         }
 
@@ -55,6 +67,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         if (auth()->user()->permission->contact['customer_add'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -66,7 +79,7 @@ class CustomerController extends Controller
         $generalSettings = DB::table('general_settings')->first('prefix');
 
         $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
-        
+
         $addCustomer = Customer::create([
             'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
@@ -100,14 +113,18 @@ class CustomerController extends Controller
             amount: $request->opening_balance ? $request->opening_balance : 0.00
         );
 
+        $this->userActivityLogUtil->addLog(action: 1, subject_type: 1, data_obj: $addCustomer);
+
         return response()->json('Customer created successfully');
     }
 
     public function edit($customerId)
     {
         if (auth()->user()->permission->contact['customer_edit'] == '0') {
+
             return response()->json('Access Denied');
         }
+
         $customer = DB::table('customers')->where('id', $customerId)->first();
         $groups = DB::table('customer_groups')->get();
         return view('contacts.customers.ajax_view.edit', compact('customer', 'groups'));
@@ -154,13 +171,19 @@ class CustomerController extends Controller
         $updateCustomer->save();
 
         $this->customerUtil->updateCustomerLedger(
-            voucher_type_id : 0, 
-            customer_id : $updateCustomer->id, 
-            date : $updateCustomer->created_at, 
-            trans_id : NULL, 
-            amount : $updateCustomer->opening_balance, 
-            fixed_date : $updateCustomer->created_at
+            voucher_type_id: 0,
+            customer_id: $updateCustomer->id,
+            date: $updateCustomer->created_at,
+            trans_id: NULL,
+            amount: $updateCustomer->opening_balance,
+            fixed_date: $updateCustomer->created_at
         );
+
+        $customer = DB::table('customers')->where('id', $updateCustomer->id)
+            ->select('name', 'phone', 'contact_id', 'total_sale_due')
+            ->first();
+
+        $this->userActivityLogUtil->addLog(action: 2, subject_type: 1, data_obj: $customer);
 
         return response()->json('Customer updated successfully');
     }
@@ -168,11 +191,16 @@ class CustomerController extends Controller
     public function delete(Request $request, $customerId)
     {
         if (auth()->user()->permission->contact['customer_delete'] == '0') {
+
             return response()->json('Access Denied');
         }
 
         $deleteCustomer = Customer::find($customerId);
+
         if (!is_null($deleteCustomer)) {
+
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: 1, data_obj: $deleteCustomer);
+
             $deleteCustomer->delete();
         }
         return response()->json('Customer deleted successfully');
@@ -182,11 +210,16 @@ class CustomerController extends Controller
     public function changeStatus($customerId)
     {
         $statusChange = Customer::where('id', $customerId)->first();
+
         if ($statusChange->status == 1) {
+
+            $this->userActivityLogUtil->addLog(action: 2, subject_type: 1, data_obj: $statusChange);
             $statusChange->status = 0;
             $statusChange->save();
             return response()->json('Customer deactivated successfully');
         } else {
+
+            $this->userActivityLogUtil->addLog(action: 2, subject_type: 1, data_obj: $statusChange);
             $statusChange->status = 1;
             $statusChange->save();
             return response()->json('Customer activated successfully');
@@ -201,6 +234,7 @@ class CustomerController extends Controller
             $generalSettings = DB::table('general_settings')->first();
             $sales = '';
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 $sales = DB::table('sales')
                     ->leftJoin('branches', 'sales.branch_id', 'branches.id')
                     ->leftJoin('customers', 'sales.customer_id', 'customers.id')
@@ -213,6 +247,7 @@ class CustomerController extends Controller
                     ->where('sales.status', 1)
                     ->orderBy('id', 'desc');
             } else {
+
                 $sales = DB::table('sales')
                     ->leftJoin('branches', 'sales.branch_id', 'branches.id')
                     ->leftJoin('customers', 'sales.customer_id', 'customers.id')
@@ -238,32 +273,35 @@ class CustomerController extends Controller
                     $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Packing Slip</a>';
 
                     if (auth()->user()->permission->sale['shipment_access'] == '1') {
+
                         $html .= '<a class="dropdown-item" id="edit_shipment"
                             href="' . route('sales.shipment.edit', [$row->id]) . '"><i
                             class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                     }
 
                     if (auth()->user()->branch_id == $row->branch_id) {
+
                         if ($row->due > 0) {
+
                             if (auth()->user()->permission->sale['sale_payment'] == '1') {
+
                                 $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '" 
-                            ><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                                    ><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                             }
                         }
 
                         if (auth()->user()->permission->sale['sale_payment'] == '1') {
+
                             $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                        data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
+                            data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
                             class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
                         }
 
-                        if (auth()->user()->permission->sale['return_access'] == '1') {
-                            $html .= '<a class="dropdown-item" href="' . route('sales.returns.create', [$row->id]) . '"><i class="fas fa-undo-alt text-primary"></i> Sale Return</a>';
-                        }
-
                         if ($row->created_by == 1) {
+
                             $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                         } else {
+
                             $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                         }
 
@@ -272,7 +310,9 @@ class CustomerController extends Controller
                     }
 
                     if ($row->sale_return_due > 0) {
+
                         if (auth()->user()->permission->sale['sale_payment'] == '1') {
+
                             $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '" 
                         ><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                         }
@@ -285,9 +325,11 @@ class CustomerController extends Controller
                     return $html;
                 })
                 ->editColumn('date', function ($row) {
+
                     return date('d/m/Y', strtotime($row->date));
                 })
                 ->editColumn('invoice_id', function ($row) {
+
                     $html = '';
                     $html .= $row->invoice_id;
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
@@ -295,26 +337,38 @@ class CustomerController extends Controller
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
+
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
+
                         return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
+
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
                 ->editColumn('total_payable_amount', fn ($row) => $this->converter->format_in_bdt($row->total_payable_amount))
+                
                 ->editColumn('paid', fn ($row) => '<span class="text-success">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+                
                 ->editColumn('due', fn ($row) =>  '<span class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
+                
                 ->editColumn('sale_return_amount', fn ($row) => $this->converter->format_in_bdt($row->sale_return_amount))
+                
                 ->editColumn('sale_return_due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
+                
                 ->editColumn('paid_status', function ($row) {
+
                     $payable = $row->total_payable_amount - $row->sale_return_amount;
                     if ($row->due <= 0) {
+
                         return '<span class="text-success"><b>Paid</b></span>';
                     } elseif ($row->due > 0 && $row->due < $payable) {
+
                         return '<span class="text-primary"><b>Partial</b></span>';
                     } elseif ($payable == $row->due) {
+
                         return '<span class="text-danger"><b>Due</b></span>';
                     }
                 })
@@ -329,6 +383,7 @@ class CustomerController extends Controller
     public function ledgerList(Request $request, $customerId)
     {
         if ($request->ajax()) {
+
             $settings = DB::table('general_settings')->first();
 
             $customerUtil = $this->customerUtil;
@@ -360,10 +415,12 @@ class CustomerController extends Controller
                 )->orderBy('customer_ledgers.report_date', 'asc');
 
             if ($request->voucher_type) {
+
                 $query->where('customer_ledgers.voucher_type', $request->voucher_type); // Final
             }
 
             if ($request->from_date) {
+
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
                 $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
@@ -374,18 +431,21 @@ class CustomerController extends Controller
 
             return DataTables::of($customerLedgers)
                 ->editColumn('date', function ($row) use ($settings) {
+                    
                     $dateFormat = json_decode($settings->business, true)['date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->report_date));
                 })
 
                 ->editColumn('particulars', function ($row) use ($customerUtil) {
+
                     $type = $customerUtil->voucherType($row->voucher_type);
                     $__agp = $row->ags_sale ? '/' . 'AGS:<b>' . $row->ags_sale . '</b>' : '';
-                    return '<b>' . $type['name'] .($row->sale_status == 3 ? '-Order': ''). '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                    return '<b>' . $type['name'] . ($row->sale_status == 3 ? '-Order' : '') . '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
                 })
 
                 ->editColumn('voucher_no', function ($row) use ($customerUtil) {
+
                     $type = $customerUtil->voucherType($row->voucher_type);
                     return $row->{$type['voucher_no']};
                 })
@@ -436,6 +496,7 @@ class CustomerController extends Controller
             )->orderBy('customer_ledgers.report_date', 'asc');
 
         if ($request->voucher_type) {
+
             $query->where('customer_ledgers.voucher_type', $request->voucher_type); // Final
         }
 
@@ -443,6 +504,7 @@ class CustomerController extends Controller
         $toDate = '';
 
         if ($request->from_date) {
+            
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
@@ -510,6 +572,7 @@ class CustomerController extends Controller
         $customerPayment->year = date('Y');
 
         if ($request->hasFile('attachment')) {
+
             $PaymentAttachment = $request->file('attachment');
             $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
             $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
@@ -539,11 +602,16 @@ class CustomerController extends Controller
         );
 
         $dueInvoices = Sale::where('customer_id', $customerId)->where('due', '>', 0)->get();
+
         if (count($dueInvoices) > 0) {
+
             $index = 0;
             foreach ($dueInvoices as $dueInvoice) {
+
                 if ($dueInvoice->due > $request->paying_amount) {
+
                     if ($request->paying_amount > 0) {
+
                         $addSalePayment = new SalePayment();
                         $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
                         $addSalePayment->sale_id = $dueInvoice->id;
@@ -571,7 +639,9 @@ class CustomerController extends Controller
                         $request->paying_amount -= $request->paying_amount;
                     }
                 } elseif ($dueInvoice->due == $request->paying_amount) {
+
                     if ($request->paying_amount > 0) {
+
                         $addSalePayment = new SalePayment();
                         $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
                         $addSalePayment->sale_id = $dueInvoice->id;
@@ -599,7 +669,9 @@ class CustomerController extends Controller
                         $request->paying_amount -= $request->paying_amount;
                     }
                 } elseif ($dueInvoice->due < $request->paying_amount) {
+
                     if ($dueInvoice->due > 0) {
+
                         $addSalePayment = new SalePayment();
                         $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
                         $addSalePayment->sale_id = $dueInvoice->id;
@@ -677,6 +749,7 @@ class CustomerController extends Controller
         $customerPayment->year = date('Y');
 
         if ($request->hasFile('attachment')) {
+
             $PaymentAttachment = $request->file('attachment');
             $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
             $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
@@ -705,122 +778,106 @@ class CustomerController extends Controller
             balance_type: 'debit'
         );
 
-        $returnSales = Sale::with(['sale_return'])->where('sale_return_due', '>', 0)->get();
-        if (count($returnSales) > 0) {
+        // $returnSales = Sale::with(['sale_return'])->where('sale_return_due', '>', 0)->get();
+        $saleReturns = SaleReturn::with(['sale'])->where('customer_id', $customerId)
+            ->where('total_return_due', '>', 0)
+            ->orderBy('sale_id', 'desc')
+            ->get();
+
+        if (count($saleReturns) > 0) {
+
             $index = 0;
-            foreach ($returnSales as $returnSale) {
-                if ($returnSale->sale_return_due > $request->paying_amount) {
+            foreach ($saleReturns as $saleReturn) {
+
+                if ($saleReturn->total_return_due > $request->paying_amount) {
+
                     if ($request->paying_amount > 0) {
-                        // Add sale payment
-                        $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
-                        $addSalePayment->sale_id = $returnSale->id;
-                        $addSalePayment->customer_id = $customerId;
-                        $addSalePayment->customer_payment_id = $customerPayment->id;
-                        $addSalePayment->account_id = $request->account_id;
-                        $addSalePayment->payment_method_id = $request->payment_method_id;
-                        $addSalePayment->paid_amount = $request->paying_amount;
-                        $addSalePayment->payment_type = 2;
-                        $addSalePayment->date = date('d-m-y', strtotime($request->date));
-                        $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                        $addSalePayment->month = date('F');
-                        $addSalePayment->year = date('Y');
-                        $addSalePayment->note = $request->note;
-                        $addSalePayment->admin_id = auth()->user()->id;
-                        $addSalePayment->save();
+
+                        $this->saleUtil->saleReturnPaymentGetId(
+                            request: $request,
+                            sale: $saleReturn->sale,
+                            customer_payment_id: $customerPayment->id,
+                            sale_return_id: $saleReturn->id
+                        );
 
                         // Add customer return Payment invoice
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
-                        $addCustomerPaymentInvoice->sale_id = $returnSale->id;
+                        $addCustomerPaymentInvoice->sale_id = $saleReturn->sale_id;
+                        $addCustomerPaymentInvoice->sale_return_id = $saleReturn->id;
                         $addCustomerPaymentInvoice->paid_amount = $request->paying_amount;
                         $addCustomerPaymentInvoice->type = 2;
                         $addCustomerPaymentInvoice->save();
 
-                        if ($returnSale->sale_return) {
-                            $returnSale->sale_return->total_return_due -= $request->paying_amount;
-                            $returnSale->sale_return->total_return_due_pay += $request->paying_amount;
-                            $returnSale->sale_return->save();
+                        $request->paying_amount -= $request->paying_amount;
+
+                        if ($saleReturn->sale) {
+
+                            $this->saleUtil->adjustSaleInvoiceAmounts($saleReturn->sale);
                         }
 
-                        $request->paying_amount -= $request->paying_amount;
-                        $this->saleUtil->adjustSaleInvoiceAmounts($returnSale);
+                        // Update sale return
+                        $this->saleUtil->adjustSaleReturnAmounts($saleReturn);
                     }
-                } elseif ($returnSale->sale_return_due == $request->paying_amount) {
+                } elseif ($saleReturn->total_return_due == $request->paying_amount) {
+
                     if ($request->paying_amount > 0) {
-                        // Add sale payment
-                        $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
-                        $addSalePayment->sale_id = $returnSale->id;
-                        $addSalePayment->customer_id = $customerId;
-                        $addSalePayment->customer_payment_id = $customerPayment->id;
-                        $addSalePayment->account_id = $request->account_id;
-                        $addSalePayment->payment_method_id = $request->payment_method_id;
-                        $addSalePayment->paid_amount = $request->paying_amount;
-                        $addSalePayment->payment_type = 2;
-                        $addSalePayment->date = date('d-m-y', strtotime($request->date));
-                        $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                        $addSalePayment->month = date('F');
-                        $addSalePayment->year = date('Y');
-                        $addSalePayment->note = $request->note;
-                        $addSalePayment->admin_id = auth()->user()->id;
-                        $addSalePayment->save();
+
+                        $this->saleUtil->saleReturnPaymentGetId(
+                            request: $request,
+                            sale: $saleReturn->sale,
+                            customer_payment_id: $customerPayment->id,
+                            sale_return_id: $saleReturn->id
+                        );
 
                         // Add Customer return Payment invoice
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
-                        $addCustomerPaymentInvoice->sale_id = $returnSale->id;
+                        $addCustomerPaymentInvoice->sale_id = $saleReturn->sale_id;
+                        $addCustomerPaymentInvoice->sale_return_id = $saleReturn->id;
                         $addCustomerPaymentInvoice->paid_amount = $request->paying_amount;
                         $addCustomerPaymentInvoice->type = 2;
                         $addCustomerPaymentInvoice->save();
 
-                        if ($returnSale->sale_return) {
-                            $returnSale->sale_return->total_return_due -= $request->paying_amount;
-                            $returnSale->sale_return->total_return_due_pay += $request->paying_amount;
-                            $returnSale->sale_return->save();
-                        }
                         $request->paying_amount -= $request->paying_amount;
-                        $this->saleUtil->adjustSaleInvoiceAmounts($returnSale);
+
+                        if ($saleReturn->sale) {
+
+                            $this->saleUtil->adjustSaleInvoiceAmounts($saleReturn->sale);
+                        }
+
+                        // Update sale return
+                        $this->saleUtil->adjustSaleReturnAmounts($saleReturn);
                     }
-                } elseif ($returnSale->sale_return_due < $request->paying_amount) {
+                } elseif ($saleReturn->total_return_due < $request->paying_amount) {
+
                     if ($request->paying_amount > 0) {
-                        // Add sale payment
-                        $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
-                        $addSalePayment->sale_id = $returnSale->id;
-                        $addSalePayment->customer_id = $customerId;
-                        $addSalePayment->customer_payment_id = $customerPayment->id;
-                        $addSalePayment->account_id = $request->account_id;
-                        $addSalePayment->payment_method_id = $request->payment_method_id;
-                        $addSalePayment->paid_amount = $returnSale->sale_return_due;
-                        $addSalePayment->payment_type = 2;
-                        $addSalePayment->date = date('d-m-y', strtotime($request->date));
-                        $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                        $addSalePayment->month = date('F');
-                        $addSalePayment->year = date('Y');
-                        $addSalePayment->note = $request->note;
-                        $addSalePayment->admin_id = auth()->user()->id;
-                        $addSalePayment->save();
+
+                        $this->saleUtil->saleReturnPaymentGetId(
+                            request: $request,
+                            sale: $saleReturn->sale,
+                            customer_payment_id: $customerPayment->id,
+                            sale_return_id: $saleReturn->id
+                        );
 
                         // Add Customer return Payment invoice
                         $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
-                        $addCustomerPaymentInvoice->sale_id = $returnSale->id;
+                        $addCustomerPaymentInvoice->sale_id = $saleReturn->sale_id;
+                        $addCustomerPaymentInvoice->sale_return_id = $saleReturn->id;
                         $addCustomerPaymentInvoice->paid_amount = $returnSale->sale_return_due;
                         $addCustomerPaymentInvoice->type = 2;
                         $addCustomerPaymentInvoice->save();
 
-                        if ($returnSale->sale_return) {
-                            $returnSale->sale_return->total_return_due -= $returnSale->sale_return_due;
-                            $returnSale->sale_return->total_return_due_received += $returnSale->sale_return_due;
-                            $returnSale->sale_return->save();
+                        $request->paying_amount -= $saleReturn->total_return_due;
+
+                        if ($saleReturn->sale) {
+
+                            $this->saleUtil->adjustSaleInvoiceAmounts($saleReturn->sale);
                         }
 
-                        $request->paying_amount -= $returnSale->sale_return_due;
-                        $this->saleUtil->adjustSaleInvoiceAmounts($returnSale);
+                        // Update sale return
+                        $this->saleUtil->adjustSaleReturnAmounts($saleReturn);
                     }
                 }
                 $index++;
@@ -844,9 +901,7 @@ class CustomerController extends Controller
                 'accounts.name as ac_name',
                 'accounts.account_number as ac_no',
                 'payment_methods.name as payment_method'
-            )
-
-            ->orderBy('customer_payments.report_date', 'desc')->get();
+            )->orderBy('customer_payments.report_date', 'desc')->get();
 
         return view('contacts.customers.ajax_view.view_payment_list', compact('customer', 'customer_payments'));
     }
@@ -860,17 +915,22 @@ class CustomerController extends Controller
             'account',
             'customer_payment_invoices',
             'customer_payment_invoices.sale:id,invoice_id,date',
+            'customer_payment_invoices.sale_return',
             'paymentMethod:id,name'
         )->where('id', $paymentId)->first();
+
         return view('contacts.customers.ajax_view.payment_details', compact('customerPayment'));
     }
 
     // Customer Payment Delete
     public function paymentDelete(Request $request, $paymentId)
     {
-        $deleteCustomerPayment = CustomerPayment::with('customer_payment_invoices')->where('id', $paymentId)->first();
+        $deleteCustomerPayment = CustomerPayment::with(['customer_payment_invoices', 'customer_payment_invoices.sale', 'customer_payment_invoices.sale_return'])->where('id', $paymentId)->first();
+
         if ($deleteCustomerPayment->attachment != null) {
+
             if (file_exists(public_path('uploads/payment_attachment/' . $deleteCustomerPayment->attachment))) {
+
                 unlink(public_path('uploads/payment_attachment/' . $deleteCustomerPayment->attachment));
             }
         }
@@ -879,25 +939,36 @@ class CustomerController extends Controller
         $storedCustomerId = $deleteCustomerPayment->customer_id;
         $storedCustomerPaymentInvoices = $deleteCustomerPayment->customer_payment_invoices;
         $deleteCustomerPayment->delete();
+
         // Update Customer payment invoices
         if (count($storedCustomerPaymentInvoices) > 0) {
+
             foreach ($deleteCustomerPayment->customer_payment_invoices as $customer_payment_invoice) {
+
                 if ($customer_payment_invoice->type == 1) {
+
                     $sale = Sale::where('id', $customer_payment_invoice->sale_id)->first();
-                    $this->saleUtil->adjustSaleInvoiceAmounts($sale);
-                } else {
-                    $sale = Sale::with('sale_return')->where('id', $customer_payment_invoice->sale_id)->first();
-                    if ($sale->sale_return) {
-                        $sale->sale_return->total_return_due += $customer_payment_invoice->paid_amount;
-                        $sale->sale_return->total_return_due_pay -= $customer_payment_invoice->paid_amount;
-                        $sale->sale_return->save();
+
+                    if ($sale) {
+
+                        $this->saleUtil->adjustSaleInvoiceAmounts($sale);
                     }
-                    $this->saleUtil->adjustSaleInvoiceAmounts($sale);
+                } else {
+
+                    $saleReturn = SaleReturn::with(['sale'])->where('id', $customer_payment_invoice->sale_return_id)->first();
+
+                    if ($saleReturn->sale) {
+
+                        $this->saleUtil->adjustSaleInvoiceAmounts($saleReturn->sale);
+                    }
+
+                    $this->saleUtil->adjustSaleReturnAmounts($saleReturn);
                 }
             }
         }
 
         if ($storedAccountId) {
+
             $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
         }
 

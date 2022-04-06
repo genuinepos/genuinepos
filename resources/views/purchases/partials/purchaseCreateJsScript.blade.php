@@ -7,11 +7,14 @@
 
     var suppliersArray = '';
     function setSuppliers(){
+
         $.ajax({
             url:"{{route('purchases.get.all.supplier')}}",
             success:function(suppliers){
+
                 suppliersArray = suppliers;
                 $.each(suppliers, function(key, val){
+
                     $('#supplier_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
                 });
             }
@@ -20,20 +23,23 @@
     setSuppliers();
 
     $('#supplier_id').on('change', function () {
+
         document.getElementById('search_product').focus();
         var id = $(this).val(); 
         var supplier = suppliersArray.filter(function (supplier) {
+
             return supplier.id == id;
         });
 
         if (supplier[0].pay_term != null && supplier[0].pay_term_number != null) {
+
             $('#pay_term').val(supplier[0].pay_term);
             $('#pay_term_number').val(supplier[0].pay_term_number);
         }else{
+
             $('#pay_term').val('');
             $('#pay_term_number').val('');
         }
-
     });
 
     $('#addSupplier').on('click', function () {
@@ -52,7 +58,9 @@
             url:"{{route('purchases.get.all.unites')}}",
             async : false,
             success:function(units){
+
                 $.each(units, function(key, unit){
+
                     unites.push(unit.name); 
                 });
             }
@@ -69,6 +77,7 @@
 
                 taxArray = taxes;
                 $.each(taxes, function(key, val){
+
                     $('#purchase_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
                 });
 
@@ -112,14 +121,17 @@
     }
 
     var delay = (function() {
+
         var timer = 0;
         return function(callback, ms) {
+
             clearTimeout (timer);
             timer = setTimeout(callback, ms);
         };
     })();
 
     $('#search_product').on('input', function(e) {
+
         $('.variant_list_area').empty();
         $('.select_area').hide();
         var product_code = $(this).val();
@@ -134,13 +146,20 @@
             url:"{{url('purchases/search/product')}}"+"/"+product_code,
             dataType: 'json',
             success:function(product){
+
                 if (!$.isEmptyObject(product.errorMsg)) {
+
                     toastr.error(product.errorMsg);
                     $('#search_product').val('');
                     return;
                 } 
 
-                if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product) || !$.isEmptyObject(product.namedProducts)){
+                if(
+                    !$.isEmptyObject(product.product) || 
+                    !$.isEmptyObject(product.variant_product) || 
+                    !$.isEmptyObject(product.namedProducts)
+                ){
+                    
                     $('#search_product').addClass('is-valid');
                     if(!$.isEmptyObject(product.product)){
 
@@ -205,6 +224,7 @@
                                 tr += '<td>';
                                 tr += '<input value="1" required name="quantities[]" type="number" step="any" class="form-control" id="quantity">';
                                 tr += '<select name="unit_names[]" id="unit_name" class="form-control mt-1">';
+
                                 unites.forEach(function(unit) {
 
                                     if (product.unit.name == unit) {
@@ -215,6 +235,7 @@
                                         tr += '<option value="'+unit+'">'+unit+'</option>';   
                                     }
                                 });
+                                
                                 tr += '</select>';
                                 tr += '</td>';
 
@@ -233,11 +254,11 @@
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<input readonly value="'+product.product_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
+                                tr += '<input readonly value="'+product.product_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount" tabindex="-1">';
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<input readonly value="'+product.product_cost+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
+                                tr += '<input readonly value="'+product.product_cost+'" required name="subtotals[]" type="text" class="form-control" id="subtotal" tabindex="-1">';
                                 tr += '</td>';
 
                                 tr += '<td>';
@@ -248,11 +269,11 @@
 
                                 tr += '<td>';
                                 tr += '<input type="hidden" value="'+product.product_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
-                                tr += '<input readonly value="'+product.product_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
+                                tr += '<input readonly value="'+product.product_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost" tabindex="-1">';
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<input readonly value="'+product.product_cost_with_tax+'" type="text" name="linetotals[]" id="line_total" class="form-control">';
+                                tr += '<input readonly value="'+product.product_cost_with_tax+'" type="text" name="linetotals[]" id="line_total" class="form-control" tabindex="-1">';
                                 tr += '</td>';
 
                                 @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
@@ -420,26 +441,26 @@
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<input readonly value="'+variant_product.variant_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
+                            tr += '<input readonly value="'+variant_product.variant_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount" tabindex="-1">';
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<input readonly value="'+variant_product.variant_cost+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
+                            tr += '<input readonly value="'+variant_product.variant_cost+'" required name="subtotals[]" type="text" class="form-control" id="subtotal" tabindex="-1">';
                             tr += '</td>';
 
                             tr += '<td>';
                             tr += '<span>'+tax_percent+'%'+'</span>'
-                            tr += '<input readonly type="hidden" name="tax_percents[]" id="tax_percent" value="'+tax_percent+'">';
+                            tr += '<input type="hidden" name="tax_percents[]" id="tax_percent" value="'+tax_percent+'" tabindex="-1">';
                             tr += '<input type="hidden" value="'+parseFloat(tax_amount).toFixed(2)+'" name="unit_taxes[]" id="unit_tax">';
                             tr += '</td>';
 
                             tr += '<td>';
                             tr += '<input type="hidden" value="'+variant_product.variant_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
-                            tr += '<input readonly value="'+variant_product.variant_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
+                            tr += '<input readonly value="'+variant_product.variant_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost" tabindex="-1">';
                             tr += '</td>';
 
                             tr += '<td>';
-                            tr += '<input readonly value="'+variant_product.variant_cost_with_tax+'" type="text" name="linetotals[]" id="line_total" class="form-control">';
+                            tr += '<input readonly value="'+variant_product.variant_cost_with_tax+'" type="text" name="linetotals[]" id="line_total" class="form-control" tabindex="-1">';
                             tr += '</td>';
 
                             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
@@ -583,11 +604,11 @@
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input readonly value="'+product_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount">';
+            tr += '<input readonly value="'+product_cost+'" required name="unit_costs_with_discount[]" type="text" class="form-control" id="unit_cost_with_discount" tabindex="-1">';
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input readonly value="'+product_cost+'" required name="subtotals[]" type="text" class="form-control" id="subtotal">';
+            tr += '<input readonly value="'+product_cost+'" required name="subtotals[]" type="text" class="form-control" id="subtotal" tabindex="-1">';
             tr += '</td>';
 
             tr += '<td>';
@@ -598,12 +619,12 @@
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input readonly type="hidden" value="'+product_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
-            tr += '<input readonly value="'+product_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost">';
+            tr += '<input readonly type="hidden" value="'+product_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" tabindex="-1">';
+            tr += '<input readonly value="'+product_cost_with_tax+'" name="net_unit_costs[]" type="text" class="form-control" id="net_unit_cost" tabindex="-1">';
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input readonly value="'+product_cost_with_tax+'" type="text" name="linetotals[]" id="line_total" class="form-control">';
+            tr += '<input readonly value="'+product_cost_with_tax+'" type="text" name="linetotals[]" id="line_total" class="form-control" tabindex="-1">';
             tr += '</td>';
 
             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
@@ -623,7 +644,9 @@
             tr += '</tr>';
             $('#purchase_list').prepend(tr); 
             calculateTotalAmount();  
+
             if (keyName == 9) {
+
                 $("#quantity").select();
                 keyName = 1;
             }
@@ -741,15 +764,15 @@
 
             tr += '</td>';
             tr += '<td>';
-            tr += '<input readonly value="0.00" required name="unit_discounts[]" type="number" class="form-control" id="unit_discount">';
+            tr += '<input value="0.00" required name="unit_discounts[]" type="number" class="form-control" id="unit_discount">';
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input readonly value="'+variant_cost+'" required name="unit_costs_with_discount[]" type="number" class="form-control" id="unit_cost_with_discount">';
+            tr += '<input readonly value="'+variant_cost+'" required name="unit_costs_with_discount[]" type="number" class="form-control" id="unit_cost_with_discount" tabindex="-1">';
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input readonly value="'+variant_cost+'" required name="subtotals[]" type="number" class="form-control" id="subtotal">';
+            tr += '<input readonly value="'+variant_cost+'" required name="subtotals[]" type="number" class="form-control" id="subtotal" tabindex="-1">';
             tr += '</td>';
 
             tr += '<td>';
@@ -760,11 +783,11 @@
 
             tr += '<td>';
             tr += '<input type="hidden" value="'+variant_cost_with_tax+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
-            tr += '<input readonly value="'+variant_cost_with_tax+'" name="net_unit_costs[]" type="number" class="form-control" id="net_unit_cost">';
+            tr += '<input readonly value="'+variant_cost_with_tax+'" name="net_unit_costs[]" type="number" class="form-control" id="net_unit_cost" tabindex="-1">';
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<input readonly value="'+variant_cost_with_tax+'" type="number" name="linetotals[]" id="line_total" class="form-control">';
+            tr += '<input readonly value="'+variant_cost_with_tax+'" type="number" name="linetotals[]" id="line_total" class="form-control" tabindex="-1">';
             tr += '</td>';
 
             @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
@@ -808,7 +831,6 @@
         var netUnitCost = tr.find('#net_unit_cost').val();
         var calcLineTotal = parseFloat(netUnitCost) * parseFloat(qty);
         var lineTotal = tr.find('#line_total').val(parseFloat(calcLineTotal).toFixed(2));
-        // console.log(tr);
         calculateTotalAmount();
     });
 
@@ -843,10 +865,14 @@
         var calcLineTotal = parseFloat(calcNetUnitCost) * parseFloat(quantity);
         var lineTotal = tr.find('#line_total').val(parseFloat(calcLineTotal).toFixed(2));
 
-        // Update selling price
-        var profit = tr.find('#profit').val();
-        var calcProfit = parseFloat(calcUnitCostWithDiscount) / 100 * parseFloat(profit) + parseFloat(calcUnitCostWithDiscount);
-        var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
+        // Calculate selling profit margin
+        var selling_price = tr.find('#selling_price').val() ? tr.find('#selling_price').val() : 0;
+        var profitAmount = parseFloat(selling_price) - parseFloat(calcUnitCostWithDiscount);
+        var __cost = parseFloat(calcUnitCostWithDiscount) > 0 ? parseFloat(calcUnitCostWithDiscount) : parseFloat(profitAmount);
+        var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
+        var __calcProfit = calcProfit ? calcProfit : 0;
+        tr.find('#profit').val(parseFloat(__calcProfit).toFixed(2));
+
         calculateTotalAmount();
     });
 
@@ -889,10 +915,13 @@
         var calcLineTotal = parseFloat(calsNetUnitCost) * parseFloat(quantity);
         var lineTotal = tr.find('#line_total').val(parseFloat(calcLineTotal).toFixed(2));
 
-        // Update profit 
-        var profitMargin = tr.find('#profit').val();
-        var calcProfit = parseFloat(calcUnitCostWithDiscount) / 100 * parseFloat(profitMargin) + parseFloat(calcUnitCostWithDiscount);
-        var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
+        // Calculate selling profit margin
+        var selling_price = tr.find('#selling_price').val() ? tr.find('#selling_price').val() : 0;
+        var profitAmount = parseFloat(selling_price) - parseFloat(calcUnitCostWithDiscount);
+        var __cost = parseFloat(calcUnitCostWithDiscount) > 0 ? parseFloat(calcUnitCostWithDiscount) : parseFloat(profitAmount);
+        var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
+        var __calcProfit = calcProfit ? calcProfit : 0;
+        tr.find('#profit').val(parseFloat(__calcProfit).toFixed(2));
         calculateTotalAmount();
     });
 
@@ -1030,7 +1059,8 @@
             cache: false,
             processData: false,
             success:function(data){
-
+                
+                $('.error').html('');
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
                 if(!$.isEmptyObject(data.errorMsg)){
@@ -1046,6 +1076,7 @@
                     toastr.success('Successfully Purchase Created.');
                     $('#add_purchase_form')[0].reset();
                     $('#purchase_list').empty();
+                    
                     $(data).printThis({
                         debug: false,                   
                         importCSS: true,                
@@ -1072,7 +1103,7 @@
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing want wrong.'); 
+                toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
 
                 $.each(err.responseJSON.errors, function(key, error) {
 

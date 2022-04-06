@@ -134,9 +134,9 @@
                             </td>
 
                             <td>
-                                @if (auth()->user()->branch_id == $purchase->branch_id) {
+                                @if (auth()->user()->branch_id == $purchase->branch_id) 
 
-                                    @if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
+                                    @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
                                         @if ($payment->payment_type == 1)
                                             <a href="{{ route('purchases.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
                                         @else

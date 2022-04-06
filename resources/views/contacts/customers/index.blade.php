@@ -69,7 +69,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th colspan="7" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th id="opening_balance" class="text-white text-end"></th>
                                                 <th id="total_sale" class="text-white text-end"></th>
                                                 <th id="total_paid" class="text-white text-end"></th>

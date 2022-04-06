@@ -57,7 +57,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="payment_heading">Choose Payment method</h6>
-                        <a href="" class="close-btn" id="cancel_pay_mathod"><span
+                        <a href="" class="close-btn" id="cancel_pay_mathod" tabindex="-1"><span
                             class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
@@ -106,7 +106,7 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <a href="" class="c-btn btn_blue me-0 float-end" id="submit_btn" data-button_type="1" data-action_id="1">Confirm (F10)</a>
+                                <a href="" class="c-btn btn_blue me-0 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Confirm (F10)</a>
                                 <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">Close</button>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h6 class="modal-title" id="exampleModalLabel">Reedem Point</h6>
-                            <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                            <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
@@ -148,7 +148,7 @@
                             <div class="form-group row mt-3">
                                 <div class="col-md-12">
                                     <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                    <a href="#" class="c-btn btn_blue ms-1 float-end" id="redeem_btn">Redeem</a>
+                                    <a href="#" class="c-btn btn_blue ms-1 float-end" id="redeem_btn" tabindex="-1">Redeem</a>
                                     <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
                                 </div>
                             </div>
@@ -174,15 +174,15 @@
                     <div class="tab_list_area">
                         <ul class="list-unstyled">
                             <li>
-                                <a id="tab_btn" class="tab_btn tab_active text-white" href="{{url('sales/pos/recent/sales')}}"><i class="fas fa-info-circle"></i> Final</a>
+                                <a id="tab_btn" class="tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> Final</a>
                             </li>
 
                             <li>
-                                <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/quotations')}}"><i class="fas fa-scroll"></i>Quotation</a>
+                                <a id="tab_btn" class="tab_btn text-white" href="{{url('common/ajax/call/recent/quotations/2')}}" tabindex="-1"><i class="fas fa-scroll"></i>Quotation</a>
                             </li>
 
                             <li>
-                                <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/drafts')}}"><i class="fas fa-shopping-bag"></i> Draft</a>
+                                <a id="tab_btn" class="tab_btn text-white" href="{{url('common/ajax/call/recent/drafts/2')}}" tabindex="-1"><i class="fas fa-shopping-bag"></i> Draft</a>
                             </li>
                         </ul>
                     </div>
@@ -230,7 +230,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Hold Invoices</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -263,7 +263,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
                             class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body" id="add_product_body"></div>
@@ -279,7 +279,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Add Customer</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_customer_modal_body"></div>
@@ -297,7 +297,7 @@
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">Suspended Sales</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="suspended_sale_list"></div>
@@ -313,7 +313,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="product_info">Samsung A30</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
@@ -402,7 +402,7 @@
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">Item Stocks</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="stock_modal_body"></div>
@@ -433,7 +433,7 @@
             <div class="modal-content modal-middle">
                 <div class="modal-header">
                     <h6 class="modal-title" id="payment_heading">Quick Cash Receive</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
@@ -472,7 +472,7 @@
                     <div class="form-group row mt-3">
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <a href="" class="c-btn btn_blue ms-1 float-end" id="submit_btn" data-button_type="1" data-action_id="1">Cash (F10)</a>
+                            <a href="#" class="c-btn btn_blue ms-1 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Cash (F10)</a>
                             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
                         </div>
                     </div>
@@ -488,7 +488,7 @@
             <div class="modal-content" id="exchange_body">
                 <div class="modal-header">
                     <h6 class="modal-title">Exchange</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
 
                 <div class="modal-body">
@@ -509,7 +509,7 @@
 
                                 <div class="col-md-2">
                                     <div class="btn_30_blue m-0">
-                                        <a id="submit_form_btn" href="#"><i class="fas fa-plus-square"></i> Search</a>
+                                        <a id="submit_form_btn" href="#" tabindex="-1"><i class="fas fa-plus-square"></i> Search</a>
                                     </div>
                                 </div>
                             </div>
@@ -535,7 +535,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="payment_heading">Add POS Shortcut Menus</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="modal-body_shortcuts"></div>
@@ -557,6 +557,7 @@
     <script>
         // Get all pos shortcut menus by ajax
         function allPosShortcutMenus() {
+
             $.ajax({
                 url: "{{ route('pos.short.menus.show') }}",
                 type: 'get',
@@ -569,10 +570,12 @@
 
         $('#cash_register_details').on('click', function (e) {
             e.preventDefault();
+
             $.ajax({
                 url:"{{route('sales.cash.register.details')}}",
                 type:'get',
                 success:function(data){
+
                     $('#cash_register_details_content').html(data);
                     $('#cashRegisterDetailsModal').modal('show');
                 }
@@ -581,10 +584,12 @@
 
         $('#close_register').on('click', function (e) {
             e.preventDefault();
+
             $.ajax({
                 url:"{{route('sales.cash.register.close.modal.view')}}",
                 type:'get',
                 success:function(data){
+
                     $('#close_register_content').html(data);
                     $('#closeRegisterModal').modal('show');
                 }
@@ -593,11 +598,13 @@
 
         $(document).on('click', '#pos_exit_button',function(e){
             e.preventDefault();
+
             var url = $(this).attr('href');
             $('#payment_deleted_form').attr('action', url);
+
             $.confirm({
                 'title': 'Delete Confirmation',
-                'content': 'Are you sure, you want to exit?',
+                'content': 'Are you sure, you went to exit?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {window.location = "{{ route('dashboard.dashboard') }}";}},
                     'No': {'class': 'no btn-danger','action': function() { console.log('Deleted canceled.')}}
@@ -607,11 +614,13 @@
 
         //Key shortcut for to the settings
         shortcuts.add('ctrl+q',function() {
+
             window.location = "{{ route('settings.general.index') }}";
         });
 
         var scrollContainer = document.querySelector("#pos-shortcut-menus");
         scrollContainer.addEventListener("wheel", (evt) => {
+
             evt.preventDefault();
             scrollContainer.scrollLeft += evt.deltaY;
         });

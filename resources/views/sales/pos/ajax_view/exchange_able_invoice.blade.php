@@ -33,7 +33,7 @@
                             <tr>
                                 <td class="serial text-start">{{ $loop->index + 1 }}</td>
                                 <td class="text-start">
-                                    <a class="product-name text-dark" href="#">{{ $item->product->name }} {{$item->variant ? $item->variant->variant_name : ''}}</a>
+                                    <a href="#" class="product-name text-dark" tabindex="-1">{{ $item->product->name }} {{$item->variant ? $item->variant->variant_name : ''}}</a>
                                     <input value="{{ $item->product_id }}" type="hidden" class="productId-{{ $item->product_id }}" name="product_ids[]">
                                     <input value="{{ $item->id }}" type="hidden" id = "product_row_id" name="product_row_ids[]">
                                     <input input value="{{$item->product_variant_id  ? $item->product_variant_id  : 'noid'}}" type="hidden" name="variant_ids[]" value="{{$item->product_variant_id  ? $item->product_variant_id  : ''}}">

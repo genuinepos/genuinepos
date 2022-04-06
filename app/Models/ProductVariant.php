@@ -19,6 +19,8 @@ class ProductVariant extends Model
             'name',
             'type',
             'tax_id', 
+            'brand_id', 
+            'category_id', 
             'tax_type', 
             'unit_id', 
             'product_code',

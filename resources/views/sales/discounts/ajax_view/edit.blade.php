@@ -3,8 +3,8 @@
     <div class="form-group row">
         <div class="col-md-12">
             <label><strong>Name :</strong> <span class="text-danger">*</span></label>
-            <input type="text" name="name" class="form-control add_input" data-name="Discount name" id="name"
-                placeholder="Discount name" value="{{ $discount->name }}"/>
+            <input type="text" name="name" class="form-control add_input" data-name="Offer name" id="name"
+                placeholder="Discount name" value="{{ $discount->name }}" autocomplete="off"/>
             <span class="error error_name"></span>
         </div>
     </div>
@@ -13,7 +13,7 @@
         <div class="col-md-12">
             <label><strong>Priority <i data-bs-toggle="tooltip" data-bs-placement="right"
                         title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> :</strong> <span class="text-danger">*</span> </label>
-            <input type="text" name="priority" class="form-control add_input" data-name="Priority" id="priority" placeholder="Priority" value="{{ $discount->priority }}"/>
+            <input type="text" name="priority" class="form-control add_input" data-name="Priority" id="priority" placeholder="Priority" value="{{ $discount->priority }}" autocomplete="off"/>
             <span class="error error_priority"></span>
         </div>
     </div>
@@ -51,6 +51,7 @@
         <div class="col-md-6">
             <label><strong>Brand :</strong> </label>
             <select name="brand_id" id="brand_id" class="form-control add_input">
+                <option value="">Please select </option>
                 @foreach ($brands as $brand)
                     <option {{ $discount->brand_id == $brand->id ? 'SELECTED' : '' }} value="{{ $brand->id }}">
                         {{ $brand->name }}
@@ -62,6 +63,7 @@
         <div class="col-md-6">
             <label><strong>Category :</strong></label>
             <select name="category_id" id="category_id" class="form-control add_input">
+                <option value="">Please select </option>
                 @foreach ($categories as $category)
                     <option {{ $discount->category_id == $category->id ? 'SELECTED' : '' }} value="{{ $category->id }}">
                         {{ $category->name }}
@@ -83,7 +85,7 @@
 
         <div class="col-md-6">
             <label><strong>Discount Amount :</strong></label>
-            <input type="number" name="discount_amount" id="discount_amount" class="form-control add_input" value="{{ $discount->discount_amount }}">
+            <input type="number" name="discount_amount" id="discount_amount" class="form-control add_input" value="{{ $discount->discount_amount }}" autocomplete="off">
             <span class="error error_discount_amount"></span>
         </div>
     </div>

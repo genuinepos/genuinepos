@@ -46,6 +46,7 @@ class PurchaseReturnController extends Controller
         AccountUtil $accountUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
+        
         $this->purchaseReturnUtil = $purchaseReturnUtil;
         $this->nameSearchUtil = $nameSearchUtil;
         $this->productStockUtil = $productStockUtil;

@@ -6,14 +6,17 @@ use DB;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Utils\UserActivityLogUtil;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 
 class SubCategoryController extends Controller
 {
-    public function __construct()
+    protected $userActivityLogUtil;
+    public function __construct(UserActivityLogUtil $userActivityLogUtil)
     {
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -33,7 +36,7 @@ class SubCategoryController extends Controller
                 ->join('categories as parentcat', 'parentcat.id', 'categories.parent_category_id')
                 ->select('parentcat.name as parentname', 'categories.*')
                 ->whereNotNull('categories.parent_category_id')->orderBy('id', 'DESC');
-                
+
             return DataTables::of($subCategories)
                 ->addIndexColumn()
                 ->editColumn('photo', function ($row) use ($img_url) {
@@ -75,7 +78,7 @@ class SubCategoryController extends Controller
         }
 
         $this->validate($request, [
-             // 'name' => ['required', Rule::unique('categories')->where(function ($query) {
+            // 'name' => ['required', Rule::unique('categories')->where(function ($query) {
             //     return $query->where('parent_category_id', '!=', NULL);
             // })],
             'name' => 'required',
@@ -83,13 +86,15 @@ class SubCategoryController extends Controller
             'photo' => 'sometimes|image|max:2048',
         ], ['parent_category_id.required' => 'Parent category field is required']);
 
+        $addSubCategory = '';
+
         if ($request->file('photo')) {
 
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
             Image::make($categoryPhoto)->resize(250, 250)->save('public/uploads/category/' . $categoryPhotoName);
 
-            Category::insert([
+            $addSubCategory = Category::insert([
                 'name' => $request->name,
                 'description' => $request->description,
                 'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
@@ -97,12 +102,18 @@ class SubCategoryController extends Controller
             ]);
         } else {
 
-            Category::insert([
+            $addSubCategory = Category::insert([
                 'name' => $request->name,
                 'description' => $request->description,
                 'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
             ]);
         }
+
+        if ($addSubCategory) {
+
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 21, data_obj: $addSubCategory);
+        }
+
         return response()->json('Subcategory created successfully');
     }
 
@@ -114,7 +125,7 @@ class SubCategoryController extends Controller
         }
 
         $this->validate($request, [
-             // 'name' => ['required', Rule::unique('categories')->where(function ($query) {
+            // 'name' => ['required', Rule::unique('categories')->where(function ($query) {
             //     return $query->where('parent_category_id', '!=', NULL);
             // })],
             'name' => 'required',
@@ -152,6 +163,9 @@ class SubCategoryController extends Controller
                 'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
             ]);
         }
+
+        $this->userActivityLogUtil->addLog(action: 2, subject_type: 21, data_obj: $updateCategory);
+
         return response()->json('Subcategory updated Successfully');
     }
 
@@ -161,7 +175,7 @@ class SubCategoryController extends Controller
 
             return response()->json('Access Denied');
         }
-        
+
         $deleteCategory = Category::find($categoryId);
 
         if ($deleteCategory->photo !== 'default.png') {
@@ -173,6 +187,8 @@ class SubCategoryController extends Controller
         }
 
         if (!is_null($deleteCategory)) {
+
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: 21, data_obj: $deleteCategory);
 
             $deleteCategory->delete();
         }

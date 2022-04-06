@@ -10,6 +10,7 @@
         .selectProduct{background-color: #ab1c59; color: #fff!important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
         h6.collapse_table:hover {background: lightgray; padding: 3px; cursor: pointer;}
+        .c-delete:focus {border: 1px solid gray;padding: 2px;}
     </style>
 @endpush
 @section('content')
@@ -38,7 +39,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><span
+                                                <label class=" col-4"><span
                                                     class="text-danger">*</span> <b>Supplier :</b></label>
                                                 <div class="col-8">
                                                     <div class="input-group">
@@ -55,8 +56,9 @@
                                             </div>
 
                                             @if (count($warehouses) > 0)
+                                                <input name="warehouse_count" value="YES" type="hidden" />
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class="col-4"><span
+                                                    <label class="col-4"><span
                                                         class="text-danger">*</span> <b>Warehouse :</b> </label>
                                                     <div class="col-8">
                                                         <select class="form-control changeable add_input"
@@ -71,7 +73,7 @@
                                                 </div>
                                             @else
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class="col-4"><b>Store Location :</b> </label>
+                                                    <label class="col-4"><b>Store Location :</b> </label>
                                                     <div class="col-8">
                                                         <input readonly type="text" name="branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}"/>
                                                     </div>
@@ -81,7 +83,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                <label class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Purchase Invoice ID" autocomplete="off">
                                                     <span class="error error_invoice_id"></span>
@@ -90,7 +92,7 @@
 
                                             @if (json_decode($generalSettings->purchase, true)['is_enable_status'] == '1')
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><b>Status :</b></label>
+                                                    <label class=" col-4"><b>Status :</b></label>
                                                     <div class="col-8">
                                                         <select class="form-control changeable" name="purchase_status" id="purchase_status">
                                                             <option value="1">Purchase</option>
@@ -101,7 +103,7 @@
                                                 </div>
                                             @else
                                                 <div class="input-group mt-1">
-                                                    <label for="inputEmail3" class=" col-4"><span
+                                                    <label class=" col-4"><span
                                                         class="text-danger">*</span> <b>Store Location :</b> </label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control" value="{{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}">
@@ -113,7 +115,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>PUR./PO. Date:</b></label>
+                                                <label class="col-4"><b>PUR./PO. Date:</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control changeable"
                                                         value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="date" placeholder="dd-mm-yyyy" autocomplete="off">
@@ -122,7 +124,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class=" col-4"><b>Pay Term :</b> </label>
+                                                <label class=" col-4"><b>Pay Term :</b> </label>
                                                 <div class="col-8">
                                                     <div class="row">
                                                         <div class="col-5">
@@ -145,14 +147,14 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Delivery Date :</b></label>
+                                                <label class=" col-4"><b>Delivery Date :</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="delivery_date" class="form-control changeable" id="delivery_date" placeholder="DD-MM-YYYY" autocomplete="off">
                                                 </div>
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4"><b>Purchase A/C : <span
+                                                <label class="col-4"><b>Purchase A/C : <span
                                                     class="text-danger">*</span></b></label>
                                                 <div class="col-8">
                                                     <select name="purchase_account_id" class="form-control add_input"
@@ -183,7 +185,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Item Search</label>
+                                                    <label class="col-form-label">Item Search</label>
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
@@ -248,17 +250,26 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <input readonly name="total_qty" type="number" step="any" class="d-none" id="total_qty" value="0.00">
-                                                        <label for="inputEmail3" class="col-4"><b>Total Item :</b> </label>
+                                                        
+                                                        <label class="col-4"><b>Total Item :</b> </label>
                                                         <div class="col-8">
-                                                            <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
+                                                            <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Order Discount :</b></label>
+                                                        <label class="col-4"><b>Total Quantity :</b> </label>
+                                                        <div class="col-8">
+                                                            <input readonly name="total_qty" type="number" step="any" class="form-control" id="total_qty" value="0.00" tabindex="-1">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>Order Discount :</b></label>
                                                         <div class="col-8">
                                                             <div class="row">
                                                                 <div class="col-md-6">
@@ -272,31 +283,31 @@
                                                                     <input name="order_discount" type="number" class="form-control" id="order_discount" value="0.00">
                                                                 </div>
                                                             </div>
-                                                            <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00">
+                                                            <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
         
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class="col-4"><b>Order Tax :</b><span class="text-danger">*</span></label>
+                                                        <label class="col-4"><b>Order Tax :</b><span class="text-danger">*</span></label>
                                                         <div class="col-8">
                                                             <select name="purchase_tax" class="form-control" id="purchase_tax">
                                                                 <option value="0.00">NoTax</option>
                                                             </select>
-                                                            <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00">
+                                                            <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Shipment Cost :</b></label>
+                                                        <label class="col-4"><b>Shipment Cost :</b></label>
                                                         <div class="col-8">
                                                             <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00">
                                                         </div>
                                                     </div>
         
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Shipment Details :</b></label>
+                                                        <label class="col-4"><b>Shipment Details :</b></label>
                                                         <div class="col-8">
                                                             <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
                                                         </div>
@@ -305,15 +316,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <input readonly name="total_qty" type="number" step="any" class="d-none" id="total_qty" value="0.00">
-                                                        <label for="inputEmail3" class=" col-4"><b>Total Item :</b> </label>
-                                                        <div class="col-8">
-                                                            <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
-                                                        </div>
-                                                    </div>
-        
-                                                    <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Order Note :</b></label>
+                                                        <label class="col-4"><b>Purchase/Order Note :</b></label>
                                                         <div class="col-8">
                                                             <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="" placeholder="Order Note.">
                                                         </div>
@@ -334,30 +337,30 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Net Total Amount : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <label class=" col-4"><b>Net Total Amount : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
-                                                            <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
+                                                            <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
         
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Total Payable :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <label class=" col-4"><b>Total Payable :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
-                                                            <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control" value="0.00">
+                                                            <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Paying Amount :</b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
+                                                        <label class=" col-4"><b>Paying Amount :</b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                         </div>
                                                     </div>
         
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class="col-4"><b>Payment Method : <span
+                                                        <label class="col-4"><b>Payment Method : <span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
@@ -375,7 +378,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class="col-4"><b>Credit A/C : <span
+                                                        <label class="col-4"><b>Credit A/C : <span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
@@ -394,16 +397,16 @@
                                                     </div>
         
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Total Due :</b></label>
+                                                        <label class=" col-4"><b>Total Due :</b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="number" step="any" class="form-control" name="purchase_due" id="purchase_due" value="0.00">
+                                                            <input readonly type="number" step="any" class="form-control" name="purchase_due" id="purchase_due" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Payment Note :</b> </label>
+                                                        <label class=" col-4"><b>Payment Note :</b> </label>
                                                         <div class="col-8">
                                                             <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note" autocomplete="off">
                                                         </div>

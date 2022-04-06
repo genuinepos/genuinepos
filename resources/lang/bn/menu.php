@@ -29,6 +29,7 @@ return [
     'generate_barcode' => 'বারকোড উত্পন্ন',
     'warranties' => 'ওয়ারেন্টি',
     'import_products' => 'পণ্য আমদানি',
+    'product_settings' => 'পণ্য সেটিংস',
     // Menu child of Contacts module
     'suppliers' => 'সরবরাহকারী',
     'import_suppliers' => 'আমদানি সরবরাহকারী',
@@ -39,6 +40,7 @@ return [
     'add_purchase' => 'ক্রয় যুক্ত করুন',
     'purchase_list' => 'ক্রয় তালিকা',
     'po_list' => 'ক্রয় আদেশ তালিকা',
+    'purchase_settings' => 'ক্রয় সেটিংস',
     'purchase_product_list' => 'পণ্য ক্রয় তালিকা',
     'add_return' => 'রিটার্ন যোগ করুন',
     'purchase_return_list' => 'ক্রয়ের রিটার্ন তালিকা',
@@ -56,7 +58,9 @@ return [
     'add_sale_return' => 'বিক্রয় ফেরত যোগ করুন',
     'sold_product_list' => 'বিক্রিত পণ্যের তালিকা',
     'shipments' => 'চালান',
-    'discounts' => 'ছাড়',
+    'discounts' => 'অফার পরিচালনা করুন',
+    'add_sale_settings' => 'বিক্রয় সেটিংস যোগ করুন',
+    'pos_sale_settings' => 'পিওএস সেটিংস যোগ করুন',
     // Menu child of Transfer module 
     'transfer_stock_heading_1' => '<strong>গুদাম</strong> থেকে <b>ব্যবসার স্থানে</b> স্টক স্থানান্তর করুন।',
     'transfer_stock_heading_2' => '<strong>ব্যবসার অবস্থান</strong> থেকে <strong>গুদামে</strong> স্টক স্থানান্তর করুন।',
@@ -143,4 +147,8 @@ return [
     'payroll_report' => 'বেতন রিপোর্ট',
     'payroll_payment_report' => 'বেতন পেমেন্ট রিপোর্ট',
     'attendance_report' => 'উপস্থিতি রিপোর্ট',
+    'sale_statement' => 'বিক্রয় বিবৃতি',
+    'return_statement' => 'বিক্রয় ফেরত বিবৃতি',
+    'purchase_statements' => 'ক্রয় বিবৃতি',
+    'user_activities_log' => 'ব্যবহারকারীর কার্যকলাপ লগ',
 ];

@@ -9,13 +9,8 @@
     }
 
     @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed; top: 0;}
-    .footer {position: fixed;bottom: 0;}
-    .noBorder {border: 0px !important;}
-    tr.noBorder td {border: 0px !important;}
-    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
+    th { font-size:10px!important; font-weight: 550!important;}
+    td { font-size:9px;}
 </style>
 @php
     $totalExpense = 0;
@@ -68,8 +63,8 @@
                             <td class="text-start">{{ $row->variant_code }}</td>
                             <td class="text-start">{{ $row->name.'-'.$row->variant_name }}</td>
                             <td class="text-start">{!! $row->b_name ? $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' : json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}</td>
-                            <td class="text-end">{{ $row->variant_quantity.'('.$row->code_name.')' }}</td>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($row->variant_price) }}</td>
+                            <td class="text-end">{{ $row->variant_quantity.'('.$row->code_name.')' }}</td>
                             <td class="text-end">
                                 @php
                                     $currentStockValue = $row->variant_cost_with_tax * $row->variant_quantity;
@@ -83,15 +78,15 @@
                             <td class="text-start">{{ $row->product_code }}</td>
                             <td class="text-start">{{ $row->name }}</td>
                             <td class="text-start">{!! $row->b_name ? $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' : json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}</td>
-                            <td class="text-end">{{ $row->product_quantity.'('.$row->code_name.')' }}</td>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($row->product_price) }}</td>
+                            <td class="text-end">{{ $row->product_quantity.'('.$row->code_name.')' }}</td>
                             <td class="text-end">
                                 @php
                                     $currentStockValue = $row->product_cost_with_tax * $row->product_quantity;
                                 @endphp
                                 {{ App\Utils\Converter::format_in_bdt($currentStockValue) }}
                             </td class="text-end">
-                            <td>{{ $row->total_sale.'('.$row->code_name.')' }}</td>
+                            <td class="text-end">{{ $row->total_sale.'('.$row->code_name.')' }}</td>
                         </tr>
                     @endif
                 @endforeach

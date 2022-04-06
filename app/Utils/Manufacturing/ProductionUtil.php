@@ -51,8 +51,10 @@ class ProductionUtil
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $productions = $this->filteredQuery($request, $query)->orderBy('productions.report_date', 'desc');
         } else {
+
             $productions = $this->filteredQuery($request, $query)
                 ->where('productions.branch_id', auth()->user()->branch_id)
                 ->orderBy('productions.report_date', 'desc');
@@ -192,28 +194,35 @@ class ProductionUtil
     private function filteredQuery($request, $query)
     {
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
+
                 $query->where('productions.branch_id', NULL);
             } else {
+
                 $query->where('productions.branch_id', $request->branch_id);
             }
         }
 
         if ($request->warehouse_id) {
+
             $query->where('productions.warehouse_id', $request->warehouse_id);
         }
 
         if ($request->status != '') {
+
             $query->where('productions.is_final', $request->status);
         }
 
         if ($request->from_date) {
+
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             //$date_range = [$from_date, $to_date];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('productions.report_date', $date_range); // Final
         }
+        
         return $query;
     }
 }

@@ -11,20 +11,20 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Customer : </strong><span>{{ $payment->sale->customer ? $payment->sale->customer->name : 'Walk-In-Customer' }}</span> </li>
-                    <li><strong>Business : </strong><span>{{ $payment->sale->customer ? $payment->sale->customerbusiness_name : '' }}</span> </li>
+                    <li><strong>Customer : </strong><span>{{ $payment->customer ? $payment->customer->name : 'Walk-In-Customer' }}</span> </li>
+                    <li><strong>Business : </strong><span>{{ $payment->customer ? $payment->customer->business_name : '' }}</span> </li>
                 </ul>
             </div>
         </div>
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Invoice ID : </strong><span>{{ $payment->sale->invoice_id }}</span> </li>
+                    <li><strong> Invoice ID : </strong><span>{{ $payment->sale_return->invoice_id }}</span> </li>
                     <li><strong>Business Location : </strong>
                         <span>
-                            @if ($payment->sale->branch)
+                            @if ($payment->sale_return->branch)
 
-                                {{ $payment->sale->branch->name.'/'.$payment->sale->branch->branch_code }}
+                                {{ $payment->sale_return->branch->name.'/'.$payment->sale_return->branch->branch_code }}
                             @else
 
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
@@ -39,8 +39,13 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li class="sale_due">
-                        <strong>Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                        <span>{{ $payment->sale->sale_return_due }}</span> 
+                        <strong>Total Return Amount: {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                        <span>{{ $payment->sale_return->total_return_amount }}</span> 
+                    </li>
+
+                    <li class="sale_due">
+                        <strong>Total Paid/Refunded Amount: {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                        <span>{{ $payment->sale_return->total_return_due_pay }}</span> 
                     </li>
                 </ul>
             </div>
@@ -59,7 +64,7 @@
                         <i class="far fa-money-bill-alt text-dark input_i"></i>
                     </span>
                 </div>
-                <input type="hidden" id="available_amount" value="{{ $payment->sale->sale_return_due+$payment->paid_amount }}">
+                <input type="hidden" id="available_amount" value="{{ $payment->sale_return->total_return_due+$payment->paid_amount }}">
                 <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="{{ $payment->paid_amount }}"/>
             </div>
             <span class="error error_p_paying_amount"></span>
@@ -143,10 +148,13 @@
 <script>
     $('#sale_payment_form').on('submit', function(e){
         e.preventDefault();
+
         $('.loading_button').show();
         var available_amount = $('#available_amount').val();
         var paying_amount = $('#p_paying_amount').val();
+
         if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
+
             $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
             $('.loading_button').hide();
             return;
@@ -163,9 +171,11 @@
             processData: false,
             success:function(data){
                 if(!$.isEmptyObject(data.errorMsg)){
+
                     toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 } else {
+
                     $('.loading_button').hide();
                     $('#paymentModal').modal('hide');
                     $('#paymentViewModal').modal('hide');
@@ -173,15 +183,22 @@
                     toastr.success(data);
                 }
             },error: function(err) {
+
                 $('.loading_button').hide();
                 $('.error').html('');
 
                 if (err.status == 0) {
+
                     toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }else if (err.status == 500) {
+
+                    toastr.error('Server Error. Please contact to support team.'); 
                     return;
                 }
 
                 $.each(err.responseJSON.errors, function(key, error) {
+
                     $('.error_p_' + key + '').html(error[0]);
                 });
             }

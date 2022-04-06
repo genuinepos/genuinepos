@@ -444,10 +444,11 @@ class PurchaseUtil
 
     public function addPurchaseProduct($request, $isEditProductPrice, $purchaseId)
     {
-        $warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
+        $warehouse_id = isset($request->warehouse_count) ? $request->warehouse_id : NULL;
 
         $index = 0;
         foreach ($request->product_ids as $productId) {
+            
             $addPurchaseProduct = new PurchaseProduct();
             $addPurchaseProduct->purchase_id = $purchaseId;
             $addPurchaseProduct->product_id = $productId;
@@ -489,7 +490,7 @@ class PurchaseUtil
 
     public function addPurchaseOrderProduct($request, $isEditProductPrice, $purchaseId)
     {
-        $warehouse_id = isset($request->warehouse_id) ? $request->warehouse_id : NULL;
+        $warehouse_id = isset($request->warehouse_count) ? $request->warehouse_id : NULL;
         $product_ids = $request->product_ids;
         $variant_ids = $request->variant_ids;
         $descriptions = $request->descriptions;
@@ -924,6 +925,8 @@ class PurchaseUtil
         $purchase->purchase_return_amount = $returnAmount;
         $purchase->purchase_return_due = $returnDue > 0 ? $returnDue : 0;
         $purchase->save();
+
+        return $purchase;
     }
 
     public function adjustPurchaseLeftQty($purchaseProduct)

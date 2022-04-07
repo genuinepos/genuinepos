@@ -629,7 +629,7 @@
                             
                             <div class="col-md-8 text-end mt-1">
                                 <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
-                                <button type="submit" class="btn btn-primary submit_button btn-sm">Save Changes</button>
+                                <button type="submit" class="btn btn-success submit_button btn-sm">Save Changes</button>
                             </div>
                         </div>
                 </section>

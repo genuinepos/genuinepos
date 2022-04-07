@@ -25,7 +25,7 @@
                                     <h6>All Business Locations</h6>
                                 </div>
 
-                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1)
+                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
                                             <a id="create" href="{{ route('settings.branches.create') }}">

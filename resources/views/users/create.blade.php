@@ -29,7 +29,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Prefix :</b> </label>
+                                                    <label class="col-4"><b>Prefix :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="prefix" class="form-control"
                                                             placeholder="Mr / Mrs / Miss" autofocus>
@@ -39,7 +39,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><span class="text-danger">*
+                                                    <label class="col-4"><span class="text-danger">*
                                                         </span><b>First Name :</b> </label>
 
                                                     <div class="col-8">
@@ -54,7 +54,7 @@
                                         <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Last Name :</b> </label>
+                                                    <label class="col-4"><b>Last Name :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="last_name" class="form-control"
                                                             placeholder="Last Name">
@@ -64,7 +64,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><span
+                                                    <label class="col-4"><span
                                                             class="text-danger">*</span> <b>Email :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="email" id="email" class="form-control"
@@ -98,7 +98,7 @@
                                             <div class="row mt-2">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><span
+                                                        <label class="col-4"><span
                                                                 class="text-danger">*</span> <b>Username :</b>  </label>
                                                         <div class="col-8">
                                                             <input type="text" name="username" id="username"
@@ -110,7 +110,7 @@
     
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"> <span
+                                                        <label class="col-4"> <span
                                                                 class="text-danger">*</span> <b>Role :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all branch." class="fas fa-info-circle tp"></i> </label>
                                                         <div class="col-8">
                                                             <select name="role_id" id="role_id" class="form-control">
@@ -124,7 +124,7 @@
                                             <div class="row mt-2">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><span
+                                                        <label class="col-4"><span
                                                                 class="text-danger">*</span> <b>Password :</b> </label>
                                                         <div class="col-8">
                                                             <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off">
@@ -135,7 +135,7 @@
     
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b><span
+                                                        <label class="col-4"><b><span
                                                             class="text-danger">*</span> Confirm Pass : </b> </label>
                                                         <div class="col-8">
                                                             <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm password" autocomplete="off">
@@ -149,7 +149,7 @@
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-6 access_branch">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Access Location :</b> </label>
+                                                        <label class="col-4"><b>Access Location :</b> </label>
                                                         <div class="col-8">
                                                             <select name="branch_id" id="branch_id" class="form-control">
                                                                 <option value="">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
@@ -164,7 +164,7 @@
 
                                                 <div class="col-md-6 belonging_branch d-none">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><span
+                                                        <label class="col-4"><span
                                                                 class="text-danger">*</span> <b>Belonging Location :</b> </label>
                                                         <div class="col-8">
                                                             <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
@@ -197,7 +197,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"> <b>Commission (%) :</b> </label>
+                                                    <label class="col-4"> <b>Commission (%) :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="sales_commission_percent"  class="form-control" placeholder="Sales Commission Percentage (%)" autocomplete="off">
                                                     </div>
@@ -206,7 +206,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Max Discount(%) : </b> </label>
+                                                    <label class="col-4"><b>Max Discount(%) : </b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="max_sales_discount_percent"  class="form-control" placeholder="Max sales discount percent" autocomplete="off">
                                                     </div>
@@ -227,7 +227,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"> <b>Date of birth :</b> </label>
+                                                    <label class="col-4"> <b>Date of birth :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="date_of_birth" class="form-control" autocomplete="off" placeholder="Date of birth">
                                                     </div>
@@ -236,7 +236,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Gender :</b> </label>
+                                                    <label class="col-4"><b>Gender :</b> </label>
                                                     <div class="col-8">
                                                         <select name="gender" class="form-control">
                                                             <option value="">Select Gender</option>
@@ -252,7 +252,7 @@
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Marital Status :</b> </label>
+                                                    <label class="col-4"><b>Marital Status :</b> </label>
                                                     <div class="col-8">
                                                         <select name="marital_status" class="form-control">
                                                             <option value="">Marital Status</option>
@@ -266,7 +266,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Blood Group :</b> </label>
+                                                    <label class="col-4"><b>Blood Group :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="blood_group"  class="form-control" placeholder="Blood group" autocomplete="off">
                                                     </div>
@@ -277,7 +277,7 @@
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Phone :</b> </label>
+                                                    <label class="col-4"><b>Phone :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="phone" class="form-control" autocomplete="off" placeholder="Phone number">
                                                     </div>
@@ -286,7 +286,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Facebook Link :</b> </label>
+                                                    <label class="col-4"><b>Facebook Link :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="facebook_link" class="form-control" autocomplete="off" placeholder="Facebook link">
                                                     </div>
@@ -297,7 +297,7 @@
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Twitter Link :</b> </label>
+                                                    <label class="col-4"><b>Twitter Link :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="twitter_link" class="form-control" autocomplete="off" placeholder="Twitter link">
                                                     </div>
@@ -306,7 +306,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Instagram Link :</b> </label>
+                                                    <label class="col-4"><b>Instagram Link :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="instagram_link" class="form-control" autocomplete="off" placeholder="Instagram link">
                                                     </div>
@@ -317,7 +317,7 @@
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Guardian Name:</b> </label>
+                                                    <label class="col-4"><b>Guardian Name:</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="guardian_name" class="form-control" autocomplete="off" placeholder="Guardian name">
                                                     </div>
@@ -326,7 +326,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>ID Proof Name :</b> </label>
+                                                    <label class="col-4"><b>ID Proof Name :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="id_proof_name" class="form-control" autocomplete="off" placeholder="ID proof name">
                                                     </div>
@@ -337,7 +337,7 @@
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>ID Proof Number :</b> </label>
+                                                    <label class="col-4"><b>ID Proof Number :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="id_proof_number" class="form-control" autocomplete="off" placeholder="ID proof number">
                                                     </div>
@@ -348,7 +348,7 @@
                                         <div class="row mt-2">
                                             <div class="col-md-12">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-2"><b>Permanent Address :</b> </label>
+                                                    <label class="col-2"><b>Permanent Address :</b> </label>
                                                     <div class="col-10">
                                                         <input type="text" name="permanent_address" class="form-control form-control-sm" autocomplete="off" placeholder="Permanent address">
                                                     </div>
@@ -359,7 +359,7 @@
                                         <div class="row mt-2">
                                             <div class="col-md-12">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-2"><b>Current Address :</b> </label>
+                                                    <label class="col-2"><b>Current Address :</b> </label>
                                                     <div class="col-10">
                                                         <input type="text" name="current_address" class="form-control form-control-sm" placeholder="Current address">
                                                     </div>
@@ -381,7 +381,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Account Name :</b> </label>
+                                                    <label class="col-4"><b>Account Name :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="bank_ac_holder_name" class="form-control " placeholder="Account holder's name" autocomplete="off">
                                                     </div>
@@ -390,7 +390,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Account No :</b> </label>
+                                                    <label class="col-4"><b>Account No :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="bank_ac_no" class="form-control" placeholder="Account number" autocomplete="off">
                                                     </div>
@@ -401,7 +401,7 @@
                                         <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Bank Name :</b> </label>
+                                                    <label class="col-4"><b>Bank Name :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="bank_name" class="form-control" placeholder="Bank name" autocomplete="off">
                                                     </div>
@@ -410,7 +410,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Identifier Code :</b> </label>
+                                                    <label class="col-4"><b>Identifier Code :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="bank_identifier_code" class="form-control" placeholder="Bank identifier code" autocomplete="off">
                                                     </div>
@@ -421,7 +421,7 @@
                                         <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Branch :</b> </label>
+                                                    <label class="col-4"><b>Branch :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="bank_branch" class="form-control" placeholder="Branch" autocomplete="off">
                                                     </div>
@@ -430,7 +430,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Tax Payer ID :</b> </label>
+                                                    <label class="col-4"><b>Tax Payer ID :</b> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="tax_payer_id" class="form-control" placeholder="Tax payer ID" autocomplete="off">
                                                     </div>
@@ -452,7 +452,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Employee ID :</b> </label>
+                                                        <label class="col-4"><b>Employee ID :</b> </label>
                                                         <div class="col-8">
                                                             <input type="text" class="form-control" name="emp_id" placeholder="Employee ID">
                                                             <span class="error error_emp_id"></span>
@@ -462,7 +462,7 @@
 
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Shift :</b> </label>
+                                                        <label class="col-4"><b>Shift :</b> </label>
                                                         <div class="col-8">
                                                             <select name="shift_id" class="form-control">
                                                                 @foreach ($shifts as $shift)
@@ -478,7 +478,7 @@
                                             <div class="row mt-1">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Department :</b> </label>
+                                                        <label class="col-4"><b>Department :</b> </label>
                                                         <div class="col-8">
                                                             <select name="department_id" class="form-control">
                                                                 <option value="">Select Department</option>
@@ -493,7 +493,7 @@
 
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"><b>Designation :</b> </label>
+                                                        <label class="col-4"><b>Designation :</b> </label>
                                                         <div class="col-8">
                                                             <select name="designation_id" class="form-control">
                                                                 <option value="">Select Designation</option>
@@ -509,7 +509,7 @@
                                             <div class="row mt-1">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"> <b>Salary :</b> </label>
+                                                        <label class="col-4"> <b>Salary :</b> </label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="salary" id="salary" class="form-control" placeholder="Salary Amount" autocomplete="off">
                                                             <span class="error error_salary"></span>
@@ -519,7 +519,7 @@
 
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label for="inputEmail3" class="col-4"> <b>Pay Type :</b> </label>
+                                                        <label class="col-4"> <b>Pay Type :</b> </label>
                                                         <div class="col-8">
                                                             <select name="pay_type" class="form-control" id="pay_type">
                                                                 <option value="">Select Pay type</option>

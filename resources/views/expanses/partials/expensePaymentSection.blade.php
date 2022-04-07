@@ -89,11 +89,11 @@
                         <i class="fas fa-spinner text-primary"></i><b> Loading...</b>
                     </button>
 
-                    <button data-action="save" id="save" class="btn btn-sm button-success submit_button float-end">
+                    <button data-action="save" id="save" class="btn btn-sm btn-success submit_button float-end">
                         Save (Shift+Enter)
                     </button>
                     
-                    <button data-action="sale_and_print" id="save_and_print" class="btn btn-sm button-success submit_button float-end me-1">
+                    <button data-action="sale_and_print" id="save_and_print" class="btn btn-sm btn-success submit_button float-end me-1">
                         Save & Print (Ctrl+Enter)
                     </button>
                 </div>

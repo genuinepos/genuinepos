@@ -553,9 +553,9 @@
                                 <div class="col-md-12 text-end mt-1">
                                     <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
                                     <button type="submit" name="action" value="save_and_new"
-                                        class="btn btn-primary submit_button btn-sm" id="save_and_new">Save And Add Another</button>
+                                        class="btn btn-success submit_button btn-sm" id="save_and_new">Save And Add Another</button>
                                     <button type="submit" name="action" value="save"
-                                        class="btn btn-primary submit_button btn-sm" id="save">Save</button>
+                                        class="btn btn-success submit_button btn-sm" id="save">Save</button>
                                 </div>
                             </div>
 

@@ -444,7 +444,7 @@
                     <div class="row justify-content-center">
                         <div class="col-12 text-end">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-danger"></i> </button>
-                            <button type="submit" id="save_changes" class="btn btn-sm btn-primary submit_button">Save Changes</button>
+                            <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button">Save Changes</button>
                         </div>
                     </div>
                 </div>

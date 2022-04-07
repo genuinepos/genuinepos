@@ -424,8 +424,8 @@
                 <div class="row justify-content-center">
                     <div class="col-12 text-end">
                         <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                        <button type="submit" id="save_and_print" value="1" class="btn btn-sm button-success submit_button me-2">Save & Print (Ctrl+Enter)</button>
-                        <button type="submit" id="save" value="2" class="btn btn-sm button-success submit_button">Save (Shift+Enter)</button>
+                        <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button me-2">Save & Print (Ctrl+Enter)</button>
+                        <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">Save (Shift+Enter)</button>
                     </div>
                 </div>
             </form>

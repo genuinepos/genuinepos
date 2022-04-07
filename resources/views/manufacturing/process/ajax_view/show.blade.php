@@ -72,7 +72,7 @@
 <div class="modal-footer">
     <div class="row">
         <div class="col-md-12">
-            <button type="submit" class="c-btn btn_blue print_btn">Print</button>
+            <button type="submit" class="c-btn button-success print_btn">Print</button>
             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
         </div>
     </div>

@@ -82,7 +82,7 @@
                                                         <input required type="text" name="description" id="description" class="form-control form-control-sm" placeholder="Type Message" autofocus>
                                                     </div>
                                                     <div class="col-md-2"> 
-                                                        <button type="submit" class="c-btn btn_blue me-0 float-start submit_button">
+                                                        <button type="submit" class="c-btn button-success me-0 float-start submit_button">
                                                             <i class="fas fa-spinner ts_preloader d-none" id="ts_preloader"></i>
                                                        Send</button>
                                                     </div>

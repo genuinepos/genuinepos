@@ -39,7 +39,7 @@
                 <ul class="list-unstyled">
                     <li class="sale_due">
                         <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                        <span class="card_text total_due text-danger">{{ App\Utils\Converter::format_in_bdt($sale->due) }}</span> 
+                        <span class="card_text total_due text-danger"><strong>{{ App\Utils\Converter::format_in_bdt($sale->due) }}</strong></span> 
                     </li>
                 </ul>
             </div>
@@ -57,7 +57,7 @@
                     <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
                 </div>
                 <input type="hidden" id="available_amount" value="{{ $sale->due }}">
-                <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="{{ $sale->due }}"/>
+                <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="0.00"/>
             </div>
             <span class="error error_p_paying_amount"></span>
         </div>
@@ -127,7 +127,7 @@
     <div class="form-group row mt-3">
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+            <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
         </div>
     </div>
@@ -137,10 +137,13 @@
     //sale payment request by ajax
     $('#sale_payment_form').on('submit', function(e){
         e.preventDefault();
+
         $('.loading_button').show();
         var available_amount = $('#available_amount').val();
         var paying_amount = $('#p_paying_amount').val();
+
         if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
+
             $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
             $('.loading_button').hide();
             return;
@@ -175,7 +178,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Please check the connection.'); 
                     return;
                 }
 

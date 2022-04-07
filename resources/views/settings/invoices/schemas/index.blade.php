@@ -121,7 +121,7 @@
 
                         <div class="form-group text-end mt-3">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+                            <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
                             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                         </div>
                     </form>

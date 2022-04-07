@@ -214,7 +214,7 @@
                             <ul class="list-unstyled">
                                 <li class="mt-1">
                                     <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                    <button type="submit" id="print_payment" class="c-btn btn_blue">Print</button>
+                                    <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
                                 </li>
                             </ul>
                         </div>

@@ -106,7 +106,7 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <a href="" class="c-btn btn_blue me-0 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Confirm (F10)</a>
+                                <a href="" class="c-btn button-success me-0 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Confirm (F10)</a>
                                 <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">Close</button>
                             </div>
                         </div>
@@ -148,7 +148,7 @@
                             <div class="form-group row mt-3">
                                 <div class="col-md-12">
                                     <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                    <a href="#" class="c-btn btn_blue ms-1 float-end" id="redeem_btn" tabindex="-1">Redeem</a>
+                                    <a href="#" class="c-btn button-success ms-1 float-end" id="redeem_btn" tabindex="-1">Redeem</a>
                                     <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
                                 </div>
                             </div>
@@ -381,7 +381,7 @@
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
-                                <button type="submit" class="c-btn btn_blue me-0 float-end">Update</button>
+                                <button type="submit" class="c-btn button-success me-0 float-end">Update</button>
                                 <button type="reset" data-bs-dismiss="modal"
                                     class="c-btn btn_orange float-end">Close</button>
                             </div>
@@ -472,7 +472,7 @@
                     <div class="form-group row mt-3">
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <a href="#" class="c-btn btn_blue ms-1 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Cash (F10)</a>
+                            <a href="#" class="c-btn button-success ms-1 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Cash (F10)</a>
                             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
                         </div>
                     </div>

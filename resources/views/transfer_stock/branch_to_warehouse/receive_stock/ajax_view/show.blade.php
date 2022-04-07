@@ -106,7 +106,7 @@
             </div>
             <div class="modal-footer">
                 <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                <button type="submit" class="c-btn btn_blue print_btn float-end">Print</button>
+                <button type="submit" class="c-btn button-success print_btn float-end">Print</button>
             </div>
           </div>
         </div>

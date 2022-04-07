@@ -331,8 +331,8 @@
                         <div class="col-md-12 text-end">
 
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-sm btn-primary submit_button">Save & Print (Ctrl + Enter) </button>
-                            <button type="submit" id="save" value="save" class="btn btn-sm btn-primary submit_button">Save (Shift + Enter)</button>
+                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print (Ctrl + Enter) </button>
+                            <button type="submit" id="save" value="save" class="btn btn-sm btn-success submit_button">Save (Shift + Enter)</button>
                         </div>
                     </div>
                 </div>

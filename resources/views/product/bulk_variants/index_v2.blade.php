@@ -59,7 +59,7 @@
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i
                                                         class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                <button type="submit" class="c-btn btn_blue float-end me-0 submit_button">Save</button>
+                                                <button type="submit" class="c-btn button-success float-end me-0 submit_button">Save</button>
                                                 <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                                             </div>
                                         </div>
@@ -105,7 +105,7 @@
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i
                                                         class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                <button type="submit" class="c-btn me-0 btn_blue float-end">Save Changes</button>
+                                                <button type="submit" class="c-btn me-0 button-success float-end">Save Changes</button>
                                                 <button type="button" data-bs-dismiss="modal"
                                                     class="c-btn btn_orange float-end" id="close_form">Close</button>
                                             </div>

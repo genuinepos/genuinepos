@@ -324,7 +324,7 @@
                         <div class="col-md-12">
                             <button type="button" class="btn loading_button d-none"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button id="save" class="btn btn-sm btn-primary submit_button float-end">Save Changes (Shift+Enter)</button>
+                            <button id="save" class="btn btn-sm button-success submit_button float-end">Save Changes (Shift+Enter)</button>
                         </div>
                     </div>
                 </div>
@@ -367,7 +367,7 @@
                     </div>
 
                     <div class="form-group text-end mt-3">
-                        <button type="submit" id="add_description" class="c-btn btn_blue float-end me-0">Add</button>
+                        <button type="submit" id="add_description" class="c-btn button-success float-end me-0">Add</button>
                     </div>
                 </div>
             </div>

@@ -137,7 +137,7 @@
     <div class="form-group row mt-3">
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
+            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
         </div>
     </div>
@@ -147,6 +147,7 @@
     // Add customer by ajax
     $('#add_customer_form').on('submit', function(e){
         e.preventDefault();
+
         $('.loading_button').show();
         $('.submit_button').prop('button');
         var url = $(this).attr('action');
@@ -154,10 +155,14 @@
         var inputs = $('.c_add_input');
             $('.error').html('');  
             var countErrorField = 0;  
+
         $.each(inputs, function(key, val){
+
             var inputId = $(val).attr('id');
             var idValue = $('#'+inputId).val();
+
             if(idValue == ''){
+
                 countErrorField += 1;
                 var fieldName = $('#'+inputId).data('name');
                 $('.error_'+inputId).html(fieldName+' is required.');
@@ -165,6 +170,7 @@
         });
 
         if(countErrorField > 0){
+
             $('.loading_button').hide();
             $('.submit_button').prop('submit');
             return;
@@ -176,6 +182,7 @@
             type:'post',
             data: request,
             success:function(data){
+                
                 $('#addCustomerModal').modal('hide');
                 $('.submit_button').prop('type', 'submit');
                 toastr.success('Customer added successfully.');

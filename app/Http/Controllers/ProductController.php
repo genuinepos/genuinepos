@@ -881,7 +881,7 @@ class ProductController extends Controller
 
             if ($deleteProduct) {
 
-                $this->userActivityLogUtil->addLog(action: 3, subject_type: 26, data_obj: $updateProduct);
+                $this->userActivityLogUtil->addLog(action: 3, subject_type: 26, data_obj: $deleteProduct);
             }
 
             $deleteProduct->delete();

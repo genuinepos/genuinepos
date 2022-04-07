@@ -444,8 +444,8 @@
                                                     <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-danger"></i> </button>
                                                     <button type="submit" id="quotation" class="btn btn-sm btn-info text-white submit_button" data-status="4" value="save_and_print">Quotation</button>
                                                     <button type="submit" id="order" class="btn btn-sm btn-secondary text-white submit_button" data-status="3" value="save_and_print">Order</button>
-                                                    <button type="submit" id="save_and_print" class="btn btn-sm btn-primary submit_button" data-status="1" value="save_and_print">Final & Print</button>
-                                                    <button type="submit" id="save" class="btn btn-sm btn-primary submit_button" data-status="1" value="save">Final</button>
+                                                    <button type="submit" id="save_and_print" class="btn btn-sm btn-success submit_button" data-status="1" value="save_and_print">Final & Print</button>
+                                                    <button type="submit" id="save" class="btn btn-sm btn-success submit_button" data-status="1" value="save">Final</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -547,7 +547,7 @@
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="c-btn btn_blue float-end me-0">Update</button>
+                            <button type="submit" class="c-btn button-success float-end me-0">Update</button>
                         </div>
                     </form>
                 </div>

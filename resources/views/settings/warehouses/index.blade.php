@@ -86,7 +86,7 @@
                                         <div class="form-group text-end mt-3">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button type="submit" class="me-0 c-btn btn_blue float-end">Save</button>
+                                            <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
                                             <button type="reset" class="c-btn btn_orange float-end">Reset</button>
                                         </div>
                                     </form>

@@ -218,7 +218,7 @@
         </div>
         <div class="modal-footer">
           <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-          <button type="submit" id="print_payment" class="c-btn btn_blue print_btn">Print</button>
+          <button type="submit" id="print_payment" class="c-btn button-success print_btn">Print</button>
         </div>
       </div>
     </div>

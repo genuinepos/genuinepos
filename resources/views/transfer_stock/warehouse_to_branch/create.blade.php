@@ -25,7 +25,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Add Transfer Stock <small>(Warehouse To Branch)</small></h5>
+                                            <h6>Add Transfer Stock <small>(Warehouse To Branch)</small></h6>
                                         </div>
 
                                         <div class="col-6">
@@ -197,8 +197,8 @@
                     <div class="row">
                         <div class="col-md-12 text-end">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" value="save_and_print" class="btn btn-sm btn-primary submit_button">Save & Print </button>
-                            <button type="submit" value="save" class="btn btn-sm btn-primary submit_button">Save </button>
+                            <button type="submit" value="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print </button>
+                            <button type="submit" value="save" class="btn btn-sm btn-success submit_button">Save </button>
                         </div>
                     </div>
                 </div>

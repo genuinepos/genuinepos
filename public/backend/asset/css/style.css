@@ -1576,3 +1576,13 @@ table.display tbody tr:hover {
 .text_color_updated {
     color: #eaad22!important;
 }
+
+.button-success{
+    background: linear-gradient(#41b667, #0a822b);
+    border: #093868 1px solid;
+    font-size: 11px;
+    padding: 0 10px;
+    color: #fff;
+    text-shadow: 1px 1px 0px #333;
+    margin-right: 5px;
+}

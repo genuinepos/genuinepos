@@ -481,7 +481,7 @@
                                         <div class="row justify-content-center">
                                             <div class="col-12 text-end">
                                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                                                <button type="submit" id="save" class="btn btn-sm btn-primary submit_button">Save Change </button>
+                                                <button type="submit" id="save" class="btn btn-sm btn-success submit_button">Save Change </button>
                                             </div>
                                         </div>
                                     </div>
@@ -573,7 +573,7 @@
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="c-btn btn_blue float-end me-0">Update</button>
+                            <button type="submit" class="c-btn button-success float-end me-0">Update</button>
                         </div>
                     </form>
                 </div>

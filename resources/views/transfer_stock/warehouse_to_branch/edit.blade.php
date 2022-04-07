@@ -24,7 +24,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Edit Transfer Stock</h5>
+                                            <h6>Edit Transfer Stock</h6>
                                         </div>
 
                                         <div class="col-6">
@@ -64,7 +64,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-2"><b>Date :</b></label>
+                                                <label class="col-2"><b>Date :</b></label>
                                                 <div class="col-8">
                                                     <input required type="text" name="date" class="form-control changeable" autocomplete="off" id="datepicker"
                                                         value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}">
@@ -74,7 +74,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-3"><b>Ref. ID :</b> </label>
+                                                <label class=" col-3"><b>Ref. ID :</b> </label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" autocomplete="off">
                                                 </div>
@@ -96,7 +96,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Item Search</label>
+                                                    <label class="col-form-label">Item Search</label>
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
@@ -196,7 +196,7 @@
                     <div class="row">
                         <div class="col-md-12 text-end">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" class="btn btn-sm btn-primary submit_button">Update </button>
+                            <button type="submit" class="btn btn-sm btn-success submit_button">Update </button>
                         </div>
                     </div>
                 </div>

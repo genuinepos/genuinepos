@@ -48,7 +48,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                                    <span class="total_due">{{ $purchase->due }}</span>
+                                    <span class="total_due text-danger"><strong>{{ App\Utils\Converter::format_in_bdt($purchase->due) }}</strong></span>
                                 </li>
                                 <li>
                                     <strong>Date : </strong>
@@ -95,7 +95,7 @@
                                 </span>
                             </div>
                             <input type="hidden" id="p_available_amount" value="{{ $purchase->due }}">
-                            <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="{{ $purchase->due }}"/>
+                            <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="0.00"/>
                         </div>
                         <span class="error error_p_paying_amount"></span>
                     </div>
@@ -169,7 +169,7 @@
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button type="submit" class="c-btn btn_blue me-0 float-end">Save</button>
+                        <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                     </div>
                 </div>

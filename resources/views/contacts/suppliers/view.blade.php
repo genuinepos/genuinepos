@@ -335,7 +335,7 @@
                                     <li class="mt-1">
                                         {{-- <a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a> --}}
                                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                        <button type="submit" id="print_payment" class="c-btn me-0 btn_blue">Print</button>
+                                        <button type="submit" id="print_payment" class="c-btn me-0 button-success">Print</button>
                                     </li>
                                 </ul>
                             </div>

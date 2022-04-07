@@ -43,6 +43,7 @@ Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controlle
     Route::get('recent/drafts/{create_by}', 'CommonAjaxCallController@recentDrafts');
     Route::get('branch/warehouse/{branch_id}', 'CommonAjaxCallController@branchWarehouses');
     Route::get('branch/allow/login/users/{branchId}', 'CommonAjaxCallController@branchAllowLoginUsers');
+    Route::get('branch/users/{branchId}', 'CommonAjaxCallController@branchUsers');
 });
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');

@@ -416,40 +416,27 @@
         });
 
         // Set accounts in payment and payment edit form
-        function setExpanseCategory(){
+        $(document).on('change', '#branch_id', function (e) {
+
+            var branchId = $(this).val();
 
             $.ajax({
-                url:"{{route('expanses.all.categories')}}",
-                async:true,
+                url:"{{ url('common/ajax/call/branch/users/') }}"+"/"+branchId,
                 type:'get',
-                dataType: 'json',
-                success:function(categories){
-                    $.each(categories, function (key, category) {
-                        $('#category_id').append('<option value="'+category.id+'">'+ category.name +' ('+category.code+')'+'</option>');
+                success:function(data){
+
+                    $('#admin_id').empty();
+                    $('#admin_id').append('<option value="">All</option>');
+                    $.each(data, function (key, val) {
+
+                        var userPrefix = val.prefix != null ? val.prefix : '';
+                        var userLastName = val.last_name != null ? val.last_name : '';
+                        $('#admin_id').append('<option value="'+val.id+'">'+userPrefix+' '+val.name+' '+userLastName+'</option>');
                     });
                 }
-            });
-        }
-        setExpanseCategory();
-
-        // Set accounts in payment and payment edit form
-        function setAdmin(){
-            $.ajax({
-                url:"{{route('expanses.all.admins')}}",
-                async:true,
-                type:'get',
-                dataType: 'json',
-                success:function(admins){
-                    $.each(admins, function (key, admin) {
-                        var prefix = admin.prefix ? admin.prefix : '';
-                        var last_name = admin.last_name ? admin.last_name : '';
-                        $('#admin_id').append('<option value="'+admin.id+'">'+ admin.name+' '+last_name+'</option>');
-                    });
-                }
-            });
-        }
-        setAdmin();
-
+            })
+        });
+        
         $(document).on('click', '#delete_payment',function(e){
             e.preventDefault();
             var url = $(this).attr('href');

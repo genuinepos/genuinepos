@@ -233,7 +233,6 @@
             })
         }
 
-    
         getBrandAllowLoginUsers($('#branch_id').val())
     </script>
 

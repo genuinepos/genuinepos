@@ -197,7 +197,7 @@
                                                                 @php $index = 0; @endphp
                                                                 @foreach ($sale->sale_products as $s_product)
                                                                     <tr>
-                                                                        <td colspan="2" class="text-start">
+                                                                        <td class="text-start">
                                                                             <a href="#" class="text-success" id="edit_product">
                                                                                 @php
                                                                                     $variant = $s_product->product_variant_id != null ? ' -'.$s_product->variant->variant_name : ''; 

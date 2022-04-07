@@ -30,6 +30,7 @@ class BranchController extends Controller
         }
 
         if (auth()->user()->permission->setup['branch'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -46,9 +47,11 @@ class BranchController extends Controller
         }
 
         $branches = '';
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $branches = Branch::all();
         } else {
+
             $branches = Branch::where('id', auth()->user()->branch_id)->get();
         }
 

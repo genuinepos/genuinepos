@@ -199,4 +199,14 @@ class CommonAjaxCallController extends Controller
             ->select('id', 'prefix', 'name', 'last_name')
             ->get();
     }
+
+    public function branchUsers($branchId)
+    {
+        $branch_id = $branchId == 'NULL' ? NULL : $branchId;
+
+        return DB::table('admin_and_users')
+            ->where('branch_id', $branch_id)
+            ->select('id', 'prefix', 'name', 'last_name')
+            ->get();
+    }
 }

@@ -232,8 +232,8 @@
 
                             <div class="col-md-6">
                                 <label class="text-navy-blue"><b>Employee :</b></label>
-                                <select name="user_id" class="form-control" id="employee">
-                                    <option disabled selected> Select Employee </option>
+                                <select required name="user_id" class="form-control" id="employee">
+                                    <option value=""> Select Employee </option>
                                     @foreach($employee as $row)
                                        <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
                                     @endforeach
@@ -248,7 +248,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week"></i></span>
                                     </div>
-                                    <input type="month" name="month_year" class="form-control" autocomplete="off" placeholder="Month-Year">
+                                    <input required type="month" name="month_year" class="form-control" autocomplete="off" placeholder="Month-Year">
                                 </div>
                             </div>
                         </div>

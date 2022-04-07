@@ -31,7 +31,7 @@
                         <span class="fas fa-edit"></span>
                     </a>
 
-                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1)
+                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                         <a href="{{ route('settings.branches.delete', $branch->id) }}" id="delete" class="action-btn c-delete">
                             <span class="fas fa-trash "></span>
                         </a>  

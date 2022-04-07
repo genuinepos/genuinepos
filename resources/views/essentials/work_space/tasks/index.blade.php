@@ -90,7 +90,7 @@
                                             </div>
 
                                             <div class="col-md-2"> 
-                                                <button type="submit" class="c-btn btn_blue me-0 float-start submit_button">Add</button>
+                                                <button type="submit" class="c-btn button-success me-0 float-start submit_button">Add</button>
                                             </div>
                                         </div>
                                     </form>

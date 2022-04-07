@@ -129,7 +129,7 @@
 
 <div class="form-group row mt-3">
     <div class="col-md-12">
-        <a href="{{ route('money.receipt.voucher.create', [$customer->id]) }}" id="generate_receipt" class="c-btn btn_blue float-end">Generate New</a>
+        <a href="{{ route('money.receipt.voucher.create', [$customer->id]) }}" id="generate_receipt" class="c-btn button-success float-end">Generate New</a>
         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
     </div>
 </div>

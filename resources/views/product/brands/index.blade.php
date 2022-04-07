@@ -45,7 +45,7 @@
                                             <div class="form-group mt-2">
                                                 <div class="col-md-12">
                                                     <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                    <button type="submit" class="c-btn btn_blue float-end submit_button me-0">Save</button>
+                                                    <button type="submit" class="c-btn button-success float-end submit_button me-0">Save</button>
                                                 </div>
                                             </div>
                                         </form>

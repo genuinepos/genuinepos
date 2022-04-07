@@ -209,7 +209,7 @@
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn btn_blue me-0 float-end submit_button">Save</button>
+                                <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
                                 <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                             </div>
                         </div>
@@ -283,7 +283,7 @@
                             <ul class="list-unstyled">
                                 {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a></li> --}}
                                 <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                <button type="submit" id="print_payment" class="c-btn btn_blue">Print</button>
+                                <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
                             </ul>
                         </div>
                     </div>

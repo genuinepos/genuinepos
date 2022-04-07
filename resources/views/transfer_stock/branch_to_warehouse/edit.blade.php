@@ -24,7 +24,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5>Edit Transfer Stock (To Warehouse)</h5>
+                                            <h6>Edit Transfer Stock (Business Location To Warehouse)</h6>
                                         </div>
 
                                         <div class="col-6">
@@ -196,7 +196,7 @@
                     <div class="row">
                         <div class="col-md-12 text-end">
                             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" class="btn btn-sm btn-primary submit_button">Update </button>
+                            <button type="submit" class="btn btn-sm btn-success submit_button">Save Changes </button>
                         </div>
                     </div>
                 </div>

@@ -55,7 +55,7 @@
                                 <th class="text-start">Total Sell Return : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{ App\Utils\Converter::format_in_bdt($totalReturn) }}
+                                    {{ App\Utils\Converter::format_in_bdt($totalSaleReturn) }}
                                 </td>
                             </tr>
     
@@ -113,7 +113,7 @@
     $grossProfit = ($totalSale + $totalStockAdjustmentRecovered) 
                 - $totalStockAdjustmentAmount 
                 - $totalExpense
-                - $totalReturn
+                - $totalSaleReturn
                 - $totalOrderTax
                 - $totalPayroll
                 - $totalTotalUnitCost

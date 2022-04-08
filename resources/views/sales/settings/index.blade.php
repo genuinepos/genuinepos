@@ -84,7 +84,7 @@
                                     <div class="col-md-12 text-end">
                                         <button type="button" class="btn loading_button d-none"><i
                                             class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                        <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
+                                        <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
                                     </div>
                                 </div>
                             </form>

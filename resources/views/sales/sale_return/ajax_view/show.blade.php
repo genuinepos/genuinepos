@@ -242,7 +242,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td class="text-end" colspan="4"><strong>Net Total Amount :</strong></td>
+                            <th class="text-end" colspan="4">Net Total Amount :</th>
                             <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->net_total_amount) }}</td>
                         </tr>
 

@@ -68,7 +68,7 @@
         </div>
 
         <div class="sale_product_table pt-3 pb-3">
-            <table class="table table-sm table-bordered">
+            <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
                         <tr>
@@ -115,31 +115,29 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td class="text-start" colspan="4"><strong>Net Total Amount :</strong></td>
-                        <td class="text-start" colspan="2" class="net_total">{{ App\Utils\Converter::format_in_bdt($saleReturn->net_total_amount) }}</td>
+                        <th class="text-end" colspan="4">Net Total Amount :</th>
+                        <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->net_total_amount) }}</td>
                     </tr>
 
                     <tr>
-                        <th class="text-start" colspan="4">Return Discount</th>
-                        <td class="text-start" colspan="2" class="return_discount">
+                        <th class="text-end" colspan="4">Return Discount :</th>
+                        <td class="text-start" colspan="2">
                             @if ($saleReturn->return_discount_type == 1)
-
-                                {{ $saleReturn->return_discount_amount }} (Fixed)
+                                {{ App\Utils\Converter::format_in_bdt($saleReturn->return_discount_amount) }} (Fixed)
                             @else  
-
                                 {{ App\Utils\Converter::format_in_bdt($saleReturn->return_discount_amount) }} ({{ $saleReturn->return_discount}}%)
                             @endif
                         </td>
                     </tr>
                     
                     <tr>
-                        <th class="text-start" colspan="4">Total Return Total</th>
-                        <td class="text-start" colspan="2" class="total_return_amount">{{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_amount) }}</td>
+                        <th class="text-end" colspan="4">Total Return Amount :</th>
+                        <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_amount) }}</td>
                     </tr>
 
                     <tr>
-                        <th class="text-start" colspan="4">Total Refunded Amount</th>
-                        <td class="text-start" colspan="2" class="total_due">{{ $saleReturn->total_return_due_pay }}</td>
+                        <th class="text-end" colspan="4">Total Paid/Refunded Amount :</th>
+                        <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_due_pay) }}</td>
                     </tr>
                 </tfoot>
             </table>

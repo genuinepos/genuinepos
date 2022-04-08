@@ -1485,7 +1485,7 @@
             $('#e_unit_discount').val(unit_discount);
             $('#e_discount_amount').val(unit_discount_amount);
             $('#e_tax_type').val(unit_tax_type);
-            $('#e_unit_tax').val(unit_tax_percent);
+            $('#e_unit_tax').val(parseFloat(unit_tax_percent).toFixed(2));
             $('#editProductModal').modal('show');
         });
 
@@ -1534,6 +1534,13 @@
 
             var calcUnitPriceWithDiscount = parseFloat(e_unit_price_exc_tax) - parseFloat(e_unit_discount_amount);
             var calsUninTaxAmount = parseFloat(calcUnitPriceWithDiscount) / 100 * parseFloat(e_unit_tax_percent);
+
+            if (e_unit_tax_type == 2) {
+
+                var inclusiveTax = 100 + parseFloat(e_unit_tax_percent);
+                var calc = parseFloat(calcUnitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
+                calsUninTaxAmount = parseFloat(calcUnitPriceWithDiscount) - parseFloat(calc);
+            }
 
             productTableRow.find('#unit_tax_percent').val(parseFloat(e_unit_tax_percent).toFixed(2));
             productTableRow.find('#tax_type').val(e_unit_tax_type);

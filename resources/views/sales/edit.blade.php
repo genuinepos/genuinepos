@@ -386,7 +386,7 @@
                                                 <select name="order_tax" class="form-control" id="order_tax">
                                                     <option value="0.00">NoTax</option>
                                                     @foreach ($taxes as $tax)
-                                                        <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                                        <option {{ $tax->tax_percent == $sale->order_tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                     @endforeach
                                                 </select>
                                                 <input type="number" step="any" class="d-none" name="order_tax_amount" id="order_tax_amount" value="0.00">

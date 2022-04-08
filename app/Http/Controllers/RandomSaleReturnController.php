@@ -72,11 +72,11 @@ class RandomSaleReturnController extends Controller
             ->where('accounts.account_type', 6)
             ->get(['accounts.id', 'accounts.name']);
 
-        $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
-
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
 
-        return view('sales.sale_return.random_return.create', compact('customers', 'methods', 'accounts', 'saleReturnAccounts', 'price_groups', 'taxes'));
+        $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+
+        return view('sales.sale_return.random_return.create', compact('customers', 'methods', 'accounts', 'saleReturnAccounts', 'taxes', 'price_groups'));
     }
 
     // Search product by code
@@ -163,6 +163,11 @@ class RandomSaleReturnController extends Controller
             $addReturnProduct->product_id = $product_id;
             $addReturnProduct->product_variant_id = $variant_id;
             $addReturnProduct->tax_type = $request->tax_types[$index];
+            $addReturnProduct->unit_tax_percent = $request->unit_tax_percents[$index];
+            $addReturnProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
+            $addReturnProduct->unit_discount_type = $request->unit_discount_types[$index];
+            $addReturnProduct->unit_discount = $request->unit_discounts[$index];
+            $addReturnProduct->unit_discount_amount = $request->unit_discount_amounts[$index];
             $addReturnProduct->return_qty = $request->return_quantities[$index];
             $addReturnProduct->unit = $request->units[$index];
             $addReturnProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
@@ -371,10 +376,15 @@ class RandomSaleReturnController extends Controller
 
             if ($saleReturnProduct) {
 
-                $saleReturnProduct->tax_type = $request->tax_types[$index];
                 $saleReturnProduct->return_qty = $request->return_quantities[$index];
                 $saleReturnProduct->unit = $request->units[$index];
                 $saleReturnProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
+                $saleReturnProduct->tax_type = $request->tax_types[$index];
+                $saleReturnProduct->unit_tax_percent = $request->unit_tax_percents[$index];
+                $saleReturnProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
+                $saleReturnProduct->unit_discount_type = $request->unit_discount_types[$index];
+                $saleReturnProduct->unit_discount = $request->unit_discounts[$index];
+                $saleReturnProduct->unit_discount_amount = $request->unit_discount_amounts[$index];
                 $saleReturnProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$index];
                 $saleReturnProduct->unit_price_inc_tax = $request->unit_prices[$index];
                 $saleReturnProduct->return_subtotal = $request->subtotals[$index];
@@ -413,10 +423,15 @@ class RandomSaleReturnController extends Controller
                 $addReturnProduct->sale_product_id = $request->sale_product_ids[$index];
                 $addReturnProduct->product_id = $product_id;
                 $addReturnProduct->product_variant_id = $variant_id;
-                $addReturnProduct->tax_type = $request->tax_types[$index];
                 $addReturnProduct->return_qty = $request->return_quantities[$index];
                 $addReturnProduct->unit = $request->units[$index];
                 $addReturnProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
+                $addReturnProduct->tax_type = $request->tax_types[$index];
+                $addReturnProduct->unit_tax_percent = $request->unit_tax_percents[$index];
+                $addReturnProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
+                $addReturnProduct->unit_discount_type = $request->unit_discount_types[$index];
+                $addReturnProduct->unit_discount = $request->unit_discounts[$index];
+                $addReturnProduct->unit_discount_amount = $request->unit_discount_amounts[$index];
                 $addReturnProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$index];
                 $addReturnProduct->unit_price_inc_tax = $request->unit_prices[$index];
                 $addReturnProduct->return_subtotal = $request->subtotals[$index];
@@ -444,7 +459,7 @@ class RandomSaleReturnController extends Controller
         $deleteUnusedReturnProducts = SaleReturnProduct::where('sale_return_id', $returnId)
             ->where('is_delete_in_update', 1)->get();
 
-        foreach($deleteUnusedReturnProducts as $deleteUnusedReturnProduct){
+        foreach ($deleteUnusedReturnProducts as $deleteUnusedReturnProduct) {
 
             $storedProductId = $deleteUnusedReturnProduct->product_id;
             $storedVariantId = $deleteUnusedReturnProduct->product_variant_id;

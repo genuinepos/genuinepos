@@ -4,6 +4,7 @@
     // Get all price group
     var price_groups = '';
     function getPriceGroupProducts(){
+        
         $.ajax({
             url:"{{route('sales.product.price.groups')}}",
             success:function(data) {

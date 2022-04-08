@@ -264,7 +264,6 @@
         
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>Return Tax :</b>
-                                                            <span class="text-danger">*</span>
                                                         </label>
 
                                                         <div class="col-8">
@@ -392,6 +391,77 @@
             </form>
         </div>
     </div>
+
+    <!-- Edit selling product modal-->
+    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="product_info">Samsung A30</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                        class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <!--begin::Form-->
+                    <form id="update_return_product" action="">
+                       
+                        <div class="form-group">
+                            <label> <strong>Quantity</strong> : <span class="text-danger">*</span></label>
+                            <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_return_quantity" placeholder="Quantity" tabindex="-1"/>
+                            <span class="error error_e_quantity"></span>
+                        </div>
+
+                        <div class="form-group mt-1">
+                            <label> <strong>Unit Price Exc.Tax</strong> : <span class="text-danger">*</span></label>
+                            <input type="number" step="any" step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price_exc_tax" placeholder="Unit price" />
+                            <span class="error error_e_unit_price"></span>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-6">
+                                <label><strong>Discount Type</strong> :</label>
+                                <select class="form-control " id="e_unit_discount_type">
+                                    <option value="2">Percentage</option>
+                                    <option value="1">Fixed</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><strong>Discount</strong> :</label>
+                                <input type="number" step="any" class="form-control " id="e_unit_discount" value="0.00"/>
+                                <input type="hidden" id="e_discount_amount"/>
+                            </div>
+                        </div>
+                       
+                        <div class="form-group row mt-1">
+                            <div class="col-md-6">
+                                <label><strong>Tax</strong> :</label>
+                                <select class="form-control" id="e_unit_tax">
+                                    <option value="0.00">NoTax</option>
+                                    @foreach ($taxes as $tax)
+                                        <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><strong>Tax Type</strong> :</label>
+                                <select class="form-control" id="e_tax_type">
+                                    <option value="1">Exclusive</option>
+                                    <option value="2">Inclusive</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-end mt-3">
+                            <button type="submit" class="c-btn button-success float-end me-0">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!-- Edit selling product modal End--> 
 @endsection
 
 @push('scripts')
@@ -750,7 +820,7 @@
                                     var tr = '';
                                     tr += '<tr>';
                                     tr += '<td class="text-start">';
-                                    tr += '<a href="#" class="text-success" id="edit_product" tabindex="-1">';
+                                    tr += '<a href="#" id="edit_product" class="text-success" tabindex="-1">';
                                     tr += '<span class="product_name">'+name+'</span>';
                                     tr += '</a>';
                                     tr += '<input name="unit_costs_inc_tax[]" type="hidden" value="'+product.product_cost_with_tax+'">';
@@ -758,6 +828,9 @@
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input type="hidden" name="tax_types[]" value="'+product.tax_type+'" id="tax_type">';
                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
+                                    tr += '<input type="hidden" name="unit_discount_types[]" value="1" id="unit_discount_type">';
+                                    tr += '<input type="hidden" name="unit_discounts[]" value="0.00" id="unit_discount">';
+                                    tr += '<input type="hidden" name="unit_discount_amounts[]" value="0.00" id="unit_discount_amount">';
                                     tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+tax_percent+'">';
                                     tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(tax_amount).toFixed(2)+'">';
                                     tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
@@ -775,7 +848,7 @@
                                     tr += '<td>';
                                     tr += '<input name="unit_prices_exc_tax[]" type="hidden" id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'" tabindex="-1">';
                                     tr += '<input name="unit_prices[]" type="hidden" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" tabindex="-1">';
-                                    tr += '<b><span>'+parseFloat(unitPriceIncTax).toFixed(2) +'</span></b>';
+                                    tr += '<b><span id="span_unit_price">'+parseFloat(unitPriceIncTax).toFixed(2) +'</span></b>';
                                     tr += '</td>';
 
                                     tr += '<td class="text text-center">';
@@ -904,13 +977,16 @@
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td class="text-start">';
-                                tr += '<a href="#" class="text-success" id="edit_product" tabindex="-1">';
+                                tr += '<a href="#" id="edit_product" class="text-success" tabindex="-1">';
                                 tr += '<span class="product_name">'+name+' -'+variant_product.variant_name+'</span>';
                                 tr += '</a>';
                                 tr += '<input name="unit_costs_inc_tax[]" type="hidden" value="'+variant_product.variant_cost_with_tax+'">';
                                 tr += '<input name="sale_product_ids[]" type="hidden" id="sale_product_id">';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
+                                tr += '<input type="hidden" name="unit_discount_types[]" value="1" id="unit_discount_type">';
+                                tr += '<input type="hidden" name="unit_discounts[]" value="0.00" id="unit_discount">';
+                                tr += '<input type="hidden" name="unit_discount_amounts[]" value="0.00" id="unit_discount_amount">';
                                 tr += '<input type="hidden" name="tax_types[]" value="'+variant_product.product.tax_type+'" id="tax_type">';
                                 tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+tax_percent+'">';
                                 tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(tax_amount).toFixed(2)+'">';
@@ -919,7 +995,7 @@
                                 tr += '<td>';
                                 tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+parseFloat(price).toFixed(2)+'" id="unit_price_exc_tax" tabindex="-1">';
                                 tr += '<input name="unit_prices[]" type="hidden" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2) +'" tabindex="-1">';
-                                tr += '<b><span>'+parseFloat(unitPriceIncTax).toFixed(2) +'</span></b>'; 
+                                tr += '<b><span id="span_unit_price">'+parseFloat(unitPriceIncTax).toFixed(2) +'</span></b>'; 
                                 tr += '</td>';
 
                                 tr += '<td class="text">';
@@ -1105,13 +1181,16 @@
                 var tr = '';
                 tr += '<tr>';
                 tr += '<td class="text-start">';
-                tr += '<a href="#" class="text-success" id="edit_product" tabindex="-1">';
+                tr += '<a href="#" id="edit_product" class="text-success" id="edit_product" tabindex="-1">';
                 tr += '<span class="product_name">'+ data.product_name +'</span>';
                 tr += '</a>';
                 tr += '<input name="sale_product_ids[]" type="hidden" id="sale_product_id" value="'+data.sale_product_id+'">';
                 tr += '<input name="unit_costs_inc_tax[]" type="hidden" value="'+data.unit_cost_inc_tax+'">';
                 tr += '<input value="'+data.product_id+'" type="hidden" class="productId-'+data.product_id+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
+                tr += '<input type="hidden" name="unit_discount_types[]" value="'+data.unit_discount_type+'" id="unit_discount_type">';
+                tr += '<input type="hidden" name="unit_discounts[]" value="'+data.unit_discount+'" id="unit_discount">';
+                tr += '<input type="hidden" name="unit_discount_amounts[]" value="'+data.unit_discount_amount+'" id="unit_discount_amount">';
                 tr += '<input type="hidden" name="tax_types[]" value="'+data.tax_type+'" id="tax_type">';
                 tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+data.unit_tax_percent+'">';
                 tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(data.unit_tax_amount).toFixed(2)+'">';
@@ -1131,7 +1210,7 @@
                 }
 
                 tr += '<input name="unit_prices[]" type="hidden" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" tabindex="-1">';
-                tr += '<b><span> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></b>';
+                tr += '<b><span id="span_unit_price"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></b>';
                 tr += '</td>';
 
                 tr += '<td class="text">';
@@ -1230,13 +1309,16 @@
                 var tr = '';
                 tr += '<tr>';
                 tr += '<td class="text-start">';
-                tr += '<a href="#" class="text-success" id="edit_product" tabindex="-1">';
+                tr += '<a href="#" id="edit_product" class="text-success" id="edit_product" tabindex="-1">';
                 tr += '<span class="product_name">'+ data.product_name + ' - ' + data.variant_name +'</span>';
                 tr += '</a>';
                 tr += '<input name="unit_costs_inc_tax[]" type="hidden" value="'+data.unit_cost_inc_tax+'">';
                 tr += '<input name="sale_product_ids[]" type="hidden" id="sale_product_id" value="'+data.sale_product_id+'">';
                 tr += '<input value="'+data.product_id+'" type="hidden" class="productId-'+data.product_id+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="'+ data.variant_id +'" type="hidden" class="variantId-'+data.variant_id+'" id="variant_id" name="variant_ids[]">';
+                tr += '<input type="hidden" name="unit_discount_types[]" value="'+data.unit_discount_type+'" id="unit_discount_type">';
+                tr += '<input type="hidden" name="unit_discounts[]" value="'+data.unit_discount+'" id="unit_discount">';
+                tr += '<input type="hidden" name="unit_discount_amounts[]" value="'+data.unit_discount_amount+'" id="unit_discount_amount">';
                 tr += '<input type="hidden" name="tax_types[]" value="'+data.tax_type+'" id="tax_type">';
                 tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+data.unit_tax_percent+'">';
                 tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(data.unit_tax_amount).toFixed(2)+'">';
@@ -1256,7 +1338,7 @@
                 }
 
                 tr += '<input name="unit_prices[]" type="hidden" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" tabindex="-1">';
-                tr += '<b><span> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></b>';
+                tr += '<b><span id="span_unit_price"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></b>';
                 tr += '</td>';
 
                 tr += '<td class="text">';
@@ -1377,6 +1459,129 @@
             calculateTotalAmount();
         });
 
+        // Show selling product's update modal
+        var tableRowIndex = 0;
+        $(document).on('click', '#edit_product', function(e) {
+            e.preventDefault();
+
+            var parentTableRow = $(this).closest('tr');
+            tableRowIndex = parentTableRow.index();
+            var quantity = parentTableRow.find('#return_quantity').val();
+            var product_name = parentTableRow.find('.product_name').html();
+            var product_code = parentTableRow.find('.product_code').html();
+            var unit_price_exc_tax = parentTableRow.find('#unit_price_exc_tax').val();
+            var unit_tax_percent = parentTableRow.find('#unit_tax_percent').val();
+            var unit_tax_amount = parentTableRow.find('#unit_tax_amount').val();
+            var unit_tax_type = parentTableRow.find('#tax_type').val();
+            var unit_discount_type = parentTableRow.find('#unit_discount_type').val();
+            var unit_discount = parentTableRow.find('#unit_discount').val();
+            var unit_discount_amount = parentTableRow.find('#unit_discount_amount').val();
+
+            // Set modal heading
+            $('#product_info').html(product_name);
+            $('#e_return_quantity').val(parseFloat(quantity).toFixed(2));
+            $('#e_unit_price_exc_tax').val(parseFloat(unit_price_exc_tax).toFixed(2));
+            $('#e_unit_discount_type').val(unit_discount_type);
+            $('#e_unit_discount').val(unit_discount);
+            $('#e_discount_amount').val(unit_discount_amount);
+            $('#e_tax_type').val(unit_tax_type);
+            $('#e_unit_tax').val(unit_tax_percent);
+            $('#editProductModal').modal('show');
+        });
+
+        //Update Selling producdt
+        $('#update_return_product').on('submit', function (e) {
+            e.preventDefault();
+
+            var inputs = $('.edit_input');
+            $('.error').html('');  
+            var countErrorField = 0;  
+
+            $.each(inputs, function(key, val){
+
+                var inputId = $(val).attr('id');
+                var idValue = $('#'+inputId).val();
+
+                if(idValue == ''){
+
+                    countErrorField += 1;
+                    var fieldName = $('#'+inputId).data('name');
+                    $('.error_'+inputId).html(fieldName+' is required.');
+                }
+            });
+
+            if(countErrorField > 0){
+
+                return;
+            }
+
+            var e_quantity = $('#e_return_quantity').val();
+            var e_unit_price_exc_tax = $('#e_unit_price_exc_tax').val();
+            var e_unit_discount_type = $('#e_unit_discount_type').val() ? $('#e_unit_discount_type').val() : 1;
+            var e_unit_discount = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
+            var e_unit_discount_amount = $('#e_discount_amount').val() ? $('#e_discount_amount').val() : 0.00;
+            var e_unit_tax_type = $('#e_tax_type').val() ? $('#e_tax_type').val() : 1;
+            var e_unit_tax_percent = $('#e_unit_tax').val() ? $('#e_unit_tax').val() : 0.00;
+            
+            var productTableRow = $('#return_item_list tr:nth-child(' + (tableRowIndex + 1) + ')');
+            // calculate unit tax 
+           
+            productTableRow.find('#return_quantity').val(parseFloat(e_quantity).toFixed(2));
+            productTableRow.find('#unit_price_exc_tax').val(parseFloat(e_unit_price_exc_tax).toFixed(2));
+            productTableRow.find('#unit_discount_type').val(e_unit_discount_type);
+            productTableRow.find('#unit_discount').val(parseFloat(e_unit_discount).toFixed(2));
+            productTableRow.find('#unit_discount_amount').val(parseFloat(e_unit_discount_amount).toFixed(2));
+
+            var calcUnitPriceWithDiscount = parseFloat(e_unit_price_exc_tax) - parseFloat(e_unit_discount_amount);
+            var calsUninTaxAmount = parseFloat(calcUnitPriceWithDiscount) / 100 * parseFloat(e_unit_tax_percent);
+
+            productTableRow.find('#unit_tax_percent').val(parseFloat(e_unit_tax_percent).toFixed(2));
+            productTableRow.find('#tax_type').val(e_unit_tax_type);
+            productTableRow.find('#unit_tax_amount').val(parseFloat(calsUninTaxAmount).toFixed(2));
+
+            var calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) + parseFloat(calsUninTaxAmount);
+            
+            productTableRow.find('#unit_price').val(parseFloat(calcUnitPriceIncTax).toFixed(2));
+            productTableRow.find('#span_unit_price').html(parseFloat(calcUnitPriceIncTax).toFixed(2));
+            var calcSubtotal = parseFloat(calcUnitPriceIncTax) * parseFloat(e_quantity);
+            productTableRow.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
+            productTableRow.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
+            $('#editProductModal').modal('hide');
+            calculateTotalAmount();
+        });
+
+        // change unit price
+        $('#e_unit_price_exc_tax').on('input', function () {
+            
+            var unit_price = $(this).val() ? $(this).val() : 0.00;
+            var discountValue = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
+
+            if ($('#e_unit_discount_type').val() == 1) {
+
+                $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
+            }else{
+
+                var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
+                $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
+            }
+        });
+
+        // Calculate unit discount
+        $('#e_unit_discount').on('input', function () {
+
+            var discountValue = $(this).val() ? $(this).val() : 0.00;
+
+            if ($('#e_unit_discount_type').val() == 1) {
+
+                $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
+            }else{
+
+                var unit_price = $('#e_unit_price').val();
+                var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
+                $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
+            }
+        });
+
         //Add purchase request by ajax
         $('#add_sale_return_form').on('submit', function(e){
             e.preventDefault();
@@ -1391,10 +1596,10 @@
                 return;
             }
 
-            var current_receivable = $('#total_refundable_amount').val() ? $('#total_refundable_amount').val() : 0;
+            var total_refundable_amount = $('#total_refundable_amount').val() ? $('#total_refundable_amount').val() : 0;
             var paying_amount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
 
-            if (parseFloat(paying_amount) > 0 && parseFloat(paying_amount) > parseFloat(current_receivable)) {
+            if (parseFloat(paying_amount) > 0 && parseFloat(paying_amount) > parseFloat(total_refundable_amount)) {
                 
                 toastr.error('Refunding amount must not be greater then total refundable amount.'); 
                 return;

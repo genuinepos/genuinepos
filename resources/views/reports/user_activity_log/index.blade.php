@@ -216,6 +216,8 @@
         });
 
         function getBrandAllowLoginUsers(branchId) {
+            
+            var branchId = branchId ? branchId : 'NULL';
             $.ajax({
                 url:"{{ url('common/ajax/call/branch/allow/login/users/') }}"+"/"+branchId,
                 type:'get',

@@ -422,19 +422,41 @@ class AccountController extends Controller
         }
 
         // Update Opening Balance Ledger
-        return $updateAccountLedger = AccountLedger::where('account_id', $updateAccount->id)->where('voucher_type', 0)->get();
+        $updateAccountLedger = AccountLedger::where('account_id', $updateAccount->id)->where('voucher_type', 0)->first();
 
-        $updateAccountLedger->{$this->accountUtil->accountBalanceType($request->account_type)} = $openingBalance;
-        $updateAccountLedger->amount_type = $this->accountUtil->accountBalanceType($request->account_type);
-        $updateAccountLedger->save();
+        if ($updateAccountLedger) {
+
+            $updateAccountLedger->{$this->accountUtil->accountBalanceType($request->account_type)} = $openingBalance;
+            $updateAccountLedger->amount_type = $this->accountUtil->accountBalanceType($request->account_type);
+            $updateAccountLedger->save();
+
+            // $runningBalance = $this->accountUtil->adjustAccountBalance(
+            //     balanceType: $this->accountUtil->accountBalanceType($request->account_type),
+            //     account_id: $updateAccount->id,
+            // );
+
+            // $updateAccountLedger->running_balance = $runningBalance;
+            // $updateAccountLedger->save();
+
+            $updateAccountLedger->running_balance = $openingBalance;
+            $updateAccountLedger->save();
+        } else {
+
+            // Add Opening Ledger
+            $accountLedger = new AccountLedger();
+            $accountLedger->account_id = $updateAccount->id;
+            $accountLedger->voucher_type = 0;
+            $accountLedger->date = date('Y-m-d H:i:s');
+            $accountLedger->{$this->accountUtil->accountBalanceType($request->account_type)} = $openingBalance;
+            $accountLedger->amount_type = $this->accountUtil->accountBalanceType($request->account_type);
+            $accountLedger->running_balance = $openingBalance;
+            $accountLedger->save();
+        }
 
         $runningBalance = $this->accountUtil->adjustAccountBalance(
             balanceType: $this->accountUtil->accountBalanceType($request->account_type),
             account_id: $updateAccount->id,
         );
-
-        $updateAccountLedger->running_balance = $runningBalance;
-        $updateAccountLedger->save();
 
         $account = DB::table('accounts')->where('id', $id)
             ->select('name', 'account_number', 'opening_balance', 'balance')

@@ -20,7 +20,7 @@
     <script src="{{asset('public/backend/js/bootstrap-dropdown.js')}}"></script>
     <script src="{{asset('public/backend/js/TableTools.min.js')}}"></script>
     <script src="{{asset('public/backend/js/jeditable.jquery.js')}}"></script>
-    <script src="{{asset('public/backend/js/custom-script.js')}}"></script>
+    {{-- <script src="{{asset('public/backend/js/custom-script.js')}}"></script> --}}
     <script src="{{asset('public/backend/asset/js/main.js')}}"></script>
     <script src="{{asset('public/backend/asset/js/SimpleCalculadorajQuery.js')}}" defer></script>
 

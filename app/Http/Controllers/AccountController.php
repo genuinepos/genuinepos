@@ -428,7 +428,7 @@ class AccountController extends Controller
 
             $updateAccountLedger->{$this->accountUtil->accountBalanceType($request->account_type)} = $openingBalance;
             $updateAccountLedger->amount_type = $this->accountUtil->accountBalanceType($request->account_type);
-            $updateAccountLedger->save();
+            // $updateAccountLedger->save();
 
             // $runningBalance = $this->accountUtil->adjustAccountBalance(
             //     balanceType: $this->accountUtil->accountBalanceType($request->account_type),

@@ -129,64 +129,64 @@ function fnFormatDetails(oTable, nTr) {
     return sOut;
 }
 
-$(function() {
-    /*
-     * Insert a 'details' column to the table
-     */
-    var nCloneTh = document.createElement('th');
-    var nCloneTd = document.createElement('td');
-    nCloneTd.innerHTML = '<img src="./img/details_open.png">';
-    nCloneTd.className = "center";
+// $(function() {
+//     /*
+//      * Insert a 'details' column to the table
+//      */
+//     var nCloneTh = document.createElement('th');
+//     var nCloneTd = document.createElement('td');
+//     nCloneTd.innerHTML = '<img src="../img/details_open.png">';
+//     nCloneTd.className = "center";
 
-    $('.tbl_details thead tr').each(function() {
-        this.insertBefore(nCloneTh, this.childNodes[0]);
-    });
+//     $('.tbl_details thead tr').each(function() {
+//         this.insertBefore(nCloneTh, this.childNodes[0]);
+//     });
 
-    $('.tbl_details tbody tr').each(function() {
-        this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
-    });
+//     $('.tbl_details tbody tr').each(function() {
+//         this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
+//     });
 
-    /*
-     * Initialse DataTables, with no sorting on the 'details' column
-     */
-    var oTable = $('.tbl_details').dataTable({
+//     /*
+//      * Initialse DataTables, with no sorting on the 'details' column
+//      */
+//     var oTable = $('.tbl_details').dataTable({
 
-        "aoColumnDefs": [
-            { "bSortable": false, "aTargets": [0] }
-        ],
-        "aaSorting": [
-            [1, 'asc']
-        ],
-        "sPaginationType": "full_numbers",
-        "iDisplayLength": 10,
-        "oLanguage": {
-            "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
-        },
-        "sDom": '<"table_top"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>'
-    });
+//         "aoColumnDefs": [
+//             { "bSortable": false, "aTargets": [0] }
+//         ],
+//         "aaSorting": [
+//             [1, 'asc']
+//         ],
+//         "sPaginationType": "full_numbers",
+//         "iDisplayLength": 10,
+//         "oLanguage": {
+//             "sLengthMenu": "<span class='lenghtMenu'> _MENU_</span><span class='lengthLabel'>Entries per page:</span>",
+//         },
+//         "sDom": '<"table_top"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>'
+//     });
     
-    $("div.table_top select").addClass('tbl_length');
-    $(".tbl_length").chosen({
-        disable_search_threshold: 4
-    });
+//     $("div.table_top select").addClass('tbl_length');
+//     $(".tbl_length").chosen({
+//         disable_search_threshold: 4
+//     });
 
-    /* Add event listener for opening and closing details
-     * Note that the indicator for showing which row is open is not controlled by DataTables,
-     * rather it is done here
-     */
-    $('.tbl_details tbody td img').live('click', function() {
-        var nTr = $(this).parents('tr')[0];
-        if (oTable.fnIsOpen(nTr)) {
-            /* This row is already open - close it */
-            this.src = "./img/details_open.png";
-            oTable.fnClose(nTr);
-        } else {
-            /* Open this row */
-            this.src = "./img/details_close.png";
-            oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
-        }
-    });
-});
+//     /* Add event listener for opening and closing details
+//      * Note that the indicator for showing which row is open is not controlled by DataTables,
+//      * rather it is done here
+//      */
+//     $('.tbl_details tbody td img').live('click', function() {
+//         var nTr = $(this).parents('tr')[0];
+//         if (oTable.fnIsOpen(nTr)) {
+//             /* This row is already open - close it */
+//             this.src = "../img/details_open.png";
+//             oTable.fnClose(nTr);
+//         } else {
+//             /* Open this row */
+//             this.src = "./img/details_close.png";
+//             oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
+//         }
+//     });
+// });
 
 
 

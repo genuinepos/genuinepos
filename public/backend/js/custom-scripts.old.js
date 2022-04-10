@@ -1826,7 +1826,7 @@
 	     */
 	    var nCloneTh = document.createElement('th');
 	    var nCloneTd = document.createElement('td');
-	    nCloneTd.innerHTML = '<img src="img/details_open.png">';
+	    nCloneTd.innerHTML = '<img src="./images/details_open.png">';
 	    nCloneTd.className = "center";
 
 	    $('.tbl_details thead tr').each(function() {
@@ -1868,7 +1868,7 @@
 	        var nTr = $(this).parents('tr')[0];
 	        if (oTable.fnIsOpen(nTr)) {
 	            /* This row is already open - close it */
-	            this.src = "img/details_open.png";
+	            this.src = "./images/details_open.png";
 	            oTable.fnClose(nTr);
 	        } else {
 	            /* Open this row */
@@ -1877,8 +1877,6 @@
 	        }
 	    });
 	});
-
-
 
 
 	$(function() {

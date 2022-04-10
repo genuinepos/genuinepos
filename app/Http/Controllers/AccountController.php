@@ -217,7 +217,7 @@ class AccountController extends Controller
                 $query->where('account_ledgers.amount_type', $request->transaction_type); // Final
             }
 
-            if ($request->voucher_type) {
+            if (isset($request->voucher_type)) {
 
                 $query->where('account_ledgers.voucher_type', $request->voucher_type); // Final
             }
@@ -572,8 +572,8 @@ class AccountController extends Controller
             $query->where('account_ledgers.amount_type', $request->transaction_type); // Final
         }
 
-        if ($request->voucher_type) {
-
+        if (isset($request->voucher_type)) {
+            
             $query->where('account_ledgers.voucher_type', $request->voucher_type); // Final
         }
 

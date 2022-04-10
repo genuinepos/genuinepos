@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class AccountUtil
 {
-    // public function adjustAccountBalance($account_id)
+    // public function adjustAccountBalanceTest($account_id)
     // {
     //     $cashFlowD = DB::table('cash_flows')->where('cash_type', 1)
     //         ->where('account_id', $account_id)
@@ -23,7 +23,7 @@ class AccountUtil
     //         ->where('loan_id', '!=', NULL)
     //         ->where('debit', '!=', NULL)
     //         ->leftJoin('loans', 'cash_flows.loan_id', 'loans.id')
-    //         ->where('loans.loan_by', 'Expense')->select(DB::raw('sum(debit) as t_debit'))
+    //         ->where('loans.loan_by', 'Expense')->select(DB::raw('sum(credit) as t_debit'))
     //         ->groupBy('loans.loan_by')
     //         ->get();
 
@@ -56,10 +56,23 @@ class AccountUtil
                 DB::raw('sum(credit) as t_credit')
             )->groupBy('account_ledgers.account_id')->get();
 
+        $expenseLoan = DB::table('account_ledgers')
+            ->where('account_ledgers.account_id', $account_id)
+            ->where('loan_id', '!=', NULL)
+            ->where('debit', '!=', NULL)
+            ->leftJoin('loans', 'account_ledgers.loan_id', 'loans.id')
+            ->where('loans.loan_by', 'Expense')->select(DB::raw('sum(credit) as t_credit'))
+            ->groupBy('loans.loan_by')
+            ->get();
+
+        $totalExpenseLoan = $expenseLoan->sum('t_credit') ? $expenseLoan->sum('t_credit') : 0;
+     
         $currentBalance = 0;
         if ($balanceType == 'debit') {
-            $currentBalance = $ac_ledger->sum('t_debit') - $ac_ledger->sum('t_credit');
+
+            $currentBalance = $ac_ledger->sum('t_debit') - ($ac_ledger->sum('t_credit') - $totalExpenseLoan);
         } else if ($balanceType == 'credit') {
+
             $currentBalance = $ac_ledger->sum('t_credit') - $ac_ledger->sum('t_debit');
         }
 

@@ -217,7 +217,7 @@ class AccountController extends Controller
                 $query->where('account_ledgers.amount_type', $request->transaction_type); // Final
             }
 
-            if ($request->voucher_type) {
+            if (isset($request->voucher_type)) {
 
                 $query->where('account_ledgers.voucher_type', $request->voucher_type); // Final
             }
@@ -428,7 +428,7 @@ class AccountController extends Controller
 
             $updateAccountLedger->{$this->accountUtil->accountBalanceType($request->account_type)} = $openingBalance;
             $updateAccountLedger->amount_type = $this->accountUtil->accountBalanceType($request->account_type);
-            $updateAccountLedger->save();
+            // $updateAccountLedger->save();
 
             // $runningBalance = $this->accountUtil->adjustAccountBalance(
             //     balanceType: $this->accountUtil->accountBalanceType($request->account_type),
@@ -571,7 +571,7 @@ class AccountController extends Controller
             $query->where('account_ledgers.amount_type', $request->transaction_type); // Final
         }
 
-        if ($request->voucher_type) {
+        if (isset($request->voucher_type)) {
             $query->where('account_ledgers.voucher_type', $request->voucher_type); // Final
         }
 

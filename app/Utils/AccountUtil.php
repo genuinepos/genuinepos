@@ -58,8 +58,10 @@ class AccountUtil
 
         $currentBalance = 0;
         if ($balanceType == 'debit') {
+
             $currentBalance = $ac_ledger->sum('t_debit') - $ac_ledger->sum('t_credit');
         } else if ($balanceType == 'credit') {
+            
             $currentBalance = $ac_ledger->sum('t_credit') - $ac_ledger->sum('t_debit');
         }
 

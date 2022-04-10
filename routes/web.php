@@ -1058,11 +1058,6 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
-    
-    $query = "CAST(total_sale_due AS DECIMAL(22,2)) DESC";
-    $cus = DB::table('customers')->where('id', 140)->orderByRaw($query)->first();
-
-    return $__filtered_date = gettype($cus->total_sale_due);
 });
 
 // All authenticated routes

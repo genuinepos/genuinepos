@@ -1533,14 +1533,6 @@ Route::get('/test', function () {
     return 'Done';
 });
 
-Route::get('test2', function(){
-     $payLoanPayments = LoanPayment::where('branch_id', NULL)->where('payment_type', 1)->get();
-
-    foreach($payLoanPayments as $payLoanPayment){
-        echo $payLoanPayment->id;
-    }
-});
-
 // All authenticated routes
 Auth::routes();
 

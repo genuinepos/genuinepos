@@ -546,10 +546,12 @@ class AccountController extends Controller
             )->orderBy('account_ledgers.date', 'asc');
 
         if ($request->transaction_type) {
+
             $query->where('account_ledgers.amount_type', $request->transaction_type); // Final
         }
 
         if ($request->voucher_type) {
+
             $query->where('account_ledgers.voucher_type', $request->voucher_type); // Final
         }
 
@@ -566,7 +568,7 @@ class AccountController extends Controller
             $toDate = $to_date;
         }
 
-        $ledgers = $query->get();
+        return $ledgers = $query->get();
 
         $account = DB::table('accounts')
             ->where('accounts.id', $accountId)

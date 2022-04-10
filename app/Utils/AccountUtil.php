@@ -58,8 +58,10 @@ class AccountUtil
 
         $currentBalance = 0;
         if ($balanceType == 'debit') {
+
             $currentBalance = $ac_ledger->sum('t_debit') - $ac_ledger->sum('t_credit');
         } else if ($balanceType == 'credit') {
+            
             $currentBalance = $ac_ledger->sum('t_credit') - $ac_ledger->sum('t_debit');
         }
 
@@ -109,14 +111,14 @@ class AccountUtil
             8 => 'Stock Adjustment RCV AMT',
             9 => 'Expense Payment',
             10 => 'Receive Payment',
-            10 => 'Receive From Customer',
+            // 10 => 'Receive From Customer',
             11 => 'Purchase Payment',
             12 => 'Sale Return Payment',
-            13 => 'Loan Get',
-            14 => 'Loan Pay',
+            13 => 'Loan&Liabilities',
+            14 => 'Loan&Advance',
             15 => 'Loan Liability Payment',
             16 => 'Loan&Advance Receive',
-            17 => 'Purchase Return Receive',
+            17 => 'Receive Return Amt.',
             18 => 'Received From Customer',
             19 => 'Paid To Supplier',
             20 => 'Paid To Customer',

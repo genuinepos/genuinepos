@@ -126,7 +126,7 @@ $(function () {
      */
     var nCloneTh = document.createElement('th');
     var nCloneTd = document.createElement('td');
-    nCloneTd.innerHTML = '<img src="img/details_open.png">';
+    // nCloneTd.innerHTML = '<img src="../images/details_open.png">';
     nCloneTd.className = "center";
 
     $('.tbl_details thead tr').each(function () {
@@ -180,5 +180,6 @@ $(function () {
 
 // Header menubar msg option
 $('#get_mail').on('click', () => {
+    
     $('#get_mail ul.lists').toggleClass('d-block');
 })

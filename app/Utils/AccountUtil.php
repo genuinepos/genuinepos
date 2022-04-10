@@ -122,7 +122,7 @@ class AccountUtil
             8 => 'Stock Adjustment RCV AMT',
             9 => 'Expense Payment',
             10 => 'Receive Payment',
-            10 => 'Receive From Customer',
+            // 10 => 'Receive From Customer',
             11 => 'Purchase Payment',
             12 => 'Sale Return Payment',
             13 => 'Loan Get',

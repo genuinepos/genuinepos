@@ -58,8 +58,8 @@ class AccountUtil
 
         $expenseLoan = DB::table('account_ledgers')
             ->where('account_ledgers.account_id', $account_id)
-            ->where('loan_id', '!=', NULL)
-            ->where('debit', '!=', NULL)
+            ->where('account_ledgers.loan_id', '!=', NULL)
+            // ->where('debit', '!=', NULL)
             ->leftJoin('loans', 'account_ledgers.loan_id', 'loans.id')
             ->where('loans.loan_by', 'Expense')->select(DB::raw('sum(credit) as t_credit'))
             ->groupBy('loans.loan_by')
@@ -125,11 +125,11 @@ class AccountUtil
             // 10 => 'Receive From Customer',
             11 => 'Purchase Payment',
             12 => 'Sale Return Payment',
-            13 => 'Loan Get',
-            14 => 'Loan Pay',
+            13 => 'Loan&Liabilities',
+            14 => 'Loan&Advance',
             15 => 'Loan Liability Payment',
             16 => 'Loan&Advance Receive',
-            17 => 'Purchase Return Receive',
+            17 => 'Receive Return Amt.',
             18 => 'Received From Customer',
             19 => 'Paid To Supplier',
             20 => 'Paid To Customer',

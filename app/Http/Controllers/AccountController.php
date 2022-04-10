@@ -422,7 +422,8 @@ class AccountController extends Controller
         }
 
         // Update Opening Balance Ledger
-        $updateAccountLedger = AccountLedger::where('account_id', $updateAccount->id)->where('voucher_type', 0)->first();
+        return $updateAccountLedger = AccountLedger::where('account_id', $updateAccount->id)->where('voucher_type', 0)->get();
+
         $updateAccountLedger->{$this->accountUtil->accountBalanceType($request->account_type)} = $openingBalance;
         $updateAccountLedger->amount_type = $this->accountUtil->accountBalanceType($request->account_type);
         $updateAccountLedger->save();
@@ -472,7 +473,7 @@ class AccountController extends Controller
     }
 
     public function ledgerPrint(Request $request, $accountId)
-    {
+    { 
         $accountUtil = $this->accountUtil;
 
         $ledgers = '';

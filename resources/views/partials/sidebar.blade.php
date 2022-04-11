@@ -100,6 +100,18 @@
                     auth()->user()->permission->sale['shipment_access'] == '1' ||
                     auth()->user()->permission->sale['return_access'] == '1' ||
                     (
+                        isset(auth()->user()->permission->sale['pos_sale_settings']) && 
+                        auth()->user()->permission->sale['pos_sale_settings'] == '1'
+                    ) ||
+                    (
+                        isset(auth()->user()->permission->sale['add_sale_settings']) && 
+                        auth()->user()->permission->sale['add_sale_settings'] == '1'
+                    ) ||
+                    (
+                        isset(auth()->user()->permission->sale['discounts']) && 
+                        auth()->user()->permission->sale['discounts'] == '1'
+                    ) ||
+                    (
                         isset(auth()->user()->permission->sale['sale_statements']) && 
                         auth()->user()->permission->sale['sale_statements'] == '1'
                     ) ||
@@ -601,8 +613,7 @@
                                 @endif
 
                                 @if (auth()->user()->permission->contact['customer_import'] == '1')
-                                    <div
-                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
                                             <a href="{{ route('contacts.customers.import.create') }}" class="bar-link">
                                                 <span><i class="fas fa-file-upload"></i></span>
@@ -645,8 +656,7 @@
                                         isset(auth()->user()->permission->contact['supplier_report']) && 
                                         auth()->user()->permission->contact['supplier_report']
                                     )
-                                        <div
-                                            class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                             <div class="switch_bar">
                                                 <a href="{{ route('reports.supplier.index') }}" class="bar-link">
                                                     <span><i class="fas fa-id-card"></i></span>
@@ -678,7 +688,8 @@
 
             @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
 
-                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                @if (!auth()->user()->branch_id)
+
                     <div class="sub-menu_t" id="purchases">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2">
@@ -694,50 +705,59 @@
 
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('purchases.create') }}" class="bar-link">
-                                                <span><i class="fas fa-shopping-cart"></i></span>
-                                            </a>
+                                    @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="switch_bar">
+                                                <a href="{{ route('purchases.create') }}" class="bar-link">
+                                                    <span><i class="fas fa-shopping-cart"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">@lang('menu.add_purchase')</p>
                                         </div>
-                                        <p class="switch_text">@lang('menu.add_purchase')</p>
-                                    </div>
+                                    @endif
+                                    
+                                    @if (auth()->user()->permission->purchase['purchase_all'] == '1')
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="switch_bar">
+                                                <a href="{{ route('purchases.index_v2') }}" class="bar-link">
+                                                    <span><i class="fas fa-list"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">@lang('menu.purchase_list')</p>
+                                        </div>
+                                    
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="switch_bar">
+                                                <a href="{{ route('purchases.product.list') }}" class="bar-link">
+                                                    <span><i class="fas fa-list"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">@lang('menu.purchase_product_list')</p>
+                                        </div>
+                                    
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="switch_bar">
+                                                <a href="{{ route('purchases.po.list') }}" class="bar-link">
+                                                    <span><i class="fas fa-list"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">@lang('menu.po_list')</p>
+                                        </div>
+                                    @endif
 
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('purchases.index_v2') }}" class="bar-link">
-                                                <span><i class="fas fa-list"></i></span>
-                                            </a>
+                                    @if (
+                                        isset(auth()->user()->permission->purchase['purchase_settings']) &&
+                                        auth()->user()->permission->purchase['purchase_settings'] == '1'
+                                    )
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="switch_bar">
+                                                <a href="{{ route('purchase.settings') }}" class="bar-link">
+                                                    <span><i class="fas fa-sliders-h"></i></span>
+                                                </a>
+                                            </div>
+                                            <p class="switch_text">@lang('menu.purchase_settings')</p>
                                         </div>
-                                        <p class="switch_text">@lang('menu.purchase_list')</p>
-                                    </div>
-
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('purchases.product.list') }}" class="bar-link">
-                                                <span><i class="fas fa-list"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.purchase_product_list')</p>
-                                    </div>
-
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('purchases.po.list') }}" class="bar-link">
-                                                <span><i class="fas fa-list"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.po_list')</p>
-                                    </div>
-
-                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                        <div class="switch_bar">
-                                            <a href="{{ route('purchase.settings') }}" class="bar-link">
-                                                <span><i class="fas fa-sliders-h"></i></span>
-                                            </a>
-                                        </div>
-                                        <p class="switch_text">@lang('menu.purchase_settings')</p>
-                                    </div>
+                                    @endif
                                 </div>
 
                                 <hr class="p-0 m-0 my-1">
@@ -766,7 +786,11 @@
                                 @endif
 
                                 @if (
-                                     (
+                                    (
+                                        isset(auth()->user()->permission->purchase['purchase_statements']) &&
+                                        auth()->user()->permission->purchase['purchase_statements'] == '1'
+                                    ) ||
+                                    (
                                         isset(auth()->user()->permission->purchase['purchase_sale_report']) &&
                                         auth()->user()->permission->purchase['purchase_sale_report'] == '1'
                                     ) ||
@@ -786,14 +810,19 @@
                                             <hr class="p-0 m-0 my-1">
                                         </div>
 
-                                        <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                            <div class="switch_bar">
-                                                <a href="{{ route('reports.purchases.statement.index') }}" class="bar-link">
-                                                    <span><i class="fas fa-tasks"></i></span>
-                                                </a>
+                                        @if (
+                                            isset(auth()->user()->permission->purchase['purchase_statements']) &&
+                                            auth()->user()->permission->purchase['purchase_statements'] == '1'
+                                        )
+                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                <div class="switch_bar">
+                                                    <a href="{{ route('reports.purchases.statement.index') }}" class="bar-link">
+                                                        <span><i class="fas fa-tasks"></i></span>
+                                                    </a>
+                                                </div>
+                                                <p class="switch_text">@lang('menu.purchase_statements')</p>
                                             </div>
-                                            <p class="switch_text">@lang('menu.purchase_statements')</p>
-                                        </div>
+                                        @endif
                                         
                                         @if (
                                             isset(auth()->user()->permission->purchase['purchase_sale_report']) &&
@@ -813,8 +842,7 @@
                                             isset(auth()->user()->permission->purchase['pro_purchase_report']) &&
                                             auth()->user()->permission->purchase['pro_purchase_report'] == '1'
                                         )
-                                            <div
-                                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                                 <div class="switch_bar">
                                                     <a href="{{ route('reports.product.purchases.index') }}" class="bar-link">
                                                         <span><i class="fas fa-shopping-cart"></i></span>
@@ -828,8 +856,7 @@
                                             isset(auth()->user()->permission->purchase['purchase_payment_report']) &&
                                             auth()->user()->permission->purchase['purchase_payment_report'] == '1'
                                         )
-                                            <div
-                                                class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                                 <div class="switch_bar">
                                                     <a href="{{ route('reports.purchase.payments.index') }}" class="bar-link">
                                                         <span><i class="fas fa-money-check-alt"></i></span>
@@ -843,36 +870,37 @@
                             </div>
                         </div>
                     </div>
-                @else
+                @elseif(auth()->user()->branch_id && auth()->user()->branch->purchase_permission == 1)
 
-                    @if (auth()->user()->branch_id && auth()->user()->branch->purchase_permission == 1)
+                    @if (auth()->user()->permission->purchase['purchase_all'] == '1')
 
-                        @if (auth()->user()->permission->purchase['purchase_all'] == '1')
-                            <div class="sub-menu_t" id="purchases">
-                                <div class="sub-menu-width">
-                                    <div class="model__close bg-secondary-2">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <p class="text-muted float-start mt-1"><strong>Purchase Management</strong></p>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                            </div>
+                        <div class="sub-menu_t" id="purchases">
+                            <div class="sub-menu-width">
+                                <div class="model__close bg-secondary-2">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <p class="text-muted float-start mt-1"><strong>Purchase Management</strong></p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                                <div
-                                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                                    <div class="switch_bar">
-                                                        <a href="{{ route('purchases.create') }}" class="bar-link">
-                                                            <span><i class="fas fa-shopping-cart"></i></span>
-                                                        </a>
-                                                    </div>
-                                                    <p class="switch_text">@lang('menu.add_purchase')</p>
+                                </div>
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+
+                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                <div class="switch_bar">
+                                                    <a href="{{ route('purchases.create') }}" class="bar-link">
+                                                        <span><i class="fas fa-shopping-cart"></i></span>
+                                                    </a>
                                                 </div>
-                                            @endif
+                                                <p class="switch_text">@lang('menu.add_purchase')</p>
+                                            </div>
+                                        @endif
+
+                                        @if (auth()->user()->permission->purchase['purchase_all'] == '1')
 
                                             <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                                 <div class="switch_bar">
@@ -882,7 +910,7 @@
                                                 </div>
                                                 <p class="switch_text">@lang('menu.purchase_list')</p>
                                             </div>
-
+                                            
                                             <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                                 <div class="switch_bar">
                                                     <a href="{{ route('purchases.product.list') }}" class="bar-link">
@@ -900,7 +928,12 @@
                                                 </div>
                                                 <p class="switch_text">@lang('menu.po_list')</p>
                                             </div>
+                                        @endif
 
+                                        @if (
+                                            isset(auth()->user()->permission->purchase['purchase_settings']) &&
+                                            auth()->user()->permission->purchase['purchase_settings'] == '1'
+                                        )
                                             <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                                 <div class="switch_bar">
                                                     <a href="{{ route('purchase.settings') }}" class="bar-link">
@@ -909,106 +942,125 @@
                                                 </div>
                                                 <p class="switch_text">@lang('menu.purchase_settings')</p>
                                             </div>
-                                        </div>
+                                        @endif
+                                    </div>
 
-                                        <hr class="p-0 m-0 my-1">
+                                    <hr class="p-0 m-0 my-1">
 
-                                        <div class="row">
-                                            @if (auth()->user()->permission->purchase['purchase_return'] == '1')
-                                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                                    <div class="switch_bar">
-                                                        <a href="{{ route('purchases.returns.supplier.return') }}"
-                                                            class="bar-link">
-                                                            <span><i class="fas fa-plus-circle"></i></span>
-                                                        </a>
-                                                    </div>
-                                                    <p class="switch_text"> @lang('menu.add_return')</p>
+                                    <div class="row">
+                                        @if (auth()->user()->permission->purchase['purchase_return'] == '1')
+                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                <div class="switch_bar">
+                                                    <a href="{{ route('purchases.returns.supplier.return') }}"
+                                                        class="bar-link">
+                                                        <span><i class="fas fa-plus-circle"></i></span>
+                                                    </a>
                                                 </div>
+                                                <p class="switch_text"> @lang('menu.add_return')</p>
+                                            </div>
 
-                                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                                    <div class="switch_bar">
-                                                        {{-- <span class="notify-grin">30</span> --}}
-                                                        <a href="{{ route('purchases.returns.index') }}"
-                                                            class="bar-link">
-                                                            <span><i class="fas fa-undo"></i></span>
-                                                        </a>
-                                                    </div>
-                                                    <p class="switch_text"> @lang('menu.purchase_return_list')</p>
+                                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                <div class="switch_bar">
+                                                    {{-- <span class="notify-grin">30</span> --}}
+                                                    <a href="{{ route('purchases.returns.index') }}"
+                                                        class="bar-link">
+                                                        <span><i class="fas fa-undo"></i></span>
+                                                    </a>
                                                 </div>
-                                            @endif
-                                        </div>
-
-                                        @if (
-                                            (
-                                                isset(auth()->user()->permission->purchase['purchase_sale_report']) &&
-                                                auth()->user()->permission->purchase['purchase_sale_report'] == '1'
-                                            ) ||
-                                            (
-                                                isset(auth()->user()->permission->purchase['pro_purchase_report']) &&
-                                                auth()->user()->permission->purchase['pro_purchase_report'] == '1'
-                                            ) ||
-                                            (
-                                                isset(auth()->user()->permission->purchase['purchase_payment_report']) &&
-                                                auth()->user()->permission->purchase['purchase_payment_report'] == '1'
-                                            )
-                                        )
-                                    
-                                            <div class="row">
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                                    <p class="text-muted ms-3"><strong>Purchase Reports</strong></p>
-                                                    <hr class="p-0 m-0 my-1">
-                                                </div>
-                                                
-                                                @if (
-                                                    isset(auth()->user()->permission->purchase['purchase_sale_report']) &&
-                                                    auth()->user()->permission->purchase['purchase_sale_report'] == '1'
-                                                )
-                                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                                        <div class="switch_bar">
-                                                            <a href="{{ route('reports.sales.purchases.index') }}" class="bar-link">
-                                                                <span><i class="far fa-chart-bar"></i></span>
-                                                            </a>
-                                                        </div>
-                                                        <p class="switch_text">@lang('menu.purchase_sale')</p>
-                                                    </div>
-                                                @endif
-            
-                                                @if (
-                                                    isset(auth()->user()->permission->purchase['pro_purchase_report']) &&
-                                                    auth()->user()->permission->purchase['pro_purchase_report'] == '1'
-                                                )
-                                                    <div
-                                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                                        <div class="switch_bar">
-                                                            <a href="{{ route('reports.product.purchases.index') }}" class="bar-link">
-                                                                <span><i class="fas fa-shopping-cart"></i></span>
-                                                            </a>
-                                                        </div>
-                                                        <p class="switch_text">@lang('menu.product_purchase_report')</p>
-                                                    </div>
-                                                @endif
-                    
-                                                @if (
-                                                    isset(auth()->user()->permission->purchase['purchase_payment_report']) &&
-                                                    auth()->user()->permission->purchase['purchase_payment_report'] == '1'
-                                                )
-                                                    <div
-                                                        class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                                        <div class="switch_bar">
-                                                            <a href="{{ route('reports.purchase.payments.index') }}" class="bar-link">
-                                                                <span><i class="fas fa-money-check-alt"></i></span>
-                                                            </a>
-                                                        </div>
-                                                        <p class="switch_text">@lang('menu.purchase_payment_report')</p>
-                                                    </div>
-                                                @endif
+                                                <p class="switch_text"> @lang('menu.purchase_return_list')</p>
                                             </div>
                                         @endif
                                     </div>
+
+                                    @if (
+                                        (
+                                            isset(auth()->user()->permission->purchase['purchase_statements']) &&
+                                            auth()->user()->permission->purchase['purchase_statements'] == '1'
+                                        ) ||
+                                        (
+                                            isset(auth()->user()->permission->purchase['purchase_sale_report']) &&
+                                            auth()->user()->permission->purchase['purchase_sale_report'] == '1'
+                                        ) ||
+                                        (
+                                            isset(auth()->user()->permission->purchase['pro_purchase_report']) &&
+                                            auth()->user()->permission->purchase['pro_purchase_report'] == '1'
+                                        ) ||
+                                        (
+                                            isset(auth()->user()->permission->purchase['purchase_payment_report']) &&
+                                            auth()->user()->permission->purchase['purchase_payment_report'] == '1'
+                                        )
+                                    )
+                                
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <p class="text-muted ms-3"><strong>Purchase Reports</strong></p>
+                                                <hr class="p-0 m-0 my-1">
+                                            </div>
+
+                                            @if (
+                                                isset(auth()->user()->permission->purchase['purchase_statements']) &&
+                                                auth()->user()->permission->purchase['purchase_statements'] == '1'
+                                            )
+                                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                    <div class="switch_bar">
+                                                        <a href="{{ route('reports.purchases.statement.index') }}" class="bar-link">
+                                                            <span><i class="fas fa-tasks"></i></span>
+                                                        </a>
+                                                    </div>
+                                                    <p class="switch_text">@lang('menu.purchase_statements')</p>
+                                                </div>
+                                            @endif
+
+                                            @if (
+                                                isset(auth()->user()->permission->purchase['purchase_sale_report']) &&
+                                                auth()->user()->permission->purchase['purchase_sale_report'] == '1'
+                                            )
+                                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                    <div class="switch_bar">
+                                                        <a href="{{ route('reports.sales.purchases.index') }}" class="bar-link">
+                                                            <span><i class="far fa-chart-bar"></i></span>
+                                                        </a>
+                                                    </div>
+                                                    <p class="switch_text">@lang('menu.purchase_sale')</p>
+                                                </div>
+                                            @endif
+        
+                                            @if (
+                                                isset(auth()->user()->permission->purchase['pro_purchase_report']) &&
+                                                auth()->user()->permission->purchase['pro_purchase_report'] == '1'
+                                            )
+                                                <div
+                                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                    <div class="switch_bar">
+                                                        <a href="{{ route('reports.product.purchases.index') }}" class="bar-link">
+                                                            <span><i class="fas fa-shopping-cart"></i></span>
+                                                        </a>
+                                                    </div>
+                                                    <p class="switch_text">@lang('menu.product_purchase_report')</p>
+                                                </div>
+                                            @endif
+                
+                                            @if (
+                                                isset(auth()->user()->permission->purchase['purchase_payment_report']) &&
+                                                auth()->user()->permission->purchase['purchase_payment_report'] == '1'
+                                            )
+                                                <div
+                                                    class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                                    <div class="switch_bar">
+                                                        <a href="{{ route('reports.purchase.payments.index') }}" class="bar-link">
+                                                            <span><i class="fas fa-money-check-alt"></i></span>
+                                                        </a>
+                                                    </div>
+                                                    <p class="switch_text">@lang('menu.purchase_payment_report')</p>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
-                        @endif
+                        </div>
                     @endif
+                   
                 @endif
             @endif
 
@@ -1053,14 +1105,19 @@
                                     </div>
                                 @endif
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('sales.add.sale.settings') }}" class="bar-link">
-                                            <span><i class="fas fa-sliders-h"></i></span>
-                                        </a>
+                                @if (
+                                    isset(auth()->user()->permission->sale['add_sale_settings']) && 
+                                    auth()->user()->permission->sale['add_sale_settings'] == '1'
+                                )
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('sales.add.sale.settings') }}" class="bar-link">
+                                                <span><i class="fas fa-sliders-h"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.add_sale_settings')</p>
                                     </div>
-                                    <p class="switch_text">@lang('menu.add_sale_settings')</p>
-                                </div>
+                                @endif
                             @endif
                         </div>
 
@@ -1093,14 +1150,19 @@
                                     </div>
                                 @endif
 
-                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                    <div class="switch_bar">
-                                        <a href="{{ route('sales.pos.settings') }}" class="bar-link">
-                                            <span><i class="fas fa-sliders-h"></i></span>
-                                        </a>
+                                @if (
+                                    isset(auth()->user()->permission->sale['pos_sale_settings']) && 
+                                    auth()->user()->permission->sale['pos_sale_settings'] == '1'
+                                )
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('sales.pos.settings') }}" class="bar-link">
+                                                <span><i class="fas fa-sliders-h"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.pos_sale_settings')</p>
                                     </div>
-                                    <p class="switch_text">@lang('menu.pos_sale_settings')</p>
-                                </div>
+                                @endif
                             @endif
                         </div>
 
@@ -1188,15 +1250,20 @@
                                 </div>
                             @endif
 
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('sales.discounts.index') }}" class="bar-link">
-                                        <span><i class="fas fa-percentage"></i></span>
-                                    </a>
-                                </div>
+                            @if (
+                                isset(auth()->user()->permission->sale['discounts']) && 
+                                auth()->user()->permission->sale['discounts'] == '1'
+                            )
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('sales.discounts.index') }}" class="bar-link">
+                                            <span><i class="fas fa-percentage"></i></span>
+                                        </a>
+                                    </div>
 
-                                <p class="switch_text">@lang('menu.discounts')</p>
-                            </div>
+                                    <p class="switch_text">@lang('menu.discounts')</p>
+                                </div>
+                            @endif
                         </div>
 
                         @if (

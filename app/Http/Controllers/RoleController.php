@@ -17,8 +17,10 @@ class RoleController extends Controller
     public function index()
     {
         if (auth()->user()->permission->user['role_view'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
+        
         return view('users.roles.index');
     }
 
@@ -215,6 +217,8 @@ class RoleController extends Controller
             'purchase_payment' => isset($request->purchase_payment) ? 1 : 0,
             'purchase_return' => isset($request->purchase_return) ? 1 : 0,
             'status_update' => isset($request->status_update) ? 1 : 0,
+            'purchase_settings' => isset($request->purchase_settings) ? 1 : 0,
+            'purchase_statements' => isset($request->purchase_statements) ? 1 : 0,
             'purchase_sale_report' => isset($request->purchase_sale_report) ? 1 : 0,
             'pro_purchase_report' => isset($request->pro_purchase_report) ? 1 : 0,
             'purchase_payment_report' => isset($request->purchase_payment_report) ? 1 : 0,
@@ -261,10 +265,12 @@ class RoleController extends Controller
             'pos_add' => isset($request->pos_add) ? 1 : 0,
             'pos_edit' => isset($request->pos_edit) ? 1 : 0,
             'pos_delete' => isset($request->pos_delete) ? 1 : 0,
+            'pos_sale_settings' => isset($request->pos_sale_settings) ? 1 : 0,
             'create_add_sale' => isset($request->create_add_sale) ? 1 : 0,
             'view_add_sale' => isset($request->view_add_sale) ? 1 : 0,
             'edit_add_sale' => isset($request->edit_add_sale) ? 1 : 0,
             'delete_add_sale' => isset($request->delete_add_sale) ? 1 : 0,
+            'add_sale_settings' => isset($request->add_sale_settings) ? 1 : 0,
             'sale_draft' => isset($request->sale_draft) ? 1 : 0,
             'sale_quotation' => isset($request->sale_quotation) ? 1 : 0,
             'sale_payment' => isset($request->sale_payment) ? 1 : 0,
@@ -276,6 +282,7 @@ class RoleController extends Controller
             'view_product_cost_is_sale_screed' => isset($request->view_product_cost_is_sale_screed) ? 1 : 0,
             'view_own_sale' => isset($request->view_own_sale) ? 1 : 0,
             'return_access' => isset($request->return_access) ? 1 : 0,
+            'discounts' => isset($request->discounts) ? 1 : 0,
             'sale_statements' => isset($request->sale_statements) ? 1 : 0,
             'sale_return_statements' => isset($request->sale_return_statements) ? 1 : 0,
             'pro_sale_report' => isset($request->pro_sale_report) ? 1 : 0,

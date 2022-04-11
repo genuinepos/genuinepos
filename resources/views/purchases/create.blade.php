@@ -96,7 +96,7 @@
                                                     <div class="col-8">
                                                         <select class="form-control changeable" name="purchase_status" id="purchase_status">
                                                             <option value="1">Purchase</option>
-                                                            <option value="2">Pending</option>
+                                                            {{-- <option value="2">Pending</option> --}}
                                                             <option value="3">Ordered</option>
                                                         </select>
                                                     </div>

@@ -62,7 +62,7 @@
                                                 </div>
                                             @else 
                                                 <div class="input-group mt-1">
-                                                    <label class=" col-4"><b>B. Location :</b> </label>
+                                                    <label class="col-4"><b>B. Location :</b> </label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}">
                                                     </div>
@@ -72,7 +72,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class=" col-4"><b>Invoice ID :</b></label>
+                                                <label class="col-4"><b>Invoice ID :</b></label>
                                                 <div class="col-8">
                                                     <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control">
                                                 </div>
@@ -80,7 +80,7 @@
 
                                             @if ($purchase->purchase_status == 3)
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Status :</b></label>
+                                                    <label class="col-4"><b>Status :</b></label>
                                                     <div class="col-8">
                                                         <input readonly type="text" value="Ordered" class="form-control">
                                                         <input type="hidden" name="purchase_status" id="purchase_status" value="3">
@@ -89,11 +89,11 @@
                                             @else 
                                                 @if (json_decode($generalSettings->purchase, true)['is_enable_status'] == '1')
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Status :</b></label>
+                                                        <label class="col-4"><b>Status :</b></label>
                                                         <div class="col-8">
                                                             <select class="form-control changeable" name="purchase_status" id="purchase_status">
                                                                 <option value="1">Purchased</option>
-                                                                <option value="2">Pending</option>
+                                                                {{-- <option value="2">Pending</option> --}}
                                                                 <option value="3">Ordered</option>
                                                             </select>
                                                         </div>
@@ -106,7 +106,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class=" col-4"><b>Date :</b></label>
+                                                <label class="col-4"><b>Date :</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control changeable"
                                                          id="date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) }}">
@@ -115,7 +115,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class=" col-4"><b>Pay Term :</b> </label>
+                                                <label class="col-4"><b>Pay Term :</b> </label>
                                                 <div class="col-8">
                                                     <div class="row">
                                                         <div class="col-5">
@@ -138,7 +138,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class=" col-4"><b>Delivery Date :</b></label>
+                                                <label class="col-4"><b>Delivery Date :</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="delivery_date" class="form-control changeable" id="delivery_date" placeholder="DD-MM-YYYY" autocomplete="off" value="{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}">
                                                 </div>
@@ -266,14 +266,14 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class=" col-4"><b>Ship Cost :</b> </label>
+                                                <label class="col-4"><b>Ship Cost :</b> </label>
                                                 <div class="col-8">
                                                     <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00"> 
                                                 </div>
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class=" col-4"><b>Ship Details :</b></label>
+                                                <label class="col-4"><b>Ship Details :</b></label>
                                                 <div class="col-8">
                                                     <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details"> 
                                                 </div>
@@ -283,14 +283,14 @@
                                         <div class="col-md-3">
                                             <input readonly name="total_qty" type="number" step="any" class="d-none" id="total_qty" value="0.00">
                                             <div class="input-group">
-                                                <label class=" col-4">Total Item:</label>
+                                                <label class="col-4">Total Item:</label>
                                                 <div class="col-8">
                                                     <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
                                                 </div>
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class=" col-4"><b>Order Note :</b></label>
+                                                <label class="col-4"><b>Order Note :</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="" autocomplete="off">
                                                 </div>
@@ -299,14 +299,14 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class=" col-4"><b>Net Total :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                <label class="col-4"><b>Net Total :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                 <div class="col-8">
                                                     <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
                                                 </div>
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class=" col-4"><b>payable :</b>{{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                <label class="col-4"><b>payable :</b>{{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                 <div class="col-8">
                                                     <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control" value="0.00">
                                                 </div>

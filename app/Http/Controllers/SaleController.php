@@ -1539,6 +1539,14 @@ class SaleController extends Controller
     // Get notification form method
     public function settings()
     {
+        if (
+            !isset(auth()->user()->permission->sale['add_sale_settings']) ||
+            auth()->user()->permission->sale['add_sale_settings'] == '0'
+        ) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get();
 
@@ -1548,6 +1556,14 @@ class SaleController extends Controller
     // Add tax settings
     public function settingsStore(Request $request)
     {
+        if (
+            !isset(auth()->user()->permission->sale['add_sale_settings']) ||
+            auth()->user()->permission->sale['add_sale_settings'] == '0'
+        ) {
+
+            return response()->json('Asses Forbidden.');
+        }
+
         $updateSaleSettings = General_setting::first();
         $saleSettings = [
             'default_sale_discount' => $request->default_sale_discount,

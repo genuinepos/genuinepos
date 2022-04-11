@@ -419,6 +419,20 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="purchase_settings" class="purchase"> &nbsp; Purchase Settings </p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="purchase_statements" class="purchase"> &nbsp; Purchase Statements</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="purchase_sale_report" class="purchase"> &nbsp; Purchase & Sale Report</p> 
                                                     </div>
                                                 </div>
@@ -611,6 +625,13 @@
                                                         <input type="checkbox" name="pos_delete" class="sale"> &nbsp; Delete POS Sale </p> 
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="pos_sale_settings" class="sale"> &nbsp; POS Sale Settings </p> 
+                                                    </div>
+                                                </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
@@ -639,7 +660,14 @@
                                                         <input type="checkbox" name="delete_add_sale" class="sale"> &nbsp; Delete Add Sale </p> 
                                                     </div>
                                                 </div>
-                
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="add_sale_settings" class="sale"> &nbsp; Add Sale Settings </p> 
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
@@ -714,6 +742,13 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="return_access" class="sale"> &nbsp; Access Sale Return </p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="discounts" class="sale"> &nbsp; Manage Offers </p> 
                                                     </div>
                                                 </div>
 

@@ -436,6 +436,28 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" 
+                                                            @if (isset($role->permission->purchase['purchase_settings']))
+                                                                {{ $role->permission->purchase['purchase_settings'] == '1' ? 'CHECKED' : '' }}
+                                                            @endif
+                                                        name="purchase_settings" class="purchase"> &nbsp; Purchase Settings </p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox"
+                                                            @if (isset($role->permission->purchase['purchase_statements']))
+                                                                {{ $role->permission->purchase['purchase_statements'] == '1' ? 'CHECKED' : '' }}
+                                                            @endif
+                                                         name="purchase_statements" class="purchase"> &nbsp; Purchase Statements</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" 
                                                             @if (isset($role->permission->purchase['purchase_sale_report']))
                                                                 {{ $role->permission->purchase['purchase_sale_report'] == '1' ? 'CHECKED' : '' }}
                                                             @endif
@@ -647,6 +669,17 @@
                                                         <input type="checkbox" {{ $role->permission->sale['pos_delete'] == '1' ? 'CHECKED' : '' }} name="pos_delete" class="sale"> &nbsp; Delete POS Sale </p> 
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" 
+                                                            @if (isset($role->permission->sale['pos_sale_settings']))
+                                                                {{ $role->permission->sale['pos_sale_settings'] == '1' ? 'CHECKED' : '' }} 
+                                                            @endif
+                                                        name="pos_sale_settings" class="sale"> &nbsp; POS Sale Settings </p> 
+                                                    </div>
+                                                </div>
                 
                                                 <div class="col-md-12">
                                                     <div class="row">
@@ -673,6 +706,17 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" {{ $role->permission->sale['delete_add_sale'] == '1' ? 'CHECKED' : '' }} name="delete_add_sale" class="sale"> &nbsp; Delete Add Sale </p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" 
+                                                            @if (isset($role->permission->sale['add_sale_settings']))
+                                                                {{ $role->permission->sale['add_sale_settings'] == '1' ? 'CHECKED' : '' }} 
+                                                            @endif
+                                                        name="add_sale_settings" class="sale"> &nbsp; Add Sale Settings </p> 
                                                     </div>
                                                 </div>
                 
@@ -750,6 +794,17 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" {{ $role->permission->sale['return_access'] == '1' ? 'CHECKED' : '' }} name="return_access" class="sale"> &nbsp; Access Sale Return </p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input  
+                                                        @if (isset($role->permission->sale['discounts']))
+                                                            {{ $role->permission->sale['discounts'] == '1' ? 'CHECKED' : '' }} 
+                                                        @endif 
+                                                    type="checkbox" name="discounts" class="sale"> &nbsp; Manage Offers </p> 
                                                     </div>
                                                 </div>
 

@@ -279,7 +279,7 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="product_delete" class="product"  value=""> &nbsp; Delete Product </p> 
+                                                        <input type="checkbox" name="product_delete" class="product"> &nbsp; Delete Product </p> 
                                                     </div>
                                                 </div>
                 
@@ -329,6 +329,13 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="generate_barcode" class="product"> &nbsp; Generate Barcode</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="product_settings" class="product"> &nbsp; Product Settings</p>
                                                     </div>
                                                 </div>
 

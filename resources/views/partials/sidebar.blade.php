@@ -20,6 +20,10 @@
                     auth()->user()->permission->product['selling_price_group'] == '1' ||
                     auth()->user()->permission->product['generate_barcode'] == '1' ||
                     (
+                        isset(auth()->user()->permission->product['product_settings']) && 
+                        auth()->user()->permission->product['product_settings'] == '1'
+                    ) ||
+                    (
                         isset(auth()->user()->permission->product['stock_report']) && 
                         auth()->user()->permission->product['stock_report'] == '1'
                     ) ||
@@ -496,19 +500,24 @@
                                     <p class="switch_text">@lang('menu.generate_barcode')</p>
                                 </div>
                             @endif
-
-                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
-                                <div class="switch_bar">
-                                    <a href="{{ route('products.settings') }}" class="bar-link">
-                                        <span>
-                                            <i class="fas fa-sliders-h"></i>
-                                        </span>
-                                    </a>
+                            
+                            @if(
+                                isset(auth()->user()->permission->product['product_settings']) && 
+                                auth()->user()->permission->product['product_settings'] == '1'
+                            )
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('products.settings') }}" class="bar-link">
+                                            <span>
+                                                <i class="fas fa-sliders-h"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.product_settings')</p>
                                 </div>
-                                <p class="switch_text">@lang('menu.product_settings')</p>
-                            </div>
+                            @endif
                         </div>
-
+                            
                         @if (
                             (
                                 isset(auth()->user()->permission->product['stock_report']) && 

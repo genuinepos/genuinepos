@@ -287,7 +287,7 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" {{ $role->permission->product['product_delete'] == '1' ? 'CHECKED' : '' }} name="product_delete" class="product"  value=""> &nbsp; Delete Product </p> 
+                                                        <input type="checkbox" {{ $role->permission->product['product_delete'] == '1' ? 'CHECKED' : '' }} name="product_delete" class="product"> &nbsp; Delete Product </p> 
                                                     </div>
                                                 </div>
                 
@@ -337,6 +337,17 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" {{ $role->permission->product['generate_barcode'] == '1' ? 'CHECKED' : '' }}  name="generate_barcode" class="product"> &nbsp; Generate Barcode</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" 
+                                                            @if (isset($role->permission->product['product_settings']))
+                                                                {{ $role->permission->product['product_settings'] == '1' ? 'CHECKED' : '' }}
+                                                            @endif
+                                                        name="product_settings" class="product"> &nbsp; Product Settings</p>
                                                     </div>
                                                 </div>
 

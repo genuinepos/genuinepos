@@ -1245,7 +1245,7 @@ Route::get('/test', function () {
         ->select('accounts.*')->first();
 
     // Add purchases
-    $purchases = Purchase::where('purchases.branch_id', 29)->get();
+    return $purchases = Purchase::where('purchases.branch_id', 29)->get();
 
     foreach ($purchases as $purchase) {
 

@@ -24,7 +24,9 @@
                                         <form id="filter_form">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
+
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                    
                                                         <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>

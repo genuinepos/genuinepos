@@ -199,6 +199,7 @@ class RoleController extends Controller
             'warranties' => isset($request->warranties) ? 1 : 0,
             'selling_price_group' => isset($request->selling_price_group) ? 1 : 0,
             'generate_barcode' => isset($request->generate_barcode) ? 1 : 0,
+            'product_settings' => isset($request->product_settings) ? 1 : 0,
             'stock_report' => isset($request->stock_report) ? 1 : 0,
             'stock_in_out_report' => isset($request->stock_in_out_report) ? 1 : 0,
         ];

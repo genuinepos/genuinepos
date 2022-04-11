@@ -1210,42 +1210,42 @@ Route::get('/test', function () {
     // Account related ledgers
     $purchaseAccount = DB::table('account_branches')
         ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-        ->where('account_branches.branch_id', NULL)
+        ->where('account_branches.branch_id', 29)
         ->where('accounts.account_type', 3)
         ->select('accounts.*')->first();
 
     $cashAccount = DB::table('account_branches')
         ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-        ->where('account_branches.branch_id', NULL)
+        ->where('account_branches.branch_id', 29)
         ->where('accounts.account_type', 2)
         ->select('accounts.*')->first();
 
     $saleAccount = DB::table('account_branches')
         ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-        ->where('account_branches.branch_id', NULL)
+        ->where('account_branches.branch_id', 29)
         ->where('accounts.account_type', 5)
         ->select('accounts.*')->first();
 
     $expenseAccount = DB::table('account_branches')
         ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-        ->where('account_branches.branch_id', NULL)
+        ->where('account_branches.branch_id', 29)
         ->where('accounts.account_type', 7)
         ->select('accounts.*')->first();
 
     $loanLiabilityAccount = DB::table('account_branches')
         ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-        ->where('account_branches.branch_id', NULL)
+        ->where('account_branches.branch_id', 29)
         ->where('accounts.account_type', 13)
         ->select('accounts.*')->first();
 
     $loanAdvanceAccount = DB::table('account_branches')
         ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-        ->where('account_branches.branch_id', NULL)
+        ->where('account_branches.branch_id', 29)
         ->where('accounts.account_type', 14)
         ->select('accounts.*')->first();
 
     // Add purchases
-    $purchases = Purchase::where('purchases.branch_id', NULL)->get();
+    $purchases = Purchase::where('purchases.branch_id', 29)->get();
 
     foreach ($purchases as $purchase) {
 
@@ -1269,7 +1269,7 @@ Route::get('/test', function () {
 
     $purchasePayments = DB::table('purchase_payments')
         ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
-        ->where('purchases.branch_id', NULL)
+        ->where('purchases.branch_id', 29)
         ->where('purchase_payments.supplier_payment_id', NULL)
         ->select('purchase_payments.*')
         ->get();
@@ -1288,7 +1288,7 @@ Route::get('/test', function () {
         $accountLedger->save();
     }
 
-    $supplierPayments = SupplierPayment::where('branch_id', NULL)->get();
+    $supplierPayments = SupplierPayment::where('branch_id', 29)->get();
 
     foreach ($supplierPayments as $supplierPayment) {
 
@@ -1305,7 +1305,7 @@ Route::get('/test', function () {
     }
 
     // Add Sales
-    $sales = Sale::where('branch_id', NULL)->get();
+    $sales = Sale::where('branch_id', 29)->get();
 
     foreach ($sales as $sale) {
 
@@ -1329,7 +1329,7 @@ Route::get('/test', function () {
 
     $salePayments = DB::table('sale_payments')
         ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
-        ->where('sales.branch_id', NULL)
+        ->where('sales.branch_id', 29)
         ->where('sale_payments.customer_payment_id', NULL)
         ->select('sale_payments.*')
         ->get();
@@ -1348,7 +1348,7 @@ Route::get('/test', function () {
         $accountLedger->save();
     }
 
-    $customerPayments = CustomerPayment::where('branch_id', NULL)->get();
+    $customerPayments = CustomerPayment::where('branch_id', 29)->get();
 
     foreach ($customerPayments as $customerPayment) {
 
@@ -1365,7 +1365,7 @@ Route::get('/test', function () {
     }
 
     // Add expenses
-    $expenses = Expanse::where('branch_id', NULL)->get();
+    $expenses = Expanse::where('branch_id', 29)->get();
 
     foreach ($expenses as $expense) {
 
@@ -1389,7 +1389,7 @@ Route::get('/test', function () {
 
     $expensePayments = DB::table('expanse_payments')
         ->leftJoin('expanses', 'expanse_payments.expanse_id', 'expanses.id')
-        ->where('expanses.branch_id', NULL)
+        ->where('expanses.branch_id', 29)
         ->select('expanse_payments.*')
         ->get();
 
@@ -1408,9 +1408,9 @@ Route::get('/test', function () {
     }
 
     // Add loans
-    $getLoans = Loan::where('branch_id', NULL)->where('type', 2)->get();
+    $getLoans = Loan::where('branch_id', 29)->where('type', 2)->get();
 
-    $getLoanPayments = LoanPayment::where('branch_id', NULL)->where('payment_type', 2)->get();
+    $getLoanPayments = LoanPayment::where('branch_id', 29)->where('payment_type', 2)->get();
 
     foreach ($getLoans as $getLoan) {
         
@@ -1460,9 +1460,9 @@ Route::get('/test', function () {
         $accountLedger->save();
     }
 
-    $payLoans = Loan::where('branch_id', NULL)->where('type', 1)->get();
+    $payLoans = Loan::where('branch_id', 29)->where('type', 1)->get();
 
-    $payLoanPayments = LoanPayment::where('branch_id', NULL)->where('payment_type', 1)->get();
+    $payLoanPayments = LoanPayment::where('branch_id', 29)->where('payment_type', 1)->get();
 
     foreach ($payLoans as $payLoan) {
         
@@ -1515,12 +1515,12 @@ Route::get('/test', function () {
     // Add Branch Product
     $products = DB::table('purchase_products')
         ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
-        ->where('purchases.branch_id', NULL)
+        ->where('purchases.branch_id', 29)
         ->select('product_id')->get();
 
     foreach ($products as $product) {
 
-        $productBranch = ProductBranch::where('branch_id', NULL)->where('product_id', $product->product_id)->first();
+        $productBranch = ProductBranch::where('branch_id', 29)->where('product_id', $product->product_id)->first();
 
         if (!$productBranch) {
 

@@ -1059,6 +1059,8 @@ Route::get('add-user', function () {
     $addAdmin->allow_login = 1;
     $addAdmin->save();
     //1=super_admin;2=admin;3=Other;
+
+
 });
 
 Route::get('pin_login', function () {

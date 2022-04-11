@@ -60,8 +60,7 @@ class FinancialAmountsUtil
         $cashInHandAmounts = '';
         $cashInHandAmountsQ = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->whereIn('accounts.account_type', [1, 2])
-            ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id');
+            ->whereIn('accounts.account_type', [1, 2]);
 
         if (isset($request->branch_id) && $request->branch_id) {
 
@@ -86,8 +85,7 @@ class FinancialAmountsUtil
 
             $cashInHandAmounts = $cashInHandAmountsQ->select(
                 'accounts.account_type',
-                DB::raw('SUM(account_ledgers.debit) as total_debit'),
-                DB::raw('SUM(account_ledgers.credit) as total_credit')
+                DB::raw('SUM(accounts.balance) as total_balance')
             )->groupBy('accounts.account_type')->get();
         } else {
 
@@ -95,8 +93,7 @@ class FinancialAmountsUtil
                 ->where('account_branches.branch_id', auth()->user()->branch_id)
                 ->select(
                     'accounts.account_type',
-                    DB::raw('SUM(account_ledgers.debit) as total_debit'),
-                    DB::raw('SUM(account_ledgers.credit) as total_credit')
+                    DB::raw('SUM(accounts.balance) as total_balance')
                 )->groupBy('accounts.account_type')->get();
         }
 
@@ -106,10 +103,10 @@ class FinancialAmountsUtil
 
             if ($cashInHandAmount->account_type == 1) {
 
-                $balance['cash_in_hand_balance'] = $cashInHandAmount->total_debit - $cashInHandAmount->total_credit;
+                $balance['cash_in_hand_balance'] = $cashInHandAmount->total_balance;
             } else {
 
-                $balance['bank_account_balance'] = $cashInHandAmount->total_debit - $cashInHandAmount->total_credit;
+                $balance['bank_account_balance'] = $cashInHandAmount->total_balance;
             }
         }
 

@@ -442,8 +442,9 @@
                                                 <div class="col-sm-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                         @foreach ($methods as $method)
-                                                            <option value="{{ $method->id }}" 
-                                                                data-account="{{ $method->account_id }}">
+                                                            <option 
+                                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                                                value="{{ $method->id }}">
                                                                 {{ $method->name }}
                                                             </option>
                                                         @endforeach
@@ -460,9 +461,9 @@
                                                             <option value="{{ $account->id }}">
                                                                 @php
                                                                     $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                                    $balance = ' BL : '.$account->balance;
+                                                                    $balance = ' BL : ' . $account->balance;
                                                                 @endphp
-                                                                {{ $account->name.$accountType.$balance}}
+                                                                {{ $account->name . $accountType . $balance }}
                                                             </option>
                                                         @endforeach
                                                     </select>

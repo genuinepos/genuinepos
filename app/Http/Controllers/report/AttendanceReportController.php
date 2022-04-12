@@ -20,7 +20,9 @@ class AttendanceReportController extends Controller
                 ->leftJoin('hrm_shifts', 'admin_and_users.shift_id', 'hrm_shifts.id');
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $query->where('admin_and_users.branch_id', NULL);
                 } else {
                     $query->where('admin_and_users.branch_id', $request->branch_id);
@@ -28,10 +30,12 @@ class AttendanceReportController extends Controller
             }
 
             if ($request->department_id) {
+
                 $query->where('admin_and_users.department_id', $request->department_id);
             }
 
             if ($request->from_date) {
+
                 $fromDate = date('Y-m-d', strtotime($request->from_date));
                 $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
                 //$date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
@@ -40,6 +44,7 @@ class AttendanceReportController extends Controller
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 $attendances = $query->select(
                     'hrm_attendances.*',
                     'hrm_department.department_name',
@@ -50,6 +55,7 @@ class AttendanceReportController extends Controller
                     'admin_and_users.emp_id',
                 )->orderBy('hrm_attendances.id', 'desc');
             } else {
+                
                 $attendances = $query->select(
                     'hrm_attendances.*',
                     'hrm_department.department_name',

@@ -16,16 +16,17 @@ use App\Models\SaleProduct;
 use App\Utils\CustomerUtil;
 use App\Models\CashRegister;
 use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
 use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
 use App\Models\General_setting;
 use App\Utils\ProductStockUtil;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Models\CashRegisterTransaction;
-use App\Utils\UserActivityLogUtil;
 
 class POSController extends Controller
 {
@@ -93,7 +94,7 @@ class POSController extends Controller
                     'accounts.balance'
                 ]);
 
-            $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+                $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
             return view('sales.pos.create', compact(
                 'openedCashRegister',
@@ -294,6 +295,7 @@ class POSController extends Controller
                 );
             }
         } else {
+            
             $addSale->total_payable_amount = $request->total_invoice_payable;
             $addSale->save();
         }
@@ -450,7 +452,7 @@ class POSController extends Controller
                 'accounts.balance'
             ]);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         return view('sales.pos.edit', compact('sale', 'categories', 'brands', 'price_groups', 'accounts', 'methods'));
     }

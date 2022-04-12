@@ -37,7 +37,7 @@ class LoanPaymentController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         $company = DB::table('loan_companies')->where('id', $company_id)->first();
 
@@ -135,7 +135,7 @@ class LoanPaymentController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         $company = DB::table('loan_companies')->where('id', $company_id)->first();
 

@@ -9,19 +9,6 @@
         </div>
     </div>
 
-    <div class="form-group row mt-1">
-        <div class="col-md-12">
-            <label><b>Default Debit/Credit Account :</b> </label>
-            <select name="account_id" id="e_account_id" class="form-control">
-                <option value="">Salect Default Account</option>
-                @foreach ($accounts as $account)
-                    <option {{ $account->id == $method->account_id ? 'SELECTED' : '' }} value="{{ $account->id }}">{{ $account->name.' (A/C:'.$account->account_number.')' }}</option>
-                @endforeach
-            </select>
-            <span class="error error_e_account_id"></span>
-        </div>
-    </div>
-
     <div class="form-group row mt-2">
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i

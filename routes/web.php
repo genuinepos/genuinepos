@@ -1,24 +1,7 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Bank;
-use App\Models\Loan;
-use App\Models\Sale;
-use App\Models\Expanse;
-use App\Models\Purchase;
-use App\Models\Supplier;
-use App\Utils\Converter;
-use App\Models\LoanPayment;
-use App\Models\SalePayment;
 use App\Models\AdminAndUser;
-use App\Models\AccountLedger;
-use App\Models\ProductBranch;
-use App\Models\CustomerLedger;
-use App\Models\SupplierLedger;
-use App\Models\CustomerPayment;
-use App\Models\PurchasePayment;
-use App\Models\SupplierPayment;
-use Illuminate\Support\Facades\DB;
+use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -921,13 +904,19 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('rp/settings', 'GeneralSettingController@rewardPoingSettings')->name('settings.reward.point.settings');
     });
 
-    Route::group(['prefix' => 'payment_settings'], function () {
+    Route::group(['prefix' => 'payment_methods'], function () {
 
         Route::get('/', 'PaymentMethodController@index')->name('settings.payment.method.index');
         Route::post('store', 'PaymentMethodController@store')->name('settings.payment.method.store');
         Route::get('edit/{id}', 'PaymentMethodController@edit')->name('settings.payment.method.edit');
         Route::post('update/{id}', 'PaymentMethodController@update')->name('settings.payment.method.update');
         Route::delete('delete/{id}', 'PaymentMethodController@delete')->name('settings.payment.method.delete');
+    });
+
+    Route::group(['prefix' => 'payment_method_settings'], function () {
+
+        Route::get('/', 'PaymentMethodSettingsController@index')->name('settings.payment.method.settings.index');
+        Route::post('update', 'PaymentMethodSettingsController@update')->name('settings.payment.method.settings.update');
     });
 
     Route::group(['prefix' => 'barcode_settings'], function () {

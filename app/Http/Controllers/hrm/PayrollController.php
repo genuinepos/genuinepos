@@ -417,7 +417,7 @@ class PayrollController extends Controller
     {
         $payroll = Payroll::with('employee', 'employee.branch')->where('id', $payrollId)->first();
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -534,7 +534,7 @@ class PayrollController extends Controller
     // Edit payroll payment modal view 
     public function paymentEdit($paymentId)
     {
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')

@@ -71,7 +71,11 @@
                                     </div>
                                     <select name="payment_method_id" class="form-control"  id="payment_method_id">
                                         @foreach ($methods as $method)
-                                            <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                            <option 
+                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                                value="{{ $method->id }}">
+                                                {{ $method->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -88,9 +92,8 @@
                                             <option value="{{ $account->id }}">
                                                 @php
                                                     $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                    $balance = ' BL : '.$account->balance;
                                                 @endphp
-                                                {{ $account->name.$accountType.$balance}}
+                                                {{ $account->name.$accountType }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -100,7 +103,7 @@
 
                         <div class="form-group mt-2">
                             <label><strong> Payment Note :</strong></label>
-                            <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note"></textarea>
+                            <textarea name="payment_note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                         </div>
 
                         <div class="form-group row mt-3">
@@ -624,6 +627,25 @@
             evt.preventDefault();
             scrollContainer.scrollLeft += evt.deltaY;
         });
+
+        $('#payment_method_id').on('change', function () {
+
+            var account_id = $(this).find('option:selected').data('account_id');
+            setMethodAccount(account_id);
+        });
+
+        function setMethodAccount(account_id) {
+
+            if (account_id) {
+
+                $('#account_id').val(account_id);
+            }else if(account_id === ''){
+
+                $('#account_id option:first-child').prop("selected", true);
+            }
+        }
+
+        setMethodAccount($('#payment_method_id').find('option:selected').data('account_id'));
     </script>
     @stack('js')
 </body>

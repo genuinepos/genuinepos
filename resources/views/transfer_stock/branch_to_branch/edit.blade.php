@@ -351,8 +351,7 @@
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                                 @foreach ($methods as $method)
-                                                                    <option {{ $transfer->payment_method_id == $method->id ? 'SELECTED' : '' }} value="{{ $method->id }}" 
-                                                                        data-account="{{ $method->account_id }}">
+                                                                    <option {{ $transfer->payment_method_id == $method->id ? 'SELECTED' : '' }} value="{{ $method->id }}">
                                                                         {{ $method->name }}
                                                                     </option>
                                                                 @endforeach

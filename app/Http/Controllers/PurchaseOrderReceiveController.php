@@ -48,7 +48,7 @@ class PurchaseOrderReceiveController extends Controller
             'purchase_order_products.variant',
         ])->where('id', $purchaseId)->first();
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')

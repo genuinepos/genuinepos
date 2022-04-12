@@ -1,9 +1,6 @@
 <?php
 
-use App\Models\Bank;
-use App\Utils\Converter;
 use App\Models\AdminAndUser;
-use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -1065,8 +1062,6 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
-   
-    return $method = PaymentMethod::with(['methodAccount'])->get();
 });
 
 // All authenticated routes

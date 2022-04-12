@@ -590,7 +590,7 @@ class AccountController extends Controller
             $toDate = $to_date;
         }
 
-        return $ledgers = $query->get();
+        $ledgers = $query->get();
 
         $account = DB::table('accounts')
             ->where('accounts.id', $accountId)

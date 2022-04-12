@@ -166,51 +166,7 @@ class AccountController extends Controller
                 ->leftJoin('contras as contra_debit', 'account_ledgers.contra_debit_id', 'contra_debit.id')
                 ->leftJoin('contras as contra_credit', 'account_ledgers.contra_credit_id', 'contra_credit.id')
                 ->leftJoin('accounts as sender_ac', 'contra_debit.sender_account_id', 'sender_ac.id')
-                ->leftJoin('accounts as receiver_ac', 'contra_credit.receiver_account_id', 'receiver_ac.id')
-                ->select(
-                    'account_ledgers.date',
-                    'account_ledgers.voucher_type',
-                    'account_ledgers.debit',
-                    'account_ledgers.credit',
-                    'account_ledgers.running_balance',
-                    'expanses.invoice_id as exp_voucher_no',
-                    'expanses.note as ex_pur',
-                    'expanse_payments.invoice_id as exp_payment_voucher',
-                    'expanse_payments.note as expense_payment_pur',
-                    'sales.invoice_id as sale_inv_id',
-                    'sales.sale_note as sale_pur',
-                    'sale_payments.invoice_id as sale_payment_voucher',
-                    'sale_payments.note as sale_payment_pur',
-                    'supplier_payments.voucher_no as supplier_payment_voucher',
-                    'supplier_payments.note as supplier_payment_pur',
-                    'sale_returns.invoice_id as sale_return_inv',
-                    'sale_returns.date as sale_return_pur',
-                    'purchases.invoice_id as purchase_inv_id',
-                    'purchases.purchase_note as purchase_pur',
-                    'purchase_payments.invoice_id as pur_payment_voucher',
-                    'purchase_payments.note as purchase_payment_pur',
-                    'customer_payments.voucher_no as customer_payment_voucher',
-                    'customer_payments.note as customer_payment_pur',
-                    'purchase_returns.invoice_id as pur_return_invoice',
-                    'purchase_returns.date as purchase_return_pur',
-                    'stock_adjustments.invoice_id as sa_voucher',
-                    'stock_adjustments.reason as adjustment_pur',
-                    'stock_adjustment_recovers.voucher_no as sar_amt_voucher',
-                    'stock_adjustment_recovers.note as sar_pur',
-                    'hrm_payroll_payments.reference_no as payroll_pay_voucher',
-                    'hrm_payroll_payments.note as payroll_payment_pur',
-                    'productions.reference_no as production_voucher',
-                    'loans.reference_no as loan_voucher_no',
-                    'loans.loan_reason as loan_pur',
-                    'loan_payments.voucher_no as loan_payment_voucher',
-                    'loan_payments.date as loan_pay_pur',
-                    'contra_debit.voucher_no as co_debit_voucher_no',
-                    'contra_debit.remarks as co_debit_pur',
-                    'contra_credit.voucher_no as co_credit_voucher_no',
-                    'contra_credit.remarks as co_credit_pur',
-                    'receiver_ac.name as receiver_acn',
-                    'sender_ac.name as sender_acn',
-                )->orderBy('account_ledgers.date', 'asc');
+                ->leftJoin('accounts as receiver_ac', 'contra_credit.receiver_account_id', 'receiver_ac.id');
 
             if ($request->transaction_type) {
 
@@ -230,7 +186,50 @@ class AccountController extends Controller
                 $query->whereBetween('account_ledgers.date', $date_range); // Final
             }
 
-            $ledgers = $query;
+            $ledgers = $query->select(
+                'account_ledgers.date',
+                'account_ledgers.voucher_type',
+                'account_ledgers.debit',
+                'account_ledgers.credit',
+                'account_ledgers.running_balance',
+                'expanses.invoice_id as exp_voucher_no',
+                'expanses.note as ex_pur',
+                'expanse_payments.invoice_id as exp_payment_voucher',
+                'expanse_payments.note as expense_payment_pur',
+                'sales.invoice_id as sale_inv_id',
+                'sales.sale_note as sale_pur',
+                'sale_payments.invoice_id as sale_payment_voucher',
+                'sale_payments.note as sale_payment_pur',
+                'supplier_payments.voucher_no as supplier_payment_voucher',
+                'supplier_payments.note as supplier_payment_pur',
+                'sale_returns.invoice_id as sale_return_inv',
+                'sale_returns.date as sale_return_pur',
+                'purchases.invoice_id as purchase_inv_id',
+                'purchases.purchase_note as purchase_pur',
+                'purchase_payments.invoice_id as pur_payment_voucher',
+                'purchase_payments.note as purchase_payment_pur',
+                'customer_payments.voucher_no as customer_payment_voucher',
+                'customer_payments.note as customer_payment_pur',
+                'purchase_returns.invoice_id as pur_return_invoice',
+                'purchase_returns.date as purchase_return_pur',
+                'stock_adjustments.invoice_id as sa_voucher',
+                'stock_adjustments.reason as adjustment_pur',
+                'stock_adjustment_recovers.voucher_no as sar_amt_voucher',
+                'stock_adjustment_recovers.note as sar_pur',
+                'hrm_payroll_payments.reference_no as payroll_pay_voucher',
+                'hrm_payroll_payments.note as payroll_payment_pur',
+                'productions.reference_no as production_voucher',
+                'loans.reference_no as loan_voucher_no',
+                'loans.loan_reason as loan_pur',
+                'loan_payments.voucher_no as loan_payment_voucher',
+                'loan_payments.date as loan_pay_pur',
+                'contra_debit.voucher_no as co_debit_voucher_no',
+                'contra_debit.remarks as co_debit_pur',
+                'contra_credit.voucher_no as co_credit_voucher_no',
+                'contra_credit.remarks as co_credit_pur',
+                'receiver_ac.name as receiver_acn',
+                'sender_ac.name as sender_acn',
+            )->orderBy('account_ledgers.date', 'asc');
 
             return DataTables::of($ledgers)
                 ->editColumn('date', function ($row) use ($settings) {
@@ -521,51 +520,7 @@ class AccountController extends Controller
             ->leftJoin('contras as contra_debit', 'account_ledgers.contra_debit_id', 'contra_debit.id')
             ->leftJoin('contras as contra_credit', 'account_ledgers.contra_credit_id', 'contra_credit.id')
             ->leftJoin('accounts as sender_ac', 'contra_debit.sender_account_id', 'sender_ac.id')
-            ->leftJoin('accounts as receiver_ac', 'contra_credit.receiver_account_id', 'receiver_ac.id')
-            ->select(
-                'account_ledgers.date',
-                'account_ledgers.voucher_type',
-                'account_ledgers.debit',
-                'account_ledgers.credit',
-                'account_ledgers.running_balance',
-                'expanses.invoice_id as exp_voucher_no',
-                'expanses.note as ex_pur',
-                'expanse_payments.invoice_id as exp_payment_voucher',
-                'expanse_payments.note as expense_payment_pur',
-                'sales.invoice_id as sale_inv_id',
-                'sales.sale_note as sale_pur',
-                'sale_payments.invoice_id as sale_payment_voucher',
-                'sale_payments.note as sale_payment_pur',
-                'supplier_payments.voucher_no as supplier_payment_voucher',
-                'supplier_payments.note as supplier_payment_pur',
-                'sale_returns.invoice_id as sale_return_inv',
-                'sale_returns.date as sale_return_pur',
-                'purchases.invoice_id as purchase_inv_id',
-                'purchases.purchase_note as purchase_pur',
-                'purchase_payments.invoice_id as pur_payment_voucher',
-                'purchase_payments.note as purchase_payment_pur',
-                'customer_payments.voucher_no as customer_payment_voucher',
-                'customer_payments.note as customer_payment_pur',
-                'purchase_returns.invoice_id as pur_return_invoice',
-                'purchase_returns.date as purchase_return_pur',
-                'stock_adjustments.invoice_id as sa_voucher',
-                'stock_adjustments.reason as adjustment_pur',
-                'stock_adjustment_recovers.voucher_no as sar_amt_voucher',
-                'stock_adjustment_recovers.note as sar_pur',
-                'hrm_payroll_payments.reference_no as payroll_pay_voucher',
-                'hrm_payroll_payments.note as payroll_payment_pur',
-                'productions.reference_no as production_voucher',
-                'loans.reference_no as loan_voucher_no',
-                'loans.loan_reason as loan_pur',
-                'loan_payments.voucher_no as loan_payment_voucher',
-                'loan_payments.date as loan_pay_pur',
-                'contra_debit.voucher_no as co_debit_voucher_no',
-                'contra_debit.remarks as co_debit_pur',
-                'contra_credit.voucher_no as co_credit_voucher_no',
-                'contra_credit.remarks as co_credit_pur',
-                'receiver_ac.name as receiver_acn',
-                'sender_ac.name as sender_acn',
-            )->orderBy('account_ledgers.date', 'asc');
+            ->leftJoin('accounts as receiver_ac', 'contra_credit.receiver_account_id', 'receiver_ac.id');
 
         if ($request->transaction_type) {
 
@@ -581,6 +536,7 @@ class AccountController extends Controller
         $toDate = '';
 
         if ($request->from_date) {
+
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
@@ -590,7 +546,50 @@ class AccountController extends Controller
             $toDate = $to_date;
         }
 
-        $ledgers = $query->get();
+        $ledgers = $query->select(
+            'account_ledgers.date',
+            'account_ledgers.voucher_type',
+            'account_ledgers.debit',
+            'account_ledgers.credit',
+            'account_ledgers.running_balance',
+            'expanses.invoice_id as exp_voucher_no',
+            'expanses.note as ex_pur',
+            'expanse_payments.invoice_id as exp_payment_voucher',
+            'expanse_payments.note as expense_payment_pur',
+            'sales.invoice_id as sale_inv_id',
+            'sales.sale_note as sale_pur',
+            'sale_payments.invoice_id as sale_payment_voucher',
+            'sale_payments.note as sale_payment_pur',
+            'supplier_payments.voucher_no as supplier_payment_voucher',
+            'supplier_payments.note as supplier_payment_pur',
+            'sale_returns.invoice_id as sale_return_inv',
+            'sale_returns.date as sale_return_pur',
+            'purchases.invoice_id as purchase_inv_id',
+            'purchases.purchase_note as purchase_pur',
+            'purchase_payments.invoice_id as pur_payment_voucher',
+            'purchase_payments.note as purchase_payment_pur',
+            'customer_payments.voucher_no as customer_payment_voucher',
+            'customer_payments.note as customer_payment_pur',
+            'purchase_returns.invoice_id as pur_return_invoice',
+            'purchase_returns.date as purchase_return_pur',
+            'stock_adjustments.invoice_id as sa_voucher',
+            'stock_adjustments.reason as adjustment_pur',
+            'stock_adjustment_recovers.voucher_no as sar_amt_voucher',
+            'stock_adjustment_recovers.note as sar_pur',
+            'hrm_payroll_payments.reference_no as payroll_pay_voucher',
+            'hrm_payroll_payments.note as payroll_payment_pur',
+            'productions.reference_no as production_voucher',
+            'loans.reference_no as loan_voucher_no',
+            'loans.loan_reason as loan_pur',
+            'loan_payments.voucher_no as loan_payment_voucher',
+            'loan_payments.date as loan_pay_pur',
+            'contra_debit.voucher_no as co_debit_voucher_no',
+            'contra_debit.remarks as co_debit_pur',
+            'contra_credit.voucher_no as co_credit_voucher_no',
+            'contra_credit.remarks as co_credit_pur',
+            'receiver_ac.name as receiver_acn',
+            'sender_ac.name as sender_acn',
+        )->orderBy('account_ledgers.date', 'asc')->get();
 
         $account = DB::table('accounts')
             ->where('accounts.id', $accountId)

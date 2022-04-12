@@ -1370,7 +1370,6 @@
         if (status == 1) {
 
             $('.payment_body').show();
-            
         } else if(status == 4){
 
             $('.payment_body').hide();
@@ -1444,4 +1443,23 @@
             return false;
         }
     }
+
+    $('#payment_method_id').on('change', function () {
+
+    var account_id = $(this).find('option:selected').data('account_id');
+        setMethodAccount(account_id);
+    });
+
+    function setMethodAccount(account_id) {
+
+        if (account_id) {
+
+            $('#account_id').val(account_id);
+        }else if(account_id === ''){
+
+            $('#account_id option:first-child').prop("selected", true);
+        }
+    }
+
+    setMethodAccount($('#payment_method_id').find('option:selected').data('account_id'));
 </script>

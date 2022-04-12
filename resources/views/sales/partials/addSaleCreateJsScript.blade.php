@@ -1661,7 +1661,7 @@
             one: 'night',
             other: 'nights'
         },
-        tooltipNumber: (totalDays) => {
+        tooltipNumber : (totalDays) => {
             return totalDays - 1;
         },
         format: _expectedDateFormat,
@@ -1669,22 +1669,22 @@
 
     $('#payment_method_id').on('change', function () {
 
-        var account_id = $(this).find('option:selected').data('account');
-        setDefaultAccount(account_id);
+        var account_id = $(this).find('option:selected').data('account_id');
+        setMethodAccount(account_id);
     });
 
-    function setDefaultAccount(account_id) {
+    function setMethodAccount(account_id) {
 
         if (account_id) {
 
             $('#account_id').val(account_id);
-        }else{
+        }else if(account_id === ''){
 
-            $('#payment_method_id option:first-child').attr("selected", "selected");
+            $('#account_id option:first-child').prop("selected", true);
         }
     }
 
-    setDefaultAccount($('#payment_method_id').find('option:selected').data('account'));
+    setMethodAccount($('#payment_method_id').find('option:selected').data('account_id'));
     
     //const textInput = e.key || String.fromCharCode(e.keyCode);
     

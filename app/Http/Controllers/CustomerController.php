@@ -540,7 +540,7 @@ class CustomerController extends Controller
                 'accounts.balance'
             ]);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         return view('contacts.customers.ajax_view.payment_modal', compact('customer', 'accounts', 'methods'));
     }
@@ -726,7 +726,7 @@ class CustomerController extends Controller
                 'accounts.balance'
             ]);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         return view('contacts.customers.ajax_view.return_payment_modal', compact('customer', 'accounts', 'methods'));
     }

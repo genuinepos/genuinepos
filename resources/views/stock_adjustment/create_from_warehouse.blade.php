@@ -249,8 +249,7 @@
 
                                                                 @foreach ($methods as $method)
 
-                                                                    <option value="{{ $method->id }}" 
-                                                                        data-account="{{ $method->account_id }}">
+                                                                    <option value="{{ $method->id }}">
                                                                         {{ $method->name }}
                                                                     </option>
                                                                 @endforeach

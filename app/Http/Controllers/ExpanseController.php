@@ -100,7 +100,7 @@ class ExpanseController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'account_type']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         return view('expanses.create', compact('expenseAccounts', 'accounts', 'methods', 'users', 'taxes'));
     }
@@ -410,7 +410,7 @@ class ExpanseController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
         return view('expanses.ajax_view.add_payment', compact('expense', 'accounts', 'methods'));
     }
 
@@ -454,7 +454,7 @@ class ExpanseController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         return view('expanses.ajax_view.edit_payment', compact('payment', 'accounts', 'methods'));
     }

@@ -2175,7 +2175,16 @@
                                             <span><i class="fas fa-credit-card"></i></span>
                                         </a>
                                     </div>
-                                    <p class="switch_text">@lang('menu.payment_settings')</p>
+                                    <p class="switch_text">@lang('menu.payment_methods')</p>
+                                </div>
+
+                                <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                    <div class="switch_bar">
+                                        <a href="{{ route('settings.payment.method.settings.index') }}" class="bar-link">
+                                            <span><i class="fas fa-credit-card"></i></span>
+                                        </a>
+                                    </div>
+                                    <p class="switch_text">@lang('menu.payment_method_settings')</p>
                                 </div>
                             @endif
 

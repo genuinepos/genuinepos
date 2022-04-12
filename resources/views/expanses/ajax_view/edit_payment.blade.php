@@ -66,8 +66,7 @@
                 </div>
                 <select required name="payment_method_id" class="form-control" id="p_payment_method_id">
                     @foreach ($methods as $method)
-                        <option  {{ $method->id == $payment->payment_method_id ? 'SELECTED' : '' }} value="{{ $method->id }}" 
-                            data-account="{{ $method->account_id }}">
+                        <option  {{ $method->id == $payment->payment_method_id ? 'SELECTED' : '' }} value="{{ $method->id }}">
                             {{ $method->name }}
                         </option>
                     @endforeach

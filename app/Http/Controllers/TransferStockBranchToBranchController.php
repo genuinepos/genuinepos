@@ -200,7 +200,7 @@ class TransferStockBranchToBranchController extends Controller
             ->get(['accounts.id', 'accounts.name', 'account_type']);
 
         $methods = DB::table('payment_methods')
-            ->select('id', 'name', 'account_id')->get();
+            ->select('id', 'name')->get();
 
         $warehouses = DB::table('warehouses')
             ->select('id', 'warehouse_name', 'warehouse_code')->where('branch_id', auth()->user()->branch_id)->get();
@@ -342,7 +342,7 @@ class TransferStockBranchToBranchController extends Controller
             ->get(['accounts.id', 'accounts.name', 'accounts.account_type']);
 
         $methods = DB::table('payment_methods')
-            ->select('id', 'name', 'account_id')->get();
+            ->select('id', 'name')->get();
 
         $warehouses = DB::table('warehouses')
             ->select('id', 'warehouse_name', 'warehouse_code')->get();

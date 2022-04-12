@@ -97,7 +97,7 @@ return [
     'general_settings' => 'সাধারণ সেটিংস',
     'invoice_schema' => 'চালানের স্কিমা',
     'invoice_layout' => 'চালানের বিন্যাস',
-    'payment_settings' => 'প্রদান সেটিংস',
+    'payment_methods' => 'মুল্য পরিশোধ পদ্ধতি',
     'barcode_settings' => 'বারকোড সেটিংস',
     'cash_counter' => 'টাকা প্রদান কেন্দ্র',
     // Menu child of Users module  

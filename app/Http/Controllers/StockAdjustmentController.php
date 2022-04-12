@@ -208,7 +208,7 @@ class StockAdjustmentController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         return view('stock_adjustment.create', compact('stockAdjustmentAccounts', 'accounts', 'methods'));
     }
@@ -235,7 +235,7 @@ class StockAdjustmentController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         return view('stock_adjustment.create_from_warehouse', compact('warehouses', 'stockAdjustmentAccounts', 'accounts', 'methods'));
     }

@@ -157,7 +157,7 @@ class PurchaseController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -956,7 +956,7 @@ class PurchaseController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         $purchase = Purchase::with(['supplier', 'branch', 'warehouse'])->where('id', $purchaseId)->first();
 
@@ -1023,7 +1023,7 @@ class PurchaseController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         $payment = PurchasePayment::with(['purchase', 'purchase.branch', 'purchase.warehouse', 'purchase.supplier'])
             ->where('id', $paymentId)->first();
@@ -1087,7 +1087,7 @@ class PurchaseController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         $purchase = Purchase::with(['supplier', 'branch', 'warehouse'])->where('id', $purchaseId)->first();
 
@@ -1153,7 +1153,7 @@ class PurchaseController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name', 'account_id')->get();
+        $methods = DB::table('payment_methods')->select('id', 'name')->get();
 
         $payment = PurchasePayment::with(['purchase', 'purchase.branch', 'purchase.warehouse', 'purchase.supplier'])
             ->where('id', $paymentId)->first();

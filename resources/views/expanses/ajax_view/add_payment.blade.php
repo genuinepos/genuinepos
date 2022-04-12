@@ -63,8 +63,7 @@
                 </div>
                 <select name="payment_method" class="form-control" id="payment_method">
                     @foreach ($methods as $method)
-                        <option value="{{ $method->id }}" 
-                            data-account="{{ $method->account_id }}">
+                        <option value="{{ $method->id }}">
                             {{ $method->name }}
                         </option>
                     @endforeach

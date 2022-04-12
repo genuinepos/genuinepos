@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Bank;
-use App\Utils\Converter;
 use App\Models\AdminAndUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -905,13 +903,19 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('rp/settings', 'GeneralSettingController@rewardPoingSettings')->name('settings.reward.point.settings');
     });
 
-    Route::group(['prefix' => 'payment_settings'], function () {
+    Route::group(['prefix' => 'payment_methods'], function () {
 
         Route::get('/', 'PaymentMethodController@index')->name('settings.payment.method.index');
         Route::post('store', 'PaymentMethodController@store')->name('settings.payment.method.store');
         Route::get('edit/{id}', 'PaymentMethodController@edit')->name('settings.payment.method.edit');
         Route::post('update/{id}', 'PaymentMethodController@update')->name('settings.payment.method.update');
         Route::delete('delete/{id}', 'PaymentMethodController@delete')->name('settings.payment.method.delete');
+    });
+
+    Route::group(['prefix' => 'payment_method_settings'], function () {
+
+        Route::get('/', 'PaymentMethodSettingsController@index')->name('settings.payment.method.settings.index');
+        Route::post('update', 'PaymentMethodSettingsController@update')->name('settings.payment.method.settings.update');
     });
 
     Route::group(['prefix' => 'barcode_settings'], function () {

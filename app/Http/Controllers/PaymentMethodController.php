@@ -17,32 +17,33 @@ class PaymentMethodController extends Controller
         $this->util = $util;
         $this->middleware('auth:admin_and_user');
     }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
+
             $methods = DB::table('payment_methods')
-                ->leftJoin('accounts', 'payment_methods.account_id', 'accounts.id')
-                ->select('payment_methods.*', 'accounts.name as ac_name', 'accounts.account_type')
+                ->select('payment_methods.*')
                 ->get();
+
             return DataTables::of($methods)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('settings.payment.method.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('settings.payment.method.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
-                    $html .= '</div>';
-                    return $html;
+
+                    if ($row->is_fixed == 0) {
+
+                        $html = '<div class="dropdown table-dropdown">';
+                        $html .= '<a href="' . route('settings.payment.method.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                        $html .= '<a href="' . route('settings.payment.method.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                        $html .= '</div>';
+                        return $html;
+                    }
                 })
-                ->editColumn('account', fn ($row) => $row->ac_name ? $row->ac_name . ' (<b>' . $this->util->accountType($row->account_type) . '</b>)' : 'N/A')
-                ->rawColumns(['action', 'account'])
+                ->rawColumns(['action'])
                 ->make(true);
         }
 
-        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])
-            ->orderBy('account_type', 'asc')
-            ->get(['id', 'name', 'account_number', 'account_type']);
-
-        return view('settings.payment_settings.index', compact('accounts'));
+        return view('settings.payment_method.index');
     }
 
     public function store(Request $request)
@@ -51,16 +52,11 @@ class PaymentMethodController extends Controller
             $request,
             [
                 'name' => 'required|unique:payment_methods,name',
-                //'account_id' => 'required',
             ],
-            // [
-            //     'account_id.required' => 'Please select a default account',
-            // ]
         );
 
         PaymentMethod::insert([
             'name' => $request->name,
-            'account_id' => $request->account_id,
         ]);
 
         return response()->json('Payment method created successfully.');
@@ -69,10 +65,8 @@ class PaymentMethodController extends Controller
     public function edit($id)
     {
         $method = DB::table('payment_methods')->where('id', $id)->first();
-        $accounts = DB::table('accounts')->whereIn('account_type', [1, 2])
-            ->orderBy('account_type', 'asc')
-            ->get(['id', 'name', 'account_number', 'account_type']);
-        return view('settings.payment_settings.ajax_view.edit_payment_method', compact('method', 'accounts'));
+
+        return view('settings.payment_method.ajax_view.edit_payment_method', compact('method'));
     }
 
     public function update(Request $request, $id)
@@ -81,17 +75,14 @@ class PaymentMethodController extends Controller
             $request,
             [
                 'name' => 'required|unique:payment_methods,name,' . $id,
-                //'account_id' => 'required',
             ],
-            // [
-            //     'account_id.required' => 'Please select a default account',
-            // ]
+            
         );
 
         $updatePayment = PaymentMethod::where('id', $id)->first();
+
         $updatePayment->update([
             'name' => $request->name,
-            'account_id' => $request->account_id,
         ]);
 
         return response()->json('Payment Method update successfully.');
@@ -100,7 +91,14 @@ class PaymentMethodController extends Controller
     public function delete(Request $request, $id)
     {
         $deletePaymentMethod = PaymentMethod::where('id', $id)->first();
+
         if (!is_null($deletePaymentMethod)) {
+
+            if ($deletePaymentMethod->is_fixed == 1) {
+
+                return response()->json('Can not delete, This payment method is fixed');
+            }
+
             $deletePaymentMethod->delete();
         }
 

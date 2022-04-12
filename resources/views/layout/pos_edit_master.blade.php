@@ -89,9 +89,8 @@
                                             <option value="{{ $account->id }}">
                                                 @php
                                                     $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                    $balance = ' BL : '.$account->balance;
                                                 @endphp
-                                                {{ $account->name.$accountType.$balance}}
+                                                {{ $account->name.$accountType}}
                                             </option>
                                         @endforeach
                                     </select>

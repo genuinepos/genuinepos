@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\AdminAndUser;
-use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;

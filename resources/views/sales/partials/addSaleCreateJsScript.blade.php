@@ -388,36 +388,36 @@
 
                                 if (product.is_variant == 1) {
 
-                                        var price = 0;
-                                        var __price = price_groups.filter(function (value) {
+                                    var price = 0;
+                                    var __price = price_groups.filter(function (value) {
 
-                                            return value.price_group_id == price_group_id && value.product_id == product.id && value.variant_id == product.variant_id;
-                                        });
+                                        return value.price_group_id == price_group_id && value.product_id == product.id && value.variant_id == product.variant_id;
+                                    });
 
-                                        if (__price.length != 0) {
+                                    if (__price.length != 0) {
 
-                                            price = __price[0].price ? __price[0].price : product.variant_price;
-                                        } else {
+                                        price = __price[0].price ? __price[0].price : product.variant_price;
+                                    } else {
 
-                                            price = product.variant_price;
-                                        }
-                                        
-                                        var tax_amount = parseFloat(price / 100 * tax_percent);
+                                        price = product.variant_price;
+                                    }
+                                    
+                                    var tax_amount = parseFloat(price / 100 * tax_percent);
 
-                                        var unitPriceIncTax = (parseFloat(price) / 100 * tax_percent) + parseFloat(price);
+                                    var unitPriceIncTax = (parseFloat(price) / 100 * tax_percent) + parseFloat(price);
 
-                                        if (product.tax_type == 2) {
+                                    if (product.tax_type == 2) {
 
-                                            var inclusiveTax = 100 + parseFloat(tax_percent);
-                                            var calcTax = parseFloat(price) / parseFloat(inclusiveTax) * 100;
-                                            var __tax_amount = parseFloat(price) - parseFloat(calcTax);
-                                            unitPriceIncTax = parseFloat(price) + parseFloat(__tax_amount);
-                                            tax_amount = __tax_amount;
-                                        }
+                                        var inclusiveTax = 100 + parseFloat(tax_percent);
+                                        var calcTax = parseFloat(price) / parseFloat(inclusiveTax) * 100;
+                                        var __tax_amount = parseFloat(price) - parseFloat(calcTax);
+                                        unitPriceIncTax = parseFloat(price) + parseFloat(__tax_amount);
+                                        tax_amount = __tax_amount;
+                                    }
 
-                                        li += '<li>';
-                                        li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-product_type="variant" data-p_id="'+product.id+'" data-is_manage_stock="'+product.is_manage_stock+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-tax_type="'+product.tax_type+'" data-unit="'+product.unit_name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-description="'+product.is_show_emi_on_pos+'" data-v_code="'+product.variant_code+'" data-v_price="'+product.variant_price+'" data-v_name="'+product.variant_name+'" data-v_cost_inc_tax="'+product.variant_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
-                                        li +='</li>';
+                                    li += '<li>';
+                                    li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-product_type="variant" data-p_id="'+product.id+'" data-is_manage_stock="'+product.is_manage_stock+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-tax_type="'+product.tax_type+'" data-unit="'+product.unit_name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-description="'+product.is_show_emi_on_pos+'" data-v_code="'+product.variant_code+'" data-v_price="'+product.variant_price+'" data-v_name="'+product.variant_name+'" data-v_cost_inc_tax="'+product.variant_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
+                                    li +='</li>';
                                     
                                 }else {
 
@@ -457,12 +457,23 @@
                             $('.select_area').show();
                         }
                     }
-                }else{
+                } else {
 
                     $('#search_product').addClass('is-invalid');
-                    toastr.error('Product not found.', 'Failed'); 
-                    $('#search_product').select();
+                    //toastr.error('Product not found.', 'Failed'); 
+                    //$('#search_product').select();
                 }
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error('Net Connetion Error. Please check the connetion.'); 
+                    return;
+                }else if(err.status == 500){
+
+                    toastr.error('Server error. Please contact to the support team.'); 
+                    return;
+                } 
             }
         });
     }

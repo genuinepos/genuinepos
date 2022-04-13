@@ -530,9 +530,20 @@
                 }else{
 
                     $('#search_product').addClass('is-invalid');
-                    toastr.error('Product not found.', 'Failed'); 
-                    $('#search_product').select();
+                    // toastr.error('Product not found.', 'Failed'); 
+                    // $('#search_product').select();
                 }
+            },error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error('Net Connetion Error. Please check the connetion.'); 
+                    return;
+                }else if(err.status == 500){
+
+                    toastr.error('Server error. Please contact to the support team.'); 
+                    return;
+                } 
             }
         });
     }

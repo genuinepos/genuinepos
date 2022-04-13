@@ -567,9 +567,8 @@ class NetProfitLossAccount
             $transferStWarehouse = $transferStWarehouseQuery->get();
         } else {
 
-           
-            $transferStBranch = $transferStBranchQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
-            $transferStWarehouse = $transferStWarehouseQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $transferStBranch = $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', auth()->user()->branch_id)->get();
+            $transferStWarehouse = $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id)->get();
         }
 
         return $totalTransferShipmentCost = $transferStBranch->sum('b_total_shipment_charge') + $transferStWarehouse->sum('w_total_shipment_charge');

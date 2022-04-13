@@ -55,65 +55,6 @@ class FinancialAmountsUtil
         return array_merge($netProfitLossAccountAmounts, $anotherAmounts);
     }
 
-    // private function cashAndBankBalance($request)
-    // {
-    //     $cashInHandAmounts = '';
-    //     $cashInHandAmountsQ = DB::table('account_branches')
-    //         ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-    //         ->whereIn('accounts.account_type', [1, 2]);
-
-    //     if (isset($request->branch_id) && $request->branch_id) {
-
-    //         if ($request->branch_id == 'NULL') {
-
-    //             $cashInHandAmountsQ->where('account_branches.branch_id', NULL);
-    //         } else {
-
-    //             $cashInHandAmountsQ->where('account_branches.branch_id', $request->branch_id);
-    //         }
-    //     }
-
-    //     if (isset($request->from_date) && $request->from_date) {
-
-    //         $from_date = date('Y-m-d', strtotime($request->from_date));
-    //         $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-    //         $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-    //         $cashInHandAmountsQ->whereBetween('account_ledgers.date', $date_range);
-    //     }
-
-    //     if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-    //         $cashInHandAmounts = $cashInHandAmountsQ->select(
-    //             'accounts.account_type',
-    //             DB::raw('SUM(accounts.balance) as total_balance')
-    //         )->groupBy('accounts.account_type')->get();
-    //     } else {
-
-    //         $cashInHandAmounts = $cashInHandAmountsQ
-    //             ->where('account_branches.branch_id', auth()->user()->branch_id)
-    //             ->select(
-    //                 'accounts.account_type',
-    //                 DB::raw('SUM(accounts.balance) as total_balance')
-    //             )->groupBy('accounts.account_type')->get();
-    //     }
-
-    //     $balance = ['cash_in_hand_balance' => 0, 'bank_account_balance' => 0];
-
-    //     foreach ($cashInHandAmounts as $cashInHandAmount) {
-
-    //         if ($cashInHandAmount->account_type == 1) {
-
-    //             $balance['cash_in_hand_balance'] = $cashInHandAmount->total_balance;
-    //         } else {
-
-    //             $balance['bank_account_balance'] = $cashInHandAmount->total_balance;
-    //         }
-    //     }
-
-    //     return $balance;
-    // }
-
-
     private function cashAndBankBalance($request)
     {
         $expenseLoan = '';

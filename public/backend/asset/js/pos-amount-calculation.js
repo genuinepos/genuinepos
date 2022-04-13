@@ -307,17 +307,15 @@ $('#e_unit_discount_type').on('change', function () {
 });
 
 // Cash receive by modal input with change value
-$(document).on('input', '.modal_paying_amt', function () {
+$('#modal_paying_amount').on('input', function () {
 
-    var totalPayable = $('.modal_total_payable').val();
+    var totalPayable = $('#total_payable_amount').val();
     // Update purchase due
     var payingAmount = $(this).val() ? $(this).val() : 0;
-
     var changeAmount = parseFloat(payingAmount) - parseFloat(totalPayable);
-
-    $('.modal_change_amt').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
+    $('#modal_change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
     var calcTotalDue = parseFloat(totalPayable) - parseFloat(payingAmount);
-    $('.modal_total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
+    $('#modal_total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
 
     $('#paying_amount').val(parseFloat(payingAmount).toFixed(2));
     $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));

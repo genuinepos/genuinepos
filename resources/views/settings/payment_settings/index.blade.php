@@ -51,7 +51,7 @@
                                                                             @foreach ($methods as $method)
                                                                                 <tr>
                                                                                     <td class="text-start">
-                                                                                        {{ $loop->index + 1 }}
+                                                                                        <b>{{ $loop->index + 1 }}.</b>
                                                                                     </td>
                                                                                     <td class="text-start">
                                                                                         {{ $method->name }} 

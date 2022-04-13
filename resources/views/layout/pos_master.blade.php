@@ -62,7 +62,7 @@
                     </div>
                     <div class="modal-body">
                         <!--begin::Form-->
-                        <div class="form-group row">
+                        <div class="form-group row single_payment">
                             <div class="col-md-4">
                                 <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">

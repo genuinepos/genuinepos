@@ -53,7 +53,7 @@
 
         <!--Add Payment modal-->
         <div class="modal fade in" id="otherPaymentMethod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog col-50-modal" role="document">
+            <div class="modal-dialog col-60-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="payment_heading">Choose Payment method</h6>
@@ -62,41 +62,99 @@
                     </div>
                     <div class="modal-body">
                         <!--begin::Form-->
-                        <div class="form-group row">
-                            <div class="col-md-4">
-                                <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
+                        <div class="form-group row single_payment">
+                            <div class="col-md-8">
+                                
+                                @if (json_decode($generalSettings->pos, true)['is_enabled_discount'] == '1')
+                                    <div class="row">
+                                        <label class="col-sm-3 col-form-label text-white">Discount:</label>
+                                        <div class="col-sm-9">
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <select name="order_discount_type" class="form-control modal_order_discount_type">
+                                                        <option value="1">Fixed(0.00)</option>
+                                                        <option value="2">Percent(%)</option>
+                                                    </select>
+                                                    {{-- <input name="order_discount_type" class="form-control" id="order_discount_type" value="1"> --}}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <input name="order_discount" type="number" step="any" class="form-control order_discount" value="0.00">
+                                                </div>
+                                            </div>
+                                            
+                                            <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
+                                                value="0.00" tabindex="-1">
+                                        </div>
                                     </div>
-                                    <select name="payment_method_id" class="form-control"  id="payment_method_id">
-                                        @foreach ($methods as $method)
-                                            <option 
-                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
-                                                value="{{ $method->id }}">
-                                                {{ $method->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                @else
+                                    <input name="order_discount" type="hidden" id="order_discount" value="0.00" tabindex="-1">
+                                    <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
+                                        value="0.00" tabindex="-1">
+                                    <input name="order_discount_type" class="d-none" id="order_discount_type" value="1">
+                                @endif
                             </div>
 
-                            <div class="col-md-8">
-                                <label><strong>Debit Account :</strong> </label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
+                            <div class="col-md-4 payment_method_and_account_area">
+                                <div class="col-md-12">
+                                    <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
+                                        </div>
+                                        <select name="payment_method_id" class="form-control"  id="payment_method_id">
+                                            @foreach ($methods as $method)
+                                                <option 
+                                                    data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                                    value="{{ $method->id }}">
+                                                    {{ $method->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <select name="account_id" class="form-control" id="account_id">
-                                        @foreach ($accounts as $account)
-                                            <option value="{{ $account->id }}">
-                                                @php
-                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                @endphp
-                                                {{ $account->name.$accountType }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                </div>
+    
+                                <div class="col-md-12">
+                                    <label><strong>Debit Account :</strong> </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
+                                        </div>
+                                        <select name="account_id" class="form-control" id="account_id">
+                                            @foreach ($accounts as $account)
+                                                <option value="{{ $account->id }}">
+                                                    @php
+                                                        $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                    @endphp
+                                                    {{ $account->name.$accountType }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row multi_payment_button_area mt-1">
+                            <div class="col-md-2">
+                                <a href="#" class="btn btn-secondary btn-sm" id="multi_payment_btn">Multi Payment</a>
+                            </div>
+                        </div> 
+
+                        <div class="form-group row multi_payment">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ul class="list-unstyled">
+                                        <li><a href="#" class="btn btn-sm btn-secondary mt-1">Cash</a></li>
+                                        <li><a href="#" class="btn btn-sm btn-secondary mt-1">Card</a></li>
+                                        <li><a href="#" class="btn btn-sm btn-secondary mt-1">Bank Transfer</a></li>
+                                        <li><a href="#" class="btn btn-sm btn-secondary mt-1">American Express</a></li>
+                                    </ul>
+                                    {{-- <button type="button" class="btn btn-sm btn-info d-block mt-1">Cash</button>
+                                    <button type="button" class="btn btn-sm btn-info d-block mt-1">Card</button>
+                                    <button type="button" class="btn btn-sm btn-info d-block mt-1">Bank Transfer</button>
+                                    <button type="button" class="btn btn-sm btn-info d-block mt-1">American Express</button> --}}
                                 </div>
                             </div>
                         </div>
@@ -309,7 +367,6 @@
     </div>
     <!-- Edit selling product modal end-->
 
- 
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
@@ -444,14 +501,14 @@
                         <div class="col-md-6">
                             <div class="input-box-4 bg-dark">
                                 <label class="text-white big_label"><strong>Total Payable :</strong> </label>
-                                <input readonly type="text" class="form-control big_field" id="modal_total_payable" value="0">
+                                <input readonly type="text" class="form-control big_field modal_total_payable" value="0">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="input-box-2 bg-info">
                                 <label class="text-white big_label"><strong>Change :</strong></label>
-                                <input type="text" class="form-control big_field text-info" id="modal_change_amount" value="0">
+                                <input type="text" class="form-control big_field text-info modal_change_amt" value="0">
                             </div>
                         </div>
                     </div>
@@ -460,14 +517,14 @@
                         <div class="col-md-6">
                             <div class="input-box bg-success">
                                 <label class="text-white big_label"><strong>Cash Receive :</strong> <span class="text-danger">*</span></label>
-                                <input type="text" name="modal_paying_amount" class="form-control text-success big_field m-paying" id="modal_paying_amount" value="0" autofocus>
+                                <input type="text" class="form-control text-success big_field m-paying modal_paying_amt" value="0" autofocus>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="input-box-3 bg-danger">
                                 <label class="text-white big_label"><strong>Due :</strong> </label>
-                                <input type="text" class="form-control text-danger big_field" id="modal_total_due" value="0">
+                                <input type="text" class="form-control text-danger big_field modal_total_due" value="0">
                             </div>
                         </div>
                     </div>

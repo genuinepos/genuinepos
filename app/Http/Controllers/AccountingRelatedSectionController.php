@@ -345,7 +345,7 @@ class AccountingRelatedSectionController extends Controller
             $loanAndAdvanceQ->whereBetween('loans.report_date', $date_range);
         }
 
-        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             $fixedAssets = $fixedAssetsQ->get();
             $currentAssets = $currentAssetsQ->get();
@@ -445,7 +445,7 @@ class AccountingRelatedSectionController extends Controller
             $toDate = $to_date;
         }
 
-        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             $fixedAssets = $fixedAssetsQ->get();
             $currentAssets = $currentAssetsQ->get();

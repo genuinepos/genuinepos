@@ -415,7 +415,7 @@
        var branch_id = $('#branch_id').val();
        var from_date = $('.from_date').val();
        var to_date = $('.to_date').val();
-
+        console.log(branch_id);
         $.ajax({
             url:"{{ route('reports.financial.amounts') }}",
             type: 'GET',

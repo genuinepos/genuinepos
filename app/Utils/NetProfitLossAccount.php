@@ -122,7 +122,7 @@ class NetProfitLossAccount
             $saleProductsQ->whereBetween('sales.report_date', $date_range);
         }
 
-        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             $purchaseProduct = $purchaseProductQ->get();
             $saleProducts = $saleProductsQ->get();
@@ -168,7 +168,7 @@ class NetProfitLossAccount
             $purchasesQ->whereBetween('purchases.report_date', $date_range);
         }
 
-        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             return $purchases = $purchasesQ->get();
         } else {
@@ -210,9 +210,9 @@ class NetProfitLossAccount
             $salesQ->whereBetween('sales.report_date', $date_range);
         }
 
-        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            return $sales = $salesQ->get();
+            return $sales = $salesQ->where('sales.branch_id', 6)->get();
         } else {
 
             return $sales = $salesQ->where('sales.branch_id', auth()->user()->branch_id)->get();
@@ -245,7 +245,7 @@ class NetProfitLossAccount
             $openingStockQ->whereBetween('product_opening_stocks.created_at', $date_range);
         }
 
-        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             return $openingStock = $openingStockQ->get();
         } else {
@@ -281,7 +281,7 @@ class NetProfitLossAccount
             $individualProductSaleTaxQ->whereBetween('sales.report_date', $date_range);
         }
 
-        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             return $individualProductSaleTax = $individualProductSaleTaxQ->get();
         } else {
@@ -318,7 +318,7 @@ class NetProfitLossAccount
             $directExpenseQ->whereBetween('expanses.report_date', $date_range);
         }
 
-        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             return $directExpense = $directExpenseQ->get();
         } else {
@@ -356,7 +356,7 @@ class NetProfitLossAccount
             $indirectExpenseQ->whereBetween('expanses.report_date', $date_range);
         }
 
-        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             return $indirectExpense = $indirectExpenseQ->get();
         } else {
@@ -395,7 +395,7 @@ class NetProfitLossAccount
             $stockAdjustmentsQ->whereBetween('stock_adjustments.report_date_ts', $date_range);
         }
 
-        if (auth()->user()->role_type == 1 && auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             return $stockAdjustments = $stockAdjustmentsQ->get();
         } else {

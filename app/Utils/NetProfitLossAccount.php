@@ -212,7 +212,7 @@ class NetProfitLossAccount
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            return $sales = $salesQ->where('sales.branch_id', 6)->get();
+            return $sales = $salesQ->get();
         } else {
 
             return $sales = $salesQ->where('sales.branch_id', auth()->user()->branch_id)->get();

@@ -337,6 +337,7 @@ class UserController extends Controller
         $updateUser->salary = $request->salary ? $request->salary : 0;
         $updateUser->salary_type = $request->pay_type;
         $updateUser->save();
+        
         session()->flash('successMsg', 'Successfully user updated');
         return response()->json('User updated successfully');
     }
@@ -357,7 +358,7 @@ class UserController extends Controller
         }
 
         if (!is_null($deleteUser)) {
-            
+
             $deleteUser->delete();
         }
         return response()->json('Successfully user is deleted');

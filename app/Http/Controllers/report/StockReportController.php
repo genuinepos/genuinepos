@@ -108,7 +108,7 @@ class StockReportController extends Controller
                         return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
-                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '(' . $row->code_name . ')</span>')
+                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' . ($row->variant_quantity ? '<strong>'.$row->variant_quantity.'</strong>' : '<strong>'.$row->product_quantity.'</strong>') . '/' . $row->code_name . '</span>')
 
                 ->editColumn('price',  fn ($row) => $row->variant_price ? $row->variant_price : $row->product_price)
                 ->editColumn('stock_value',  function ($row) use ($converter) {

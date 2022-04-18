@@ -5,8 +5,8 @@
         .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 88.3%;z-index: 9999999;padding: 0;left: 6%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
         .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
         .select_area ul li a {color: #000000;text-decoration: none;font-size: 11px;padding: 4px 3px;display: block;border: 1px solid lightgray;margin-top: 3px;}
-        .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
-        .selectProduct {background-color: #ab1c59;color: #fff !important;}
+        .select_area ul li a:hover {background-color: #999396;color: #fff;}
+        .selectProduct {background-color: #746e70;color: #fff !important;}
         .input-group-text-sale {font-size: 7px !important;}
         .border_red {border: 1px solid red!important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}

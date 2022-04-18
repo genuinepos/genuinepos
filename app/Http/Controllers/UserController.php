@@ -26,6 +26,7 @@ class UserController extends Controller
         }
 
         if ($request->ajax()) {
+
             $users = '';
             $query = DB::table('admin_and_users')
                 ->leftJoin('branches', 'admin_and_users.branch_id', 'branches.id')
@@ -34,9 +35,12 @@ class UserController extends Controller
                 ->leftJoin('hrm_designations', 'admin_and_users.designation_id', 'hrm_designations.id');
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $query->where('admin_and_users.branch_id', NULL);
                 } else {
+
                     $query->where('admin_and_users.branch_id', $request->branch_id);
                 }
             }
@@ -59,6 +63,7 @@ class UserController extends Controller
 
             return DataTables::of($users)
                 ->addColumn('action', function ($row) {
+
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
@@ -70,27 +75,37 @@ class UserController extends Controller
                     return $html;
                 })
                 ->editColumn('branch', function ($row) {
+
                     if ($row->branch_name) {
+
                         return $row->branch_name . '/' . $row->branch_code . '(<b>B.L</b>)';
                     } else {
+
                         return '(<b>Head Office</b>)';
                     }
                 })
                 ->editColumn('role_name',  function ($row) {
                     if ($row->role_type == 1) {
+
                         return 'Super-Admin';
                     } elseif ($row->role_type == 2) {
+
                         return 'Admin';
                     } elseif ($row->role_type == 3) {
+
                         return  $row->role_name;
                     } else {
+
                         return '<span class="badge bg-warning text-white">No Role</span>';
                     }
                 })
                 ->editColumn('username',  function ($row) {
+
                     if ($row->username) {
+
                         return $row->username;
                     } else {
+
                         return '<span class="badge bg-secondary"><b>Login not allowed</b></span>';
                     }
                 })
@@ -106,6 +121,7 @@ class UserController extends Controller
     public function create()
     {
         if (auth()->user()->permission->user['user_add'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -121,9 +137,11 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'first_name' => 'required',
+            'email' => 'required|unique:admin_and_users,email',
         ]);
 
         if (isset($request->allow_login)) {
+
             $this->validate($request, [
                 'username' => 'required|unique:admin_and_users,username',
                 'password' => 'required|confirmed',
@@ -139,14 +157,17 @@ class UserController extends Controller
         $addUser->status = isset($request->is_active) ? 1 : 0;
 
         if (isset($request->allow_login)) {
+
             $addUser->allow_login = 1;
             $addUser->username = $request->username;
             $addUser->password = Hash::make($request->password);
             if (!$request->role_id) {
+
                 $superAdminPermission = RolePermission::where('is_super_admin_role', 1)->first();
                 $addUser->role_type = 2;
                 $addUser->role_permission_id = $superAdminPermission->id;
             } else {
+
                 $userPermission = RolePermission::where('role_id', $request->role_id)->first();
                 $addUser->role_type = 3;
                 $addUser->role_id = $request->role_id;
@@ -154,6 +175,7 @@ class UserController extends Controller
                 $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
             }
         } else {
+
             $addUser->branch_id = $request->belonging_branch_id == 'head_office' ? NULL : $request->belonging_branch_id;
         }
 
@@ -194,12 +216,14 @@ class UserController extends Controller
     public function edit($userId)
     {
         if (auth()->user()->permission->user['user_edit'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         $user = AdminAndUser::with(['role'])->where('id', $userId)->first();
 
         if ($user->role_type == 1 && auth()->user()->role_type != 1) {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -215,6 +239,7 @@ class UserController extends Controller
     public function update(Request $request, $userId)
     {
         if (auth()->user()->permission->user['user_edit'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -226,16 +251,19 @@ class UserController extends Controller
         $updateUser = AdminAndUser::where('id', $userId)->first();
 
         if (isset($request->allow_login)) {
+
             $this->validate($request, [
                 'username' => 'required|unique:admin_and_users,username,' . $userId,
                 'password' => 'sometimes|confirmed',
             ]);
 
             if ($updateUser->allow_login == 0) {
+
                 $this->validate($request, [
                     'password' => 'required|confirmed',
                 ]);
             } else {
+                
                 $this->validate($request, [
                     'password' => 'sometimes|confirmed',
                 ]);
@@ -271,14 +299,18 @@ class UserController extends Controller
         $updateUser->role_permission_id = NULL;
 
         if (isset($request->allow_login)) {
+
             $updateUser->allow_login = 1;
             $updateUser->username = $request->username;
             $updateUser->password = $request->password ? Hash::make($request->password) : $updateUser->password;
+            
             if (!$request->role_id) {
+
                 $superAdminPermission = RolePermission::where('is_super_admin_role', 1)->first();
                 $updateUser->role_type = 2;
                 $updateUser->role_permission_id = $superAdminPermission->id;
             } else {
+
                 $userPermission = RolePermission::where('role_id', $request->role_id)->first();
                 $updateUser->role_type = 3;
                 $updateUser->role_id = $request->role_id;

@@ -109,20 +109,19 @@
                 </thead>
                 <tbody>
                     @foreach ($customerPayment->customer_payment_invoices as $pi)
-                        @if ($pi->type == 1)
+                        @if ($pi->sale)
                             <tr>
                                 <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale->date)) }}</td>
                                 <td class="text-start">{{ $pi->sale->invoice_id }}</h6></td>
                                 <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $pi->paid_amount }}</td>
                             </tr>
-                        @else 
+                        @elseif($pi->sale_return)
                             <tr>
                                 <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale_return->date)) }}</td>
                                 <td class="text-start">{{ $pi->sale_return->invoice_id }}</h6></td>
                                 <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $pi->paid_amount }}</td>
                             </tr>
                         @endif
-                        
                     @endforeach
                 </tbody>
             </table>

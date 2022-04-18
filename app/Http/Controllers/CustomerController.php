@@ -231,7 +231,9 @@ class CustomerController extends Controller
     {
         $customerId = $customerId;
         if ($request->ajax()) {
+
             $generalSettings = DB::table('general_settings')->first();
+            
             $sales = '';
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 

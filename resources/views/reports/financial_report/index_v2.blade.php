@@ -31,6 +31,7 @@
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control" id="branch_id" autofocus>
+                                                                <option value="">All</option>
                                                                 <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">

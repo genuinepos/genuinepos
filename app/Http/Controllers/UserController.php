@@ -263,7 +263,7 @@ class UserController extends Controller
                     'password' => 'required|confirmed',
                 ]);
             } else {
-                
+
                 $this->validate($request, [
                     'password' => 'sometimes|confirmed',
                 ]);

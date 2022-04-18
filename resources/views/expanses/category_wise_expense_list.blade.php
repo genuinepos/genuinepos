@@ -40,12 +40,12 @@
                                                     @endif
                                                 @endif
 
-                                                <div class="col-md-2">
+                                                {{-- <div class="col-md-2">
                                                     <label><strong>Expense For :</strong></label>
                                                     <select name="admin_id" class="form-control submit_able" id="admin_id" >
                                                         <option value="">All</option>
                                                     </select>
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="col-md-2">
                                                     <label><strong>Category :</strong></label>
@@ -220,22 +220,6 @@
         }
         setExpanseCategory();
 
-        // Set accounts in payment and payment edit form
-        function setAdmin(){
-            $.ajax({
-                url:"{{route('expanses.all.admins')}}",
-                async:true,
-                type:'get',
-                dataType: 'json',
-                success:function(admins){
-                    $.each(admins, function (key, admin) {
-                        var prefix = admin.prefix ? admin.prefix : '';
-                        var last_name = admin.last_name ? admin.last_name : '';
-                        $('#admin_id').append('<option value="'+admin.id+'">'+ admin.name+' '+last_name+'</option>');
-                    });
-                }
-            });
-        }setAdmin();
     </script>
 
     <script type="text/javascript">

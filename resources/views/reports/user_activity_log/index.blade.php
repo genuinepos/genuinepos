@@ -235,7 +235,7 @@
             })
         }
 
-        getBrandAllowLoginUsers($('#branch_id').val())
+        getBrandAllowLoginUsers($('#branch_id').val());
     </script>
 
     <script type="text/javascript">

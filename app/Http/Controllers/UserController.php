@@ -271,20 +271,7 @@ class UserController extends Controller
         }
 
         $addons = DB::table('addons')->first();
-        // if ($addons->hrm == 1) {
-        //     $this->validate($request, [
-        //         'department_id' => 'required',
-        //         'shift_id' => 'required',
-        //         'emp_id' => 'required',
-        //         'salary' => 'required',
-        //         'pay_type' => 'required',
-        //     ], [
-        //         'department_id.required' => 'Department field is required.',
-        //         'shift_id.required' => 'Shift field is required.',
-        //         'emp_id.required' => 'Employee ID field is required.',
-        //     ]);
-        // }
-
+     
         //return $request->all();
         $updateUser->prefix = $request->prefix;
         $updateUser->name = $request->first_name;
@@ -318,6 +305,7 @@ class UserController extends Controller
                 $updateUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
             }
         } else {
+
             $updateUser->branch_id = $request->belonging_branch_id == 'head_office' ? NULL : $request->belonging_branch_id;
         }
 
@@ -357,16 +345,19 @@ class UserController extends Controller
     public function delete($userId)
     {
         if (auth()->user()->permission->user['user_delete'] == '0') {
+
             return response()->json('Access Denied');
         }
 
         $deleteUser = AdminAndUser::find($userId);
 
         if ($deleteUser->role_type == 1) {
+
             return response()->json('Super-admin can be deleted');
         }
 
         if (!is_null($deleteUser)) {
+            
             $deleteUser->delete();
         }
         return response()->json('Successfully user is deleted');

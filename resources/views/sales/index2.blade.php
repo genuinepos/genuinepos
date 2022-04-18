@@ -122,7 +122,8 @@
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     {{-- <table class="display data_tbl data__table table-hover"> --}}
-                                    <table class="display data_tbl modal-table table-sm table-striped">
+                                    {{-- <table class="display data_tbl modal-table table-sm table-striped"> --}}
+                                        <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
                                                 <th>Actions</th>

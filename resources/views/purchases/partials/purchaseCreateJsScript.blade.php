@@ -949,7 +949,7 @@
         
         // Update selling price
         var unit_cost = tr.find('#unit_cost').val();
-        var unitCostWithDiscount = parseFloat(unit_cost) - parseFloat(profit);
+        var unitCostWithDiscount = tr.find('#unit_cost_with_discount').val();
         var calcProfit = parseFloat(unitCostWithDiscount)  /100 * parseFloat(profit) + parseFloat(unitCostWithDiscount);
         var sellingPrice = tr.find('#selling_price').val(parseFloat(calcProfit).toFixed(2));
         calculateTotalAmount();

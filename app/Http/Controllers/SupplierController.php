@@ -45,6 +45,7 @@ class SupplierController extends Controller
     public function index()
     {
         if (auth()->user()->permission->contact['supplier_all'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -102,12 +103,6 @@ class SupplierController extends Controller
         return response()->json('Supplier created successfully');
     }
 
-    public function getSupplier($supplierId)
-    {
-        $supplier = Supplier::where('id', $supplierId)->first();
-        return response()->json($supplier);
-    }
-
     public function edit($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->select('suppliers.*')->first();
@@ -122,7 +117,6 @@ class SupplierController extends Controller
         ]);
 
         $updateSupplier = Supplier::where('id', $request->id)->first();
-
         $updateSupplier->contact_id = $request->contact_id;
         $updateSupplier->name = $request->name;
         $updateSupplier->business_name = $request->business_name;
@@ -145,12 +139,12 @@ class SupplierController extends Controller
 
         // Add supplier Ledger
         $this->supplierUtil->updateSupplierLedger(
-            voucher_type_id : 0,
-            supplier_id : $updateSupplier->id,
-            date : $updateSupplier->created_at,
-            trans_id : NULL,
-            amount : $updateSupplier->opening_balance,
-            fixed_date : $updateSupplier->created_at,
+            voucher_type_id: 0,
+            supplier_id: $updateSupplier->id,
+            date: $updateSupplier->created_at,
+            trans_id: NULL,
+            amount: $updateSupplier->opening_balance,
+            fixed_date: $updateSupplier->created_at,
         );
 
         return response()->json('Supplier updated successfully');
@@ -159,7 +153,9 @@ class SupplierController extends Controller
     public function delete(Request $request, $supplierId)
     {
         $deleteSupplier = Supplier::find($supplierId);
+
         if (!is_null($deleteSupplier)) {
+
             $deleteSupplier->delete();
         }
         return response()->json('supplier deleted successfully');
@@ -170,10 +166,12 @@ class SupplierController extends Controller
     {
         $statusChange = Supplier::where('id', $supplierId)->first();
         if ($statusChange->status == 1) {
+
             $statusChange->status = 0;
             $statusChange->save();
             return response()->json('Supplier deactivated successfully');
         } else {
+
             $statusChange->status = 1;
             $statusChange->save();
             return response()->json('Supplier activated successfully');
@@ -185,6 +183,7 @@ class SupplierController extends Controller
     {
         $supplierId = $supplierId;
         if ($request->ajax()) {
+
             $generalSettings = DB::table('general_settings')->first();
             $purchases = '';
             $query = DB::table('purchases')
@@ -247,7 +246,7 @@ class SupplierController extends Controller
                     $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
 
                     if (auth()->user()->permission->purchase['purchase_return'] == '1') {
-                        
+
                         $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
                     }
 
@@ -256,69 +255,78 @@ class SupplierController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
+
                 ->editColumn('date', function ($row) {
 
                     return date('d/m/Y', strtotime($row->date));
                 })
+
                 ->editColumn('invoice_id', function ($row) {
                     $html = '';
                     $html .= $row->invoice_id;
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;
                 })
+
                 ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->warehouse_name) {
+
                         return $row->warehouse_name . '<b>(WH)</b>';
                     } elseif ($row->branch_name) {
+
                         return $row->branch_name . '<b>(BL)</b>';
                     } else {
+
                         return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
                     }
                 })
-                ->editColumn('total_purchase_amount', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_purchase_amount . '</b>';
-                })
-                ->editColumn('paid', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid . '</b>';
-                })
-                ->editColumn('due', function ($row) use ($generalSettings) {
-                    return '<b><span class="text-danger">' . json_decode($generalSettings->business, true)['currency'] . ($row->due >= 0 ? $row->due :   0.00) . '</span></b>';
-                })
-                ->editColumn('return_amount', function ($row) use ($generalSettings) {
-                    return '<b>' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->purchase_return_amount . '</b>';
-                })
-                ->editColumn('return_due', function ($row) use ($generalSettings) {
-                    return '<b><span class="text-success">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->purchase_return_due . '</span></b>';
-                })
+
+                ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
+
+                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+
+                ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
+
+                ->editColumn('return_amount', fn ($row) => '<span class="return_amount" data-value="' . $row->purchase_return_amount . '">' . $this->converter->format_in_bdt($row->purchase_return_amount) . '</span>')
+
+                ->editColumn('return_due', fn ($row) => '<span class="return_due text-danger" data-value="' . $row->purchase_return_due . '">' . $this->converter->format_in_bdt($row->purchase_return_due) . '</span>')
+
                 ->editColumn('status', function ($row) {
+
                     if ($row->purchase_status == 1) {
+
                         return '<span class="text-success"><b>Purchased</b></span>';
                     } elseif ($row->purchase_status == 2) {
+
                         return '<span class="text-secondary"><b>Pending</b></span>';
                     } elseif ($row->purchase_status == 3) {
-                        return '<span class="text-primary text-white"><b>Purchased By Order</b></span>';
+
+                        return '<span class="text-primary"><b>Purchased By Order</b></span>';
                     }
                 })
+
                 ->editColumn('payment_status', function ($row) {
+
                     $payable = $row->total_purchase_amount - $row->purchase_return_amount;
                     if ($row->due <= 0) {
+
                         return '<span class="badge bg-success">Paid</span>';
                     } elseif ($row->due > 0 && $row->due < $payable) {
+
                         return '<span class="badge bg-primary text-white">Partial</span>';
                     } elseif ($payable == $row->due) {
+
                         return '<span class="badge bg-danger text-white">Due</span>';
                     }
                 })
+
                 ->editColumn('created_by', function ($row) {
+
                     return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
                 })
-                ->setRowAttr([
-                    'data-href' => function ($row) {
-                        return route('purchases.show', [$row->id]);
-                    }
-                ])
-                ->setRowClass('clickable_row')
+
                 ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'return_amount', 'return_due', 'payment_status', 'status', 'created_by'])
+
                 ->make(true);
         }
 
@@ -330,6 +338,7 @@ class SupplierController extends Controller
     public function ledgers(Request $request, $supplierId)
     {
         if ($request->ajax()) {
+
             $settings = DB::table('general_settings')->first();
 
             $supplierUtil = $this->supplierUtil;
@@ -374,18 +383,21 @@ class SupplierController extends Controller
 
             return DataTables::of($supplierLedgers)
                 ->editColumn('date', function ($row) use ($settings) {
+
                     $dateFormat = json_decode($settings->business, true)['date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->report_date));
                 })
 
                 ->editColumn('particulars', function ($row) use ($supplierUtil) {
+
                     $type = $supplierUtil->voucherType($row->voucher_type);
                     $__agp = $row->agp_purchase ? '/' . 'AGP:<b>' . $row->agp_purchase . '</b>' : '';
                     return '<b>' . $type['name'] . '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
                 })
 
                 ->editColumn('voucher_no',  function ($row) use ($supplierUtil) {
+
                     $type = $supplierUtil->voucherType($row->voucher_type);
                     return $row->{$type['voucher_no']};
                 })
@@ -457,13 +469,6 @@ class SupplierController extends Controller
         $ledgers = $query->get();
 
         return view('contacts.suppliers.ajax_view.print_ledger', compact('ledgers', 'supplier', 'supplierUtil', 'fromDate', 'toDate'));
-    }
-
-    // Supplier  purchases
-    public function purchases($supplierId)
-    {
-        $supplierId = $supplierId;
-        return view('contacts.suppliers.purchases', compact('supplierId'));
     }
 
     // Supplier payment view
@@ -726,7 +731,7 @@ class SupplierController extends Controller
         );
 
         $returnPurchases = Purchase::with(['purchase_return'])->where('purchase_return_due', '>', 0)->get();
-        
+
         if (count($returnPurchases) > 0) {
 
             $index = 0;
@@ -850,7 +855,7 @@ class SupplierController extends Controller
                         $addSupplierPaymentInvoice->save();
 
                         if ($returnPurchase->purchase_return) {
-                            
+
                             $returnPurchase->purchase_return->total_return_due -= $returnPurchase->purchase_return_due;
                             $returnPurchase->purchase_return->total_return_due_received += $returnPurchase->purchase_return_due;
                             $returnPurchase->purchase_return->save();
@@ -875,7 +880,7 @@ class SupplierController extends Controller
 
                 $index = 0;
                 foreach ($dueSupplierReturnInvoices as $dueSupplierReturnInvoice) {
-                    
+
                     if ($dueSupplierReturnInvoice->total_return_due > $request->paying_amount) {
 
                         if ($request->paying_amount > 0) {
@@ -995,22 +1000,22 @@ class SupplierController extends Controller
         return response()->json('Return amount received successfully.');
     }
 
-    public function viewPayment($supplierId)
-    {
-        $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
-        $supplier_payments = DB::table('supplier_payments')
-            ->leftJoin('accounts', 'supplier_payments.account_id', 'accounts.id')
-            ->leftJoin('payment_methods', 'supplier_payments.payment_method_id', 'payment_methods.id')
-            ->select(
-                'supplier_payments.*',
-                'accounts.name as ac_name',
-                'accounts.account_number as ac_no',
-                'payment_methods.name as payment_method'
-            )
-            ->where('supplier_payments.supplier_id', $supplier->id)
-            ->orderBy('supplier_payments.report_date', 'desc')->get();
-        return view('contacts.suppliers.ajax_view.view_payment_list', compact('supplier', 'supplier_payments'));
-    }
+    // public function viewPayment($supplierId)
+    // {
+    //     $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
+    //     $supplier_payments = DB::table('supplier_payments')
+    //         ->leftJoin('accounts', 'supplier_payments.account_id', 'accounts.id')
+    //         ->leftJoin('payment_methods', 'supplier_payments.payment_method_id', 'payment_methods.id')
+    //         ->select(
+    //             'supplier_payments.*',
+    //             'accounts.name as ac_name',
+    //             'accounts.account_number as ac_no',
+    //             'payment_methods.name as payment_method'
+    //         )
+    //         ->where('supplier_payments.supplier_id', $supplier->id)
+    //         ->orderBy('supplier_payments.report_date', 'desc')->get();
+    //     return view('contacts.suppliers.ajax_view.view_payment_list', compact('supplier', 'supplier_payments'));
+    // }
 
     // Supplier Payment Details
     public function paymentDetails($paymentId)
@@ -1030,34 +1035,47 @@ class SupplierController extends Controller
     public function paymentDelete(Request $request, $paymentId)
     {
         $deleteSupplierPayment = SupplierPayment::with('supplier_payment_invoices')->where('id', $paymentId)->first();
+
         $storedAccountId = $deleteSupplierPayment->account_id;
         $storedSupplierPayment = $deleteSupplierPayment;
         $storeSupplierPaymentInvoices = $deleteSupplierPayment->supplier_payment_invoices;
+
         if ($deleteSupplierPayment->attachment != null) {
+
             if (file_exists(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment))) {
+
                 unlink(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment));
             }
         }
+
         $deleteSupplierPayment->delete();
 
         // Update supplier payment invoices
         if (count($storeSupplierPaymentInvoices) > 0) {
+
             if ($storedSupplierPayment->type == 1) {
+
                 foreach ($storeSupplierPaymentInvoices as $pInvoice) {
+
                     $purchase = Purchase::where('id', $pInvoice->purchase_id)->first();
                     $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
                 }
             } else {
+
                 foreach ($storeSupplierPaymentInvoices as $pInvoice) {
+
                     if ($pInvoice->purchase_id) {
+
                         $purchase = Purchase::with('purchase_return')->where('id', $pInvoice->purchase_id)->first();
                         if ($purchase->purchase_return) {
+
                             $purchase->purchase_return->total_return_due += $pInvoice->paid_amount;
                             $purchase->purchase_return->total_return_due_received -= $pInvoice->paid_amount;
                             $purchase->purchase_return->save();
                         }
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
                     } elseif ($pInvoice->supplier_return_id) {
+
                         $supplierReturn = PurchaseReturn::where('id', $pInvoice->supplier_return_id)->first();
                         $supplierReturn->total_return_due += $pInvoice->paid_amount;
                         $supplierReturn->total_return_due_received -= $pInvoice->paid_amount;
@@ -1068,10 +1086,209 @@ class SupplierController extends Controller
         }
 
         if ($storedAccountId) {
+
             $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
         }
 
         $this->supplierUtil->adjustSupplierForSalePaymentDue($deleteSupplierPayment->supplier_id);
         return response()->json('Payment deleted successfully.');
+    }
+
+    public function allPaymentList(Request $request, $supplierId)
+    {
+        if ($request->ajax()) {
+
+            $generalSettings = DB::table('general_settings')->first();
+            $payments = '';
+            $paymentsQuery = DB::table('supplier_ledgers')->whereIn('supplier_ledgers.voucher_type', [3, 4, 5, 6])
+                ->leftJoin('supplier_payments', 'supplier_ledgers.supplier_payment_id', 'supplier_payments.id')
+                ->leftJoin('payment_methods as sp_pay_method', 'supplier_payments.payment_method_id', 'sp_pay_method.id')
+                ->leftJoin('accounts as sp_account', 'supplier_payments.account_id', 'sp_account.id')
+                ->leftJoin('purchase_payments', 'supplier_ledgers.purchase_payment_id', 'purchase_payments.id')
+                ->leftJoin('payment_methods as pp_pay_method', 'purchase_payments.payment_method_id', 'pp_pay_method.id')
+                ->leftJoin('accounts as pp_account', 'purchase_payments.account_id', 'pp_account.id')
+                ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
+                ->leftJoin('purchase_returns', 'purchase_payments.supplier_return_id', 'purchase_returns.id')
+                // ->leftJoin('admin_and_users', 'supplier_ledgers.user_id', 'admin_and_users.id')
+            ;
+
+            if ($request->type) {
+
+                if ($request->type == 1) {
+
+                    $paymentsQuery->whereIn('supplier_ledgers.voucher_type', [3, 5]);
+                } else {
+
+                    $paymentsQuery->whereIn('supplier_ledgers.voucher_type', [4, 6]);
+                }
+            }
+
+            if ($request->p_from_date) {
+
+                $from_date = date('Y-m-d', strtotime($request->p_from_date));
+                $to_date = $request->p_to_date ? date('Y-m-d', strtotime($request->p_to_date)) : $from_date;
+                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+                $paymentsQuery->whereBetween('supplier_ledgers.report_date', $date_range); // Final
+            }
+
+            $payments = $paymentsQuery->select(
+                'supplier_ledgers.date',
+                'supplier_ledgers.report_date',
+                'supplier_ledgers.amount',
+                'supplier_ledgers.supplier_payment_id',
+                'supplier_ledgers.purchase_payment_id',
+                'supplier_ledgers.voucher_type',
+                'supplier_payments.voucher_no as supplier_payment_voucher',
+                'supplier_payments.pay_mode as sp_pay_mode',
+                'sp_pay_method.name as sp_payment_method',
+                'sp_account.name as sp_account',
+                'sp_account.account_number as sp_account_number',
+                'purchase_payments.invoice_id as purchase_payment_voucher',
+                'purchase_payments.pay_mode as pp_pay_mode',
+                'pp_pay_method.name as pp_payment_method',
+                'pp_account.name as pp_account',
+                'pp_account.account_number as pp_account_number',
+                'purchases.invoice_id as purchase_inv',
+                'purchase_returns.invoice_id as return_inv',
+            )->orderBy('supplier_ledgers.report_date', 'desc');
+
+            return DataTables::of($payments)
+                ->addColumn('action', function ($row) {
+
+                    $html = '<div class="btn-group" role="group">';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+
+                    if ($row->supplier_payment_id) {
+
+                        $html .= '<a href="' . route('suppliers.view.details', $row->supplier_payment_id) . '" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
+
+                        $html .= '<a href="' . route('suppliers.payment.delete', $row->supplier_payment_id) . '" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
+                    } else {
+
+                        $html .= '<a href="' . route('purchases.payment.details', $row->purchase_payment_id) . '" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
+
+                        $html .= '<a href="' . route('purchases.payment.delete', $row->purchase_payment_id) . '" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
+                    }
+
+                    $html .= '</div>';
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->editColumn('date', function ($row) use ($generalSettings) {
+
+                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                })
+                ->editColumn('voucher_no', function ($row) {
+
+                    return $row->supplier_payment_voucher . $row->purchase_payment_voucher;
+                })
+                ->editColumn('against_invoice', function ($row) {
+
+                    if ($row->purchase_inv || $row->return_inv) {
+
+                        if ($row->purchase_inv) {
+
+                            return 'Purchase : ' . $row->purchase_inv;
+                        } else {
+
+                            return 'Purchase Return : ' . $row->return_inv;
+                        }
+                    }
+                })
+                ->editColumn('type', function ($row) {
+
+                    if ($row->voucher_type == 3 || $row->voucher_type == 5) {
+
+                        return 'Payment';
+                    } else {
+
+                        return 'Return Payment';
+                    }
+                })
+                ->editColumn('method', function ($row) {
+
+                    return $row->sp_pay_mode . $row->sp_payment_method . $row->pp_pay_mode . $row->pp_payment_method;
+                })
+                ->editColumn('account', function ($row) {
+
+                    if ($row->sp_account) {
+
+                        return $row->sp_account . '(A/C:' . $row->sp_account_number . ')';
+                    } else {
+
+                        return $row->pp_account . '(A/C:' . $row->pp_account_number . ')';
+                    }
+                })
+                ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
+
+                ->rawColumns(['date', 'against_invoice', 'type', 'method', 'account', 'amount', 'action'])
+                ->make(true);
+        }
+    }
+
+    public function allPaymentPrint(Request $request, $supplierId)
+    {
+        $payments = '';
+        $fromDate  = '';
+        $toDate = '';
+        $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
+
+        $paymentsQuery = DB::table('supplier_ledgers')->whereIn('supplier_ledgers.voucher_type', [3, 4, 5, 6])
+            ->leftJoin('supplier_payments', 'supplier_ledgers.supplier_payment_id', 'supplier_payments.id')
+            ->leftJoin('payment_methods as sp_pay_method', 'supplier_payments.payment_method_id', 'sp_pay_method.id')
+            ->leftJoin('accounts as sp_account', 'supplier_payments.account_id', 'sp_account.id')
+            ->leftJoin('purchase_payments', 'supplier_ledgers.purchase_payment_id', 'purchase_payments.id')
+            ->leftJoin('payment_methods as pp_pay_method', 'purchase_payments.payment_method_id', 'pp_pay_method.id')
+            ->leftJoin('accounts as pp_account', 'purchase_payments.account_id', 'pp_account.id')
+            ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
+            ->leftJoin('purchase_returns', 'purchase_payments.supplier_return_id', 'purchase_returns.id')
+            // ->leftJoin('admin_and_users', 'supplier_ledgers.user_id', 'admin_and_users.id')
+        ;
+
+        if ($request->type) {
+
+            if ($request->type == 1) {
+
+                $paymentsQuery->whereIn('supplier_ledgers.voucher_type', [3, 5]);
+            } else {
+
+                $paymentsQuery->whereIn('supplier_ledgers.voucher_type', [4, 6]);
+            }
+        }
+
+        if ($request->p_from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->p_from_date));
+            $to_date = $request->p_to_date ? date('Y-m-d', strtotime($request->p_to_date)) : $from_date;
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $paymentsQuery->whereBetween('supplier_ledgers.report_date', $date_range); // Final
+
+            $fromDate  = $request->p_from_date;
+            $toDate = $request->p_to_date ? $request->p_to_date : $request->p_from_date;
+        }
+
+        $payments = $paymentsQuery->select(
+            'supplier_ledgers.date',
+            'supplier_ledgers.report_date',
+            'supplier_ledgers.amount',
+            'supplier_ledgers.supplier_payment_id',
+            'supplier_ledgers.purchase_payment_id',
+            'supplier_ledgers.voucher_type',
+            'supplier_payments.voucher_no as supplier_payment_voucher',
+            'supplier_payments.pay_mode as sp_pay_mode',
+            'sp_pay_method.name as sp_payment_method',
+            'sp_account.name as sp_account',
+            'sp_account.account_number as sp_account_number',
+            'purchase_payments.invoice_id as purchase_payment_voucher',
+            'purchase_payments.pay_mode as pp_pay_mode',
+            'pp_pay_method.name as pp_payment_method',
+            'pp_account.name as pp_account',
+            'pp_account.account_number as pp_account_number',
+            'purchases.invoice_id as purchase_inv',
+            'purchase_returns.invoice_id as return_inv',
+        )->orderBy('supplier_ledgers.report_date', 'desc')->get();
+
+        return view('contacts.suppliers.ajax_view.print_payments', compact('payments', 'fromDate', 'toDate', 'supplier'));
     }
 }

@@ -56,10 +56,13 @@
                             <li><strong>Purchase Status : </strong> <span class="badge bg-primary">Ordered</span></li>
                             <li><strong>Receiving Status : </strong> 
                                 @if ($purchase->po_receiving_status == 'Pending')
+
                                     <span class="badge bg-danger">Pending</span>
                                 @elseif ($purchase->po_receiving_status == 'Completed')
+
                                     <span class="badge bg-success">Completed</span>
                                 @else
+                                
                                     <span class="badge bg-primary">Partial</span>
                                 @endif
                             </li>
@@ -223,7 +226,7 @@
                                 </tr>
    
                                 <tr>
-                                    <th class="text-end">Order Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">Grand Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                                    </td>
@@ -232,11 +235,10 @@
                                 <tr>
                                     <th class="text-end">Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                                    </td>
                                 </tr>
 
-                                
                                 <tr>
                                     <th class="text-end">Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
@@ -480,7 +482,7 @@
                             </tr>
     
                             <tr>
-                                <th colspan="11" class="text-end">Order Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th colspan="11" class="text-end">Grand Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                                 </td>

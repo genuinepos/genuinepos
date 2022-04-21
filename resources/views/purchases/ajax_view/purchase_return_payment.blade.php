@@ -156,11 +156,13 @@
      //Add purchase return payment request by ajax
      $('#payment_form').on('submit', function(e) {
         e.preventDefault();
+        
         $('.loading_button').show();
         var available = $('#p_available_amount').val();
         var paying_amount = $('#p_paying_amount').val();
 
         if (parseFloat(paying_amount) > parseFloat(available)) {
+
             $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
             $('.loading_button').hide();
             return;
@@ -177,21 +179,29 @@
             processData: false,
             success: function(data) {
                 if (!$.isEmptyObject(data.errorMsg)) {
+
                     toastr.error(data.errorMsg, 'ERROR');
                     $('.loading_button').hide();
                 } else {
+
                     $('.loading_button').hide();
                     $('#paymentModal').modal('hide');
                     $('#paymentViewModal').modal('hide');
                     toastr.success(data);
-                    table.ajax.reload();
+                    $('.data_tbl').DataTable().ajax.reload();
                 }
             },error: function(err) {
+
                 $('.loading_button').hide();
                 $('.error').html('');
 
                 if (err.status == 0) {
+
                     toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }else if (err.status == 500) {
+                    
+                    toastr.error('Server error. Please contact to the support team.'); 
                     return;
                 }
 

@@ -15,6 +15,7 @@ return [
   'manufacturing' => 'Manufacture',
   'essentials' => 'Manage Task',
   'e_commerce' => 'Ecommerce',
+  'communication' => 'Communicate',
   'service' => 'Service',
   'reports' => 'Reports',
   // Menu child of Products module
@@ -103,6 +104,12 @@ return [
   'invoice_schema' => 'Invoice Schemas',
   'invoice_layout' => 'Invoice Layouts',
   'cash_counter' => 'Cash Counter',
+  // Menu child of Communication module  
+  'notice_board' => 'Notice Board',
+  'email' => 'Email',
+  'sms' => 'SMS',
+  'email_settings' => 'Email Settings',
+  'sms_settings' => 'SMS Settings',
   // Menu child of Users module  
   'add_user' => 'Add User',
   'user_list' => 'User List',

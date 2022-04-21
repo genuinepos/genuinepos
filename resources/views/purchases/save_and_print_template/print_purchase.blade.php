@@ -210,6 +210,20 @@
                                 {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                             </td>
                         </tr>
+
+                        <tr>
+                            <th colspan="7" class="text-end">Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td class="text-end">
+                                {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="7" class="text-end">Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td class="text-end">
+                                {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
+                            </td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>

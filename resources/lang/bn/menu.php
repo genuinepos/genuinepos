@@ -13,6 +13,7 @@ return [
     'users' => 'ব্যবহারকারী',
     'hrm' => 'মানব সম্পদ',
     'essentials' => 'কার্য ব্যবস্থাপনা',
+    'communication' => 'যোগাযোগ',
     'manufacturing' => 'উৎপাদন',
     'e_commerce' => 'ইকমার্স',
     'service' => 'সেবা',
@@ -100,6 +101,12 @@ return [
     'payment_methods' => 'মুল্য পরিশোধ পদ্ধতি',
     'barcode_settings' => 'বারকোড সেটিংস',
     'cash_counter' => 'টাকা প্রদান কেন্দ্র',
+    // Menu child of Communication module  
+    'notice_board' => 'নোটিশ বোর্ড',
+    'email' => 'ইমেইল',
+    'sms' => 'এসএমএস',
+    'email_settings' => 'ইমেল সেটিংস',
+    'sms_settings' => 'এসএমএস সেটিংস',
     // Menu child of Users module  
     'add_user' => 'ব্যবহারকারী যুক্ত করুন',
     'user_list' => 'ব্যবহারকারীর তালিকা',

@@ -11,6 +11,7 @@ use App\Utils\AccountUtil;
 use App\Utils\PurchaseUtil;
 use App\Utils\SupplierUtil;
 use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
 use App\Models\PurchaseReturn;
 use App\Models\SupplierLedger;
 use App\Models\PurchasePayment;
@@ -483,7 +484,7 @@ class SupplierController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name')->get();
+        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
         return view('contacts.suppliers.ajax_view.payment_modal', compact('supplier', 'accounts', 'methods'));
     }

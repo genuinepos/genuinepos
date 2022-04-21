@@ -311,7 +311,7 @@
 
                         <div class="tab_contant payments d-none">
                             <div class="row">
-                                <div class="col-md-4 col-sm-12 col-lg-4">
+                                <div class="col-md-3 col-sm-12 col-lg-3">
                                     <table class="table modal-table table-sm mt-3">
                                         <tbody>
                                             <tr>
@@ -344,18 +344,9 @@
                                     </table>
                                 </div>
 
-                                <div class="col-md-7 col-sm-12 col-lg-8">
-                                    <div class="card mt-3">
-                                        <form id="filter_supplier_payments" class="pb-2 px-2" method="get">
-
-                                            <div class="form-group row">
-                                                <div class="col-md-12">
-                                                    <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-success float-end mt-1 me-4"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
-
-                                                    <a class="btn btn-success float-end mt-1 me-4 return_payment_btn {{ $supplier->total_purchase_return_due > 0 ? '' : 'd-none' }} " id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i> Receive Return Amount</a> 
-                                                
-                                                </div>
-                                            </div>
+                                <div class="col-md-7 col-sm-12 col-lg-7">
+                                    <div class="card mt-3 pb-5">
+                                        <form id="filter_supplier_payments" class="py-2 px-2 mt-2" method="get">
 
                                             <div class="form-group row">
                                                 <div class="col-md-3">
@@ -391,23 +382,34 @@
 
                                                 <div class="col-md-3">
                                                     <div class="row">
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-12">
                                                             <label><strong></strong></label>
                                                             <div class="input-group">
                                                                 <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6">
-                                                            <label></label>
-                                                            <div class="input-group">
-                                                                <a href="{{ route('suppliers.all.payment.print', $supplier->id) }}" class="btn btn-sm btn-primary float-end" id="print_payments"><i class="fas fa-print "></i> Print</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-sm-12 col-lg-2">
+                                    <div class="row mt-2">
+                                        <div class="col-md-12">
+                                            <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-success mt-2"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
+    
+                                            <a class="btn btn-success return_payment_btn mt-2 {{ $supplier->total_purchase_return_due > 0 ? '' : 'd-none' }} " id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund Amount</a> 
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12">
+                                            
+                                                <a href="{{ route('suppliers.all.payment.print', $supplier->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
+                                            
+                                        </div>
                                     </div>
                                 </div>
                             </div>

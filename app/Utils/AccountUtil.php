@@ -202,6 +202,7 @@ class AccountUtil
         if ($update) {
 
             $previousAccountId = $update->account_id;
+
             $update->date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
             $update->account_id = $account_id;
             $update->{$voucherType['amt']} = $amount;
@@ -210,9 +211,11 @@ class AccountUtil
             $update->save();
 
             if ($previousAccountId != $account_id) {
-                $this->adjustAccountBalance($balance_type, $account_id);
+
+                $this->adjustAccountBalance($balance_type, $previousAccountId);
             }
         } else {
+
             $this->addAccountLedger($voucher_type_id, $date, $account_id, $trans_id, $amount, $balance_type);
         }
     }

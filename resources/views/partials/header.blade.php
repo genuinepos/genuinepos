@@ -35,8 +35,8 @@
                                 <li class="top-icon d-none d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
                                                 class="fas fa-th-large"></i></b></a>
                                     <ul class="lists">
-                                        <li><a href="#"><i class="fas fa-bell"></i><span class="title">Notice
-                                                    Board</span></a> </li>
+                                        <li><a href="#"><i class="fas fa-bell"></i>
+                                            <span class="title">Notice Board</span></a> </li>
                                         <li><a href="#"><i class="fas fa-envelope-open"></i><span class="title">Send
                                                     Email</span></a></li>
                                         <li><a href="#"><i class="fas fa-comment-alt"></i><span class="title">Send

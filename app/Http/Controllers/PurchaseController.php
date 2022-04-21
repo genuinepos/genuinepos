@@ -182,7 +182,7 @@ class PurchaseController extends Controller
         $this->validate($request, [
             'supplier_id' => 'required',
             'invoice_id' => 'sometimes|unique:purchases,invoice_id',
-            'date' => 'required',
+            'date' => 'required|date',
             'payment_method_id' => 'required',
             'purchase_account_id' => 'required',
             'account_id' => 'required',
@@ -478,7 +478,7 @@ class PurchaseController extends Controller
     public function update(Request $request, $editType)
     {
         $this->validate($request, [
-            'date' => 'required',
+            'date' => 'required|date',
             'purchase_account_id' => 'required',
         ], [
             'purchase_account_id.required' => 'Purchase A/C is required.',
@@ -967,7 +967,7 @@ class PurchaseController extends Controller
     {
         $this->validate($request, [
             'paying_amount' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'payment_method_id' => 'required',
             'account_id' => 'required',
         ]);
@@ -1035,12 +1035,13 @@ class PurchaseController extends Controller
     {
         $this->validate($request, [
             'paying_amount' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'payment_method_id' => 'required',
             'account_id' => 'required',
         ]);
 
         if ($request->paying_amount > 0) {
+
             $updatePurchasePayment = PurchasePayment::with(
                 'account',
                 'purchase.purchase_return',
@@ -1098,7 +1099,7 @@ class PurchaseController extends Controller
     {
         $this->validate($request, [
             'paying_amount' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'payment_method_id' => 'required',
             'account_id' => 'required',
         ]);
@@ -1164,7 +1165,7 @@ class PurchaseController extends Controller
     {
         $this->validate($request, [
             'paying_amount' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'payment_method_id' => 'required',
             'account_id' => 'required',
         ]);

@@ -451,86 +451,86 @@
             });
         });
 
-        // Show supplier payment modal
-        $(document).on('click', '#pay_button',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('.data_preloader').show();
-            $.ajax({
-                url:url,
-                type:'get',
-                success:function(data) {
-                    $('#payment_modal_body').html(data);
-                    $('#paymentModal').modal('show');
-                    $('.data_preloader').hide();
-                    document.getElementById('p_amount').focus();
-                }
-            });
-        });
+        // // Show supplier payment modal
+        // $(document).on('click', '#pay_button',function(e){
+        //     e.preventDefault();
+        //     var url = $(this).attr('href');
+        //     $('.data_preloader').show();
+        //     $.ajax({
+        //         url:url,
+        //         type:'get',
+        //         success:function(data) {
+        //             $('#payment_modal_body').html(data);
+        //             $('#paymentModal').modal('show');
+        //             $('.data_preloader').hide();
+        //             document.getElementById('p_amount').focus();
+        //         }
+        //     });
+        // });
 
-        //Add Supplier payment request by ajax
-        $(document).on('submit', '#supplier_payment_form', function(e){
-            e.preventDefault();
+        // //Add Supplier payment request by ajax
+        // $(document).on('submit', '#supplier_payment_form', function(e){
+        //     e.preventDefault();
 
-            $('.loading_button').show();
-            var available_amount = $('#p_available_amount').val();
-            var paying_amount = $('#p_paying_amount').val();
+        //     $('.loading_button').show();
+        //     var available_amount = $('#p_available_amount').val();
+        //     var paying_amount = $('#p_paying_amount').val();
 
-            if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
-                $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
-                $('.loading_button').hide();
-                return;
-            }
+        //     if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
+        //         $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
+        //         $('.loading_button').hide();
+        //         return;
+        //     }
 
-            var url = $(this).attr('action');
+        //     var url = $(this).attr('action');
           
-            $.ajax({
-                url:url,
-                type:'post',
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success:function(data){
-                    $('.loading_button').hide();
-                    $('.error').html('');
-                    if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR');
-                    }else{
-                        $('#paymentModal').modal('hide');
-                        toastr.success(data);
-                        getAllSupplier();
-                    }
-                },
-                error: function(err) {
-                    $('.loading_button').hide();
-                    $('.error').html('');
+        //     $.ajax({
+        //         url:url,
+        //         type:'post',
+        //         data: new FormData(this),
+        //         contentType: false,
+        //         cache: false,
+        //         processData: false,
+        //         success:function(data){
+        //             $('.loading_button').hide();
+        //             $('.error').html('');
+        //             if(!$.isEmptyObject(data.errorMsg)){
+        //                 toastr.error(data.errorMsg,'ERROR');
+        //             }else{
+        //                 $('#paymentModal').modal('hide');
+        //                 toastr.success(data);
+        //                 getAllSupplier();
+        //             }
+        //         },
+        //         error: function(err) {
+        //             $('.loading_button').hide();
+        //             $('.error').html('');
 
-                    if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
-                        return;
-                    }
+        //             if (err.status == 0) {
+        //                 toastr.error('Net Connetion Error. Reload This Page.'); 
+        //                 return;
+        //             }
 
-                    $.each(err.responseJSON.errors, function(key, error) {
-                        $('.error_p_' + key + '').html(error[0]);
-                    });
-                }
-            });
-        });
+        //             $.each(err.responseJSON.errors, function(key, error) {
+        //                 $('.error_p_' + key + '').html(error[0]);
+        //             });
+        //         }
+        //     });
+        // });
 
-        $(document).on('click', '#add_payment',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            $.confirm({
-                'title': 'Payment Confirmation',
-                'content': 'Are you sure to make this payment?',
-                'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#supplier_payment_form').submit();}},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Edit canceled.');}}
-                }
-            });
-        });
+        // $(document).on('click', '#add_payment',function(e){
+        //     e.preventDefault();
+        //     var url = $(this).attr('href');
+        //     $('#deleted_form').attr('action', url);
+        //     $.confirm({
+        //         'title': 'Payment Confirmation',
+        //         'content': 'Are you sure to make this payment?',
+        //         'buttons': {
+        //             'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#supplier_payment_form').submit();}},
+        //             'No': {'class': 'no btn-danger','action': function() {console.log('Edit canceled.');}}
+        //         }
+        //     });
+        // });
 
         // Show supplier return payment modal
         $(document).on('click', '#pay_receive_button',function(e){

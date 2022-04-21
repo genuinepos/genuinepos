@@ -949,13 +949,8 @@
                     $('.loading_button').hide();
                     toastr.success(data); 
 
-                    @if ($editType == 'purchased') 
-
-                        window.location = "{{route('purchases.index_v2')}}";
-                    @else 
-                    
-                        window.location = "{{route('purchases.po.list')}}";
-                    @endif
+                    window.location = "{{ url()->previous() }}";
+                   
                 }
             },error: function(err) {
                 $('.loading_button').hide();
@@ -968,11 +963,13 @@
                 }else if (err.status == 500) {
 
                     toastr.error('Server error. Please contact the support team.');
+                    return;
                 }
 
                 toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
 
                 $.each(err.responseJSON.errors, function(key, error) {
+
                     $('.error_' + key + '').html(error[0]);
                 });
             }

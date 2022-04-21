@@ -80,7 +80,7 @@ class LoginController extends Controller
                 return redirect()->intended(route('dashboard.dashboard'));
             } else {
 
-                session()->flash('errorMsg', 'Sorry! Email or Password not matched!');
+                session()->flash('errorMsg', 'Sorry! Username or Password not matched!');
                 return redirect()->back();
             }
         } else {

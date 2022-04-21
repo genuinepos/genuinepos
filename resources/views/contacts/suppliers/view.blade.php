@@ -29,7 +29,7 @@
                             <ul class="list-unstyled">
                                 <li>
                                     <a id="tab_btn" data-show="ledger" class="tab_btn tab_active" href="#">
-                                        <i class="fas fa-scroll"></i>Ledger
+                                        <i class="fas fa-scroll"></i> Ledger
                                     </a>
                                 </li>
 
@@ -42,6 +42,12 @@
                                 <li>
                                     <a id="tab_btn" data-show="purchases" class="tab_btn" href="#">
                                         <i class="fas fa-shopping-bag"></i> Purchases
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a id="tab_btn" data-show="payments" class="tab_btn" href="#">
+                                        <i class="far fa-money-bill-alt"></i> Payments
                                     </a>
                                 </li>
                             </ul>
@@ -60,34 +66,34 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->opening_balance) }}</td>
+                                                        <td class="text-end opening_balance">{{ App\Utils\Converter::format_in_bdt($supplier->opening_balance) }}</td>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="text-end"><strong>Total Purchase : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->total_return) }}</td>
+                                                        <td class="text-end total_purchase">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</td>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end">
+                                                        <td class="text-end text-success total_paid">
                                                             {{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}
                                                         </td>
                                                     </tr>
 
                                                     <tr>
+                                                        <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                        <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($supplier->total_return) }}</td>
+                                                    </tr>
+
+                                                    <tr>
                                                         <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</td>
+                                                        <td class="text-end text-danger total_purchase_due">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</td>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="text-end"><strong>Total Returnable/Refundable Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end">
+                                                        <td class="text-end total_purchase_return_due">
                                                             {{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_return_due) }}
                                                         </td>
                                                     </tr>
@@ -150,7 +156,7 @@
                                                             </div>
                 
                                                             <div class="col-md-5 mt-3">
-                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_ledger"><i class="fas fa-print"></i> Print</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -162,13 +168,14 @@
                             </div>
 
                             <div class="row">
+                                
                                 <div class="data_preloader d-none">
                                     <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="ledger_list_table">
                                         <div class="table-responsive">
-                                            <table class="display data_tbl data__table ledger_table">
+                                            <table class="display data_tbl data__table ledger_table w-100">
                                                 <thead>
                                                     <tr>
                                                         <th>Date</th>
@@ -185,7 +192,7 @@
                                                         <th colspan="3" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                         <th id="debit" class="text-white text-end"></th>
                                                         <th id="credit" class="text-white text-end"></th>
-                                                        <th id="due" class="text-white text-end">---</th>
+                                                        <th class="text-white text-end">---</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -229,7 +236,8 @@
                                         </li>
 
                                         <li>
-                                            <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> {{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}
+                                            <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b> 
+                                            <span class="total_purchase">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</span>
                                         </li>
 
                                         <li>
@@ -237,7 +245,8 @@
                                         </li>
 
                                         <li>
-                                            <b> {{ json_decode($generalSettings->business, true)['currency'] }}</b> {{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}
+                                            <b> {{ json_decode($generalSettings->business, true)['currency'] }}</b> 
+                                            <span class="total_paid">{{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}</span>
                                         </li>
 
                                         <li>
@@ -245,7 +254,8 @@
                                         </li>
 
                                         <li>
-                                            <b> {{ json_decode($generalSettings->business, true)['currency'] }}</b> {{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}
+                                            <b> {{ json_decode($generalSettings->business, true)['currency'] }}</b> 
+                                            <span class="total_purchase_due">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -255,9 +265,9 @@
                         <div class="tab_contant purchases d-none">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="table_area">
+                                    <div class="widget_content table_area">
                                         <div class="table-responsive">
-                                            <table class="display data_tbl data__table purchase_table">
+                                            <table class="display data_tbl data__table purchase_table w-100">
                                                 <thead>
                                                     <tr class="text-left">
                                                         <th>Actions</th>
@@ -276,6 +286,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
+                                                <tfoot>
+                                                    <tr class="bg-secondary">
+                                                        <th colspan="7" class="text-end text-white">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                        <th class="text-start text-white" id="total_purchase_amount"></th>
+                                                        <th class="text-start text-white" id="paid"></th>
+                                                        <th class="text-start text-white" id="due"></th>
+                                                        <th class="text-start text-white" id="return_amount"></th>
+                                                        <th class="text-start text-white" id="return_due"></th>
+                                                        <th class="text-start text-white">---</th>
+                                                    </tr>
+                                                </tfoot>
                                             </table>
                                         </div>
                                     </div>
@@ -287,11 +308,157 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="tab_contant payments d-none">
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12 col-lg-4">
+                                    <table class="table modal-table table-sm mt-3">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                <td class="text-end opening_balance">{{ App\Utils\Converter::format_in_bdt($supplier->opening_balance) }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-end"><strong>Total Purchase : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                <td class="text-end total_purchase">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                <td class="text-end text-success total_paid">
+                                                    {{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($supplier->total_return) }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                <td class="text-end text-danger total_purchase_due">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-md-7 col-sm-12 col-lg-8">
+                                    <div class="card mt-3">
+                                        <form id="filter_supplier_payments" class="pb-2 px-2" method="get">
+
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-success float-end mt-1 me-4"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
+
+                                                    <a class="btn btn-success float-end mt-1 me-4 return_payment_btn {{ $supplier->total_purchase_return_due > 0 ? '' : 'd-none' }} " id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i> Receive Return Amount</a> 
+                                                
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label><strong>Payment Status :</strong></label>
+                                                    <select name="type" class="form-control submit_able" id="type" autofocus>
+                                                        <option value="">All</option> 
+                                                        <option value="1">Payment</option>
+                                                        <option value="2">Return Payment</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label><strong>From Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i
+                                                                    class="fas fa-calendar-week input_f"></i></span>
+                                                        </div>
+                                                        <input type="text" name="p_from_date" id="p_from_date" class="form-control p_from_date date"autocomplete="off">
+                                                    </div>
+                                                </div>
+    
+                                                <div class="col-md-3">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i
+                                                                    class="fas fa-calendar-week input_f"></i></span>
+                                                        </div>
+                                                        <input type="text" name="p_to_date" id="p_to_date" class="form-control p_to_date date" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label><strong></strong></label>
+                                                            <div class="input-group">
+                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <label></label>
+                                                            <div class="input-group">
+                                                                <a href="{{ route('suppliers.all.payment.print', $supplier->id) }}" class="btn btn-sm btn-primary float-end" id="print_payments"><i class="fas fa-print "></i> Print</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+          
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="widget_content table_area">
+                                        <div class="table-responsive">
+                                            <table class="display data_tbl data__table payments_table w-100">
+                                                <thead>
+                                                    <tr class="text-start">
+                                                        <th class="text-start">Date</th>
+                                                        <th class="text-start">Voucher No</th>
+                                                        <th class="text-start">Against Invoice</th>
+                                                        {{-- <th>Created By</th> --}}
+                                                        <th class="text-start">Payment Status</th>
+                                                        <th class="text-start">Payment Type</th>
+                                                        <th class="text-start">Account</th>
+                                                        <th class="text-end">Paid Amount</th>
+                                                        <th class="text-start">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                                <tfoot>
+                                                    <tr class="bg-secondary">
+                                                        <th class="text-end text-white" colspan="6">Total : </th>
+                                                        <th class="text-end text-white" id="amount"></th>
+                                                        <th class="text-start text-white">---</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <form id="deleted_form" action="" method="post">
+        @method('DELETE')
+        @csrf
+    </form>
+
+    <form id="payment_deleted_form" action="" method="post">
+        @method('DELETE')
+        @csrf
+    </form>
 
     <div id="purchase_details"></div>
 
@@ -353,7 +520,8 @@
         var table = $('.purchase_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             ajax:"{{ url('contacts/suppliers/view', $supplierId) }}",
 
             columnDefs: [{
@@ -376,7 +544,19 @@
                 {data: 'return_amount', name: 'purchase_return_amount'},
                 {data: 'return_due', name: 'purchase_return_due'},
                 {data: 'created_by', name: 'created_by.name'},
-            ],
+            ],fnDrawCallback: function() {
+                var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
+                $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
+                var paid = sum_table_col($('.data_tbl'), 'paid');
+                $('#paid').text(bdFormat(paid));
+                var due = sum_table_col($('.data_tbl'), 'due');
+                $('#due').text(bdFormat(due));
+                var return_amount = sum_table_col($('.data_tbl'), 'return_amount');
+                $('#return_amount').text(bdFormat(return_amount));
+                var return_due = sum_table_col($('.data_tbl'), 'return_due');
+                $('#return_due').text(bdFormat(return_due));
+                $('.data_preloader').hide();
+            }
         });
 
         var ledger_table = $('.ledger_table').DataTable({
@@ -389,7 +569,8 @@
                 {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
             ],
 
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
             "ajax": {
                 "url": "{{ route('contacts.supplier.ledgers', $supplier->id) }}",
@@ -416,10 +597,57 @@
             }
         });
 
+        var payments_table = $('.payments_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "searching" : true,
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
+                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+            ],
+
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+
+            "ajax": {
+                "url": "{{ route('suppliers.all.payment.list', $supplier->id) }}",
+                "data": function(d) {
+                    d.type = $('#type').val();
+                    d.p_from_date = $('.p_from_date').val();
+                    d.p_to_date = $('.p_to_date').val();
+                }
+            },
+
+            columnDefs: [{
+                "targets": [3, 4, 5, 6],
+                "orderable": false,
+                "searchable": false
+            }],
+
+            columns: [
+                {data: 'date', name: 'supplier_ledgers.date'},
+                {data: 'voucher_no', name: 'supplier_payments.voucher_no'},
+                {data: 'against_invoice', name: 'purchases.invoice_id'},
+                {data: 'type', name: 'type'},
+                {data: 'method', name: 'method'},
+                {data: 'account', name: 'account'},
+                {data: 'amount', name: 'supplier_ledgers.amount', className: 'text-end'},
+                {data: 'action'},
+            ],fnDrawCallback: function() {
+
+                var amount = sum_table_col($('.data_tbl'), 'amount');
+                $('#amount').text(bdFormat(amount));
+                $('.data_preloader').hide();
+            }
+        });
+
         function sum_table_col(table, class_name) {
             var sum = 0;
             table.find('tbody').find('tr').each(function() {
+
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    
                     sum += parseFloat(
                         $(this).find('.' + class_name).data('value')
                     );
@@ -433,6 +661,13 @@
             e.preventDefault();
             $('.data_preloader').show();
             ledger_table.ajax.reload();
+        });
+
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_supplier_payments', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            payments_table.ajax.reload();
         });
 
         $(document).on('click', '#tab_btn', function(e) {
@@ -453,6 +688,7 @@
                 url:url,
                 type:'get',
                 success:function(data){
+
                     $('#purchase_details').html(data);
                     $('#purchase_table_preloader').hide();
                     $('#detailsModal').modal('show');
@@ -490,7 +726,9 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    table.ajax.reload();
+
+                    $('.data_tbl').DataTable().ajax.reload();
+                    getSupplier();
                     toastr.error(data);
                 }
             });
@@ -512,38 +750,30 @@
             });
         });
      
-        $(document).on('change', '#payment_method', function () {
-            var value = $(this).val();
-            $('.payment_method').hide();
-            $('#'+value).show();
-        });
-
         $(document).on('click', '#add_payment', function (e) {
             e.preventDefault();
-            $('#purchase_table_preloader').show();
             var url = $(this).attr('href');
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(data){
+
                     $('#paymentModal').html(data); 
                     $('#paymentModal').modal('show'); 
-                    $('#purchase_table_preloader').hide();
                 }
             });
         });
 
         $(document).on('click', '#add_return_payment', function (e) {
             e.preventDefault();
-            $('#purchase_table_preloader').show();
             var url = $(this).attr('href');
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(data){
+
                     $('#paymentModal').html(data); 
                     $('#paymentModal').modal('show'); 
-                    $('#purchase_table_preloader').hide(); 
                 }
             });
         });
@@ -557,9 +787,9 @@
                 url:url,
                 type:'get',
                 success:function(data){
+
                     $('#paymentModal').html(data); 
                     $('#paymentModal').modal('show'); 
-                    $('#purchase_table_preloader').hide();
                 }
             });
         });
@@ -568,30 +798,30 @@
         $(document).on('click', '#edit_return_payment', function (e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#purchase_table_preloader').show();
+
             $.ajax({
-                url:url,
+                url : url,
                 type:'get',
                 success:function(data){
+
                     $('#paymentModal').html(data); 
                     $('#paymentModal').modal('show'); 
-                    $('#purchase_table_preloader').hide(); 
                 }
             });
         });
 
         // //Show payment view modal with data
         $(document).on('click', '#view_payment', function (e) {
-           e.preventDefault();
-           $('#purchase_table_preloader').show();
-           var url = $(this).attr('href');
+            e.preventDefault();
+            $('#purchase_table_preloader').show();
+            var url = $(this).attr('href');
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(date){
+
                     $('#payment_list_modal_body').html(date);
                     $('#paymentViewModal').modal('show');
-                    $('#purchase_table_preloader').hide();
                 }
             });
         });
@@ -604,6 +834,7 @@
                 url:url,
                 type:'get',
                 success:function(date){
+
                     $('.payment_details_area').html(date);
                     $('#paymentDetailsModal').modal('show');
                 }
@@ -613,6 +844,7 @@
         // Print single payment details
         $(document).on('click', '#print_payment', function (e) {
            e.preventDefault(); 
+
             var body = $('.sale_payment_print_area').html();
             var header = $('.print_header').html();
             var footer = $('.signature_area').html();
@@ -633,16 +865,15 @@
             e.preventDefault();
             var url = $(this).attr('href');
             $('#payment_deleted_form').attr('action', url);
-            swal({
-                title: "Are you sure to delete ?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) { 
-                    $('#payment_deleted_form').submit();
-                } 
-            });
+            var url = $(this).attr('href');
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure, you want to delete?',
+                'buttons': {
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#payment_deleted_form').submit();}},
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+                }
+            })
         });
             
         //data delete by ajax
@@ -655,15 +886,18 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    table.ajax.reload();
+
+                    $('.data_tbl').DataTable().ajax.reload();
+                    getSupplier();
                     toastr.error(data);
                 }
             });
         });
 
         //Print Ledger
-        $(document).on('click', '#print_report', function (e) {
+        $(document).on('click', '#print_ledger', function (e) {
             e.preventDefault();
+
             var url = "{{ route('contacts.supplier.ledger.print', $supplierId) }}";
             var voucher_type = $('#voucher_type').val();
             var from_date = $('.from_date').val();
@@ -673,6 +907,34 @@
                 type: 'get',
                 data: { voucher_type, from_date, to_date },
                 success: function(data) {
+
+                    $(data).printThis({
+                        debug: false,                   
+                        importCSS: true,                
+                        importStyle: true,          
+                        loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",                      
+                        removeInline: false,
+                        printDelay: 700, 
+                        header: null,        
+                    });
+                }
+            }); 
+        });
+
+        //Print Ledger
+        $(document).on('click', '#print_payments', function (e) {
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+            var type = $('#type').val();
+            var p_from_date = $('.p_from_date').val();
+            var p_to_date = $('.p_to_date').val();
+            $.ajax({
+                url: url,
+                type: 'get',
+                data: { type, p_from_date, p_to_date },
+                success: function(data) {
+
                     $(data).printThis({
                         debug: false,                   
                         importCSS: true,                
@@ -725,5 +987,70 @@
             },
             format: 'DD-MM-YYYY',
         });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('p_from_date'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('p_to_date'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+
+        function getSupplier() {
+
+            $.ajax({
+                url:"{{ url('common/ajax/call/get/supplier', $supplier->id) }}",
+                type:'get',
+                success:function(data){
+
+                    $('.opening_balance').text(bdFormat(data.opening_balance));
+                    $('.total_purchase').text(bdFormat(data.total_purchase));
+                    $('.total_return').text(bdFormat(data.total_return));
+                    $('.total_paid').text(bdFormat(data.total_paid));
+                    $('.total_purchase_due').text(bdFormat(data.total_purchase_due));
+                    $('.total_purchase_return_due').text(bdFormat(data.total_purchase_return_due));
+
+                    if (data.total_purchase_return_due > 0) {
+
+                        $('.return_payment_btn').removeClass('d-none');
+                    }else{
+
+                        $('.return_payment_btn').addClass('d-none');
+                    }
+                }
+            });
+        }
+
+        // getSupplier();
     </script>
 @endpush

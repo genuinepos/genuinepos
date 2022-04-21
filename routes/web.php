@@ -42,6 +42,7 @@ Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controlle
     Route::get('branch/warehouse/{branch_id}', 'CommonAjaxCallController@branchWarehouses');
     Route::get('branch/allow/login/users/{branchId}', 'CommonAjaxCallController@branchAllowLoginUsers');
     Route::get('branch/users/{branchId}', 'CommonAjaxCallController@branchUsers');
+    Route::get('get/supplier/{supplierId}', 'CommonAjaxCallController@getSupplier');
 });
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
@@ -201,21 +202,17 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('store', 'SupplierController@store')->name('contacts.supplier.store');
         Route::get('edit/{supplierId}', 'SupplierController@edit')->name('contacts.supplier.edit');
         Route::post('update', 'SupplierController@update')->name('contacts.supplier.update');
-        Route::get('get/supplier/{supplierId}', 'SupplierController@getSupplier')->name('contacts.supplier.get.supplier');
         Route::delete('delete/{supplierId}', 'SupplierController@delete')->name('contacts.supplier.delete');
         Route::get('change/status/{supplierId}', 'SupplierController@changeStatus')->name('contacts.supplier.change.status');
         Route::get('view/{supplierId}', 'SupplierController@view');
         Route::get('ledgers/{supplierId}', 'SupplierController@ledgers')->name('contacts.supplier.ledgers');
-        Route::get('purchase/list/{supplierId}', 'SupplierController@purchaseList')->name('contacts.supplier.purchase.list');
         Route::get('print/ledger/{supplierId}', 'SupplierController@ledgerPrint')->name('contacts.supplier.ledger.print');
-        Route::get('purchases/{supplierId}', 'SupplierController@purchases');
+        Route::get('all/payment/list/{supplierId}', 'SupplierController@allPaymentList')->name('suppliers.all.payment.list');
+        Route::get('all/payment/print/{supplierId}', 'SupplierController@allPaymentPrint')->name('suppliers.all.payment.print');
         Route::get('payment/{supplierId}', 'SupplierController@payment')->name('suppliers.payment');
         Route::post('payment/{supplierId}', 'SupplierController@paymentAdd')->name('suppliers.payment.add');
-
         Route::get('return/payment/{supplierId}', 'SupplierController@returnPayment')->name('suppliers.return.payment');
         Route::post('return/payment/{supplierId}', 'SupplierController@returnPaymentAdd')->name('suppliers.return.payment.add');
-
-        Route::get('view/payment/{supplierId}', 'SupplierController@viewPayment')->name('suppliers.view.payment');
         Route::get('payment/details/{paymentId}', 'SupplierController@paymentDetails')->name('suppliers.view.details');
         Route::delete('payment/delete/{paymentId}', 'SupplierController@paymentDelete')->name('suppliers.payment.delete');
 
@@ -898,7 +895,6 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('system/settings', 'GeneralSettingController@systemSettings')->name('settings.system.settings');
         Route::post('module/settings', 'GeneralSettingController@moduleSettings')->name('settings.module.settings');
         Route::post('send/email/sms/settings', 'GeneralSettingController@SendEmailSmsSettings')->name('settings.send.email.sms.settings');
-        Route::post('email/settings', 'GeneralSettingController@emailSettings')->name('settings.email.settings');
         Route::post('sms/settings', 'GeneralSettingController@smsSettings')->name('settings.sms.settings');
         Route::post('rp/settings', 'GeneralSettingController@rewardPoingSettings')->name('settings.reward.point.settings');
     });
@@ -1026,6 +1022,19 @@ Route::group(['prefix' => 'pos-short-menus', 'namespace' => 'App\Http\Controller
     Route::post('store', 'PosShortMenuController@store')->name('pos.short.menus.store');
 });
 
+Route::group(['prefix' => 'communication', 'namespace' => 'App\Http\Controllers'], function () {
+
+    Route::group(['prefix' => 'email',], function () {
+        Route::get('settings', 'EmailController@emailSettings')->name('communication.email.settings');
+        Route::post('settings/store', 'EmailController@emailSettingsStore')->name('communication.email.settings.store');
+    });
+
+    Route::group(['prefix' => 'sms',], function () {
+        Route::get('settings', 'SmsController@smsSettings')->name('communication.sms.settings');
+        Route::post('settings/store', 'SmsController@smsSettingsStore')->name('communication.sms.settings.store');
+    });
+});
+
 Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
 
 Route::get('maintenance/mode', function () {
@@ -1062,6 +1071,33 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
+
+    $payments = DB::table('supplier_ledgers')->whereIn('supplier_ledgers.voucher_type', [3, 4, 5, 6])
+    ->leftJoin('supplier_payments', 'supplier_ledgers.supplier_payment_id', 'supplier_payments.id')
+    ->leftJoin('purchase_payments', 'supplier_ledgers.purchase_payment_id', 'purchase_payments.id')
+    ->select(
+        'supplier_ledgers.supplier_payment_id',
+        'supplier_ledgers.purchase_payment_id',
+        'supplier_payments.date as supplier_payment_date',
+        'purchase_payments.date as purchase_payment_date',
+    )->get();
+
+    foreach($payments as $payment){
+
+        if($payment->supplier_payment_id){
+
+            DB::table('supplier_ledgers')->where('supplier_payment_id', $payment->supplier_payment_id)
+            ->update([
+                'date' => $payment->supplier_payment_date
+            ]);
+        }elseif($payment->purchase_payment_id){
+
+            DB::table('supplier_ledgers')->where('purchase_payment_id', $payment->purchase_payment_id)->update([
+                'date' => $payment->purchase_payment_date
+            ]);
+        }
+    }
+
 });
 
 // All authenticated routes

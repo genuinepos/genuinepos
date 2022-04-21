@@ -410,9 +410,9 @@
                                         <div class="payment_body {{ $sale->status == 1 || $sale->status == 3 ? '' : 'd-none' }}">
                                             
                                             <div class="row">
-                                                <label class="col-sm-5 col-form-label">Previous Paid :</label>
+                                                <label class="col-sm-5 col-form-label">Paid :</label>
                                                 <div class="col-sm-7">
-                                                    <input readonly class="form-control text-success" type="number" step="any" name="previous_paid" id="previous_paid" value="{{ $sale->paid }}" tabindex="-1">
+                                                    <input readonly type="number" step="any" name="previous_paid" class="form-control text-success" id="previous_paid" value="{{ $sale->paid }}" tabindex="-1">
                                                 </div>
                                             </div>
 

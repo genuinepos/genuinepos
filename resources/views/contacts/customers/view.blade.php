@@ -549,14 +549,19 @@
             e.preventDefault();
             var url = $(this).attr('action');
             var request = $(this).serialize();
+
             $('.loading_button').show();
             var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+            $('.error').html('');  
+            var countErrorField = 0;  
+
             $.each(inputs, function(key, val){
+
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
+
                 if(idValue == ''){
+
                     countErrorField += 1;
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
@@ -564,6 +569,7 @@
             });
 
             if(countErrorField > 0){
+
                 $('.loading_button').hide();
                 return;
             }
@@ -573,9 +579,11 @@
                 type:'post',
                 data:request,
                 success:function(data){
+
                     console.log(data);
                     sales_table.ajax.reload();
                     toastr.success(data);
+
                     $('.loading_button').hide();
                     $('#editShipmentModal').modal('hide'); 
                 }
@@ -585,8 +593,10 @@
         // Make print
         $(document).on('click', '.print_btn',function (e) {
            e.preventDefault(); 
+
             var body = $('.sale_print_template').html();
             var header = $('.heading_area').html();
+
             $(body).printThis({
                 debug: false,                   
                 importCSS: true,                
@@ -600,6 +610,7 @@
 
         $(document).on('click', '#add_payment', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Add Payment');
@@ -607,6 +618,7 @@
                 url:url,
                 type:'get',
                 success:function(data){
+
                     $('#payment-modal-body').html(data); 
                     $('#paymentModal').modal('show'); 
                     $('.data_preloader').hide();
@@ -616,9 +628,11 @@
 
         $(document).on('click', '#add_return_payment', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Pay Return Amount');
+
             $.ajax({
                 url:url,
                 type:'get',
@@ -633,11 +647,14 @@
         // //Show payment view modal with data
         $(document).on('click', '#view_payment', function (e) {
            e.preventDefault();
+
            var url = $(this).attr('href');
+
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(date){
+
                     $('#payment_view_modal_body').html(date);
                     $('#paymentViewModal').modal('show');
                 }
@@ -647,13 +664,16 @@
         // // show payment edit modal with data
         $(document).on('click', '#edit_payment', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $('#payment_heading').html('Edit Payment');
+
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(data){
+
                     $('.data_preloader').hide();
                     $('#payment-modal-body').html(data); 
                     $('#paymentModal').modal('show'); 
@@ -670,6 +690,7 @@
                 url:url,
                 type:'get',
                 success:function(data){
+
                     $('#payment-modal-body').html(data); 
                     $('#paymentModal').modal('show'); 
                 }
@@ -684,6 +705,7 @@
                 url:url,
                 type:'get',
                 success:function(date){
+                    
                     $('.payment_details_area').html(date);
                     $('#paymentDetailsModal').modal('show');
                 }
@@ -711,16 +733,20 @@
         // Show sweet alert for delete
         $(document).on('click', '#delete_payment',function(e){
             e.preventDefault();
+
             var url = $(this).attr('href');
             var button = $(this);
             $('#payment_deleted_form').attr('action', url);
+
             swal({
                 title: "Are you sure to delete ?",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
             }).then((willDelete) => {
+
                 if (willDelete) { 
+
                     $('#payment_deleted_form').submit();
                     button.closest('tr').remove();
                 }

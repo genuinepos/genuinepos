@@ -912,7 +912,7 @@
 
             // Print single payment details
             $('#print_payment').on('click', function (e) {
-            e.preventDefault();
+                e.preventDefault();
                 var body = $('.sale_payment_print_area').html();
                 var header = $('.header_area').html();
                 var footer = $('.signature_area').html();

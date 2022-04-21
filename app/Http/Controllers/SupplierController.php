@@ -1100,7 +1100,7 @@ class SupplierController extends Controller
 
             $generalSettings = DB::table('general_settings')->first();
             $payments = '';
-            $paymentsQuery = DB::table('supplier_ledgers')->whereIn('supplier_ledgers.voucher_type', [3, 4, 5, 6])
+            $paymentsQuery = DB::table('supplier_ledgers')->where('supplier_ledgers.supplier_id', $supplierId)->whereIn('supplier_ledgers.voucher_type', [3, 4, 5, 6])
                 ->leftJoin('supplier_payments', 'supplier_ledgers.supplier_payment_id', 'supplier_payments.id')
                 ->leftJoin('payment_methods as sp_pay_method', 'supplier_payments.payment_method_id', 'sp_pay_method.id')
                 ->leftJoin('accounts as sp_account', 'supplier_payments.account_id', 'sp_account.id')
@@ -1234,7 +1234,9 @@ class SupplierController extends Controller
         $toDate = '';
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
 
-        $paymentsQuery = DB::table('supplier_ledgers')->whereIn('supplier_ledgers.voucher_type', [3, 4, 5, 6])
+        $paymentsQuery = DB::table('supplier_ledgers')
+            ->where('supplier_ledgers.supplier_id', $supplierId)
+            ->whereIn('supplier_ledgers.voucher_type', [3, 4, 5, 6])
             ->leftJoin('supplier_payments', 'supplier_ledgers.supplier_payment_id', 'supplier_payments.id')
             ->leftJoin('payment_methods as sp_pay_method', 'supplier_payments.payment_method_id', 'sp_pay_method.id')
             ->leftJoin('accounts as sp_account', 'supplier_payments.account_id', 'sp_account.id')

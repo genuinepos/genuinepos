@@ -1071,33 +1071,6 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
-
-    $payments = DB::table('supplier_ledgers')->whereIn('supplier_ledgers.voucher_type', [3, 4, 5, 6])
-    ->leftJoin('supplier_payments', 'supplier_ledgers.supplier_payment_id', 'supplier_payments.id')
-    ->leftJoin('purchase_payments', 'supplier_ledgers.purchase_payment_id', 'purchase_payments.id')
-    ->select(
-        'supplier_ledgers.supplier_payment_id',
-        'supplier_ledgers.purchase_payment_id',
-        'supplier_payments.date as supplier_payment_date',
-        'purchase_payments.date as purchase_payment_date',
-    )->get();
-
-    foreach($payments as $payment){
-
-        if($payment->supplier_payment_id){
-
-            DB::table('supplier_ledgers')->where('supplier_payment_id', $payment->supplier_payment_id)
-            ->update([
-                'date' => $payment->supplier_payment_date
-            ]);
-        }elseif($payment->purchase_payment_id){
-
-            DB::table('supplier_ledgers')->where('purchase_payment_id', $payment->purchase_payment_id)->update([
-                'date' => $payment->purchase_payment_date
-            ]);
-        }
-    }
-
 });
 
 // All authenticated routes

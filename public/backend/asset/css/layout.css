@@ -28,7 +28,7 @@ li.buttom__icon a img {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 71px;
+    /* width: 71px; */
     /* height: 70px; */
 }
 
@@ -772,8 +772,8 @@ footer img.logo {
 #dashboard-8 .main__nav {
     width: 142px;
     position: fixed;
-    overflow: hidden;
-    overflow-y: scroll;
+    overflow: auto;
+    overflow-y: scroll!important;
     height: 100vh;
     z-index: 99;
 }

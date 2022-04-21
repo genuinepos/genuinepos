@@ -17,6 +17,8 @@ class UserActivityLogUtil
             3 => 'Users',
             18 => 'User Login',
             19 => 'User Logout',
+            27 => 'Receive Payment',
+            28 => 'Purchase Payment',
             4 => 'Purchase',
             5 => 'Purchase Order',
             6 => 'Purchase Return',
@@ -383,6 +385,38 @@ class UserActivityLogUtil
                     'P.Code(SKU) : ',
                     'Cost.inc Tax : ',
                     'Price.Exc Tax : ',
+                ]
+            ],
+            27 => [ // Receive Payment
+                'fields' => [
+                    'date',
+                    'voucher_no',
+                    'customer',
+                    'method',
+                    'paid_amount',
+                ],
+                'texts' => [
+                    'Date : ',
+                    'Voucher : ',
+                    'Customer : ',
+                    'Payment Method : ',
+                    'Paid Amount : ',
+                ]
+            ],
+            28 => [ // Purchase Payment
+                'fields' => [
+                    'date',
+                    'voucher_no',
+                    'supplier_name',
+                    'method',
+                    'paid_amount',
+                ],
+                'texts' => [
+                    'Date : ',
+                    'Voucher No : ',
+                    'supplier : ',
+                    'Payment Method : ',
+                    'Paid Amount : ',
                 ]
             ],
         ];

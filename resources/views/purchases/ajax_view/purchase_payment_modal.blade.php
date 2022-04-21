@@ -10,7 +10,7 @@
     .payment_details_contant{background: azure!important;}
     h6.checkbox_input_wrap {border: 1px solid #495677;padding: 0px 7px;}
 </style>
-<div class="modal-dialog four-col-modal" role="document">
+<div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h6 class="modal-title" id="exampleModalLabel">Add Payment <span class="type_name"></span></h6>
@@ -134,7 +134,7 @@
                 </div>
 
                 <div class="form-group row mt-2">
-                    <div class="col-md-7">
+                    <div class="col-md-4">
                         <label><strong>Credit Account :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -155,7 +155,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
                         <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
                     </div>
@@ -202,15 +202,18 @@
             cache: false,
             processData: false,
             success: function(data) {
+
                 if (!$.isEmptyObject(data.errorMsg)) {
+                    
                     toastr.error(data.errorMsg, 'ERROR');
                     $('.loading_button').hide();
                 } else {
+
                     $('.loading_button').hide();
                     $('#paymentModal').modal('hide');
                     $('#paymentViewModal').modal('hide');
                     toastr.success(data);
-                    table.ajax.reload();
+                    $('.data_tbl').DataTable().ajax.reload();
                 }
             },error: function(err) {
                 $('.loading_button').hide();

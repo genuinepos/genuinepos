@@ -448,7 +448,7 @@ class PurchaseUtil
 
         $index = 0;
         foreach ($request->product_ids as $productId) {
-            
+
             $addPurchaseProduct = new PurchaseProduct();
             $addPurchaseProduct->purchase_id = $purchaseId;
             $addPurchaseProduct->product_id = $productId;
@@ -663,7 +663,9 @@ class PurchaseUtil
             $filterVariantId = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
             $updatePurchaseProduct = PurchaseOrderProduct::where('purchase_id', $purchaseId)
                 ->where('product_id', $productId)
-                ->where('product_variant_id', $filterVariantId)->first();
+                ->where('product_variant_id', $filterVariantId)
+                ->first();
+
             if ($updatePurchaseProduct) {
 
                 $updatePurchaseProduct->product_id = $productId;
@@ -761,8 +763,16 @@ class PurchaseUtil
     {
         $html = '<div class="btn-group" role="group">';
         $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
-        $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+        $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+
+        if ($row->purchase_status == 1) {
+
+            $html .= '<a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+        } else {
+
+            $html .= '<a class="dropdown-item details_button" href="' . route('purchases.show.order', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+        }
+
         // $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
         $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';

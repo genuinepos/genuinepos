@@ -316,17 +316,13 @@
                         </a>
                     </li>
                 @endif
-                
-                @if (
-                    auth()->user()->permission->report['tax_report'] == '1'
-                )
-                    <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
-                        <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/business-report.svg') }}">
-                            <p class="title">Reports</p>
-                        </a>
-                    </li>
-                @endif
+
+                <li data-menu="communication" class="{{ request()->is('communication*') ? 'menu_active' : '' }}">
+                    <a href="#">
+                        <img src="{{ asset('public/backend/asset/img/icon/communication.svg') }}">
+                        <p class="title">@lang('menu.communication')</p>
+                    </a>
+                </li>
 
                 @if (
                     auth()->user()->permission->setup['branch'] == '1' || 
@@ -343,6 +339,17 @@
                         <a href="#">
                             <img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}">
                             <p class="title">@lang('menu.setup')</p>
+                        </a>
+                    </li>
+                @endif
+            
+                @if (
+                    auth()->user()->permission->report['tax_report'] == '1'
+                )
+                    <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('public/backend/asset/img/icon/business-report.svg') }}">
+                            <p class="title">Reports</p>
                         </a>
                     </li>
                 @endif
@@ -2368,6 +2375,75 @@
                                 </div>
                             @endif
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-menu_t" id="communication">
+                <div class="sub-menu-width">
+                    <div class="model__close bg-secondary-2">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p class="text-muted float-start mt-1"><strong>Communication</strong></p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="" class="bar-link">
+                                        <span><i class="fas fa-exclamation"></i></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.notice_board')</p>
+                            </div>
+                        </div>
+                        <hr class="p-0 m-0 my-1">
+                        <div class="row">
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="" class="bar-link">
+                                        <span><i class="far fa-envelope"></i></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.email')</p>
+                            </div>
+
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="{{ route('communication.email.settings') }}" class="bar-link">
+                                        <span><i class="fas fa-sliders-h"></i></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.email_settings')</p>
+                            </div>
+                        </div>
+                        <hr class="p-0 m-0 my-1">
+                        <div class="row">
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="" class="bar-link">
+                                        <span><i class="fas fa-sms"></i></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.sms')</p>
+                            </div>
+
+                            <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                <div class="switch_bar">
+                                    <a href="{{ route('communication.sms.settings') }}" class="bar-link">
+                                        <span><i class="fas fa-sliders-h"></i></span>
+                                    </a>
+                                </div>
+                                <p class="switch_text">@lang('menu.sms_settings')</p>
+                            </div>
+                        </div>
+                        <hr class="p-0 m-0 my-1">
                     </div>
                 </div>
             </div>

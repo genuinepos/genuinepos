@@ -226,9 +226,23 @@
                                 </tr>
    
                                 <tr>
-                                    <th class="text-start">Purchase Total</th>
+                                    <th class="text-start">Grand Total</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                            {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
+                                   </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-start">Paid : </th>
+                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
+                                   </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-start">Due : </th>
+                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                                    </td>
                                 </tr>
                             </table>
@@ -462,6 +476,20 @@
                             <th colspan="7" class="text-end">Purchase Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="7" class="text-end">Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td class="text-end">
+                                {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="7" class="text-end">Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td class="text-end">
+                                {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                             </td>
                         </tr>
                     </tfoot>

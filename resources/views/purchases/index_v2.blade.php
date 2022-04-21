@@ -182,9 +182,7 @@
                     <h6 class="modal-title" id="exampleModalLabel">Update Purchase Status</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="change_status_modal_body">
-                    <!--begin::Form-->
-                </div>
+                <div class="modal-body" id="change_status_modal_body"></div>
             </div>
         </div>
     </div>
@@ -199,9 +197,7 @@
                         <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
-                    <div class="modal-body" id="payment_list_modal_body">
-
-                    </div>
+                    <div class="modal-body" id="payment_list_modal_body"></div>
                 </div>
             </div>
         </div>
@@ -327,9 +323,11 @@
         // Show details modal with data
         $(document).on('click', '.details_button', function(e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $.get(url,  function(data) {
+
                 $('#purchase_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
@@ -360,12 +358,18 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
+
                     table.ajax.reload();
                     toastr.error(data);
                 },error: function(err) {
+
                     if (err.status == 0) {
+
                         toastr.error('Net Connetion Error. Reload This Page.'); 
-                    }else{
+                    }else if (err.status == 500) {
+                        
+                    }{
+
                         toastr.error('Server Error. Please contact to the support team.'); 
                     }
                 }
@@ -375,6 +379,7 @@
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             table.ajax.reload();
         });
@@ -408,8 +413,10 @@
 
         $(document).on('click', '#add_return_payment', function(e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
+
             $.get(url,  function(data) {
                 $('#paymentModal').html(data);
                 $('#paymentModal').modal('show');
@@ -420,9 +427,12 @@
         // show payment edit modal with data
         $(document).on('click', '#edit_payment', function(e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
+
             $.get(url,  function(data) {
+
                 $('#paymentModal').html(data);
                 $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
@@ -432,9 +442,12 @@
         // show payment edit modal with data
         $(document).on('click', '#edit_return_payment', function(e) {
             e.preventDefault();
+
             var url = $(this).attr('href');
             $('.data_preloader').show();
+            
             $.get(url,  function(data) {
+
                 $('#paymentModal').html(data);
                 $('#paymentModal').modal('show');
                 $('.data_preloader').hide();

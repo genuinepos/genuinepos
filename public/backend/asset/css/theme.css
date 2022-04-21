@@ -236,7 +236,8 @@ body.red-theme {
 }
 
 .red-theme table.display tbody tr:hover {
-    background: var(--red-color-1) !important;
+    /* background: var(--red-color-1) !important; */
+    background: rgb(116, 115, 115);
 }
 
 .red-theme table.display tbody tr:hover td {
@@ -259,7 +260,8 @@ body.red-theme {
 }
 
 .red-theme .btn-primary:hover {
-    background: var(--red-color-2) !important;
+    /* background: var(--red-color-2) !important; */
+    background: rgb(117, 117, 117) !important;
 }
 
 .red-theme .btn-info {
@@ -505,7 +507,8 @@ body.blue-theme {
 }
 
 .blue-theme table.display tbody tr:hover {
-    background: var(--blue-color-1) !important;
+    /* background: var(--blue-color-1) !important; */
+    background: rgb(121, 120, 120) !important;
     color: #fff;
 }
 
@@ -770,7 +773,8 @@ body.dark-theme {
 }
 
 .dark-theme table.display tbody tr:hover {
-    background: var(--dark-color-1) !important;
+    /* background: var(--dark-color-1) !important; */
+    background: rgb(117, 117, 117) !important;
     color: #fff;
 }
 
@@ -1039,7 +1043,8 @@ body.light-theme {
 }
 
 .light-theme table.display tbody tr:hover {
-    background: var(--light-color-1) !important;
+    /* background: var(--light-color-1) !important; */
+    background: rgb(122, 121, 121) !important;
     color: #fff;
 }
 

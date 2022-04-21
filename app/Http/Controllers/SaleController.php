@@ -229,7 +229,7 @@ class SaleController extends Controller
     {
         $this->validate($request, [
             'status' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'sale_account_id' => 'required',
             'account_id' => 'required',
         ], [
@@ -600,7 +600,7 @@ class SaleController extends Controller
 
         $this->validate($request, [
             'status' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'sale_account_id' => 'required',
         ], [
             'sale_account_id.required' => 'Sale A/C is required',
@@ -1056,7 +1056,7 @@ class SaleController extends Controller
 
         $this->validate($request, [
             'paying_amount' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'payment_method_id' => 'required',
             'account_id' => 'required',
         ]);
@@ -1135,7 +1135,7 @@ class SaleController extends Controller
 
         $this->validate($request, [
             'paying_amount' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'payment_method_id' => 'required',
             'account_id' => 'required',
         ]);
@@ -1203,7 +1203,7 @@ class SaleController extends Controller
 
         $this->validate($request, [
             'paying_amount' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'payment_method_id' => 'required',
             'account_id' => 'required',
         ]);
@@ -1281,7 +1281,7 @@ class SaleController extends Controller
     {
         $this->validate($request, [
             'paying_amount' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'payment_method_id' => 'required',
             'account_id' => 'required',
         ]);

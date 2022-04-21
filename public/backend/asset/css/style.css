@@ -1457,6 +1457,8 @@ ul.add_sale_ex_btn li {
     color: white !important;
 }
 
+.active_tr td span b {color: white!important;}
+
 table.display tbody tr:hover {
     background: #3b79c5de !important;
     color: #fff;

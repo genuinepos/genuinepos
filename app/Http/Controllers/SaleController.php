@@ -349,6 +349,10 @@ class SaleController extends Controller
         $addSale->month = date('F');
         $addSale->year = date('Y');
 
+        $addSale->previous_due = $request->previous_due;
+        $addSale->gross_pay = $request->paying_amount;
+        $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
+
         // Update customer due
         $invoicePayable = 0;
 
@@ -691,6 +695,9 @@ class SaleController extends Controller
         $updateSale->delivered_to = $request->delivered_to;
         $updateSale->sale_note = $request->sale_note;
         $updateSale->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+
+        $updateSale->gross_pay = $request->previous_paid + $request->paying_amount;
+    
         $updateSale->save();
 
         if ($updateSale->status == 1 ||  $request->status == 3) {

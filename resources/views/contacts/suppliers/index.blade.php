@@ -318,16 +318,21 @@
         // Add Supplier by ajax
         $('#add_supplier_form').on('submit', function(e) {
             e.preventDefault();
+
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.add_input');
                 $('.error').html('');  
-                var countErrorField = 0;  
+                var countErrorField = 0; 
+                 
             $.each(inputs, function(key, val){
+
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
+
                 if(idValue == ''){
+
                     countErrorField += 1;
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
@@ -335,6 +340,7 @@
             });
 
             if(countErrorField > 0){
+
                 $('.loading_button').hide();
                 return;
             }

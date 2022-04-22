@@ -6,135 +6,148 @@
     .payment_list_table {position: relative;}
     .payment_details_contant{background: azure!important;}
 </style>
-<div class="info_area mb-2">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="payment_top_card">
-                <ul class="list-unstyled">
-                    <li><strong>Customer : </strong><span class="card_text customer_name">{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span> </li>
-                    <li><strong>Business : </strong><span class="card_text customer_business">{{ $sale->customer ? $sale->customer->business_name : '' }}</span> </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="payment_top_card">
-                <ul class="list-unstyled">
-                    <li><strong> Invoice ID : </strong><span class="card_text invoice_no">{{ $sale->invoice_id }}</span> </li>
-                    <li><strong>Business Location: </strong>
-                        <span>
-                            @if ($sale->branch)
-                                {{ $sale->branch->name.'/'.$sale->branch->branch_code }}
-                            @else
-                                {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>HO</b>) 
-                            @endif
-                        </span>  
-                    </li>
-                </ul>
-            </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="payment_top_card">
-                <ul class="list-unstyled">
-                    <li class="sale_due">
-                        <strong>Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                        <span class="text-end">{{ $sale->sale_return_due }}</span> 
-                    </li>
-                </ul>
+<div class="modal-dialog col-60-modal" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h6 class="modal-title" id="payment_heading">Add Return Payment</h6>
+            <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+        </div>
+        <div class="modal-body" id="payment-modal-body"> 
+            <div class="info_area mb-2">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="payment_top_card">
+                            <ul class="list-unstyled">
+                                <li><strong>Customer : </strong><span class="card_text customer_name">{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span> </li>
+                                <li><strong>Business : </strong><span class="card_text customer_business">{{ $sale->customer ? $sale->customer->business_name : '' }}</span> </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="payment_top_card">
+                            <ul class="list-unstyled">
+                                <li><strong>Invoice ID : </strong><span class="card_text invoice_no">{{ $sale->invoice_id }}</span> </li>
+                                <li><strong>Business Location: </strong>
+                                    <span>
+                                        @if ($sale->branch)
+
+                                            {{ $sale->branch->name.'/'.$sale->branch->branch_code }}
+                                        @else
+
+                                            {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>HO</b>) 
+                                        @endif
+                                    </span>  
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="payment_top_card">
+                            <ul class="list-unstyled">
+                                <li class="sale_due">
+                                    <strong>Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                                    <span class="text-end">{{ $sale->sale_return_due }}</span> 
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <form id="payment_form" action="{{ route('sales.return.payment.add', $sale->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
+                            </div>
+                            <input type="hidden" id="available_amount" value="{{ $sale->sale_return_due }}">
+                            <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="{{ $sale->sale_return_due }}"/>
+                        </div>
+                        <span class="error error_p_paying_amount"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
+                            </div>
+                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                        </div>
+                        <span class="error error_p_date"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
+                            </div>
+                            <select name="payment_method_id" class="form-control"  id="payment_method_id">
+                                @foreach ($methods as $method)
+                                    <option value="{{ $method->id }}">
+                                        {{ $method->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <span class="error error_p_payment_method_id"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-2">
+                    <div class="col-md-4">
+                        <label><strong>Credit Account :</strong> </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
+                            </div>
+                            <select name="account_id" class="form-control" id="p_account_id">
+                                @foreach ($accounts as $account)
+                                    <option value="{{ $account->id }}">
+                                        @php
+                                            $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                            $balance = ' BL : '.$account->balance;
+                                        @endphp
+                                        {{ $account->name.$accountType.$balance}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <span class="error error_p_account_id"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
+                        <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
+                    </div>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label><strong> Payment Note :</strong></label>
+                    <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <div class="col-md-12">
+                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                        <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
+                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<form id="sale_payment_form" action="{{ route('sales.return.payment.add', $sale->id) }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    <div class="form-group row">
-        <div class="col-md-4">
-            <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
-                </div>
-                <input type="hidden" id="available_amount" value="{{ $sale->sale_return_due }}">
-                <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="{{ $sale->sale_return_due }}"/>
-            </div>
-            <span class="error error_p_paying_amount"></span>
-        </div>
-
-        <div class="col-md-4">
-            <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
-                </div>
-                <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
-            </div>
-            <span class="error error_p_date"></span>
-        </div>
-
-        <div class="col-md-4">
-            <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
-                </div>
-                <select name="payment_method_id" class="form-control"  id="payment_method_id">
-                    @foreach ($methods as $method)
-                        <option value="{{ $method->id }}">
-                            {{ $method->name }}
-                        </option>
-                    @endforeach
-                </select>
-                <span class="error error_p_payment_method_id"></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group row mt-2">
-        <div class="col-md-4">
-            <label><strong>Credit Account :</strong> </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
-                </div>
-                <select name="account_id" class="form-control" id="p_account_id">
-                    @foreach ($accounts as $account)
-                        <option value="{{ $account->id }}">
-                            @php
-                                $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                $balance = ' BL : '.$account->balance;
-                            @endphp
-                            {{ $account->name.$accountType.$balance}}
-                        </option>
-                    @endforeach
-                </select>
-                <span class="error error_p_account_id"></span>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
-            <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
-        </div>
-    </div>
-
-    <div class="form-group mt-2">
-        <label><strong> Payment Note :</strong></label>
-        <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
-    </div>
-
-    <div class="form-group row mt-3">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-        </div>
-    </div>
-</form>
-
 <script>
     //sale payment request by ajax
-    $('#sale_payment_form').on('submit', function(e) {
+    $('#payment_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.loading_button').show();
@@ -168,7 +181,7 @@
                     $('.loading_button').hide();
                     $('#paymentModal').modal('hide');
                     $('#paymentViewModal').modal('hide');
-                    sales_table.ajax.reload();
+                    $('.data_tbl').DataTable().ajax.reload();
                     toastr.success(data);
                 }
             },error: function(err) {
@@ -179,6 +192,10 @@
                 if (err.status == 0) {
 
                     toastr.error('Net Connetion Error. Reload This Page.'); 
+                    return;
+                }else if (err.status == 500) {
+                    
+                    toastr.error('Server error. Please contact to the support team.'); 
                     return;
                 }
 

@@ -31,20 +31,20 @@ class CustomerUtil
 
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . url('contacts/customers/view', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
-                if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                // if (auth()->user()->permission->sale['sale_payment'] == '1') {
 
-                    $html .= '<a class="dropdown-item" id="view_payment" href="' . route('customers.view.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                //     $html .= '<a class="dropdown-item" id="view_payment" href="' . route('customers.view.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
 
-                    if ($row->total_sale_due > 0) {
+                //     if ($row->total_sale_due > 0) {
 
-                        $html .= '<a class="dropdown-item" id="pay_button" href="' . route('customers.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                    }
+                //         $html .= '<a class="dropdown-item" id="pay_button" href="' . route('customers.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                //     }
 
-                    if ($row->total_sale_return_due > 0) {
+                //     if ($row->total_sale_return_due > 0) {
 
-                        $html .= '<a class="dropdown-item" id="pay_return_button" href="' . route('customers.return.payment', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Due</a>';
-                    }
-                }
+                //         $html .= '<a class="dropdown-item" id="pay_return_button" href="' . route('customers.return.payment', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Due</a>';
+                //     }
+                // }
 
                 $html .= '<a class="dropdown-item" id="money_receipt_list" href="' . route('money.receipt.voucher.list', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Payment Receipt Voucher</a>';
 

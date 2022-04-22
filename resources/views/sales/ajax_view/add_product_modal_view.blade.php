@@ -22,7 +22,7 @@
             </select>
         </div>
 
-        <div class="col-md-3 ">
+        <div class="col-md-3">
             <label><b> Unit :</b> <span class="text-danger">*</span></label>
             <select class="form-control product_unit" name="unit_id" id="sale_unit_id">
                 <option value="">Select Unit</option>

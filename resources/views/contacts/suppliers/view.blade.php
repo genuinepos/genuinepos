@@ -519,6 +519,44 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/barcode/JsBarcode.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+         var ledger_table = $('.ledger_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "searching" : false,
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
+                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+            ],
+
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+
+            "ajax": {
+                "url": "{{ route('contacts.supplier.ledgers', $supplier->id) }}",
+                "data": function(d) {
+                    d.voucher_type = $('#voucher_type').val();
+                    d.from_date = $('.from_date').val();
+                    d.to_date = $('.to_date').val();
+                }
+            },
+
+            columns: [
+                {data: 'date', name: 'supplier_ledgers.report_date'},
+                {data: 'particulars', name: 'particulars'},
+                {data: 'voucher_no', name: 'voucher_no'},
+                {data: 'debit', name: 'debit', className: 'text-end'},
+                {data: 'credit', name: 'credit', className: 'text-end'},
+                {data: 'running_balance', name: 'running_balance', className: 'text-end'},
+            ],fnDrawCallback: function() {
+                var debit = sum_table_col($('.data_tbl'), 'debit');
+                $('#debit').text(bdFormat(debit));
+                var credit = sum_table_col($('.data_tbl'), 'credit');
+                $('#credit').text(bdFormat(credit));
+                $('.data_preloader').hide();
+            }
+        });
+        
         var table = $('.purchase_table').DataTable({
             "processing": true,
             "serverSide": true,
@@ -557,44 +595,6 @@
                 $('#return_amount').text(bdFormat(return_amount));
                 var return_due = sum_table_col($('.data_tbl'), 'return_due');
                 $('#return_due').text(bdFormat(return_due));
-                $('.data_preloader').hide();
-            }
-        });
-
-        var ledger_table = $('.ledger_table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "searching" : false,
-            dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
-                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
-            ],
-
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-
-            "ajax": {
-                "url": "{{ route('contacts.supplier.ledgers', $supplier->id) }}",
-                "data": function(d) {
-                    d.voucher_type = $('#voucher_type').val();
-                    d.from_date = $('.from_date').val();
-                    d.to_date = $('.to_date').val();
-                }
-            },
-
-            columns: [
-                {data: 'date', name: 'supplier_ledgers.report_date'},
-                {data: 'particulars', name: 'particulars'},
-                {data: 'voucher_no', name: 'voucher_no'},
-                {data: 'debit', name: 'debit', className: 'text-end'},
-                {data: 'credit', name: 'credit', className: 'text-end'},
-                {data: 'running_balance', name: 'running_balance', className: 'text-end'},
-            ],fnDrawCallback: function() {
-                var debit = sum_table_col($('.data_tbl'), 'debit');
-                $('#debit').text(bdFormat(debit));
-                var credit = sum_table_col($('.data_tbl'), 'credit');
-                $('#credit').text(bdFormat(credit));
                 $('.data_preloader').hide();
             }
         });

@@ -43,6 +43,7 @@ Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controlle
     Route::get('branch/allow/login/users/{branchId}', 'CommonAjaxCallController@branchAllowLoginUsers');
     Route::get('branch/users/{branchId}', 'CommonAjaxCallController@branchUsers');
     Route::get('get/supplier/{supplierId}', 'CommonAjaxCallController@getSupplier');
+    Route::get('get/customer/{customerId}', 'CommonAjaxCallController@getCustomer');
 });
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
@@ -231,7 +232,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('store', 'CustomerController@store')->name('contacts.customer.store');
         Route::get('edit/{customerId}', 'CustomerController@edit')->name('contacts.customer.edit');
         Route::post('update', 'CustomerController@update')->name('contacts.customer.update');
-        Route::get('get/customer/{customerId}', 'CustomerController@getCustomer')->name('contacts.customer.get.customer');
+        
         Route::delete('delete/{customerId}', 'CustomerController@delete')->name('contacts.customer.delete');
         Route::get('change/status/{customerId}', 'CustomerController@changeStatus')->name('contacts.customer.change.status');
         Route::get('view/{customerId}', 'CustomerController@view');
@@ -243,7 +244,9 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('return/payment/{customerId}', 'CustomerController@returnPayment')->name('customers.return.payment');
         Route::post('return/payment/{customerId}', 'CustomerController@returnPaymentAdd')->name('customers.return.payment.add');
 
-        Route::get('view/payment/{customerId}', 'CustomerController@viewPayment')->name('customers.view.payment');
+        // Route::get('view/payment/{customerId}', 'CustomerController@viewPayment')->name('customers.view.payment');
+        Route::get('all/payment/list/{customerId}', 'CustomerController@allPaymentList')->name('customers.all.payment.list');
+        Route::get('all/payment/print/{customerId}', 'CustomerController@allPaymentPrint')->name('customers.all.payment.print');
         Route::get('payment/details/{paymentId}', 'CustomerController@paymentDetails')->name('customers.view.details');
         Route::delete('payment/delete/{paymentId}', 'CustomerController@paymentDelete')->name('customers.payment.delete');
 
@@ -1071,6 +1074,38 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
+
+    return $paymentsQuery = DB::table('customer_ledgers')
+    ->where('customer_ledgers.customer_id', 133)
+    ->whereIn('customer_ledgers.voucher_type', [3, 4, 5, 6])
+    ->leftJoin('customer_payments', 'customer_ledgers.customer_payment_id', 'customer_payments.id')
+    ->leftJoin('payment_methods as cp_pay_method', 'customer_payments.payment_method_id', 'cp_pay_method.id')
+    ->leftJoin('accounts as cp_account', 'customer_payments.account_id', 'cp_account.id')
+    ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
+    ->leftJoin('payment_methods as sp_pay_method', 'sale_payments.payment_method_id', 'sp_pay_method.id')
+    ->leftJoin('accounts as sp_account', 'sale_payments.account_id', 'sp_account.id')
+    ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
+    ->leftJoin('sale_returns', 'sale_payments.sale_return_id', 'sale_returns.id')
+    ->select(
+        'customer_ledgers.date',
+        'customer_ledgers.report_date',
+        'customer_ledgers.amount',
+        'customer_ledgers.customer_payment_id',
+        'customer_ledgers.sale_payment_id',
+        'customer_ledgers.voucher_type',
+        'customer_payments.voucher_no as customer_payment_voucher',
+        'customer_payments.pay_mode as cp_pay_mode',
+        'cp_pay_method.name as cp_payment_method',
+        'cp_account.name as cp_account',
+        'cp_account.account_number as cp_account_number',
+        'sale_payments.invoice_id as sale_payment_voucher',
+        'sale_payments.pay_mode as sp_pay_mode',
+        'sp_pay_method.name as sp_payment_method',
+        'sp_account.name as sp_account',
+        'sp_account.account_number as sp_account_number',
+        'sales.invoice_id as sale_inv',
+        'sales.invoice_id as return_inv',
+    )->orderBy('customer_ledgers.report_date', 'desc')->get();
 });
 
 // All authenticated routes

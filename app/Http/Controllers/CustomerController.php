@@ -130,12 +130,6 @@ class CustomerController extends Controller
         return view('contacts.customers.ajax_view.edit', compact('customer', 'groups'));
     }
 
-    public function getCustomer($customerId)
-    {
-        $customer = Customer::where('id', $customerId)->first();
-        return response()->json($customer);
-    }
-
     public function update(Request $request)
     {
         if (auth()->user()->permission->contact['customer_edit'] == '0') {
@@ -233,7 +227,7 @@ class CustomerController extends Controller
         if ($request->ajax()) {
 
             $generalSettings = DB::table('general_settings')->first();
-            
+
             $sales = '';
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
@@ -247,7 +241,7 @@ class CustomerController extends Controller
                         'customers.name as customer_name',
                     )->where('sales.customer_id', $customerId)
                     ->where('sales.status', 1)
-                    ->orderBy('id', 'desc');
+                    ->orderBy('sales.report_date', 'desc');
             } else {
 
                 $sales = DB::table('sales')
@@ -261,11 +255,13 @@ class CustomerController extends Controller
                     )->where('sales.customer_id', $customerId)
                     ->where('sales.status', 1)
                     ->where('sales.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc');
+                    ->orderBy('sales.report_date', 'desc');
             }
 
             return DataTables::of($sales)
+
                 ->addColumn('action', function ($row) {
+
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
@@ -320,16 +316,18 @@ class CustomerController extends Controller
                         }
                     }
 
-                    $html .= '<a class="dropdown-item" id="items_notification" href=""><i
-                                    class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
+                    // $html .= '<a class="dropdown-item" id="items_notification" href=""><i
+                    //                 class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;
                 })
+
                 ->editColumn('date', function ($row) {
 
                     return date('d/m/Y', strtotime($row->date));
                 })
+
                 ->editColumn('invoice_id', function ($row) {
 
                     $html = '';
@@ -337,7 +335,9 @@ class CustomerController extends Controller
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
                     return $html;
                 })
+
                 ->editColumn('from',  function ($row) use ($generalSettings) {
+
                     if ($row->branch_name) {
 
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
@@ -350,16 +350,16 @@ class CustomerController extends Controller
 
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
-                ->editColumn('total_payable_amount', fn ($row) => $this->converter->format_in_bdt($row->total_payable_amount))
-                
-                ->editColumn('paid', fn ($row) => '<span class="text-success">' . $this->converter->format_in_bdt($row->paid) . '</span>')
-                
-                ->editColumn('due', fn ($row) =>  '<span class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
-                
-                ->editColumn('sale_return_amount', fn ($row) => $this->converter->format_in_bdt($row->sale_return_amount))
-                
-                ->editColumn('sale_return_due', fn ($row) => '<span class="text-danger">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
-                
+                ->editColumn('total_payable_amount', fn ($row) => '<span class="text-success total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
+
+                ->editColumn('paid', fn ($row) => '<span class="text-success paid" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+
+                ->editColumn('due', fn ($row) =>  '<span class="text-danger due" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
+
+                ->editColumn('sale_return_amount', fn ($row) => '<span class="text-danger sale_return_amount" data-value="' . $row->sale_return_amount . '">' . $this->converter->format_in_bdt($row->sale_return_amount) . '</span>')
+
+                ->editColumn('sale_return_due', fn ($row) => '<span class="text-danger sale_return_due" data-value="' . $row->sale_return_due . '">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
+
                 ->editColumn('paid_status', function ($row) {
 
                     $payable = $row->total_payable_amount - $row->sale_return_amount;
@@ -433,7 +433,7 @@ class CustomerController extends Controller
 
             return DataTables::of($customerLedgers)
                 ->editColumn('date', function ($row) use ($settings) {
-                    
+
                     $dateFormat = json_decode($settings->business, true)['date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->report_date));
@@ -506,7 +506,7 @@ class CustomerController extends Controller
         $toDate = '';
 
         if ($request->from_date) {
-            
+
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
@@ -977,5 +977,206 @@ class CustomerController extends Controller
         //Update customer info
         $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
         return response()->json('Payment deleted successfully.');
+    }
+
+    public function allPaymentList(Request $request, $customerId)
+    {
+        if ($request->ajax()) {
+
+            $generalSettings = DB::table('general_settings')->first();
+            $payments = '';
+            $paymentsQuery = DB::table('customer_ledgers')
+                ->where('customer_ledgers.customer_id', $customerId)
+                ->whereIn('customer_ledgers.voucher_type', [3, 4, 5, 6])
+                ->leftJoin('customer_payments', 'customer_ledgers.customer_payment_id', 'customer_payments.id')
+                ->leftJoin('payment_methods as cp_pay_method', 'customer_payments.payment_method_id', 'cp_pay_method.id')
+                ->leftJoin('accounts as cp_account', 'customer_payments.account_id', 'cp_account.id')
+                ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
+                ->leftJoin('payment_methods as sp_pay_method', 'sale_payments.payment_method_id', 'sp_pay_method.id')
+                ->leftJoin('accounts as sp_account', 'sale_payments.account_id', 'sp_account.id')
+                ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
+                ->leftJoin('sale_returns', 'sale_payments.sale_return_id', 'sale_returns.id');
+
+            if ($request->type) {
+
+                if ($request->type == 1) {
+
+                    $paymentsQuery->whereIn('customer_ledgers.voucher_type', [3, 5]);
+                } else {
+
+                    $paymentsQuery->whereIn('customer_ledgers.voucher_type', [4, 6]);
+                }
+            }
+
+            if ($request->p_from_date) {
+
+                $from_date = date('Y-m-d', strtotime($request->p_from_date));
+                $to_date = $request->p_to_date ? date('Y-m-d', strtotime($request->p_to_date)) : $from_date;
+                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+                $paymentsQuery->whereBetween('customer_ledgers.report_date', $date_range); // Final
+            }
+
+            $payments = $paymentsQuery->select(
+                'customer_ledgers.date',
+                'customer_ledgers.report_date',
+                'customer_ledgers.amount',
+                'customer_ledgers.customer_payment_id',
+                'customer_ledgers.sale_payment_id',
+                'customer_ledgers.voucher_type',
+                'customer_payments.voucher_no as customer_payment_voucher',
+                'customer_payments.pay_mode as cp_pay_mode',
+                'cp_pay_method.name as cp_payment_method',
+                'cp_account.name as cp_account',
+                'cp_account.account_number as cp_account_number',
+                'sale_payments.invoice_id as sale_payment_voucher',
+                'sale_payments.pay_mode as sp_pay_mode',
+                'sp_pay_method.name as sp_payment_method',
+                'sp_account.name as sp_account',
+                'sp_account.account_number as sp_account_number',
+                'sales.invoice_id as sale_inv',
+                'sales.invoice_id as return_inv',
+            )->orderBy('customer_ledgers.report_date', 'desc')->get();
+
+            return DataTables::of($payments)
+                ->addColumn('action', function ($row) {
+
+                    $html = '<div class="btn-group" role="group">';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+
+                    if ($row->customer_payment_id) {
+
+                        $html .= '<a href="' . route('customers.view.details', $row->customer_payment_id) . '" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
+
+                        $html .= '<a href="' . route('customers.payment.delete', $row->customer_payment_id) . '" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
+                    } else {
+
+                        $html .= '<a href="' . route('sales.payment.details', $row->sale_payment_id) . '" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
+
+                        $html .= '<a href="' . route('sales.payment.delete', $row->sale_payment_id) . '" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
+                    }
+
+                    $html .= '</div>';
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->editColumn('date', function ($row) use ($generalSettings) {
+
+                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                })
+                ->editColumn('voucher_no', function ($row) {
+
+                    return $row->customer_payment_voucher . $row->sale_payment_voucher;
+                })
+                ->editColumn('against_invoice', function ($row) {
+
+                    if ($row->sale_inv || $row->return_inv) {
+
+                        if ($row->sale_inv) {
+
+                            return 'Sale : ' . $row->sale_inv;
+                        } else {
+
+                            return 'Sale Return : ' . $row->return_inv;
+                        }
+                    }
+                })
+                ->editColumn('type', function ($row) {
+
+                    if ($row->voucher_type == 3 || $row->voucher_type == 5) {
+
+                        return 'Receive Payment';
+                    } else {
+
+                        return 'Return Payment';
+                    }
+                })
+                ->editColumn('method', function ($row) {
+
+                    return $row->cp_pay_mode . $row->cp_payment_method . $row->sp_pay_mode . $row->sp_payment_method;
+                })
+                ->editColumn('account', function ($row) {
+
+                    if ($row->cp_account) {
+
+                        return $row->cp_account . '(A/C:' . $row->cp_account_number . ')';
+                    } else {
+
+                        return $row->sp_account . '(A/C:' . $row->sp_account_number . ')';
+                    }
+                })
+                ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
+
+                ->rawColumns(['date', 'against_invoice', 'type', 'method', 'account', 'amount', 'action'])
+                ->make(true);
+        }
+    }
+
+    public function allPaymentPrint(Request $request, $customerId)
+    {
+        $payments = '';
+        $fromDate  = '';
+        $toDate = '';
+        $customer = DB::table('customers')->where('id', $customerId)->first();
+
+        $paymentsQuery = DB::table('customer_ledgers')
+            ->where('customer_ledgers.customer_id', $customerId)
+            ->whereIn('customer_ledgers.voucher_type', [3, 4, 5, 6])
+            ->leftJoin('customer_payments', 'customer_ledgers.customer_payment_id', 'customer_payments.id')
+            ->leftJoin('payment_methods as cp_pay_method', 'customer_payments.payment_method_id', 'cp_pay_method.id')
+            ->leftJoin('accounts as cp_account', 'customer_payments.account_id', 'cp_account.id')
+
+            ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
+            ->leftJoin('payment_methods as sp_pay_method', 'sale_payments.payment_method_id', 'sp_pay_method.id')
+            ->leftJoin('accounts as sp_account', 'sale_payments.account_id', 'sp_account.id')
+            ->leftJoin('sales', 'sale_payments.purchase_id', 'sales.id')
+            ->leftJoin('sale_returns', 'sale_payments.sale_return_id', 'sale_returns.id')
+            // ->leftJoin('admin_and_users', 'customer_ledgers.user_id', 'admin_and_users.id')
+        ;
+
+        if ($request->type) {
+
+            if ($request->type == 1) {
+
+                $paymentsQuery->whereIn('customer_ledgers.voucher_type', [3, 5]);
+            } else {
+
+                $paymentsQuery->whereIn('customer_ledgers.voucher_type', [4, 6]);
+            }
+        }
+
+        if ($request->p_from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->p_from_date));
+            $to_date = $request->p_to_date ? date('Y-m-d', strtotime($request->p_to_date)) : $from_date;
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $paymentsQuery->whereBetween('customer_ledgers.report_date', $date_range); // Final
+
+            $fromDate  = $request->p_from_date;
+            $toDate = $request->p_to_date ? $request->p_to_date : $request->p_from_date;
+        }
+
+        $payments = $paymentsQuery->select(
+            'customer_ledgers.date',
+            'customer_ledgers.report_date',
+            'customer_ledgers.amount',
+            'customer_ledgers.customer_payment_id',
+            'customer_ledgers.sale_payment_id',
+            'customer_ledgers.voucher_type',
+            'customer_payments.voucher_no as customer_payment_voucher',
+            'customer_payments.pay_mode as cp_pay_mode',
+            'cp_pay_method.name as cp_payment_method',
+            'cp_account.name as cp_account',
+            'cp_account.account_number as cp_account_number',
+            'sale_payments.invoice_id as sale_payment_voucher',
+            'sale_payments.pay_mode as sp_pay_mode',
+            'sp_pay_method.name as sp_payment_method',
+            'sp_account.name as sp_account',
+            'sp_account.account_number as sp_account_number',
+            'sales.invoice_id as sale_inv',
+            'sales.invoice_id as return_inv',
+        )->orderBy('customer_ledgers.report_date', 'desc')->get();
+
+        return view('contacts.customers.ajax_view.print_payments', compact('payments', 'fromDate', 'toDate', 'customer'));
     }
 }

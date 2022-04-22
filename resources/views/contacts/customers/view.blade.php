@@ -47,6 +47,12 @@
                                             <i class="fas fa-shopping-bag"></i> Sale
                                         </a>
                                     </li>
+
+                                    <li>
+                                        <a id="tab_btn" data-show="payments" class="tab_btn" href="#">
+                                            <i class="far fa-money-bill-alt"></i> Payments
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
 
@@ -79,12 +85,30 @@
 
                                     <div class="col-md-3">
                                         <ul class="list-unstyled">
-                                            <li><strong> Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</li>
-                                            <li><strong> Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</li>
-                                            <li><strong> Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</li>
-                                            <li><strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</li>
-                                            <li><strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</li>
-                                            <li><strong> Total Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> {{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</li>
+                                            <li>
+                                                <strong> Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <span class="opening_balance">{{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</span>
+                                            </li>
+                                            <li>
+                                                <strong> Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <span class="total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</span>
+                                            </li>
+                                            <li>
+                                                <strong> Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <span class="total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</span>
+                                            </li>
+                                            <li>
+                                                <strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <span class="total_paid">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</span>
+                                            </li>
+                                            <li>
+                                                <strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <span class="total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</span>
+                                            </li>
+                                            <li>
+                                                <strong> Total Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <span class="total_sale_return_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</span>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -103,34 +127,34 @@
                                                     <tbody>
                                                         <tr>
                                                             <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> </td>
-                                                            <td class="text-end"> {{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</td>
+                                                            <td class="text-end opening_balance"> {{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</td>
                                                         </tr>
 
                                                         <tr>
                                                             <td class="text-end"><strong>Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</td>
+                                                            <td class="text-end total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</td>
                                                         </tr>
 
                                                         <tr>
                                                             <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</td>
+                                                            <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</td>
                                                         </tr>
 
                                                         <tr>
                                                             <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                            <td class="text-end"> 
+                                                            <td class="text-end total_paid"> 
                                                                 {{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}
                                                             </td>
                                                         </tr>
 
                                                         <tr>
                                                             <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</td>
+                                                            <td class="text-end total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</td>
                                                         </tr>
 
                                                         <tr>
                                                             <td class="text-end"><strong>Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</td>
+                                                            <td class="text-end total_sale_return_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -225,7 +249,7 @@
                                                             <th colspan="3" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                             <th id="debit" class="text-white text-end"></th>
                                                             <th id="credit" class="text-white text-end"></th>
-                                                            <th id="due" class="text-white text-end">---</th>
+                                                            <th class="text-white text-end">---</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -240,7 +264,7 @@
                                     <div class="col-md-12">
                                         <div class="table_area">
                                             <div class="table-responsive">
-                                                <table class="display data_tbl data__table data_tbl2 w-100">
+                                                <table class="display data_tbl data__table sales_table w-100">
                                                     <thead>
                                                         <tr>
                                                             <th>Actions</th>
@@ -257,14 +281,154 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody></tbody>
+                                                    <tfoot>
+                                                        <tr class="bg-secondary">
+                                                            <th colspan="5" class="text-end text-white">Total :</th>
+                                                            <th class="text-end text-white" id="total_payable_amount"></th>
+                                                            <th class="text-end text-white" id="paid"></th>
+                                                            <th class="text-end text-white" id="due"></th>
+                                                            <th class="text-end text-white" id="sale_return_amount"></th>
+                                                            <th class="text-end text-white" id="sale_return_due"></th>
+                                                            <th class="text-start text-white">---</th>
+                                                        </tr>
+                                                    </tfoot>
                                                 </table>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                        <form id="deleted_form" action="" method="post">
-                                            @method('DELETE')
-                                            @csrf
-                                        </form>
+                            <div class="tab_contant payments d-none">
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-12 col-lg-3">
+                                        <table class="table modal-table table-sm mt-3">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                    <td class="text-end opening_balance">{{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td class="text-end"><strong>Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                    <td class="text-end total_purchase">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                    <td class="text-end text-success total_paid">
+                                                        {{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}
+                                                    </td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                    <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                    <td class="text-end text-danger total_purchase_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+    
+                                    <div class="col-md-7 col-sm-12 col-lg-7">
+                                        <div class="card mt-3 pb-5">
+                                            <form id="filter_customer_payments" class="py-2 px-2 mt-2" method="get">
+    
+                                                <div class="form-group row">
+                                                    <div class="col-md-3">
+                                                        <label><strong>Payment Status :</strong></label>
+                                                        <select name="type" class="form-control submit_able" id="type" autofocus>
+                                                            <option value="">All</option> 
+                                                            <option value="1">Receive Payment</option>
+                                                            <option value="2">Return Payment</option>
+                                                        </select>
+                                                    </div>
+    
+                                                    <div class="col-md-3">
+                                                        <label><strong>From Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                            </div>
+                                                            <input type="text" name="p_from_date" id="p_from_date" class="form-control p_from_date date"autocomplete="off">
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="col-md-3">
+                                                        <label><strong>To Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                            </div>
+                                                            <input type="text" name="p_to_date" id="p_to_date" class="form-control p_to_date date" autocomplete="off">
+                                                        </div>
+                                                    </div>
+    
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label><strong></strong></label>
+                                                                <div class="input-group">
+                                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-md-2 col-sm-12 col-lg-2">
+                                        <div class="row mt-2">
+                                            <div class="col-md-12">
+                                                <a href="{{ route('customers.payment', $customer->id) }}" id="add_payment" class="btn btn-success mt-2"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
+        
+                                                <a class="btn btn-success return_payment_btn mt-2 {{ $customer->total_sale_return_due > 0 ? '' : 'd-none' }} " id="add_payment" href="#"><i class="far fa-money-bill-alt text-white"></i> Refund Amount</a> 
+                                            </div>
+                                        </div>
+    
+                                        <div class="row mt-2">
+                                            <div class="col-md-12">
+                                                <a href="#" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+              
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="widget_content table_area">
+                                            <div class="table-responsive">
+                                                <table class="display data_tbl data__table payments_table w-100">
+                                                    <thead>
+                                                        <tr class="text-start">
+                                                            <th class="text-start">Date</th>
+                                                            <th class="text-start">Voucher No</th>
+                                                            <th class="text-start">Against Invoice</th>
+                                                            {{-- <th>Created By</th> --}}
+                                                            <th class="text-start">Payment Status</th>
+                                                            <th class="text-start">Payment Type</th>
+                                                            <th class="text-start">Account</th>
+                                                            <th class="text-end">Paid Amount</th>
+                                                            <th class="text-start">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                    <tfoot>
+                                                        <tr class="bg-secondary">
+                                                            <th class="text-end text-white" colspan="6">Total : </th>
+                                                            <th class="text-end text-white" id="amount"></th>
+                                                            <th class="text-start text-white">---</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -275,109 +439,81 @@
         </div>
     </div>
 
+    <form id="deleted_form" action="" method="post">
+        @method('DELETE')
+        @csrf
+    </form>
+
+    <form id="payment_deleted_form" action="" method="post">
+        @method('DELETE')
+        @csrf
+    </form>
+
     <!-- Details Modal -->
     <div id="sale_details"></div>
 
    <!-- Edit Shipping modal -->
    <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content" id="edit_shipment_modal_content"> </div>
+            <div class="modal-content" id="edit_shipment_modal_content">
+
+            </div>
         </div>
     </div>
 
     @if (auth()->user()->permission->sale['sale_payment'] == '1')
-    <!--Payment View modal-->
-    <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
+        <!--Payment View modal-->
+        <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog four-col-modal" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="payment_view_modal_body"> </div>
                 </div>
-                <div class="modal-body" id="payment_view_modal_body"> </div>
             </div>
         </div>
-    </div>
 
-     <!--Add Payment modal-->
-    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="payment_heading">Add Payment</h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body" id="payment-modal-body"> </div>
-            </div>
-        </div>
-    </div>
+        <!--Add Payment modal-->
+        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
-    <!--Payment list modal-->
-    <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span class="payment_invoice"></span>)</h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="payment_details_area"></div>
+        <!--Payment list modal-->
+        <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog four-col-modal" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span class="payment_invoice"></span>)</h6>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="payment_details_area"></div>
 
-                    <div class="row">
-                        <div class="col-md-6 text-right">
-                            <ul class="list-unstyled">
-                                <li class="mt-3" id="payment_attachment"></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <ul class="list-unstyled">
-                                <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a></li>
-                            </ul>
+                        <div class="row">
+                            <div class="col-md-6 text-right">
+                                <ul class="list-unstyled">
+                                    <li class="mt-3" id="payment_attachment"></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <ul class="list-unstyled">
+                                    <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary float-end">Print</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-@endif
+    @endif
 
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        //Get all customer for filter form
-        var sales_table = $('.data_tbl2').DataTable({
-            "processing": true,
-            "serverSide": true,
-            aaSorting: [[3, 'asc']],
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
-            ajax:"{{ url('contacts/customers/view', $customerId) }}",
-            columnDefs: [{
-                "targets": [0, 10],
-                "orderable": false,
-                "searchable": false
-            }],
-            columns: [
-                {data: 'action',},
-                { data: 'date', name: 'date'},
-                { data: 'invoice_id', name: 'invoice_id'},
-                {data: 'from', name: 'branches.name'},
-                {data: 'customer', name: 'customers.name'},
-                {data: 'total_payable_amount', name: 'total_payable_amount', className: 'text-end'},
-                {data: 'paid', name: 'paid', className: 'text-end'},
-                {data: 'due', name: 'due', className: 'text-end'},
-                {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end'},
-                {data: 'sale_return_due', name: 'sale_return_due', className: 'text-end'},
-                {data: 'paid_status', name: 'paid_status'},
-            ],
-        });
-
+        //Get customer Ledgers by yajra data table
         var ledger_table = $('.ledger_table').DataTable({
             "processing": true,
             "serverSide": true,
@@ -388,7 +524,8 @@
                 {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
             ],
 
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
             "ajax": {
                 "url": "{{ route('contacts.customer.ledger.list', $customer->id) }}",
@@ -407,6 +544,7 @@
                 {data: 'credit', name: 'credit', className: 'text-end'},
                 {data: 'running_balance', name: 'running_balance', className: 'text-end'},
             ],fnDrawCallback: function() {
+
                 var debit = sum_table_col($('.data_tbl'), 'debit');
                 $('#debit').text(bdFormat(debit));
                 var credit = sum_table_col($('.data_tbl'), 'credit');
@@ -415,10 +553,103 @@
             }
         });
 
+          //Get customer Sales by yajra data table
+          var sales_table = $('.sales_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            // aaSorting: [[3, 'asc']],
+
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            
+            ajax:"{{ url('contacts/customers/view', $customerId) }}",
+
+            columnDefs: [{
+                "targets": [0, 10],
+                "orderable": false,
+                "searchable": false
+            }],
+
+            columns: [
+                {data: 'action'},
+                { data: 'date', name: 'date'},
+                { data: 'invoice_id', name: 'invoice_id'},
+                {data: 'from', name: 'branches.name'},
+                {data: 'customer', name: 'customers.name'},
+                {data: 'total_payable_amount', name: 'total_payable_amount', className: 'text-end'},
+                {data: 'paid', name: 'paid', className: 'text-end'},
+                {data: 'due', name: 'due', className: 'text-end'},
+                {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end'},
+                {data: 'sale_return_due', name: 'sale_return_due', className: 'text-end'},
+                {data: 'paid_status', name: 'paid_status'},
+            ],fnDrawCallback: function() {
+
+                var total_payable_amount = sum_table_col($('.data_tbl'), 'total_payable_amount');
+                $('#total_payable_amount').text(bdFormat(total_payable_amount));
+                var paid = sum_table_col($('.data_tbl'), 'paid');
+                $('#paid').text(bdFormat(paid));
+                var due = sum_table_col($('.data_tbl'), 'due');
+                $('#due').text(bdFormat(due));
+                var sale_return_amount = sum_table_col($('.data_tbl'), 'sale_return_amount');
+                $('#sale_return_amount').text(bdFormat(sale_return_amount));
+                var sale_return_due = sum_table_col($('.data_tbl'), 'sale_return_due');
+                $('#sale_return_due').text(bdFormat(sale_return_due));
+                $('.data_preloader').hide();
+            }
+        });
+
+        var payments_table = $('.payments_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "searching" : true,
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
+                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+            ],
+
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+
+            "ajax": {
+                "url": "{{ route('customers.all.payment.list', $customer->id) }}",
+                "data": function(d) {
+                    d.type = $('#type').val();
+                    d.p_from_date = $('.p_from_date').val();
+                    d.p_to_date = $('.p_to_date').val();
+                }
+            },
+
+            columnDefs: [{
+                "targets": [3, 4, 5, 6],
+                "orderable": false,
+                "searchable": false
+            }],
+
+            columns: [
+                {data: 'date', name: 'customer_ledgers.date'},
+                {data: 'voucher_no', name: 'customer_payments.voucher_no'},
+                {data: 'against_invoice', name: 'sales.invoice_id'},
+                {data: 'type', name: 'type'},
+                {data: 'method', name: 'method'},
+                {data: 'account', name: 'account'},
+                {data: 'amount', name: 'customer_ledgers.amount', className: 'text-end'},
+                {data: 'action'},
+            ],fnDrawCallback: function() {
+
+                var amount = sum_table_col($('.data_tbl'), 'amount');
+                $('#amount').text(bdFormat(amount));
+                $('.data_preloader').hide();
+            }
+        });
+
+
         function sum_table_col(table, class_name) {
             var sum = 0;
             table.find('tbody').find('tr').each(function() {
+
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
+
                     sum += parseFloat(
                         $(this).find('.' + class_name).data('value')
                     );
@@ -433,6 +664,14 @@
             $('.data_preloader').show();
             ledger_table.ajax.reload();
         });
+
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_customer_payments', function (e) {
+            e.preventDefault();
+
+            $('.data_preloader').show();
+            payments_table.ajax.reload();
+        });
         
         $(document).on('click', '#tab_btn', function(e) {
             e.preventDefault();
@@ -446,12 +685,14 @@
         // Show details modal with data
         $(document).on('click', '.details_button', function (e) {
             e.preventDefault();
+
             var url = $(this).attr('href');
             $('.data_preloader').show();
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(data){
+
                     $('#sale_details').html(data);
                     $('.data_preloader').hide();
                     $('#detailsModal').modal('show');
@@ -462,6 +703,7 @@
         // Print Packing slip
         $(document).on('click', '#print_packing_slip', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $.ajax({
@@ -485,12 +727,14 @@
         // Show change status modal and pass actual link in the change status form
         $(document).on('click', '#edit_shipment', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show(); 
             var url = $(this).attr('href');
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(data){
+                    
                     $('.data_preloader').hide();
                     $('#edit_shipment_modal_content').html(data);
                     $('#editShipmentModal').modal('show');
@@ -500,8 +744,10 @@
 
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
+
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);           
+            $('#deleted_form').attr('action', url);
+
             $.confirm({
                 'title': 'Delete Confirmation',
                 'message': 'Are you sure?',
@@ -515,6 +761,7 @@
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();
+
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
@@ -522,70 +769,10 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    sales_table.ajax.reload();
+
+                     $('.data_tbl').DataTable().ajax.reload();
                     toastr.error(data);
-                }
-            });
-        });
-
-        // Show change status modal and pass actual link in the change status form
-        $(document).on('click', '#edit_shipment', function (e) {
-            e.preventDefault();
-            $('.data_preloader').show(); 
-            var url = $(this).attr('href');
-            $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
-                    $('.data_preloader').hide();
-                    $('#edit_shipment_modal_body').html(data);
-                    $('#editShipmentModal').modal('show');
-                }
-            });
-        });
-
-        //change sale status requested by ajax
-        $(document).on('submit', '#edit_shipment_form',function(e){
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-
-            $('.loading_button').show();
-            var inputs = $('.add_input');
-            $('.error').html('');  
-            var countErrorField = 0;  
-
-            $.each(inputs, function(key, val){
-
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-
-                if(idValue == ''){
-
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-
-                $('.loading_button').hide();
-                return;
-            }
-
-            $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-
-                    console.log(data);
-                    sales_table.ajax.reload();
-                    toastr.success(data);
-
-                    $('.loading_button').hide();
-                    $('#editShipmentModal').modal('hide'); 
+                    getCustomer();
                 }
             });
         });
@@ -610,16 +797,15 @@
 
         $(document).on('click', '#add_payment', function (e) {
             e.preventDefault();
-
             $('.data_preloader').show();
             var url = $(this).attr('href');
-            $('#payment_heading').html('Add Payment');
+            
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(data){
 
-                    $('#payment-modal-body').html(data); 
+                    $('#paymentModal').html(data); 
                     $('#paymentModal').modal('show'); 
                     $('.data_preloader').hide();
                 }
@@ -637,9 +823,10 @@
                 url:url,
                 type:'get',
                 success:function(data){
+
+                    $('#paymentModal').html(data); 
+                    $('#paymentModal').modal('show');  
                     $('.data_preloader').hide();
-                    $('#payment-modal-body').html(data); 
-                    $('#paymentModal').modal('show'); 
                 }
             });
         });
@@ -674,9 +861,9 @@
                 type:'get',
                 success:function(data){
 
-                    $('.data_preloader').hide();
-                    $('#payment-modal-body').html(data); 
+                    $('#paymentModal').html(data); 
                     $('#paymentModal').modal('show'); 
+                    $('.data_preloader').hide();
                 }
             });
         });
@@ -691,8 +878,9 @@
                 type:'get',
                 success:function(data){
 
-                    $('#payment-modal-body').html(data); 
+                    $('#paymentModal').html(data); 
                     $('#paymentModal').modal('show'); 
+                    $('.data_preloader').hide();
                 }
             });
         });
@@ -735,37 +923,34 @@
             e.preventDefault();
 
             var url = $(this).attr('href');
-            var button = $(this);
             $('#payment_deleted_form').attr('action', url);
+            var url = $(this).attr('href');
 
-            swal({
-                title: "Are you sure to delete ?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-
-                if (willDelete) { 
-
-                    $('#payment_deleted_form').submit();
-                    button.closest('tr').remove();
+            $.confirm({
+                'title': 'Delete Confirmation',
+                'content': 'Are you sure, you want to delete?',
+                'buttons': {
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#payment_deleted_form').submit();}},
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                 }
-            });
+            })
         });
             
         //data delete by ajax
         $(document).on('submit', '#payment_deleted_form',function(e){
             e.preventDefault();
+
             var url = $(this).attr('action');
-            console.log(url);
             var request = $(this).serialize();
             $.ajax({
                 url:url,
                 type:'post',
                 data:request,
                 success:function(data){
-                    sales_table.ajax.reload();
+
+                    $('.data_tbl').DataTable().ajax.reload();
                     toastr.error(data);
+                    getCustomer();
                 }
             });
         });
@@ -850,5 +1035,69 @@
             },
             format: 'DD-MM-YYYY',
         });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('p_from_date'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('p_to_date'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+
+        
+        function getCustomer() {
+
+            $.ajax({
+                url:"{{ url('common/ajax/call/get/customer', $customer->id) }}",
+                type:'get',
+                success:function(data){
+
+                    $('.opening_balance').text(bdFormat(data.opening_balance));
+                    $('.total_sale').text(bdFormat(data.total_sale));
+                    $('.total_return').text(bdFormat(data.total_return));
+                    $('.total_paid').text(bdFormat(data.total_paid));
+                    $('.total_sale_due').text(bdFormat(data.total_sale_due));
+                    $('.total_sale_return_due').text(bdFormat(data.total_sale_return_due));
+
+                    if (data.total_sale_return_due > 0) {
+
+                        $('.return_payment_btn').removeClass('d-none');
+                    }else{
+
+                        $('.return_payment_btn').addClass('d-none');
+                    }
+                }
+            });
+        }
     </script>
 @endpush

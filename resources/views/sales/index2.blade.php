@@ -193,18 +193,7 @@
         </div>
 
         <!--Add Payment modal-->
-        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">Payment</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                    </div>
-                    <div class="modal-body" id="payment-modal-body"></div>
-                </div>
-            </div>
-        </div>
+        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
         <!--Payment list modal-->
         <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -240,19 +229,8 @@
         </div>
     @endif
 
-    <div class="modal fade" id="sendNotificationModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Send Notification</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="send-natification-modal-body"></div>
-            </div>
-        </div>
-    </div>
 @endsection
+
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
@@ -368,8 +346,8 @@
 
             $.get(url, function(data) {
 
-                $('#payment-modal-body').html(data);
-                $('#paymentModal').modal('show');
+                $('#paymentModal').html(data); 
+                $('#paymentModal').modal('show'); 
                 $('.data_preloader').hide();
             });
         });
@@ -383,9 +361,9 @@
 
             $.get(url, function(data) {
 
+                $('#paymentModal').html(data); 
+                $('#paymentModal').modal('show'); 
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data);
-                $('#paymentModal').modal('show');
             });
         });
 
@@ -399,9 +377,9 @@
 
             $.get(url, function(data) {
 
+                $('#paymentModal').html(data); 
+                $('#paymentModal').modal('show'); 
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data);
-                $('#paymentModal').modal('show');
             });
         });
 
@@ -414,9 +392,9 @@
 
             $.get(url, function(data) {
 
+                $('#paymentModal').html(data); 
+                $('#paymentModal').modal('show'); 
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data);
-                $('#paymentModal').modal('show');
             });
         });
 
@@ -446,48 +424,13 @@
             });
         });
 
-        //change sale status requested by ajax
-        $(document).on('submit', '#edit_shipment_form',function(e){
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $('.loading_button').show();
-            var inputs = $('.add_input');
-                $('.error').html('');
-                var countErrorField = 0;
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                return;
-            }
-
-            $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-                    sales_table.ajax.reload();
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                    $('#editShipmentModal').modal('hide');
-                }
-            });
-        });
-
         // Make print
         $(document).on('click', '.print_btn',function (e) {
            e.preventDefault();
+
             var body = $('.sale_print_template').html();
             var header = $('.heading_area').html();
+
             $(body).printThis({
                 debug: false,
                 importCSS: true,
@@ -502,8 +445,10 @@
 
         $(document).on('click', '.print_challan_btn',function (e) {
            e.preventDefault();
+
             var body = $('.challan_print_template').html();
             var header = $('.heading_area').html();
+
             $(body).printThis({
                 debug: false,
                 importCSS: true,
@@ -519,9 +464,11 @@
         // Print single payment details
         $('#print_payment').on('click', function (e) {
            e.preventDefault();
+
             var body = $('.sale_payment_print_area').html();
             var header = $('.print_header').html();
             var footer = $('.signature_area').html();
+
             $(body).printThis({
                 debug: false,
                 importCSS: true,
@@ -543,6 +490,7 @@
                 url:url,
                 type:'get',
                 success:function(data){
+
                     $('.data_preloader').hide();
                     $(data).printThis({
                         debug: false,

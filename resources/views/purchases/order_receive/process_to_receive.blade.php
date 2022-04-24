@@ -251,7 +251,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Paying Amount : </b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
+                                                        <label class="col-4"><b>Paying Amount : </b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                         </div>
@@ -264,7 +264,9 @@
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                                 @foreach ($methods as $method)
-                                                                    <option value="{{ $method->id }}">
+                                                                    <option 
+                                                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                                                        value="{{ $method->id }}">
                                                                         {{ $method->name }}
                                                                     </option>
                                                                 @endforeach
@@ -442,5 +444,24 @@
             },
             format: _expectedDateFormat,
         });
+
+        $('#payment_method_id').on('change', function () {
+
+            var account_id = $(this).find('option:selected').data('account_id');
+            setMethodAccount(account_id);
+        });
+
+        function setMethodAccount(account_id) {
+
+            if (account_id) {
+
+                $('#account_id').val(account_id);
+            }else if(account_id === ''){
+
+                $('#account_id option:first-child').prop("selected", true);
+            }
+        }
+
+        setMethodAccount($('#payment_method_id').find('option:selected').data('account_id'));
     </script>
 @endpush

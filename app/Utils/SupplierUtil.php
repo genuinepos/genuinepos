@@ -123,28 +123,28 @@ class SupplierUtil
                 'par' => 'purchase_return_par',
             ],
             3 => [
-                'name' => 'Purchase Payment',
+                'name' => 'Payment', // Purchase invoice wise payment
                 'id' => 'purchase_payment_id',
                 'voucher_no' => 'payment_voucher_no',
                 'amt' => 'debit',
                 'par' => 'purchase_payment_par',
             ],
             4 => [
-                'name' => 'Received Return Amt.',
+                'name' => 'Received Return Amt.', // Purchase/Purchase Return invoice wise Receive Return Amt.
                 'id' => 'purchase_payment_id',
                 'voucher_no' => 'payment_voucher_no',
                 'amt' => 'credit',
                 'par' => 'purchase_payment_par',
             ],
             5 => [
-                'name' => 'Paid To Supplier',
+                'name' => 'Payment', // Supplier wise payment
                 'id' => 'supplier_payment_id',
                 'voucher_no' => 'supplier_payment_voucher',
                 'amt' => 'debit',
                 'par' => 'supplier_payment_par',
             ],
             6 => [
-                'name' => 'Return Amt. Received',
+                'name' => 'Received Return Amt.', // Supplier wise Receive Return Amt.
                 'id' => 'supplier_payment_id',
                 'voucher_no' => 'supplier_payment_voucher',
                 'amt' => 'credit',

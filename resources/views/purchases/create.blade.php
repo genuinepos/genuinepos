@@ -365,7 +365,9 @@
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                                 @foreach ($methods as $method)
-                                                                    <option value="{{ $method->id }}">
+                                                                    <option 
+                                                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                                                        value="{{ $method->id }}">
                                                                         {{ $method->name }}
                                                                     </option>
                                                                 @endforeach

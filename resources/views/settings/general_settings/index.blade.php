@@ -61,10 +61,6 @@
                                         <li class="menu_list">
                                             <a class="menu_btn" data-form="es_settings_form" href="#">Send Email & SMS Settings</a>
                                         </li>
-
-                                        <li class="menu_list">
-                                            <a class="menu_btn" data-form="sms_settings_form" href="#">SMS Setting</a>
-                                        </li>
                                     </ul>
                                 </div>
                             </div>

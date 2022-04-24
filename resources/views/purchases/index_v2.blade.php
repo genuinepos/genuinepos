@@ -367,7 +367,7 @@
 
                         toastr.error('Net Connetion Error. Reload This Page.'); 
                     }else if (err.status == 500) {
-                        
+
                     }{
 
                         toastr.error('Server Error. Please contact to the support team.'); 
@@ -418,6 +418,7 @@
             var url = $(this).attr('href');
 
             $.get(url,  function(data) {
+
                 $('#paymentModal').html(data);
                 $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
@@ -570,5 +571,7 @@
             },
             format: 'DD-MM-YYYY'
         });
+
+        function getSupplier() {}
     </script>
 @endpush

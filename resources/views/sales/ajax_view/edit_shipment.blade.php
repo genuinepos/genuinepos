@@ -9,7 +9,7 @@
         <div class="form-group row">
             <div class="col-md-6">
                 <label><strong>Shipment Details : </strong></label>
-                <textarea name="shipment_details" class="form-control form-control-sm" id="shipment_details"  cols="30" rows="3" placeholder="Shipment Details">{{ $sale->shipment_details }}</textarea>
+                <textarea name="shipment_details" class="form-control form-control-sm" id="shipment_details" cols="30" rows="3" placeholder="Shipment Details">{{ $sale->shipment_details }}</textarea>
             </div>
     
             <div class="col-md-6">
@@ -49,3 +49,65 @@
         </div>
     </form>
 </div>
+
+<script>
+    //change sale status requested by ajax
+    $('#edit_shipment_form').on('submit',function(e){
+        e.preventDefault();
+        
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+
+        $('.loading_button').show();
+        var inputs = $('.add_input');
+        $('.error').html('');  
+        var countErrorField = 0;  
+
+        $.each(inputs, function(key, val){
+
+            var inputId = $(val).attr('id');
+            var idValue = $('#'+inputId).val();
+
+            if(idValue == ''){
+
+                countErrorField += 1;
+                var fieldName = $('#'+inputId).data('name');
+                $('.error_'+inputId).html(fieldName+' is required.');
+            }
+        });
+
+        if(countErrorField > 0){
+
+            $('.loading_button').hide();
+            return;
+        }
+
+        $.ajax({
+            url:url,
+            type:'post',
+            data:request,
+            success:function(data){
+
+                $('.data_tbl').DataTable().ajax.reload();
+                toastr.success(data);
+
+                $('.loading_button').hide();
+                $('#editShipmentModal').modal('hide'); 
+            },error: function(err) {
+
+                $('.loading_button').hide();
+                $('.error').html('');
+
+                if (err.status == 0) {
+
+                    toastr.error('Net Connetion Error. Please check the connection.'); 
+                    return;
+                }else if (err.status == 500) {
+                    
+                    toastr.error('Server error. Please contact to the support team.'); 
+                    return;
+                }
+            }
+        });
+    });
+</script>

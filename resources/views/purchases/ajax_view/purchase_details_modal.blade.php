@@ -162,7 +162,7 @@
                                                         @if ($payment->is_advanced == 1)
                                                             <b>PO Advance Payment</b>
                                                         @else 
-                                                            {{ $payment->payment_type == 1 ? 'Purchase Due Payment' : 'Return Due Payment' }}
+                                                            {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Received Return Amt.' }}
                                                         @endif
                                                     </td>
                                                     <td>

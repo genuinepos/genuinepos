@@ -9,6 +9,7 @@ use App\Utils\AccountUtil;
 use App\Utils\ExpenseUtil;
 use App\Models\AdminAndUser;
 use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
 use App\Models\ExpansePayment;
 use App\Models\ExpanseCategory;
 use App\Models\ExpenseDescription;
@@ -100,7 +101,7 @@ class ExpanseController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'account_type']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name')->get();
+        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
         return view('expanses.create', compact('expenseAccounts', 'accounts', 'methods', 'users', 'taxes'));
     }

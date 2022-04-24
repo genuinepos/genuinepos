@@ -93,7 +93,7 @@
                                     <i class="fas fa-money-check text-dark input_i"></i>
                                 </span>
                             </div>
-                            <select name="payment_method_id" class="form-control"  id="payment_method_id">
+                            <select name="payment_method_id" class="form-control"  id="p_payment_method_id">
                                 @foreach ($methods as $method)
                                     <option value="{{ $method->id }}">
                                         {{ $method->name }}
@@ -189,6 +189,7 @@
                     $('#paymentViewModal').modal('hide');
                     toastr.success(data);
                     $('.data_tbl').DataTable().ajax.reload();
+                    getSupplier();
                 }
             },error: function(err) {
 

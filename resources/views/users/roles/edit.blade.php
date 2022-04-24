@@ -425,7 +425,7 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" {{ $role->permission->purchase['purchase_payment'] == '1' ? 'CHECKED' : '' }} name="purchase_payment" class="purchase"> &nbsp; View/Add/Delete Purchase </p> 
+                                                        <input type="checkbox" {{ $role->permission->purchase['purchase_payment'] == '1' ? 'CHECKED' : '' }} name="purchase_payment" class="purchase"> &nbsp; View/Add/Delete Purchase Payment </p> 
                                                     </div>
                                                 </div>
                 

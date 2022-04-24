@@ -213,25 +213,26 @@ class CommonAjaxCallController extends Controller
     public function getSupplier($supplierId)
     {
         $supplier = DB::table('suppliers')
-        ->where('id', $supplierId)
-        ->select(
-            'name',
-            'contact_id',
-            'phone',
-            'opening_balance',
-            'total_purchase',
-            'total_return',
-            'total_paid',
-            'total_purchase_due',
-            'total_purchase_return_due',
-        )
-        ->first();
+            ->where('id', $supplierId)
+            ->select(
+                'name',
+                'contact_id',
+                'phone',
+                'opening_balance',
+                'total_purchase',
+                'total_return',
+                'total_paid',
+                'total_purchase_due',
+                'total_purchase_return_due',
+            )
+            ->first();
         return response()->json($supplier);
     }
 
     public function getCustomer($customerId)
     {
-        $customer = Customer::where('id', $customerId)->first();
+        $customer = DB::table('customers')
+            ->where('id', $customerId)->first();
         return response()->json($customer);
     }
 }

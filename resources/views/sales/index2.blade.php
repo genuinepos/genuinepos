@@ -627,5 +627,7 @@
                 return false;
             }
         }
+
+        function getCustomer() {}
     </script>
 @endpush

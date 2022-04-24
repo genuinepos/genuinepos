@@ -14,12 +14,13 @@ use App\Utils\AccountUtil;
 use App\Models\SalePayment;
 use App\Utils\CustomerUtil;
 use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
 use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\CustomerPaymentInvoice;
 use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Utils\UserActivityLogUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class CustomerController extends Controller
@@ -283,8 +284,7 @@ class CustomerController extends Controller
 
                             if (auth()->user()->permission->sale['sale_payment'] == '1') {
 
-                                $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '" 
-                                    ><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                                $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                             }
                         }
 
@@ -542,7 +542,7 @@ class CustomerController extends Controller
                 'accounts.balance'
             ]);
 
-        $methods = DB::table('payment_methods')->select('id', 'name')->get();
+        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
         return view('contacts.customers.ajax_view.payment_modal', compact('customer', 'accounts', 'methods'));
     }
@@ -561,7 +561,7 @@ class CustomerController extends Controller
 
         // Add Customer Payment Record
         $customerPayment = new CustomerPayment();
-        $customerPayment->voucher_no = 'CPV' . $this->invoiceVoucherRefIdUtil->getLastId('customer_payments');
+        $customerPayment->voucher_no = 'CPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
         $customerPayment->branch_id = auth()->user()->branch_id;
         $customerPayment->customer_id = $customerId;
         $customerPayment->account_id = $request->account_id;
@@ -728,7 +728,7 @@ class CustomerController extends Controller
                 'accounts.balance'
             ]);
 
-        $methods = DB::table('payment_methods')->select('id', 'name')->get();
+        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
         return view('contacts.customers.ajax_view.return_payment_modal', compact('customer', 'accounts', 'methods'));
     }
@@ -938,6 +938,7 @@ class CustomerController extends Controller
         }
 
         $storedAccountId = $deleteCustomerPayment->account_id;
+        $storedCustomerPaymentType = $deleteCustomerPayment->type;
         $storedCustomerId = $deleteCustomerPayment->customer_id;
         $storedCustomerPaymentInvoices = $deleteCustomerPayment->customer_payment_invoices;
         $deleteCustomerPayment->delete();
@@ -947,7 +948,7 @@ class CustomerController extends Controller
 
             foreach ($deleteCustomerPayment->customer_payment_invoices as $customer_payment_invoice) {
 
-                if ($customer_payment_invoice->type == 1) {
+                if ($storedCustomerPaymentType == 1) {
 
                     $sale = Sale::where('id', $customer_payment_invoice->sale_id)->first();
 
@@ -1085,7 +1086,7 @@ class CustomerController extends Controller
 
                     if ($row->voucher_type == 3 || $row->voucher_type == 5) {
 
-                        return 'Receive Payment';
+                        return 'Received Payment';
                     } else {
 
                         return 'Return Payment';
@@ -1129,7 +1130,7 @@ class CustomerController extends Controller
             ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
             ->leftJoin('payment_methods as sp_pay_method', 'sale_payments.payment_method_id', 'sp_pay_method.id')
             ->leftJoin('accounts as sp_account', 'sale_payments.account_id', 'sp_account.id')
-            ->leftJoin('sales', 'sale_payments.purchase_id', 'sales.id')
+            ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
             ->leftJoin('sale_returns', 'sale_payments.sale_return_id', 'sale_returns.id')
             // ->leftJoin('admin_and_users', 'customer_ledgers.user_id', 'admin_and_users.id')
         ;

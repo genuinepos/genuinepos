@@ -88,9 +88,11 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
                             </div>
-                            <select name="payment_method_id" class="form-control"  id="payment_method_id">
+                            <select name="payment_method_id" class="form-control"  id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option value="{{ $method->id }}">
+                                    <option 
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                        value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
                                 @endforeach
@@ -182,6 +184,7 @@
                     $('#paymentModal').modal('hide');
                     $('#paymentViewModal').modal('hide');
                     $('.data_tbl').DataTable().ajax.reload();
+                    getCustomer();
                     toastr.success(data);
                 }
             },error: function(err) {
@@ -230,4 +233,23 @@
         },
         format: _expectedDateFormat,
     });
+
+    $('#p_payment_method_id').on('change', function () {
+
+        var account_id = $(this).find('option:selected').data('account_id');
+        setMethodAccount(account_id);
+    });
+
+    function setMethodAccount(account_id) {
+
+        if (account_id) {
+
+            $('#p_account_id').val(account_id);
+        }else if(account_id === ''){
+
+            $('#p_account_id option:first-child').prop("selected", true);
+        }
+    }
+
+    setMethodAccount($('#p_payment_method_id').find('option:selected').data('account_id'));
 </script>

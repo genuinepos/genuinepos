@@ -1051,7 +1051,7 @@ class SaleController extends Controller
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
         $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
-        $methods = DB::table('payment_methods')->select('id', 'name')->get();
+        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
         return view('sales.ajax_view.add_payment', compact('sale', 'accounts', 'methods'));
     }
 
@@ -1128,7 +1128,7 @@ class SaleController extends Controller
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
         $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch')->where('id', $paymentId)->first();
-        $methods = DB::table('payment_methods')->select('id', 'name')->get();
+        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
         return view('sales.ajax_view.edit_payment', compact('payment', 'accounts', 'methods'));
     }
 
@@ -1197,7 +1197,8 @@ class SaleController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name')->get();
+        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
+
         return view('sales.ajax_view.add_return_payment', compact('sale', 'accounts', 'methods'));
     }
 
@@ -1280,7 +1281,7 @@ class SaleController extends Controller
             ->orderBy('accounts.account_type', 'asc')
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
-        $methods = DB::table('payment_methods')->select('id', 'name')->get();
+        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
         return view('sales.ajax_view.edit_return_payment', compact('payment', 'accounts', 'methods'));
     }
 

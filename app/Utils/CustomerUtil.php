@@ -205,28 +205,28 @@ class CustomerUtil
                 'par' => 'sale_return_par',
             ],
             3 => [
-                'name' => 'Received Payment',
+                'name' => 'Received Payment',  // invoice wise Payment
                 'id' => 'sale_payment_id',
                 'voucher_no' => 'sale_payment_voucher',
                 'amt' => 'credit',
                 'par' => 'sale_payment_par',
             ],
             4 => [
-                'name' => 'Return Payment',
+                'name' => 'Paid Return Amt.', // Customer wise Return Payment
                 'id' => 'sale_payment_id',
                 'voucher_no' => 'sale_payment_voucher',
                 'amt' => 'debit',
                 'par' => 'sale_payment_par',
             ],
             5 => [
-                'name' => 'Receive From Customer',
+                'name' => 'Received Payment', // Customer wise Payment
                 'id' => 'customer_payment_id',
                 'voucher_no' => 'customer_payment_voucher',
                 'amt' => 'credit',
                 'par' => 'customer_payment_par',
             ],
             6 => [
-                'name' => 'Paid Return Amt.',
+                'name' => 'Paid Return Amt.', // Sale/ Sale Return invoice wise Return Payment
                 'id' => 'customer_payment_id',
                 'voucher_no' => 'customer_payment_voucher',
                 'amt' => 'debit',
@@ -242,6 +242,7 @@ class CustomerUtil
         $voucher_type = $this->voucherType($voucher_type_id);
         $addCustomerLedger = new CustomerLedger();
         $addCustomerLedger->customer_id = $customer_id;
+        $addCustomerLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
         $addCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         $addCustomerLedger->{$voucher_type['id']} = $trans_id;
         $addCustomerLedger->{$voucher_type['amt']} = $amount;
@@ -264,6 +265,7 @@ class CustomerUtil
         if ($updateCustomerLedger) {
 
             //$updateCustomerLedger->customer_id = $customer_id;
+            $updateCustomerLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
             $updateCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
             $updateCustomerLedger->{$voucher_type['amt']} = $amount;
             $updateCustomerLedger->amount = $amount;

@@ -93,7 +93,9 @@
                             </div>
                             <select name="payment_method_id" class="form-control" id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option value="{{ $method->id }}">
+                                    <option 
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                        value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
                                 @endforeach
@@ -156,15 +158,15 @@
         e.preventDefault();
 
         $('.loading_button').show();
-        var available_amount = $('#p_available_amount').val();
-        var paying_amount = $('#p_paying_amount').val();
+        // var available_amount = $('#p_available_amount').val();
+        // var paying_amount = $('#p_paying_amount').val();
         
-        if (parseFloat(paying_amount) > parseFloat(available_amount)) {
+        // if (parseFloat(paying_amount) > parseFloat(available_amount)) {
 
-            $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
-            $('.loading_button').hide();
-            return;
-        }
+        //     $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
+        //     $('.loading_button').hide();
+        //     return;
+        // }
 
         var url = $(this).attr('action');
         
@@ -238,5 +240,24 @@
         },
         format: _expectedDateFormat,
     });
+
+    $('#p_payment_method_id').on('change', function () {
+
+        var account_id = $(this).find('option:selected').data('account_id');
+        setMethodAccount(account_id);
+    });
+
+    function setMethodAccount(account_id) {
+
+        if (account_id) {
+
+            $('#p_account_id').val(account_id);
+        }else if(account_id === ''){
+
+            $('#p_account_id option:first-child').prop("selected", true);
+        }
+    }
+
+    setMethodAccount($('#p_payment_method_id').find('option:selected').data('account_id'));
 </script>
 

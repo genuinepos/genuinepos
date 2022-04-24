@@ -1074,32 +1074,6 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
-
-    $payments = DB::table('customer_ledgers')->whereIn('customer_ledgers.voucher_type', [3, 4, 5, 6])
-        ->leftJoin('customer_payments', 'customer_ledgers.customer_payment_id', 'customer_payments.id')
-        ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
-        ->select(
-            'customer_ledgers.customer_payment_id',
-            'customer_ledgers.sale_payment_id',
-            'customer_payments.date as customer_payment_date',
-            'sale_payments.date as sale_payment_date',
-        )->get();
-
-    foreach ($payments as $payment) {
-
-        if ($payment->customer_payment_id) {
-
-            DB::table('customer_ledgers')->where('customer_payment_id', $payment->customer_payment_id)
-                ->update([
-                    'date' => $payment->customer_payment_date
-                ]);
-        } elseif ($payment->sale_payment_id) {
-
-            DB::table('customer_ledgers')->where('sale_payment_id', $payment->sale_payment_id)->update([
-                'date' => $payment->sale_payment_date
-            ]);
-        }
-    }
 });
 
 // All authenticated routes

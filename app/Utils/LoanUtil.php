@@ -56,11 +56,13 @@ class LoanUtil
             $loan->total_receive = $total_receive;
             $loan->save();
         } else {
+
             $loanPaymentDistributions = DB::table('loan_payment_distributions')->where('loan_id', $loan->id)
             ->where('loan_payment_distributions.payment_type', 2)
             ->select(
                 DB::raw('sum(paid_amount) as t_paid'),
             )->groupBy('loan_payment_distributions.loan_id')->get();
+            
             $total_paid = $loanPaymentDistributions->sum('t_paid');
             $total_due = $loan->loan_amount - $total_paid;
             $loan->due = $total_due;

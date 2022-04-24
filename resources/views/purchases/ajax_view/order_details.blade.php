@@ -140,12 +140,12 @@
                                 <table class="table modal-table table-striped table-sm">
                                     <thead>
                                         <tr class="bg-primary text-white">
-                                            <th>Date</th>
-                                            <th>Voucher No</th>
-                                            <th>Method</th>
-                                            <th>Type</th>
-                                            <th>Account</th>
-                                            <th>
+                                            <th class="text-start">Date</th>
+                                            <th class="text-start">Voucher No</th>
+                                            <th class="text-start">Method</th>
+                                            <th class="text-start">Type</th>
+                                            <th class="text-start">Account</th>
+                                            <th class="text-end">
                                                 Amount({{ json_decode($generalSettings->business, true)['currency'] }})
                                             </th>
                                             <th>Action</th>
@@ -155,27 +155,33 @@
                                        @if (count($purchase->purchase_payments) > 0)
                                            @foreach ($purchase->purchase_payments as $payment)
                                                <tr data-info="{{ $payment }}">
-                                                   <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
-                                                   <td>{{ $payment->invoice_id }}</td>
-                                                   <td>{{ $payment->pay_mode }}</td>
-                                                   <td>
+                                                   <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
+                                                   <td class="text-start">{{ $payment->invoice_id }}</td>
+                                                   <td class="text-start">{{ $payment->pay_mode }}</td>
+                                                   <td class="text-start">
                                                         @if ($payment->is_advanced == 1)
+
                                                             <b>PO Advance Payment</b>
                                                         @else 
-                                                            {{ $payment->payment_type == 1 ? 'Purchase Due Payment' : 'Return Due Payment' }}
+                                                        
+                                                            {{ $payment->payment_type == 1 ? 'Payment' : 'Received Return Amt.' }}
                                                         @endif
                                                     </td>
-                                                    <td>
+                                                    <td class="text-start">
                                                         {{ $payment->account ? $payment->account->name.' (A/C'.$payment->account->account_number.')' : 'N/A' }}
                                                     </td>
-                                                    <td>{{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}</td>
-                                                    <td>
+                                                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}</td>
+                                                    <td class="text-start">
                                                        @if (auth()->user()->branch_id == $purchase->branch_id)
+
                                                            @if ($payment->payment_type == 1)
+
                                                                <a href="{{ route('purchases.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
                                                            @else
+
                                                                <a href="{{ route('purchases.return.payment.edit', $payment->id) }}" id="edit_return_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
                                                            @endif
+
                                                            <a href="{{ route('purchases.payment.details', $payment->id) }}" id="payment_details" class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
                                                        @else   
                                                            ......
@@ -306,14 +312,18 @@
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         @if ($purchase->branch)
                             @if ($purchase->branch->logo != 'default.png')
+
                                 <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $purchase->branch->logo) }}">
                             @else 
+
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
                             @endif
                         @else 
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+
                                 <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                             @else 
+
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             @endif
                         @endif
@@ -346,28 +356,36 @@
                             <li>
                                 <strong>Business Location : </strong> 
                                 @if ($purchase->branch)
+
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
+
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
                             <li><strong>Ordered Location : </strong>
                                 @if ($purchase->warehouse_id )
+
                                     {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_code }}
                                     (<b>WH</b>)
                                 @elseif($purchase->branch_id)
+
                                     {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
                                     (<b>B.L</b>)
                                 @else
+
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
                                 @endif
                             </li>
                             <li><strong>Phone : </strong>
                                 @if ($purchase->branch)
+
                                     {{ $purchase->branch->phone }}
                                 @elseif($purchase->warehouse_id)
+
                                     {{ $purchase->warehouse->phone }}.
                                 @else
+
                                     {{ json_decode($generalSettings->business, true)['phone'] }}
                                 @endif
                             </li>
@@ -386,10 +404,13 @@
                                    $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                @endphp
                                @if ($purchase->due <= 0)
+
                                    Paid
                                @elseif($purchase->due > 0 && $purchase->due < $payable) 
+
                                    Partial
                                @elseif($payable == $purchase->due)
+                               
                                    Due
                                @endif
                             </li>

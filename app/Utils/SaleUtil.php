@@ -1121,8 +1121,11 @@ class SaleUtil
                 return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
             })
             ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')
+            
             ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . $this->converter->format_in_bdt($row->subtotal) . '</span>')
+            
             ->rawColumns(['product', 'customer', 'invoice_id', 'sku', 'date', 'sold_by', 'quantity', 'branch', 'unit_price_inc_tax', 'subtotal'])
+            
             ->make(true);
     }
 
@@ -1651,6 +1654,7 @@ class SaleUtil
                                     break;
                                 }
                             } else if ($sold_qty == $purchaseProduct->left_qty) {
+
                                 if ($sold_qty > 0) {
 
                                     $addPurchaseSaleChain = new PurchaseSaleProductChain();
@@ -1665,6 +1669,7 @@ class SaleUtil
                                     break;
                                 }
                             } else if ($sold_qty < $purchaseProduct->left_qty) {
+                                
                                 if ($sold_qty > 0) {
 
                                     $addPurchaseSaleChain = new PurchaseSaleProductChain();

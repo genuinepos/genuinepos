@@ -609,62 +609,6 @@
                 });
             });
 
-            //Add Customer payment request by ajax
-            $(document).on('submit', '#customer_payment_form', function(e) {
-                e.preventDefault();
-
-                $('.loading_button').show();
-                var available_amount = $('#p_available_amount').val();
-                var paying_amount = $('#p_paying_amount').val();
-                
-                if (parseFloat(paying_amount) > parseFloat(available_amount)) {
-                    $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
-                    $('.loading_button').hide();
-                    return;
-                }
-
-                var url = $(this).attr('action');
-             
-                $.ajax({
-                    url: url,
-                    type: 'post',
-                    data: new FormData(this),
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    success: function(data) {
-
-                        if (!$.isEmptyObject(data.errorMsg)) {
-
-                            toastr.error(data.errorMsg, 'ERROR');
-                            $('.loading_button').hide();
-                        } else {
-
-                            $('.loading_button').hide();
-                            $('#paymentModal').modal('hide');
-                            toastr.success(data);
-                            table.ajax.reload();
-                        }
-                    },
-                    error: function(err) {
-
-                        $('.loading_button').hide();
-                        $('.error').html('');
-
-                        if (err.status == 0) {
-
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
-                            return;
-                        }
-
-                        $.each(err.responseJSON.errors, function(key, error) {
-
-                            $('.error_p_' + key + '').html(error[0]);
-                        });
-                    }
-                });
-            });
-
             $(document).on('click', '#add_payment',function(e){
                 e.preventDefault();
                 var url = $(this).attr('href');

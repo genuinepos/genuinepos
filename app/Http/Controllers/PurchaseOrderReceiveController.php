@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\CashFlow;
 use App\Models\Purchase;
+use App\Utils\AccountUtil;
+use App\Utils\PurchaseUtil;
+use App\Utils\SupplierUtil;
 use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
 use App\Models\SupplierLedger;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
+use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseOrderProduct;
-use App\Utils\AccountUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Utils\ProductStockUtil;
-use App\Utils\PurchaseUtil;
-use App\Utils\SupplierUtil;
 
 class PurchaseOrderReceiveController extends Controller
 {
@@ -48,7 +49,7 @@ class PurchaseOrderReceiveController extends Controller
             'purchase_order_products.variant',
         ])->where('id', $purchaseId)->first();
 
-        $methods = DB::table('payment_methods')->select('id', 'name')->get();
+        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')

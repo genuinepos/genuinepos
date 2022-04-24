@@ -45,11 +45,13 @@
                                     </a>
                                 </li>
 
-                                <li>
-                                    <a id="tab_btn" data-show="payments" class="tab_btn" href="#">
-                                        <i class="far fa-money-bill-alt"></i> Payments
-                                    </a>
-                                </li>
+                                @if (auth()->user()->permission->purchase['purchase_payment'] == '1') 
+                                    <li>
+                                        <a id="tab_btn" data-show="payments" class="tab_btn" href="#">
+                                            <i class="far fa-money-bill-alt"></i> Payments
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
 
@@ -309,143 +311,145 @@
                             </div>
                         </div>
 
-                        <div class="tab_contant payments d-none">
-                            <div class="row">
-                                <div class="col-md-3 col-sm-12 col-lg-3">
-                                    <table class="table modal-table table-sm mt-3">
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                <td class="text-end opening_balance">{{ App\Utils\Converter::format_in_bdt($supplier->opening_balance) }}</td>
-                                            </tr>
+                        @if (auth()->user()->permission->purchase['purchase_payment'] == '1') 
+                            <div class="tab_contant payments d-none">
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-12 col-lg-3">
+                                        <table class="table modal-table table-sm mt-3">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                    <td class="text-end opening_balance">{{ App\Utils\Converter::format_in_bdt($supplier->opening_balance) }}</td>
+                                                </tr>
 
-                                            <tr>
-                                                <td class="text-end"><strong>Total Purchase : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                <td class="text-end total_purchase">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</td>
-                                            </tr>
+                                                <tr>
+                                                    <td class="text-end"><strong>Total Purchase : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                    <td class="text-end total_purchase">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</td>
+                                                </tr>
 
-                                            <tr>
-                                                <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                <td class="text-end text-success total_paid">
-                                                    {{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                    <td class="text-end text-success total_paid">
+                                                        {{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}
+                                                    </td>
+                                                </tr>
 
-                                            <tr>
-                                                <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($supplier->total_return) }}</td>
-                                            </tr>
+                                                <tr>
+                                                    <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                    <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($supplier->total_return) }}</td>
+                                                </tr>
 
-                                            <tr>
-                                                <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                <td class="text-end text-danger total_purchase_due">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                <tr>
+                                                    <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                    <td class="text-end text-danger total_purchase_due">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                                <div class="col-md-7 col-sm-12 col-lg-7">
-                                    <div class="card mt-3 pb-5">
-                                        <form id="filter_supplier_payments" class="py-2 px-2 mt-2" method="get">
+                                    <div class="col-md-7 col-sm-12 col-lg-7">
+                                        <div class="card mt-3 pb-5">
+                                            <form id="filter_supplier_payments" class="py-2 px-2 mt-2" method="get">
 
-                                            <div class="form-group row">
-                                                <div class="col-md-3">
-                                                    <label><strong>Payment Status :</strong></label>
-                                                    <select name="type" class="form-control submit_able" id="type" autofocus>
-                                                        <option value="">All</option> 
-                                                        <option value="1">Payment</option>
-                                                        <option value="2">Return Payment</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="p_from_date" id="p_from_date" class="form-control p_from_date date"autocomplete="off">
+                                                <div class="form-group row">
+                                                    <div class="col-md-3">
+                                                        <label><strong>Payment Status :</strong></label>
+                                                        <select name="type" class="form-control submit_able" id="type" autofocus>
+                                                            <option value="">All</option> 
+                                                            <option value="1">Payment</option>
+                                                            <option value="2">Return Payment</option>
+                                                        </select>
                                                     </div>
-                                                </div>
-    
-                                                <div class="col-md-3">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="p_to_date" id="p_to_date" class="form-control p_to_date date" autocomplete="off">
-                                                    </div>
-                                                </div>
 
-                                                <div class="col-md-3">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <label><strong></strong></label>
-                                                            <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                    <div class="col-md-3">
+                                                        <label><strong>From Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"><i
+                                                                        class="fas fa-calendar-week input_f"></i></span>
+                                                            </div>
+                                                            <input type="text" name="p_from_date" id="p_from_date" class="form-control p_from_date date"autocomplete="off">
+                                                        </div>
+                                                    </div>
+        
+                                                    <div class="col-md-3">
+                                                        <label><strong>To Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"><i
+                                                                        class="fas fa-calendar-week input_f"></i></span>
+                                                            </div>
+                                                            <input type="text" name="p_to_date" id="p_to_date" class="form-control p_to_date date" autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label><strong></strong></label>
+                                                                <div class="input-group">
+                                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-12 col-lg-2">
+
+                                        <div class="row mt-2">
+                                            <div class="col-md-12">
+                                                <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-success mt-2"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
+                                                <a class="btn btn-success return_payment_btn mt-2 {{ $supplier->total_purchase_return_due > 0 ? '' : 'd-none' }} " id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund Amount</a> 
                                             </div>
-                                        </form>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2 col-sm-12 col-lg-2">
-                                    <div class="row mt-2">
-                                        <div class="col-md-12">
-                                            <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-success mt-2"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
-    
-                                            <a class="btn btn-success return_payment_btn mt-2 {{ $supplier->total_purchase_return_due > 0 ? '' : 'd-none' }} " id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund Amount</a> 
                                         </div>
-                                    </div>
-
-                                    <div class="row mt-2">
-                                        <div class="col-md-12">
-                                            
-                                                <a href="{{ route('suppliers.all.payment.print', $supplier->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
-                                            
+                                    
+                                        <div class="row mt-2">
+                                            <div class="col-md-12">
+                                                
+                                                    <a href="{{ route('suppliers.all.payment.print', $supplier->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
+                                                
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-          
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="widget_content table_area">
-                                        <div class="table-responsive">
-                                            <table class="display data_tbl data__table payments_table w-100">
-                                                <thead>
-                                                    <tr class="text-start">
-                                                        <th class="text-start">Date</th>
-                                                        <th class="text-start">Voucher No</th>
-                                                        <th class="text-start">Against Invoice</th>
-                                                        {{-- <th>Created By</th> --}}
-                                                        <th class="text-start">Payment Status</th>
-                                                        <th class="text-start">Payment Type</th>
-                                                        <th class="text-start">Account</th>
-                                                        <th class="text-end">Paid Amount</th>
-                                                        <th class="text-start">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                                <tfoot>
-                                                    <tr class="bg-secondary">
-                                                        <th class="text-end text-white" colspan="6">Total : </th>
-                                                        <th class="text-end text-white" id="amount"></th>
-                                                        <th class="text-start text-white">---</th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
+            
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="widget_content table_area">
+                                            <div class="table-responsive">
+                                                <table class="display data_tbl data__table payments_table w-100">
+                                                    <thead>
+                                                        <tr class="text-start">
+                                                            <th class="text-start">Date</th>
+                                                            <th class="text-start">Voucher No</th>
+                                                            <th class="text-start">Against Invoice</th>
+                                                            {{-- <th>Created By</th> --}}
+                                                            <th class="text-start">Payment Status</th>
+                                                            <th class="text-start">Payment Type</th>
+                                                            <th class="text-start">Account</th>
+                                                            <th class="text-end">Paid Amount</th>
+                                                            <th class="text-start">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                    <tfoot>
+                                                        <tr class="bg-secondary">
+                                                            <th class="text-end text-white" colspan="6">Total : </th>
+                                                            <th class="text-end text-white" id="amount"></th>
+                                                            <th class="text-start text-white">---</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -519,6 +523,44 @@
     <script src="{{ asset('public') }}/assets/plugins/custom/barcode/JsBarcode.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+         var ledger_table = $('.ledger_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "searching" : false,
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
+                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+            ],
+
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+
+            "ajax": {
+                "url": "{{ route('contacts.supplier.ledgers', $supplier->id) }}",
+                "data": function(d) {
+                    d.voucher_type = $('#voucher_type').val();
+                    d.from_date = $('.from_date').val();
+                    d.to_date = $('.to_date').val();
+                }
+            },
+
+            columns: [
+                {data: 'date', name: 'supplier_ledgers.report_date'},
+                {data: 'particulars', name: 'particulars'},
+                {data: 'voucher_no', name: 'voucher_no'},
+                {data: 'debit', name: 'debit', className: 'text-end'},
+                {data: 'credit', name: 'credit', className: 'text-end'},
+                {data: 'running_balance', name: 'running_balance', className: 'text-end'},
+            ],fnDrawCallback: function() {
+                var debit = sum_table_col($('.data_tbl'), 'debit');
+                $('#debit').text(bdFormat(debit));
+                var credit = sum_table_col($('.data_tbl'), 'credit');
+                $('#credit').text(bdFormat(credit));
+                $('.data_preloader').hide();
+            }
+        });
+
         var table = $('.purchase_table').DataTable({
             "processing": true,
             "serverSide": true,
@@ -561,88 +603,52 @@
             }
         });
 
-        var ledger_table = $('.ledger_table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "searching" : false,
-            dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
-                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
-            ],
+        @if (auth()->user()->permission->purchase['purchase_payment'] == '1') 
+            var payments_table = $('.payments_table').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "searching" : true,
+                dom: "lBfrtip",
+                buttons: [
+                    {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
+                    {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+                ],
 
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+                "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+                "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
-            "ajax": {
-                "url": "{{ route('contacts.supplier.ledgers', $supplier->id) }}",
-                "data": function(d) {
-                    d.voucher_type = $('#voucher_type').val();
-                    d.from_date = $('.from_date').val();
-                    d.to_date = $('.to_date').val();
+                "ajax": {
+                    "url": "{{ route('suppliers.all.payment.list', $supplier->id) }}",
+                    "data": function(d) {
+                        d.type = $('#type').val();
+                        d.p_from_date = $('.p_from_date').val();
+                        d.p_to_date = $('.p_to_date').val();
+                    }
+                },
+
+                columnDefs: [{
+                    "targets": [3, 4, 5, 6],
+                    "orderable": false,
+                    "searchable": false
+                }],
+
+                columns: [
+                    {data: 'date', name: 'supplier_ledgers.date'},
+                    {data: 'voucher_no', name: 'supplier_payments.voucher_no'},
+                    {data: 'against_invoice', name: 'purchases.invoice_id'},
+                    {data: 'type', name: 'type'},
+                    {data: 'method', name: 'method'},
+                    {data: 'account', name: 'account'},
+                    {data: 'amount', name: 'supplier_ledgers.amount', className: 'text-end'},
+                    {data: 'action'},
+                ],fnDrawCallback: function() {
+
+                    var amount = sum_table_col($('.data_tbl'), 'amount');
+                    $('#amount').text(bdFormat(amount));
+                    $('.data_preloader').hide();
                 }
-            },
-
-            columns: [
-                {data: 'date', name: 'supplier_ledgers.report_date'},
-                {data: 'particulars', name: 'particulars'},
-                {data: 'voucher_no', name: 'voucher_no'},
-                {data: 'debit', name: 'debit', className: 'text-end'},
-                {data: 'credit', name: 'credit', className: 'text-end'},
-                {data: 'running_balance', name: 'running_balance', className: 'text-end'},
-            ],fnDrawCallback: function() {
-                var debit = sum_table_col($('.data_tbl'), 'debit');
-                $('#debit').text(bdFormat(debit));
-                var credit = sum_table_col($('.data_tbl'), 'credit');
-                $('#credit').text(bdFormat(credit));
-                $('.data_preloader').hide();
-            }
-        });
-
-        var payments_table = $('.payments_table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "searching" : true,
-            dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
-                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
-            ],
-
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-
-            "ajax": {
-                "url": "{{ route('suppliers.all.payment.list', $supplier->id) }}",
-                "data": function(d) {
-                    d.type = $('#type').val();
-                    d.p_from_date = $('.p_from_date').val();
-                    d.p_to_date = $('.p_to_date').val();
-                }
-            },
-
-            columnDefs: [{
-                "targets": [3, 4, 5, 6],
-                "orderable": false,
-                "searchable": false
-            }],
-
-            columns: [
-                {data: 'date', name: 'supplier_ledgers.date'},
-                {data: 'voucher_no', name: 'supplier_payments.voucher_no'},
-                {data: 'against_invoice', name: 'purchases.invoice_id'},
-                {data: 'type', name: 'type'},
-                {data: 'method', name: 'method'},
-                {data: 'account', name: 'account'},
-                {data: 'amount', name: 'supplier_ledgers.amount', className: 'text-end'},
-                {data: 'action'},
-            ],fnDrawCallback: function() {
-
-                var amount = sum_table_col($('.data_tbl'), 'amount');
-                $('#amount').text(bdFormat(amount));
-                $('.data_preloader').hide();
-            }
-        });
+            });
+        @endif
 
         function sum_table_col(table, class_name) {
             var sum = 0;

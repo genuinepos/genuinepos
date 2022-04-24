@@ -822,14 +822,19 @@ class PurchaseUtil
         $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
         $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <a class="dropdown-item details_button" href="' . route('purchases.show.order', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+        
         if (auth()->user()->branch_id == $row->branch_id) {
+            
             $html .= '<a class="dropdown-item" href="' . route('purchases.po.receive.process', [$row->id]) . '"><i class="fas fa-check-double text-primary"></i> PO To Receive</a>';
         }
         // $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
         if (auth()->user()->branch_id == $row->branch_id) {
+
             if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
+
                 if ($row->due > 0) {
+                    
                     $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                 }
 
@@ -837,6 +842,7 @@ class PurchaseUtil
             }
 
             if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
+
                 $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
             }
 

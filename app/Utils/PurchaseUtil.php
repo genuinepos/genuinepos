@@ -327,10 +327,12 @@ class PurchaseUtil
             ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id');
 
         if ($request->product_id) {
+
             $query->where('purchase_products.product_id', $request->product_id);
         }
 
         if ($request->variant_id) {
+
             $query->where('purchase_products.product_variant_id', $request->variant_id);
         }
 
@@ -452,9 +454,7 @@ class PurchaseUtil
             $addPurchaseProduct = new PurchaseProduct();
             $addPurchaseProduct->purchase_id = $purchaseId;
             $addPurchaseProduct->product_id = $productId;
-
             $addPurchaseProduct->product_variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
-
             $addPurchaseProduct->description = $request->descriptions[$index];
             $addPurchaseProduct->quantity =  $request->quantities[$index];
             $addPurchaseProduct->left_qty =  $request->quantities[$index];
@@ -838,7 +838,7 @@ class PurchaseUtil
                     $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                 }
 
-                $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payments</a>';
             }
 
             if (auth()->user()->permission->purchase['purchase_edit'] == '1') {

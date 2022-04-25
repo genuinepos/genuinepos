@@ -275,7 +275,8 @@
              <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="{{ route('purchases.order.supplier.copy.print', $purchase->id) }}" id="print_supplier_copy" class="c-btn btn_primary py-1 text-white">Print Supplier Copy</a>
+                        <a href="{{ route('purchases.po.receive.process', $purchase->id) }}" class="c-btn btn-secondary py-1 px-1 text-white"> <i class="fas fa-check-double"></i> PO To Receive</a>
+                        <a href="{{ route('purchases.order.supplier.copy.print', $purchase->id) }}" id="print_supplier_copy" class="c-btn btn-info py-1 px-1 text-white"> <i class="fas fa-print"></i> Print Supplier Copy</a>
                         <button type="submit" class="c-btn button-success print_btn">Print</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
                     </div>

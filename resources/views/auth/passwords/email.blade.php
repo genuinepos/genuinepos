@@ -7,7 +7,13 @@
                 <div class="col-lg-4 col-md-5 col-12">
                     <div class="form-head">
                         <div class="head">
-                            <img src="{{ asset('public/assets/images/genuine_pos.png') }}" alt="" class="logo">
+                            @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+
+                                <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                            @else 
+
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                            @endif
                             <span class="head-text">
                                 Genuine POS, Point of Sale software by SpeedDigit
                             </span>
@@ -34,22 +40,24 @@
                                             @error('email') is-invalid @enderror" value="{{ old('email') }}"
                                     placeholder="Enter Your Email" required autocomplete="email" autofocus />
                             </div>
-                             @if (Session::has('errorMsg'))
+
+                            @if (Session::has('errorMsg'))
                                 <div class="bg-danger p-3 mt-4">
                                     <p class="text-white">
                                         {{ session('errorMsg') }}
                                     </p>
                                 </div>
                             @endif
+
                             @if($errors->any())
                                 @foreach ($errors->all() as $error)
-                                <div class="bg-danger p-3 mt-4">
-                                    <p class="text-white">
-                                        {{ $error }}
-                                    </p>
-                                </div>
+                                    <div class="bg-danger p-3 mt-4">
+                                        <p class="text-white">
+                                            {{ $error }}
+                                        </p>
+                                    </div>
                                 @endforeach
-                                @endif
+                            @endif
                             <button type="submit" class="submit-button">
                                 {{ __('Send Password Reset Link') }}
                             </button>

@@ -87,6 +87,9 @@ class SaleUtil
                     }
 
                     $payingPreviousDue = $paidAmount - $request->total_invoice_payable;
+
+                    $addSale->previous_due_paid = $payingPreviousDue;
+
                     if ($payingPreviousDue > 0) {
                         $dueAmounts = $payingPreviousDue;
                         $dueInvoices = Sale::where('customer_id', $request->customer_id)
@@ -103,7 +106,7 @@ class SaleUtil
                                         // add sale payment
                                         $addPaymentGetId = $this->addPaymentGetId(
                                             invoicePrefix: $paymentInvoicePrefix,
-                                            request: $request->date ?? date('Y-m-d'),
+                                            request: $request,
                                             payingAmount: $dueAmounts,
                                             invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
                                             saleId: $dueInvoice->id,
@@ -329,6 +332,14 @@ class SaleUtil
                 }
             }
         }
+
+        if ($addSale->customer_id) {
+
+            $customer = DB::table('customers')->where('id', $addSale->customer_id)->select('total_sale_due')->first();
+            $addSale->customer_running_balance = $customer->total_sale_due;
+        }
+
+        $addSale->save();
     }
 
     // Add sale add payment util method
@@ -1121,11 +1132,11 @@ class SaleUtil
                 return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
             })
             ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')
-            
+
             ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . $this->converter->format_in_bdt($row->subtotal) . '</span>')
-            
+
             ->rawColumns(['product', 'customer', 'invoice_id', 'sku', 'date', 'sold_by', 'quantity', 'branch', 'unit_price_inc_tax', 'subtotal'])
-            
+
             ->make(true);
     }
 
@@ -1669,7 +1680,7 @@ class SaleUtil
                                     break;
                                 }
                             } else if ($sold_qty < $purchaseProduct->left_qty) {
-                                
+
                                 if ($sold_qty > 0) {
 
                                     $addPurchaseSaleChain = new PurchaseSaleProductChain();

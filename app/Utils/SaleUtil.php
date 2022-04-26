@@ -642,28 +642,28 @@ class SaleUtil
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if ($userPermission->sale['sale_payment'] == '1') {
+                    // if ($userPermission->sale['sale_payment'] == '1') {
 
-                        if ($row->due > 0) {
+                    //     if ($row->due > 0) {
 
-                            $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                        }
-                    }
+                    //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                    //     }
+                    // }
 
-                    if ($userPermission->sale['sale_payment'] == '1') {
+                    // if ($userPermission->sale['sale_payment'] == '1') {
 
-                        $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                        data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
-                            class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-                    }
+                    //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
+                    //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
+                    //         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                    // }
 
-                    if ($row->sale_return_due > 0) {
+                    // if ($row->sale_return_due > 0) {
 
-                        if ($userPermission->sale['sale_payment'] == '1') {
+                    //     if ($userPermission->sale['sale_payment'] == '1') {
 
-                            $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
-                        }
-                    }
+                    //         $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                    //     }
+                    // }
 
                     if ($userPermission->sale['edit_add_sale'] == '1') {
 
@@ -785,26 +785,26 @@ class SaleUtil
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                    // if (auth()->user()->permission->sale['sale_payment'] == '1') {
 
-                        if ($row->due > 0) {
+                    //     if ($row->due > 0) {
 
-                            $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                        }
-                    }
+                    //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                    //     }
+                    // }
 
-                    if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                    // if (auth()->user()->permission->sale['sale_payment'] == '1') {
 
-                        $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal" data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-                    }
+                    //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal" data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                    // }
 
-                    if ($row->sale_return_due > 0) {
+                    // if ($row->sale_return_due > 0) {
 
-                        if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                    //     if (auth()->user()->permission->sale['sale_payment'] == '1') {
 
-                            $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
-                        }
-                    }
+                    //         $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                    //     }
+                    // }
 
                     if (auth()->user()->permission->sale['pos_edit'] == '1') {
 
@@ -817,7 +817,7 @@ class SaleUtil
                     }
                 }
 
-                $html .= '<a class="dropdown-item" id="items_notification" href=""><i class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
+                // $html .= '<a class="dropdown-item" id="items_notification" href=""><i class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
                 $html .= '</div>';
                 $html .= '</div>';
                 return $html;
@@ -923,20 +923,20 @@ class SaleUtil
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if ($userPermission->sale['sale_payment'] == '1') {
+                    // if ($userPermission->sale['sale_payment'] == '1') {
 
-                        if ($row->due > 0) {
+                    //     if ($row->due > 0) {
 
-                            $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                        }
-                    }
+                    //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                    //     }
+                    // }
 
-                    if ($userPermission->sale['sale_payment'] == '1') {
+                    // if ($userPermission->sale['sale_payment'] == '1') {
 
-                        $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                        data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
-                            class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-                    }
+                    //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
+                    //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
+                    //         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                    // }
 
                     if ($userPermission->sale['edit_add_sale'] == '1') {
 

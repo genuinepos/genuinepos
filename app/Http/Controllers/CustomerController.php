@@ -603,7 +603,10 @@ class CustomerController extends Controller
             balance_type: 'debit'
         );
 
-        $dueInvoices = Sale::where('customer_id', $customerId)->where('due', '>', 0)->get();
+        $dueInvoices = Sale::where('customer_id', $customerId)
+            ->where('due', '>', 0)
+            ->orderBy('report_date', 'asc')
+            ->get();
 
         if (count($dueInvoices) > 0) {
 
@@ -783,7 +786,7 @@ class CustomerController extends Controller
         // $returnSales = Sale::with(['sale_return'])->where('sale_return_due', '>', 0)->get();
         $saleReturns = SaleReturn::with(['sale'])->where('customer_id', $customerId)
             ->where('total_return_due', '>', 0)
-            ->orderBy('sale_id', 'desc')
+            ->orderBy('report_date', 'asc')
             ->get();
 
         if (count($saleReturns) > 0) {

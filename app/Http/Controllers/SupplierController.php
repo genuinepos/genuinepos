@@ -351,6 +351,7 @@ class SupplierController extends Controller
 
         $dueInvoices = Purchase::where('supplier_id', $supplierId)
             ->where('due', '>', 0)
+            ->orderBy('report_date', 'asc')
             ->get();
 
         if (count($dueInvoices) > 0) {
@@ -536,7 +537,10 @@ class SupplierController extends Controller
             balance_type: 'debit'
         );
 
-        $returnPurchases = Purchase::with(['purchase_return'])->where('purchase_return_due', '>', 0)->get();
+        $returnPurchases = Purchase::with(['purchase_return'])
+            ->where('purchase_return_due', '>', 0)
+            ->orderBy('report_date', 'asc')
+            ->get();
 
         if (count($returnPurchases) > 0) {
 

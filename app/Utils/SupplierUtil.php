@@ -395,6 +395,7 @@ class SupplierUtil
     public function adjustSupplierForSalePaymentDue($supplierId)
     {
         $supplier = Supplier::where('id', $supplierId)->first();
+
         $totalSupplierPurchase = DB::table('purchases')
             ->where('supplier_id', $supplierId)
             ->select(DB::raw('sum(total_purchase_amount) as total_purchase'))

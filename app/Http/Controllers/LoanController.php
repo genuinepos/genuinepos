@@ -64,8 +64,7 @@ class LoanController extends Controller
                 'branches.name as b_name',
                 'branches.branch_code as b_code',
             )->where('loans.branch_id', auth()->user()->branch_id)
-                ->orderBy('loans.report_date', 'desc')
-                ->get();
+                ->orderBy('loans.report_date', 'desc');
 
             return DataTables::of($loans)
                 ->addColumn('action', function ($row) {

@@ -62,7 +62,7 @@
                             <select name="account_id" class="form-control" id="account_id">
                                 <option value="">Select Account</option>
                                 @foreach ($accounts as $account)
-                                    <option {{ $payment->account_id == $account->id ? 'SELECTED' : '' }} value="{{ $account->id }}">
+                                    <option value="{{ $account->id }}">
                                         @php
                                             $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
                                             $bank = $account->bank ? ', BK : '.$account->bank : '';

@@ -221,7 +221,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Previous Paid :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <label class=" col-4"><b> Paid :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $purchase->paid }}" tabindex="-1">
                                                         </div>
@@ -242,7 +242,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class=" col-4"><b>Current Due :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <label class=" col-4"><b>Current Order Due :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="due" id="due" class="form-control text-danger bold_input_field" value="{{ $purchase->due }}" tabindex="-1">
                                                         </div>
@@ -396,7 +396,7 @@
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
                     toastr.success(data);
-                    window.location = "{{route('purchases.po.list')}}";
+                    window.location = "{{ url()->previous() }}";
                 }, error: function(err) {
 
                     $('.loading_button').hide();

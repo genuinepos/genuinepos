@@ -14,8 +14,24 @@
         #display_pre_due{font-weight: 600;}
         input[type=number]#quantity::-webkit-inner-spin-button, 
         input[type=number]#quantity::-webkit-outer-spin-button {opacity: 1;margin: 0;}
+
+        .select2-container--default .select2-selection--single {margin-bottom: 1px;}
+        .select2-container .select2-selection--single {overflow: hidden;}
+        .select2-container .select2-selection--single .select2-selection__rendered {display: inline-block;width: 143px;}
+        /*.select2-selection:focus {
+             box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+        } */
+        
+        .select2-selection:focus {
+            box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+            color: #212529;
+            background-color: #fff;
+            border-color: #86b7fe;
+            outline: 0;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -45,16 +61,18 @@
                                             <div class="input-group">
                                                 <label class=" col-4"><b>Customer :</b> </label>
                                                 <div class="col-8">
-                                                    <div class="input-group width-60">
-                                                        <select name="customer_id" class="form-control" id="customer_id">
+                                                    <div class="input-group">
+                                                        <div style="display: inline-block; margin-bottom: 2px;"> 
+                                                            <select style="margin-bottom: 2px;" name="customer_id" class="form-control select2" id="customer_id">
                                                             <option value="">Walk-In-Customer</option>
                                                             @foreach ($customers as $customer)
                                                                 <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
                                                             @endforeach
-                                                        </select>
-                                                        <div class="input-group-prepend">
+                                                        </select></div>
+                                                        <div style="display: inline-block"> <div class="input-group-prepend">
                                                             <span class="input-group-text add_button" id="addCustomer"><i class="fas fa-plus-square text-dark"></i></span>
-                                                        </div>
+                                                        </div></div> 
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
@@ -421,9 +439,11 @@
                                                             <option value="{{ $account->id }}">
                                                                 @php
                                                                     $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                                    $balance = ' BL : '.$account->balance;
+                                                                    $bank = $account->bank ? ', BK : '.$account->bank : '';
+                                                                    $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
+                                                                    $balance = ', BL : '.$account->balance;
                                                                 @endphp
-                                                                {{ $account->name . $accountType . $balance}}
+                                                                {{ $account->name.$accountType.$bank.$ac_no.$balance }}
                                                             </option>
                                                         @endforeach
                                                     </select>

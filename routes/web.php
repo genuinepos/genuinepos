@@ -30,6 +30,7 @@ Route::get('route-list', function () {
 });
 
 Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::get('branch/authenticated/users/{branchId}', 'CommonAjaxCallController@branchAuthenticatedUsers');
     Route::get('category/subcategories/{categoryId}', 'CommonAjaxCallController@categorySubcategories');
     Route::get('only/search/product/for/reports/{product_name}', 'CommonAjaxCallController@onlySearchProductForReports');
@@ -206,6 +207,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::delete('delete/{supplierId}', 'SupplierController@delete')->name('contacts.supplier.delete');
         Route::get('change/status/{supplierId}', 'SupplierController@changeStatus')->name('contacts.supplier.change.status');
         Route::get('view/{supplierId}', 'SupplierController@view');
+        Route::get('uncompleted/orders/{supplierId}', 'SupplierController@uncompletedOrders')->name('suppliers.uncompleted.orders');
         Route::get('ledgers/{supplierId}', 'SupplierController@ledgers')->name('contacts.supplier.ledgers');
         Route::get('print/ledger/{supplierId}', 'SupplierController@ledgerPrint')->name('contacts.supplier.ledger.print');
         Route::get('all/payment/list/{supplierId}', 'SupplierController@allPaymentList')->name('suppliers.all.payment.list');
@@ -918,6 +920,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     });
 
     Route::group(['prefix' => 'barcode_settings'], function () {
+
         Route::get('/', 'BarcodeSettingController@index')->name('settings.barcode.index');
         Route::get('create', 'BarcodeSettingController@create')->name('settings.barcode.create');
         Route::post('store', 'BarcodeSettingController@store')->name('settings.barcode.store');
@@ -952,6 +955,7 @@ Route::group(['prefix' => 'settings', 'namespace' => 'App\Http\Controllers'], fu
     });
 
     Route::group(['prefix' => 'cash_counter'], function () {
+
         Route::get('/', 'CashCounterController@index')->name('settings.cash.counter.index');
         Route::post('store', 'CashCounterController@store')->name('settings.payment.cash.counter.store');
         Route::get('edit/{id}', 'CashCounterController@edit')->name('settings.cash.counter.edit');
@@ -1074,6 +1078,17 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
+
+    // return $unCompletedOrders = DB::table('purchases')
+    //     ->where('purchases.purchase_status', 3)
+    //     ->where('purchases.po_receiving_status', '!=', 'Completed')
+    //     ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
+    //     ->select(
+    //         'purchases.date',
+    //         'purchases.invoice_id',
+    //         'purchases.invoice_id',
+    //     )
+    //     ->get();
 });
 
 // All authenticated routes

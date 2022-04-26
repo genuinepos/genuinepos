@@ -250,10 +250,11 @@
                 }
             },
             columnDefs: [{
-                "targets": [1, 6],
+                "targets": [0, 6],
                 "orderable": false,
                 "searchable": false
             }],
+            
             columns: [
                 {data: 'account_type', name: 'account_type'},
                 {data: 'name', name: 'accounts.name'},

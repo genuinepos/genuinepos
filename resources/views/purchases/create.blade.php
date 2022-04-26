@@ -56,6 +56,7 @@
                                             </div>
 
                                             @if (count($warehouses) > 0)
+
                                                 <input name="warehouse_count" value="YES" type="hidden" />
                                                 <div class="input-group mt-1">
                                                     <label class="col-4"><span
@@ -72,6 +73,7 @@
                                                     </div>
                                                 </div>
                                             @else
+                                            
                                                 <div class="input-group mt-1">
                                                     <label class="col-4"><b>Store Location :</b> </label>
                                                     <div class="col-8">
@@ -387,9 +389,11 @@
                                                                     <option value="{{ $account->id }}">
                                                                         @php
                                                                             $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                                            $balance = ' BL : '.$account->balance;
+                                                                            $bank = $account->bank ? ', BK : '.$account->bank : '';
+                                                                            $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
+                                                                            $balance = ', BL : '.$account->balance;
                                                                         @endphp
-                                                                        {{ $account->name.$accountType.$balance}}
+                                                                        {{ $account->name.$accountType.$bank.$ac_no.$balance }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>

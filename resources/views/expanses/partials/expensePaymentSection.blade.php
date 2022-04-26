@@ -45,12 +45,14 @@
                                     <div class="col-8">
                                         <select required name="account_id" class="form-control" id="account_id">
                                             @foreach ($accounts as $account)
-                                                @php
-                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                    $balance = ' BL : '.$account->balance;
-                                                @endphp
                                                 <option value="{{ $account->id }}">
-                                                    {{ $account->name.$accountType.$balance}}
+                                                    @php
+                                                        $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                        $bank = $account->bank ? ', BK : '.$account->bank : '';
+                                                        $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
+                                                        $balance = ', BL : '.$account->balance;
+                                                    @endphp
+                                                    {{ $account->name.$accountType.$bank.$ac_no.$balance }}
                                                 </option>
                                             @endforeach
                                         </select>

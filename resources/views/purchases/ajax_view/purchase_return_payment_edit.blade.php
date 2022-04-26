@@ -124,9 +124,11 @@
                                     <option {{ $payment->account_id == $account->id ? 'SELECTED' : '' }} value="{{ $account->id }}">
                                         @php
                                             $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                            $balance = ' BL : '.$account->balance;
+                                            $bank = $account->bank ? ', BK : '.$account->bank : '';
+                                            $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
+                                            $balance = ', BL : '.$account->balance;
                                         @endphp
-                                        {{ $account->name.$accountType.$balance }}
+                                        {{ $account->name.$accountType.$bank.$ac_no.$balance }}
                                     </option>
                                 @endforeach
                             </select>

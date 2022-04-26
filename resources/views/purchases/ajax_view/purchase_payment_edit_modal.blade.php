@@ -135,7 +135,7 @@
                 </div>
 
                 <div class="form-group row mt-2">
-                    <div class="col-md-7">
+                    <div class="col-md-4">
                         <label><strong>Credit Account :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -146,9 +146,11 @@
                                     <option {{ $payment->account_id == $account->id ? 'SELECTED' : '' }} value="{{ $account->id }}">
                                         @php
                                             $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                            $balance = ' BL : '.$account->balance;
+                                            $bank = $account->bank ? ', BK : '.$account->bank : '';
+                                            $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
+                                            $balance = ', BL : '.$account->balance;
                                         @endphp
-                                        {{ $account->name.$accountType.$balance }}
+                                        {{ $account->name.$accountType.$bank.$ac_no.$balance }}
                                     </option>
                                 @endforeach
                             </select>
@@ -156,7 +158,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
                         <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
                     </div>

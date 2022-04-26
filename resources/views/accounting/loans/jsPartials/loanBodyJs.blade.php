@@ -8,7 +8,7 @@
         processing: true,
         serverSide: true,
         searchable: true,
-        aaSorting: [[1, 'desc']],
+        // aaSorting: [[1, 'desc']],
         "ajax": {
             "url": "{{ route('accounting.loan.index') }}",
             "data": function(d) {

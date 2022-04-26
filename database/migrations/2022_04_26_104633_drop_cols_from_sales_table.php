@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNewColsToSalesTable extends Migration
+class DropColsFromSalesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,8 @@ class AddNewColsToSalesTable extends Migration
     public function up()
     {
         Schema::table('sales', function (Blueprint $table) {
-            $table->decimal('all_total_payable', 22, 2)->after('attachment')->default(0);
-            $table->decimal('all_total_payable', 22, 2)->after('attachment')->default(0);
-            $table->decimal('gross_pay', 22, 2)->after('all_total_payable')->default(0);
-            $table->decimal('previous_due', 22, 2)->after('gross_pay')->default(0);
+            $table->dropColumn('gross_pay');
+            $table->dropColumn('previous_due');
         });
     }
 

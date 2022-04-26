@@ -9,6 +9,39 @@
                     </a>
                 </li>
 
+                <li data-menu="superadmin" class="">
+                    <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/superadmin.svg') }}">
+                        <p class="title">@lang('menu.superadmin')</p>
+                    </a>
+                </li>
+
+                @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
+                    @if (
+                        auth()->user()->permission->contact['supplier_all'] == '1' || 
+                        auth()->user()->permission->contact['supplier_add'] == '1' || 
+                        auth()->user()->permission->contact['supplier_import'] == '1' ||
+                        auth()->user()->permission->contact['customer_all'] == '1' ||
+                        auth()->user()->permission->contact['customer_add'] == '1' ||
+                        auth()->user()->permission->contact['customer_import'] == '1' ||
+                        auth()->user()->permission->contact['customer_group'] == '1' ||
+                        (
+                            isset(auth()->user()->permission->contact['supplier_report']) && 
+                            auth()->user()->permission->contact['supplier_report'] == '1'
+                        ) ||
+                        (
+                            isset(auth()->user()->permission->contact['customer_report']) &&
+                            auth()->user()->permission->contact['customer_report'] == '1'
+                        )
+                        
+                    )
+                        <li data-menu="contact" class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
+                            <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/agenda.svg') }}">
+                                <p class="title">@lang('menu.contacts')</p>
+                            </a>
+                        </li>
+                    @endif
+                @endif
+
                 @if (
                     auth()->user()->permission->product['product_all'] == '1' ||
                     auth()->user()->permission->product['product_add'] == '1' || 
@@ -41,32 +74,6 @@
                     </li>
                 @endif
 
-                @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
-                    @if (
-                        auth()->user()->permission->contact['supplier_all'] == '1' || 
-                        auth()->user()->permission->contact['supplier_add'] == '1' || 
-                        auth()->user()->permission->contact['supplier_import'] == '1' ||
-                        auth()->user()->permission->contact['customer_all'] == '1' ||
-                        auth()->user()->permission->contact['customer_add'] == '1' ||
-                        auth()->user()->permission->contact['customer_import'] == '1' ||
-                        auth()->user()->permission->contact['customer_group'] == '1' ||
-                        (
-                            isset(auth()->user()->permission->contact['supplier_report']) && 
-                            auth()->user()->permission->contact['supplier_report'] == '1'
-                        ) ||
-                        (
-                            isset(auth()->user()->permission->contact['customer_report']) &&
-                            auth()->user()->permission->contact['customer_report'] == '1'
-                        )
-                        
-                    )
-                        <li data-menu="contact" class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
-                            <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/agenda.svg') }}">
-                                <p class="title">@lang('menu.contacts')</p>
-                            </a>
-                        </li>
-                    @endif
-                @endif
 
                 @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
 
@@ -356,8 +363,11 @@
             </ul>
         </div>
     </div>
+
     <div class="category-bar">
         <div id="sidebar_t">
+
+            
             <div class="sub-menu_t" id="product">
                 <div class="sub-menu-width">
                     <div class="model__close bg-secondary-2">
@@ -572,6 +582,39 @@
                             </div>
                         @endif
                     </div>
+                </div>
+            </div>
+
+            <div class="sub-menu_t" id="superadmin">
+                <div class="sub-menu-width">
+                    <div class="model__close bg-secondary-2">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p class="text-muted float-start mt-1"><strong>Superadmin</strong></p>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            @if ($addons->branches == 1)
+                                @if (auth()->user()->permission->setup['branch'] == '1')
+                                    <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
+                                        <div class="switch_bar">
+                                            <a href="{{ route('settings.branches.index') }}" class="bar-link">
+                                                <span><i class="fas fa-project-diagram"></i></span>
+                                            </a>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.branches')</p>
+                                    </div>
+                                @endif
+                            @endif
+                        </div>
+                    </div>
+
                 </div>
             </div>
 

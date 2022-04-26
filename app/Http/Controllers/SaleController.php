@@ -209,10 +209,18 @@ class SaleController extends Controller
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
-            ->where('account_branches.branch_id', $branch_id)
+            ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         $saleAccounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -586,10 +594,18 @@ class SaleController extends Controller
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         return view('sales.edit', compact('sale', 'price_groups', 'saleAccounts', 'taxes', 'qty_limits', 'methods', 'accounts'));
     }
@@ -697,7 +713,7 @@ class SaleController extends Controller
         $updateSale->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
 
         $updateSale->gross_pay = $request->previous_paid + $request->paying_amount;
-    
+
         $updateSale->save();
 
         if ($updateSale->status == 1 ||  $request->status == 3) {
@@ -1045,10 +1061,18 @@ class SaleController extends Controller
     {
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
@@ -1122,10 +1146,18 @@ class SaleController extends Controller
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch')->where('id', $paymentId)->first();
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
@@ -1192,10 +1224,18 @@ class SaleController extends Controller
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 

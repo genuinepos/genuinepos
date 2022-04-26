@@ -1,6 +1,9 @@
 <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
 <script>
+
+    $('.select2').select2();
     // Get all price group
     var price_groups = '';
     function getPriceGroupProducts(){
@@ -1553,6 +1556,9 @@
         $('#total_invoice_payable').html(parseFloat(0).toFixed(2));
         $('#add_sale_form')[0].reset();
         $('#sale_list').empty();
+        $("#customer_id").select2("destroy");
+
+        $("#customer_id").select2();
         document.getElementById('search_product').focus();
         afterChangeStatusAcivity(status);
     }
@@ -1736,5 +1742,24 @@
             return false;
         }
     }
+
+    $(document).on('click', '.select2', function () {
+
+        $('.select2-search__field').focus();
+        $('.select2-search__field').select();
+    });
+
+    $(document).on('keyup', '.select2', function (e) {
+        var e = e || window.event;
+
+        if(!e.ctrlKey && e.which != 13) {
+            
+            return;
+        }
+
+        $('.select2-search__field').focus();
+        $('.select2-search__field').select();
+      
+    });
 
 </script>

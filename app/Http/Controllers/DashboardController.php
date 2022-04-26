@@ -8,8 +8,8 @@ use App\Utils\Converter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-define('TODAY_DATE', Carbon::today());
 
+define('TODAY_DATE', Carbon::today());
 
 class DashboardController extends Controller
 {
@@ -109,12 +109,14 @@ class DashboardController extends Controller
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $sales = $saleQuery->where('sales.status', 1)->get();
             $purchases = $purchaseQuery->get();
             $expenses = $expenseQuery->get();
             $users = $userQuery->count();
             $adjustments = $adjustmentQuery->get();
         } else {
+            
             $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
                 ->where('sales.status', 1)->get();
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)->get();
@@ -167,7 +169,7 @@ class DashboardController extends Controller
                         'product_branch_variants.variant_quantity',
                         'product_variants.variant_name',
                         'units.name as unit_name',
-   
+
                     ]
                 )
                 ->where('product_branches.branch_id', auth()->user()->branch_id)
@@ -177,7 +179,7 @@ class DashboardController extends Controller
                 ->orderBy('products.id', 'desc')
                 ->get();
 
-            
+
             // if ($request->branch_id) {
 
             //     if ($request->branch_id == 'NULL') {
@@ -196,10 +198,12 @@ class DashboardController extends Controller
             return DataTables::of($alertQtyProducts)
                 ->addIndexColumn()
                 ->editColumn('name', function ($row) {
-                    return $row->name.($row->variant_name != null ? '/'.$row->variant_name : '');
+
+                    return $row->name . ($row->variant_name != null ? '/' . $row->variant_name : '');
                 })
                 ->editColumn('stock', function ($row) {
-                    return $quantity = '<span class="text-danger"><b>' . $row->product_quantity.'/'.$row->unit_name. '</b></span>';
+
+                    return $quantity = '<span class="text-danger"><b>' . $row->product_quantity . '/' . $row->unit_name . '</b></span>';
                 })
                 ->rawColumns(['stock'])->make(true);
         }
@@ -392,7 +396,9 @@ class DashboardController extends Controller
             }
 
             if ($request->date_range != 'all_time') {
+
                 if ($request->date_range) {
+
                     $date_range = explode('~', $request->date_range);
                     $form_date = date('Y-m-d', strtotime($date_range[0]));
                     $to_date = date('Y-m-d', strtotime($date_range[1]));
@@ -410,24 +416,31 @@ class DashboardController extends Controller
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 $purchases = $query->where('purchases.due', '!=', 0)->orderBy('id', 'desc')->get();
             } else {
+
                 $purchases = $query->where('purchases.branch_id', auth()->user()->branch_id)
                     ->where('purchases.due', '!=', 0)->get();
             }
 
             return DataTables::of($purchases)
                 ->editColumn('date', function ($row) {
+
                     return date('d/m/Y', strtotime($row->date));
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
+
                     if ($row->branch_name) {
+
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
+
                         return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('due',  function ($row) use ($generalSettings) {
+
                     return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
                 })
                 ->rawColumns(['date', 'from', 'due'])

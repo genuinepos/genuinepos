@@ -185,154 +185,19 @@ class SupplierController extends Controller
         $supplierId = $supplierId;
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
-            $purchases = '';
-            $query = DB::table('purchases')
-                ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
-                ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
-                ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
-                ->leftJoin('admin_and_users as created_by', 'purchases.admin_id', 'created_by.id');
-
-            $purchases = $query->select(
-                'purchases.*',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'warehouses.warehouse_name',
-                'warehouses.warehouse_code',
-                'suppliers.name as supplier_name',
-                'created_by.prefix as created_prefix',
-                'created_by.name as created_name',
-                'created_by.last_name as created_last_name',
-            )->where('purchases.branch_id', auth()->user()->branch_id)
-                ->where('purchases.supplier_id', $supplierId)
-                ->where('purchases.is_purchased', 1)
-                ->orderBy('purchases.report_date', 'desc');
-
-            return DataTables::of($purchases)
-                ->addColumn('action', function ($row) {
-
-                    $html = '<div class="btn-group" role="group">';
-                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
-                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-
-                    if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
-
-                        $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'purchased']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
-                    }
-
-                    if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
-
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                    }
-
-                    $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
-
-                    if (auth()->user()->branch_id == $row->branch_id) {
-
-                        if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
-
-                            if ($row->due > 0) {
-
-                                $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
-                            }
-
-                            if ($row->purchase_return_due > 0) {
-
-                                $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Return Amount</a>';
-                            }
-                        }
-                    }
-
-                    $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-
-                    if (auth()->user()->permission->purchase['purchase_return'] == '1') {
-
-                        $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
-                    }
-
-                    $html .= '<a class="dropdown-item" id="items_notification" href=""><i class="fas fa-envelope mr-1 text-primary"></i> Items Received Notification</a>';
-                    $html .= '</div>';
-                    $html .= '</div>';
-                    return $html;
-                })
-
-                ->editColumn('date', function ($row) {
-
-                    return date('d/m/Y', strtotime($row->date));
-                })
-
-                ->editColumn('invoice_id', function ($row) {
-                    $html = '';
-                    $html .= $row->invoice_id;
-                    $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
-                    return $html;
-                })
-
-                ->editColumn('from',  function ($row) use ($generalSettings) {
-                    if ($row->warehouse_name) {
-
-                        return $row->warehouse_name . '<b>(WH)</b>';
-                    } elseif ($row->branch_name) {
-
-                        return $row->branch_name . '<b>(BL)</b>';
-                    } else {
-
-                        return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
-                    }
-                })
-
-                ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
-
-                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
-
-                ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
-
-                ->editColumn('return_amount', fn ($row) => '<span class="return_amount" data-value="' . $row->purchase_return_amount . '">' . $this->converter->format_in_bdt($row->purchase_return_amount) . '</span>')
-
-                ->editColumn('return_due', fn ($row) => '<span class="return_due text-danger" data-value="' . $row->purchase_return_due . '">' . $this->converter->format_in_bdt($row->purchase_return_due) . '</span>')
-
-                ->editColumn('status', function ($row) {
-
-                    if ($row->purchase_status == 1) {
-
-                        return '<span class="text-success"><b>Purchased</b></span>';
-                    } elseif ($row->purchase_status == 2) {
-
-                        return '<span class="text-secondary"><b>Pending</b></span>';
-                    } elseif ($row->purchase_status == 3) {
-
-                        return '<span class="text-primary"><b>Purchased By Order</b></span>';
-                    }
-                })
-
-                ->editColumn('payment_status', function ($row) {
-
-                    $payable = $row->total_purchase_amount - $row->purchase_return_amount;
-                    if ($row->due <= 0) {
-
-                        return '<span class="badge bg-success">Paid</span>';
-                    } elseif ($row->due > 0 && $row->due < $payable) {
-
-                        return '<span class="badge bg-primary text-white">Partial</span>';
-                    } elseif ($payable == $row->due) {
-
-                        return '<span class="badge bg-danger text-white">Due</span>';
-                    }
-                })
-
-                ->editColumn('created_by', function ($row) {
-
-                    return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
-                })
-
-                ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'return_amount', 'return_due', 'payment_status', 'status', 'created_by'])
-
-                ->make(true);
+            return $this->supplierUtil->supplierPurchaseList($request, $supplierId);
         }
 
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
         return view('contacts.suppliers.view', compact('supplierId', 'supplier'));
+    }
+
+    public function uncompletedOrders(Request $request, $supplierId)
+    {
+        if ($request->ajax()) {
+
+            return $this->supplierUtil->uncompletedPurchaseOrderList($request, $supplierId);
+        }
     }
 
     // Supplier payment list
@@ -340,77 +205,7 @@ class SupplierController extends Controller
     {
         if ($request->ajax()) {
 
-            $settings = DB::table('general_settings')->first();
-
-            $supplierUtil = $this->supplierUtil;
-
-            $supplierLedgers = '';
-
-            $query = DB::table('supplier_ledgers')->where('supplier_ledgers.supplier_id', $supplierId)
-                ->leftJoin('purchases', 'supplier_ledgers.purchase_id', 'purchases.id')
-                ->leftJoin('purchase_returns', 'supplier_ledgers.purchase_return_id', 'purchase_returns.id')
-                ->leftJoin('purchase_payments', 'supplier_ledgers.purchase_payment_id', 'purchase_payments.id')
-                ->leftJoin('supplier_payments', 'supplier_ledgers.supplier_payment_id', 'supplier_payments.id')
-                ->leftJoin('purchases as agp_purchase', 'purchase_payments.purchase_id', 'agp_purchase.id')
-                ->select(
-                    'supplier_ledgers.report_date',
-                    'supplier_ledgers.voucher_type',
-                    'supplier_ledgers.debit',
-                    'supplier_ledgers.credit',
-                    'supplier_ledgers.running_balance',
-                    'purchases.invoice_id as purchase_inv_id',
-                    'purchases.purchase_note as purchase_par',
-                    'purchase_returns.invoice_id as return_inv_id',
-                    'purchase_returns.date as purchase_return_par',
-                    'purchase_payments.invoice_id as payment_voucher_no',
-                    'purchase_payments.note as purchase_payment_par',
-                    'supplier_payments.voucher_no as supplier_payment_voucher',
-                    'supplier_payments.note as supplier_payment_par',
-                    'agp_purchase.invoice_id as agp_purchase',
-                )->orderBy('supplier_ledgers.report_date', 'asc');
-
-            if ($request->voucher_type) {
-                $query->where('supplier_ledgers.voucher_type', $request->voucher_type); // Final
-            }
-
-            if ($request->from_date) {
-                $from_date = date('Y-m-d', strtotime($request->from_date));
-                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-                $query->whereBetween('supplier_ledgers.report_date', $date_range); // Final
-            }
-
-            $supplierLedgers = $query;
-
-            return DataTables::of($supplierLedgers)
-                ->editColumn('date', function ($row) use ($settings) {
-
-                    $dateFormat = json_decode($settings->business, true)['date_format'];
-                    $__date_format = str_replace('-', '/', $dateFormat);
-                    return date($__date_format, strtotime($row->report_date));
-                })
-
-                ->editColumn('particulars', function ($row) use ($supplierUtil) {
-
-                    $type = $supplierUtil->voucherType($row->voucher_type);
-                    $__agp = $row->agp_purchase ? '/' . 'AGP:<b>' . $row->agp_purchase . '</b>' : '';
-                    return '<b>' . $type['name'] . '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
-                })
-
-                ->editColumn('voucher_no',  function ($row) use ($supplierUtil) {
-
-                    $type = $supplierUtil->voucherType($row->voucher_type);
-                    return $row->{$type['voucher_no']};
-                })
-
-                ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . $this->converter->format_in_bdt($row->debit) . '</span>')
-
-                ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . $this->converter->format_in_bdt($row->credit) . '</span>')
-
-                ->editColumn('running_balance', fn ($row) => '<span class="running_balance" data-value="' . $row->running_balance . '">' . $this->converter->format_in_bdt($row->running_balance) . '</span>')
-
-                ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
-                ->make(true);
+            return $this->supplierUtil->supplierLedgers($request, $supplierId);
         }
     }
 
@@ -479,10 +274,18 @@ class SupplierController extends Controller
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
@@ -661,16 +464,18 @@ class SupplierController extends Controller
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get([
+            ->select(
                 'accounts.id',
                 'accounts.name',
                 'accounts.account_number',
                 'accounts.account_type',
-                'accounts.balance'
-            ]);
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 

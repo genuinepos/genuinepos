@@ -45,6 +45,12 @@
                                     </a>
                                 </li>
 
+                                <li>
+                                    <a id="tab_btn" data-show="uncompleted_orders" class="tab_btn" href="#">
+                                        <i class="fas fa-shopping-bag"></i> Purchase Orders
+                                    </a>
+                                </li>
+
                                 @if (auth()->user()->permission->purchase['purchase_payment'] == '1') 
                                     <li>
                                         <a id="tab_btn" data-show="payments" class="tab_btn" href="#">
@@ -311,6 +317,55 @@
                             </div>
                         </div>
 
+                        <div class="tab_contant uncompleted_orders d-none">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="widget_content table_area">
+                                        <div class="table-responsive">
+                                            <table class="display data_tbl data__table uncompleted_orders_table w-100">
+                                                <thead>
+                                                    <tr >
+                                                        <th class="text-start">Actions</th>
+                                                        <th class="text-start">Date</th>
+                                                        <th class="text-start">Order ID</th>
+                                                        <th class="text-start">Purchase From</th>
+                                                        <th class="text-start">Supplier</th>
+                                                        <th class="text-start">Created By</th>
+                                                        <th class="text-start">Receiving Status</th>
+                                                        <th class="text-end">Ordered Qty</th>
+                                                        <th class="text-end">Received Qty</th>
+                                                        <th class="text-end">Pending Qty</th>
+                                                        <th class="text-end">Grand Total</th>
+                                                        <th class="text-end">Paid</th>
+                                                        <th class="text-end">Due</th>
+                                                        <th class="text-end">Payment Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                                <tfoot>
+                                                    <tr class="bg-secondary">
+                                                        <th colspan="7" class="text-end text-white">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                        <th class="text-start text-white" id="po_qty"></th>
+                                                        <th class="text-start text-white" id="po_received_qty"></th>
+                                                        <th class="text-start text-white" id="po_pending_qty"></th>
+                                                        <th class="text-start text-white" id="po_total_purchase_amount"></th>
+                                                        <th class="text-start text-white" id="po_paid"></th>
+                                                        <th class="text-start text-white" id="po_due"></th>
+                                                        <th class="text-start text-white">---</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <form id="deleted_form" action="" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                         @if (auth()->user()->permission->purchase['purchase_payment'] == '1') 
                             <div class="tab_contant payments d-none">
                                 <div class="row">
@@ -409,9 +464,7 @@
                                     
                                         <div class="row mt-2">
                                             <div class="col-md-12">
-                                                
-                                                    <a href="{{ route('suppliers.all.payment.print', $supplier->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
-                                                
+                                                <a href="{{ route('suppliers.all.payment.print', $supplier->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
                                             </div>
                                         </div>
                                     </div>
@@ -599,6 +652,54 @@
                 $('#return_amount').text(bdFormat(return_amount));
                 var return_due = sum_table_col($('.data_tbl'), 'return_due');
                 $('#return_due').text(bdFormat(return_due));
+                $('.data_preloader').hide();
+            }
+        });
+
+        var table = $('.uncompleted_orders_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            ajax:"{{ route('suppliers.uncompleted.orders', $supplierId) }}",
+
+            columnDefs: [{
+                "targets": [0, 5, 13],
+                "orderable": false,
+                "searchable": false
+            }],
+
+            columns: [
+                {data: 'action'},
+                {data: 'date', name: 'date'},
+                {data: 'invoice_id', name: 'invoice_id'},
+                {data: 'from', name: 'branches.name'},
+                {data: 'supplier_name', name: 'suppliers.name'},
+                {data: 'created_by', name: 'created_by.name'},
+                {data: 'po_receiving_status', name: 'po_receiving_status'},
+                {data: 'po_qty', name: 'po_qty', className: 'text-end'},
+                {data: 'po_received_qty', name: 'po_received_qty', className: 'text-end'},
+                {data: 'po_pending_qty', name: 'po_pending_qty', className: 'text-end'},
+                {data: 'total_purchase_amount', name: 'total_purchase_amount', className: 'text-end'},
+                {data: 'paid', name: 'paid', className: 'text-end'},
+                {data: 'due', name: 'due', className: 'text-end'},
+                {data: 'payment_status', name: 'payment_status'},
+                
+            ],fnDrawCallback: function() {
+
+                var po_qty = sum_table_col($('.data_tbl'), 'po_qty');
+                $('#po_qty').text(bdFormat(po_qty));
+                var po_received_qty = sum_table_col($('.data_tbl'), 'po_received_qty');
+                $('#po_received_qty').text(bdFormat(po_received_qty));
+                var po_pending_qty = sum_table_col($('.data_tbl'), 'po_pending_qty');
+                $('#po_pending_qty').text(bdFormat(po_pending_qty));
+                var total_purchase_amount = sum_table_col($('.data_tbl'), 'po_total_purchase_amount');
+                $('#po_total_purchase_amount').text(bdFormat(total_purchase_amount));
+                var paid = sum_table_col($('.data_tbl'), 'po_paid');
+                $('#po_paid').text(bdFormat(paid));
+                var due = sum_table_col($('.data_tbl'), 'po_due');
+                $('#po_due').text(bdFormat(due));
+               
                 $('.data_preloader').hide();
             }
         });
@@ -954,6 +1055,27 @@
                     });
                 }
             }); 
+        });
+
+        // Print Packing slip
+        $(document).on('click', '#print_supplier_copy', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $.ajax({
+                url:url,
+                type:'get',
+                success:function(data){
+                    $(data).printThis({
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{ asset('public/assets/css/print/purchase.print.css') }}",
+                        removeInline: false,
+                        printDelay: 700,
+                        header: null,
+                    });
+                }
+            });
         });
     </script>
 

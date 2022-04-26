@@ -67,6 +67,7 @@ class PurchaseController extends Controller
         }
 
         if ($request->ajax()) {
+
             return $this->purchaseUtil->purchaseListTable($request);
         }
 
@@ -78,10 +79,12 @@ class PurchaseController extends Controller
     public function purchaseProductList(Request $request)
     {
         if (auth()->user()->permission->purchase['purchase_all'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->purchaseUtil->purchaseProductListTable($request);
         }
 
@@ -94,10 +97,12 @@ class PurchaseController extends Controller
     public function poList(Request $request)
     {
         if (auth()->user()->permission->purchase['purchase_all'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->purchaseUtil->poListTable($request);
         }
 
@@ -155,6 +160,7 @@ class PurchaseController extends Controller
     public function create()
     {
         if (auth()->user()->permission->purchase['purchase_add'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -162,10 +168,18 @@ class PurchaseController extends Controller
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         $purchaseAccounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -397,7 +411,7 @@ class PurchaseController extends Controller
                 $variant_id = $variant_ids[$__index] != 'noid' ? $variant_ids[$__index] : NULL;
                 $this->productStockUtil->adjustMainProductAndVariantStock($productId, $variant_id);
 
-                if (isset($request->warehouse_id)) {
+                if (isset($request->warehouse_count)) {
 
                     $this->productStockUtil->addWarehouseProduct($productId, $variant_id, $request->warehouse_id);
                     $this->productStockUtil->adjustWarehouseStock($productId, $variant_id, $request->warehouse_id);
@@ -568,7 +582,8 @@ class PurchaseController extends Controller
         // update purchase total information
         $updatePurchase->invoice_id = $request->invoice_id
             ? $request->invoice_id
-            : ($invoicePrefix != null ? $invoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);;
+            : ($invoicePrefix != null ? $invoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);
+
         $updatePurchase->pay_term = $request->pay_term;
         $updatePurchase->pay_term_number = $request->pay_term_number;
         $updatePurchase->purchase_account_id = $request->purchase_account_id;
@@ -952,10 +967,18 @@ class PurchaseController extends Controller
     {
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
@@ -1019,10 +1042,18 @@ class PurchaseController extends Controller
     {
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
@@ -1084,10 +1115,18 @@ class PurchaseController extends Controller
     {
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
@@ -1150,10 +1189,18 @@ class PurchaseController extends Controller
     {
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         $methods = DB::table('payment_methods')->select('id', 'name')->get();
 

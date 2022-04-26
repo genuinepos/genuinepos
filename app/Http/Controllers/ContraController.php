@@ -56,7 +56,7 @@ class ContraController extends Controller
             }
 
             if ($request->from_date) {
-                
+
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
                 $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
@@ -141,10 +141,18 @@ class ContraController extends Controller
     {
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         return view('accounting.contra.ajax_view.create', compact('accounts'));
     }
@@ -206,10 +214,18 @@ class ContraController extends Controller
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->orderBy('accounts.account_type', 'asc')
-            ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.account_type',
+                'accounts.balance',
+                'banks.name as bank'
+            )->get();
 
         return view('accounting.contra.ajax_view.edit', compact('contra', 'accounts'));
     }

@@ -379,29 +379,29 @@ class PurchaseController extends Controller
         }
 
         // update main product and variant price
-        if ($request->purchase_status == 1) {
 
-            $loop = 0;
-            foreach ($product_ids as $productId) {
 
-                $variant_id = $variant_ids[$loop] != 'noid' ? $variant_ids[$loop] : NULL;
-                $__xMargin = isset($request->profits) ? $profits[$loop] : 0;
-                $__sale_price = isset($request->selling_prices) ? $selling_prices[$loop] : 0;
+        $loop = 0;
+        foreach ($product_ids as $productId) {
 
-                $this->purchaseUtil->updateProductAndVariantPrice(
-                    $productId,
-                    $variant_id,
-                    $unit_costs_with_discount[$loop],
-                    $net_unit_costs[$loop],
-                    $__xMargin,
-                    $__sale_price,
-                    $isEditProductPrice,
-                    $addPurchase->is_last_created
-                );
+            $variant_id = $variant_ids[$loop] != 'noid' ? $variant_ids[$loop] : NULL;
+            $__xMargin = isset($request->profits) ? $profits[$loop] : 0;
+            $__sale_price = isset($request->selling_prices) ? $selling_prices[$loop] : 0;
 
-                $loop++;
-            }
+            $this->purchaseUtil->updateProductAndVariantPrice(
+                $productId,
+                $variant_id,
+                $unit_costs_with_discount[$loop],
+                $net_unit_costs[$loop],
+                $__xMargin,
+                $__sale_price,
+                $isEditProductPrice,
+                $addPurchase->is_last_created
+            );
+
+            $loop++;
         }
+
 
         if ($request->purchase_status == 1) {
 

@@ -57,6 +57,16 @@
                         </tr>
 
                         <tr>
+                            <th class="text-start">Total Payment :</th>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayment) }}</td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-start">Total Purchase Due :</th>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchaseDue) }}</td>
+                        </tr>
+
+                        <tr>
                             <th class="text-start">Total Adjustment :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($total_adjustment) }}</td>
                         </tr>

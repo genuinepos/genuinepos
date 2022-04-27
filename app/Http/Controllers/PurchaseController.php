@@ -587,7 +587,7 @@ class PurchaseController extends Controller
         $updatePurchase->pay_term = $request->pay_term;
         $updatePurchase->pay_term_number = $request->pay_term_number;
         $updatePurchase->purchase_account_id = $request->purchase_account_id;
-        $updatePurchase->admin_id = auth()->user()->id;
+        // $updatePurchase->admin_id = auth()->user()->id;
         $updatePurchase->total_item = $request->total_item;
         $updatePurchase->order_discount = $request->order_discount ? $request->order_discount : 0.00;
         $updatePurchase->order_discount_type = $request->order_discount_type;

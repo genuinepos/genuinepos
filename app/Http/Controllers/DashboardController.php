@@ -77,13 +77,16 @@ class DashboardController extends Controller
         );
 
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
+
                 $purchaseQuery->where('purchases.branch_id', NULL);
                 $saleQuery->where('sales.branch_id', NULL)->where('sales.status', 1);
                 $expenseQuery->where('expanses.branch_id', NULL);
                 $userQuery->where('admin_and_users.branch_id', NULL);
                 $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
             } else {
+
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id)->where('sales.status', 1);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
@@ -116,7 +119,7 @@ class DashboardController extends Controller
             $users = $userQuery->count();
             $adjustments = $adjustmentQuery->get();
         } else {
-            
+
             $sales = $saleQuery->where('sales.branch_id', auth()->user()->branch_id)
                 ->where('sales.status', 1)->get();
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)->get();
@@ -456,6 +459,8 @@ class DashboardController extends Controller
         $totalSalesReturn = 0;
         $totalSalesShipmentCost = 0;
         $totalPurchase = 0;
+        $totalPurchaseDue = 0;
+        $totalPayment = 0;
         $totalPurchaseReturn = 0;
         $totalExpense = 0;
         $total_recovered = 0;
@@ -464,6 +469,8 @@ class DashboardController extends Controller
         $totalPayroll = 0;
 
         $purchases = '';
+        $purchasePayment = '';
+        $supplierPayment = '';
         $purchaseReturn = '';
         $purchaseTotalShipmentCost = '';
         $sales = '';
@@ -476,8 +483,22 @@ class DashboardController extends Controller
 
         $purchaseQuery = DB::table('purchases')->select(
             DB::raw('sum(total_purchase_amount) as total_purchase'),
-            DB::raw('sum(shipment_charge) as total_shipment_charge')
+            DB::raw('sum(shipment_charge) as total_shipment_charge'),
+            DB::raw('sum(due) as total_due')
         );
+
+        $supplierPaymentQ = DB::table('supplier_payments')
+            ->where('supplier_payments.type', 1)
+            ->select(
+                DB::raw('sum(paid_amount) as t_paid'),
+            );
+
+        $purchasePaymentQ = DB::table('purchase_payments')
+            ->where('purchase_payments.supplier_payment_id', NULL)
+            ->where('purchase_payments.payment_type', 1)
+            ->select(
+                DB::raw('sum(paid_amount) as total_paid'),
+            );
 
         $purchaseReturnQuery = DB::table('purchase_returns')->select(
             DB::raw('sum(total_return_amount) as total_return')
@@ -518,6 +539,8 @@ class DashboardController extends Controller
             if ($request->branch_id == 'HF') {
 
                 $purchaseQuery->where('purchases.branch_id', NULL);
+                $supplierPaymentQ->where('supplier_payments.branch_id', NULL);
+                $purchasePaymentQ->where('purchase_payments.branch_id', NULL);
                 $saleQuery->where('sales.branch_id', NULL);
                 $expenseQuery->where('expanses.branch_id', NULL);
                 $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
@@ -529,6 +552,8 @@ class DashboardController extends Controller
             } else {
 
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
+                $supplierPaymentQ->where('supplier_payments.branch_id', $request->branch_id);
+                $purchasePaymentQ->where('purchase_payments.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
                 $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
@@ -547,6 +572,8 @@ class DashboardController extends Controller
 
             $sales = $saleQuery->where('sales.status', 1)->whereDate('report_date', TODAY_DATE)->get();
             $purchases = $purchaseQuery->whereDate('report_date', TODAY_DATE)->get();
+            $supplierPayment = $supplierPaymentQ->whereDate('supplier_payments.report_date', TODAY_DATE)->get();
+            $purchasePayment = $purchasePaymentQ->whereDate('purchase_payments.report_date', TODAY_DATE)->get();
             $expenses = $expenseQuery->whereDate('report_date', TODAY_DATE)->get();
             $adjustments = $adjustmentQuery->whereDate('report_date_ts', TODAY_DATE)->get();
             $purchaseReturn = $purchaseReturnQuery->whereDate('report_date', TODAY_DATE)->get();
@@ -560,6 +587,10 @@ class DashboardController extends Controller
                 ->where('sales.status', 1)->whereDate('report_date', TODAY_DATE)->get();
 
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)->whereDate('report_date', TODAY_DATE)->get();
+
+            $supplierPayment = $supplierPaymentQ->where('supplier_payments.branch_id', auth()->user()->branch_id)->whereDate('supplier_payments.report_date', TODAY_DATE)->get();
+
+            $purchasePayment = $purchasePaymentQ->where('purchase_payments.branch_id', auth()->user()->branch_id)->whereDate('purchase_payments.report_date', TODAY_DATE)->get();
 
             $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)->whereDate('report_date', TODAY_DATE)->get();
 
@@ -588,6 +619,8 @@ class DashboardController extends Controller
         $totalSalesReturn = $saleReturn->sum('total_return');
         $totalSalesShipmentCost = $sales->sum('total_shipment_charge');
         $totalPurchase = $purchases->sum('total_purchase');
+        $totalPayment = $supplierPaymentQ->sum('t_paid') + $purchasePaymentQ->sum('total_paid');
+        $totalPurchaseDue = $purchases->sum('total_due');
         $totalPurchaseReturn = $purchaseReturn->sum('total_return');
         $totalExpense = $expenses->sum('total_expense');
         $total_adjustment = $adjustments->sum('total_adjustment');
@@ -619,6 +652,8 @@ class DashboardController extends Controller
             'totalSalesReturn',
             'totalSalesShipmentCost',
             'totalPurchase',
+            'totalPurchaseDue',
+            'totalPayment',
             'totalPurchaseReturn',
             'totalExpense',
             'total_adjustment',

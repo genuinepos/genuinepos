@@ -273,9 +273,18 @@ class PurchaseController extends Controller
             $updateLastCreated->save();
         }
 
+        $__invoicePrefix = '';
+        if ($request->purchase_status == 1) {
+
+            $__invoicePrefix = $invoicePrefix != null ? $invoicePrefix : '';
+        } elseif ($request->purchase_status == 3) {
+
+            $__invoicePrefix = 'PO';
+        }
+
         // add purchase total information
         $addPurchase = new Purchase();
-        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);
+        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : $__invoicePrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);
         $addPurchase->warehouse_id = $request->warehouse_id ? $request->warehouse_id : NULL;
         $addPurchase->branch_id = auth()->user()->branch_id;
         $addPurchase->supplier_id = $request->supplier_id;
@@ -579,10 +588,17 @@ class PurchaseController extends Controller
 
         $updatePurchase->warehouse_id = isset($request->warehouse_count) ? $request->warehouse_id : NULL;
 
+        $__invoicePrefix = '';
+        if ($request->purchase_status == 1) {
+
+            $__invoicePrefix = $invoicePrefix != null ? $invoicePrefix : '';
+        } elseif ($request->purchase_status == 3) {
+
+            $__invoicePrefix = 'PO';
+        }
+
         // update purchase total information
-        $updatePurchase->invoice_id = $request->invoice_id
-            ? $request->invoice_id
-            : ($invoicePrefix != null ? $invoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);
+        $updatePurchase->invoice_id = $request->invoice_id ? $request->invoice_id : $__invoicePrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);
 
         $updatePurchase->pay_term = $request->pay_term;
         $updatePurchase->pay_term_number = $request->pay_term_number;

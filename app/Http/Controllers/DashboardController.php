@@ -490,7 +490,7 @@ class DashboardController extends Controller
         $supplierPaymentQ = DB::table('supplier_payments')
             ->where('supplier_payments.type', 1)
             ->select(
-                DB::raw('sum(paid_amount) as t_paid'),
+                DB::raw('sum(supplier_payments.paid_amount) as t_paid'),
             );
 
         $purchasePaymentQ = DB::table('purchase_payments')
@@ -619,7 +619,7 @@ class DashboardController extends Controller
         $totalSalesReturn = $saleReturn->sum('total_return');
         $totalSalesShipmentCost = $sales->sum('total_shipment_charge');
         $totalPurchase = $purchases->sum('total_purchase');
-        $totalPayment = $supplierPaymentQ->sum('t_paid') + $purchasePaymentQ->sum('total_paid');
+        $totalPayment = $supplierPayment->sum('t_paid') + $purchasePayment->sum('total_paid');
         $totalPurchaseDue = $purchases->sum('total_due');
         $totalPurchaseReturn = $purchaseReturn->sum('total_return');
         $totalExpense = $expenses->sum('total_expense');

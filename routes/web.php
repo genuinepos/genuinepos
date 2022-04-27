@@ -1082,7 +1082,7 @@ Route::get('/test', function () {
     //     $p->save();
     // }
 
-     $supplierPaymentQ = DB::table('supplier_payments')->where('supplier_payments.type', 1)
+    $supplierPaymentQ = DB::table('supplier_payments')->where('supplier_payments.type', 1)
             ->select(
                 DB::raw('sum(paid_amount) as total_paid'),
             )->get();

@@ -455,6 +455,8 @@ class DashboardController extends Controller
     {
         $branch = '';
         $totalSales = 0;
+        $totalSaleDue = 0;
+        $totalReceive = 0;
         $totalSaleDiscount = 0;
         $totalSalesReturn = 0;
         $totalSalesShipmentCost = 0;
@@ -474,8 +476,8 @@ class DashboardController extends Controller
         $purchaseReturn = '';
         $purchaseTotalShipmentCost = '';
         $sales = '';
-        $salePayment = '';
         $customerPayment = '';
+        $salePayment = '';
         $branchTransfer = '';
         $warehouseTransfer = '';
         $saleReturn = '';
@@ -510,31 +512,19 @@ class DashboardController extends Controller
             DB::raw('sum(total_payable_amount) as total_sale'),
             DB::raw('sum(order_discount) as total_discount'),
             DB::raw('sum(shipment_charge) as total_shipment_charge'),
-            DB::raw('sum(order_tax_amount) as total_order_tax')
+            DB::raw('sum(order_tax_amount) as total_order_tax'),
+            DB::raw('sum(due) as total_due'),
         );
 
-        $supplierPaymentQ = DB::table('supplier_payments')
-            ->where('supplier_payments.type', 1)
+        $customerPaymentQ = DB::table('customer_payments')
+            ->where('customer_payments.type', 1)
             ->select(
-                DB::raw('sum(supplier_payments.paid_amount) as t_paid'),
+                DB::raw('sum(customer_payments.paid_amount) as t_paid'),
             );
 
-        $purchasePaymentQ = DB::table('purchase_payments')
-            ->where('purchase_payments.supplier_payment_id', NULL)
-            ->where('purchase_payments.payment_type', 1)
-            ->select(
-                DB::raw('sum(paid_amount) as total_paid'),
-            );
-
-        $supplierPaymentQ = DB::table('supplier_payments')
-            ->where('supplier_payments.type', 1)
-            ->select(
-                DB::raw('sum(supplier_payments.paid_amount) as t_paid'),
-            );
-
-        $purchasePaymentQ = DB::table('purchase_payments')
-            ->where('purchase_payments.supplier_payment_id', NULL)
-            ->where('purchase_payments.payment_type', 1)
+        $salePaymentQ = DB::table('sale_payments')
+            ->where('sale_payments.customer_payment_id', NULL)
+            ->where('sale_payments.payment_type', 1)
             ->select(
                 DB::raw('sum(paid_amount) as total_paid'),
             );
@@ -569,6 +559,8 @@ class DashboardController extends Controller
                 $purchaseQuery->where('purchases.branch_id', NULL);
                 $supplierPaymentQ->where('supplier_payments.branch_id', NULL);
                 $purchasePaymentQ->where('purchase_payments.branch_id', NULL);
+                $customerPaymentQ->where('customer_payments.branch_id', NULL);
+                $salePaymentQ->where('sale_payments.branch_id', NULL);
                 $saleQuery->where('sales.branch_id', NULL);
                 $expenseQuery->where('expanses.branch_id', NULL);
                 $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
@@ -582,6 +574,8 @@ class DashboardController extends Controller
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
                 $supplierPaymentQ->where('supplier_payments.branch_id', $request->branch_id);
                 $purchasePaymentQ->where('purchase_payments.branch_id', $request->branch_id);
+                $customerPaymentQ->where('customer_payments.branch_id', $request->branch_id);
+                $salePaymentQ->where('sale_payments.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
                 $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
@@ -602,6 +596,8 @@ class DashboardController extends Controller
             $purchases = $purchaseQuery->whereDate('report_date', TODAY_DATE)->get();
             $supplierPayment = $supplierPaymentQ->whereDate('supplier_payments.report_date', TODAY_DATE)->get();
             $purchasePayment = $purchasePaymentQ->whereDate('purchase_payments.report_date', TODAY_DATE)->get();
+            $customerPayment = $customerPaymentQ->whereDate('customer_payments.report_date', TODAY_DATE)->get();
+            $salePayment = $salePaymentQ->whereDate('sale_payments.report_date', TODAY_DATE)->get();
             $expenses = $expenseQuery->whereDate('report_date', TODAY_DATE)->get();
             $adjustments = $adjustmentQuery->whereDate('report_date_ts', TODAY_DATE)->get();
             $purchaseReturn = $purchaseReturnQuery->whereDate('report_date', TODAY_DATE)->get();
@@ -619,6 +615,10 @@ class DashboardController extends Controller
             $supplierPayment = $supplierPaymentQ->where('supplier_payments.branch_id', auth()->user()->branch_id)->whereDate('supplier_payments.report_date', TODAY_DATE)->get();
 
             $purchasePayment = $purchasePaymentQ->where('purchase_payments.branch_id', auth()->user()->branch_id)->whereDate('purchase_payments.report_date', TODAY_DATE)->get();
+
+            $customerPayment = $customerPaymentQ->where('customer_payments.branch_id', auth()->user()->branch_id)->whereDate('customer_payments.report_date', TODAY_DATE)->get();
+
+            $salePayment = $salePaymentQ->where('sale_payments.branch_id', auth()->user()->branch_id)->whereDate('sale_payments.report_date', TODAY_DATE)->get();
 
             $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)->whereDate('report_date', TODAY_DATE)->get();
 
@@ -642,6 +642,8 @@ class DashboardController extends Controller
         }
 
         $totalSales = $sales->sum('total_sale');
+        $totalSaleDue = $sales->sum('total_due');
+        $totalReceive = $customerPayment->sum('t_paid') + $salePayment->sum('total_paid');
         $totalSaleDiscount = $sales->sum('total_discount');
         $totalSaleTax = $sales->sum('total_order_tax');
         $totalSalesReturn = $saleReturn->sum('total_return');
@@ -676,6 +678,8 @@ class DashboardController extends Controller
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('dashboard.ajax_view.today_summery', compact(
             'totalSales',
+            'totalSaleDue',
+            'totalReceive',
             'totalSaleDiscount',
             'totalSalesReturn',
             'totalSalesShipmentCost',

@@ -1080,14 +1080,7 @@ Route::get('/test', function () {
     // foreach ($purchases as $p) {
     //     $p->is_last_created = 0;
     //     $p->save();
-    // }
-
-    $supplierPaymentQ = DB::table('supplier_payments')->where('supplier_payments.type', 1)
-            ->select(
-                DB::raw('sum(paid_amount) as total_paid'),
-            )->get();
-
-    return $supplierPaymentQ->sum('total_paid'); 
+    // } 
 });
 
 // All authenticated routes

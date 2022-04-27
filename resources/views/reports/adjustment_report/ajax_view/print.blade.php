@@ -9,9 +9,6 @@
     }
 
     @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 4%;margin-right: 4%;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed;top: 0;}
     .footer {position: fixed;bottom: 0;}
     .noBorder {border: 0px !important;}
     tr.noBorder td {border: 0px !important;}

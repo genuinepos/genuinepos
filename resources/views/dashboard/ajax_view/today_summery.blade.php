@@ -24,6 +24,23 @@
     </div>
 </div>
 
+<style>
+    @media print
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+    }
+
+    @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 4%;margin-right: 4%;}
+    .header, .header-space,
+    .footer, .footer-space {height: 20px;}
+    .header {position: fixed;top: 0;}
+    .footer {position: fixed;bottom: 0;}
+</style>
+
 <div class="print_body">
     <div class="today_summery_area mt-2">
         <div class="print_today_summery_header d-none">
@@ -124,6 +141,16 @@
                         <tr>
                             <th class="text-start">Total sale :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSales) }}</td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-start">Total Received :</th>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalReceive) }}</td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-start">Total Sale Due :</th>
+                            <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSaleDue) }}</td>
                         </tr>
 
                         <tr>

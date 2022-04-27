@@ -144,7 +144,7 @@
                                                 <th>Invoice ID</th>
                                                 <th>Stock Location</th>
                                                 <th>Customer</th>
-                                                <th>Inv. Pay Status</th> 
+                                                <th>Inv. Status</th> 
                                                 <th>Inv. Payable</th>
                                                 <th>Pre. Due</th>
                                                 <th>Total Payable</th>
@@ -152,7 +152,7 @@
                                                 <th>Inv. Paid</th>
                                                 <th>PRE. Due Paid</th>
                                                 <th>Inv. Due</th>
-                                                <th>Balance</th>
+                                                <th>Cr. Balance</th>
                                                 <th>Inv. Return</th>
                                                 <th>Inv. Return Due</th>
                                             </tr>

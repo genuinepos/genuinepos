@@ -1589,6 +1589,8 @@ table.display tbody tr:hover {
     margin-right: 5px;
 }
 
-.display th {font-size: 11px;}
+.display th {font-size: 11px; padding-left: 3px!important; padding-right: 9px!important; padding-top: 3px!important; padding-bottom: 3px!important;}
 
-.display td {font-size: 11px;padding: 0px 2px!important;}
+.display td {font-size: 11px; padding-left: 3px!important; padding-right: 9px!important; padding-top: 3px!important; padding-bottom: 3px!important;}
+
+.display tfoot th {padding-left: 3px!important; padding-right: 9px!important; padding-top: 10px!important; padding-bottom: 10px!important;}

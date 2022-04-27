@@ -1588,3 +1588,7 @@ table.display tbody tr:hover {
     text-shadow: 1px 1px 0px #333;
     margin-right: 5px;
 }
+
+.display th {font-size: 11px;}
+
+.display td {font-size: 11px;padding: 0px 2px!important;}

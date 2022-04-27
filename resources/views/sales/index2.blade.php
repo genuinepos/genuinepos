@@ -144,17 +144,17 @@
                                                 <th>Invoice ID</th>
                                                 <th>Stock Location</th>
                                                 <th>Customer</th>
-                                                <th>Invoice. Payment Status</th> 
-                                                <th>Invoice Payable</th>
-                                                <th>Previous Due</th>
+                                                <th>Inv. Pay Status</th> 
+                                                <th>Inv. Payable</th>
+                                                <th>Pre. Due</th>
                                                 <th>Total Payable</th>
                                                 <th>Gross Pay</th>
-                                                <th>Invoice Paid</th>
-                                                <th>Previous Due Paid</th>
-                                                <th>Invoice Due</th>
-                                                <th>Customer Running Balance</th>
-                                                <th>Invoice Return</th>
-                                                <th>Invoice Return Due</th>
+                                                <th>Inv. Paid</th>
+                                                <th>PRE. Due Paid</th>
+                                                <th>Inv. Due</th>
+                                                <th>Balance</th>
+                                                <th>Inv. Return</th>
+                                                <th>Inv. Return Due</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

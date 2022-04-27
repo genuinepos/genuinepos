@@ -474,6 +474,8 @@ class DashboardController extends Controller
         $purchaseReturn = '';
         $purchaseTotalShipmentCost = '';
         $sales = '';
+        $salePayment = '';
+        $customerPayment = '';
         $branchTransfer = '';
         $warehouseTransfer = '';
         $saleReturn = '';
@@ -510,6 +512,32 @@ class DashboardController extends Controller
             DB::raw('sum(shipment_charge) as total_shipment_charge'),
             DB::raw('sum(order_tax_amount) as total_order_tax')
         );
+
+        $supplierPaymentQ = DB::table('supplier_payments')
+            ->where('supplier_payments.type', 1)
+            ->select(
+                DB::raw('sum(supplier_payments.paid_amount) as t_paid'),
+            );
+
+        $purchasePaymentQ = DB::table('purchase_payments')
+            ->where('purchase_payments.supplier_payment_id', NULL)
+            ->where('purchase_payments.payment_type', 1)
+            ->select(
+                DB::raw('sum(paid_amount) as total_paid'),
+            );
+
+        $supplierPaymentQ = DB::table('supplier_payments')
+            ->where('supplier_payments.type', 1)
+            ->select(
+                DB::raw('sum(supplier_payments.paid_amount) as t_paid'),
+            );
+
+        $purchasePaymentQ = DB::table('purchase_payments')
+            ->where('purchase_payments.supplier_payment_id', NULL)
+            ->where('purchase_payments.payment_type', 1)
+            ->select(
+                DB::raw('sum(paid_amount) as total_paid'),
+            );
 
         $saleReturnQuery = DB::table('sale_returns')
             ->select(DB::raw('sum(total_return_amount) as total_return'));

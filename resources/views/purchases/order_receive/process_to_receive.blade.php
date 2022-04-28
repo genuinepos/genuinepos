@@ -455,7 +455,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('payment_date'),
+            element: document.getElementById('fixed_payment_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,

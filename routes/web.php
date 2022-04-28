@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Sale;
 use App\Models\AdminAndUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -1032,11 +1033,13 @@ Route::group(['prefix' => 'pos-short-menus', 'namespace' => 'App\Http\Controller
 Route::group(['prefix' => 'communication', 'namespace' => 'App\Http\Controllers'], function () {
 
     Route::group(['prefix' => 'email',], function () {
+
         Route::get('settings', 'EmailController@emailSettings')->name('communication.email.settings');
         Route::post('settings/store', 'EmailController@emailSettingsStore')->name('communication.email.settings.store');
     });
 
     Route::group(['prefix' => 'sms',], function () {
+
         Route::get('settings', 'SmsController@smsSettings')->name('communication.sms.settings');
         Route::post('settings/store', 'SmsController@smsSettingsStore')->name('communication.sms.settings.store');
     });
@@ -1077,18 +1080,7 @@ Route::get('/test', function () {
     // foreach ($purchases as $p) {
     //     $p->is_last_created = 0;
     //     $p->save();
-    // }
-
-    // return $unCompletedOrders = DB::table('purchases')
-    //     ->where('purchases.purchase_status', 3)
-    //     ->where('purchases.po_receiving_status', '!=', 'Completed')
-    //     ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
-    //     ->select(
-    //         'purchases.date',
-    //         'purchases.invoice_id',
-    //         'purchases.invoice_id',
-    //     )
-    //     ->get();
+    // } 
 });
 
 // All authenticated routes

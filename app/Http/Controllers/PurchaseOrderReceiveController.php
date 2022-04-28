@@ -171,13 +171,14 @@ class PurchaseOrderReceiveController extends Controller
                 payingAmount: $request->paying_amount,
                 invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT),
                 purchase: $purchase,
-                supplier_payment_id: NULL
+                supplier_payment_id: NULL,
+                fixed_payment_date : $request->fixed_payment_date
             );
 
             // Add Bank/Cash-In-Hand A/C Ledger
             $this->accountUtil->addAccountLedger(
                 voucher_type_id: 11,
-                date: $request->date,
+                date: $request->fixed_payment_date,
                 account_id: $request->account_id,
                 trans_id: $addPurchasePaymentGetId,
                 amount: $request->paying_amount,
@@ -188,7 +189,7 @@ class PurchaseOrderReceiveController extends Controller
             $this->supplierUtil->addSupplierLedger(
                 voucher_type_id: 3,
                 supplier_id: $purchase->supplier_id,
-                date: $request->date,
+                date: $request->fixed_payment_date,
                 trans_id: $addPurchasePaymentGetId,
                 amount: $request->paying_amount,
             );

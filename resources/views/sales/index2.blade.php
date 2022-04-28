@@ -138,24 +138,6 @@
                                                 <th>Total Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Total Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
-                                            {{-- <tr>
-                                                <th>Actions</th>
-                                                <th>Date</th>
-                                                <th>Invoice ID</th>
-                                                <th>Stock Location</th>
-                                                <th>Customer</th>
-                                                <th>Invoice Payable</th>
-                                                <th>Previous Due</th>
-                                                <th>Total Payable</th>
-                                                <th>Payment Status</th> 
-                                                <th>Gross Pay</th>
-                                                <th>Invoice Paid</th>
-                                                <th>Previous Due Paid</th>
-                                                <th>Invoice Due</th>
-                                                <th>Customer Running Balance</th>
-                                                <th>Invoice Return</th>
-                                                <th>Invoice Return Due</th>
-                                            </tr> --}}
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>

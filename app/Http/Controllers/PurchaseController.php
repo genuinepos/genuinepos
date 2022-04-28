@@ -307,8 +307,8 @@ class PurchaseController extends Controller
         $addPurchase->purchase_note = $request->purchase_note;
         $addPurchase->purchase_status = $request->purchase_status;
         $addPurchase->is_purchased = $request->purchase_status == 1 ? 1 : 0;
-        $addPurchase->po_qty = $request->purchase_status == 1 ? $request->total_qty : 0;
-        $addPurchase->po_pending_qty = $request->purchase_status == 1 ? $request->total_qty : 0;
+        $addPurchase->po_qty = $request->purchase_status == 3 ? $request->total_qty : 0;
+        $addPurchase->po_pending_qty = $request->purchase_status == 3 ? $request->total_qty : 0;
         $addPurchase->po_receiving_status = $request->purchase_status == 1 ? NULL : 'Pending';
         $addPurchase->date = $request->date;
         $addPurchase->delivery_date = $request->delivery_date;

@@ -957,8 +957,9 @@ class PurchaseUtil
         $purchaseProduct->save();
     }
 
-    public function addPurchasePaymentGetId($invoicePrefix, $request, $payingAmount, $invoiceId, $purchase, $supplier_payment_id)
+    public function addPurchasePaymentGetId($invoicePrefix, $request, $payingAmount, $invoiceId, $purchase, $supplier_payment_id, $fixed_payment_date = NULL)
     {
+        $__date = $fixed_payment_date ? $fixed_payment_date : $request->date;
         // Add purchase payment
         $addPurchasePayment = new PurchasePayment();
         $addPurchasePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'PPV') . $invoiceId;
@@ -968,15 +969,16 @@ class PurchaseUtil
         $addPurchasePayment->payment_method_id = $request->payment_method_id;
         $addPurchasePayment->supplier_payment_id = $supplier_payment_id;
         $addPurchasePayment->paid_amount = $payingAmount;
-        $addPurchasePayment->date = $request->date;
+        $addPurchasePayment->date = $__date;
         $addPurchasePayment->time = date('h:i:s a');
-        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($__date . date(' H:i:s')));
         $addPurchasePayment->month = date('F');
         $addPurchasePayment->year = date('Y');
         $addPurchasePayment->note = $request->payment_note;
         $addPurchasePayment->admin_id = auth()->user()->id;
 
         if ($request->hasFile('attachment')) {
+
             $purchasePaymentAttachment = $request->file('attachment');
             $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
             $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);

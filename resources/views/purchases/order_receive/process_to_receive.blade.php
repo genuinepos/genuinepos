@@ -253,7 +253,15 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>Paying Amount : </b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
                                                         <div class="col-8">
-                                                            <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
+                                                            <div class="row">
+                                                                <div class="col-md-7">
+                                                                    <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
+                                                                </div>
+
+                                                                <div class="col-md-5">
+                                                                    <input type="text" step="any" name="fixed_payment_date" class="form-control" id="fixed_payment_date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" placeholder="DD-MM-YYYY" autocomplete="off">
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -429,6 +437,25 @@
         new Litepicker({
             singleMode: true,
             element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: _expectedDateFormat,
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('payment_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,

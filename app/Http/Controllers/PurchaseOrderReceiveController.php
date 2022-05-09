@@ -16,6 +16,7 @@ use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseOrderProduct;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\UserActivityLogUtil;
 
 class PurchaseOrderReceiveController extends Controller
 {
@@ -24,19 +25,22 @@ class PurchaseOrderReceiveController extends Controller
     protected $supplierUtil;
     protected $productStockUtil;
     protected $purchaseUtil;
+    protected $userActivityLogUtil;
 
     public function __construct(
         AccountUtil $accountUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         SupplierUtil $supplierUtil,
         ProductStockUtil $productStockUtil,
-        PurchaseUtil $purchaseUtil
+        PurchaseUtil $purchaseUtil,
+        UserActivityLogUtil $userActivityLogUtil,
     ) {
         $this->accountUtil = $accountUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->supplierUtil = $supplierUtil;
         $this->productStockUtil = $productStockUtil;
         $this->purchaseUtil = $purchaseUtil;
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -105,7 +109,7 @@ class PurchaseOrderReceiveController extends Controller
         foreach ($purchase_order_products as $purchase_order_product) {
 
             $purchaseProduct = PurchaseProduct::where('purchase_id', $purchase->id)->where('product_order_product_id', $purchase_order_product->id)->first();
-            
+
             if ($purchaseProduct) {
 
                 $purchaseProduct->quantity = $purchase_order_product->received_quantity;
@@ -131,7 +135,7 @@ class PurchaseOrderReceiveController extends Controller
 
                 $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
             } else {
-                
+
                 if ($purchase_order_product->received_quantity != 0) {
 
                     $addPurchaseProduct = new PurchaseProduct();
@@ -172,7 +176,7 @@ class PurchaseOrderReceiveController extends Controller
                 invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT),
                 purchase: $purchase,
                 supplier_payment_id: NULL,
-                fixed_payment_date : $request->fixed_payment_date
+                fixed_payment_date: $request->fixed_payment_date
             );
 
             // Add Bank/Cash-In-Hand A/C Ledger
@@ -193,6 +197,23 @@ class PurchaseOrderReceiveController extends Controller
                 trans_id: $addPurchasePaymentGetId,
                 amount: $request->paying_amount,
             );
+
+            $orderPayment = DB::table('purchase_payments')
+                ->where('purchase_payments.id', $addPurchasePaymentGetId)
+                ->leftJoin('suppliers', 'purchase_payments.supplier_id', 'suppliers.id')
+                ->leftJoin('payment_methods', 'purchase_payments.payment_method_id', 'payment_methods.id')
+                ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
+                ->select(
+                    'purchase_payments.invoice_id as voucher_no',
+                    'purchase_payments.date',
+                    'purchase_payments.paid_amount',
+                    'suppliers.name as supplier',
+                    'suppliers.phone',
+                    'payment_methods.name as method',
+                    'purchases.invoice_id as agp',
+                )->first();
+
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 28, data_obj: $orderPayment);
         }
 
         $purchase_products = DB::table('purchase_products')->where('purchase_id', $purchase->id)->get();

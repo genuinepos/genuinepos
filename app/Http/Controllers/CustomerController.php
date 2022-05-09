@@ -710,6 +710,22 @@ class CustomerController extends Controller
             }
         }
 
+
+        $receive = DB::table('customer_payments')
+            ->where('customer_payments.id', $customerPayment->id)
+            ->leftJoin('customers', 'customer_payments.customer_id', 'customers.id')
+            ->leftJoin('payment_methods', 'customer_payments.payment_method_id', 'payment_methods.id')
+            ->select(
+                'customer_payments.voucher_no',
+                'customer_payments.date',
+                'customer_payments.paid_amount',
+                'customers.name as customer',
+                'customers.phone',
+                'payment_methods.name as method',
+            )->first();
+
+        $this->userActivityLogUtil->addLog(action: 1, subject_type: 27, data_obj: $receive);
+
         $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customerId);
         return response()->json('payment added successfully.');
     }
@@ -944,14 +960,33 @@ class CustomerController extends Controller
         $storedCustomerPaymentType = $deleteCustomerPayment->type;
         $storedCustomerId = $deleteCustomerPayment->customer_id;
         $storedCustomerPaymentInvoices = $deleteCustomerPayment->customer_payment_invoices;
+
+        $customerPayment = DB::table('customer_payments')
+            ->where('customer_payments.id', $deleteCustomerPayment->id)
+            ->leftJoin('customers', 'customer_payments.customer_id', 'customers.id')
+            ->leftJoin('payment_methods', 'customer_payments.payment_method_id', 'payment_methods.id')
+            ->select(
+                'customer_payments.voucher_no',
+                'customer_payments.date',
+                'customer_payments.paid_amount',
+                'customers.name as customer',
+                'customers.phone',
+                'payment_methods.name as method',
+            )->first();
+
+        if ($storedCustomerPaymentType == 1) {
+
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: 27, data_obj: $customerPayment);
+        }
+
         $deleteCustomerPayment->delete();
 
         // Update Customer payment invoices
         if (count($storedCustomerPaymentInvoices) > 0) {
 
-            foreach ($deleteCustomerPayment->customer_payment_invoices as $customer_payment_invoice) {
+            if ($storedCustomerPaymentType == 1) {
 
-                if ($storedCustomerPaymentType == 1) {
+                foreach ($deleteCustomerPayment->customer_payment_invoices as $customer_payment_invoice) {
 
                     $sale = Sale::where('id', $customer_payment_invoice->sale_id)->first();
 
@@ -959,7 +994,10 @@ class CustomerController extends Controller
 
                         $this->saleUtil->adjustSaleInvoiceAmounts($sale);
                     }
-                } else {
+                }
+            } else {
+
+                foreach ($deleteCustomerPayment->customer_payment_invoices as $customer_payment_invoice) {
 
                     $saleReturn = SaleReturn::with(['sale'])->where('id', $customer_payment_invoice->sale_return_id)->first();
 

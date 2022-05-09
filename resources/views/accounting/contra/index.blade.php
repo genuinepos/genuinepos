@@ -161,6 +161,35 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="contraDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
+    aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content payment_details_contant">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Contra Details (<span
+                            class="payment_invoice"></span>)</h6>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <div class="contra_details_area">
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 text-end">
+                            <ul class="list-unstyled">
+                                <li class="mt-1">
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                                    <button type="submit" id="print_payment" class="c-btn me-0 button-success">Print</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js"
@@ -252,10 +281,39 @@
                         $('#editModal').modal('show');
                         $('.data_preloader').hide();
                     },error:function(err){
+
                         $('.data_preloader').hide();
                         if (err.status == 0) {
+
                             toastr.error('Net Connetion Error. Reload This Page.'); 
                         }else{
+
+                            toastr.error('Server Error. Please contact to the support team.'); 
+                        }
+                    }
+                });
+            });
+
+            // pass editable data to edit modal fields
+            $(document).on('click', '#show', function(e) {
+                e.preventDefault();
+                $('.data_preloader').show();
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
+                        $('.contra_details_area').html(data);
+                        $('#contraDetailsModal').modal('show');
+                        $('.data_preloader').hide();
+                    },error:function(err){
+
+                        $('.data_preloader').hide();
+                        if (err.status == 0) {
+
+                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                        }else{
+                            
                             toastr.error('Server Error. Please contact to the support team.'); 
                         }
                     }

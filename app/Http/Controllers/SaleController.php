@@ -360,7 +360,7 @@ class SaleController extends Controller
         $addSale->previous_due = $request->previous_due;
         $addSale->gross_pay = $request->paying_amount;
         $addSale->all_total_payable = $request->total_payable_amount;
-        
+
         $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
 
         // Update customer due
@@ -1084,6 +1084,7 @@ class SaleController extends Controller
     public function paymentAdd(Request $request, $saleId)
     {
         if (auth()->user()->permission->sale['sale_payment'] == '0') {
+
             return response()->json('Access Denied');
         }
 
@@ -1131,6 +1132,23 @@ class SaleController extends Controller
                     amount: $request->paying_amount
                 );
             }
+
+            $salePayment = DB::table('sale_payments')
+                ->where('sale_payments.id', $addPaymentGetId)
+                ->leftJoin('customers', 'sale_payments.customer_id', 'customers.id')
+                ->leftJoin('payment_methods', 'sale_payments.payment_method_id', 'payment_methods.id')
+                ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
+                ->select(
+                    'sale_payments.invoice_id as voucher_no',
+                    'sale_payments.date',
+                    'sale_payments.paid_amount',
+                    'customers.name as customer',
+                    'customers.phone',
+                    'payment_methods.name as method',
+                    'sales.invoice_id as ags',
+                )->first();
+
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 27, data_obj: $salePayment);
 
             $this->saleUtil->adjustSaleInvoiceAmounts($sale);
         }
@@ -1425,6 +1443,23 @@ class SaleController extends Controller
                         unlink(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment));
                     }
                 }
+
+                $salePayment = DB::table('sale_payments')
+                    ->where('sale_payments.id', $paymentId)
+                    ->leftJoin('customers', 'sale_payments.customer_id', 'customers.id')
+                    ->leftJoin('payment_methods', 'sale_payments.payment_method_id', 'payment_methods.id')
+                    ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
+                    ->select(
+                        'sale_payments.invoice_id as voucher_no',
+                        'sale_payments.date',
+                        'sale_payments.paid_amount',
+                        'customers.name as customer',
+                        'customers.phone',
+                        'payment_methods.name as method',
+                        'sales.invoice_id as ags',
+                    )->first();
+
+                $this->userActivityLogUtil->addLog(action: 3, subject_type: 27, data_obj: $salePayment);
 
                 $deleteSalePayment->delete();
 

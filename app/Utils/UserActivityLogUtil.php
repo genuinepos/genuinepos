@@ -18,7 +18,7 @@ class UserActivityLogUtil
             18 => 'User Login',
             19 => 'User Logout',
             27 => 'Receive Payment',
-            28 => 'Purchase Payment',
+            28 => 'Payment',
             4 => 'Purchase',
             5 => 'Purchase Order',
             6 => 'Purchase Return',
@@ -391,32 +391,40 @@ class UserActivityLogUtil
                 'fields' => [
                     'date',
                     'voucher_no',
+                    'ags',
                     'customer',
+                    'phone',
                     'method',
                     'paid_amount',
                 ],
                 'texts' => [
                     'Date : ',
                     'Voucher : ',
+                    'AGS : ',
                     'Customer : ',
-                    'Payment Method : ',
-                    'Paid Amount : ',
+                    'Phn No : ',
+                    'Type : ',
+                    'Paid : ',
                 ]
             ],
-            28 => [ // Purchase Payment
+            28 => [ // Payment
                 'fields' => [
                     'date',
                     'voucher_no',
-                    'supplier_name',
+                    'agp',
+                    'supplier',
+                    'phone',
                     'method',
                     'paid_amount',
                 ],
                 'texts' => [
                     'Date : ',
-                    'Voucher No : ',
-                    'supplier : ',
-                    'Payment Method : ',
-                    'Paid Amount : ',
+                    'Voucher : ',
+                    'AGP : ',
+                    'Supplier : ',
+                    'Phn No : ',
+                    'Type : ',
+                    'Paid : ',
                 ]
             ],
         ];
@@ -445,7 +453,7 @@ class UserActivityLogUtil
         $index = 0;
         foreach ($descriptionModel[$subject_type]['fields'] as $field) {
 
-            $description .= $descriptionModel[$subject_type]['texts'][$index] . $data_obj->{$field} . ', ';
+            $description .= $descriptionModel[$subject_type]['texts'][$index] . (isset($data_obj->{$field}) ? $data_obj->{$field} : 'N/A' ) . ', ';
             $index++;
         }
 

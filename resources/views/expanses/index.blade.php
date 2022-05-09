@@ -136,8 +136,8 @@
                                                 <th class="text-start">Expanse For</th>
                                                 <th class="text-start">Payment Status</th>
                                                 <th class="text-start">Tax</th>
-                                                <th class="text-start">Net Total({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th class="text-start">Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th class="text-start">Net Total</th>
+                                                <th class="text-start">Payment Due</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

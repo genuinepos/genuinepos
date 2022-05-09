@@ -94,7 +94,7 @@ class ContraController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('accounting.contras.show', [$row->id]) . '"><i class="far fa-eye me-1 text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('accounting.contras.show', [$row->id]) . '" id="show"><i class="far fa-eye me-1 text-primary"></i> Show</a>';
                     $html .= '<a class="dropdown-item" id="edit" href="' . route('accounting.contras.edit', [$row->id]) . '"><i class="far fa-edit me-1 text-primary"></i> Edit</a>';
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('accounting.contras.delete', [$row->id]) . '"><i class="far fa-trash-alt me-1 text-primary"></i> Delete</a>';
                     $html .= '</div>';
@@ -160,7 +160,6 @@ class ContraController extends Controller
     public function store(Request $request)
     {
         //return $request->all();
-
         $this->validate($request, [
             'date' => 'required|date',
             'receiver_account_id' => 'required',
@@ -275,6 +274,22 @@ class ContraController extends Controller
         );
 
         return response()->json('Contra updated successfully');
+    }
+
+    public function show($contraId)
+    {
+        $contra = Contra::with(
+          [
+              'branch', 
+              'user', 
+              'senderAccount', 
+              'senderAccount.bank',
+              'receiverAccount', 
+              'receiverAccount.bank'
+          ] 
+        )->where('id', $contraId)->first();
+
+        return view('accounting.contra.ajax_view.show', compact('contra'));
     }
 
     public function delete(Request $request, $contraId)

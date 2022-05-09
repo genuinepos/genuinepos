@@ -967,6 +967,7 @@ class PurchaseUtil
         $addPurchasePayment->is_advanced = $purchase->is_purchased == 0 ? 1 : 0;
         $addPurchasePayment->account_id = $request->account_id;
         $addPurchasePayment->payment_method_id = $request->payment_method_id;
+        $addPurchasePayment->supplier_id = $purchase->supplier_id;
         $addPurchasePayment->supplier_payment_id = $supplier_payment_id;
         $addPurchasePayment->paid_amount = $payingAmount;
         $addPurchasePayment->date = $__date;

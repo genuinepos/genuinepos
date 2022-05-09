@@ -16,6 +16,7 @@ use App\Models\PurchaseReturn;
 use App\Models\SupplierLedger;
 use App\Models\PurchasePayment;
 use App\Models\SupplierPayment;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\SupplierPaymentInvoice;
 use App\Utils\InvoiceVoucherRefIdUtil;
@@ -28,18 +29,21 @@ class SupplierController extends Controller
     public $accountUtil;
     public $invoiceVoucherRefIdUtil;
     public $converter;
+    public $userActivityLogUtil;
     public function __construct(
         SupplierUtil $supplierUtil,
         PurchaseUtil $purchaseUtil,
         AccountUtil $accountUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         Converter $converter,
+        UserActivityLogUtil $userActivityLogUtil,
     ) {
         $this->supplierUtil = $supplierUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->accountUtil = $accountUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->converter = $converter;
+        $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -456,6 +460,22 @@ class SupplierController extends Controller
         }
 
         $this->supplierUtil->adjustSupplierForSalePaymentDue($supplierId);
+
+        $payment = DB::table('supplier_payments')
+            ->where('supplier_payments.id', $supplierPayment->id)
+            ->leftJoin('suppliers', 'supplier_payments.supplier_id', 'suppliers.id')
+            ->leftJoin('payment_methods', 'supplier_payments.payment_method_id', 'payment_methods.id')
+            ->select(
+                'supplier_payments.voucher_no',
+                'supplier_payments.date',
+                'supplier_payments.paid_amount',
+                'suppliers.name as supplier',
+                'suppliers.phone',
+                'payment_methods.name as method',
+            )->first();
+
+        $this->userActivityLogUtil->addLog(action: 1, subject_type: 28, data_obj: $payment);
+
         return response()->json('Payment added successfully.');
     }
 
@@ -807,6 +827,7 @@ class SupplierController extends Controller
         }
 
         $this->supplierUtil->adjustSupplierForSalePaymentDue($supplierId);
+
         return response()->json('Return amount received successfully.');
     }
 
@@ -856,6 +877,24 @@ class SupplierController extends Controller
 
                 unlink(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment));
             }
+        }
+
+        $payment = DB::table('supplier_payments')
+            ->where('supplier_payments.id', $deleteSupplierPayment->id)
+            ->leftJoin('suppliers', 'supplier_payments.supplier_id', 'suppliers.id')
+            ->leftJoin('payment_methods', 'supplier_payments.payment_method_id', 'payment_methods.id')
+            ->select(
+                'supplier_payments.voucher_no',
+                'supplier_payments.date',
+                'supplier_payments.paid_amount',
+                'suppliers.name as supplier',
+                'suppliers.phone',
+                'payment_methods.name as method',
+            )->first();
+
+        if ($deleteSupplierPayment->type == 1) {
+
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: 28, data_obj: $payment);
         }
 
         $deleteSupplierPayment->delete();

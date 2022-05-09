@@ -284,7 +284,7 @@ class PurchaseController extends Controller
 
         // add purchase total information
         $addPurchase = new Purchase();
-        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : $__invoicePrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);
+        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : $__invoicePrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);
         $addPurchase->warehouse_id = $request->warehouse_id ? $request->warehouse_id : NULL;
         $addPurchase->branch_id = auth()->user()->branch_id;
         $addPurchase->supplier_id = $request->supplier_id;
@@ -1048,6 +1048,23 @@ class PurchaseController extends Controller
                 amount: $request->paying_amount,
             );
 
+            $purchasePayment = DB::table('purchase_payments')
+                ->where('purchase_payments.id', $addPurchasePaymentGetId)
+                ->leftJoin('suppliers', 'purchase_payments.supplier_id', 'suppliers.id')
+                ->leftJoin('payment_methods', 'purchase_payments.payment_method_id', 'payment_methods.id')
+                ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
+                ->select(
+                    'purchase_payments.invoice_id as voucher_no',
+                    'purchase_payments.date',
+                    'purchase_payments.paid_amount',
+                    'suppliers.name as supplier',
+                    'suppliers.phone',
+                    'payment_methods.name as method',
+                    'purchases.invoice_id as agp',
+                )->first();
+
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 28, data_obj: $purchasePayment);
+
             $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
         }
 
@@ -1120,6 +1137,23 @@ class PurchaseController extends Controller
                     amount: $request->paying_amount
                 );
             }
+
+            $purchasePayment = DB::table('purchase_payments')
+                ->where('purchase_payments.id', $updatePurchasePayment->id)
+                ->leftJoin('suppliers', 'purchase_payments.supplier_id', 'suppliers.id')
+                ->leftJoin('payment_methods', 'purchase_payments.payment_method_id', 'payment_methods.id')
+                ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
+                ->select(
+                    'purchase_payments.invoice_id as voucher_no',
+                    'purchase_payments.date',
+                    'purchase_payments.paid_amount',
+                    'suppliers.name as supplier',
+                    'suppliers.phone',
+                    'payment_methods.name as method',
+                    'purchases.invoice_id as agp',
+                )->first();
+
+            $this->userActivityLogUtil->addLog(action: 2, subject_type: 28, data_obj: $purchasePayment);
 
             $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
         }
@@ -1326,6 +1360,24 @@ class PurchaseController extends Controller
 
                 $storedSupplierId = $deletePurchasePayment->purchase->supplier_id;
                 $storedPurchaseId = $deletePurchasePayment->purchase_id;
+
+                $purchasePayment = DB::table('purchase_payments')
+                    ->where('purchase_payments.id', $deletePurchasePayment->id)
+                    ->leftJoin('suppliers', 'purchase_payments.supplier_id', 'suppliers.id')
+                    ->leftJoin('payment_methods', 'purchase_payments.payment_method_id', 'payment_methods.id')
+                    ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
+                    ->select(
+                        'purchase_payments.invoice_id as voucher_no',
+                        'purchase_payments.date',
+                        'purchase_payments.paid_amount',
+                        'suppliers.name as supplier',
+                        'suppliers.phone',
+                        'payment_methods.name as method',
+                        'purchases.invoice_id as agp',
+                    )->first();
+
+                $this->userActivityLogUtil->addLog(action: 3, subject_type: 28, data_obj: $purchasePayment);
+
                 $deletePurchasePayment->delete();
 
                 if ($storedPurchaseId) {

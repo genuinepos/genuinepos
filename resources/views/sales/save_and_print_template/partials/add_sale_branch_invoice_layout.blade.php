@@ -474,19 +474,19 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <b>Date:</b> <span>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span> 
+                                    <strong>Date:</strong> <span>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span> 
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-center">
-                                    <b>INV NO: </b> <span>{{ $sale->invoice_id }}</span> 
+                                    <strong>INV NO: </strong> <span>{{ $sale->invoice_id }}</span> 
                                 </th>
                             </tr>
                             
                             <tr>
                                 <th class="text-center">
-                                    <b>Customer:</b> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span> 
+                                    <strong>Customer:</strong> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span> 
                                 </th>
                             </tr>
                         </thead>

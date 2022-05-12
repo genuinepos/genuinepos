@@ -324,6 +324,7 @@ class POSController extends Controller
             $addSaleProduct->unit_price_inc_tax = $request->unit_prices_inc_tax[$__index];
             $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : NULL;
             $addSaleProduct->subtotal = $request->subtotals[$__index];
+            $addSaleProduct->stock_branch_id = $branch_id;
             $addSaleProduct->save();
             $__index++;
         }
@@ -633,6 +634,7 @@ class POSController extends Controller
                 $addSaleProduct->unit = $request->units[$__index];
                 $addSaleProduct->subtotal = $request->subtotals[$__index];
                 $addSaleProduct->description = $request->descriptions[$__index];
+                $addSaleProduct->stock_branch_id = auth()->user()->branch_id;
                 $addSaleProduct->save();
             }
 

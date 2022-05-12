@@ -24,6 +24,28 @@
         <textarea name="address" class="form-control" placeholder="Warehouse address" id="e_address" rows="3">{{ $w->address }}</textarea>
     </div>
 
+    <div class="col-md-12">
+        <label><strong>Under Business Location :</strong></label>
+        <select name="branch_ids[]" id="branch_id" class="form-control select2 edit-select2" multiple="multiple">
+            <option {{ $isExistsHeadOffice ? 'SELECTED' : '' }} value="NULL">
+                {{ json_decode($generalSettings->business, true)['shop_name'] }} (HO)
+            </option>
+
+            @foreach ($branches as $branch)
+                <option 
+                    @foreach ($w->warehouseBranches as $warehouseBranch)
+                        @if ($warehouseBranch->is_global == 0)
+                            {{ $branch->id == $warehouseBranch->branch_id ? 'SELECTED' : '' }}
+                        @endif
+                    @endforeach
+                    value="{{ $branch->id }}"
+                >
+                    {{ $branch->name.'/'.$branch->branch_code }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
     <div class="form-group row mt-2">
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -32,3 +54,54 @@
         </div>
     </div>
 </form>
+
+<script>
+    $('.edit-select2').select2({
+        placeholder: "Select under business location",
+        allowClear: true
+    });
+
+    //Edit warehouse by ajax
+    $('#edit_warehouse_form').on('submit', function(e){
+        e.preventDefault();
+        
+        $('.loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        var inputs = $('.edit_input');
+            $('.error').html('');  
+            var countErrorField = 0;  
+
+        $.each(inputs, function(key, val){
+
+            var inputId = $(val).attr('id');
+            var idValue = $('#'+inputId).val()
+
+            if(idValue == ''){
+
+                countErrorField += 1;
+                var fieldName = $('#'+inputId).data('name');
+                $('.error_'+inputId).html(fieldName+' is required.');
+            } 
+        });
+
+        if(countErrorField > 0){
+            $('.loading_button').hide();
+            return;
+        }
+
+        $.ajax({
+            url:url,
+            type:'post',
+            data:request,
+            success:function(data){
+
+                toastr.success(data);
+                $('.loading_button').hide();
+                table.ajax.reload();
+                $('#add_form').show();
+                $('#edit_form').hide();
+            }
+        });
+    });
+</script>

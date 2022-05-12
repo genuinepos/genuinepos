@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\Sale;
+use App\Models\Branch;
 use App\Models\Product;
+use App\Models\Warehouse;
 use App\Models\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PurchaseSaleProductChain;
@@ -31,5 +33,15 @@ class SaleProduct extends Model
     public function sale()
     {
         return $this->belongsTo(Sale::class, 'sale_id');
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'stock_branch_id')->select('id', 'name', 'branch_code');
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'stock_warehouse_id')->select('id', 'warehouse_name', 'warehouse_code');
     }
 }

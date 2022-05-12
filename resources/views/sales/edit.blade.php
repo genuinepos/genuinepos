@@ -47,9 +47,17 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class="col-4"> <b>B. Location :</b> </label>
+                                                <label class="col-4"> <b>Warehouse :</b> </label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
+                                                    {{-- <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1"> --}}
+                                                    <select name="warehouse_id" class="form-control" id="warehouse_id">
+                                                        <option value="">Select Warehouse</option>
+                                                        @foreach ($warehouses as $warehouse)
+                                                            <option data-w_name="{{ $warehouse->name.'/'.$warehouse->code }}" value="{{ $warehouse->id }}">
+                                                                {{ $warehouse->name.'/'.$warehouse->code }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -80,7 +88,8 @@
                                                         id="status">
                                                         <option value="">Select status</option>
                                                         @foreach (App\Utils\SaleUtil::saleStatus() as $key => $status)
-                                                            <option {{ $sale->status == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $status }}
+                                                            <option {{ $sale->status == $key ? 'SELECTED' : '' }} value="{{ $key }}">
+                                                                {{ $status }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -186,6 +195,7 @@
                                                             <thead class="staky">
                                                                 <tr>
                                                                     <th class="text-start">Product</th>
+                                                                    <th class="text-start">Stock Location</th>
                                                                     <th class="text-center">Quantity</th>
                                                                     <th>Unit</th>
                                                                     <th class="text-center">Price Inc.Tax</th>
@@ -205,17 +215,17 @@
                                                                                 
                                                                                 <span class="product_name">{{ $s_product->product->name.$variant }}</span>
 
-                                                                            </a><br/><input type="{{ $s_product->product->is_show_emi_on_pos == 1 ? 'text' : 'hidden'}}" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here." value="{{$s_product->description ? $s_product->description : '' }}">
-                                                                            <input value="{{ $s_product->product_id }}" type="hidden" class="productId-'{{ $s_product->product_id }}" id="product_id" name="product_ids[]">
+                                                                            </a><br/><input type="{{ $s_product->product->is_show_emi_on_pos == 1 ? 'text' : 'hidden'}}" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here." value="{{ $s_product->description ? $s_product->description : '' }}">
+                                                                            <input value="{{ $s_product->product_id }}" type="hidden" id="product_id" name="product_ids[]">
                                                         
                                                                             @if ($s_product->product_variant_id != null)
-                                                        
+
                                                                                 <input value="{{ $s_product->product_variant_id }}" type="hidden" class="variantId-{{ $s_product->product_variant_id }}" id="variant_id" name="variant_ids[]">
                                                                             @else
-                                                        
+
                                                                                 <input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]"> 
                                                                             @endif
-                                                        
+
                                                                             <input type="hidden" id="tax_type" value="{{ $s_product->product->tax_type }}">
 
                                                                             <input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="{{ $s_product->unit_tax_percent }}">
@@ -241,6 +251,26 @@
                                                                             <input type="hidden" id="previous_quantity" value="{{ $previous_sold_quantity }}">
 
                                                                             <input type="hidden" id="qty_limit" value="{{ $qty_limits[$index] }}">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="hidden" class="{{ $s_product->product_id . $s_product->stock_branch_id . $s_product->stock_warehouse_id }}" id="unique_id" value="{{ $s_product->product_id . $s_product->stock_branch_id . $s_product->stock_warehouse_id }}">
+                                                                            <input type="hidden" name="branch_ids[]" id="branch_id" value="{{ $s_product->stock_branch_id }}">
+                                                                            <input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="{{ $s_product->stock_warehouse_id ? $s_product->stock_warehouse_id : 'NULL' }}">
+                                                    
+                                                                            @if ($s_product->stock_warehouse_id) 
+                                                    
+                                                                                <span>{{ $s_product->warehouse->warehouse_name.'/'.$s_product->warehouse->warehouse_code }}</span>
+                                                                            @else
+                                                                                @if ($s_product->stock_branch_id)
+
+                                                                                    {{ $s_product->branch->name.'/'.$s_product->branch->branch_code }}
+                                                                                @else 
+                                
+                                                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
+                                                                                @endif
+                                                                            @endif
+                                                    
                                                                         </td>
                                                     
                                                                         <td>

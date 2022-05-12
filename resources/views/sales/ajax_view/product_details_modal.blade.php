@@ -92,17 +92,17 @@
                             </li>
                             <li><strong>Shipment Status : </strong>
                                 @if ($sale->shipment_status == null)
-                                    <spna class="badge bg-danger">Not-Available</spna>
+                                    <span class="badge bg-danger">Not-Available</span>
                                 @elseif($sale->shipment_status == 1)
-                                    <spna class="badge bg-warning">Ordered</spna>
+                                    <span class="badge bg-warning">Ordered</span>
                                 @elseif($sale->shipment_status == 2)
-                                    <spna class="badge bg-secondary">Packed</spna>
+                                    <span class="badge bg-secondary">Packed</span>
                                 @elseif($sale->shipment_status == 3)
-                                    <spna class="badge bg-primary">Shipped</spna>
+                                    <span class="badge bg-primary">Shipped</span>
                                 @elseif($sale->shipment_status == 4)
-                                    <spna class="badge bg-success">Delivered</spna>
+                                    <span class="badge bg-success">Delivered</span>
                                 @elseif($sale->shipment_status == 5)
-                                    <spna class="badge bg-info">Cancelled</spna>
+                                    <span class="badge bg-info">Cancelled</span>
                                 @endif
                             </li>
                             <li><strong>Created By : </strong>
@@ -112,10 +112,13 @@
                                     $name = $lastName = '';
                                     if ($sale->admin) {
                                         if ($sale->admin->role_type == 1) {
+                                            
                                             $admin_role = ' (Super-Admin)';
                                         } elseif ($sale->admin->role_type == 2) {
+
                                             $admin_role = ' (Admin)';
                                         } elseif ($sale->admin->role_type == 3) {
+
                                             $admin_role = '(' . $sale->admin->role->name . ')';
                                         }
                                     
@@ -137,6 +140,7 @@
                                 <tr class="bg-primary text-white">
                                     <th class="text-start">S/L</th>
                                     <th class="text-start">Product</th>
+                                    <th class="text-start">Stock Location</th>
                                     <th class="text-end">Quantity</th>
                                     <th class="text-end">Unit Price Exc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
@@ -153,6 +157,19 @@
                                             $variant = $saleProduct->variant ? ' -' . $saleProduct->variant->variant_name : '';
                                         @endphp
                                         <td class="text-start">{{ $saleProduct->product->name . $variant }}</td>
+                                        <td class="text-start">
+                                            @if ($saleProduct->stock_warehouse_id)
+                                                {{ $saleProduct->warehouse->warehouse_name.'/'.$saleProduct->warehouse->warehouse_code }}
+                                            @else 
+                                                @if ($saleProduct->stock_branch_id)
+
+                                                    {{ $saleProduct->branch->name.'/'.$saleProduct->branch->branch_code }}
+                                                @else 
+
+                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
+                                                @endif
+                                            @endif
+                                        </td>
                                         <td class="text-end">{{ $saleProduct->quantity }}</td>
                                         <td class="text-end">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_exc_tax) }}
                                         </td>

@@ -91,8 +91,7 @@ class TransferStockBranchToBranchController extends Controller
             } else {
 
                 $transfers = $query->orderBy('transfer_stock_branch_to_branches.report_date', 'desc')
-                ->where('transfer_stock_branch_to_branches.sender_branch_id', auth()->user()->branch_id)
-                ;
+                    ->where('transfer_stock_branch_to_branches.sender_branch_id', auth()->user()->branch_id);
             }
 
             return DataTables::of($transfers)
@@ -171,7 +170,15 @@ class TransferStockBranchToBranchController extends Controller
                 ->make(true);
         }
 
-        $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')->get();
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
 
@@ -202,8 +209,15 @@ class TransferStockBranchToBranchController extends Controller
         $methods = DB::table('payment_methods')
             ->select('id', 'name')->get();
 
-        $warehouses = DB::table('warehouses')
-            ->select('id', 'warehouse_name', 'warehouse_code')->where('branch_id', auth()->user()->branch_id)->get();
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
 
         $branches = DB::table('branches')
             ->select('id', 'name', 'branch_code')->get();
@@ -344,8 +358,15 @@ class TransferStockBranchToBranchController extends Controller
         $methods = DB::table('payment_methods')
             ->select('id', 'name')->get();
 
-        $warehouses = DB::table('warehouses')
-            ->select('id', 'warehouse_name', 'warehouse_code')->get();
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
 
         $branches = DB::table('branches')
             ->select('id', 'name', 'branch_code')->get();
@@ -484,7 +505,7 @@ class TransferStockBranchToBranchController extends Controller
             ->where('id', $transferId)->first();
 
         if ($deleteTransfer->received_qty > 0) {
-            
+
             return response()->json(['errorMsg' => 'Transfer can not be deleted. Cause one or more quantity has already been received from this transfer.']);
         }
 

@@ -88,7 +88,7 @@
         
         @if ($defaultLayout->is_header_less == 1)
             @for ($i = 0; $i < $defaultLayout->gap_from_top; $i++)
-                </br>
+                <br/>
             @endfor
         @endif
 
@@ -145,13 +145,14 @@
                     </tr>
                 </thead>
                 <tbody class="sale_print_product_list">
-                    @foreach ($sale->sale_products as $sale_product)
+                    @foreach ($customerCopySaleProducts as $sale_product)
                         <tr>
                             <td class="text-start">{{ $loop->index + 1 }}</td>
                             <td class="text-start">
-                                {{ $sale_product->product->name }}
-                                @if ($sale_product->variant)
-                                    -{{ $sale_product->variant->variant_name }}
+                                {{ $sale_product->p_name }}
+                                
+                                @if ($sale_product->product_variant_id)
+                                    -{{ $sale_product->variant_name }}
                                 @endif
                                 {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                             </td>

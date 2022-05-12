@@ -78,16 +78,24 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class=" col-4"> <b>B. Location :</b> </label>
+                                                <label class="col-4"> <b>Warehouse :</b> </label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1">
+                                                    {{-- <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1"> --}}
+                                                    <select name="warehouse_id" class="form-control" id="warehouse_id">
+                                                        <option value="">Select Warehouse</option>
+                                                        @foreach ($warehouses as $warehouse)
+                                                            <option data-w_name="{{ $warehouse->name.'/'.$warehouse->code }}" value="{{ $warehouse->id }}">
+                                                                {{ $warehouse->name.'/'.$warehouse->code }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                <label class="col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID" autocomplete="off">
                                                 </div>
@@ -123,6 +131,8 @@
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control add_input" data-name="Date"
                                                         value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="date">
+                                                    {{-- <input type="date" name="date" class="form-control add_input" data-name="Date"
+                                                        value="" autocomplete="off"> --}}
                                                         <span class="error error_date"></span>
                                                 </div>
                                             </div>
@@ -240,6 +250,7 @@
                                                             <thead class="staky">
                                                                 <tr>
                                                                     <th class="text-start">Product</th>
+                                                                    <th class="text-start">Stock Location</th>
                                                                     <th class="text-center">Quantity</th>
                                                                     <th>Unit</th>
                                                                     <th class="text-center">Price Inc.Tax</th>

@@ -563,9 +563,16 @@ class SaleUtil
 
             foreach ($storedSaleProducts as $saleProduct) {
 
-                $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
-                $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
-                $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, $storedBranchId);
+                $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $saleProduct->product_variant_id);
+
+                if ($saleProduct->stock_warehouse_id) {
+
+                    $this->productStockUtil->adjustWarehouseStock($saleProduct->product_id, $saleProduct->product_variant_id, $saleProduct->stock_warehouse_id);
+                } else {
+
+                    $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $saleProduct->product_variant_id, $saleProduct->stock_branch_id);
+                }
+
 
                 foreach ($saleProduct->purchaseSaleProductChains as $purchaseSaleProductChain) {
 
@@ -1594,6 +1601,7 @@ class SaleUtil
                 $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
 
                 $sold_qty = $sale_product->quantity;
+                
                 $salePurchaseProductChains = PurchaseSaleProductChain::with('purchaseProduct')
                     ->where('sale_product_id', $sale_product->id)->get();
 
@@ -1737,6 +1745,56 @@ class SaleUtil
 
         return $qty_limits;
     }
+
+    public function customerCopySaleProductsQuery($saleId)
+    {
+        return DB::table('sale_products')
+            ->where('sale_products.sale_id', $saleId)
+            ->leftJoin('products', 'sale_products.product_id', 'products.id')
+            ->leftJoin('warranties', 'products.warranty_id', 'warranties.id')
+            ->leftJoin('product_variants', 'sale_products.product_variant_id', 'product_variants.id')
+            ->select(
+                'sale_products.product_id',
+                'sale_products.product_variant_id',
+                'sale_products.description',
+                'sale_products.unit',
+                // 'sale_products.quantity',
+                'sale_products.unit_price_inc_tax',
+                'sale_products.unit_discount_amount',
+                'sale_products.unit_tax_percent',
+                'sale_products.subtotal',
+                'products.name as p_name',
+                'products.product_code',
+                'products.warranty_id',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'warranties.duration as w_duration',
+                'warranties.duration_type as w_duration_type',
+                'warranties.description as w_description',
+                'warranties.type',
+                DB::raw('SUM(sale_products.quantity) as quantity')
+            )
+            ->groupBy('sale_products.product_id')
+            ->groupBy('sale_products.product_variant_id')
+            ->groupBy('sale_products.description')
+            ->groupBy('sale_products.unit')
+            // ->groupBy('sale_products.quantity')
+            ->groupBy('sale_products.unit_price_inc_tax')
+            ->groupBy('sale_products.unit_discount_amount')
+            ->groupBy('sale_products.unit_tax_percent')
+            ->groupBy('sale_products.subtotal')
+            ->groupBy('products.warranty_id')
+            ->groupBy('products.name')
+            ->groupBy('products.product_code')
+            ->groupBy('warranties.duration')
+            ->groupBy('warranties.duration_type')
+            ->groupBy('warranties.type')
+            ->groupBy('warranties.description')
+            ->groupBy('product_variants.variant_name')
+            ->groupBy('product_variants.variant_code')
+            ->get();
+    }
+
 
     public static function saleStatus()
     {

@@ -54,6 +54,7 @@ class StockAdjustmentController extends Controller
         }
 
         if ($request->ajax()) {
+
             $generalSettings = DB::table('general_settings')->first();
             $adjustments = '';
             $query = DB::table('stock_adjustments')->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
@@ -219,9 +220,15 @@ class StockAdjustmentController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $warehouses = DB::table('warehouses')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->get(['id', 'warehouse_name', 'warehouse_code']);
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
 
         $stockAdjustmentAccounts = DB::table('accounts')
             ->where('accounts.branch_id', auth()->user()->branch_id)
@@ -414,7 +421,7 @@ class StockAdjustmentController extends Controller
                     data_obj: $deleteAdjustment
                 );
             } else {
-    
+
                 $this->userActivityLogUtil->addLog(
                     action: 3,
                     subject_type: 13,
@@ -428,7 +435,7 @@ class StockAdjustmentController extends Controller
 
                 // Update product qty for adjustment
                 $this->productStockUtil->adjustMainProductAndVariantStock($adjustment_product->product_id, $adjustment_product->product_variant_id);
-                
+
                 if ($storedWarehouseId) {
 
                     $this->productStockUtil->adjustWarehouseStock($adjustment_product->product_id, $adjustment_product->product_variant_id, $storedWarehouseId);

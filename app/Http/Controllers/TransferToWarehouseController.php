@@ -24,12 +24,11 @@ class TransferToWarehouseController extends Controller
     protected $converter;
     protected $userActivityLogUtil;
     public function __construct(
-        NameSearchUtil $nameSearchUtil, 
-        ProductStockUtil $productStockUtil, 
+        NameSearchUtil $nameSearchUtil,
+        ProductStockUtil $productStockUtil,
         Converter $converter,
         UserActivityLogUtil $userActivityLogUtil
-        )
-    {
+    ) {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->productStockUtil = $productStockUtil;
         $this->converter = $converter;
@@ -89,9 +88,9 @@ class TransferToWarehouseController extends Controller
                 })
 
                 ->editColumn('shipping_charge', fn ($row) => $this->converter->format_in_bdt($row->shipping_charge))
-               
+
                 ->editColumn('net_total_amount', fn ($row) => $this->converter->format_in_bdt($row->net_total_amount))
-                
+
                 ->editColumn('status', function ($row) {
 
                     if ($row->status == 1) {
@@ -123,7 +122,16 @@ class TransferToWarehouseController extends Controller
     // Add transfer stock to branch create view
     public function create()
     {
-        $warehouses = DB::table('warehouses')->where('branch_id', auth()->user()->branch_id)->get();
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
+
         return view('transfer_stock.branch_to_warehouse.create', compact('warehouses'));
     }
 
@@ -204,8 +212,19 @@ class TransferToWarehouseController extends Controller
     public function edit($transferId)
     {
         $transferId = $transferId;
+
         $transfer = DB::table('transfer_stock_to_warehouses')->where('id', $transferId)->select('id', 'warehouse_id', 'date')->first();
-        $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')->get();
+
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
+
         return view('transfer_stock.branch_to_warehouse.edit', compact('transferId', 'transfer', 'warehouses'));
     }
 
@@ -335,7 +354,7 @@ class TransferToWarehouseController extends Controller
 
         // Delete not found which was previous
         $delectableTransferProducts = TransferStockToWarehouseProduct::where('transfer_stock_id', $transferId)->where('is_delete_in_update', 1)->get();
-        
+
         foreach ($delectableTransferProducts as $delectableTransferProduct) {
 
             $delectableTransferProduct->delete();
@@ -354,15 +373,15 @@ class TransferToWarehouseController extends Controller
         if (!is_null($deleteTransferToWarehouse)) {
 
             $this->userActivityLogUtil->addLog(
-                action : 3,
-                subject_type : 10,
-                data_obj : $deleteTransferToWarehouse
+                action: 3,
+                subject_type: 10,
+                data_obj: $deleteTransferToWarehouse
             );
 
             $storedTransferredProducts = $deleteTransferToWarehouse->transfer_products;
             $storedBranchId = $deleteTransferToWarehouse->branch_id;
             $storedWarehouseId = $deleteTransferToWarehouse->warehouse_id;
-            
+
             $deleteTransferToWarehouse->delete();
 
             foreach ($storedTransferredProducts as $transfer_product) {
@@ -385,7 +404,7 @@ class TransferToWarehouseController extends Controller
             ->where('product_code', $__product_code)
             ->select([
                 'id',
-                'name', 
+                'name',
                 'product_code',
                 'product_price',
                 'profit',
@@ -490,12 +509,16 @@ class TransferToWarehouseController extends Controller
         $branch_id = auth()->user()->branch_id;
         $productBranch = DB::table('product_branches')->where('product_id', $product_id)->where('branch_id', $branch_id)->first();
         if ($productBranch) {
+
             if ($productBranch->product_quantity > 0) {
+
                 return response()->json($productBranch->product_quantity);
             } else {
+
                 return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop/branch']);
             }
         } else {
+
             return response()->json(['errorMsg' => 'This product is not available in this shop/branch.']);
         }
     }
@@ -510,12 +533,16 @@ class TransferToWarehouseController extends Controller
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
             if ($productBranchVariant) {
+
                 if ($productBranchVariant->variant_quantity > 0) {
+
                     return response()->json($productBranchVariant->variant_quantity);
                 } else {
+
                     return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop']);
                 }
             } else {
+
                 return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
             }
         } else {

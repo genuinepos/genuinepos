@@ -23,6 +23,7 @@ class StockReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+
             $converter = $this->converter;
             $generalSettings = DB::table('general_settings')->first();
             $branch_stock = '';
@@ -37,30 +38,38 @@ class StockReportController extends Controller
                 ->leftJoin('taxes', 'products.tax_id', 'taxes.id');
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $query->where('product_branches.branch_id', NULL);
                 } else {
+
                     $query->where('product_branches.branch_id', $request->branch_id);
                 }
             }
 
             if ($request->category_id) {
+
                 $query->where('products.category_id', $request->category_id);
             }
 
             if ($request->brand_id) {
+
                 $query->where('products.brand_id', $request->brand_id);
             }
 
             if ($request->unit_id) {
+
                 $query->where('products.unit_id', $request->unit_id);
             }
 
             if ($request->tax_id) {
+
                 $query->where('products.tax_id', $request->tax_id);
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 $branch_stock = $query->select(
                     'units.code_name',
                     'branches.name as b_name',
@@ -79,6 +88,7 @@ class StockReportController extends Controller
                     'product_branch_variants.total_sale as v_total_sale',
                 );
             } else {
+
                 $branch_stock = $query->select(
                     'units.code_name',
                     'branches.name as b_name',
@@ -102,9 +112,12 @@ class StockReportController extends Controller
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
                 ->editColumn('name',  fn ($row) => Str::limit($row->name, 25, '') . ' ' . $row->variant_name)
                 ->editColumn('branch',  function ($row) use ($generalSettings) {
+
                     if ($row->b_name) {
+
                         return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
+
                         return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
@@ -133,6 +146,7 @@ class StockReportController extends Controller
     public function warehouseStock(Request $request)
     {
         if ($request->ajax()) {
+
             $converter = $this->converter;
             $generalSettings = DB::table('general_settings')->first();
             $branch_stock = '';
@@ -148,34 +162,43 @@ class StockReportController extends Controller
                 ->leftJoin('taxes', 'products.tax_id', 'taxes.id');
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $query->where('warehouses.branch_id', NULL);
                 } else {
+
                     $query->where('warehouses.branch_id', $request->branch_id);
                 }
             }
 
             if ($request->warehouse_id) {
+                
                 $query->where('warehouses.id', $request->warehouse_id);
             }
 
             if ($request->category_id) {
+
                 $query->where('products.category_id', $request->category_id);
             }
 
             if ($request->brand_id) {
+
                 $query->where('products.brand_id', $request->brand_id);
             }
 
             if ($request->unit_id) {
+
                 $query->where('products.unit_id', $request->unit_id);
             }
 
             if ($request->tax_id) {
+
                 $query->where('products.tax_id', $request->tax_id);
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 $branch_stock = $query->select(
                     'units.code_name',
                     'warehouses.warehouse_name as w_name',
@@ -194,6 +217,7 @@ class StockReportController extends Controller
                     'product_warehouse_variants.variant_quantity',
                 );
             } else {
+
                 $branch_stock = $query->select(
                     'units.code_name',
                     'warehouses.warehouse_name as w_name',
@@ -218,8 +242,10 @@ class StockReportController extends Controller
                 ->editColumn('name',  fn ($row) => Str::limit($row->name, 25, '') . ' ' . $row->variant_name)
                 ->editColumn('branch',  function ($row) use ($generalSettings) {
                     if ($row->b_name) {
+
                         return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
+
                         return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
@@ -242,6 +268,7 @@ class StockReportController extends Controller
     {
         $branch_id = $request->branch_id;
         $branch_stock = '';
+        
         $query = DB::table('product_branches')
             ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
             ->leftJoin('products', 'product_branches.product_id', 'products.id')
@@ -253,30 +280,38 @@ class StockReportController extends Controller
             ->leftJoin('taxes', 'products.tax_id', 'taxes.id');
 
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
+
                 $query->where('product_branches.branch_id', NULL);
             } else {
+
                 $query->where('product_branches.branch_id', $request->branch_id);
             }
         }
 
         if ($request->category_id) {
+
             $query->where('products.category_id', $request->category_id);
         }
 
         if ($request->brand_id) {
+
             $query->where('products.brand_id', $request->brand_id);
         }
 
         if ($request->unit_id) {
+
             $query->where('products.unit_id', $request->unit_id);
         }
 
         if ($request->tax_id) {
+
             $query->where('products.tax_id', $request->tax_id);
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $branch_stock = $query->select(
                 'units.code_name',
                 'branches.name as b_name',
@@ -295,6 +330,7 @@ class StockReportController extends Controller
                 'product_branch_variants.total_sale as v_total_sale',
             )->get();
         } else {
+
             $branch_stock = $query->select(
                 'units.code_name',
                 'branches.name as b_name',

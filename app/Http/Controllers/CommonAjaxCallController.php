@@ -186,7 +186,15 @@ class CommonAjaxCallController extends Controller
     {
         $branch_id = $branch_id == 'NULL' ? NULL : $branch_id;
 
-        return DB::table('warehouses')->where('branch_id', $branch_id)->orderBy('id', 'DESC')->get();
+        return  DB::table('warehouse_branches')
+        ->where('warehouse_branches.branch_id', $branch_id)
+        ->orWhere('warehouse_branches.is_global', 1)
+        ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+        ->select(
+            'warehouses.id',
+            'warehouses.warehouse_name',
+            'warehouses.warehouse_code',
+        )->get();
     }
 
     public function branchAllowLoginUsers($branchId)

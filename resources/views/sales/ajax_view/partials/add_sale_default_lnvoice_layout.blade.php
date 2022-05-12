@@ -1,4 +1,3 @@
-
 @php $defaultLayout = DB::table('invoice_layouts')->where('is_default', 1)->first(); @endphp
   @if ($defaultLayout->layout_design == 1)
       <div class="sale_print_template d-none">
@@ -13,29 +12,29 @@
                             <div class="col-md-12">
                                 <div class="header_text text-center">
                                     <p>{{ $defaultLayout->header_text }}</p>
-                                    <p>{{ $defaultLayout->sub_heading_1 }}<p/>
-                                    <p>{{ $defaultLayout->sub_heading_2 }}<p/>
-                                    <p>{{ $defaultLayout->sub_heading_3 }}<p/>
+                                    <p>{{ $defaultLayout->sub_heading_1 }}<p>
+                                    <p>{{ $defaultLayout->sub_heading_2 }}<p>
+                                    <p>{{ $defaultLayout->sub_heading_3 }}<p>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 col-sm-4 col-lg-4">
-                                    @if ($defaultLayout->show_shop_logo == 1)
-                                        @if ($sale->branch)
-                                            @if ($sale->branch->logo != 'default.png')
-                                                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
-                                            @else 
-                                                <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
-                                            @endif
+                                @if ($defaultLayout->show_shop_logo == 1)
+                                    @if ($sale->branch)
+                                        @if ($sale->branch->logo != 'default.png')
+                                            <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
                                         @else 
-                                            @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                                                <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                                            @else 
-                                                <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
-                                            @endif
+                                            <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
+                                        @endif
+                                    @else 
+                                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                                            <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                        @else 
+                                            <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                                         @endif
                                     @endif
+                                @endif
                             </div>
 
                             <div class="col-md-4 col-sm-4 col-lg-4 text-center">
@@ -169,6 +168,7 @@
                                 <th class="text-start">SL</th>
                                 <th class="text-start">Descrpiton</th>
                                 <th class="text-start">Sold Qty</th>
+
                                 @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
                                     <th class="text-end">Warranty</th>
                                 @endif
@@ -187,27 +187,39 @@
                             </tr>
                         </thead>
                         <tbody class="sale_print_product_list">
-                            @foreach ($sale->sale_products as $sale_product)
+                            @foreach ($customerCopySaleProducts as $sale_product)
                                 <tr>
                                     <td class="text-start">{{ $loop->index + 1}} </td>
+
                                     <td class="text-start">
-                                        {{ Str::limit($sale_product->product->name, 40) }}
-                                        @if ($sale_product->variant)
-                                            -{{ $sale_product->variant->variant_name }}
+                                        {{ Str::limit($sale_product->p_name, 40) }}
+
+                                        @if ($sale_product->product_variant_id)
+
+                                            -{{ $sale_product->variant_name }}
                                         @endif
+
                                         {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                     </td>
+
                                     <td class="text-start">{{ $sale_product->quantity }}({{ $sale_product->unit }}) </td>
 
-                                    @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
+                                    @if (
+                                        $defaultLayout->product_w_type || 
+                                        $defaultLayout->product_w_duration || 
+                                        $defaultLayout->product_w_discription
+                                    )
                                         <td class="text-end">
-                                            @if ($sale_product->product->warranty)
-                                                {{ $sale_product->product->warranty->duration . ' ' . $sale_product->product->warranty->duration_type }}
+                                            @if ($sale_product->warranty_id)
+
+                                                {{ $sale_product->w_duration . ' ' .$sale_product->w_duration_type }}
                                                 {{ $sale_product->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
-                                                @if ($sale_product->product->warranty->description)
-                                                    {!! '<br><small>'.$sale_product->product->warranty->description.'</small>'  !!}
+                                                @if ($sale_product->w_description)
+
+                                                    {!! '<br><small>'.$sale_product->w_description.'</small>'  !!}
                                                 @endif
                                             @else 
+
                                                 <b>No</b>
                                             @endif
                                         </td>
@@ -331,21 +343,25 @@
                 </div><br><br>
 
                 <div class="row">
+
                     <div class="col-md-3">
                         <div class="details_area text-center">
                             <p class="borderTop"><b>Customer's signature</b></p>
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="details_area text-center">
                             <p class="borderTop"><b>Checked By</b></p>
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="details_area text-center">
                             <p class="borderTop"><b>Approved By</b></p>
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="details_area text-center">
                             <p class="borderTop"><b>Signature Of Authority</b></p>
@@ -492,20 +508,21 @@
                       <table class="w-100">
                           <thead class="t-head">
                               <tr>
-                                  <th class="text-start"> Description</th>
+                                  <th class="text-start">Description</th>
                                   <th class="text-center">Qty</th>
                                   <th class="text-center">Price</th>
                                   <th class="text-end">Total</th>
                               </tr>
                           </thead>
                           <thead class="d-body">
-                              @foreach ($sale->sale_products as $saleProduct)
+                              @foreach ($customerCopySaleProducts as $saleProduct)
                                   <tr>
                                     @php
-                                        $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
+                                        $variant = $saleProduct->product_variant_id ? ' ' .$saleProduct->variant_name : '';
                                     @endphp
+                                    
                                     <th class="text-start">
-                                        {{ $loop->index + 1 }}. {{Str::limit($saleProduct->product->name, 25, '').$variant }} 
+                                        {{ $loop->index + 1 }}. {{Str::limit($saleProduct->p_name, 25, '').$variant }} 
                                     </th>
                                     
                                     <th class="text-center">{{ (float) $saleProduct->quantity }}</th>

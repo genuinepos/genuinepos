@@ -45,7 +45,7 @@ class ProductionController extends Controller
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        
+
         if ($request->ajax()) {
 
             return $this->productionUtil->productionList($request);
@@ -59,10 +59,15 @@ class ProductionController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $warehouses = DB::table('warehouses')
-            ->select('id', 'warehouse_name', 'warehouse_code')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->get();
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
 
         $taxes = DB::table('taxes')->select('id', 'tax_percent', 'tax_name')->get();
 
@@ -145,7 +150,7 @@ class ProductionController extends Controller
 
             $addProduction->stock_warehouse_id = $request->stock_warehouse_id;
         } else {
-            
+
             $addProduction->stock_branch_id = auth()->user()->branch_id;
         }
 
@@ -208,7 +213,7 @@ class ProductionController extends Controller
                     if (isset($request->is_final)) {
 
                         $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
-                        
+
                         if (isset($request->stock_warehouse_count)) {
 
                             $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $request->stock_warehouse_id);
@@ -319,9 +324,15 @@ class ProductionController extends Controller
             'ingredients.unit:id,name',
         ])->where('id', $productionId)->first();
 
-        $warehouses = DB::table('warehouses')->select('id', 'warehouse_name', 'warehouse_code')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->get();
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
 
         $taxes = DB::table('taxes')->select('id', 'tax_percent', 'tax_name')->get();
 
@@ -330,7 +341,7 @@ class ProductionController extends Controller
             ->where('account_branches.branch_id', auth()->user()->branch_id)
             ->where('accounts.account_type', 23)
             ->get(['accounts.id', 'accounts.name']);
-        
+
         return view('manufacturing.production.edit', compact('warehouses', 'production', 'taxes', 'productionAccounts'));
     }
 
@@ -437,7 +448,7 @@ class ProductionController extends Controller
                 balance_type: 'debit'
             );
         }
-        
+
         if (isset($request->product_ids)) {
 
             $index = 0;
@@ -503,7 +514,7 @@ class ProductionController extends Controller
     public function delete(Request $request, $productionId)
     {
         if (auth()->user()->permission->manufacturing['production_delete'] == '0') {
-            
+
             return response()->json('Access Denied');
         }
 

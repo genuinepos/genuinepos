@@ -2,6 +2,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
 <script>
+    var branch_id = "{{ auth()->user()->branch_id }}";
+
+    var branch_name = "{{  auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}";
 
     $('.select2').select2();
     // Get all price group
@@ -32,18 +35,21 @@
         $('.select_area').hide();
         var product_code = $(this).val();
         var __product_code = product_code.replaceAll('/', '~');
+        var warehouse_id = $('#warehouse_id').val();
+        var __warehouse_id = warehouse_id == '' ? 'NULL' : warehouse_id;
+        var warehouse_name = $('#warehouse_id').find('option:selected').data('w_name');
         var status = $('#status').val() ? $('#status').val() : 'no_status';
         var __price_group_id = $('#price_group_id').val() ? $('#price_group_id').val() : 'no_id';
-        delay(function() { searchProduct(status, __product_code, __price_group_id); }, 200); //sendAjaxical is the name of remote-command
+        delay(function() { searchProduct(status, __product_code, __price_group_id, __warehouse_id, warehouse_name); }, 200); //sendAjaxical is the name of remote-command
     });
 
-    function searchProduct(status, product_code, __price_group_id) {
+    function searchProduct(status, product_code, __price_group_id, __warehouse_id, warehouse_name) {
 
         $('#search_product').focus();
         var price_group_id = $('#price_group_id').val();
        
         $.ajax({
-            url:"{{ url('sales/search/product') }}" + "/"+ status + "/" + product_code + "/" + __price_group_id,
+            url:"{{ url('sales/search/product') }}" + "/"+ status + "/" + product_code + "/" + __price_group_id + "/" + __warehouse_id,
             dataType: 'json',
             success:function(product){
 
@@ -76,25 +82,31 @@
                             $('.select_area').hide();
                             $('#search_product').val('');
 
-                            if (product.is_manage_stock == 0) {
+                            if (product.is_manage_stock == 1) {
 
                                 $('#stock_quantity').val(parseFloat(qty_limit).toFixed(2));
                             }
                             
-                            product_ids = document.querySelectorAll('#product_id');
+                            // product_ids = document.querySelectorAll('#product_id');
+                            var unique_id = document.querySelectorAll('#unique_id');
+
+                            var __unique_id = product.id+branch_id+__warehouse_id;
+
                             var sameProduct = 0;
 
-                            product_ids.forEach(function(input){
+                            unique_id.forEach(function(input){
 
-                                if(input.value == product.id){
+                                if(input.value == __unique_id){
 
                                     sameProduct += 1;
                                     var className = input.getAttribute('class');
+                             
                                     // get closest table row for increasing qty and re calculate product amount
                                     var closestTr = $('.'+className).closest('tr');
+                                    
                                     var presentQty = closestTr.find('#quantity').val();
                                     var qty_limit = closestTr.find('#qty_limit').val();
-
+                             
                                     if (status == 'no_status' || status == 1) {
 
                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
@@ -139,7 +151,7 @@
                                 if (discount.discount_type == 1) {
 
                                     discount_amount = discount.discount_amount
-                                }else{
+                                } else {
 
                                     discount_amount = (parseFloat(price) / 100) * discount.discount_amount;
                                 }
@@ -165,7 +177,7 @@
                                 tr += '<a href="#" class="text-success" id="edit_product">';
                                 tr += '<span class="product_name">'+name+'</span>';
                                 tr += '</a><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
-                                tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
+                                tr += '<input value="'+product.id+'" type="hidden" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+product.tax_type+'" type="hidden" id="tax_type">';
                                 tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
                                 tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+tax_percent+'">';
@@ -175,6 +187,20 @@
                                 tr += '<input value="'+discount_amount+'" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
                                 tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+(product.update_product_cost ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax)+'">';
                                 tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
+                                tr += '</td>';
+
+                                tr += '<td class="text-start">';
+                                tr += '<input type="hidden" class="'+product.id+branch_id+__warehouse_id+'" id="unique_id" value="'+ product.id + branch_id + __warehouse_id +'">';
+                                tr += '<input type="hidden" name="branch_ids[]" id="branch_id" value="'+ branch_id +'">';
+                                tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="'+ __warehouse_id +'">';
+
+                                if (__warehouse_id != 'NULL') {
+
+                                    tr += '<span>'+ warehouse_name +'</span>';
+                                }else{
+                                    tr += '<span>'+ branch_name +'</span>';
+                                }
+                                
                                 tr += '</td>';
 
                                 tr += '<td>';
@@ -256,14 +282,15 @@
 
                         var variant_product = product.variant_product;
                         var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
-                        var variant_ids = document.querySelectorAll('#variant_id');
+                        var unique_id = document.querySelectorAll('#unique_id');
+                        var __unique_id = variant_product.id+branch_id+__warehouse_id;
                         var sameVariant = 0;
                         
-                        variant_ids.forEach(function(input){
+                        unique_id.forEach(function(input){
 
                             if(input.value != 'noid'){
 
-                                if(input.value == variant_product.id){
+                                if(input.value == __unique_id){
 
                                     sameVariant += 1;
                                     var className = input.getAttribute('class');
@@ -276,7 +303,7 @@
 
                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
 
-                                            toastr.error('Quantity Limit is - '+qty_limit+' '+variant_product.product.unit.name);
+                                            toastr.error('Quantity Limit is - '+ qty_limit +' '+ variant_product.product.unit.name);
                                             return;
                                         }
                                     }
@@ -294,7 +321,7 @@
                                 }
                             }    
                         });
-                    
+
                         if(sameVariant == 0){
 
                             var price = 0;
@@ -341,8 +368,8 @@
                             tr += '<a href="#" class="text-success" id="edit_product">';
                             tr += '<span class="product_name">'+name+' -'+variant_product.variant_name+'</span>';
                             tr += '</a><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable" placeholder="IMEI, Serial number or other info.">';
-                            tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
-                            tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
+                            tr += '<input value="'+variant_product.product.id+'" type="hidden" id="product_id" name="product_ids[]">';
+                            tr += '<input value="'+variant_product.id+'" type="hidden" id="variant_id" name="variant_ids[]">';
                             tr += '<input value="'+variant_product.product.tax_type+'" type="hidden" id="tax_type">';
                             tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+tax_percent+'">';
                             tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(tax_amount).toFixed(2)+'">';
@@ -351,6 +378,20 @@
                             tr += '<input value="'+ discount_amount +'" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
                             tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+(variant_product.update_variant_cost ? variant_product.update_variant_cost.net_unit_cost : variant_product.variant_cost_with_tax)+'">';
                             tr += '<input type="hidden" id="qty_limit" value="'+qty_limit+'">';
+                            tr += '</td>';
+
+                            tr += '<td class="text-start">';
+                            tr += '<input type="hidden" class="'+variant_product.id+branch_id+__warehouse_id+'" id="unique_id" value="'+variant_product.id+branch_id+__warehouse_id+'">';
+                            tr += '<input type="hidden" name="branch_ids[]" id="branch_id" value="'+ branch_id +'">';
+                            tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="'+ __warehouse_id +'">';
+
+                            if (__warehouse_id != 'NULL') {
+
+                                tr += '<span>'+ warehouse_name +'</span>';
+                            }else{
+
+                                tr += '<span>'+ branch_name +'</span>';
+                            }
                             tr += '</td>';
 
                             tr += '<td>';
@@ -472,11 +513,7 @@
 
                     toastr.error('Net Connetion Error. Please check the connetion.'); 
                     return;
-                }else if(err.status == 500){
-
-                    toastr.error('Server error. Please contact to the support team.'); 
-                    return;
-                } 
+                }
             }
         });
     }
@@ -497,6 +534,10 @@
             document.getElementById('search_product').focus();
         }
 
+        var warehouse_id = $('#warehouse_id').val();
+        var __warehouse_id = warehouse_id == '' ? 'NULL' : warehouse_id;
+        var warehouse_name = $('#warehouse_id').find('option:selected').data('w_name');
+
         var product_id = e.getAttribute('data-p_id');
         var is_manage_stock = e.getAttribute('data-is_manage_stock');
         var product_name = e.getAttribute('data-p_name');
@@ -511,7 +552,7 @@
         $('#search_product').val('');
 
         $.ajax({
-            url:"{{ url('sales/check/single/product/stock/') }}"+"/"+ status +"/"+product_id+ "/" + __price_group_id,
+            url:"{{ url('sales/check/single/product/stock/') }}"+ "/" + status + "/" + product_id + "/" + __price_group_id + "/" + __warehouse_id,
             type:'get',
             dataType: 'json',
             success:function(data) {
@@ -522,15 +563,17 @@
 
                         $('#stock_quantity').val(parseFloat(data.stock).toFixed(2)); 
                     }
-                    
-                    var product_ids = document.querySelectorAll('#product_id');
+
+                    var unique_id = document.querySelectorAll('#unique_id');
+                    var __unique_id = product_id + branch_id + __warehouse_id;
+
                     var sameProduct = 0;
 
                     var discount = data.discount;
 
-                    product_ids.forEach(function(input){
+                    unique_id.forEach(function(input){
 
-                        if(input.value == product_id){
+                        if(input.value == __unique_id){
 
                             sameProduct += 1;
                             var className = input.getAttribute('class');
@@ -602,8 +645,8 @@
                         tr += '<a href="#" class="text-success" id="edit_product">';
                         tr += '<span class="product_name">'+name+'</span>';
                         tr += '</a><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info">';
-                        tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
-                        tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
+                        tr += '<input value="'+product_id+'" type="hidden" id="product_id" name="product_ids[]">';
+                        tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
                         tr += '<input value="'+p_tax_type+'" type="hidden" id="tax_type">';
                         tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+p_tax_percent+'">';
                         tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(p_tax_amount).toFixed(2)+'">';
@@ -612,6 +655,21 @@
                         tr += '<input value="'+ discount_amount +'" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
                         tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+product_cost_inc_tax+'">';
                         tr += '<input type="hidden" id="qty_limit" value="'+data.stock+'">';
+                        tr += '</td>';
+
+                        tr += '<td class="text-start">';
+                        tr += '<input type="hidden" class="'+ product_id + branch_id + __warehouse_id +'" id="unique_id" value="'+ product_id + branch_id + __warehouse_id +'">';
+                        tr += '<input type="hidden" name="branch_ids[]" id="branch_id" value="'+ branch_id +'">';
+                        tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="'+ __warehouse_id +'">';
+
+                        if (__warehouse_id != 'NULL') {
+
+                            tr += '<span>'+ warehouse_name +'</span>';
+                        }else{
+
+                            tr += '<span>'+ branch_name +'</span>';
+                        }
+
                         tr += '</td>';
 
                         tr += '<td>';
@@ -675,6 +733,10 @@
 
             document.getElementById('search_product').focus();
         }
+
+        var warehouse_id = $('#warehouse_id').val();
+        var __warehouse_id = warehouse_id == '' ? 'NULL' : warehouse_id;
+        var warehouse_name = $('#warehouse_id').find('option:selected').data('w_name');
         
         $('.select_area').hide();
         $('#search_product').val("");
@@ -694,7 +756,7 @@
         var description = e.getAttribute('data-description');
 
         $.ajax({
-            url:"{{url('sales/check/branch/variant/qty/')}}"+ "/" + status + "/" + product_id + "/" + variant_id + "/" +  __price_group_id,
+            url:"{{url('sales/check/branch/variant/qty/')}}"+ "/" + status + "/" + product_id + "/" + variant_id + "/" +  __price_group_id + "/" +  __warehouse_id,
             type:'get',
             dataType: 'json',
             success:function(data){
@@ -708,13 +770,15 @@
 
                     var discount = data.discount;
                  
-                    var variant_ids = document.querySelectorAll('#variant_id');
+                    var unique_id = document.querySelectorAll('#unique_id');
+                    var __unique_id = variant_id + branch_id + __warehouse_id;
+
                     var sameVariant = 0;
-                    variant_ids.forEach(function(input){
+                    unique_id.forEach(function(input){
 
                         if(input.value != 'noid'){
 
-                            if(input.value == variant_id){
+                            if(input.value == __unique_id){
 
                                 sameVariant += 1;
                                 var className = input.getAttribute('class');
@@ -786,8 +850,8 @@
                         tr += '<a href="#" class="text-success" id="edit_product">';
                         tr += '<span class="product_name">'+name+' -'+variant_name+'</span>';
                         tr += '</a><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
-                        tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
-                        tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
+                        tr += '<input value="'+product_id+'" type="hidden" id="product_id" name="product_ids[]">';
+                        tr += '<input value="'+variant_id+'" type="hidden" id="variant_id" name="variant_ids[]">';
                         tr += '<input value="'+tax_type+'" type="hidden" id="tax_type">';
                         tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+tax_percent+'">';
                         tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(tax_amount).toFixed(2)+'">';
@@ -798,14 +862,31 @@
                         tr += '<input type="hidden" id="qty_limit" value="'+data.stock+'">';
                         tr += '</td>';
 
+                        tr += '<td class="text-start">';
+                        tr += '<input type="hidden" class="'+ variant_id + branch_id + __warehouse_id +'" id="unique_id" value="'+ variant_id + branch_id + __warehouse_id +'">';
+                        tr += '<input type="hidden" name="branch_ids[]" id="branch_id" value="'+ branch_id +'">';
+                        tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="'+ __warehouse_id +'">';
+
+                        if (__warehouse_id != 'NULL') {
+
+                            tr += '<span>'+ warehouse_name +'</span>';
+                        } else {
+
+                            tr += '<span>'+ branch_name +'</span>';
+                        }
+
+                        tr += '</td>';
+
                         tr += '<td>';
                         tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
                         tr += '<p class="text-danger" id="stock_error"></p>';
                         tr += '</td>';
+
                         tr += '<td class="text">';
                         tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
                         tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                         tr += '</td>';
+
                         tr += '<td>';
                         tr += '<input name="unit_prices_exc_tax[]" type="hidden" id="unit_price_exc_tax" value="'+parseFloat(price).toFixed(2)+'">';
 
@@ -821,13 +902,16 @@
 
                         tr += '<input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" tabindex="-1">';
                         tr += '</td>';
+
                         tr += '<td class="text text-center">';
                         tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>'; 
                         tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal" tabindex="-1">';
                         tr += '</td>';
+
                         tr += '<td class="text-center">';
                         tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                         tr += '</td>';
+
                         tr += '</tr>';
                         $('#sale_list').prepend(tr);
                         calculateTotalAmount();

@@ -76,7 +76,7 @@ class ReceiveTransferBranchToBranchController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="'.route('transfer.stock.branch.to.branch.receivable.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item details_button" href="' . route('transfer.stock.branch.to.branch.receivable.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
                     $html .= '<a class="dropdown-item" href="' . route('transfer.stock.branch.to.branch.ProcessToReceive', [$row->id]) . '"><i class="far fa-eye text-primary"></i> Process To Receive</a>';
                     $html .= '<a class="dropdown-item" id="send_notification" href="#"><i class="fas fa-envelope text-primary"></i> Send Notification</a>';
                     $html .= '</div>';
@@ -158,10 +158,15 @@ class ReceiveTransferBranchToBranchController extends Controller
 
     public function ProcessToReceive($transferId)
     {
-        $warehouses = DB::table('warehouses')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->select('id', 'warehouse_name', 'warehouse_code')
-            ->get();
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
 
         $transfer = TransferStockBranchToBranch::with(
             [
@@ -244,13 +249,12 @@ class ReceiveTransferBranchToBranchController extends Controller
                 $this->productStockUtil->addWarehouseProduct($product_id, $variant_id, $transfer->receiver_warehouse_id);
 
                 $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $transfer->receiver_warehouse_id);
-
-            } 
+            }
 
             if ($transfer->sender_warehouse_id) {
 
                 $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $transfer->sender_warehouse_id);
-            } 
+            }
 
             if ($previousReceiverWarehouseId != $transfer->receiver_warehouse_id && $previousReceiverWarehouseId) {
 

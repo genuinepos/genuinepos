@@ -23,7 +23,7 @@ class TransferToBranchController extends Controller
     protected $productStockUtil;
     protected $converter;
     protected $userActivityLogUtil;
-    
+
     public function __construct(
         NameSearchUtil $nameSearchUtil,
         ProductStockUtil $productStockUtil,
@@ -43,6 +43,7 @@ class TransferToBranchController extends Controller
         if ($request->ajax()) {
 
             $generalSettings = DB::table('general_settings')->first();
+
             $transfers = DB::table('transfer_stock_to_branches')
                 ->leftJoin('warehouses', 'transfer_stock_to_branches.warehouse_id', 'warehouses.id')
                 ->leftJoin('branches', 'transfer_stock_to_branches.branch_id', 'branches.id')->select(
@@ -127,7 +128,16 @@ class TransferToBranchController extends Controller
     // Add transfer stock to branch create view
     public function create()
     {
-        $warehouses = DB::table('warehouses')->where('branch_id', auth()->user()->branch_id)->get();
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
+
         return view('transfer_stock.warehouse_to_branch.create', compact('warehouses'));
     }
 
@@ -210,8 +220,16 @@ class TransferToBranchController extends Controller
     {
         $transferId = $transferId;
         $transfer = DB::table('transfer_stock_to_branches')->where('id', $transferId)->select('id', 'warehouse_id', 'branch_id', 'date')->first();
-        $warehouses = DB::table('warehouses')
-            ->select('id', 'warehouse_name', 'warehouse_code')->get();
+
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
 
         return view('transfer_stock.warehouse_to_branch.edit', compact('transferId', 'transfer', 'warehouses'));
     }

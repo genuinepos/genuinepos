@@ -431,13 +431,13 @@ Route::group(['prefix' => 'sales', 'namespace' => 'App\Http\Controllers'], funct
     Route::get('get/all/users', 'SaleController@getAllUser')->name('sales.get.all.users');
     Route::get('get/all/unit', 'SaleController@getAllUnit')->name('sales.get.all.unites');
     Route::get('get/all/tax', 'SaleController@getAllTax')->name('sales.get.all.taxes');
-    Route::get('search/product/{status}/{product_code}/{price_group_id}', 'SaleController@searchProduct');
+    Route::get('search/product/{status}/{product_code}/{price_group_id}/{warehouse_id}', 'SaleController@searchProduct');
     Route::delete('delete/{saleId}', 'SaleController@delete')->name('sales.delete');
     Route::get('edit/shipment/{saleId}', 'SaleController@editShipment')->name('sales.shipment.edit');
     Route::post('update/shipment/{saleId}', 'SaleController@updateShipment')->name('sales.shipment.update');
     Route::post('change/status/{saleId}', 'SaleController@changeStatus')->name('sales.change.status');
-    Route::get('check/branch/variant/qty/{status}/{product_id}/{variant_id}/{price_group_id}', 'SaleController@checkBranchProductVariant');
-    Route::get('check/single/product/stock/{status}/{product_id}/{price_group_id}', 'SaleController@checkBranchSingleProductStock');
+    Route::get('check/branch/variant/qty/{status}/{product_id}/{variant_id}/{price_group_id}/{warehouse_id}', 'SaleController@checkVariantProductStock');
+    Route::get('check/single/product/stock/{status}/{product_id}/{price_group_id}/{warehouse_id}', 'SaleController@checkSingleProductStock');
 
     Route::get('shipments', 'SaleController@shipments')->name('sales.shipments');
 
@@ -1066,6 +1066,7 @@ Route::get('add-user', function () {
     $addAdmin->allow_login = 1;
     $addAdmin->save();
     //1=super_admin;2=admin;3=Other;
+
 });
 
 Route::get('pin_login', function () {
@@ -1081,6 +1082,43 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // } 
+
+    return $saleProducts = DB::table('sale_products')
+        ->where('sale_products.sale_id', 31)
+        ->leftJoin('products', 'sale_products.product_id', 'products.id')
+        ->leftJoin('warranties', 'products.warranty_id', 'warranties.id')
+        ->leftJoin('product_variants', 'sale_products.product_variant_id', 'product_variants.id')
+        ->select(
+            'sale_products.description',
+            // 'sale_products.quantity',
+            'sale_products.unit_price_inc_tax',
+            'sale_products.unit_discount_amount',
+            'sale_products.unit_tax_percent',
+            'sale_products.subtotal',
+            'products.name',
+            'products.warranty_id',
+            'product_variants.variant_name',
+            'warranties.duration',
+            'warranties.duration_type',
+            'warranties.description as w_description',
+            'warranties.type',
+            DB::raw('SUM(sale_products.quantity) as quantity')
+        )
+        ->groupBy('sale_products.description')
+        // ->groupBy('sale_products.quantity')
+        ->groupBy('sale_products.unit_price_inc_tax')
+        ->groupBy('sale_products.unit_discount_amount')
+        ->groupBy('sale_products.unit_tax_percent')
+        ->groupBy('sale_products.subtotal')
+        ->groupBy('products.warranty_id')
+        ->groupBy('products.name')
+
+        ->groupBy('warranties.duration')
+        ->groupBy('warranties.duration_type')
+        ->groupBy('warranties.type')
+        ->groupBy('warranties.description')
+        ->groupBy('product_variants.variant_name')
+        ->get();
 });
 
 // All authenticated routes

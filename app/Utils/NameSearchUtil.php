@@ -94,164 +94,6 @@ class NameSearchUtil
         }
     }
 
-    public function checkBranchSingleProductStock($product_id, $branch_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL)
-    {
-        $product = DB::table('products')
-            ->where('id', $product_id)->select('id', 'is_manage_stock', 'brand_id', 'category_id')
-            ->first();
-
-        if ($product->is_manage_stock == 0) {
-
-            return response()->json(
-                [
-                    'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                    'stock' => PHP_INT_MAX,
-                ]
-            );
-        }
-
-        $productBranch = DB::table('product_branches')
-            ->where('product_id', $product_id)
-            ->where('branch_id', $branch_id)->first();
-
-        if ($productBranch) {
-
-            if ($status == 2 || $status == 3 || $status == 4) {
-
-                return response()->json([
-                    'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                    'stock' => $productBranch->product_quantity,
-                ]);
-            }
-
-            if ($productBranch->product_quantity > 0) {
-
-                return response()->json([
-                    'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                    'stock' => $productBranch->product_quantity,
-                ]);
-            } else {
-
-                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop/branch.']);
-            }
-        } else {
-
-            return response()->json(['errorMsg' => 'This product is not available in this shop/branch.']);
-        }
-    }
-
-    public function checkBranchVariantProductStock($product_id, $variant_id, $branch_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL)
-    {
-        $product = DB::table('products')
-            ->where('id', $product_id)->select('id', 'is_manage_stock', 'brand_id', 'category_id')
-            ->first();
-
-        if ($product->is_manage_stock == 0) {
-
-            return response()->json([
-                'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                'stock' => PHP_INT_MAX
-            ]);
-        }
-
-        $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product_id)->first();
-
-        if ($productBranch) {
-
-            $productBranchVariant = DB::table('product_branch_variants')
-                ->where('product_branch_id', $productBranch->id)
-                ->where('product_id', $product_id)
-                ->where('product_variant_id', $variant_id)->first();
-
-            if ($productBranchVariant) {
-
-                if ($status == 2 || $status == 3 || $status == 4) {
-
-                    return response()->json([
-                        'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                        'stock' => $productBranchVariant->variant_quantity
-                    ]);
-                }
-
-                if ($productBranchVariant->variant_quantity > 0) {
-
-                    return response()->json([
-                        'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                        'stock' =>  $productBranchVariant->variant_quantity
-                    ]);
-                } else {
-
-                    return response()->json(['errorMsg' => 'Stock is out of this product(variant) from this Shop/Business Location']);
-                }
-            } else {
-
-                return response()->json(['errorMsg' => 'This variant is not available in this Shop/Business Location.']);
-            }
-        } else {
-
-            return response()->json(['errorMsg' => 'This product is not available in this Shop/Business Location.']);
-        }
-    }
-
-
-    public function checkWarehouseSingleProduct($product_id, $warehouse_id)
-    {
-        $productWarehouse = DB::table('product_warehouses')->where('product_id', $product_id)->where('warehouse_id', $warehouse_id)->first();
-
-        if ($productWarehouse) {
-
-            if ($productWarehouse->product_quantity > 0) {
-
-                return response()->json($productWarehouse->product_quantity);
-            } else {
-
-                return response()->json(['errorMsg' => 'Stock is out of this product from this warehouse']);
-            }
-        } else {
-
-            return response()->json(['errorMsg' => 'This product is not available in this warehouse.']);
-        }
-    }
-
-    // Check warehouse product variant qty 
-    public function checkWarehouseProductVariant($product_id, $variant_id, $warehouse_id)
-    {
-        $productWarehouse = DB::table('product_warehouses')
-            ->where('warehouse_id', $warehouse_id)
-            ->where('product_id', $product_id)
-            ->first();
-
-        if (is_null($productWarehouse)) {
-
-            return response()->json(['errorMsg' => 'This product is not available in this warehouse.']);
-        }
-
-        $productWarehouseVariant = DB::table('product_warehouse_variants')
-            ->where('product_warehouse_id', $productWarehouse->id)
-            ->where('product_id', $product_id)
-            ->where('product_variant_id', $variant_id)
-            ->first();
-
-        if (is_null($productWarehouseVariant)) {
-
-            return response()->json(['errorMsg' => 'This variant is not available in this warehouse.']);
-        }
-
-        if ($productWarehouse && $productWarehouseVariant) {
-
-            if ($productWarehouseVariant->variant_quantity > 0) {
-
-                return response()->json($productWarehouseVariant->variant_quantity);
-            } else {
-
-                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this warehouse.']);
-            }
-        } else {
-
-            return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
-        }
-    }
-
     public function searchStockToBranch($product, $product_code, $branch_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL, $isCheckStock = true)
     {
         if ($product) {
@@ -393,6 +235,405 @@ class NameSearchUtil
         }
 
         return $this->nameSearching($product_code);
+    }
+
+    public function addSaleSearchStockToWarehouse($product, $product_code, $warehouse_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL, $isCheckStock = true)
+    {
+        if ($product) {
+
+            if ($product->is_manage_stock == 0) {
+
+                return response()->json(
+                    [
+                        'product' => $product,
+                        'qty_limit' => PHP_INT_MAX,
+                        'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                    ]
+                );
+            }
+
+            $productWarehouse = DB::table('product_warehouses')
+                ->where('warehouse_id', $warehouse_id)
+                ->where('product_id', $product->id)
+                ->select('product_quantity')
+                ->first();
+
+            if ($productWarehouse) {
+
+                if ($status == 2 || $status == 3 || $status == 4) {
+
+                    return response()->json(
+                        [
+                            'product' => $product,
+                            'qty_limit' => $productWarehouse ? $productWarehouse->product_quantity : 0,
+                            'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                        ]
+                    );
+                }
+
+                if ($product->type == 2) {
+
+                    return response()->json(['errorMsg' => 'Combo product is not sellable in this demo']);
+                } else {
+
+                    if ($productWarehouse->product_quantity > 0) {
+
+                        return response()->json(
+                            [
+                                'product' => $product,
+                                'qty_limit' => $productWarehouse->product_quantity,
+                                'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                            ]
+                        );
+                    } else {
+
+                        return response()->json(['errorMsg' => 'Stock is out of this product in the selected warehouse']);
+                    }
+                }
+            } else {
+
+                return response()->json(['errorMsg' => 'This product is not available in the selected warehouse.']);
+            }
+        } else {
+
+            $variant_product = ProductVariant::with('product', 'updateVariantCost', 'product.tax', 'product.unit')
+                ->where('variant_code', $product_code)
+                ->select([
+                    'id',
+                    'product_id',
+                    'variant_name',
+                    'variant_code',
+                    'variant_quantity',
+                    'variant_cost',
+                    'variant_cost_with_tax',
+                    'variant_profit',
+                    'variant_price',
+                ])->first();
+
+            if ($variant_product) {
+
+                if ($variant_product->product->is_manage_stock == 0) {
+
+                    return response()->json([
+                        'variant_product' => $variant_product,
+                        'qty_limit' => PHP_INT_MAX,
+                        'discount' => $is_allowed_discount == true ? $this->productDiscount($variant_product->product_id, $price_group_id, $variant_product->product->brand_id, $variant_product->product->category_id) : null,
+                    ]);
+                }
+
+                if ($variant_product) {
+
+                    $productWarehouse = DB::table('product_warehouses')
+                        ->where('warehouse_id', $warehouse_id)
+                        ->where('product_id', $variant_product->product_id)
+                        ->first();
+
+                    if (is_null($productWarehouse)) {
+
+                        return response()->json(['errorMsg' => 'This product is not available in the selected warehouse']);
+                    }
+
+                    $productWarehouseVariant = DB::table('product_warehouse_variants')
+                        ->where('product_warehouse_id', $productWarehouse->id)
+                        ->where('product_id', $variant_product->product_id)
+                        ->where('product_variant_id', $variant_product->id)
+                        ->select('variant_quantity')
+                        ->first();
+
+                    if (is_null($productWarehouseVariant)) {
+
+                        return response()->json(['errorMsg' => 'Product variant is not available in the selected warehouse']);
+                    }
+
+                    if ($productWarehouse && $productWarehouseVariant) {
+
+                        if ($status == 2 || $status == 3 || $status == 4) {
+
+                            return response()->json(
+                                [
+                                    'variant_product' => $variant_product,
+                                    'qty_limit' => $productWarehouseVariant ? $productWarehouseVariant->variant_quantity : 0,
+                                    'discount' => $is_allowed_discount == true ? $this->productDiscount($variant_product->product_id, $price_group_id, $variant_product->product->brand_id, $variant_product->product->category_id) : null,
+                                ]
+                            );
+                        }
+
+                        if ($productWarehouseVariant->variant_quantity > 0) {
+
+                            return response()->json([
+                                'variant_product' => $variant_product,
+                                'qty_limit' => $productWarehouseVariant->variant_quantity,
+                                'discount' => $is_allowed_discount == true ? $this->productDiscount($variant_product->product_id, $price_group_id, $variant_product->product->brand_id, $variant_product->product->category_id) : null,
+                            ]);
+                        } else {
+
+                            return response()->json(['errorMsg' => 'Stock is out of this product variant in the selected warehouse']);
+                        }
+                    } else {
+
+                        return response()->json(['errorMsg' => 'Product is not available in the selected warehouse.']);
+                    }
+                }
+            }
+        }
+
+        return $this->nameSearching($product_code);
+    }
+
+    public function checkBranchSingleProductStock($product_id, $branch_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL)
+    {
+        $product = DB::table('products')
+            ->where('id', $product_id)->select('id', 'is_manage_stock', 'brand_id', 'category_id')
+            ->first();
+
+        if ($product->is_manage_stock == 0) {
+
+            return response()->json(
+                [
+                    'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                    'stock' => PHP_INT_MAX,
+                ]
+            );
+        }
+
+        $productBranch = DB::table('product_branches')
+            ->where('product_id', $product_id)
+            ->where('branch_id', $branch_id)->first();
+
+        if ($productBranch) {
+
+            if ($status == 2 || $status == 3 || $status == 4) {
+
+                return response()->json([
+                    'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                    'stock' => $productBranch->product_quantity,
+                ]);
+            }
+
+            if ($productBranch->product_quantity > 0) {
+
+                return response()->json([
+                    'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                    'stock' => $productBranch->product_quantity,
+                ]);
+            } else {
+
+                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop/branch.']);
+            }
+        } else {
+
+            return response()->json(['errorMsg' => 'This product is not available in this shop/branch.']);
+        }
+    }
+
+    public function checkAddSaleWarehouseSingleProductStock($product_id, $warehouse_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL)
+    {
+        $product = DB::table('products')
+            ->where('id', $product_id)->select('id', 'is_manage_stock', 'brand_id', 'category_id')
+            ->first();
+
+        if ($product->is_manage_stock == 0) {
+
+            return response()->json(
+                [
+                    'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                    'stock' => PHP_INT_MAX,
+                ]
+            );
+        }
+
+        $productWarehouse = DB::table('product_warehouses')
+            ->where('product_id', $product_id)
+            ->where('warehouse_id', $warehouse_id)->first();
+
+        if ($productWarehouse) {
+
+            if ($status == 2 || $status == 3 || $status == 4) {
+
+                return response()->json([
+                    'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                    'stock' => $productWarehouse->product_quantity,
+                ]);
+            }
+
+            if ($productWarehouse->product_quantity > 0) {
+
+                return response()->json([
+                    'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                    'stock' => $productWarehouse->product_quantity,
+                ]);
+            } else {
+
+                return response()->json(['errorMsg' => 'Stock is out of this product(variant) in the selected warehouse.']);
+            }
+        } else {
+
+            return response()->json(['errorMsg' => 'This product is not available in the selected warehouse.']);
+        }
+    }
+
+    public function checkBranchVariantProductStock($product_id, $variant_id, $branch_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL)
+    {
+        $product = DB::table('products')
+            ->where('id', $product_id)->select('id', 'is_manage_stock', 'brand_id', 'category_id')
+            ->first();
+
+        if ($product->is_manage_stock == 0) {
+
+            return response()->json([
+                'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                'stock' => PHP_INT_MAX
+            ]);
+        }
+
+        $productBranch = DB::table('product_branches')->where('branch_id', $branch_id)->where('product_id', $product_id)->first();
+
+        if ($productBranch) {
+
+            $productBranchVariant = DB::table('product_branch_variants')
+                ->where('product_branch_id', $productBranch->id)
+                ->where('product_id', $product_id)
+                ->where('product_variant_id', $variant_id)->first();
+
+            if ($productBranchVariant) {
+
+                if ($status == 2 || $status == 3 || $status == 4) {
+
+                    return response()->json([
+                        'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                        'stock' => $productBranchVariant->variant_quantity
+                    ]);
+                }
+
+                if ($productBranchVariant->variant_quantity > 0) {
+
+                    return response()->json([
+                        'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                        'stock' =>  $productBranchVariant->variant_quantity
+                    ]);
+                } else {
+
+                    return response()->json(['errorMsg' => 'Stock is out of this product(variant) from this Shop/Business Location']);
+                }
+            } else {
+
+                return response()->json(['errorMsg' => 'This variant is not available in this Shop/Business Location.']);
+            }
+        } else {
+
+            return response()->json(['errorMsg' => 'This product is not available in this Shop/Business Location.']);
+        }
+    }
+
+    public function checkAddSaleWarehouseVariantProductStock($product_id, $variant_id, $warehouse_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL)
+    {
+        $product = DB::table('products')
+            ->where('id', $product_id)->select('id', 'is_manage_stock', 'brand_id', 'category_id')
+            ->first();
+
+        if ($product->is_manage_stock == 0) {
+
+            return response()->json([
+                'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                'stock' => PHP_INT_MAX
+            ]);
+        }
+
+        $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouse_id)->where('product_id', $product_id)->first();
+
+        if ($productWarehouse) {
+
+            $productWarehouseVariant = DB::table('product_warehouse_variants')
+                ->where('product_warehouse_id', $productWarehouse->id)
+                ->where('product_id', $product_id)
+                ->where('product_variant_id', $variant_id)->first();
+
+            if ($productWarehouseVariant) {
+
+                if ($status == 2 || $status == 3 || $status == 4) {
+
+                    return response()->json([
+                        'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                        'stock' => $productWarehouseVariant->variant_quantity
+                    ]);
+                }
+
+                if ($productWarehouseVariant->variant_quantity > 0) {
+
+                    return response()->json([
+                        'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
+                        'stock' =>  $productWarehouseVariant->variant_quantity
+                    ]);
+                } else {
+
+                    return response()->json(['errorMsg' => 'Stock is out of this product(variant) in the selected warehouse.']);
+                }
+            } else {
+
+                return response()->json(['errorMsg' => 'This variant is not available in the selected warehouse..']);
+            }
+        } else {
+
+            return response()->json(['errorMsg' => 'This product is not available in the selected warehouse.']);
+        }
+    }
+
+    public function checkWarehouseSingleProduct($product_id, $warehouse_id)
+    {
+        $productWarehouse = DB::table('product_warehouses')->where('product_id', $product_id)->where('warehouse_id', $warehouse_id)->first();
+
+        if ($productWarehouse) {
+
+            if ($productWarehouse->product_quantity > 0) {
+
+                return response()->json($productWarehouse->product_quantity);
+            } else {
+
+                return response()->json(['errorMsg' => 'Stock is out of this product from this warehouse']);
+            }
+        } else {
+
+            return response()->json(['errorMsg' => 'This product is not available in this warehouse.']);
+        }
+    }
+
+    // Check warehouse product variant qty 
+    public function checkWarehouseProductVariant($product_id, $variant_id, $warehouse_id)
+    {
+        $productWarehouse = DB::table('product_warehouses')
+            ->where('warehouse_id', $warehouse_id)
+            ->where('product_id', $product_id)
+            ->first();
+
+        if (is_null($productWarehouse)) {
+
+            return response()->json(['errorMsg' => 'This product is not available in this warehouse.']);
+        }
+
+        $productWarehouseVariant = DB::table('product_warehouse_variants')
+            ->where('product_warehouse_id', $productWarehouse->id)
+            ->where('product_id', $product_id)
+            ->where('product_variant_id', $variant_id)
+            ->first();
+
+        if (is_null($productWarehouseVariant)) {
+
+            return response()->json(['errorMsg' => 'This variant is not available in this warehouse.']);
+        }
+
+        if ($productWarehouse && $productWarehouseVariant) {
+
+            if ($productWarehouseVariant->variant_quantity > 0) {
+
+                return response()->json($productWarehouseVariant->variant_quantity);
+            } else {
+
+                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this warehouse.']);
+            }
+        } else {
+
+            return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
+        }
     }
 
     public function searchStockToWarehouse($product, $product_code, $warehouse_id)

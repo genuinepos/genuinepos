@@ -127,17 +127,21 @@ class SaleController extends Controller
         $sale = Sale::with([
             'branch',
             'branch.add_sale_invoice_layout',
-            'customer',
-            'admin',
+            'customer:id,name,phone,alternative_phone,city,state,country,landline,email,address,tax_number,point',
+            'admin:id,prefix,name,last_name,role_id',
             'admin.role',
             'sale_products',
-            'sale_products.product',
+            'sale_products.product:id,name,product_code',
             'sale_products.product.warranty',
-            'sale_products.variant',
+            'sale_products.variant:id,variant_name,variant_code',
             'sale_payments',
-            'sale_payments.paymentMethod',
+            'sale_payments.paymentMethod:id,name',
         ])->where('id', $saleId)->first();
-        return view('sales.ajax_view.product_details_modal', compact('sale'));
+
+
+        $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($saleId);
+
+        return view('sales.ajax_view.product_details_modal', compact('sale', 'customerCopySaleProducts'));
     }
 
     public function posShow($saleId)
@@ -185,15 +189,19 @@ class SaleController extends Controller
     public function quotationDetails($quotationId)
     {
         $quotation = Sale::with([
-            'branch', 'branch.add_sale_invoice_layout', 'customer', 'admin', 'admin.role', 'sale_products', 'sale_products.product', 'sale_products.variant', 'sale_payments',
+            'branch', 'branch.add_sale_invoice_layout', 'customer', 'admin:id,prefix,name,last_name,role_id', 'admin.role', 'sale_products', 'sale_products.branch', 'sale_products.warehouse', 'sale_products.product:id,name,product_code', 'sale_products.variant:id,variant_name,variant_code', 'sale_payments',
         ])->where('id', $quotationId)->first();
-        return view('sales.ajax_view.quotation_details', compact('quotation'));
+
+        $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($quotation->id);
+
+        return view('sales.ajax_view.quotation_details', compact('quotation', 'customerCopySaleProducts'));
     }
 
     // Create sale view
     public function create()
     {
         if (auth()->user()->permission->sale['create_add_sale'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -228,13 +236,33 @@ class SaleController extends Controller
             ->where('accounts.account_type', 5)
             ->get(['accounts.id', 'accounts.name']);
 
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', $branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name as name',
+                'warehouses.warehouse_code as code',
+            )->get();
+
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
-        return view('sales.create', compact('customers', 'methods', 'accounts', 'saleAccounts', 'price_groups', 'invoice_schemas'));
+
+        return view('sales.create', compact(
+            'customers',
+            'methods',
+            'accounts',
+            'saleAccounts',
+            'price_groups',
+            'invoice_schemas',
+            'warehouses'
+        ));
     }
 
     // Add Sale method
     public function store(Request $request)
     {
+        //return $request->all();
         $this->validate($request, [
             'status' => 'required',
             'date' => 'required|date',
@@ -438,10 +466,14 @@ class SaleController extends Controller
         $__index = 0;
         foreach ($request->product_ids as $product_id) {
 
+            $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+            $warehouse_id = $request->warehouse_ids[$__index] == 'NULL' ? NULL : $request->warehouse_ids[$__index];
             $addSaleProduct = new SaleProduct();
             $addSaleProduct->sale_id = $addSale->id;
+            $addSaleProduct->stock_warehouse_id = $warehouse_id;
+            $addSaleProduct->stock_branch_id = $request->branch_ids[$__index];
             $addSaleProduct->product_id = $product_id;
-            $addSaleProduct->product_variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+            $addSaleProduct->product_variant_id = $variant_id;
             $addSaleProduct->quantity = $request->quantities[$__index];
             $addSaleProduct->unit_discount_type = $request->unit_discount_types[$__index];
             $addSaleProduct->unit_discount = $request->unit_discounts[$__index];
@@ -465,10 +497,11 @@ class SaleController extends Controller
             'branch',
             'branch.add_sale_invoice_layout',
             'sale_products',
-            'sale_products.product',
-            'sale_products.product.warranty',
-            'sale_products.variant',
-            'admin'
+            'sale_products.product:id,name,product_code,is_manage_stock',
+            'sale_products.variant:id,variant_name,variant_code',
+            'sale_products.branch',
+            'sale_products.warehouse',
+            'admin:id,prefix,name,last_name'
         ])->where('id', $addSale->id)->first();
 
         if ($request->status == 1 || $request->status == 3) {
@@ -487,9 +520,19 @@ class SaleController extends Controller
             $__index = 0;
             foreach ($request->product_ids as $product_id) {
 
+                $warehouse_id = $request->warehouse_ids[$__index] == 'NULL' ? NULL : $request->warehouse_ids[$__index];
                 $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+
                 $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
-                $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
+
+                if ($warehouse_id) {
+
+                    $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $warehouse_id);
+                } else {
+
+                    $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
+                }
+
                 $__index++;
             }
 
@@ -525,6 +568,8 @@ class SaleController extends Controller
             }
         }
 
+        $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($sale->id);
+
         if ($request->action == 'save_and_print') {
 
             if ($request->status == 1 || $request->status == 3) {
@@ -535,14 +580,15 @@ class SaleController extends Controller
                     'total_payable_amount',
                     'paying_amount',
                     'total_due',
-                    'change_amount'
+                    'change_amount',
+                    'customerCopySaleProducts'
                 ));
             } elseif ($request->status == 2) {
 
-                return view('sales.save_and_print_template.draft_print', compact('sale'));
+                return view('sales.save_and_print_template.draft_print', compact('sale', 'customerCopySaleProducts'));
             } elseif ($request->status == 4) {
 
-                return view('sales.save_and_print_template.quotation_print', compact('sale'));
+                return view('sales.save_and_print_template.quotation_print', compact('sale', 'customerCopySaleProducts'));
             }
         } else {
 
@@ -575,6 +621,8 @@ class SaleController extends Controller
         $sale = Sale::with([
             'sale_products',
             'customer',
+            'sale_products.branch',
+            'sale_products.warehouse',
             'sale_products.product',
             'sale_products.variant',
             'sale_products.product.comboProducts',
@@ -609,7 +657,17 @@ class SaleController extends Controller
                 'banks.name as bank'
             )->get();
 
-        return view('sales.edit', compact('sale', 'price_groups', 'saleAccounts', 'taxes', 'qty_limits', 'methods', 'accounts'));
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name as name',
+                'warehouses.warehouse_code as code',
+            )->get();
+
+        return view('sales.edit', compact('sale', 'price_groups', 'saleAccounts', 'taxes', 'qty_limits', 'methods', 'accounts', 'warehouses'));
     }
 
     // Update Sale 
@@ -749,10 +807,14 @@ class SaleController extends Controller
         foreach ($request->product_ids as $product_id) {
 
             $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+            $warehouse_id = $request->warehouse_ids[$__index] == 'NULL' ? NULL : $request->warehouse_ids[$__index];
 
             $saleProduct = SaleProduct::where('sale_id', $updateSale->id)
                 ->where('product_id', $product_id)
-                ->where('product_variant_id', $variant_id)->first();
+                ->where('product_variant_id', $variant_id)
+                ->where('stock_branch_id', $request->branch_ids[$__index])
+                ->where('stock_warehouse_id', $warehouse_id)
+                ->first();
 
             if ($saleProduct) {
 
@@ -773,19 +835,21 @@ class SaleController extends Controller
             } else {
 
                 $addSaleProduct = new SaleProduct();
-                $addSaleProduct->sale_id = $updateSale->id;
+                $addSaleProduct->sale_id = $addSale->id;
+                $addSaleProduct->stock_warehouse_id = $warehouse_id;
+                $addSaleProduct->stock_branch_id = $request->branch_ids[$__index];
                 $addSaleProduct->product_id = $product_id;
                 $addSaleProduct->product_variant_id = $variant_id;
                 $addSaleProduct->quantity = $request->quantities[$__index];
-                $addSaleProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$__index];
-                $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$__index];
-                $addSaleProduct->unit_price_inc_tax = $request->unit_prices[$__index];
                 $addSaleProduct->unit_discount_type = $request->unit_discount_types[$__index];
                 $addSaleProduct->unit_discount = $request->unit_discounts[$__index];
                 $addSaleProduct->unit_discount_amount = $request->unit_discount_amounts[$__index];
                 $addSaleProduct->unit_tax_percent = $request->unit_tax_percents[$__index];
                 $addSaleProduct->unit_tax_amount = $request->unit_tax_amounts[$__index];
                 $addSaleProduct->unit = $request->units[$__index];
+                $addSaleProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$__index];
+                $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$__index];
+                $addSaleProduct->unit_price_inc_tax = $request->unit_prices[$__index];
                 $addSaleProduct->subtotal = $request->subtotals[$__index];
                 $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : NULL;
                 $addSaleProduct->save();
@@ -801,13 +865,22 @@ class SaleController extends Controller
 
             $storedProductId = $deleteNotFoundSaleProduct->product_id;
             $storedVariantId = $deleteNotFoundSaleProduct->product_variant_id ? $deleteNotFoundSaleProduct->product_variant_id : NULL;
+            $storedStockBranchId = $deleteNotFoundSaleProduct->stock_branch_id;
+            $storedStockWarehouseId = $deleteNotFoundSaleProduct->stock_warehouse_id;
 
             $purchaseSaleProductChains = $deleteNotFoundSaleProduct->purchaseSaleProductChains;
 
             $deleteNotFoundSaleProduct->delete();
 
             $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
-            $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
+
+            if($storedStockWarehouseId){
+
+                $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId, $storedStockWarehouseId);
+            }else {
+
+                $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, $storedStockBranchId);
+            }
 
             foreach ($purchaseSaleProductChains as $purchaseSaleProductChain) {
 
@@ -822,8 +895,16 @@ class SaleController extends Controller
             foreach ($sale_products as $saleProduct) {
 
                 $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
+
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
-                $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, auth()->user()->branch_id);
+
+                if($saleProduct->stock_warehouse_id){
+
+                    $this->productStockUtil->adjustWarehouseStock($saleProduct->product_id, $variant_id, $saleProduct->stock_warehouse_id);
+                }else {
+
+                    $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, $saleProduct->stock_branch_id);
+                }
             }
 
             $sale = Sale::with([
@@ -918,7 +999,10 @@ class SaleController extends Controller
     public function packingSlip($saleId)
     {
         $sale = Sale::with(['branch', 'customer'])->where('id', $saleId)->first();
-        return view('sales.ajax_view.print_packing_slip', compact('sale'));
+
+        $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($saleId);
+
+        return view('sales.ajax_view.print_packing_slip', compact('sale', 'customerCopySaleProducts'));
     }
 
     // Shipments View
@@ -994,8 +1078,9 @@ class SaleController extends Controller
     }
 
     // Search product by code
-    public function searchProduct($status, $product_code, $price_group_id)
+    public function searchProduct($status, $product_code, $price_group_id, $warehouse_id)
     {
+        $__warehouse_id = $warehouse_id == 'NULL' ? NULL : $warehouse_id;
         $product_code = (string)$product_code;
         $__product_code = str_replace('~', '/', $product_code);
         $branch_id = auth()->user()->branch_id;
@@ -1028,21 +1113,43 @@ class SaleController extends Controller
                 'is_manage_stock',
             ])->first();
 
-        return $this->nameSearchUtil->searchStockToBranch($product, $__product_code,  $branch_id, $status, $is_allowed_discount, $__price_group_id);
+        if ($__warehouse_id) {
+
+            return $this->nameSearchUtil->addSaleSearchStockToWarehouse($product, $__product_code, $__warehouse_id, $status, $is_allowed_discount, $__price_group_id);
+        } else {
+
+            return $this->nameSearchUtil->searchStockToBranch($product, $__product_code, $branch_id, $status, $is_allowed_discount, $__price_group_id);
+        }
     }
 
-    // Check Branch Single product Stock
-    public function checkBranchSingleProductStock($status, $product_id, $price_group_id)
+    // Check Single product Stock
+    public function checkSingleProductStock($status, $product_id, $price_group_id, $warehouse_id)
     {
+        $__warehouse_id = $warehouse_id == 'NULL' ? NULL : $warehouse_id;
         $is_allowed_discount = true;
-        return $this->nameSearchUtil->checkBranchSingleProductStock($product_id, auth()->user()->branch_id, $status, $is_allowed_discount, $price_group_id);
+
+        if ($__warehouse_id) {
+
+            return $this->nameSearchUtil->checkAddSaleWarehouseSingleProductStock($product_id, $__warehouse_id, $status, $is_allowed_discount, $price_group_id);
+        } else {
+
+            return $this->nameSearchUtil->checkBranchSingleProductStock($product_id, auth()->user()->branch_id, $status, $is_allowed_discount, $price_group_id);
+        }
     }
 
     // Check Branch variant product Stock 
-    public function checkBranchProductVariant($status, $product_id, $variant_id, $price_group_id)
+    public function checkVariantProductStock($status, $product_id, $variant_id, $price_group_id, $warehouse_id)
     {
+        $__warehouse_id = $warehouse_id == 'NULL' ? NULL : $warehouse_id;
         $is_allowed_discount = true;
-        return $this->nameSearchUtil->checkBranchVariantProductStock($product_id, $variant_id, auth()->user()->branch_id, $status, $is_allowed_discount, $price_group_id);
+
+        if ($__warehouse_id) {
+
+            return $this->nameSearchUtil->checkAddSaleWarehouseVariantProductStock($product_id, $variant_id, $warehouse_id, $status, $is_allowed_discount, $price_group_id);
+        } else {
+
+            return $this->nameSearchUtil->checkBranchVariantProductStock($product_id, $variant_id, auth()->user()->branch_id, $status, $is_allowed_discount, $price_group_id);
+        }
     }
 
     public function editShipment($saleId)
@@ -1579,6 +1686,8 @@ class SaleController extends Controller
         $total_due = $sale->due;
         $change_amount = 0;
 
+        $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($saleId);
+
         if ($sale->status == 1) {
 
             if ($sale->created_by == 1) {
@@ -1589,7 +1698,8 @@ class SaleController extends Controller
                     'total_payable_amount',
                     'paying_amount',
                     'total_due',
-                    'change_amount'
+                    'change_amount',
+                    'customerCopySaleProducts'
                 ));
             } else {
 
@@ -1604,10 +1714,10 @@ class SaleController extends Controller
             }
         } elseif ($sale->status == 2) {
 
-            return view('sales.save_and_print_template.draft_print', compact('sale'));
+            return view('sales.save_and_print_template.draft_print', compact('sale', 'customerCopySaleProducts'));
         } elseif ($sale->status == 4) {
 
-            return view('sales.save_and_print_template.quotation_print', compact('sale'));
+            return view('sales.save_and_print_template.quotation_print', compact('sale', 'customerCopySaleProducts'));
         }
     }
 

@@ -1,5 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
+<link rel="stylesheet" type="text/css" href="{{asset('public')}}/backend/asset/css/select2.min.css"/>
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -7,7 +8,6 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-warehouse"></span>
@@ -28,9 +28,10 @@
                                                         <div class="col-md-3">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
+                                                                class="form-control submit_able" 
+                                                                id="branch_id" autofocus>
                                                                 <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                <option selected value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -82,6 +83,20 @@
                                             <label><b>Address :</b>  </label>
                                             <textarea name="address" class="form-control" placeholder="Warehouse address" rows="3"></textarea>
                                         </div>
+
+                                        <div class="col-md-12">
+                                            <label><strong>Under Business Location :</strong></label>
+                                            <select name="branch_ids[]" id="branch_id" class="form-control select2" multiple="multiple">
+                                                <option value="NULL">
+                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (HO)
+                                                </option>
+        
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_business_location"></span>
+                                        </div>
                 
                                         <div class="form-group text-end mt-3">
                                             <button type="button" class="btn loading_button d-none"><i
@@ -131,9 +146,7 @@
                                                     <th class="text-start">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-        
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -151,7 +164,13 @@
     </div>
 @endsection
 @push('scripts')
+<script src="{{asset('public')}}/backend/asset/js/select2.min.js"></script>
 <script>
+     $('.select2').select2({
+        placeholder: "Select under business location",
+        allowClear: true
+    });
+
     var table = $('.data_tbl').DataTable({
         "processing": true,
         "serverSide": true,
@@ -198,10 +217,14 @@
             var inputs = $('.add_input');
                 $('.error').html('');  
                 var countErrorField = 0;  
+
             $.each(inputs, function(key, val){
+
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val()
+
                 if(idValue == ''){
+
                     countErrorField += 1;
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
@@ -209,6 +232,7 @@
             });
 
             if(countErrorField > 0){
+
                  $('.loading_button').hide();
                 return;
             }
@@ -218,10 +242,12 @@
                 type:'post',
                 data:request,
                 success:function(data){
+
                     toastr.success(data);
                     $('#add_warehouse_form')[0].reset();
                     $('.loading_button').hide();
                     table.ajax.reload();
+                    $(".select2").select2().val('').trigger('change');
                     $('.submit_button').prop('type', 'submit');
                 }
             });
@@ -244,43 +270,6 @@
             });
         });
 
-        //Edit warehouse by ajax
-        $(document).on('submit', '#edit_warehouse_form', function(e){
-            e.preventDefault();
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            var inputs = $('.edit_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val()
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                } 
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                return;
-            }
-            $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                    table.ajax.reload();
-                    $('#add_form').show();
-                    $('#edit_form').hide();
-                }
-            });
-        });
-
         $(document).on('click', '#delete',function(e){
             e.preventDefault(); 
             var url = $(this).attr('href');
@@ -298,8 +287,9 @@
         });
 
         //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
+        $(document).on('submit', '#deleted_form',function(e){ 
             e.preventDefault();
+
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
@@ -307,15 +297,21 @@
                 type:'delete',
                 data:request,
                 success:function(data){
+
                     if($.isEmptyObject(data.errorMsg)){
+
                         toastr.error(data);
                         table.ajax.reload();
-                    }else{toastr.error(data.errorMsg, 'Error');}
+                    }else{
+
+                        toastr.error(data.errorMsg, 'Error');
+                    }
                 }
             });
         });
 
         $(document).on('click', '#close_form', function() {
+
             $('#add_form').show();
             $('#edit_form').hide();
         });

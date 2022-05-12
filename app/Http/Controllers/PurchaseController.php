@@ -187,7 +187,16 @@ class PurchaseController extends Controller
             ->where('accounts.account_type', 3)
             ->get(['accounts.id', 'accounts.name']);
 
-        $warehouses = DB::table('warehouses')->where('branch_id', auth()->user()->branch_id)->get();
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
+
         return view('purchases.create', compact('warehouses', 'methods', 'accounts', 'purchaseAccounts'));
     }
 
@@ -486,7 +495,16 @@ class PurchaseController extends Controller
         $purchaseId = $purchaseId;
         $editType = $editType;
 
-        $warehouses = DB::table('warehouses')->get();
+        $warehouses = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
+
         $purchase = DB::table('purchases')->where('id', $purchaseId)->select('id', 'warehouse_id', 'date', 'delivery_date', 'purchase_status')->first();
 
         $purchaseAccounts = DB::table('account_branches')

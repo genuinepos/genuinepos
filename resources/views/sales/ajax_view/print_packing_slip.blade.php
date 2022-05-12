@@ -87,13 +87,13 @@
                     </tr>
                 </thead>
                 <thead>
-                    @foreach ($sale->sale_products as $saleProduct)
+                    @foreach ($customerCopySaleProducts as $saleProduct)
                         <tr>
                             @php
-                                $variant = $saleProduct->variant ? ' -' . $saleProduct->variant->variant_name : '';
+                                $variant = $saleProduct->product_variant_id ? ' -' . $saleProduct->variant_name : '';
                             @endphp
                             <td class="text-start">{{ $loop->index + 1 }}</td>
-                            <td class="text-start"><p><b> {{ $saleProduct->product->name . $variant }}</b></p> </td>
+                            <td class="text-start"><p><b> {{ $saleProduct->p_name }}</b> {{ $variant }}</p> </td>
                             <td class="text-start">{{ $saleProduct->unit }}
                             <td class="text-start">{{ $saleProduct->quantity }}</td>
                         </tr>

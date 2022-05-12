@@ -204,24 +204,27 @@
                         </tr>
                     </thead>
                     <tbody class="sale_print_product_list">
-                        @foreach ($sale->sale_products as $sale_product)
+                        @foreach ($customerCopySaleProducts as $sale_product)
                             <tr>
                                 <td class="text-start">{{ $loop->index + 1 }}</td>
                                 <td class="text-start">
-                                    {{ $sale_product->product->name }}
-                                    @if ($sale_product->variant)
-                                        -{{ $sale_product->variant->variant_name }}
+                                    {{ $sale_product->p_name }}
+
+                                    @if ($sale_product->product_variant_id)
+
+                                        -{{ $sale_product->variant_name }}
                                     @endif
                                     {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                 </td>
+
                                 <td class="text-start">{{ $sale_product->quantity }}({{ $sale_product->unit }}) </td>
 
                                 @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
                                     <td class="text-start">
-                                        @if ($sale_product->product->warranty)
-                                            {{ $sale_product->product->warranty->duration . ' ' . $sale_product->product->warranty->duration_type }}
-                                            {{ $sale_product->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
-                                            {!! $defaultLayout->product_w_discription ? '<br><small class="text-muted">' . $sale_product->product->warranty->description . '</small>' : '' !!}
+                                        @if ($sale_product->warranty_id)
+                                            {{ $sale_product->product->w_duration . ' ' . $sale_product->w_duration_type }}
+                                            {{ $sale_product->w_type == 1 ? 'Warranty' : 'Guaranty' }}
+                                            {!! $defaultLayout->product_w_discription ? '<br><small class="text-muted">' . $sale_product->w_description . '</small>' : '' !!}
                                         @else 
                                             <strong>No</strong>
                                         @endif
@@ -231,12 +234,14 @@
                                 <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->unit_price_inc_tax) }} </td>
 
                                 @if ($defaultLayout->product_discount)
+
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale_product->unit_discount_amount) }}
                                     </td>
                                 @endif
 
                                 @if ($defaultLayout->product_tax)
+
                                     <td class="text-end">
                                         {{ $sale_product->unit_tax_percent }}%
                                     </td>
@@ -539,13 +544,12 @@
                             </tr>
                         </thead>
                         <thead class="d-body">
-                            @foreach ($sale->sale_products as $saleProduct)
+                            @foreach ($customerCopySaleProducts as $saleProduct)
                                 <tr>
                                     @php
-                                        $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
+                                        $variant = $saleProduct->product_variant_id ? ' '.$saleProduct->variant_name : '';
                                     @endphp
-                                    <th class="text-start">{{ $loop->index + 1 }}. {{ Str::limit($saleProduct->product->name, 25, '').$variant }} </th>
-                                    
+                                    <th class="text-start">{{ $loop->index + 1 }}. {{ Str::limit($saleProduct->p_name, 25, '').$variant }}</th>
                                     <th class="text-center">{{ (float)$saleProduct->quantity }}</th>
                                     <th class="text-center">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</th>
                                     <th class="text-end">{{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}</th>
@@ -617,9 +621,9 @@
                             <tr>
                                 <th class="text-end">Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="total_paid text-end">
-                                    <b>
+                                    <span>
                                         {{ App\Utils\Converter::format_in_bdt($change_amount > 0 ? $change_amount : 0) }}
-                                    </b>
+                                    </span>
                                 </th>
                             </tr> 
                             

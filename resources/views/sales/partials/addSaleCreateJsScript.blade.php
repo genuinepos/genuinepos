@@ -321,7 +321,7 @@
                                 }
                             }    
                         });
-                    
+
                         if(sameVariant == 0){
 
                             var price = 0;

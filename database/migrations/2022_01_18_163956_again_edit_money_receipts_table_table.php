@@ -16,6 +16,8 @@ class AgainEditMoneyReceiptsTableTable extends Migration
         Schema::table('money_receipts', function (Blueprint $table) {
             $table->string('receiver')->after('note')->nullable();
             $table->string('ac_details')->after('receiver')->nullable();
+            $table->boolean('is_header_less')->after('ac_details')->default(0);
+            $table->bigInteger('gap_from_top')->after('is_header_less')->nullable();
         });
     }
 

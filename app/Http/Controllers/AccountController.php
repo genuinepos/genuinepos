@@ -441,7 +441,7 @@ class AccountController extends Controller
             $updateAccountLedger->save();
         } else {
 
-            // Add Opening Stock Ledger
+            // Add Opening Ledger
             $accountLedger = new AccountLedger();
             $accountLedger->account_id = $updateAccount->id;
             $accountLedger->voucher_type = 0;
@@ -494,7 +494,7 @@ class AccountController extends Controller
     }
 
     public function ledgerPrint(Request $request, $accountId)
-    {
+    { 
         $accountUtil = $this->accountUtil;
 
         $ledgers = '';
@@ -528,7 +528,7 @@ class AccountController extends Controller
         }
 
         if (isset($request->voucher_type)) {
-
+            
             $query->where('account_ledgers.voucher_type', $request->voucher_type); // Final
         }
 

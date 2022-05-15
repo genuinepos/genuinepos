@@ -10,10 +10,10 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\hrm'], fun
     Route::group(['prefix' => 'designations'], function () {
 
         Route::get('/', 'DesignationController@index')->name('hrm.designations');
-        Route::get('/ajax-all-desgination', 'DesignationController@all_designation')->name('hrm.designations.all');
-        Route::post('/hrm/desgination/store', 'DesignationController@storedesignation')->name('hrm.designations.store');
-        Route::post('/hrm/desgination/update', 'DesignationController@updatedesignation')->name('hrm.designations.update');
-        Route::delete('hrm/delete/{designationId}', 'DesignationController@deletedesignation')->name('hrm.designations.delete');
+        Route::get('/ajax-all-designation', 'DesignationController@allDesignation')->name('hrm.designations.all');
+        Route::post('/hrm/designation/store', 'DesignationController@storeDesignation')->name('hrm.designations.store');
+        Route::post('/hrm/designation/update', 'DesignationController@updateDesignation')->name('hrm.designations.update');
+        Route::delete('hrm/delete/{designationId}', 'DesignationController@deleteDesignation')->name('hrm.designations.delete');
     });
 
     //Departments routes group

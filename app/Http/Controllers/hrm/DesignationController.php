@@ -21,7 +21,7 @@ class DesignationController extends Controller
     }
 
     //ajax request for all designation
-    public function all_designation()
+    public function allDesignation()
     {
         $designation = Designation::orderBy('id', 'DESC')->get();
         return view('hrm.designation.ajax.designation_list', compact('designation'));

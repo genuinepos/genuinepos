@@ -996,3 +996,50 @@ Route::group(['prefix' => 'communication', 'namespace' => 'App\Http\Controllers'
         Route::post('settings/store', 'SmsController@smsSettingsStore')->name('communication.sms.settings.store');
     });
 });
+
+Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
+
+Route::get('maintenance/mode', function () {
+
+    return view('maintenance/maintenance');
+})->name('maintenance.mode');
+
+Route::get('add-user', function () {
+
+    $addAdmin = new AdminAndUser();
+    $addAdmin->prefix = 'Mr.';
+    $addAdmin->name = 'Super';
+    $addAdmin->last_name = 'Admin';
+    $addAdmin->email = 'superadmin@gmail.com';
+    $addAdmin->username = 'superadmin';
+    $addAdmin->password = Hash::make('12345');
+    $addAdmin->role_type = 3;
+    $addAdmin->role_permission_id = 1;
+    $addAdmin->allow_login = 1;
+    $addAdmin->save();
+    //1=super_admin;2=admin;3=Other;
+
+});
+
+Route::get('pin_login', function () {
+
+    return view('auth.pin_login');
+});
+
+Route::get('/test', function () {
+
+    //return str_pad(10, 10, "0", STR_PAD_LEFT);
+    // $purchases = Purchase::all();
+    // foreach ($purchases as $p) {
+    //     $p->is_last_created = 0;
+    //     $p->save();
+    // } 
+});
+
+// All authenticated routes
+Auth::routes();
+
+// Route::get('dbal', function() {
+//     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
+// });
+

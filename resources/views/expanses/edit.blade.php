@@ -176,7 +176,7 @@
                                                         <select name="tax" class="form-control" id="tax">
                                                             <option value="0.00">NoTax</option>
                                                             @foreach ($taxes as $tax)
-                                                                <option {{ $tax->tax_percent == $tax->tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                                                <option {{ $tax->tax_percent == $expense->tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>

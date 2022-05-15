@@ -332,7 +332,7 @@ class ExpanseController extends Controller
 
         $adjustedExpense = $this->expenseUtil->adjustExpenseAmount($updateExpanse);
 
-        $this->userActivityLogUtil->addLog(action: 3, subject_type: 15, data_obj: $adjustedExpense);
+        $this->userActivityLogUtil->addLog(action: 2, subject_type: 15, data_obj: $adjustedExpense);
 
         $exDescriptions = ExpenseDescription::where('expense_id', $updateExpanse->id)->get();
 

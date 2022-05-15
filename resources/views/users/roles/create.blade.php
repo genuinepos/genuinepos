@@ -50,7 +50,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Users Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Users Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -64,7 +64,12 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-4 offset-1">
+
+                                                <div class="col-md-12">
+                                                    <p><strong>Users</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="user_view" class="users"> &nbsp; View User
@@ -91,9 +96,15 @@
                                                             autocomplete="off"> &nbsp; Delete User
                                                     </p>
                                                 </div>
+                                            </div>
 
+                                            <div class="col-md-5">
                                                 <div class="col-md-12">
-                                                    <p class="checkbox_input_wrap">
+                                                    <p><strong>Roles</strong></p>
+                                                </div>
+                                              
+                                                <div class="col-md-12">
+                                                    <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="role_view" class="users">
                                                         &nbsp; View Role
                                                     </p>
@@ -126,7 +137,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Conatacts Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Contacts Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -138,10 +149,14 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-4 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Suppliers</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="supplier_all" class="contacts"> &nbsp; View All Supplier </p> 
                                                     </div>
                                                 </div>
@@ -175,7 +190,20 @@
                                                 </div>
 
                                                 <div class="col-md-12">
-                                                    <div class="row"><p class="checkbox_input_wrap"> 
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="supplier_report" class="contacts"> &nbsp; Supplier Report</p> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-5">
+                                                <div class="col-md-12">
+                                                    <p><strong>Customers</strong></p>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row"><p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="customer_all" class="contacts"> &nbsp; View All Customer </p> 
                                                     </div>
                                                 </div>
@@ -219,13 +247,6 @@
                                                         <input type="checkbox" name="customer_report" class="contacts"> &nbsp; Customer Report</p> 
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="supplier_report" class="contacts"> &nbsp; Supplier Report</p> 
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -235,22 +256,26 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Product Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Products Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-2">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap "> 
+                                                    <p class="checkbox_input_wrap"> 
                                                     <input type="checkbox" id="select_all" data-target="product" autocomplete="off"> &nbsp;  Select All </p> 
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-4 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Products</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="product_all" class="product"> &nbsp; View All Product </p> 
                                                     </div>
                                                 </div>
@@ -281,6 +306,33 @@
                                                         <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="product_delete" class="product"> &nbsp; Delete Product </p> 
                                                     </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="product_settings" class="product"> &nbsp; Product Settings</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="stock_report" class="product"> &nbsp; Stock Report</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="stock_in_out_report" class="product"> &nbsp; Stock In-Out Report</p> 
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-5">
+                                                <div class="col-md-12">
+                                                    <p><strong>Others</strong></p>
                                                 </div>
                 
                                                 <div class="col-md-12">
@@ -331,27 +383,6 @@
                                                         <input type="checkbox" name="generate_barcode" class="product"> &nbsp; Generate Barcode</p> 
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="product_settings" class="product"> &nbsp; Product Settings</p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="stock_report" class="product"> &nbsp; Stock Report</p> 
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="stock_in_out_report" class="product"> &nbsp; Stock In-Out Report</p> 
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -361,7 +392,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Purchase Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Purchases Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -373,10 +404,14 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-4 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Purchases</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="purchase_all" class="purchase"> &nbsp; View All Purchase </p> 
                                                     </div>
                                                 </div>
@@ -399,20 +434,6 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="purchase_delete" class="purchase" > &nbsp; Delete Purchase </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="purchase_payment" class="purchase"> &nbsp; View/Add/Delete Purchase Payment </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="purchase_return" class="purchase"> &nbsp; Access Purchase Return </p> 
                                                     </div>
                                                 </div>
                 
@@ -450,6 +471,26 @@
                                                         <input type="checkbox" name="pro_purchase_report" class="purchase"> &nbsp; Product Purchase Report</p> 
                                                     </div>
                                                 </div>
+                                            </div>
+
+                                            <div class="col-md-5">
+                                                <div class="col-md-12">
+                                                    <p><strong>Others</strong></p>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="purchase_payment" class="purchase"> &nbsp; View/Add/Delete Purchase Payment </p> 
+                                                    </div>
+                                                </div>
+                
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="purchase_return" class="purchase"> &nbsp; Access Purchase Return </p> 
+                                                    </div>
+                                                </div>
 
                                                 <div class="col-md-12">
                                                     <div class="row">
@@ -466,7 +507,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Stock Adjustment Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Adjustment Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -478,10 +519,14 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-6 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Stock Adjustments</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="adjustment_all" class="adjustment"> &nbsp; View All Adjustment </p> 
                                                     </div>
                                                 </div>
@@ -522,7 +567,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><strong>Expense Permission</strong> </p>
+                                        <p class="p-1 text-primary"><strong>Expenses Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -534,10 +579,14 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-6 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Expenses</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="view_expense" class="expense"> &nbsp; View Expense </p> 
                                                     </div>
                                                 </div>
@@ -592,7 +641,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Sales Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Sales Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -604,42 +653,11 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-4 offset-1">
                                                 <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="pos_all" class="sale"> &nbsp; Manage Pos Sale</p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="pos_add" class="sale"> &nbsp; Add POS Sale </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="pos_edit" class="sale"> &nbsp; Edit POS Sale </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="pos_delete" class="sale"> &nbsp; Delete POS Sale </p> 
-                                                    </div>
+                                                    <p><strong>Sales</strong></p>
                                                 </div>
 
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="pos_sale_settings" class="sale"> &nbsp; POS Sale Settings </p> 
-                                                    </div>
-                                                </div>
-                
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
@@ -706,24 +724,10 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="edit_price_pos_screen" class="sale"> &nbsp; Edit Product Price From POS Screen </p> 
+                                                        <input type="checkbox" name="edit_discount_sale_screen" class="sale"> &nbsp; Edit Product Discount In Sale Scr. </p> 
                                                     </div>
                                                 </div>
                 
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="edit_discount_sale_screen" class="sale"> &nbsp; Edit Product Discount From Sale Screen </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="edit_discount_pos_screen" class="sale"> &nbsp; Edit Product Discount From POS Screen </p> 
-                                                    </div>
-                                                </div>
-            
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
@@ -734,7 +738,7 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="view_product_cost_is_sale_screed" class="sale"> &nbsp; View Product Cost is sale screen </p> 
+                                                        <input type="checkbox" name="view_product_cost_is_sale_screed" class="sale"> &nbsp; View Product Cost In sale screen </p> 
                                                     </div>
                                                 </div>
 
@@ -748,7 +752,7 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" name="return_access" class="sale"> &nbsp; Access Sale Return </p> 
+                                                        <input type="checkbox" name="return_access" class="sale"> &nbsp; Access Sale Returns </p> 
                                                     </div>
                                                 </div>
 
@@ -801,6 +805,60 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-5">
+                                                <div class="col-md-12">
+                                                    <p><strong>POS Sale</strong></p>
+                                                </div> 
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="pos_all" class="sale"> &nbsp; Manage Pos Sale</p> 
+                                                    </div>
+                                                </div>
+                
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="pos_add" class="sale"> &nbsp; Add POS Sale </p> 
+                                                    </div>
+                                                </div>
+                
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="pos_edit" class="sale"> &nbsp; Edit POS Sale </p> 
+                                                    </div>
+                                                </div>
+                
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="pos_delete" class="sale"> &nbsp; Delete POS Sale </p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="pos_sale_settings" class="sale"> &nbsp; POS Sale Settings </p> 
+                                                    </div>
+                                                </div>
+                
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="edit_price_pos_screen" class="sale"> &nbsp; Edit Product Price From POS Screen </p> 
+                                                    </div>
+                                                </div>
+                
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" name="edit_discount_pos_screen" class="sale"> &nbsp; Edit Product Discount From POS Screen </p> 
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -809,7 +867,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Cash Register Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Cash Register Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -821,10 +879,14 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-6 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Cash Register</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="register_view" class="cash_register"> &nbsp; View Cash Register</p> 
                                                     </div>
                                                 </div>
@@ -851,7 +913,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>All Report Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>All Report Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -863,11 +925,15 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-6 offset-1">
                                     
                                                 <div class="col-md-12">
+                                                    <p><strong>Reports</strong></p>
+                                                </div>
+
+                                                <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="tax_report" class="report"> &nbsp; Tax Report</p> 
                                                     </div>
                                                 </div>
@@ -887,7 +953,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Setup Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Setup Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -899,10 +965,14 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-6 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Setup</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="tax" class="settings"> &nbsp; Tax</p> 
                                                     </div>
                                                 </div>
@@ -971,7 +1041,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Dashboard Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Dashboard Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -980,10 +1050,15 @@
                                                 
                                             </div>
                                             
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-6 offset-1">
+
+                                                <div class="col-md-12">
+                                                    <p><strong>Dashboard</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="dash_data"> &nbsp; View Dashboard Data </p> 
                                                     </div>
                                                 </div>
@@ -996,7 +1071,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Accounting Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Accounting Permission</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -1005,10 +1080,14 @@
                                 
                                             </div>
                                             
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-6 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Accounting</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="ac_access"> &nbsp; Access Accounting </p> 
                                                     </div>
                                                 </div>
@@ -1022,7 +1101,7 @@
                                 <div class="col-md-8">
                                     <div class="form_element m-0 mt-2">
                                         <div class="heading_area">
-                                            <p class="p-1 text-primary"><b>HRM Permission</b> </p>
+                                            <p class="p-1 text-primary"><strong>HRM Permissions</strong> </p>
                                         </div>
 
                                         <div class="element-body">
@@ -1034,35 +1113,19 @@
                                                     </div>
                                                 </div>
                     
-                                                <div class="col-md-6 offset-2">
+                                                <div class="col-md-4 offset-1">
+
                                                     <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="hrm_dashboard" class="HRMS"> &nbsp; Hrm Dashboard</p> 
-                                                        </div>
+                                                        <p><strong>HRM</strong></p>
                                                     </div>
 
                                                     <div class="col-md-12">
                                                         <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="leave_type" class="HRMS"> &nbsp; Leave Type</p> 
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="leave_assign" class="HRMS"> &nbsp; Leave Assign</p> 
+                                                            <p class="checkbox_input_wrap mt-1"> 
+                                                            <input type="checkbox" name="hrm_dashboard" class="HRMS"> &nbsp; HRM Dashboard</p> 
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="shift" class="HRMS"> &nbsp; Shift</p> 
-                                                        </div>
-                                                    </div>
-                    
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap"> 
@@ -1073,35 +1136,7 @@
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="view_allowance_and_deduction" class="HRMS"> &nbsp; Allowance and deduction</p> 
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
                                                             <input type="checkbox" name="payroll" class="HRMS"> &nbsp; Payroll</p> 
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="holiday" class="HRMS"> &nbsp; Holiday</p> 
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="department" class="HRMS"> &nbsp; Departments</p> 
-                                                        </div>
-                                                    </div>
-                    
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" name="designation" class="HRMS"> &nbsp; Designation</p> 
                                                         </div>
                                                     </div>
 
@@ -1126,6 +1161,61 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-5">
+                                                    <div class="col-md-12">
+                                                        <p><strong>Others</strong></p>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap mt-1"> 
+                                                            <input type="checkbox" name="leave_type" class="HRMS"> &nbsp; Leave Type</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="leave_assign" class="HRMS"> &nbsp; Leave Assign</p> 
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="shift" class="HRMS"> &nbsp; Shift</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="view_allowance_and_deduction" class="HRMS"> &nbsp; Allowance and deduction</p> 
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="holiday" class="HRMS"> &nbsp; Holiday</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="department" class="HRMS"> &nbsp; Departments</p> 
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap"> 
+                                                            <input type="checkbox" name="designation" class="HRMS"> &nbsp; Designation</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1136,7 +1226,7 @@
                                 <div class="col-md-8">
                                     <div class="form_element m-0 mt-2">
                                         <div class="heading_area">
-                                            <p class="p-1 text-primary"><b>Manage Task Permission</b> </p>
+                                            <p class="p-1 text-primary"><strong>Manage Task Permissions</strong> </p>
                                         </div>
 
                                         <div class="element-body">
@@ -1148,10 +1238,14 @@
                                                     </div>
                                                 </div>
                     
-                                                <div class="col-md-6 offset-2">
+                                                <div class="col-md-6 offset-1">
+                                                    <div class="col-md-12">
+                                                        <p><strong>Manage Task</strong></p>
+                                                    </div>
+
                                                     <div class="col-md-12">
                                                         <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
+                                                            <p class="checkbox_input_wrap mt-1"> 
                                                             <input type="checkbox" name="assign_todo" class="Essentials"> &nbsp; Todo</p> 
                                                         </div>
                                                     </div>
@@ -1169,7 +1263,7 @@
                                                             <input type="checkbox" name="memo" class="Essentials"> &nbsp; Memo</p> 
                                                         </div>
                                                     </div>
-                    
+
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap"> 
@@ -1187,7 +1281,7 @@
                                 <div class="col-md-8">
                                     <div class="form_element m-0 mt-2">
                                         <div class="heading_area">
-                                            <p class="p-1 text-primary"><b>Manufacturing Permission</b> </p>
+                                            <p class="p-1 text-primary"><strong>Manufacturing Permissions</strong> </p>
                                         </div>
 
                                         <div class="element-body">
@@ -1199,10 +1293,15 @@
                                                     </div>
                                                 </div>
                     
-                                                <div class="col-md-6 offset-2">
+                                                <div class="col-md-6 offset-1">
+
+                                                    <div class="col-md-12">
+                                                        <p><strong>Manufacturing</strong></p>
+                                                    </div>
+
                                                     <div class="col-md-12">
                                                         <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
+                                                            <p class="checkbox_input_wrap mt-1"> 
                                                             <input type="checkbox" name="process_view" class=" Manufacturing"> &nbsp; View Process</p> 
                                                         </div>
                                                     </div>
@@ -1279,7 +1378,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Others Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Others Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -1291,10 +1390,14 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-6 offset-1">
+
+                                                <div class="col-md-12">
+                                                    <p><strong>Others</strong></p>
+                                                </div>
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" name="today_summery" class="others"> &nbsp; Today Summery</p> 
                                                     </div>
                                                 </div>
@@ -1319,6 +1422,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </section>
             </form>
         </div>
@@ -1327,10 +1431,13 @@
 @push('scripts')
     <script>
         $(document).on('click', '#select_all', function() {
+
             var target = $(this).data('target');
             if ($(this).is(':CHECKED', true)) {
+
                 $('.' + target).prop('checked', true);
             } else {
+
                 $('.' + target).prop('checked', false);
             }
         });

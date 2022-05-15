@@ -265,12 +265,12 @@ class UserActivityLogUtil
                 'fields' => [
                     'date',
                     'invoice_id',
-                    'total_amount'
+                    'net_total_amount'
                 ],
                 'texts' => [
                     'Date : ',
                     'Expense Voucher No : ',
-                    'Total Amt. : ',
+                    'Net Total Amt. : ',
                 ]
             ],
             16 => [ // Bank

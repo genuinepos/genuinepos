@@ -25,7 +25,7 @@
                           Action
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="{{ url('contacts/suppliers/view', $supplier->id) }}"><i class="far fa-eye text-primary"></i> View</a>
+                            <a class="dropdown-item" href="{{ url('contacts/suppliers/view', $supplier->id) }}"><i class="fas fa-tasks text-primary"></i> Manage</a>
         
                             {{-- @if ($supplier->total_purchase_return_due > 0)
 

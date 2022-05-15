@@ -138,7 +138,6 @@ class SaleController extends Controller
             'sale_payments.paymentMethod:id,name',
         ])->where('id', $saleId)->first();
 
-
         $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($saleId);
 
         return view('sales.ajax_view.product_details_modal', compact('sale', 'customerCopySaleProducts'));
@@ -166,6 +165,7 @@ class SaleController extends Controller
     public function drafts(Request $request)
     {
         if ($request->ajax()) {
+            
             return $this->saleUtil->saleDraftTable($request);
         }
 
@@ -388,7 +388,6 @@ class SaleController extends Controller
         $addSale->previous_due = $request->previous_due;
         $addSale->gross_pay = $request->paying_amount;
         $addSale->all_total_payable = $request->total_payable_amount;
-
         $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
 
         // Update customer due

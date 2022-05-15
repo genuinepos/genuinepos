@@ -18,7 +18,7 @@ return [
   'communication' => 'Communicate',
   'service' => 'Service',
   'reports' => 'Reports',
-  'superadmin' => 'Superadmin',
+  'superadmin' => 'Manage Business',
   // Menu child of Products module
   'categories' => 'Categories',
   'sub_categories' => 'SubCategories',

@@ -34,7 +34,7 @@
                                             <div class="col-md-8">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-3"><span
-                                                        class="text-danger">*</span> <b>Role Name :</b> </label>
+                                                        class="text-danger">*</span> <strong>Role Name :</strong> </label>
                                                     <div class="col-8">
                                                         <input type="text" name="role_name" class="form-control add_input" id="role_name"
                                                             placeholder="Role Name" value="{{ $role->name }}">
@@ -50,7 +50,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Users Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Users Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -63,7 +63,11 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-4 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Users</strong></p>
+                                                </div>
+                                                
                                                 <div class="col-md-12">
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->permission->user['user_view'] == '1' ? 'CHECKED' : '' }} name="user_view" class="users"> &nbsp; View
@@ -89,9 +93,15 @@
                                                         <input type="checkbox" {{ $role->permission->user['user_delete'] == '1' ? 'CHECKED' : '' }} name="user_delete" class="users"> &nbsp; Delete User
                                                     </p>
                                                 </div>
+                                            </div>
+
+                                            <div class="col-md-5">
+                                                <div class="col-md-12">
+                                                    <p><strong>Roles</strong></p>
+                                                </div>
 
                                                 <div class="col-md-12">
-                                                    <p class="checkbox_input_wrap">
+                                                    <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->permission->user['role_view'] == '1' ? 'CHECKED' : '' }}  name="role_view" class="users">
                                                         &nbsp; View Role
                                                     </p>
@@ -126,7 +136,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Contacts Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Contacts Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -138,10 +148,13 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-4 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Suppliers</strong></p>
+                                                </div>
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" {{ $role->permission->contact['supplier_all'] == '1' ? 'CHECKED' : '' }} name="supplier_all" class="contacts"> &nbsp; View All Supplier </p> 
                                                     </div>
                                                 </div>
@@ -175,7 +188,25 @@
                                                 </div>
 
                                                 <div class="col-md-12">
-                                                    <div class="row"><p class="checkbox_input_wrap"> 
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" 
+                                                            @if (isset($role->permission->contact['supplier_report']))
+                                                                {{ $role->permission->contact['supplier_report'] == '1' ? 'CHECKED' : '' }}
+                                                            @endif
+                                                            name="supplier_report" class="report"> &nbsp; Supplier Report</p> 
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-5">
+
+                                                <div class="col-md-12">
+                                                    <p><strong>Customers</strong></p>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row"><p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" {{ $role->permission->contact['customer_all'] == '1' ? 'CHECKED' : '' }} name="customer_all" class="contacts"> &nbsp; View All Customer </p> 
                                                     </div>
                                                 </div>
@@ -223,17 +254,6 @@
                                                             name="customer_report" class="report"> &nbsp; Customer Report</p> 
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" 
-                                                            @if (isset($role->permission->contact['supplier_report']))
-                                                                {{ $role->permission->contact['supplier_report'] == '1' ? 'CHECKED' : '' }}
-                                                            @endif
-                                                            name="supplier_report" class="report"> &nbsp; Supplier Report</p> 
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -243,7 +263,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Product Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Product Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -255,7 +275,11 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-4 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Products</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap"> 
@@ -289,6 +313,45 @@
                                                         <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" {{ $role->permission->product['product_delete'] == '1' ? 'CHECKED' : '' }} name="product_delete" class="product"> &nbsp; Delete Product </p> 
                                                     </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" 
+                                                            @if (isset($role->permission->product['product_settings']))
+                                                                {{ $role->permission->product['product_settings'] == '1' ? 'CHECKED' : '' }}
+                                                            @endif
+                                                        name="product_settings" class="product"> &nbsp; Product Settings</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" 
+                                                            @if (isset($role->permission->product['stock_report']))
+                                                                {{ $role->permission->product['stock_report'] == '1' ? 'CHECKED' : '' }}
+                                                            @endif
+                                                         name="stock_report" class="report"> &nbsp; stock Report</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" 
+                                                            @if (isset($role->permission->product['stock_in_out_report']))
+                                                                {{ $role->permission->product['stock_in_out_report'] == '1' ? 'CHECKED' : '' }}
+                                                            @endif
+                                                        name="stock_in_out_report" class="product"> &nbsp; Stock In-Out Report</p> 
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-5">
+                                                <div class="col-md-12">
+                                                    <p><strong>Others</strong></p>
                                                 </div>
                 
                                                 <div class="col-md-12">
@@ -339,39 +402,6 @@
                                                         <input type="checkbox" {{ $role->permission->product['generate_barcode'] == '1' ? 'CHECKED' : '' }}  name="generate_barcode" class="product"> &nbsp; Generate Barcode</p> 
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" 
-                                                            @if (isset($role->permission->product['product_settings']))
-                                                                {{ $role->permission->product['product_settings'] == '1' ? 'CHECKED' : '' }}
-                                                            @endif
-                                                        name="product_settings" class="product"> &nbsp; Product Settings</p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" 
-                                                            @if (isset($role->permission->product['stock_report']))
-                                                                {{ $role->permission->product['stock_report'] == '1' ? 'CHECKED' : '' }}
-                                                            @endif
-                                                         name="stock_report" class="report"> &nbsp; stock Report</p> 
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" 
-                                                            @if (isset($role->permission->product['stock_in_out_report']))
-                                                                {{ $role->permission->product['stock_in_out_report'] == '1' ? 'CHECKED' : '' }}
-                                                            @endif
-                                                        name="stock_in_out_report" class="product"> &nbsp; Stock In-Out Report</p> 
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -381,7 +411,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Purchase Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Purchase Permission</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -393,10 +423,15 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-4 offset-1">
+
+                                                <div class="col-md-12">
+                                                    <p><strong>Purchases</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" {{ $role->permission->purchase['purchase_all'] == '1' ? 'CHECKED' : '' }} name="purchase_all" class="purchase"> &nbsp; View All Purchase </p> 
                                                     </div>
                                                 </div>
@@ -419,20 +454,6 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" {{ $role->permission->purchase['purchase_delete'] == '1' ? 'CHECKED' : '' }} name="purchase_delete" class="purchase" > &nbsp; Delete Purchase </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" {{ $role->permission->purchase['purchase_payment'] == '1' ? 'CHECKED' : '' }} name="purchase_payment" class="purchase"> &nbsp; View/Add/Delete Purchase Payment </p> 
-                                                    </div>
-                                                </div>
-                
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap mt-1"> 
-                                                        <input type="checkbox" {{ $role->permission->purchase['purchase_return'] == '1' ? 'CHECKED' : '' }} name="purchase_return" class="purchase"> &nbsp; Access Purchase Return </p> 
                                                     </div>
                                                 </div>
                 
@@ -486,6 +507,26 @@
                                                          name="pro_purchase_report" class="purchase"> &nbsp; Product Purchase Report</p> 
                                                     </div>
                                                 </div>
+                                            </div>
+
+                                            <div class="col-md-5">
+                                                <div class="col-md-12">
+                                                    <p><strong>Others</strong></p>
+                                                </div>
+                
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" {{ $role->permission->purchase['purchase_payment'] == '1' ? 'CHECKED' : '' }} name="purchase_payment" class="purchase"> &nbsp; View/Add/Delete Purchase Payment </p> 
+                                                    </div>
+                                                </div>
+                
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1"> 
+                                                        <input type="checkbox" {{ $role->permission->purchase['purchase_return'] == '1' ? 'CHECKED' : '' }} name="purchase_return" class="purchase"> &nbsp; Access Purchase Return </p> 
+                                                    </div>
+                                                </div>
 
                                                 <div class="col-md-12">
                                                     <div class="row">
@@ -506,7 +547,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><b>Stock Adjustment Permission</b> </p>
+                                        <p class="p-1 text-primary"><strong>Adjustment Permissions</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -518,10 +559,15 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-6 offset-1">
+
+                                                <div class="col-md-12">
+                                                    <p><strong>Stock Adjustments</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" {{ $role->permission->s_adjust['adjustment_all'] == '1' ? 'CHECKED' : '' }} name="adjustment_all" class="adjustment"> &nbsp; View All Adjustment </p> 
                                                     </div>
                                                 </div>
@@ -566,7 +612,7 @@
                             <div class="col-md-8">
                                 <div class="form_element m-0 mt-2">
                                     <div class="heading_area">
-                                        <p class="p-1 text-primary"><strong>Expense Permission</strong> </p>
+                                        <p class="p-1 text-primary"><strong>Expenses Permission</strong> </p>
                                     </div>
 
                                     <div class="element-body">
@@ -578,10 +624,14 @@
                                                 </div>
                                             </div>
                 
-                                            <div class="col-md-6 offset-2">
+                                            <div class="col-md-6 offset-1">
+                                                <div class="col-md-12">
+                                                    <p><strong>Expenses</strong></p>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
+                                                        <p class="checkbox_input_wrap mt-1"> 
                                                         <input type="checkbox" {{ $role->permission->expense['view_expense'] == '1' ? 'CHECKED' : '' }}  name="view_expense" class="expense"> &nbsp; View Expense </p> 
                                                     </div>
                                                 </div>

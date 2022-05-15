@@ -8,30 +8,26 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
+if (env('APP_DEBUG') === true) {
+    include_once __DIR__ . '/dev_routes.php';
+}
+
+Auth::routes();
+Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
+Route::get('maintenance/mode', fn () => view('maintenance/maintenance'))->name('maintenance.mode');
+Route::get('pin_login', fn () => view('auth.pin_login'));
+
+Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
+
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', 'App\Http\Controllers\DashboardController@cardData')->name('dashboard.card.data');
 Route::get('dashboard/stock/alert', 'App\Http\Controllers\DashboardController@stockAlert')->name('dashboard.stock.alert');
 Route::get('dashboard/sale/order', 'App\Http\Controllers\DashboardController@saleOrder')->name('dashboard.sale.order');
 Route::get('dashboard/sale/due', 'App\Http\Controllers\DashboardController@saleDue')->name('dashboard.sale.due');
 Route::get('dashboard/purchase/due', 'App\Http\Controllers\DashboardController@purchaseDue')->name('dashboard.purchase.due');
-
 Route::get('dashboard/today/summery', 'App\Http\Controllers\DashboardController@todaySummery')->name('dashboard.today.summery');
 
-Route::get('route-list', function () {
-
-    if (env('APP_DEBUG') === true) {
-
-        Artisan::call('route:list --columns=Method,URI,Name,Action');
-        return '<pre>' . Artisan::output() . '</pre>';
-    } else {
-
-        echo '<h1>Access Denied</h1>';
-        return null;
-    }
-});
-
 Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controllers'], function () {
-
     Route::get('branch/authenticated/users/{branchId}', 'CommonAjaxCallController@branchAuthenticatedUsers');
     Route::get('category/subcategories/{categoryId}', 'CommonAjaxCallController@categorySubcategories');
     Route::get('only/search/product/for/reports/{product_name}', 'CommonAjaxCallController@onlySearchProductForReports');
@@ -48,12 +44,10 @@ Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controlle
     Route::get('get/customer/{customerId}', 'CommonAjaxCallController@getCustomer');
 });
 
-Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 //Product section route group
 Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], function () {
     // Branch route group
     Route::group(['prefix' => 'categories'], function () {
-
         Route::get('/', 'CategoryController@index')->name('product.categories.index');
         Route::get('form/category', 'CategoryController@getAllFormCategory')->name('product.categories.all.category.form');
         Route::post('store', 'CategoryController@store')->name('product.categories.store');
@@ -63,7 +57,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
     });
 
     Route::group(['prefix' => 'sub-categories'], function () {
-
         Route::get('/', 'SubCategoryController@index')->name('product.subcategories.index');
         Route::post('store', 'SubCategoryController@store')->name('product.subcategories.store');
         Route::post('update', 'SubCategoryController@update')->name('product.subcategories.update');
@@ -73,7 +66,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
     // Brand route group
     Route::group(['prefix' => 'brands'], function () {
-
         Route::get('/', 'BrandController@index')->name('product.brands.index');
         Route::get('all', 'BrandController@getAllBrand')->name('product.brands.all.brand');
         Route::post('store', 'BrandController@store')->name('product.brands.store');
@@ -84,7 +76,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
     // Products route group
     Route::group(['prefix' => '/'], function () {
-
         Route::get('all', 'ProductController@allProduct')->name('products.all.product');
         Route::get('view/{productId}', 'ProductController@view')->name('products.view');
         Route::get('get/all/product', 'ProductController@getAllProduct')->name('products.get.all.product');
@@ -115,14 +106,12 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         Route::post('settings/store', 'ProductController@settingsStore')->name('products.settings.store');
 
         Route::group(['prefix' => 'import/price/group/products'], function () {
-
             Route::get('export', 'ImportPriceGroupProductController@export')->name('products.export.price.group.products');
         });
     });
 
-    // Selling price group route group 
+    // Selling price group route group
     Route::group(['prefix' => 'selling/price/groups'], function () {
-
         Route::get('/', 'PriceGroupController@index')->name('product.selling.price.groups.index');
         Route::post('store', 'PriceGroupController@store')->name('product.selling.price.groups.store');
         Route::get('edit/{id}', 'PriceGroupController@edit')->name('product.selling.price.groups.edit');
@@ -133,7 +122,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
     // Variants route group
     Route::group(['prefix' => 'variants'], function () {
-
         Route::get('/', 'BulkVariantController@index')->name('product.variants.index');
         Route::get('all', 'BulkVariantController@getAllVariant')->name('product.variants.all.variant');
         Route::post('store', 'BulkVariantController@store')->name('product.variants.store');
@@ -143,7 +131,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
     // Barcode route group
     Route::group(['prefix' => 'barcode'], function () {
-
         Route::get('/', 'BarcodeController@index')->name('barcode.index');
         Route::post('preview', 'BarcodeController@preview')->name('barcode.preview');
         Route::get('supplier/products', 'BarcodeController@supplierProduct')->name('barcode.supplier.get.products');
@@ -161,14 +148,12 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 
     // Import product route group
     Route::group(['prefix' => 'imports'], function () {
-
         Route::get('create', 'ProductImportController@create')->name('product.import.create');
         Route::post('store', 'ProductImportController@store')->name('product.import.store');
     });
 
     // Warranty route group
     Route::group(['prefix' => 'warranties'], function () {
-
         Route::get('/', 'WarrantyController@index')->name('product.warranties.index');
         Route::get('all', 'WarrantyController@allWarranty')->name('product.warranties.all.warranty');
         Route::post('store', 'WarrantyController@store')->name('product.warranties.store');
@@ -179,7 +164,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
     Route::group(['prefix' => 'reports', 'namespace' => 'report'], function () {
 
         Route::group(['prefix' => 'stock'], function () {
-
             Route::get('/', 'StockReportController@index')->name('reports.stock.index');
             Route::get('print/branch/stocks', 'StockReportController@printBranchStock')->name('reports.stock.print.branch.stock');
             Route::get('warehouse/stock', 'StockReportController@warehouseStock')->name('reports.stock.warehouse.stock');
@@ -187,7 +171,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
         });
 
         Route::group(['prefix' => 'stock/in/out'], function () {
-
             Route::get('/', 'StockInOutReportController@index')->name('reports.stock.in.out.index');
             Route::get('print', 'StockInOutReportController@print')->name('reports.stock.in.out.print');
         });
@@ -198,7 +181,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], function () {
     // Supplier route group
     Route::group(['prefix' => 'suppliers'], function () {
-
         Route::get('/', 'SupplierController@index')->name('contacts.supplier.index');
         Route::get('get/all/suppliers', 'SupplierController@getAllSupplier')->name('contacts.supplier.get.all.supplier');
         Route::get('add', 'SupplierController@create')->name('contacts.supplier.create');
@@ -221,7 +203,6 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::delete('payment/delete/{paymentId}', 'SupplierController@paymentDelete')->name('suppliers.payment.delete');
 
         Route::group(['prefix' => 'import'], function () {
-
             Route::get('/', 'SupplierImportController@create')->name('contacts.suppliers.import.create');
             Route::post('store', 'SupplierImportController@store')->name('contacts.suppliers.import.store');
         });
@@ -235,7 +216,6 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('store', 'CustomerController@store')->name('contacts.customer.store');
         Route::get('edit/{customerId}', 'CustomerController@edit')->name('contacts.customer.edit');
         Route::post('update', 'CustomerController@update')->name('contacts.customer.update');
-
         Route::delete('delete/{customerId}', 'CustomerController@delete')->name('contacts.customer.delete');
         Route::get('change/status/{customerId}', 'CustomerController@changeStatus')->name('contacts.customer.change.status');
         Route::get('view/{customerId}', 'CustomerController@view');
@@ -254,7 +234,6 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::delete('payment/delete/{paymentId}', 'CustomerController@paymentDelete')->name('customers.payment.delete');
 
         Route::group(['prefix' => 'money/receipt'], function () {
-
             Route::get('/voucher/list/{customerId}', 'MoneyReceiptController@moneyReceiptList')->name('money.receipt.voucher.list');
             Route::get('create/{customerId}', 'MoneyReceiptController@moneyReceiptCreate')->name('money.receipt.voucher.create');
             Route::post('store/{customerId}', 'MoneyReceiptController@store')->name('money.receipt.voucher.store');
@@ -267,7 +246,6 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         });
 
         Route::group(['prefix' => 'groups'], function () {
-
             Route::get('/', 'CustomerGroupController@index')->name('contacts.customers.groups.index');
             Route::get('all/groups', 'CustomerGroupController@allBanks')->name('contacts.customers.groups.all.group');
             Route::post('store', 'CustomerGroupController@store')->name('contacts.customers.groups.store');
@@ -276,7 +254,6 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         });
 
         Route::group(['prefix' => 'import'], function () {
-
             Route::get('/', 'CustomerImportController@create')->name('contacts.customers.import.create');
             Route::post('store', 'CustomerImportController@store')->name('contacts.customers.import.store');
         });
@@ -285,13 +262,11 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
     Route::group(['prefix' => 'reports', 'namespace' => 'report'], function () {
 
         Route::group(['prefix' => 'suppliers'], function () {
-
             Route::get('/', 'SupplierReportController@index')->name('reports.supplier.index');
             Route::get('print', 'SupplierReportController@print')->name('reports.supplier.print');
         });
 
         Route::group(['prefix' => 'customers'], function () {
-
             Route::get('/', 'CustomerReportController@index')->name('reports.customer.index');
             Route::get('print', 'CustomerReportController@print')->name('reports.customer.print');
         });
@@ -300,7 +275,6 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
 
 // Purchase route group
 Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], function () {
-
     Route::get('v2', 'PurchaseController@index_v2')->name('purchases.index_v2');
     Route::get('product/list', 'PurchaseController@purchaseProductList')->name('purchases.product.list');
     Route::get('po/list', 'PurchaseController@poList')->name('purchases.po.list');
@@ -322,7 +296,6 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::post('add/product', 'PurchaseController@addProduct')->name('purchases.add.product');
     Route::get('recent/product/{productId}', 'PurchaseController@getRecentProduct');
     Route::get('add/quick/supplier/modal', 'PurchaseController@addQuickSupplierModal')->name('purchases.add.quick.supplier.modal');
-
     Route::get('payment/modal/{purchaseId}', 'PurchaseController@paymentModal')->name('purchases.payment.modal');
     Route::post('payment/store/{purchaseId}', 'PurchaseController@paymentStore')->name('purchases.payment.store');
     Route::get('payment/edit/{paymentId}', 'PurchaseController@paymentEdit')->name('purchases.payment.edit');
@@ -331,7 +304,6 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::post('return/payment/store/{purchaseId}', 'PurchaseController@returnPaymentStore')->name('purchases.return.payment.store');
     Route::get('return/payment/edit/{paymentId}', 'PurchaseController@returnPaymentEdit')->name('purchases.return.payment.edit');
     Route::post('return/payment/update/{paymentId}', 'PurchaseController@returnPaymentUpdate')->name('purchases.return.payment.update');
-
     Route::get('payment/details/{paymentId}', 'PurchaseController@paymentDetails')->name('purchases.payment.details');
     Route::delete('payment/delete/{paymentId}', 'PurchaseController@paymentDelete')->name('purchases.payment.delete');
     Route::get('payment/list/{purchaseId}', 'PurchaseController@paymentList')->name('purchase.payment.list');
@@ -339,67 +311,47 @@ Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], f
     Route::post('settings/store', 'PurchaseController@settingsStore')->name('purchase.settings.store');
 
     Route::group(['prefix' => '/'], function () {
-
         Route::get('po/process/receive/{purchaseId}', 'PurchaseOrderReceiveController@processReceive')->name('purchases.po.receive.process');
         Route::post('po/process/receive/store/{purchaseId}', 'PurchaseOrderReceiveController@processReceiveStore')->name('purchases.po.receive.process.store');
     });
 
     // Purchase Return route
     Route::group(['prefix' => 'returns'], function () {
-
         Route::get('/', 'PurchaseReturnController@index')->name('purchases.returns.index');
-
         Route::get('show/{returnId}', 'PurchaseReturnController@show')->name('purchases.returns.show');
-
         Route::get('add/{purchaseId}', 'PurchaseReturnController@create')->name('purchases.returns.create');
-
         Route::get('get/purchase/{purchaseId}', 'PurchaseReturnController@getPurchase')->name('purchases.returns.get.purchase');
-
         Route::post('store/{purchaseId}', 'PurchaseReturnController@store')->name('purchases.returns.store');
-
         Route::delete('delete/{purchaseReturnId}', 'PurchaseReturnController@delete')->name('purchases.returns.delete');
-
         Route::get('create', 'PurchaseReturnController@supplierReturn')->name('purchases.returns.supplier.return');
-
         Route::get('search/product/{productCode}/{warehouseId}', 'PurchaseReturnController@searchProduct');
-
         Route::get('check/single/product/stock/{product_id}/{warehouse_id}', 'PurchaseReturnController@checkSingleProductStock');
-
         Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', 'PurchaseReturnController@checkVariantProductStock');
-
         Route::post('supplier/return/store', 'PurchaseReturnController@supplierReturnStore')->name('purchases.returns.supplier.return.store');
-
         Route::get('supplier/return/edit/{purchaseReturnId}', 'PurchaseReturnController@supplierReturnEdit')->name('purchases.returns.supplier.return.edit');
-
         Route::get('get/editable/supplierReturn/{purchaseReturnId}', 'PurchaseReturnController@getEditableSupplierReturn')->name('purchases.return.get.editable.supplier.return');
-
         Route::post('supplier/return/update/{purchaseReturnId}', 'PurchaseReturnController@supplierReturnUpdate')->name('purchases.returns.supplier.return.update');
-
         Route::post('return/payments/{returnId}', 'PurchaseReturnController@returnPaymentList')->name('purchases.returns.purchase.return.payment.list');
     });
 
     Route::group(['prefix' => 'reports', 'namespace' => 'report'], function () {
 
         Route::group(['prefix' => 'purchase/statements'], function () {
-
             Route::get('/', 'PurchaseStatementController@index')->name('reports.purchases.statement.index');
             Route::get('print', 'PurchaseStatementController@print')->name('reports.purchases.statement.print');
         });
 
         Route::group(['prefix' => 'product/purchases'], function () {
-
             Route::get('/', 'ProductPurchaseReportController@index')->name('reports.product.purchases.index');
             Route::get('print', 'ProductPurchaseReportController@print')->name('reports.product.purchases.print');
         });
 
         Route::group(['prefix' => 'purchase/payments'], function () {
-
             Route::get('/', 'PurchasePaymentReportController@index')->name('reports.purchase.payments.index');
             Route::get('print', 'PurchasePaymentReportController@print')->name('reports.purchase.payments.print');
         });
 
         Route::group(['prefix' => 'sales/purchase'], function () {
-
             Route::get('/', 'SalePurchaseReportController@index')->name('reports.sales.purchases.index');
             Route::get('sale/purchase/amounts', 'SalePurchaseReportController@salePurchaseAmounts')->name('reports.profit.sales.purchases.amounts');
             Route::get('filter/sale/purchase/amounts', 'SalePurchaseReportController@filterSalePurchaseAmounts')->name('reports.profit.sales.filter.purchases.amounts');
@@ -1044,86 +996,3 @@ Route::group(['prefix' => 'communication', 'namespace' => 'App\Http\Controllers'
         Route::post('settings/store', 'SmsController@smsSettingsStore')->name('communication.sms.settings.store');
     });
 });
-
-Route::get('change/lang/{lang}', 'App\Http\Controllers\DashboardController@changeLang')->name('change.lang');
-
-Route::get('maintenance/mode', function () {
-
-    return view('maintenance/maintenance');
-})->name('maintenance.mode');
-
-Route::get('add-user', function () {
-
-    $addAdmin = new AdminAndUser();
-    $addAdmin->prefix = 'Mr.';
-    $addAdmin->name = 'Super';
-    $addAdmin->last_name = 'Admin';
-    $addAdmin->email = 'superadmin@gmail.com';
-    $addAdmin->username = 'superadmin';
-    $addAdmin->password = Hash::make('12345');
-    $addAdmin->role_type = 3;
-    $addAdmin->role_permission_id = 1;
-    $addAdmin->allow_login = 1;
-    $addAdmin->save();
-    //1=super_admin;2=admin;3=Other;
-
-});
-
-Route::get('pin_login', function () {
-
-    return view('auth.pin_login');
-});
-
-Route::get('/test', function () {
-
-    //return str_pad(10, 10, "0", STR_PAD_LEFT);
-    // $purchases = Purchase::all();
-    // foreach ($purchases as $p) {
-    //     $p->is_last_created = 0;
-    //     $p->save();
-    // } 
-
-    return $saleProducts = DB::table('sale_products')
-        ->where('sale_products.sale_id', 31)
-        ->leftJoin('products', 'sale_products.product_id', 'products.id')
-        ->leftJoin('warranties', 'products.warranty_id', 'warranties.id')
-        ->leftJoin('product_variants', 'sale_products.product_variant_id', 'product_variants.id')
-        ->select(
-            'sale_products.description',
-            // 'sale_products.quantity',
-            'sale_products.unit_price_inc_tax',
-            'sale_products.unit_discount_amount',
-            'sale_products.unit_tax_percent',
-            'sale_products.subtotal',
-            'products.name',
-            'products.warranty_id',
-            'product_variants.variant_name',
-            'warranties.duration',
-            'warranties.duration_type',
-            'warranties.description as w_description',
-            'warranties.type',
-            DB::raw('SUM(sale_products.quantity) as quantity')
-        )
-        ->groupBy('sale_products.description')
-        // ->groupBy('sale_products.quantity')
-        ->groupBy('sale_products.unit_price_inc_tax')
-        ->groupBy('sale_products.unit_discount_amount')
-        ->groupBy('sale_products.unit_tax_percent')
-        ->groupBy('sale_products.subtotal')
-        ->groupBy('products.warranty_id')
-        ->groupBy('products.name')
-
-        ->groupBy('warranties.duration')
-        ->groupBy('warranties.duration_type')
-        ->groupBy('warranties.type')
-        ->groupBy('warranties.description')
-        ->groupBy('product_variants.variant_name')
-        ->get();
-});
-
-// All authenticated routes
-Auth::routes();
-
-// Route::get('dbal', function() {
-//     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
-// });

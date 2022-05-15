@@ -807,9 +807,11 @@
                                             </div>
 
                                             <div class="col-md-5">
+                                                
                                                 <div class="col-md-12">
                                                     <p><strong>POS Sale</strong></p>
                                                 </div> 
+
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1"> 

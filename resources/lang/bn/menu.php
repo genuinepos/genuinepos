@@ -18,7 +18,7 @@ return [
     'e_commerce' => 'ইকমার্স',
     'service' => 'সেবা',
     'reports' => 'রিপোর্ট',
-    'superadmin' => 'সুপার অ্যাডমিন',
+    'superadmin' => 'ব্যবসা পরিচালনা',
     // Menu child of Products module
     'categories' => 'বিভাগ',
     'sub_categories' => 'উপবিভাগ',

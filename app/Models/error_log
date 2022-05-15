@@ -1,8 +1,0 @@
-[07-Jun-2021 05:41:24 UTC] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Foundation\Auth\User' not found in /home/genuinep/public_html/app/Models/User.php:10
-Stack trace:
-#0 {main}
-  thrown in /home/genuinep/public_html/app/Models/User.php on line 10
-[07-Jun-2021 05:42:17 UTC] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/genuinep/public_html/app/Models/Account.php:10
-Stack trace:
-#0 {main}
-  thrown in /home/genuinep/public_html/app/Models/Account.php on line 10

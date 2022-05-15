@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Essentials'], function () {
 
-    Route::group(['prefix' => 'workspaces'], function ()
-    {
+    Route::group(['prefix' => 'workspaces'], function () {
         Route::get('/', 'WorkSpaceController@index')->name('workspace.index');
         Route::get('view/docs/{id}', 'WorkSpaceController@viewDocs')->name('workspace.view.docs');
         Route::get('show/{id}', 'WorkSpaceController@show')->name('workspace.show');
@@ -14,9 +13,8 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
         Route::post('update/{id}', 'WorkSpaceController@update')->name('workspace.update');
         Route::delete('delete/{id}', 'WorkSpaceController@delete')->name('workspace.delete');
         Route::delete('delete/doc/{docId}', 'WorkSpaceController@deleteDoc')->name('workspace.delete.doc');
-        
-        Route::group(['prefix' => 'tasks'], function()
-        {
+
+        Route::group(['prefix' => 'tasks'], function () {
             Route::get('{workspaceId}', 'WorkSpaceTaskController@index')->name('workspace.task.index');
             Route::post('store', 'WorkSpaceTaskController@store')->name('workspace.task.store');
             Route::get('list/{workspaceId}', 'WorkSpaceTaskController@taskList')->name('workspace.task.list');
@@ -28,8 +26,7 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
         });
     });
 
-    Route::group(['prefix' => 'todo'], function()
-    {
+    Route::group(['prefix' => 'todo'], function () {
         Route::get('/', 'TodoController@index')->name('todo.index');
         Route::get('show/{id}', 'TodoController@show')->name('todo.show');
         Route::post('store', 'TodoController@store')->name('todo.store');
@@ -52,8 +49,7 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
     //     Route::delete('delete/{id}', 'DocumentController@delete')->name('documents.delete');
     // });
 
-    Route::group(['prefix' => 'memos'], function()
-    {
+    Route::group(['prefix' => 'memos'], function () {
         Route::get('/', 'MemoController@index')->name('memos.index');
         Route::get('show/{id}', 'MemoController@show')->name('memos.show');
         Route::post('store', 'MemoController@store')->name('memos.store');
@@ -64,13 +60,10 @@ Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Ess
         Route::post('add/user/{id}', 'MemoController@addUsers')->name('memos.add.users');
     });
 
-    Route::group(['prefix' => 'messages'], function()
-    {
+    Route::group(['prefix' => 'messages'], function () {
         Route::get('/', 'MessageController@index')->name('messages.index');
         Route::get('all', 'MessageController@allMessage')->name('messages.all');
         Route::post('store', 'MessageController@store')->name('messages.store');
         Route::delete('delete/{id}', 'MessageController@delete')->name('messages.delete');
     });
 });
-
-

@@ -51,12 +51,22 @@ class FinancialAmountsUtil
         $anotherAmounts['total_loan_and_liability'] = $loanAmounts['total_loan_and_liability'];
         $anotherAmounts['total_loan_and_liability_due'] = $loanAmounts['total_loan_and_liability_due'];
         $anotherAmounts['total_loan_and_liability_paid'] = $loanAmounts['total_loan_and_liability_paid'];
-      
+
         return array_merge($netProfitLossAccountAmounts, $anotherAmounts);
     }
 
     private function cashAndBankBalance($request)
     {
+        $expenseLoan = '';
+        $expenseLoanQ = DB::table('account_branches')
+            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
+            ->whereIn('accounts.account_type', [1, 2])
+            ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+            ->where('account_ledgers.loan_id', '!=', NULL)
+            // ->where('debit', '!=', NULL)
+            ->leftJoin('loans', 'account_ledgers.loan_id', 'loans.id')
+            ->where('loans.loan_by', 'Expense');
+
         $cashInHandAmounts = '';
         $cashInHandAmountsQ = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -68,9 +78,11 @@ class FinancialAmountsUtil
             if ($request->branch_id == 'NULL') {
 
                 $cashInHandAmountsQ->where('account_branches.branch_id', NULL);
+                $expenseLoanQ->where('account_branches.branch_id', NULL);
             } else {
 
                 $cashInHandAmountsQ->where('account_branches.branch_id', $request->branch_id);
+                $expenseLoanQ->where('account_branches.branch_id', $request->branch_id);
             }
         }
 
@@ -80,6 +92,7 @@ class FinancialAmountsUtil
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $cashInHandAmountsQ->whereBetween('account_ledgers.date', $date_range);
+            $expenseLoanQ->whereBetween('account_ledgers.date', $date_range);
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -89,6 +102,11 @@ class FinancialAmountsUtil
                 DB::raw('SUM(account_ledgers.debit) as total_debit'),
                 DB::raw('SUM(account_ledgers.credit) as total_credit')
             )->groupBy('accounts.account_type')->get();
+
+            $expenseLoan = $expenseLoanQ->where('loans.loan_by', 'Expense')
+                ->select(DB::raw('sum(account_ledgers.credit) as t_credit'))
+                ->groupBy('loans.loan_by')
+                ->get();
         } else {
 
             $cashInHandAmounts = $cashInHandAmountsQ
@@ -98,7 +116,15 @@ class FinancialAmountsUtil
                     DB::raw('SUM(account_ledgers.debit) as total_debit'),
                     DB::raw('SUM(account_ledgers.credit) as total_credit')
                 )->groupBy('accounts.account_type')->get();
+
+            $expenseLoan = $expenseLoanQ
+                ->where('account_branches.branch_id', auth()->user()->branch_id)
+                ->where('loans.loan_by', 'Expense')->select(DB::raw('sum(account_ledgers.credit) as t_credit'))
+                ->groupBy('loans.loan_by')
+                ->get();
         }
+
+        $totalExpenseLoan = $expenseLoan->sum('t_credit') ? $expenseLoan->sum('t_credit') : 0;
 
         $balance = ['cash_in_hand_balance' => 0, 'bank_account_balance' => 0];
 
@@ -109,7 +135,7 @@ class FinancialAmountsUtil
                 $balance['cash_in_hand_balance'] = $cashInHandAmount->total_debit - $cashInHandAmount->total_credit;
             } else {
 
-                $balance['bank_account_balance'] = $cashInHandAmount->total_debit - $cashInHandAmount->total_credit;
+                $balance['bank_account_balance'] = $cashInHandAmount->total_debit - ($cashInHandAmount->total_credit - $totalExpenseLoan);
             }
         }
 
@@ -166,7 +192,7 @@ class FinancialAmountsUtil
         //DB::raw('sum(case when due > 0 then due end) as total_due')
         $loans = '';
         $loanQ = DB::table('loans');
-        
+
         if (isset($request->branch_id) && $request->branch_id) {
 
             if ($request->branch_id == 'NULL') {

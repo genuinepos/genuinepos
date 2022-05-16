@@ -9,7 +9,7 @@ class Category extends Model
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];
     
-    public function child_categories()
+    public function Subcategories()
     {
         return $this->hasMany(Category::class, 'parent_category_id');
     }

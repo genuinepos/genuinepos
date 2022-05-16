@@ -168,13 +168,23 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    toastr.error(data);
-                    table.ajax.reload();
-                    $('#deleted_form')[0].reset();
+
+                    if ($.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data);
+                        table.ajax.reload();
+                        $('#deleted_form')[0].reset();
+                    } else {
+
+                        toastr.error(data.errorMsg);
+                    }
                 },error: function(err) {
+
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
-                    }else{
+
+                        toastr.error('Net Connetion Error. Please check the connection.'); 
+                    }else if(err.status == 500){
+
                         toastr.error('Server Error. Please contact to the support team.'); 
                     }
                 }

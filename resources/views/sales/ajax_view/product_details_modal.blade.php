@@ -141,6 +141,7 @@
                                     <th class="text-start">S/L</th>
                                     <th class="text-start">Product</th>
                                     <th class="text-start">Stock Location</th>
+                                    <th class="text-start">Warranty</th>
                                     <th class="text-end">Quantity</th>
                                     <th class="text-end">Unit Price Exc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
@@ -156,7 +157,10 @@
                                         @php
                                             $variant = $saleProduct->variant ? ' -' . $saleProduct->variant->variant_name : '';
                                         @endphp
-                                        <td class="text-start">{{ $saleProduct->product->name . $variant }}</td>
+                                        <td class="text-start">
+                                            {{ $saleProduct->product->name . $variant }}<br/>
+                                            <small>{{ $saleProduct->description }}</small>
+                                        </td>
                                         <td class="text-start">
                                             @if ($saleProduct->stock_warehouse_id)
                                                 {{ $saleProduct->warehouse->warehouse_name.'/'.$saleProduct->warehouse->warehouse_code }}
@@ -168,6 +172,13 @@
 
                                                     {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                                 @endif
+                                            @endif
+                                        </td>
+                                        <td class="text-start">
+                                            @if ($saleProduct->product->warranty_id)
+                                                {{ $saleProduct->product->warranty->duration . ' ' . $saleProduct->product->warranty->duration_type }}
+                                                {{ $saleProduct->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
+                                                {!! $saleProduct->product->warranty->discription ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                             @endif
                                         </td>
                                         <td class="text-end">{{ $saleProduct->quantity }}</td>

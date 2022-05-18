@@ -179,6 +179,8 @@
                                                 {{ $saleProduct->product->warranty->duration . ' ' . $saleProduct->product->warranty->duration_type }}
                                                 {{ $saleProduct->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
                                                 {!! $saleProduct->product->warranty->discription ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
+                                            @else 
+                                                NO
                                             @endif
                                         </td>
                                         <td class="text-end">{{ $saleProduct->quantity }}</td>

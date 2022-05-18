@@ -179,7 +179,7 @@
                                     $sale->branch->add_sale_invoice_layout->product_w_discription
                                 )
                                     <td class="text-start">
-                                        @if ($sale_product->product->warranty)
+                                        @if ($sale_product->warranty_id)
 
                                             {{ $sale_product->w_duration . ' ' . $sale_product->w_duration_type }}
                                             {{ $sale_product->w_type == 1 ? 'Warranty' : 'Guaranty' }}

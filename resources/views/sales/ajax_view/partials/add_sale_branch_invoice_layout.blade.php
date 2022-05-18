@@ -186,6 +186,7 @@
                             <th class="text-end">SubTotal</th>
                         </tr>
                     </thead>
+                    
                     <tbody class="sale_print_product_list">
                         @foreach ($customerCopySaleProducts as $sale_product)
                             <tr>

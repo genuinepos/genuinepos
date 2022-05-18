@@ -131,7 +131,7 @@ class SaleController extends Controller
             'admin:id,prefix,name,last_name,role_id',
             'admin.role',
             'sale_products',
-            'sale_products.product:id,name,product_code',
+            'sale_products.product:id,name,product_code,warranty_id,unit_id,tax_id',
             'sale_products.product.warranty',
             'sale_products.variant:id,variant_name,variant_code',
             'sale_payments',

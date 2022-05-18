@@ -1771,7 +1771,7 @@ class SaleUtil
                 'warranties.duration as w_duration',
                 'warranties.duration_type as w_duration_type',
                 'warranties.description as w_description',
-                'warranties.type',
+                'warranties.type as w_type',
                 DB::raw('SUM(sale_products.quantity) as quantity')
             )
             ->groupBy('sale_products.product_id')

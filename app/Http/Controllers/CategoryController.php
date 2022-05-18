@@ -168,7 +168,12 @@ class CategoryController extends Controller
             return response()->json('Access Denied');
         }
 
-        $deleteCategory = Category::find($categoryId);
+        $deleteCategory = Category::with(['subCategories'])->where('id', $categoryId)->first();
+
+        if (count($deleteCategory->subCategories) > 0) {
+            
+            return response()->json(['errorMsg' => 'Category can not be deleted. One or more sub-categories is belonging under this category.']);
+        }
 
         if ($deleteCategory->photo !== 'default.png') {
 

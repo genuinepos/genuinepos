@@ -174,7 +174,9 @@
                                 <td class="text-start">{{ $sale_product->quantity }} ({{ $sale_product->unit }}) </td>
 
                                 @if (
-                                    $sale->branch->add_sale_invoice_layout->product_w_type || $sale->branch->add_sale_invoice_layout->product_w_duration || $sale->branch->add_sale_invoice_layout->product_w_discription
+                                    $sale->branch->add_sale_invoice_layout->product_w_type || 
+                                    $sale->branch->add_sale_invoice_layout->product_w_duration || 
+                                    $sale->branch->add_sale_invoice_layout->product_w_discription
                                 )
                                     <td class="text-start">
                                         @if ($sale_product->product->warranty)

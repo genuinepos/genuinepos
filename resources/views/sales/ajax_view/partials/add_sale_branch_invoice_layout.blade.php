@@ -189,53 +189,48 @@
                     <tbody class="sale_print_product_list">
                         @foreach ($customerCopySaleProducts as $sale_product)
                             <tr>
-                                <td class="text-start">{{ $loop->index + 1}} </td>
+                                <td class="text-start">{{ $loop->index + 1 }}</td>
 
                                 <td class="text-start">
-                                    {{ Str::limit($sale_product->p_name, 40) }}
+                                    {{ $sale_product->p_name }}
 
                                     @if ($sale_product->product_variant_id)
-
                                         -{{ $sale_product->variant_name }}
                                     @endif
-
-                                    {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
+                                    
+                                    {!! $sale->branch->add_sale_invoice_layout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                 </td>
 
-                                <td class="text-start">{{ $sale_product->quantity }}({{ $sale_product->unit }}) </td>
+                                <td class="text-start">{{ $sale_product->quantity }} ({{ $sale_product->unit }}) </td>
 
                                 @if (
-                                    $defaultLayout->product_w_type || 
-                                    $defaultLayout->product_w_duration || 
-                                    $defaultLayout->product_w_discription
+                                    $sale->branch->add_sale_invoice_layout->product_w_type || 
+                                    $sale->branch->add_sale_invoice_layout->product_w_duration || 
+                                    $sale->branch->add_sale_invoice_layout->product_w_discription
                                 )
-                                    <td class="text-end">
-                                        @if ($sale_product->warranty_id)
+                                    <td class="text-start">
+                                        @if ($sale_product->product->warranty)
 
-                                            {{ $sale_product->w_duration . ' ' .$sale_product->w_duration_type }}
-                                            {{ $sale_product->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
-                                            @if ($sale_product->w_description)
-
-                                                {!! '<br><small>'.$sale_product->w_description.'</small>'  !!}
-                                            @endif
+                                            {{ $sale_product->w_duration . ' ' . $sale_product->w_duration_type }}
+                                            {{ $sale_product->w_type == 1 ? 'Warranty' : 'Guaranty' }}
+                                            {!! $sale->branch->add_sale_invoice_layout->product_w_discription ? '<br><small class="text-muted">' . $sale_product->w_description . '</small>' : '' !!}
                                         @else 
 
-                                            <b>No</b>
+                                            <strong>No</strong>
                                         @endif
                                     </td>
                                 @endif
 
-                                <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->unit_price_inc_tax) }} </td>
+                                <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->unit_price_inc_tax) }}</td>
 
-                                @if ($defaultLayout->product_discount)
-                                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->unit_discount_amount) }}
-                                    </td>
+                                @if ($sale->branch->add_sale_invoice_layout->product_discount)
+
+                                    <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->unit_discount_amount) }}</td>
                                 @endif
 
-                                @if ($defaultLayout->product_tax)
-                                    <td class="text-end">
-                                        {{ $sale_product->unit_tax_percent }}%
-                                    </td>
+                                @if ($sale->branch->add_sale_invoice_layout->product_tax)
+
+                                    <td class="text-end">{{ $sale_product->unit_tax_percent }}</td>
                                 @endif
 
                                 <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->subtotal) }}</td>

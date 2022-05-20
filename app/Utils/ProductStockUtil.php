@@ -29,6 +29,8 @@ class ProductStockUtil
                 ->where('purchase_products.product_id', $product_id)
                 ->where('purchase_products.opening_stock_id', NULL)
                 ->where('purchase_products.production_id', NULL)
+                ->where('purchase_products.sale_return_product_id', NULL)
+                ->where('purchase_products.transfer_branch_to_branch_product_id', NULL)
                 ->select(DB::raw('sum(quantity) as total_purchase'))
                 ->groupBy('purchase_products.product_id')->get();
 
@@ -89,6 +91,8 @@ class ProductStockUtil
                     ->where('purchase_products.product_variant_id', $variant_id)
                     ->where('purchase_products.opening_stock_id', NULL)
                     ->where('purchase_products.production_id', NULL)
+                    ->where('purchase_products.sale_return_product_id', NULL)
+                    ->where('purchase_products.transfer_branch_to_branch_product_id', NULL)
                     ->select(DB::raw('sum(quantity) as total_purchase'))
                     ->groupBy('purchase_products.product_variant_id')
                     ->get();
@@ -191,6 +195,8 @@ class ProductStockUtil
                 ->where('purchase_products.product_id', $product_id)
                 ->where('purchase_products.opening_stock_id', NULL)
                 ->where('purchase_products.production_id', NULL)
+                ->where('purchase_products.sale_return_product_id', NULL)
+                ->where('purchase_products.transfer_branch_to_branch_product_id', NULL)
                 ->select(DB::raw('sum(quantity) as total_purchase'))
                 ->groupBy('purchase_products.product_id')->get();
 
@@ -323,6 +329,8 @@ class ProductStockUtil
                     ->where('purchase_products.product_variant_id', $variant_id)
                     ->where('purchase_products.opening_stock_id', NULL)
                     ->where('purchase_products.production_id', NULL)
+                    ->where('purchase_products.sale_return_product_id', NULL)
+                    ->where('purchase_products.transfer_branch_to_branch_product_id', NULL)
                     ->select(DB::raw('sum(quantity) as total_purchase'))
                     ->groupBy('purchase_products.product_variant_id')->get();
 
@@ -445,6 +453,8 @@ class ProductStockUtil
                 ->where('purchase_products.product_id', $product_id)
                 ->where('purchase_products.opening_stock_id', NULL)
                 ->where('purchase_products.production_id', NULL)
+                ->where('purchase_products.sale_return_product_id', NULL)
+                ->where('purchase_products.transfer_branch_to_branch_product_id', NULL)
                 ->select(DB::raw('sum(quantity) as total_purchase'))
                 ->groupBy('purchase_products.product_id')->get();
 

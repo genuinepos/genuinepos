@@ -213,10 +213,13 @@
             var countErrorField = 0;
             $.each(inputs, function(key, val) {
                 var inputId = $(val).attr('id');
-                console.log(inputId);
+
                 var idValue = $('#' + inputId).val()
+
                 if (inputId !== 'parent_category' && inputId !== 'photo') {
+
                     if (idValue == '') {
+                        
                         countErrorField += 1;
                         var fieldName = $('#' + inputId).data('name');
                         $('.error_' + inputId).html(fieldName + ' is required.');

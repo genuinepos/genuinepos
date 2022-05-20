@@ -33,10 +33,12 @@ class StockInOutReportController extends Controller
                 ->leftJoin('purchase_products', 'purchase_sale_product_chains.purchase_product_id', 'purchase_products.id')
                 ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
                 ->leftJoin('productions', 'purchase_products.production_id', 'productions.id')
-               
+
                 ->leftJoin('product_opening_stocks', 'purchase_products.opening_stock_id', 'product_opening_stocks.id')
                 ->leftJoin('sale_return_products', 'purchase_products.sale_return_product_id', 'sale_return_products.id')
-                ->leftJoin('sale_returns', 'sale_return_products.sale_return_id', 'sale_returns.id');
+                ->leftJoin('sale_returns', 'sale_return_products.sale_return_id', 'sale_returns.id')
+                ->leftJoin('transfer_stock_branch_to_branch_products', 'purchase_products.transfer_branch_to_branch_product_id', 'transfer_stock_branch_to_branch_products.id')
+                ->leftJoin('transfer_stock_branch_to_branches', 'transfer_stock_branch_to_branch_products.transfer_id', 'transfer_stock_branch_to_branches.id');
 
             if ($request->product_id) {
 
@@ -97,6 +99,8 @@ class StockInOutReportController extends Controller
                 'productions.reference_no as production_voucher_no',
                 'sale_returns.id as sale_return_id',
                 'sale_returns.invoice_id as sale_return_invoice',
+                'transfer_stock_branch_to_branches.id as transfer_id',
+                'transfer_stock_branch_to_branches.ref_id as transfer_ref_id',
                 'product_opening_stocks.id as pos_id',
                 'purchase_products.net_unit_cost',
                 'purchase_products.quantity as stock_in_qty',
@@ -120,7 +124,7 @@ class StockInOutReportController extends Controller
                     return Str::limit($row->name, 20, '') . $variant;
                 })
 
-                ->editColumn('sale', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" id="details" class="text-danger text-hover" title="view" >' . $row->invoice_id . '</a>')
+                ->editColumn('sale', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" id="details" class="text-hover" title="view" >' . $row->invoice_id . '</a>')
 
                 ->editColumn('date', function ($row) {
 
@@ -142,7 +146,7 @@ class StockInOutReportController extends Controller
 
                 ->editColumn('sold_qty', function ($row) {
 
-                    return '<span class="sold_qty" data-value="' . $row->sold_qty . '">' . $row->sold_qty.'/'.$row->unit. '</span>';
+                    return '<span class="sold_qty" data-value="' . $row->sold_qty . '">' . $row->sold_qty . '/' . $row->unit . '</span>';
                 })
 
                 ->editColumn('customer_name', function ($row) {
@@ -151,19 +155,22 @@ class StockInOutReportController extends Controller
                 })
 
                 ->editColumn('stock_in_by', function ($row) {
-                    
+
                     if ($row->purchase_inv) {
 
-                        return 'Purchase: ' . '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="text-danger text-hover" id="details" title="view" >' . $row->purchase_inv . '</a>';
+                        return 'Purchase: ' . '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="text-hover" id="details" title="view" >' . $row->purchase_inv . '</a>';
                     } else if ($row->production_voucher_no) {
 
-                        return 'Production: ' . '<a href="' . route('manufacturing.productions.show', [$row->production_id]) . '" class="text-danger text-hover" id="details" title="view" >' . $row->production_voucher_no . '</a>';
+                        return 'Production: ' . '<a href="' . route('manufacturing.productions.show', [$row->production_id]) . '" class=" text-hover" id="details" title="view" >' . $row->production_voucher_no . '</a>';
                     } else if ($row->pos_id) {
-                        
+
                         return 'Opening Stock';
                     } else if ($row->sale_return_id) {
-                        
-                        return 'Sale Returned Stock : ' . '<a href="#" class="text-danger text-hover" id="details" title="view" >' . $row->sale_return_invoice . '</a>';
+
+                        return 'Sale Returned Stock : ' . '<a href="#" class="text-hover" id="details" title="view" >' . $row->sale_return_invoice . '</a>';
+                    } else if ($row->transfer_id) {
+
+                        return 'Received From Another B.L. : ' . '<a href="' . route('transfer.stock.branch.to.branch.receivable.show', [$row->transfer_id]) . '" class="text-hover" id="details" title="view" >' . $row->transfer_ref_id . '</a>';
                     } else {
 
                         return 'Non-Manageable-Stock';
@@ -174,7 +181,7 @@ class StockInOutReportController extends Controller
                     if ($row->stock_in_date) {
 
                         return date('d/m/Y', strtotime($row->stock_in_date));
-                    }else {
+                    } else {
 
                         return date('d/m/Y', strtotime($row->product_created_at));
                     }
@@ -189,11 +196,10 @@ class StockInOutReportController extends Controller
                     if ($row->net_unit_cost) {
 
                         return '<span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . $row->net_unit_cost . '</span>';
-                    }else {
+                    } else {
 
                         return '<span class="net_unit_cost" data-value="' . $row->unit_cost_inc_tax . '">' . $row->unit_cost_inc_tax . '</span>';
                     }
-                    
                 })
 
                 ->rawColumns(

@@ -11,13 +11,16 @@ use App\Models\PurchaseProduct;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
+use App\Utils\PurchaseSaleChainUtil;
 
 class ProductUtil
 {
     public $purchaseUtil;
-    public function __construct(PurchaseUtil $purchaseUtil)
+    public $purchaseSaleChainUtil;
+    public function __construct(PurchaseUtil $purchaseUtil, PurchaseSaleChainUtil $purchaseSaleChainUtil)
     {
         $this->purchaseUtil = $purchaseUtil;
+        $this->purchaseSaleChainUtil = $purchaseSaleChainUtil;
     }
 
     public function productListTable($request)
@@ -34,11 +37,11 @@ class ProductUtil
         //     ->leftJoin('brands', 'products.brand_id', 'brands.id');
 
         $query = DB::table('product_branches')
-        ->leftJoin('products', 'product_branches.product_id', 'products.id')
-        ->leftJoin('categories', 'products.category_id', 'categories.id')
-        ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
-        ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
-        ->leftJoin('brands', 'products.brand_id', 'brands.id');
+            ->leftJoin('products', 'product_branches.product_id', 'products.id')
+            ->leftJoin('categories', 'products.category_id', 'categories.id')
+            ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
+            ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
+            ->leftJoin('brands', 'products.brand_id', 'brands.id');
 
         if ($request->type == 1) {
             $query->where('products.type', 1)->where('products.is_variant', 0);
@@ -75,7 +78,7 @@ class ProductUtil
         // if ($request->is_for_sale) {
         //     $query->where('products.is_for_sale', '0');
         // }
-    
+
         $products = $query->select(
             [
                 'products.id',
@@ -245,17 +248,18 @@ class ProductUtil
         $addOpeningStock->subtotal = $subtotal;
         $addOpeningStock->save();
 
-        $addRowInPurchaseProductTable = new PurchaseProduct();
-        $addRowInPurchaseProductTable->opening_stock_id = $addOpeningStock->id;
-        $addRowInPurchaseProductTable->product_id = $product_id;
-        $addRowInPurchaseProductTable->product_variant_id = $variant_id;
-        $addRowInPurchaseProductTable->net_unit_cost = $unit_cost_inc_tax;
-        $addRowInPurchaseProductTable->quantity = $quantity;
-        $addRowInPurchaseProductTable->left_qty = $quantity;
-        $addRowInPurchaseProductTable->line_total = $subtotal;
-        $addRowInPurchaseProductTable->created_at = date('Y-m-d H:i:s');
-        $addRowInPurchaseProductTable->branch_id = auth()->user()->branch_id;
-        $addRowInPurchaseProductTable->save();
+        $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
+            tranColName: 'opening_stock_id',
+            transId: $addOpeningStock->id,
+            branchId: auth()->user()->branch_id,
+            productId: $product_id,
+            quantity: $quantity,
+            variantId: $variant_id,
+            unitCostIncTax: $unit_cost_inc_tax,
+            sellingPrice: 0,
+            subTotal: $subtotal,
+            createdAt: date('Y-m-d H:i:s'),
+        );
     }
 
     // Update opening stock method
@@ -266,24 +270,17 @@ class ProductUtil
         $openingStock->subtotal = $subtotal;
         $openingStock->save();
 
-        $purchaseProduct = PurchaseProduct::where('opening_stock_id', $openingStock->id)->first();
-        if ($purchaseProduct) {
-            $purchaseProduct->net_unit_cost = $unit_cost_inc_tax;
-            $purchaseProduct->quantity = $quantity;
-            $purchaseProduct->line_total = $subtotal;
-            $purchaseProduct->save();
-            $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
-        } else {
-            $addRowInPurchaseProductTable = new PurchaseProduct();
-            $addRowInPurchaseProductTable->opening_stock_id = $openingStock->id;
-            $addRowInPurchaseProductTable->product_id = $openingStock->product_id;
-            $addRowInPurchaseProductTable->product_variant_id = $openingStock->product_variant_id;
-            $addRowInPurchaseProductTable->net_unit_cost = $unit_cost_inc_tax;
-            $addRowInPurchaseProductTable->quantity = $quantity;
-            $addRowInPurchaseProductTable->left_qty = $quantity;
-            $addRowInPurchaseProductTable->line_total = $subtotal;
-            $addRowInPurchaseProductTable->created_at = date('Y-m-d H:i:s');
-            $addRowInPurchaseProductTable->save();
-        }
+        $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
+            tranColName: 'opening_stock_id',
+            transId: $openingStock->id,
+            branchId: auth()->user()->branch_id,
+            productId: $openingStock->product_id,
+            quantity: $quantity,
+            variantId: $openingStock->product_variant_id,
+            unitCostIncTax: $unit_cost_inc_tax,
+            sellingPrice: 0,
+            subTotal: $subtotal,
+            createdAt: date('Y-m-d H:i:s'),
+        );
     }
 }

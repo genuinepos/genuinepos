@@ -7,6 +7,7 @@ use App\Utils\Converter;
 use Illuminate\Http\Request;
 use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
+use App\Utils\PurchaseSaleChainUtil;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\TransferStockBranchToBranch;
 use App\Models\TransferStockBranchToBranchProducts;
@@ -15,15 +16,15 @@ class ReceiveTransferBranchToBranchController extends Controller
 {
     protected $converter;
     protected $productStockUtil;
-    protected $util;
+    protected $purchaseSaleChainUtil;
     public function __construct(
         Converter $converter,
         ProductStockUtil $productStockUtil,
-        Util $util
+        PurchaseSaleChainUtil $purchaseSaleChainUtil
     ) {
         $this->converter = $converter;
         $this->productStockUtil = $productStockUtil;
-        $this->util = $util;
+        $this->purchaseSaleChainUtil = $purchaseSaleChainUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -270,7 +271,7 @@ class ReceiveTransferBranchToBranchController extends Controller
             // Adjust Receiver Business Location Stock
             $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $transfer->receiver_branch_id);
 
-            $this->util->addPurchaseProductForSalePurchaseChainMaintaining(
+            $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
                 tranColName : 'transfer_branch_to_branch_product_id',
                 transId : $updateTransferProduct->id,
                 branchId : $transfer->receiver_branch_id,

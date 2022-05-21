@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\Manufacturing;
 
 use App\Models\Product;
+use App\Utils\AccountUtil;
 use App\Utils\PurchaseUtil;
 use Illuminate\Http\Request;
 use App\Models\PurchaseProduct;
 use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Utils\PurchaseSaleChainUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Models\Manufacturing\Production;
 use App\Utils\Manufacturing\ProductionUtil;
 use App\Models\Manufacturing\ProductionIngredient;
-use App\Utils\AccountUtil;
 
 class ProductionController extends Controller
 {
@@ -22,18 +23,21 @@ class ProductionController extends Controller
     protected $productionUtil;
     protected $accountUtil;
     protected $purchaseUtil;
+    protected $purchaseSaleChainUtil;
     public function __construct(
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         ProductStockUtil $productStockUtil,
         ProductionUtil $productionUtil,
         AccountUtil $accountUtil,
-        PurchaseUtil $purchaseUtil
+        PurchaseUtil $purchaseUtil,
+        PurchaseSaleChainUtil $purchaseSaleChainUtil
     ) {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->productStockUtil = $productStockUtil;
         $this->productionUtil = $productionUtil;
         $this->accountUtil = $accountUtil;
         $this->purchaseUtil = $purchaseUtil;
+        $this->purchaseSaleChainUtil = $purchaseSaleChainUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -177,20 +181,6 @@ class ProductionController extends Controller
         $addProduction->is_last_entry = 1;
         $addProduction->save();
 
-        $addRowInPurchaseProductTable = new PurchaseProduct();
-        $addRowInPurchaseProductTable->production_id = $addProduction->id;
-        $addRowInPurchaseProductTable->product_id = $request->product_id;
-        $addRowInPurchaseProductTable->product_variant_id = $request->variant_id;
-        $addRowInPurchaseProductTable->net_unit_cost = $request->per_unit_cost_inc_tax;
-        $addRowInPurchaseProductTable->quantity = $request->final_output_quantity;
-        $addRowInPurchaseProductTable->line_total = $request->total_cost;
-        $addRowInPurchaseProductTable->profit_margin = $request->xMargin;
-        $addRowInPurchaseProductTable->selling_price = $request->selling_price;
-        $addRowInPurchaseProductTable->left_qty = $request->final_output_quantity;
-        $addRowInPurchaseProductTable->branch_id = auth()->user()->branch_id;
-        $addRowInPurchaseProductTable->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-        $addRowInPurchaseProductTable->save();
-
         if (isset($request->product_ids)) {
 
             $index = 0;
@@ -254,6 +244,20 @@ class ProductionController extends Controller
                 trans_id: $addProduction->id,
                 amount: $request->total_cost,
                 balance_type: 'debit'
+            );
+
+            $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
+                tranColName: 'production_id',
+                transId: $addProduction->id,
+                branchId: auth()->user()->branch_id,
+                productId: $request->product_id,
+                quantity: $request->final_output_quantity,
+                variantId: $request->variant_id,
+                unitCostIncTax: $request->per_unit_cost_inc_tax,
+                sellingPrice: $request->selling_price,
+                subTotal: $request->total_cost,
+                createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+                xMargin: $request->xMargin,
             );
         }
 
@@ -409,33 +413,6 @@ class ProductionController extends Controller
         $updateProduction->is_final = isset($request->is_final) ? 1 : 0;
         $updateProduction->save();
 
-        $purchaseProduct = PurchaseProduct::where('production_id', $updateProduction->id)->first();
-        if ($purchaseProduct) {
-
-            $purchaseProduct->net_unit_cost = $request->per_unit_cost_inc_tax;
-            $purchaseProduct->quantity = $request->final_output_quantity;
-            $purchaseProduct->line_total = $request->total_cost;
-            $purchaseProduct->profit_margin = $request->xMargin;
-            $purchaseProduct->selling_price = $request->selling_price;
-            $purchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-            $purchaseProduct->save();
-            $this->purchaseUtil->adjustPurchaseLeftQty($purchaseProduct);
-        } else {
-
-            $addRowInPurchaseProductTable = new PurchaseProduct();
-            $addRowInPurchaseProductTable->production_id = $addProduction->id;
-            $addRowInPurchaseProductTable->product_id = $request->product_id;
-            $addRowInPurchaseProductTable->product_variant_id = $request->variant_id;
-            $addRowInPurchaseProductTable->net_unit_cost = $request->per_unit_cost_inc_tax;
-            $addRowInPurchaseProductTable->quantity = $request->final_output_quantity;
-            $addRowInPurchaseProductTable->left_qty = $request->final_output_quantity;
-            $addRowInPurchaseProductTable->line_total = $request->total_cost;
-            $addRowInPurchaseProductTable->profit_margin = $request->xMargin;
-            $addRowInPurchaseProductTable->selling_price = $request->selling_price;
-            $addRowInPurchaseProductTable->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-            $addRowInPurchaseProductTable->save();
-        }
-
         if (isset($request->is_final)) {
 
             // Update Production A/C Ledger
@@ -446,6 +423,20 @@ class ProductionController extends Controller
                 trans_id: $updateProduction->id,
                 amount: $request->total_cost,
                 balance_type: 'debit'
+            );
+
+            $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
+                tranColName: 'production_id',
+                transId: $updateProduction->id,
+                branchId: auth()->user()->branch_id,
+                productId: $request->product_id,
+                quantity: $request->final_output_quantity,
+                variantId: $request->variant_id,
+                unitCostIncTax: $request->per_unit_cost_inc_tax,
+                sellingPrice: $request->selling_price,
+                subTotal: $request->total_cost,
+                createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+                xMargin: $request->xMargin,
             );
         }
 

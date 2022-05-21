@@ -303,7 +303,7 @@ class ProductController extends Controller
     {
         $product = Product::with([
             'category',
-            'child_category',
+            'subCategory',
             'tax',
             'unit:id,name,code_name',
             'brand',
@@ -314,12 +314,12 @@ class ProductController extends Controller
             'product_variants',
         ])->where('id', $productId)->first();
 
-        $won_branch_stocks = DB::table('product_branches')
+        $own_branch_stocks = DB::table('product_branches')
+            ->where('product_branches.branch_id', auth()->user()->branch_id)
+            ->where('product_branches.product_id', $productId)
             ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
             ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
             ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
-            ->where('product_branches.branch_id', auth()->user()->branch_id)
-            ->where('product_branches.product_id', $productId)
             ->select(
                 'branches.name as b_name',
                 'branches.branch_code',
@@ -348,11 +348,11 @@ class ProductController extends Controller
             )->get();
 
         $another_branch_stocks = DB::table('product_branches')
+            ->where('product_branches.product_id', $productId)
             ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')
             ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
             ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
             // ->where('product_branches.branch_id', '!=', auth()->user()->branch_id)
-            ->where('product_branches.product_id', $productId)
             ->select(
                 'product_branches.branch_id',
                 'branches.name as b_name',
@@ -368,17 +368,44 @@ class ProductController extends Controller
                 'product_branch_variants.total_sale as v_total_sale',
             )->get();
 
-        $won_warehouse_stocks = DB::table('product_warehouses')
-
+        $own_warehouse_stocks = DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+            ->where('warehouse_branches.is_global', 0)
+            ->leftJoin('product_warehouses', 'warehouse_branches.warehouse_id', 'product_warehouses.warehouse_id')
             ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
             ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
-
             ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
-
-            ->where('warehouses.branch_id', auth()->user()->branch_id)
-
             ->where('product_warehouses.product_id', $productId)
+            ->select(
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'product_variants.variant_cost_with_tax',
+                'product_variants.variant_price',
+                'product_warehouses.product_quantity',
+                'product_warehouses.total_purchased',
+                'product_warehouses.total_adjusted',
+                'product_warehouses.total_transferred',
+                'product_warehouses.total_received',
+                'product_warehouses.total_sale_return',
+                'product_warehouses.total_purchase_return',
+                'product_warehouse_variants.variant_quantity',
+                'product_warehouse_variants.total_purchased as v_total_purchased',
+                'product_warehouse_variants.total_adjusted as v_total_adjusted',
+                'product_warehouse_variants.total_transferred as v_total_transferred',
+                'product_warehouse_variants.total_received as v_total_received',
+                'product_warehouse_variants.total_sale_return as v_',
+                'product_warehouse_variants.total_purchase_return as v_total_purchase_return',
+            )->get();
 
+        $global_warehouse_stocks = DB::table('warehouse_branches')
+            ->where('warehouse_branches.is_global', 1)
+            ->leftJoin('product_warehouses', 'warehouse_branches.warehouse_id', 'product_warehouses.warehouse_id')
+            ->where('product_warehouses.product_id', $productId)
+            ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
+            ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
+            ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
             ->select(
                 'warehouses.warehouse_name',
                 'warehouses.warehouse_code',
@@ -403,7 +430,14 @@ class ProductController extends Controller
             )->get();
 
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
-        return view('product.products.ajax_view.product_details_view', compact('product', 'price_groups', 'won_branch_stocks', 'another_branch_stocks', 'won_warehouse_stocks'));
+        return view('product.products.ajax_view.product_details_view', compact(
+            'product',
+            'price_groups',
+            'own_branch_stocks',
+            'another_branch_stocks',
+            'own_warehouse_stocks',
+            'global_warehouse_stocks'
+        ));
     }
 
     //update opening stock

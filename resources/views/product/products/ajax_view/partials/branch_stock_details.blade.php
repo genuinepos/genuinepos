@@ -17,8 +17,8 @@
         </tr>
     </thead>
     <tbody>
-        @if (count($won_branch_stocks) > 0)
-            @foreach ($won_branch_stocks as $row)
+        @if (count($own_branch_stocks) > 0)
+            @foreach ($own_branch_stocks as $row)
                 @if ($row->variant_name)
                     <tr>
                         <td class="text-start">{{ $row->variant_code }}</td>

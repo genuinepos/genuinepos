@@ -78,7 +78,7 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'category_id')->select(['id', 'name']);
     }
 
-    public function child_category()
+    public function subcategory()
     {
         return $this->belongsTo(Category::class, 'parent_category_id', 'id')->select(['id', 'name']);
     }

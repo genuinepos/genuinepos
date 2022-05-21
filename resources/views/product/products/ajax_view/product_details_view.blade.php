@@ -37,7 +37,7 @@
                 <div class="col-md-3">
                     <ul class="list-unstyled">
                         <li><strong>Category : </strong> {{$product->category ? $product->category->name : 'N/A' }}</li>
-                        <li><strong>Sub-Category : </strong> {{ $product->child_category ? $product->child_category->name : 'N/A' }}</li>
+                        <li><strong>Sub-Category : </strong> {{ $product->subCategory ? $product->subCategory->name : 'N/A' }}</li>
                         <li><strong>Is For Sale : </strong>{{ $product->is_for_sale == 1 ? 'Yes' : 'No' }}</li>
                         <li><strong>Alert Quantity : </strong>{{ $product->alert_quantity }}</li>
                         <li><strong>Warranty : </strong>
@@ -117,16 +117,31 @@
             @endif
 
             @if ($product->is_manage_stock == 1)
-                @if (count($won_warehouse_stocks) > 0)
+                @if (count($own_warehouse_stocks) > 0)
                     <hr class="m-0">
                     
                     <div class="row">
                         <div class="heading">
-                            <label class="p-0 m-0"><strong>WAREHOUSE STOCK DETAILS :</strong></label>
+                            <label class="p-0 m-0">OWN <strong>WAREHOUSE</strong> STOCK DETAILS :</label>
                         </div>
                         <div class="table-responsive" id="warehouse_stock_details">
                             <!--Warehouse Stock Details-->
-                            @include('product.products.ajax_view.partials.warehouse_stock_details')
+                            @include('product.products.ajax_view.partials.own_warehouse_stock_details')
+                            <!--Warehouse Stock Details End-->
+                        </div>
+                    </div>
+                @endif
+
+                @if (count($global_warehouse_stocks) > 0)
+                    <hr class="m-0">
+                    
+                    <div class="row">
+                        <div class="heading">
+                            <label class="p-0 m-0">GLOBAL <strong>WAREHOUSE</strong> STOCK DETAILS : </label>
+                        </div>
+                        <div class="table-responsive" id="warehouse_stock_details">
+                            <!--Warehouse Stock Details-->
+                            @include('product.products.ajax_view.partials.global_warehouse_stock_details')
                             <!--Warehouse Stock Details End-->
                         </div>
                     </div>
@@ -135,7 +150,7 @@
 
                 <div class="row">
                     <div class="heading">
-                        <label class="p-0 m-0"><strong>WON BUSINESS LOCATION STOCK DETAILS :</strong></label>
+                        <label class="p-0 m-0">WON <strong>BUSINESS LOCATION</strong> STOCK DETAILS :</label>
                     </div>
                     <div class="table-responsive" id="branch_stock_details">
                         @include('product.products.ajax_view.partials.branch_stock_details')
@@ -147,7 +162,7 @@
                 @if ($addons->branches == 1)
                     <div class="row">
                         <div class="heading">
-                            <label class="p-0 m-0"><strong>ANOTHER BUSINESS LOCATION STOCK DETAILS :</strong></label>
+                            <label class="p-0 m-0">ANOTHER <strong>BUSINESS LOCATION</strong> STOCK DETAILS :</label>
                         </div>
                         <div class="table-responsive" id="branch_stock_details">
                             @include('product.products.ajax_view.partials.another_branch_details')

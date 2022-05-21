@@ -47,20 +47,87 @@ class SupplierController extends Controller
         $this->middleware('auth:admin_and_user');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         if (auth()->user()->permission->contact['supplier_all'] == '0') {
 
             abort(403, 'Access Forbidden.');
         }
 
-        return view('contacts.suppliers.index');
-    }
 
-    public function getAllSupplier()
-    {
-        $suppliers = Supplier::orderBy('id', 'DESC')->get();
-        return view('contacts.suppliers.ajax_view.supplier_list', compact('suppliers'));
+        if ($request->ajax()) {
+
+            $suppliers = DB::table('suppliers');
+
+            return DataTables::of($suppliers)
+                ->addColumn('action', function ($row) {
+                    $html = '';
+                    $html .= '<div class="btn-group" role="group">';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . url('contacts/suppliers/view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
+
+                    if (auth()->user()->permission->contact['supplier_edit'] == '1') :
+
+                        $html .= '<a class="dropdown-item" href="' . route('contacts.supplier.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    endif;
+
+                    if (auth()->user()->permission->contact['supplier_delete'] == '1') :
+
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.supplier.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    endif;
+
+                    if ($row->status == 1) :
+
+                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
+                    else :
+
+                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
+                    endif;
+
+                    $html .= '</div>';
+                    $html .= '</div>';
+                    return $html;
+                })
+
+                ->editColumn('business_name', function ($row) {
+
+                    return $row->business_name ? $row->business_name : '...';
+                })
+
+                ->editColumn('tax_number', function ($row) {
+
+                    return $row->tax_number ? $row->tax_number : '...';
+                })
+
+                ->editColumn('opening_balance', fn ($row) => '<span class="opening_balance" data-value="' . $row->opening_balance . '">' . $this->converter->format_in_bdt($row->opening_balance) . '</span>')
+
+                ->editColumn('total_purchase', fn ($row) => '<span class="total_purchase" data-value="' . $row->total_purchase . '">' . $this->converter->format_in_bdt($row->total_purchase) . '</span>')
+
+                ->editColumn('total_paid', fn ($row) => '<span class="total_paid text-success" data-value="' . $row->total_paid . '">' . $this->converter->format_in_bdt($row->total_paid) . '</span>')
+
+                ->editColumn('total_purchase_due', fn ($row) => '<span class="total_purchase_due text-danger" data-value="' . $row->total_purchase_due . '">' . $this->converter->format_in_bdt($row->total_purchase_due) . '</span>')
+
+                ->editColumn('total_return', fn ($row) => '<span class="total_return" data-value="' . $row->total_return . '">' . $this->converter->format_in_bdt($row->total_return) . '</span>')
+
+                ->editColumn('total_purchase_return_due', fn ($row) => '<span class="total_purchase_return_due" data-value="' . $row->total_purchase_return_due . '">' . $this->converter->format_in_bdt($row->total_purchase_return_due) . '</span>')
+
+                ->editColumn('status', function ($row) {
+
+                    if ($row->status == 1) :
+
+                        return '<i class="far fa-thumbs-up text-success"></i>';
+                    else :
+
+                        return '<i class="far fa-thumbs-down text-danger"></i>';
+                    endif;
+                })
+                ->rawColumns(['action', 'business_name', 'tax_number', 'opening_balance', 'total_purchase', 'total_paid', 'total_purchase_due', 'total_return', 'total_purchase_return_due', 'status'])
+                ->make(true);
+        }
+
+
+        return view('contacts.suppliers.index');
     }
 
     public function store(Request $request)

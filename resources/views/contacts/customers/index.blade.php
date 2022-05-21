@@ -288,22 +288,6 @@
         </div>
     </div>
 
-    <!-- Customer payment Modal-->
-    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Receive Payment</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="payment_modal_body"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Customer payment Modal End-->
-
     <!-- Money Receipt list Modal-->
     <div class="modal fade" id="moneyReceiptListModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
@@ -341,50 +325,6 @@
         aria-hidden="true">
     </div>
     <!--add money receipt Modal End-->
-
-    <!-- Customer payment view Modal-->
-    <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="payment_list"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Customer payment view Modal End-->
-
-    <!-- Customer payment details Modal-->
-    <div class="modal fade" id="paymentDatailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <div id="payment_details_body"></div>
-
-                    <div class="row">
-                        <div class="col-md-6 text-right">
-                            <ul class="list-unstyled">
-                                <li class="mt-3" id="payment_attachment"></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6 text-end">
-                            <ul class="list-unstyled">
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Customer payment details Modal End-->
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -568,57 +508,6 @@
                             }
                         },
                         'No': {'class': 'no btn-modal-primary','action': function() { console.log('Confirmation canceled.');}}
-                    }
-                });
-            });
-
-            // Show Customer payment modal
-            $(document).on('click', '#pay_button', function(e) {
-                e.preventDefault();
-
-                var url = $(this).attr('href');
-                $('.data_preloader').show();
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    success: function(data) {
-
-                        $('#payment_modal_body').html(data);
-                        $('#paymentModal').modal('show');
-                        $('.data_preloader').hide();
-                        document.getElementById('p_paying_amount').focus();
-                    }
-                });
-            });
-
-            // Show customer return payment modal
-            $(document).on('click', '#pay_return_button', function(e) {
-                e.preventDefault();
-
-                var url = $(this).attr('href');
-                $('.data_preloader').show();
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    success: function(data) {
-
-                        $('#payment_modal_body').html(data);
-                        $('#paymentModal').modal('show');
-                        $('.data_preloader').hide();
-                    }
-                });
-            });
-
-            $(document).on('click', '#add_payment',function(e){
-                e.preventDefault();
-                var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);
-                $.confirm({
-                    'title': 'Payment Confirmation',
-                    'content': 'Are you sure to receive this payment?',
-                    'buttons': {
-                        'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#customer_payment_form').submit();}},
-                        'No': {'class': 'no btn-danger','action': function() {console.log('Edit canceled.');}}
                     }
                 });
             });
@@ -828,32 +717,6 @@
                 }
             });
 
-            $(document).on('click', '#view_payment', function(e) {
-                e.preventDefault();
-                $('.data_preloader').show();
-                var url = $(this).attr('href');
-
-                $.get(url, function(data) {
-
-                    $('#payment_list').html(data);
-                    $('#viewPaymentModal').modal('show');
-                    $('.data_preloader').hide();
-                });
-            });
-
-            $(document).on('click', '#payment_details', function(e) {
-                e.preventDefault();
-                $('.data_preloader').show();
-                var url = $(this).attr('href');
-
-                $.get(url, function(data) {
-
-                    $('#payment_details_body').html(data);
-                    $('#paymentDatailsModal').modal('show');
-                    $('.data_preloader').hide();
-                });
-            });
-
             // Print single payment details
             $('#print_payment').on('click', function (e) {
                 e.preventDefault();
@@ -869,40 +732,6 @@
                     printDelay: 500,
                     header: header,
                     footer: footer
-                });
-            });
-
-            $(document).on('click', '#delete_payment',function(e){
-                e.preventDefault();
-                var url = $(this).attr('href');
-                $('#deleted_payment_form').attr('action', url);
-                $.confirm({
-                    'title': 'Delete Confirmation',
-                    'message': 'Are you sure?',
-                    'buttons': {
-                        'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_payment_form').submit();}},
-                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
-                    }
-                });
-            });
-
-            //data delete by ajax
-            $(document).on('submit', '#deleted_payment_form',function(e) {
-                e.preventDefault();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                $.ajax({
-                    url:url,
-                    type:'post',
-                    async:false,
-                    data:request,
-                    success:function(data) {
-
-                        table.ajax.reload();
-                        toastr.error(data);
-                        $('#deleted_payment_form')[0].reset();
-                        $('#viewPaymentModal').modal('hide');
-                    }
                 });
             });
         });

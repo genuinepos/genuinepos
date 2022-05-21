@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Hrm\AllowanceEmployee;
 use Illuminate\Support\Facades\Cache;
 
-
 class AllowanceController extends Controller
 {
     public function __construct()

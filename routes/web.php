@@ -182,7 +182,6 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
     // Supplier route group
     Route::group(['prefix' => 'suppliers'], function () {
         Route::get('/', 'SupplierController@index')->name('contacts.supplier.index');
-        Route::get('get/all/suppliers', 'SupplierController@getAllSupplier')->name('contacts.supplier.get.all.supplier');
         Route::get('add', 'SupplierController@create')->name('contacts.supplier.create');
         Route::post('store', 'SupplierController@store')->name('contacts.supplier.store');
         Route::get('edit/{supplierId}', 'SupplierController@edit')->name('contacts.supplier.edit');

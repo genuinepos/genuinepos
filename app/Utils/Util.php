@@ -359,14 +359,19 @@ class Util
         ];
 
         if ($forFilter == 0) {
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 return $data;
             } else {
+
                 return $filteredType =  array_filter($data, function ($val, $key) {
+
                     return $key != 2;
                 }, ARRAY_FILTER_USE_BOTH);
             }
         } else {
+            
             return $data;
         }
     }

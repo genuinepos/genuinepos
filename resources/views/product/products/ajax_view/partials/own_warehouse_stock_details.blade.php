@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($won_warehouse_stocks as $row)
+        @foreach ($own_warehouse_stocks as $row)
             @if ($row->variant_name)
                 <tr>
                     <td class="text-start">{{ $row->variant_code }}</td>

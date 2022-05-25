@@ -44,20 +44,35 @@
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
-                                            <tr>
-                                                <th>Supplier ID</th>
-                                                <th>Name</th>
-                                                <th>Business Name</th>
-                                                <th>Phone</th>
-                                                <th>Email</th>
-                                                <th>Tax Number</th>
-                                                <th>Opening Balance</th>
-                                                <th>Total Purchase Due</th>
-                                                <th>Status</th>
+                                            <tr class="text-start">
                                                 <th>Actions</th>
+                                                <th>Supplier ID</th>
+                                                <th>Prefix</th>
+                                                <th>Name</th>
+                                                <th>Business</th>
+                                                <th>Phone</th>
+                                                <th>Opening Balance</th>
+                                                <th>Total Purchase</th>
+                                                <th>Total Paid</th>
+                                                <th>Purchase Due</th>
+                                                <th>Total Return</th>
+                                                <th>Return Due</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th colspan="6" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th id="opening_balance" class="text-white text-end"></th>
+                                                <th id="total_purchase" class="text-white text-end"></th>
+                                                <th id="total_paid" class="text-white text-end"></th>
+                                                <th id="total_purchase_due" class="text-white text-end"></th>
+                                                <th id="total_return" class="text-white text-end"></th>
+                                                <th id="total_purchase_return_due" class="text-white text-end"></th>
+                                                <th class="text-white text-start">---</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -233,83 +248,69 @@
         </div>
     </div>
     <!-- Edit Modal End-->
-
-    <!-- Supplier payment Modal-->
-    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Payment</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="payment_modal_body"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Supplier payment Modal End-->
-
-    <!-- Supplier payment view Modal-->
-    <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="payment_list"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Supplier payment view Modal End-->
-
-    <!-- Supplier payment details Modal-->
-    <div class="modal fade" id="paymentDatailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">View Payment</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <div id="payment_details_body"></div>
-
-                    <div class="row">
-                        <div class="col-md-6 text-right">
-                            <ul class="list-unstyled">
-                                <li class="mt-3" id="payment_attachment"></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6 text-end">
-                            <ul class="list-unstyled">
-                                {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a></li> --}}
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Supplier payment details Modal End-->
 @endsection
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    // Get all category by ajax
-    function getAllSupplier(){
-        $('.data_preloader').show();
-        $.ajax({
-            url:"{{ route('contacts.supplier.get.all.supplier') }}",
-            type:'get',
-            success:function(data){
-                $('.table-responsive').html(data);
-                $('.data_preloader').hide();
+    var table = $('.data_tbl').DataTable({
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+        ],
+        "processing": true,
+        "serverSide": true,
+        aaSorting: [[0, 'asc']],
+        ajax: "{{ route('contacts.supplier.index') }}",
+        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        columnDefs: [{"targets": [0, 12],"orderable": false,"searchable": false}],
+        columns: [
+            {data: 'action',name: 'action'},
+            {data: 'contact_id',name: 'contact_id'},
+            {data: 'prefix',name: 'prefix'},
+            {data: 'name',name: 'name'},
+            {data: 'business_name',name: 'business_name'},
+            {data: 'phone',name: 'phone'},
+            {data: 'opening_balance',name: 'opening_balance', className: 'text-end'},
+            {data: 'total_purchase',name: 'total_purchase', className: 'text-end'},
+            {data: 'total_paid',name: 'total_paid', className: 'text-end'},
+            {data: 'total_purchase_due',name: 'total_purchase_due', className: 'text-end'},
+            {data: 'total_return',name: 'total_return', className: 'text-end'},
+            {data: 'total_purchase_return_due',name: 'total_purchase_return_due', className: 'text-end'},
+            {data: 'status',name: 'status'},
+        ],fnDrawCallback: function() {
+
+            var opening_balance = sum_table_col($('.data_tbl'), 'opening_balance');
+            $('#opening_balance').text(bdFormat(opening_balance));
+            var total_purchase = sum_table_col($('.data_tbl'), 'total_purchase');
+            $('#total_purchase').text(bdFormat(total_purchase));
+            var total_purchase_due = sum_table_col($('.data_tbl'), 'total_purchase_due');
+            $('#total_purchase_due').text(bdFormat(total_purchase_due));
+            var total_paid = sum_table_col($('.data_tbl'), 'total_paid');
+            $('#total_paid').text(bdFormat(total_paid));
+            var total_return = sum_table_col($('.data_tbl'), 'total_return');
+            $('#total_return').text(bdFormat(total_return));
+            var total_purchase_return_due = sum_table_col($('.data_tbl'), 'total_purchase_return_due');
+            $('#total_purchase_return_due').text(bdFormat(total_purchase_return_due));
+        }
+    });
+
+    function sum_table_col(table, class_name) {
+        var sum = 0;
+
+        table.find('tbody').find('tr').each(function() {
+
+            if (parseFloat($(this).find('.' + class_name).data('value'))) {
+
+                sum += parseFloat(
+                    $(this).find('.' + class_name).data('value')
+                );
             }
         });
+        return sum;
     }
-    getAllSupplier();
-
+    
     // Setup ajax for csrf token.
     $.ajaxSetup({ headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
@@ -453,182 +454,6 @@
                 success:function(data){
                     toastr.success(data);
                     getAllSupplier();
-                }
-            });
-        });
-
-        // // Show supplier payment modal
-        // $(document).on('click', '#pay_button',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('.data_preloader').show();
-        //     $.ajax({
-        //         url:url,
-        //         type:'get',
-        //         success:function(data) {
-        //             $('#payment_modal_body').html(data);
-        //             $('#paymentModal').modal('show');
-        //             $('.data_preloader').hide();
-        //             document.getElementById('p_amount').focus();
-        //         }
-        //     });
-        // });
-
-        // //Add Supplier payment request by ajax
-        // $(document).on('submit', '#supplier_payment_form', function(e){
-        //     e.preventDefault();
-
-        //     $('.loading_button').show();
-        //     var available_amount = $('#p_available_amount').val();
-        //     var paying_amount = $('#p_paying_amount').val();
-
-        //     if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
-        //         $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
-        //         $('.loading_button').hide();
-        //         return;
-        //     }
-
-        //     var url = $(this).attr('action');
-          
-        //     $.ajax({
-        //         url:url,
-        //         type:'post',
-        //         data: new FormData(this),
-        //         contentType: false,
-        //         cache: false,
-        //         processData: false,
-        //         success:function(data){
-        //             $('.loading_button').hide();
-        //             $('.error').html('');
-        //             if(!$.isEmptyObject(data.errorMsg)){
-        //                 toastr.error(data.errorMsg,'ERROR');
-        //             }else{
-        //                 $('#paymentModal').modal('hide');
-        //                 toastr.success(data);
-        //                 getAllSupplier();
-        //             }
-        //         },
-        //         error: function(err) {
-        //             $('.loading_button').hide();
-        //             $('.error').html('');
-
-        //             if (err.status == 0) {
-        //                 toastr.error('Net Connetion Error. Reload This Page.'); 
-        //                 return;
-        //             }
-
-        //             $.each(err.responseJSON.errors, function(key, error) {
-        //                 $('.error_p_' + key + '').html(error[0]);
-        //             });
-        //         }
-        //     });
-        // });
-
-        // $(document).on('click', '#add_payment',function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('href');
-        //     $('#deleted_form').attr('action', url);
-        //     $.confirm({
-        //         'title': 'Payment Confirmation',
-        //         'content': 'Are you sure to make this payment?',
-        //         'buttons': {
-        //             'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#supplier_payment_form').submit();}},
-        //             'No': {'class': 'no btn-danger','action': function() {console.log('Edit canceled.');}}
-        //         }
-        //     });
-        // });
-
-        // Show supplier return payment modal
-        $(document).on('click', '#pay_receive_button',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('.data_preloader').show();
-            $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
-                    $('#payment_modal_body').html(data);
-                    $('#paymentModal').modal('show');
-                    $('.data_preloader').hide();
-                }
-            });
-        });
-
-        $(document).on('change', '#payment_method', function () {
-            var value = $(this).val();
-            $('.payment_method').hide();
-            $('#'+value).show();
-        });
-
-        $(document).on('click', '#view_payment', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-            var url = $(this).attr('href');
-            $.get(url, function(data) {
-                $('#payment_list').html(data);
-                $('#viewPaymentModal').modal('show');
-                $('.data_preloader').hide();
-            });
-        });
-
-        $(document).on('click', '#payment_details', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-            var url = $(this).attr('href');
-            $.get(url, function(data) {
-                $('#payment_details_body').html(data);
-                $('#paymentDatailsModal').modal('show');
-                $('.data_preloader').hide();
-            });
-        });
-
-        // Print single payment details
-        $('#print_payment').on('click', function (e) {
-           e.preventDefault();
-            var body = $('.sale_payment_print_area').html();
-            var header = $('.header_area').html();
-            var footer = $('.signature_area').html();
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
-                removeInline: true,
-                printDelay: 500,
-                header: header,
-                footer: footer
-            });
-        });
-
-        $(document).on('click', '#delete_payment',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_payment_form').attr('action', url);
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'message': 'Are you sure?',
-                'buttons': {
-                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_payment_form').submit();}},
-                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
-                }
-            });
-        });
-
-        //data delete by ajax
-        $(document).on('submit', '#deleted_payment_form',function(e) {
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url:url,
-                type:'post',
-                async:false,
-                data:request,
-                success:function(data){
-                    getAllSupplier();
-                    toastr.error(data);
-                    $('#deleted_payment_form')[0].reset();
-                    $('#viewPaymentModal').modal('hide');
                 }
             });
         });

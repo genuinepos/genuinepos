@@ -8,8 +8,6 @@ use App\Models\Hrm\Allowance;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Hrm\AllowanceEmployee;
-use Illuminate\Support\Facades\Cache;
-
 
 class AllowanceController extends Controller
 {

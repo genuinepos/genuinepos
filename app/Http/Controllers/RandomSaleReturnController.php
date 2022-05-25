@@ -11,12 +11,12 @@ use App\Utils\CustomerUtil;
 use App\Utils\PurchaseUtil;
 use Illuminate\Http\Request;
 use App\Utils\NameSearchUtil;
-use App\Models\PurchaseProduct;
 use App\Utils\ProductStockUtil;
 use App\Models\SaleReturnProduct;
-use Illuminate\Support\Facades\DB;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
+use App\Utils\PurchaseSaleChainUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
 
 class RandomSaleReturnController extends Controller
 {
@@ -28,6 +28,7 @@ class RandomSaleReturnController extends Controller
     protected $invoiceVoucherRefIdUtil;
     protected $purchaseUtil;
     protected $userActivityLogUtil;
+    protected $purchaseSaleChainUtil;
 
     public function __construct(
         ProductStockUtil $productStockUtil,
@@ -37,7 +38,8 @@ class RandomSaleReturnController extends Controller
         CustomerUtil $customerUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         PurchaseUtil $purchaseUtil,
-        UserActivityLogUtil $userActivityLogUtil
+        UserActivityLogUtil $userActivityLogUtil,
+        PurchaseSaleChainUtil $purchaseSaleChainUtil,
     ) {
 
         $this->productStockUtil = $productStockUtil;
@@ -48,6 +50,7 @@ class RandomSaleReturnController extends Controller
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
+        $this->purchaseSaleChainUtil = $purchaseSaleChainUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -176,17 +179,18 @@ class RandomSaleReturnController extends Controller
             $addReturnProduct->return_subtotal = $request->subtotals[$index];
             $addReturnProduct->save();
 
-            $addRowInPurchaseProductTable = new PurchaseProduct();
-            $addRowInPurchaseProductTable->sale_return_product_id = $addReturnProduct->id;
-            $addRowInPurchaseProductTable->product_id = $product_id;
-            $addRowInPurchaseProductTable->product_variant_id = $variant_id;
-            $addRowInPurchaseProductTable->unit = $request->units[$index];
-            $addRowInPurchaseProductTable->quantity = $request->return_quantities[$index];
-            $addRowInPurchaseProductTable->left_qty = $request->return_quantities[$index];
-            $addRowInPurchaseProductTable->unit_cost = $request->unit_costs_inc_tax[$index];
-            $addRowInPurchaseProductTable->unit_cost_with_discount = $request->unit_costs_inc_tax[$index];
-            $addRowInPurchaseProductTable->net_unit_cost = $request->unit_costs_inc_tax[$index];
-            $addRowInPurchaseProductTable->save();
+            $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
+                tranColName: 'sale_return_product_id',
+                transId: $addReturnProduct->id,
+                branchId: auth()->user()->branch_id,
+                productId: $product_id,
+                quantity: $request->return_quantities[$index],
+                variantId: $variant_id,
+                unitCostIncTax: $request->unit_costs_inc_tax[$index],
+                sellingPrice: $request->unit_prices_exc_tax[$index],
+                subTotal: $request->subtotals[$index],
+                createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+            );
 
             $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
             $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
@@ -273,7 +277,7 @@ class RandomSaleReturnController extends Controller
             return view('sales.sale_return.save_and_print_template.sale_return_print_view', compact('saleReturn'));
         } else {
 
-            return response()->json('Sale Return is created successfully.');
+            return response()->json(['successMsg' => 'Sale Return is created successfully.']);
         }
     }
 
@@ -391,31 +395,18 @@ class RandomSaleReturnController extends Controller
                 $saleReturnProduct->is_delete_in_update = 0;
                 $saleReturnProduct->save();
 
-                if ($saleReturnProduct->purchaseProduct) {
-
-                    $saleReturnProduct->purchaseProduct->unit = $request->units[$index];
-                    $saleReturnProduct->purchaseProduct->quantity = $request->return_quantities[$index];
-                    $saleReturnProduct->purchaseProduct->left_qty = $request->return_quantities[$index];
-                    $saleReturnProduct->purchaseProduct->unit_cost = $request->unit_costs_inc_tax[$index];
-                    $saleReturnProduct->purchaseProduct->unit_cost_with_discount = $request->unit_costs_inc_tax[$index];
-                    $saleReturnProduct->purchaseProduct->net_unit_cost = $request->unit_costs_inc_tax[$index];
-                    $saleReturnProduct->purchaseProduct->save();
-
-                    $this->purchaseUtil->adjustPurchaseLeftQty($saleReturnProduct->purchaseProduct);
-                } else {
-
-                    $addRowInPurchaseProductTable = new PurchaseProduct();
-                    $addRowInPurchaseProductTable->sale_return_product_id = $saleReturnProduct->id;
-                    $addRowInPurchaseProductTable->product_id = $product_id;
-                    $addRowInPurchaseProductTable->product_variant_id = $variant_id;
-                    $addRowInPurchaseProductTable->unit = $request->units[$index];
-                    $addRowInPurchaseProductTable->quantity = $request->return_quantities[$index];
-                    $addRowInPurchaseProductTable->left_qty = $request->return_quantities[$index];
-                    $addRowInPurchaseProductTable->unit_cost = $request->unit_costs_inc_tax[$index];
-                    $addRowInPurchaseProductTable->unit_cost_with_discount = $request->unit_costs_inc_tax[$index];
-                    $addRowInPurchaseProductTable->net_unit_cost = $request->unit_costs_inc_tax[$index];
-                    $addRowInPurchaseProductTable->save();
-                }
+                $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
+                    tranColName: 'sale_return_product_id',
+                    transId: $saleReturnProduct->id,
+                    branchId: auth()->user()->branch_id,
+                    productId: $product_id,
+                    quantity: $request->return_quantities[$index],
+                    variantId: $variant_id,
+                    unitCostIncTax: $request->unit_costs_inc_tax[$index],
+                    sellingPrice: $request->unit_prices_exc_tax[$index],
+                    subTotal: $request->subtotals[$index],
+                    createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+                );
             } else {
 
                 $addReturnProduct = new SaleReturnProduct();
@@ -437,17 +428,18 @@ class RandomSaleReturnController extends Controller
                 $addReturnProduct->return_subtotal = $request->subtotals[$index];
                 $addReturnProduct->save();
 
-                $addRowInPurchaseProductTable = new PurchaseProduct();
-                $addRowInPurchaseProductTable->sale_return_product_id = $addReturnProduct->id;
-                $addRowInPurchaseProductTable->product_id = $product_id;
-                $addRowInPurchaseProductTable->product_variant_id = $variant_id;
-                $addRowInPurchaseProductTable->unit = $request->units[$index];
-                $addRowInPurchaseProductTable->quantity = $request->return_quantities[$index];
-                $addRowInPurchaseProductTable->left_qty = $request->return_quantities[$index];
-                $addRowInPurchaseProductTable->unit_cost = $request->unit_costs_inc_tax[$index];
-                $addRowInPurchaseProductTable->unit_cost_with_discount = $request->unit_costs_inc_tax[$index];
-                $addRowInPurchaseProductTable->net_unit_cost = $request->unit_costs_inc_tax[$index];
-                $addRowInPurchaseProductTable->save();
+                $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
+                    tranColName: 'sale_return_product_id',
+                    transId: $addReturnProduct->id,
+                    branchId: auth()->user()->branch_id,
+                    productId: $product_id,
+                    quantity: $request->return_quantities[$index],
+                    variantId: $variant_id,
+                    unitCostIncTax: $request->unit_costs_inc_tax[$index],
+                    sellingPrice: $request->unit_prices_exc_tax[$index],
+                    subTotal: $request->subtotals[$index],
+                    createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+                );
             }
 
             $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);

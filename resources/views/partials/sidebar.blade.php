@@ -1479,7 +1479,7 @@
                                     </div>
                                     <p class="switch_text">@lang('menu.transfer_list')</p>
                                 </div>
-
+                                transfer.stocks.to.branch.receive.stock.index
                                 <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
                                         <a href="{{ route('transfer.stocks.to.warehouse.receive.stock.index') }}"
@@ -1897,7 +1897,7 @@
                     </div>
                     <div class="container-fluid">
                         <div class="row">
-                            @if (auth()->user()->permission->user['user_view'] == '1')
+                            @if (auth()->user()->permission->user['user_add'] == '1')
                                 <div
                                     class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                     <div class="switch_bar">
@@ -2304,7 +2304,7 @@
                                     <p class="text-muted float-start mt-1"><strong>Manufacturing</strong></p>
                                 </div>
                                 <div class="col-md-4">
-                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i>Back</a>
                                 </div>
                             </div>
                         </div>

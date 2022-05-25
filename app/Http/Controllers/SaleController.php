@@ -834,7 +834,7 @@ class SaleController extends Controller
             } else {
 
                 $addSaleProduct = new SaleProduct();
-                $addSaleProduct->sale_id = $addSale->id;
+                $addSaleProduct->sale_id = $updateSale->id;
                 $addSaleProduct->stock_warehouse_id = $warehouse_id;
                 $addSaleProduct->stock_branch_id = $request->branch_ids[$__index];
                 $addSaleProduct->product_id = $product_id;

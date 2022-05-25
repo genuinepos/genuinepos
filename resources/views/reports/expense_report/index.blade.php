@@ -158,22 +158,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     // Set accounts in payment and payment edit form
-    function setAdmin(){
-        $.ajax({
-            url:"{{route('expanses.all.admins')}}",
-            async:true,
-            type:'get',
-            dataType: 'json',
-            success:function(admins){
-                $.each(admins, function (key, admin) {
-                    var prefix = admin.prefix ? admin.prefix : '';
-                    var last_name = admin.last_name ? admin.last_name : '';
-                    $('#admin_id').append('<option value="'+admin.id+'">'+ admin.name+' '+last_name+'</option>');
-                });
-            }
-        });
-    }
-    setAdmin();
 
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",

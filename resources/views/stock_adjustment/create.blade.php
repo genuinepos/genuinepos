@@ -316,7 +316,7 @@
             $('.select_area').hide();
             var keyword = $(this).val();
             var __keyword = keyword.replaceAll('/', '~');
-
+            
             $.ajax({
                 url:"{{url('stock/adjustments/search/product')}}"+"/"+__keyword, 
                 dataType: 'json',

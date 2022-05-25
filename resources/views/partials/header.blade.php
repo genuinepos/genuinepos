@@ -140,11 +140,13 @@
                                             @endif
                                         </span>
                                     </li>
+
                                     <li>
                                         <i class="fas fa-eye text-primary"></i><a class="dropdown-item d-block"
                                             href="{{ route('users.profile.view', auth()->user()->id) }}">View
                                             Profile</a>
                                     </li>
+                                    
                                     <li>
                                         <i class="fas fa-edit text-primary"></i></span><a class="dropdown-item d-block"
                                             href="{{ route('users.profile.index') }}">Edit Profile</a>

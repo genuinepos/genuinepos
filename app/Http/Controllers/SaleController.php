@@ -165,7 +165,7 @@ class SaleController extends Controller
     public function drafts(Request $request)
     {
         if ($request->ajax()) {
-            
+
             return $this->saleUtil->saleDraftTable($request);
         }
 
@@ -873,10 +873,10 @@ class SaleController extends Controller
 
             $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
 
-            if($storedStockWarehouseId){
+            if ($storedStockWarehouseId) {
 
                 $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId, $storedStockWarehouseId);
-            }else {
+            } else {
 
                 $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, $storedStockBranchId);
             }
@@ -897,10 +897,10 @@ class SaleController extends Controller
 
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
 
-                if($saleProduct->stock_warehouse_id){
+                if ($saleProduct->stock_warehouse_id) {
 
                     $this->productStockUtil->adjustWarehouseStock($saleProduct->product_id, $variant_id, $saleProduct->stock_warehouse_id);
-                }else {
+                } else {
 
                     $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $variant_id, $saleProduct->stock_branch_id);
                 }

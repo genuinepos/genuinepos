@@ -886,7 +886,7 @@ class CustomerController extends Controller
                         $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
                         $addCustomerPaymentInvoice->sale_id = $saleReturn->sale_id;
                         $addCustomerPaymentInvoice->sale_return_id = $saleReturn->id;
-                        $addCustomerPaymentInvoice->paid_amount = $returnSale->sale_return_due;
+                        $addCustomerPaymentInvoice->paid_amount = $saleReturn->sale_return_due;
                         $addCustomerPaymentInvoice->type = 2;
                         $addCustomerPaymentInvoice->save();
 

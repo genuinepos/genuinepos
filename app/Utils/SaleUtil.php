@@ -1104,7 +1104,7 @@ class SaleUtil
             'customers.name as customer_name'
         );
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             $saleProducts = $query->orderBy('sales.report_date', 'desc');
         } else {
@@ -1261,8 +1261,10 @@ class SaleUtil
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $quotations = $this->filteredQuery($request, $query)->where('sales.status', 4)->orderBy('sales.report_date', 'desc');
         } else {
+
             $quotations = $this->filteredQuery($request, $query)->where('sales.branch_id', auth()->user()->branch_id)->where('sales.status', 4)->orderBy('sales.report_date', 'desc');
         }
 
@@ -1335,11 +1337,13 @@ class SaleUtil
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $sales = $this->filteredQuery($request, $query)->where('sales.created_by', 1)
                 ->where('sales.status', 1)
                 ->where('shipment_status', '!=', 'NULL')
                 ->orderBy('sales.report_date', 'desc');
         } else {
+            
             $sales = $this->filteredQuery($request, $query)
                 ->where('sales.created_by', 1)->where('branch_id', auth()->user()->branch_id)
                 ->where('sales.status', 1)

@@ -102,16 +102,23 @@
                     <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <h6>All Product</h6>
                                 </div>
                                 
                                 @if (auth()->user()->permission->product['product_add'] == '1')
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-8">
                                         <div class="btn_30_blue float-end">
                                             <a href="{{ route('products.add.view') }}" id="add_btn"><i class="fas fa-plus-square"></i> Add Product (Ctrl+Enter)</a>
                                         </div>
+
+                                        <a href="" class="btn btn-sm btn-warning multipla_deactive_btn text-white float-end mt-2 ms-1">Deactivate Selected</a>
+
+                                        @if (auth()->user()->permission->product['product_delete'])
+
+                                            <a href="" class="btn btn-sm btn-danger multipla_delete_btn float-end mt-2">Delete Selected</a>
+                                        @endif
                                     </div>
                                 @endif
                             </div>
@@ -145,16 +152,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th colspan="13">
-                                                        @if (auth()->user()->permission->product['product_delete'])
-                                                            <a href="" class="btn btn-sm btn-danger multipla_delete_btn">Delete Selected</a>
-                                                        @endif
-                                                        <a href="" class="btn btn-sm btn-warning multipla_deactive_btn text-white">Deactivate Selected</a>
-                                                    </th>
-                                                </tr>
-                                            </tfoot>
                                         </table>
                                     </div>
                                 </form>

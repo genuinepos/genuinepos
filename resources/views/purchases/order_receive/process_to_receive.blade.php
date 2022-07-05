@@ -119,20 +119,22 @@
                                                                     <th>Subtotal</th>
                                                                     <th>Pending Qty</th>
                                                                     <th>Receive Qty</th>
+                                                                    <th>Add Receive</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="order_list">
                                                                 @foreach ($purchase->purchase_order_products as $row)
                                                                     <tr>
                                                                         <td>
+                                                                            <input type="hidden" name="purchase_order_product_ids[]" id="purchase_order_product_id" value="{{ $row->id }}">
                                                                             <input type="hidden" name="product_ids[]" value="{{ $row->product_id }}">
                                                                             <input type="hidden" name="variant_ids[]" value="{{ $row->product_variant_id ? $row->product_variant_id : 'noid' }}">
-                                                                            {{ Str::limit($row->product->name, 25) }} 
+                                                                            {{ Str::limit($row->product->name, 25) }}
                                                                             <b>{{ $row->variant ? ' - '.$row->variant->variant_name : '' }}</b>
                                                                         </td>
 
-                                                                        <td> 
-                                                                            <input type="hidden" name="ordered_quantities[]" id="ordered_quantity" value="{{ $row->order_quantity }}">
+                                                                        <td>
+                                                                            <input type="hidden" name="ordered_quantities[]" id="ordered_quantity" class="ordered_quantity-{{ $row->id }}" value="{{ $row->order_quantity }}">
                                                                             <input type="hidden" id="unit" value="{{$row->unit}}">
                                                                             <b>{{ $row->order_quantity }} ({{$row->unit}})</b>
                                                                         </td>
@@ -141,13 +143,88 @@
 
                                                                         <td> <b>{{ $row->line_total }}</b></td>
 
-                                                                        <td> 
-                                                                            <input readonly type="text" class="form-control text-danger" name="pending_quantities[]" id="pending_quantity" value="{{ $row->pending_quantity }}">
+                                                                        <td>
+                                                                            <input readonly type="text" class="form-control text-danger bold_input_field pending_quantity-{{ $row->id }}" name="pending_quantities[]" id="pending_quantity" value="{{ $row->pending_quantity }}">
                                                                         </td>
 
-                                                                        <td> 
-                                                                            <input required type="number" step="any" class="form-control" name="received_quantities[]" id="received_quantity" value="{{ $row->received_quantity }}">
+                                                                        <td>
+                                                                            <input readonly type="number" step="any" class="form-control text-success bold_input_field received_quantity-{{ $row->id }}" name="received_quantities[]" id="received_quantity" value="{{ $row->received_quantity }}">
                                                                         </td>
+
+                                                                        <td>
+                                                                            <a href="#" class="btn btn-sm btn-success" data-id="{{ $row->id }}" id="add_receive">+</a>
+                                                                        </td>
+                                                                        
+                                                                        @if (count($row->receives) > 0)
+                                                                            @foreach ($row->receives as $receive)
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td colspan="4">
+                                                                                        <table class="display data__table">
+                                                                                            <tbody id="{{ $row->id }}">
+                                                                                                <tr class="text-end">
+                                                                                                    <td>
+                                                                                                        <input type="text" name="or_receive_rows[{{ $row->id }}][purchase_challan][]" value="{{ $receive->purchase_challan }}" placeholder="Challan No">
+
+                                                                                                        <input type="hidden" name="or_receive_rows[{{ $row->id }}][receive_id][]" value="{{ $receive->id }}">
+                                                                                                    </td>
+
+                                                                                                    <td>
+                                                                                                        <input type="text" name="or_receive_rows[{{ $row->id }}][lot_number][]" value="{{ $receive->lot_number }}" placeholder="Lot Number">
+                                                                                                    </td>
+
+                                                                                                    <td>
+                                                                                                        <input required type="date" name="or_receive_rows[{{ $row->id }}][received_date][]" value="{{ $receive->received_date }}" placeholder="Received Date">
+                                                                                                    </td>
+
+                                                                                                    <td>
+                                                                                                        <input required type="number" step="any" name="or_receive_rows[{{ $row->id }}][qty_received][]" id="qty_received-{{ $row->id }}" value="{{ $receive->qty_received }}"  data-id="{{ $row->id }}" class="qty_received" placeholder="Received Quantity">
+                                                                                                    </td>
+
+                                                                                                    <td></td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endforeach
+                                                                        @else 
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td colspan="4">
+                                                                                    <table class="display data__table">
+                                                                                    
+                                                                                        <tbody id="{{ $row->id }}">
+                                                                                            <tr class="text-end">
+                                                                                                <td>
+                                                                                                    <input type="text" name="or_receive_rows[{{ $row->id }}][purchase_challan][]" placeholder="Challan No">
+
+                                                                                                    <input type="hidden" name="or_receive_rows[{{ $row->id }}][receive_id][]" value="">
+                                                                                                </td>
+
+                                                                                                <td>
+                                                                                                    <input type="text" name="or_receive_rows[{{ $row->id }}][lot_number][]" placeholder="Lot Number">
+                                                                                                </td>
+
+                                                                                                <td>
+                                                                                                    <input required type="date" name="or_receive_rows[{{ $row->id }}][received_date][]" placeholder="Received Date">
+                                                                                                </td>
+
+                                                                                                <td>
+                                                                                                    <input required type="number" step="any" name="or_receive_rows[{{ $row->id }}][qty_received][]" id="qty_received-{{ $row->id }}" data-id="{{ $row->id }}" class="qty_received" placeholder="Received Quantity">
+                                                                                                </td>
+                                                                                                
+                                                                                                <td>
+                                                                                                    <a href="#" class="btn btn-sm btn-danger" data-id="{{ $row->id }}" id="delete_partial_receive">X</a>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>     
+                                                                        @endif
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
@@ -344,19 +421,93 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        $(document).on('click', '#add_receive', function(e) {
+            e.preventDefault();
+
+            var purchase_order_product_id = $(this).data('id');
+
+            var tr = '';
+            tr += '<tr class="text-end">';
+            tr += '<td>';
+            tr += '<input type="text" name="or_receive_rows['+purchase_order_product_id+'][purchase_challan][]" placeholder="Challan No">';
+            tr += '<input type="hidden" name="or_receive_rows['+purchase_order_product_id+'][receive_id][]">';
+            tr += '</td>';
+            tr += '<td><input type="text" name="or_receive_rows['+purchase_order_product_id+'][lot_number][]" placeholder="Lot Number"></td>';
+            tr += '<td><input required type="date" name="or_receive_rows['+purchase_order_product_id+'][received_date][]" placeholder="Received Date"></td>';
+            tr += '<td><input required type="number" step="any" name="or_receive_rows['+purchase_order_product_id+'][qty_received][]" id="qty_received-'+purchase_order_product_id+'" class="qty_received" data-id="'+purchase_order_product_id+'" placeholder="Received Quantity" autofocus></td>';
+            tr += '<td><a href="#" class="btn btn-sm btn-danger" data-id="'+purchase_order_product_id+'" id="delete_partial_receive">X</a></td>';
+            tr += '</tr>';
+
+            $('#'+purchase_order_product_id).append(tr);
+        });
+
+        $(document).on('click', '#delete_partial_receive', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            $(this).closest('tr').remove();
+            calulateOnlyReceiveQty(id);
+            calulateTotalReceiveAndPendingQty();
+        });
+        
+        $(document).on('input', '.qty_received', function() {
+
+            var val = $(this).val();
+            var id = $(this).data('id');
+
+            var total_qty_received = calulateOnlyReceiveQty(id);
+            
+            if (parseFloat(total_qty_received) >= 0) {
+
+                var ordered_quantity = $('.ordered_quantity-'+id).val();
+                total_qty_received = calulateOnlyReceiveQty(id);
+                calulateTotalReceiveAndPendingQty();
+
+                if (parseFloat(total_qty_received) > parseFloat(ordered_quantity)) {
+
+                    alert('Only - ' + ordered_quantity + ' ' + ' is available.');
+                    var instantValue = parseFloat(ordered_quantity) - (parseFloat(total_qty_received) - parseFloat(val));
+                    $(this).val(instantValue);
+                    calulateOnlyReceiveQty(id);
+                    calulateTotalReceiveAndPendingQty();
+                    return;
+                }
+            }
+        });
+
+        function calulateOnlyReceiveQty(id) {
+
+            var received_quantities = document.querySelectorAll('#qty_received-'+id);
+
+            var ordered_quantity = $('.ordered_quantity-'+id).val();
+
+            var total_received = 0;
+            received_quantities.forEach(function(qty) {
+
+                total_received += parseFloat(qty.value) ? parseFloat(qty.value) : 0;
+            });
+
+            //console.log(total_received);
+            var pending_qty = parseInt(ordered_quantity) - parseFloat(total_received);
+
+            $('.pending_quantity-'+id).val(parseInt(pending_qty).toFixed(2));
+
+            $('.received_quantity-'+id).val(parseFloat(total_received).toFixed(2));
+            return parseFloat(total_received);
+        }
+
         function calulateTotalReceiveAndPendingQty() {
 
             var pending_quantities = document.querySelectorAll('#pending_quantity');
             var received_quantities = document.querySelectorAll('#received_quantity');
 
             var total_pending = 0;
-            pending_quantities.forEach(function(qty){
+            pending_quantities.forEach(function(qty) {
 
                 total_pending += parseFloat(qty.value) ? parseFloat(qty.value) : 0;
             });
 
             var total_received = 0;
-            received_quantities.forEach(function(qty){
+            received_quantities.forEach(function(qty) {
 
                 total_received += parseFloat(qty.value) ? parseFloat(qty.value) : 0;
             });
@@ -365,7 +516,7 @@
             $('#total_received').val(parseFloat(total_received));
         }
 
-        $(document).on('input', '#received_quantity', function(){
+        $(document).on('input', '#received_quantity', function() {
 
             var received_qty = $(this).val() ? $(this).val() : 0;
             if (parseFloat(received_qty) >= 0) {
@@ -377,7 +528,7 @@
                 tr.find('#pending_quantity').val(parseFloat(pending_qty).toFixed(2));
                 calulateTotalReceiveAndPendingQty();
 
-                if(parseInt(received_qty) > parseInt(ordered_quantity)){
+                if (parseInt(received_qty) > parseInt(ordered_quantity)) {
 
                     alert('Only - ' + ordered_quantity + ' ' + unit + ' is available.');
                     $(this).val(ordered_quantity);

@@ -783,7 +783,13 @@ class PurchaseController extends Controller
             data_obj: $adjustedPurchase
         );
 
-        session()->flash('successMsg', 'Successfully purchase is updated');
+        if ($editType == 'ordered') {
+
+            session()->flash('successMsg', ['Successfully purchase is updated', 'uncompleted_orders']);
+        }else{
+
+            session()->flash('successMsg', ['Successfully purchase is updated', 'purchases']);
+        }
         return response()->json('Successfully purchase is updated');
     }
 

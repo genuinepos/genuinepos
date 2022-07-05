@@ -679,6 +679,7 @@
         
         $(document).on('click', '#tab_btn', function(e) {
             e.preventDefault();
+            
             $('.tab_btn').removeClass('tab_active');
             $('.tab_contant').hide();
             var show_content = $(this).data('show');

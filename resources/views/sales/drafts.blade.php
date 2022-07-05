@@ -229,8 +229,13 @@
             draftDetails(url);
         });
 
+        // $(document).ready(function() {
+        //             $("div").click(function() {
+        //                 $("div").dblclick();
+        //             });
+
         // Show details modal with data by clicking the row
-        $(document).on('click', 'tr.clickable_row td:not(:first-child, :last-child)', function(e){
+        $(document).on('dblclick', 'tr.clickable_row td:not(:first-child, :last-child)', function(e){
             e.preventDefault();
             var draft = $(this).parent().data('href');
             draftDetails(draft);

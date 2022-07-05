@@ -26,4 +26,9 @@ class PurchaseOrderProduct extends Model
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
+
+    public function receives()
+    {
+        return $this->hasMany(PurchaseOrderProductReceive::class, 'order_product_id');
+    }
 }

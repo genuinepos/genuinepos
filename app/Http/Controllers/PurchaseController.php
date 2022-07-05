@@ -136,6 +136,7 @@ class PurchaseController extends Controller
             'supplier',
             'admin',
             'purchase_order_products',
+            'purchase_order_products.receives',
             'purchase_products.product',
             'purchase_products.product.warranty',
             'purchase_products.variant',

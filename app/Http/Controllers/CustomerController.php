@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
+use App\Utils\CustomerPaymentUtil;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\CustomerPaymentInvoice;
@@ -31,6 +32,7 @@ class CustomerController extends Controller
     public $invoiceVoucherRefIdUtil;
     public $userActivityLogUtil;
     public $saleUtil;
+    public $customerPaymentUtil;
 
     public function __construct(
         CustomerUtil $customerUtil,
@@ -39,6 +41,7 @@ class CustomerController extends Controller
         SaleUtil $saleUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         UserActivityLogUtil $userActivityLogUtil,
+        CustomerPaymentUtil $customerPaymentUtil
     ) {
         $this->customerUtil = $customerUtil;
         $this->accountUtil = $accountUtil;
@@ -46,6 +49,7 @@ class CustomerController extends Controller
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->saleUtil = $saleUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
+        $this->customerPaymentUtil = $customerPaymentUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -377,7 +381,9 @@ class CustomerController extends Controller
                 ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status'])
                 ->make(true);
         }
+
         $customer = DB::table('customers')->where('id', $customerId)->first();
+
         return view('contacts.customers.view', compact('customerId', 'customer'));
     }
 
@@ -542,9 +548,26 @@ class CustomerController extends Controller
                 'accounts.balance'
             ]);
 
+        $allSalesAndOrders = DB::table('sales')->where('sales.customer_id', $customerId)
+            ->whereIn('sales.status', [1, 3])
+            ->where('sales.due', '>', 0)
+            ->select('id', 'date', 'invoice_id', 'due', 'status')->orderBy('report_date', 'desc')->get();
+
+        $invoices = DB::table('sales')
+            ->where('sales.branch_id', auth()->user()->branch_id)
+            ->where('sales.customer_id', $customerId)
+            ->where('sales.status', 1)->where('sales.due', '>', 0)
+            ->select('id', 'date', 'invoice_id', 'due')->orderBy('report_date', 'desc')
+            ->get();
+
+        $orders = DB::table('sales')->where('sales.customer_id', $customerId)
+            ->where('sales.status', 3)->where('sales.due', '>', 0)
+            ->select('id', 'date', 'invoice_id', 'due')->orderBy('report_date', 'desc')
+            ->get();
+
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
-        return view('contacts.customers.ajax_view.payment_modal', compact('customer', 'accounts', 'methods'));
+        return view('contacts.customers.ajax_view.payment_modal', compact('customer', 'accounts', 'methods', 'allSalesAndOrders', 'invoices', 'orders'));
     }
 
     public function paymentAdd(Request $request, $customerId)
@@ -556,177 +579,88 @@ class CustomerController extends Controller
             'account_id' => 'required',
         ]);
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+        try {
 
-        // Add Customer Payment Record
-        $customerPayment = new CustomerPayment();
-        $customerPayment->voucher_no = 'CPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
-        $customerPayment->branch_id = auth()->user()->branch_id;
-        $customerPayment->customer_id = $customerId;
-        $customerPayment->account_id = $request->account_id;
-        $customerPayment->paid_amount = $request->paying_amount;
-        $customerPayment->payment_method_id = $request->payment_method_id;
-        $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-        $customerPayment->date = $request->date;
-        $customerPayment->time = date('h:i:s a');
-        $customerPayment->month = date('F');
-        $customerPayment->year = date('Y');
+            DB::beginTransaction();
+            // database queries here. Access any $var_N directly
+            $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+            $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
 
-        if ($request->hasFile('attachment')) {
+            // Add Customer Payment Record
+            $customerPayment = new CustomerPayment();
+            $customerPayment->voucher_no = 'CPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
+            $customerPayment->branch_id = auth()->user()->branch_id;
+            $customerPayment->customer_id = $customerId;
+            $customerPayment->account_id = $request->account_id;
+            $customerPayment->paid_amount = $request->paying_amount;
+            $customerPayment->payment_method_id = $request->payment_method_id;
+            $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+            $customerPayment->date = $request->date;
+            $customerPayment->time = date('h:i:s a');
+            $customerPayment->month = date('F');
+            $customerPayment->year = date('Y');
 
-            $PaymentAttachment = $request->file('attachment');
-            $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
-            $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
-            $customerPayment->attachment = $paymentAttachmentName;
-        }
+            if ($request->hasFile('attachment')) {
 
-        $customerPayment->note = $request->note;
-        $customerPayment->save();
-
-        // Add supplier Ledger
-        $this->customerUtil->addCustomerLedger(
-            voucher_type_id: 5,
-            customer_id: $customerId,
-            date: $request->date,
-            trans_id: $customerPayment->id,
-            amount: $request->paying_amount
-        );
-
-        // Add Bank/Cash-in-hand A/C Ledger
-        $this->accountUtil->addAccountLedger(
-            voucher_type_id: 18,
-            date: $request->date,
-            account_id: $request->account_id,
-            trans_id: $customerPayment->id,
-            amount: $request->paying_amount,
-            balance_type: 'debit'
-        );
-
-        $dueInvoices = Sale::where('customer_id', $customerId)
-            ->where('due', '>', 0)
-            ->orderBy('report_date', 'asc')
-            ->get();
-
-        if (count($dueInvoices) > 0) {
-
-            $index = 0;
-            foreach ($dueInvoices as $dueInvoice) {
-
-                if ($dueInvoice->due > $request->paying_amount) {
-
-                    if ($request->paying_amount > 0) {
-
-                        $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
-                        $addSalePayment->sale_id = $dueInvoice->id;
-                        $addSalePayment->customer_id = $customerId;
-                        $addSalePayment->account_id = $request->account_id;
-                        $addSalePayment->customer_payment_id = $customerPayment->id;
-                        $addSalePayment->paid_amount = $request->paying_amount;
-                        $addSalePayment->date = date('d-m-Y', strtotime($request->date));
-                        $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                        $addSalePayment->month = date('F');
-                        $addSalePayment->year = date('Y');
-                        $addSalePayment->payment_method_id = $request->payment_method_id;
-                        $addSalePayment->admin_id = auth()->user()->id;
-                        $addSalePayment->payment_on = 1;
-                        $addSalePayment->save();
-
-                        // Add Customer Payment invoice
-                        $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
-                        $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
-                        $addCustomerPaymentInvoice->sale_id = $dueInvoice->id;
-                        $addCustomerPaymentInvoice->paid_amount = $request->paying_amount;
-                        $addCustomerPaymentInvoice->save();
-                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
-                        $request->paying_amount -= $request->paying_amount;
-                    }
-                } elseif ($dueInvoice->due == $request->paying_amount) {
-
-                    if ($request->paying_amount > 0) {
-
-                        $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
-                        $addSalePayment->sale_id = $dueInvoice->id;
-                        $addSalePayment->customer_id = $customerId;
-                        $addSalePayment->account_id = $request->account_id;
-                        $addSalePayment->customer_payment_id = $customerPayment->id;
-                        $addSalePayment->paid_amount = $request->paying_amount;
-                        $addSalePayment->date = date('d-m-Y', strtotime($request->date));
-                        $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                        $addSalePayment->month = date('F');
-                        $addSalePayment->year = date('Y');
-                        $addSalePayment->payment_method_id = $request->payment_method_id;
-                        $addSalePayment->admin_id = auth()->user()->id;
-                        $addSalePayment->payment_on = 1;
-                        $addSalePayment->save();
-
-                        // Add Customer Payment invoice
-                        $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
-                        $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
-                        $addCustomerPaymentInvoice->sale_id = $dueInvoice->id;
-                        $addCustomerPaymentInvoice->paid_amount = $request->paying_amount;
-                        $addCustomerPaymentInvoice->save();
-                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
-                        $request->paying_amount -= $request->paying_amount;
-                    }
-                } elseif ($dueInvoice->due < $request->paying_amount) {
-
-                    if ($dueInvoice->due > 0) {
-
-                        $addSalePayment = new SalePayment();
-                        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
-                        $addSalePayment->sale_id = $dueInvoice->id;
-                        $addSalePayment->customer_id = $customerId;
-                        $addSalePayment->account_id = $request->account_id;
-                        $addSalePayment->customer_payment_id = $customerPayment->id;
-                        $addSalePayment->paid_amount = $dueInvoice->due;
-                        $addSalePayment->date = date('d-m-Y', strtotime($request->date));
-                        $addSalePayment->time = date('h:i:s a');
-                        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                        $addSalePayment->month = date('F');
-                        $addSalePayment->year = date('Y');
-                        $addSalePayment->payment_method_id = $request->payment_method_id;
-
-                        $addSalePayment->admin_id = auth()->user()->id;
-                        $addSalePayment->payment_on = 1;
-                        $addSalePayment->save();
-
-                        // Add Customer Payment invoice
-                        $addCustomerPaymentInvoice = new CustomerPaymentInvoice();
-                        $addCustomerPaymentInvoice->customer_payment_id = $customerPayment->id;
-                        $addCustomerPaymentInvoice->sale_id = $dueInvoice->id;
-                        $addCustomerPaymentInvoice->paid_amount = $dueInvoice->due;
-                        $addCustomerPaymentInvoice->save();
-
-                        $request->paying_amount -= $dueInvoice->due;
-                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
-                    }
-                }
-                $index++;
+                $PaymentAttachment = $request->file('attachment');
+                $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
+                $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
+                $customerPayment->attachment = $paymentAttachmentName;
             }
+
+            $customerPayment->note = $request->note;
+            $customerPayment->save();
+
+            // Add supplier Ledger
+            $this->customerUtil->addCustomerLedger(
+                voucher_type_id: 5,
+                customer_id: $customerId,
+                date: $request->date,
+                trans_id: $customerPayment->id,
+                amount: $request->paying_amount
+            );
+
+            // Add Bank/Cash-in-hand A/C Ledger
+            $this->accountUtil->addAccountLedger(
+                voucher_type_id: 18,
+                date: $request->date,
+                account_id: $request->account_id,
+                trans_id: $customerPayment->id,
+                amount: $request->paying_amount,
+                balance_type: 'debit'
+            );
+
+            if (isset($request->payment_against) && ($request->payment_against == 'sale_invoices' || $request->payment_against == 'sale_orders')) {
+
+                $this->customerPaymentUtil->specificInvoiceOrOrderByPayment($request, $customerPayment, $customerId, $paymentInvoicePrefix);
+            } else {
+
+                $this->customerPaymentUtil->randomInvoiceOrSalesOrderPayment($request, $customerPayment, $customerId, $paymentInvoicePrefix);
+            }
+
+            $receive = DB::table('customer_payments')
+                ->where('customer_payments.id', $customerPayment->id)
+                ->leftJoin('customers', 'customer_payments.customer_id', 'customers.id')
+                ->leftJoin('payment_methods', 'customer_payments.payment_method_id', 'payment_methods.id')
+                ->select(
+                    'customer_payments.voucher_no',
+                    'customer_payments.date',
+                    'customer_payments.paid_amount',
+                    'customers.name as customer',
+                    'customers.phone',
+                    'payment_methods.name as method',
+                )->first();
+
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 27, data_obj: $receive);
+
+            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customerId);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-
-        $receive = DB::table('customer_payments')
-            ->where('customer_payments.id', $customerPayment->id)
-            ->leftJoin('customers', 'customer_payments.customer_id', 'customers.id')
-            ->leftJoin('payment_methods', 'customer_payments.payment_method_id', 'payment_methods.id')
-            ->select(
-                'customer_payments.voucher_no',
-                'customer_payments.date',
-                'customer_payments.paid_amount',
-                'customers.name as customer',
-                'customers.phone',
-                'payment_methods.name as method',
-            )->first();
-
-        $this->userActivityLogUtil->addLog(action: 1, subject_type: 27, data_obj: $receive);
-
-        $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customerId);
         return response()->json('payment added successfully.');
     }
 
@@ -946,78 +880,89 @@ class CustomerController extends Controller
     // Customer Payment Delete
     public function paymentDelete(Request $request, $paymentId)
     {
-        $deleteCustomerPayment = CustomerPayment::with(['customer_payment_invoices', 'customer_payment_invoices.sale', 'customer_payment_invoices.sale_return'])->where('id', $paymentId)->first();
+        try {
 
-        if ($deleteCustomerPayment->attachment != null) {
+            DB::beginTransaction();
+            // database queries here. Access any $var_N directly
+            $deleteCustomerPayment = CustomerPayment::with(['customer_payment_invoices', 'customer_payment_invoices.sale', 'customer_payment_invoices.sale_return'])->where('id', $paymentId)->first();
 
-            if (file_exists(public_path('uploads/payment_attachment/' . $deleteCustomerPayment->attachment))) {
+            if ($deleteCustomerPayment->attachment != null) {
 
-                unlink(public_path('uploads/payment_attachment/' . $deleteCustomerPayment->attachment));
+                if (file_exists(public_path('uploads/payment_attachment/' . $deleteCustomerPayment->attachment))) {
+
+                    unlink(public_path('uploads/payment_attachment/' . $deleteCustomerPayment->attachment));
+                }
             }
-        }
 
-        $storedAccountId = $deleteCustomerPayment->account_id;
-        $storedCustomerPaymentType = $deleteCustomerPayment->type;
-        $storedCustomerId = $deleteCustomerPayment->customer_id;
-        $storedCustomerPaymentInvoices = $deleteCustomerPayment->customer_payment_invoices;
+            $storedAccountId = $deleteCustomerPayment->account_id;
+            $storedCustomerPaymentType = $deleteCustomerPayment->type;
+            $storedCustomerId = $deleteCustomerPayment->customer_id;
+            $storedCustomerPaymentInvoices = $deleteCustomerPayment->customer_payment_invoices;
 
-        $customerPayment = DB::table('customer_payments')
-            ->where('customer_payments.id', $deleteCustomerPayment->id)
-            ->leftJoin('customers', 'customer_payments.customer_id', 'customers.id')
-            ->leftJoin('payment_methods', 'customer_payments.payment_method_id', 'payment_methods.id')
-            ->select(
-                'customer_payments.voucher_no',
-                'customer_payments.date',
-                'customer_payments.paid_amount',
-                'customers.name as customer',
-                'customers.phone',
-                'payment_methods.name as method',
-            )->first();
-
-        if ($storedCustomerPaymentType == 1) {
-
-            $this->userActivityLogUtil->addLog(action: 3, subject_type: 27, data_obj: $customerPayment);
-        }
-
-        $deleteCustomerPayment->delete();
-
-        // Update Customer payment invoices
-        if (count($storedCustomerPaymentInvoices) > 0) {
+            $customerPayment = DB::table('customer_payments')
+                ->where('customer_payments.id', $deleteCustomerPayment->id)
+                ->leftJoin('customers', 'customer_payments.customer_id', 'customers.id')
+                ->leftJoin('payment_methods', 'customer_payments.payment_method_id', 'payment_methods.id')
+                ->select(
+                    'customer_payments.voucher_no',
+                    'customer_payments.date',
+                    'customer_payments.paid_amount',
+                    'customers.name as customer',
+                    'customers.phone',
+                    'payment_methods.name as method',
+                )->first();
 
             if ($storedCustomerPaymentType == 1) {
 
-                foreach ($deleteCustomerPayment->customer_payment_invoices as $customer_payment_invoice) {
+                $this->userActivityLogUtil->addLog(action: 3, subject_type: 27, data_obj: $customerPayment);
+            }
 
-                    $sale = Sale::where('id', $customer_payment_invoice->sale_id)->first();
+            $deleteCustomerPayment->delete();
 
-                    if ($sale) {
+            // Update Customer payment invoices
+            if (count($storedCustomerPaymentInvoices) > 0) {
 
-                        $this->saleUtil->adjustSaleInvoiceAmounts($sale);
+                if ($storedCustomerPaymentType == 1) {
+
+                    foreach ($deleteCustomerPayment->customer_payment_invoices as $customer_payment_invoice) {
+
+                        $sale = Sale::where('id', $customer_payment_invoice->sale_id)->first();
+
+                        if ($sale) {
+
+                            $this->saleUtil->adjustSaleInvoiceAmounts($sale);
+                        }
                     }
-                }
-            } else {
+                } else {
 
-                foreach ($deleteCustomerPayment->customer_payment_invoices as $customer_payment_invoice) {
+                    foreach ($deleteCustomerPayment->customer_payment_invoices as $customer_payment_invoice) {
 
-                    $saleReturn = SaleReturn::with(['sale'])->where('id', $customer_payment_invoice->sale_return_id)->first();
+                        $saleReturn = SaleReturn::with(['sale'])->where('id', $customer_payment_invoice->sale_return_id)->first();
 
-                    if ($saleReturn->sale) {
+                        if ($saleReturn->sale) {
 
-                        $this->saleUtil->adjustSaleInvoiceAmounts($saleReturn->sale);
+                            $this->saleUtil->adjustSaleInvoiceAmounts($saleReturn->sale);
+                        }
+
+                        $this->saleUtil->adjustSaleReturnAmounts($saleReturn);
                     }
-
-                    $this->saleUtil->adjustSaleReturnAmounts($saleReturn);
                 }
             }
+
+            if ($storedAccountId) {
+
+                $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
+            }
+
+            //Update customer info
+            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
+            
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-        if ($storedAccountId) {
-
-            $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
-        }
-
-        //Update customer info
-        $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
         return response()->json('Payment deleted successfully.');
     }
 

@@ -125,6 +125,39 @@
                                             <td class="text-start">{{ App\Utils\Converter::format_in_bdt($product->line_total) }}</td>
                                             <td class="text-start text-danger">{{ $product->pending_quantity }}</td>
                                             <td class="text-start text-success">{{ $product->received_quantity }}</td>
+                                            @if (count($product->receives) > 0)
+                                                
+                                                <tr>
+                                                    <td colspan="3" class="text-center"><strong>Receive Details ➡</strong></td>
+                                                    
+                                                    <td colspan="8">
+                                                        <table class="table modal-table table-sm table-striped">
+                                                            <thead>
+                                                                <tr class="bg-secondary">
+                                                                    <th>Challan No</th>
+                                                                    <th>Lot Number</th>
+                                                                    <th>Received Date</th>
+                                                                    <th>Received Quantity</th>
+                                                                </tr>
+                                                                
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($product->receives as $receive)
+                                                                    <tr class="text-end">
+                                                                        <td>{{ $receive->purchase_challan }}</td>
+
+                                                                        <td>{{ $receive->lot_number }}</td>
+
+                                                                        <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($receive->received_date)) }}</td>
+
+                                                                        <td>{{ $receive->qty_received }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            @endif
                                         </tr>
                                      @endforeach
                                  </tbody>
@@ -153,7 +186,9 @@
                                     </thead>
                                     <tbody id="p_details_payment_list">
                                        @if (count($purchase->purchase_payments) > 0)
+
                                            @foreach ($purchase->purchase_payments as $payment)
+
                                                <tr data-info="{{ $payment }}">
                                                    <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
                                                    <td class="text-start">{{ $payment->invoice_id }}</td>
@@ -189,7 +224,8 @@
                                                    </td>
                                                </tr>
                                            @endforeach
-                                       @else   
+                                       @else 
+                                        
                                            <tr>
                                                <td colspan="7" class="text-center">No Data Found</td>
                                            </tr>  
@@ -345,7 +381,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>Supplier :- </strong></li>
-                            <li><strong>Namne : </strong>{{ $purchase->supplier->name }}</li>
+                            <li><strong>Name : </strong>{{ $purchase->supplier->name }}</li>
                             <li><strong>Address : </strong>{{ $purchase->supplier->address }}</li>
                             <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
                             <li><strong>Phone : </strong> {{ $purchase->supplier->phone }}</li>
@@ -448,6 +484,7 @@
                                     {{ Str::limit($product->product->name, 25).' '.$variant }}
                                     <small>{!! $product->description ? '<br/>'.$product->description : '' !!}</small>
                                 </td>
+
                                 <td>{{ $product->order_quantity }}</td>
                                 <td>
                                     {{ App\Utils\Converter::format_in_bdt($product->unit_cost) }}
@@ -455,9 +492,41 @@
                                 <td>{{ App\Utils\Converter::format_in_bdt($product->unit_discount) }} </td>
                                 <td>{{ $product->unit_tax.'('.$product->unit_tax_percent.'%)' }}</td>
                                 <td>{{ App\Utils\Converter::format_in_bdt($product->line_total) }}</td>
-                                <td>{{ $product->lot_no ? $product->lot_no : '' }}</td>
                                 <td>{{ $product->pending_quantity }}</td>
                                 <td>{{ $product->received_quantity }}</td>
+
+                                @if (count($product->receives) > 0)
+                                    <tr>
+                                        <td colspan="3" class="text-center"><strong>Receive Details ➡</strong></td>
+                                        
+                                        <td colspan="8">
+                                            <table class="table modal-table table-sm table-bordered">
+                                                <thead>
+                                                    <tr class="bg-info">
+                                                        <th>Challan No</th>
+                                                        <th>Lot Number</th>
+                                                        <th>Received Date</th>
+                                                        <th>Received Quantity</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    @foreach ($product->receives as $receive)
+                                                        <tr class="text-end">
+                                                            <td>{{ $receive->purchase_challan }}</td>
+
+                                                            <td>{{ $receive->lot_number }}</td>
+
+                                                            <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($receive->received_date)) }}</td>
+
+                                                            <td>{{ $receive->qty_received }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

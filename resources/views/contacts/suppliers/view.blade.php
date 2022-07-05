@@ -40,13 +40,13 @@
                                 </li>
 
                                 <li>
-                                    <a id="tab_btn" data-show="purchases" class="tab_btn" href="#">
+                                    <a id="tab_btn" data-show="purchases" class="purchases tab_btn" href="#">
                                         <i class="fas fa-shopping-bag"></i> Purchases
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a id="tab_btn" data-show="uncompleted_orders" class="tab_btn" href="#">
+                                    <a id="tab_btn" data-show="uncompleted_orders" class="uncompleted_orders tab_btn" href="#">
                                         <i class="fas fa-shopping-bag"></i> Purchase Orders
                                     </a>
                                 </li>
@@ -575,6 +575,18 @@
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/barcode/JsBarcode.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        @if (Session::has('successMsg')) 
+
+            var dataName = "{{ session('successMsg')[1] }}";
+
+            $('.tab_btn').removeClass('tab_active');
+            $('.tab_contant').hide();
+            var show_content = $('.'+dataName).data('show');
+            $('.' + show_content).show();
+            $('.'+dataName).addClass('tab_active');
+        @endif
+    </script>
     <script>
          var ledger_table = $('.ledger_table').DataTable({
             "processing": true,

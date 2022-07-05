@@ -34,41 +34,8 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // }
-    return $saleProducts = DB::table('sale_products')
-        ->where('sale_products.sale_id', 31)
-        ->leftJoin('products', 'sale_products.product_id', 'products.id')
-        ->leftJoin('warranties', 'products.warranty_id', 'warranties.id')
-        ->leftJoin('product_variants', 'sale_products.product_variant_id', 'product_variants.id')
-        ->select(
-            'sale_products.description',
-            // 'sale_products.quantity',
-            'sale_products.unit_price_inc_tax',
-            'sale_products.unit_discount_amount',
-            'sale_products.unit_tax_percent',
-            'sale_products.subtotal',
-            'products.name',
-            'products.warranty_id',
-            'product_variants.variant_name',
-            'warranties.duration',
-            'warranties.duration_type',
-            'warranties.description as w_description',
-            'warranties.type',
-            DB::raw('SUM(sale_products.quantity) as quantity')
-        )
-        ->groupBy('sale_products.description')
-        // ->groupBy('sale_products.quantity')
-        ->groupBy('sale_products.unit_price_inc_tax')
-        ->groupBy('sale_products.unit_discount_amount')
-        ->groupBy('sale_products.unit_tax_percent')
-        ->groupBy('sale_products.subtotal')
-        ->groupBy('products.warranty_id')
-        ->groupBy('products.name')
-        ->groupBy('warranties.duration')
-        ->groupBy('warranties.duration_type')
-        ->groupBy('warranties.type')
-        ->groupBy('warranties.description')
-        ->groupBy('product_variants.variant_name')
-        ->get();
+   
+    
 });
 
 // Route::get('dbal', function() {

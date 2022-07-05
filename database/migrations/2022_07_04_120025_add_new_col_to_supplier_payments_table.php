@@ -14,6 +14,7 @@ class AddNewColToSupplierPaymentsTable extends Migration
     public function up()
     {
         Schema::table('supplier_payments', function (Blueprint $table) {
+            
             $table->string('reference', 191)->after('voucher_no')->nullable();
         });
     }

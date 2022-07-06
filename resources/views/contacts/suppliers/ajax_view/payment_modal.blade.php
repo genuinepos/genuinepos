@@ -274,7 +274,9 @@
                                                             <tr>
                                                                 <td><input type="checkbox" name="purchase_ids[]" value="{{ $order->id }}" id="purchase_id" data-due_amount="{{ $order->due }}"></td>
                                                                 <td>{{ date('d/m/Y', strtotime($order->date)) }}</td>
-                                                                <td>{{ $order->invoice_id }}</td>
+                                                                <td>
+                                                                    <a class="details_button" title="Details" href="{{ route('purchases.show.order', [$order->id]) }}">{{ $order->invoice_id }}</a>
+                                                                </td>
                                                                 <td>
                                                                     @php
                                                                         $payable = $order->total_purchase_amount - $order->purchase_return_amount;

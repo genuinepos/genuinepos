@@ -920,6 +920,7 @@ class ProductController extends Controller
 
             $deleteProduct->delete();
         }
+        
         return response()->json('Product deleted successfully');
     }
 

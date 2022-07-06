@@ -134,7 +134,6 @@ class BrandController extends Controller
     // Delete Brand method//
     public function delete(Request $request, $brandId)
     {
-        return response()->json('Feature is disabled in this demo');
         $deleteBrand = Brand::find($brandId);
 
         if ($deleteBrand->photo !== 'default.png') {

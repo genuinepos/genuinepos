@@ -5,7 +5,9 @@
 @endpush
 @section('content')
     <style>
-        .contract_info_area ul li strong{color:#495677}.account_summary_area .heading h4{background:#0F3057;color:white}.contract_info_area ul li strong i {color: #495b77;font-size: 13px;}
+        .contract_info_area ul li strong{color:#495677}
+        .account_summary_area .heading h4{background:#0F3057;color:white}
+        .contract_info_area ul li strong i {color: #495b77;font-size: 13px;}
     </style>
 
 <div class="body-woaper">
@@ -92,6 +94,11 @@
                                                     <tr>
                                                         <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                                         <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($supplier->total_return) }}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="text-end"><strong>Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                        <td class="text-end total_less">{{ App\Utils\Converter::format_in_bdt($supplier->total_less) }}</td>
                                                     </tr>
 
                                                     <tr>
@@ -258,6 +265,15 @@
                                         </li>
 
                                         <li>
+                                            <strong> Total Less : </strong>
+                                        </li>
+
+                                        <li>
+                                            <b> {{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                            <span class="total_less">{{ App\Utils\Converter::format_in_bdt($supplier->total_less) }}</span>
+                                        </li>
+
+                                        <li>
                                             <strong> Total Purchase Due :</strong> 
                                         </li>
 
@@ -395,6 +411,11 @@
                                                 </tr>
 
                                                 <tr>
+                                                    <td class="text-end"><strong>Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                    <td class="text-end total_less">{{ App\Utils\Converter::format_in_bdt($supplier->total_less) }}</td>
+                                                </tr>
+
+                                                <tr>
                                                     <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                                     <td class="text-end text-danger total_purchase_due">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</td>
                                                 </tr>
@@ -479,11 +500,13 @@
                                                         <tr class="text-start">
                                                             <th class="text-start">Date</th>
                                                             <th class="text-start">Voucher No</th>
+                                                            <th class="text-start">Reference</th>
                                                             <th class="text-start">Against Invoice</th>
                                                             {{-- <th>Created By</th> --}}
                                                             <th class="text-start">Payment Status</th>
                                                             <th class="text-start">Payment Type</th>
                                                             <th class="text-start">Account</th>
+                                                            <th class="text-end">Less Amount</th>
                                                             <th class="text-end">Paid Amount</th>
                                                             <th class="text-start">Actions</th>
                                                         </tr>
@@ -491,7 +514,8 @@
                                                     <tbody></tbody>
                                                     <tfoot>
                                                         <tr class="bg-secondary">
-                                                            <th class="text-end text-white" colspan="6">Total : </th>
+                                                            <th class="text-end text-white" colspan="7">Total : </th>
+                                                            <th class="text-end text-white" id="less_amount"></th>
                                                             <th class="text-end text-white" id="amount"></th>
                                                             <th class="text-start text-white">---</th>
                                                         </tr>
@@ -518,8 +542,6 @@
         @method('DELETE')
         @csrf
     </form>
-
-    <div id="purchase_details"></div>
 
     @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
         <!--Payment list modal-->
@@ -571,12 +593,14 @@
             </div>
         </div>
     @endif
+
+    <div id="purchase_details"></div>
 @endsection
 @push('scripts')
     <script src="{{ asset('public') }}/assets/plugins/custom/barcode/JsBarcode.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        @if (Session::has('successMsg')) 
+        @if (Session::has('successMsg'))
 
             var dataName = "{{ session('successMsg')[1] }}";
 
@@ -588,7 +612,7 @@
         @endif
     </script>
     <script>
-         var ledger_table = $('.ledger_table').DataTable({
+        var ledger_table = $('.ledger_table').DataTable({
             "processing": true,
             "serverSide": true,
             "searching" : false,
@@ -716,7 +740,8 @@
             }
         });
 
-        @if (auth()->user()->permission->purchase['purchase_payment'] == '1') 
+        @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
+
             var payments_table = $('.payments_table').DataTable({
                 "processing": true,
                 "serverSide": true,
@@ -748,16 +773,21 @@
                 columns: [
                     {data: 'date', name: 'supplier_ledgers.date'},
                     {data: 'voucher_no', name: 'supplier_payments.voucher_no'},
+                    {data: 'reference', name: 'supplier_payments.reference'},
                     {data: 'against_invoice', name: 'purchases.invoice_id'},
                     {data: 'type', name: 'type'},
                     {data: 'method', name: 'method'},
                     {data: 'account', name: 'account'},
+                    {data: 'less_amount', name: 'supplier_payments.less_amount', className: 'text-end'},
                     {data: 'amount', name: 'supplier_ledgers.amount', className: 'text-end'},
                     {data: 'action'},
                 ],fnDrawCallback: function() {
 
                     var amount = sum_table_col($('.data_tbl'), 'amount');
                     $('#amount').text(bdFormat(amount));
+
+                    var less_amount = sum_table_col($('.data_tbl'), 'less_amount');
+                    $('#less_amount').text(bdFormat(less_amount));
                     $('.data_preloader').hide();
                 }
             });
@@ -1179,13 +1209,14 @@
                     $('.total_purchase').text(bdFormat(data.total_purchase));
                     $('.total_return').text(bdFormat(data.total_return));
                     $('.total_paid').text(bdFormat(data.total_paid));
+                    $('.total_less').text(bdFormat(data.total_less));
                     $('.total_purchase_due').text(bdFormat(data.total_purchase_due));
                     $('.total_purchase_return_due').text(bdFormat(data.total_purchase_return_due));
 
                     if (data.total_purchase_return_due > 0) {
 
                         $('.return_payment_btn').removeClass('d-none');
-                    }else{
+                    } else {
 
                         $('.return_payment_btn').addClass('d-none');
                     }

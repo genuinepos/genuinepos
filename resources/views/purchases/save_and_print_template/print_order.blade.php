@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h4 class="bill_name">PURCHASE ORDER BILL</h4>
+                            <h4 class="bill_name">PURCHASE ORDER</h4>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">

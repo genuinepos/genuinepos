@@ -230,6 +230,7 @@ class CommonAjaxCallController extends Controller
                 'total_purchase',
                 'total_return',
                 'total_paid',
+                'total_less',
                 'total_purchase_due',
                 'total_purchase_return_due',
             )

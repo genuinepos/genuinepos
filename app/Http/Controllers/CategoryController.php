@@ -163,6 +163,8 @@ class CategoryController extends Controller
 
     public function delete(Request $request, $categoryId)
     {
+        return response()->json('Feature is disabled in this demo');
+
         if (auth()->user()->permission->product['categories'] == '0') {
 
             return response()->json('Access Denied');

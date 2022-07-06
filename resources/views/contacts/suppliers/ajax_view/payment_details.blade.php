@@ -3,13 +3,15 @@
     <div class="header_area d-none">
         <div class="company_name text-center">
             <h3>
-                <b>
+                <strong>
                     @if ($supplierPayment->branch)
+                    
                         {{ $supplierPayment->branch->name . '/' . $supplierPayment->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} 
                     @endif
-                </b>
+                </strong>
             </h3>
             <h6>
                 @if ($supplierPayment->branch)
@@ -23,12 +25,12 @@
     </div>
 
     <div class="reference_area">
-        <p><b>Title :</b>
-            {{ $supplierPayment->type == 1 ? 'Supplier Payment' : 'Supplier Return Payment' }} 
+        <p><strong>Title :</strong>
+            {{ $supplierPayment->type == 1 ? 'Supplier Payment' : 'Return Payment' }} 
         </p>
-        <p><b>Supplier :</b> {{ $supplierPayment->supplier->name }}</p>
-        <p><b>Phone :</b> {{ $supplierPayment->supplier->phone }}</p>
-        <p><b>Address :</b> {{ $supplierPayment->supplier->address }}</p>
+        <p><strong>Supplier :</strong> {{ $supplierPayment->supplier->name }}</p>
+        <p><strong>Phone :</strong> {{ $supplierPayment->supplier->phone }}</p>
+        <p><strong>Address :</strong> {{ $supplierPayment->supplier->address }}</p>
     </div>
 
     <div class="total_amount_table_area">
@@ -37,21 +39,21 @@
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Paid Amount :</th>
-                            <td width="50%">
+                            <td width="50%" class="text-start"><strong>Paid Amount :</strong></td>
+                            <td width="50%" class="text-start">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ $supplierPayment->paid_amount }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Account :</th>
-                            <td width="50%">{{ $supplierPayment->account ? $supplierPayment->account->name : '' }}</td>
+                            <td width="50%" class="text-start"><strong>Credit Account :</strong></td>
+                            <td width="50%" class="text-start">{{ $supplierPayment->account ? $supplierPayment->account->name : '' }}</td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Method :</th>
-                            <td width="50%">{{ $supplierPayment->paymentMethod ? $supplierPayment->paymentMethod->name : $supplierPayment->pay_mode }}</td>
+                            <td width="50%" class="text-start"><strong>Payment Method :</strong></td>
+                            <td width="50%" class="text-start">{{ $supplierPayment->paymentMethod ? $supplierPayment->paymentMethod->name : $supplierPayment->pay_mode }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -61,25 +63,34 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Voucher No :</th>
-                            <td width="50%">
+                            <td width="50%" class="text-start"><strong>Voucher No :</strong></td>
+                            <td width="50%" class="text-start">
                                 {{ $supplierPayment->voucher_no }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Paid On :</th>
-                            <td width="50%">
+                            <td width="50%" class="text-start"><strong>Reference :</strong></td>
+                            <td width="50%" class="text-start">
+                                {{ $supplierPayment->reference }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="50%" class="text-start"><strong>Paid On :</strong></td>
+                            <td width="50%" class="text-start">
+
                                 @php
                                     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
                                 @endphp
+
                                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($supplierPayment->date)) . ' ' . date($timeFormat, strtotime($supplierPayment->time)) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Note :</th>
-                            <td width="50%">
+                            <td width="50%" class="text-start"><strong>Payment Note :</strong></td>
+                            <td width="50%" class="text-start">
                                 {{ $supplierPayment->note }}
                             </td>
                         </tr>

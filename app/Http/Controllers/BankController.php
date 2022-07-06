@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Bank;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class BankController extends Controller
 {
@@ -83,8 +82,10 @@ class BankController extends Controller
 
     public function delete(Request $request, $bankId)
     {
-        $deleteBank = Bank::with(['accounts'])->where('id', $bankId)->first();
+        return response()->json('Feature is disabled in this demo');
 
+        $deleteBank = Bank::find($bankId);
+        
         if (!is_null($deleteBank)) {
 
             if(count($deleteBank->accounts) > 0) {

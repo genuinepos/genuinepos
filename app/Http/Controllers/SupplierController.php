@@ -364,19 +364,19 @@ class SupplierController extends Controller
 
         $allPurchaseAndOrders = DB::table('purchases')->where('supplier_id', $supplierId)->whereIn('purchase_status', [1, 3])
             ->where('purchases.due', '>', 0)
-            ->select('id', 'invoice_id', 'date', 'due', 'purchase_status')
+            ->select('id', 'invoice_id', 'date', 'due', 'total_purchase_amount', 'purchase_return_amount', 'purchase_status')
             ->orderBy('purchases.report_date', 'desc')
             ->get();
 
         $purchases = DB::table('purchases')->where('supplier_id', $supplierId)->where('purchase_status', 1)
             ->where('purchases.due', '>', 0)
-            ->select('id', 'invoice_id', 'date', 'due')
+            ->select('id', 'invoice_id', 'date', 'total_purchase_amount', 'purchase_return_amount', 'purchase_return_amount', 'due')
             ->orderBy('purchases.report_date', 'desc')
             ->get();
 
         $orders = DB::table('purchases')->where('supplier_id', $supplierId)->where('purchase_status', 3)
             ->where('purchases.due', '>', 0)
-            ->select('id', 'invoice_id', 'date', 'due')
+            ->select('id', 'invoice_id', 'date', 'total_purchase_amount', 'purchase_return_amount', 'due')
             ->orderBy('purchases.report_date', 'desc')
             ->get();
 
@@ -411,6 +411,7 @@ class SupplierController extends Controller
             $supplierPayment->supplier_id = $supplierId;
             $supplierPayment->account_id = $request->account_id;
             $supplierPayment->paid_amount = $request->paying_amount;
+            $supplierPayment->less_amount = $request->less_amount ? $request->less_amount : 0;
             $supplierPayment->payment_method_id = $request->payment_method_id;
             $supplierPayment->date = $request->date;
             $supplierPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
@@ -448,7 +449,7 @@ class SupplierController extends Controller
                 balance_type: 'debit'
             );
 
-            if (isset($request->payment_against) && ($request->payment_against == 'purchases' || $request->payment_against == 'purchase_orders')) {
+            if (isset($request->purchase_ids)) {
 
                 $this->supplierPaymentUtil->specificPurchaseOrOrderByPayment($request, $supplierPayment, $supplierId, $paymentInvoicePrefix);
             } else {
@@ -478,6 +479,8 @@ class SupplierController extends Controller
 
             DB::rollBack();
         }
+
+        return response()->json('Payment added successfully.');
 
         return response()->json('Payment added successfully.');
     }
@@ -862,6 +865,7 @@ class SupplierController extends Controller
             'supplier_payment_invoices.purchase:id,invoice_id,date',
             'paymentMethod:id,name'
         )->where('id', $paymentId)->first();
+
         return view('contacts.suppliers.ajax_view.payment_details', compact('supplierPayment'));
     }
 
@@ -991,7 +995,9 @@ class SupplierController extends Controller
                 'supplier_ledgers.purchase_payment_id',
                 'supplier_ledgers.voucher_type',
                 'supplier_payments.voucher_no as supplier_payment_voucher',
+                'supplier_payments.reference',
                 'supplier_payments.pay_mode as sp_pay_mode',
+                'supplier_payments.less_amount',
                 'sp_pay_method.name as sp_payment_method',
                 'sp_account.name as sp_account',
                 'sp_account.account_number as sp_account_number',
@@ -1072,9 +1078,11 @@ class SupplierController extends Controller
                         return $row->pp_account . '(A/C:' . $row->pp_account_number . ')';
                     }
                 })
+                ->editColumn('less_amount', fn ($row) => '<span class="less_amount" data-value="' . $row->less_amount . '">' . $this->converter->format_in_bdt($row->less_amount) . '</span>')
+                
                 ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
 
-                ->rawColumns(['date', 'against_invoice', 'type', 'method', 'account', 'amount', 'action'])
+                ->rawColumns(['date', 'against_invoice', 'type', 'method', 'account', 'less_amount', 'amount', 'action'])
                 ->make(true);
         }
     }
@@ -1130,7 +1138,9 @@ class SupplierController extends Controller
             'supplier_ledgers.purchase_payment_id',
             'supplier_ledgers.voucher_type',
             'supplier_payments.voucher_no as supplier_payment_voucher',
+            'supplier_payments.reference',
             'supplier_payments.pay_mode as sp_pay_mode',
+            'supplier_payments.less_amount',
             'sp_pay_method.name as sp_payment_method',
             'sp_account.name as sp_account',
             'sp_account.account_number as sp_account_number',

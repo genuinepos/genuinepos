@@ -21,7 +21,7 @@
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                
+
                     <div class="card">
                         <div class="card-body">
                             <div class="data_preloader">
@@ -91,22 +91,32 @@
                                                 <strong> Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
                                                 <span class="opening_balance">{{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</span>
                                             </li>
+
                                             <li>
                                                 <strong> Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
                                                 <span class="total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</span>
                                             </li>
+
                                             <li>
                                                 <strong> Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
                                                 <span class="total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</span>
                                             </li>
+
+                                            <li>
+                                                <strong> Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                                <span class="total_less">{{ App\Utils\Converter::format_in_bdt($customer->total_less) }}</span>
+                                            </li>
+
                                             <li>
                                                 <strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
                                                 <span class="total_paid">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</span>
                                             </li>
+
                                             <li>
                                                 <strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
                                                 <span class="total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</span>
                                             </li>
+
                                             <li>
                                                 <strong> Total Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
                                                 <span class="total_sale_return_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</span>
@@ -140,6 +150,11 @@
                                                         <tr>
                                                             <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                                             <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td class="text-end"><strong>Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                            <td class="text-end total_less">{{ App\Utils\Converter::format_in_bdt($customer->total_less) }}</td>
                                                         </tr>
 
                                                         <tr>
@@ -328,6 +343,13 @@
                                                         <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                                         <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</td>
                                                     </tr>
+
+                                                    <tr>
+                                                        <td class="text-end"><strong>Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                                        <td class="text-end text-success total_less">
+                                                            {{ App\Utils\Converter::format_in_bdt($customer->total_less) }}
+                                                        </td>
+                                                    </tr>
         
                                                     <tr>
                                                         <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
@@ -412,11 +434,13 @@
                                                             <tr class="text-start">
                                                                 <th class="text-start">Date</th>
                                                                 <th class="text-start">Voucher No</th>
+                                                                <th class="text-start">Reference</th>
                                                                 <th class="text-start">Against Invoice</th>
                                                                 {{-- <th>Created By</th> --}}
                                                                 <th class="text-start">Payment Status</th>
                                                                 <th class="text-start">Payment Type</th>
                                                                 <th class="text-start">Account</th>
+                                                                <th class="text-endx">Less Amount</th>
                                                                 <th class="text-end">Paid Amount</th>
                                                                 <th class="text-start">Actions</th>
                                                             </tr>
@@ -424,7 +448,8 @@
                                                         <tbody></tbody>
                                                         <tfoot>
                                                             <tr class="bg-secondary">
-                                                                <th class="text-end text-white" colspan="6">Total : </th>
+                                                                <th class="text-end text-white" colspan="7">Total : </th>
+                                                                <th class="text-end text-white" id="less_amount"></th>
                                                                 <th class="text-end text-white" id="amount"></th>
                                                                 <th class="text-start text-white">---</th>
                                                             </tr>
@@ -452,9 +477,6 @@
         @method('DELETE')
         @csrf
     </form>
-
-    <!-- Details Modal -->
-    <div id="sale_details"></div>
 
    <!-- Edit Shipping modal -->
    <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -511,6 +533,8 @@
         </div>
     @endif
 
+    <!-- Details Modal -->
+    <div id="sale_details"></div>
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -555,8 +579,8 @@
             }
         });
 
-          //Get customer Sales by yajra data table
-          var sales_table = $('.sales_table').DataTable({
+        //Get customer Sales by yajra data table
+        var sales_table = $('.sales_table').DataTable({
             "processing": true,
             "serverSide": true,
             // aaSorting: [[3, 'asc']],
@@ -633,16 +657,21 @@
                 columns: [
                     {data: 'date', name: 'customer_ledgers.date'},
                     {data: 'voucher_no', name: 'customer_payments.voucher_no'},
+                    {data: 'reference', name: 'customer_payments.reference'},
                     {data: 'against_invoice', name: 'sales.invoice_id'},
                     {data: 'type', name: 'type'},
                     {data: 'method', name: 'method'},
                     {data: 'account', name: 'account'},
+                    {data: 'less_amount', name: 'customer_payments.less_amount', className: 'text-end'},
                     {data: 'amount', name: 'customer_ledgers.amount', className: 'text-end'},
                     {data: 'action'},
                 ],fnDrawCallback: function() {
 
                     var amount = sum_table_col($('.data_tbl'), 'amount');
                     $('#amount').text(bdFormat(amount));
+
+                    var less_amount = sum_table_col($('.data_tbl'), 'less_amount');
+                    $('#less_amount').text(bdFormat(less_amount));
                     $('.data_preloader').hide();
                 }
             });
@@ -1121,6 +1150,7 @@
                     $('.total_paid').text(bdFormat(data.total_paid));
                     $('.total_sale_due').text(bdFormat(data.total_sale_due));
                     $('.total_sale_return_due').text(bdFormat(data.total_sale_return_due));
+                    $('.total_less').text(bdFormat(data.total_less));
 
                     if (data.total_sale_return_due > 0) {
 

@@ -30,7 +30,7 @@
                                             </h6>
                                         </div>
 
-                                        <div class="col-2">
+                                        <div class="col-3">
                                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>

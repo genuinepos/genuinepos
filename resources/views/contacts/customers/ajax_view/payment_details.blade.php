@@ -3,15 +3,15 @@
     <div class="header_area d-none">
         <div class="company_name text-center">
             <h3>
-                <b>
+                <strong>
                     @if ($customerPayment->branch)
 
                         {{ $customerPayment->branch->name . '/' . $customerPayment->branch->branch_code }}
                     @else
 
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} 
                     @endif
-                </b>
+                </strong>
             </h3>
             <h6>
                 @if ($customerPayment->branch)
@@ -27,12 +27,12 @@
     </div>
 
     <div class="reference_area">
-        <p><b>Title :</b>
+        <p><strong>Title :</strong>
             {{ $customerPayment->type == 1 ? 'Customer Payment' : 'Customer Return Payment' }} 
         </p>
-        <p><b>Customer :</b> {{ $customerPayment->customer->name }}</p>
-        <p><b>Phone :</b> {{ $customerPayment->customer->phone }}</p>
-        <p><b>Address :</b> {{ $customerPayment->customer->address }}</p>
+        <p><strong>Customer :</strong> {{ $customerPayment->customer->name }}</p>
+        <p><strong>Phone :</strong> {{ $customerPayment->customer->phone }}</p>
+        <p><strong>Address :</strong> {{ $customerPayment->customer->address }}</p>
     </div>
 
     <div class="total_amount_table_area">
@@ -41,19 +41,22 @@
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Paid Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <td width="50%" class="text-start">
+                                <strong>Paid Amount :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            </td>
+                            
                             <td width="50%" class="text-start">
                                 {{ App\Utils\Converter::format_in_bdt($customerPayment->paid_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Account :</th>
+                            <td width="50%" class="text-start"><strong>Debit Account :</strong></td>
                             <td width="50%" class="text-start">{{ $customerPayment->account ? $customerPayment->account->name : '' }}</td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Method :</th>
+                            <td width="50%" class="text-start"><strong> Payment Method :</strong></td>
                             <td width="50%" class="text-start">{{ $customerPayment->paymentMethod ? $customerPayment->paymentMethod->name : $customerPayment->pay_mode }}</td>
                         </tr>
                     </tbody>
@@ -64,14 +67,21 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Voucher No :</th>
+                            <td width="50%" class="text-start"><strong>Voucher No :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ $customerPayment->voucher_no }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Paid On :</th>
+                            <td width="50%" class="text-start"><strong>Reference :</strong></td>
+                            <td width="50%" class="text-start">
+                                {{ $customerPayment->reference }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="50%" class="text-start"><strong>Paid On :</strong></td>
                             <td width="50%" class="text-start">
                                 @php
                                     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
@@ -81,7 +91,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Note :</th>
+                            <td width="50%" class="text-start"><strong>Payment Note :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ $customerPayment->note }}
                             </td>
@@ -111,15 +121,25 @@
                     @foreach ($customerPayment->customer_payment_invoices as $pi)
                         @if ($pi->sale)
                             <tr>
-                                <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale->date)) }}</td>
+                                <td class="text-start">
+                                    {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale->date)) }}
+                                </td>
                                 <td class="text-start">{{ $pi->sale->invoice_id }}</h6></td>
-                                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $pi->paid_amount }}</td>
+                                <td class="text-start">
+                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                    {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
+                                </td>
                             </tr>
                         @elseif($pi->sale_return)
                             <tr>
-                                <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale_return->date)) }}</td>
+                                <td class="text-start">
+                                    {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale_return->date)) }}
+                                </td>
                                 <td class="text-start">{{ $pi->sale_return->invoice_id }}</h6></td>
-                                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $pi->paid_amount }}</td>
+                                <td class="text-start">
+                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                    {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
+                                </td>
                             </tr>
                         @endif
                     @endforeach

@@ -551,18 +551,18 @@ class CustomerController extends Controller
         $allSalesAndOrders = DB::table('sales')->where('sales.customer_id', $customerId)
             ->whereIn('sales.status', [1, 3])
             ->where('sales.due', '>', 0)
-            ->select('id', 'date', 'invoice_id', 'due', 'status')->orderBy('report_date', 'desc')->get();
+            ->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due', 'status')->get();
 
         $invoices = DB::table('sales')
             ->where('sales.branch_id', auth()->user()->branch_id)
             ->where('sales.customer_id', $customerId)
             ->where('sales.status', 1)->where('sales.due', '>', 0)
-            ->select('id', 'date', 'invoice_id', 'due')->orderBy('report_date', 'desc')
+            ->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due')->orderBy('report_date', 'desc')
             ->get();
 
         $orders = DB::table('sales')->where('sales.customer_id', $customerId)
             ->where('sales.status', 3)->where('sales.due', '>', 0)
-            ->select('id', 'date', 'invoice_id', 'due')->orderBy('report_date', 'desc')
+            ->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due')->orderBy('report_date', 'desc')
             ->get();
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
@@ -589,10 +589,12 @@ class CustomerController extends Controller
             // Add Customer Payment Record
             $customerPayment = new CustomerPayment();
             $customerPayment->voucher_no = 'CPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
+            $customerPayment->reference = $request->reference;
             $customerPayment->branch_id = auth()->user()->branch_id;
             $customerPayment->customer_id = $customerId;
             $customerPayment->account_id = $request->account_id;
             $customerPayment->paid_amount = $request->paying_amount;
+            $customerPayment->less_amount = $request->less_amount ? $request->less_amount : 0;
             $customerPayment->payment_method_id = $request->payment_method_id;
             $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
             $customerPayment->date = $request->date;
@@ -630,7 +632,7 @@ class CustomerController extends Controller
                 balance_type: 'debit'
             );
 
-            if (isset($request->payment_against) && ($request->payment_against == 'sale_invoices' || $request->payment_against == 'sale_orders')) {
+            if (isset($request->sale_ids)) {
 
                 $this->customerPaymentUtil->specificInvoiceOrOrderByPayment($request, $customerPayment, $customerId, $paymentInvoicePrefix);
             } else {
@@ -653,7 +655,7 @@ class CustomerController extends Controller
 
             $this->userActivityLogUtil->addLog(action: 1, subject_type: 27, data_obj: $receive);
 
-            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customerId);
+            // $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customerId);
 
             DB::commit();
         } catch (Exception $e) {
@@ -661,7 +663,7 @@ class CustomerController extends Controller
             DB::rollBack();
         }
 
-        return response()->json('payment added successfully.');
+        return response()->json('Payment added successfully.');
     }
 
     public function returnPayment($customerId)
@@ -956,7 +958,7 @@ class CustomerController extends Controller
 
             //Update customer info
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
-            
+
             DB::commit();
         } catch (Exception $e) {
 
@@ -1012,6 +1014,8 @@ class CustomerController extends Controller
                 'customer_ledgers.voucher_type',
                 'customer_payments.voucher_no as customer_payment_voucher',
                 'customer_payments.pay_mode as cp_pay_mode',
+                'customer_payments.reference',
+                'customer_payments.less_amount',
                 'cp_pay_method.name as cp_payment_method',
                 'cp_account.name as cp_account',
                 'cp_account.account_number as cp_account_number',
@@ -1092,9 +1096,12 @@ class CustomerController extends Controller
                         return $row->sp_account . '(A/C:' . $row->sp_account_number . ')';
                     }
                 })
+
+                ->editColumn('less_amount', fn ($row) => '<span class="less_amount" data-value="' . $row->less_amount . '">' . $this->converter->format_in_bdt($row->less_amount) . '</span>')
+
                 ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
 
-                ->rawColumns(['date', 'against_invoice', 'type', 'method', 'account', 'amount', 'action'])
+                ->rawColumns(['date', 'against_invoice', 'type', 'method', 'account', 'less_amount', 'amount', 'action'])
                 ->make(true);
         }
     }
@@ -1151,6 +1158,8 @@ class CustomerController extends Controller
             'customer_ledgers.sale_payment_id',
             'customer_ledgers.voucher_type',
             'customer_payments.voucher_no as customer_payment_voucher',
+            'customer_payments.reference',
+            'customer_payments.less_amount',
             'customer_payments.pay_mode as cp_pay_mode',
             'cp_pay_method.name as cp_payment_method',
             'cp_account.name as cp_account',

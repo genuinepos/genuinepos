@@ -11,7 +11,7 @@
     .due_orders_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .seperate_area {border: 1px solid gray;padding: 6px;}
 </style>
-<div class="modal-dialog col-80-modal" role="document">
+<div class="modal-dialog modal-dialog five-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h6 class="modal-title" id="exampleModalLabel">Receive Payment <span class="type_name"></span></h6>
@@ -41,16 +41,19 @@
                                     <b>{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</b> 
                                     </span>
                                 </li>
+
                                 <li><strong>Total Paid : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</b> 
                                     </span>
                                 </li>
+
                                 <li><strong>Total Due : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-danger">
-                                        <b>{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</b> 
+                                        <b id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</b> 
+                                        <input type="hidden" id="card_total_due" value="{{ $customer->total_sale_due }}">
                                     </span>
                                 </li>
                             </ul>
@@ -63,7 +66,7 @@
             <form id="payment_form" action="{{ route('customers.payment.add', $customer->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="seperate_area">
                             <div class="row">
                                 <div class="col-md-12">
@@ -112,6 +115,10 @@
                                                         <p><strong>All </strong></p>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-6">
+                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                </div>
                                             </div>
 
                                             <div class="due_all_table">
@@ -122,20 +129,47 @@
                                                             <th>Date</th>
                                                             <th>Order/Invoice ID</th>
                                                             <th>Status</th>
+                                                            <th>Payment Status</th>
                                                             <th>Due Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($allSalesAndOrders as $row)
                                                             <tr>
-                                                                <td>{{ $loop->index + 1 }}</td>
+                                                                <td><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $row->id }}" id="sale_id" data-due_amount="{{ $row->due }}"></td>
                                                                 <td>{{ $row->date }}</td>
-                                                                <td>{{ $row->invoice_id }}</td>
                                                                 <td>
                                                                     @if ($row->status == 1)
+                                                                    
+                                                                        <a class="details_button" title="Details" href="{{ route('sales.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
+                                                                    @elseif($row->status == 3)
+
+                                                                        <a class="details_button" title="Details" href="{{ route('sales.order.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if ($row->status == 1)
+
                                                                         Sale
                                                                     @else
+
                                                                         Order
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @php
+                                                                        $payable = $row->total_payable_amount - $row->sale_return_amount;
+                                                                    @endphp
+
+                                                                    @if ($row->due <= 0) 
+
+                                                                        <span class="text-success"><b>Paid</b></span>
+                                                                    @elseif ($row->due > 0 && $row->due < $payable) 
+
+                                                                        <span class="text-primary"><b>Partial</b></span>
+                                                                    @elseif ($payable == $row->due) 
+
+                                                                        <span class="text-danger"><b>Due</b></span>
                                                                     @endif
                                                                 </td>
                                                                 <td>{{ App\Utils\Converter::format_in_bdt($row->due) }}</td>
@@ -159,7 +193,7 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Cancel</a>
+                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
                                                 </div>
                                             </div>
                                         
@@ -170,6 +204,7 @@
                                                             <th>Select</th>
                                                             <th>Date</th>
                                                             <th>Invoice ID</th>
+                                                            <th>Payment Status</th>
                                                             <th>Due Amount</th>
                                                         </tr>
                                                     </thead>
@@ -177,8 +212,30 @@
                                                         @foreach ($invoices as $invoice)
                                                             <tr>
                                                                 <td><input type="checkbox" name="sale_ids[]" value="{{ $invoice->id }}" id="sale_id" data-due_amount="{{ $invoice->due }}"></td>
+
                                                                 <td>{{ $invoice->date }}</td>
-                                                                <td>{{ $invoice->invoice_id }}</td>
+
+                                                                <td>
+                                                                    <a class="details_button" title="Details" href="{{ route('sales.show', [$invoice->id]) }}">{{ $invoice->invoice_id }}</a>
+                                                                </td>
+                                                                
+                                                                <td>
+                                                                    @php
+                                                                        $payable = $invoice->total_payable_amount - $invoice->sale_return_amount;
+                                                                    @endphp
+
+                                                                    @if ($invoice->due <= 0) 
+
+                                                                        <span class="text-success"><b>Paid</b></span>
+                                                                    @elseif ($invoice->due > 0 && $invoice->due < $payable) 
+
+                                                                        <span class="text-primary"><b>Partial</b></span>
+                                                                    @elseif ($payable == $invoice->due) 
+
+                                                                        <span class="text-danger"><b>Due</b></span>
+                                                                    @endif
+                                                                </td>
+
                                                                 <td>{{ App\Utils\Converter::format_in_bdt($invoice->due) }}</td>
                                                             </tr>
                                                         @endforeach
@@ -200,7 +257,7 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Cancel</a>
+                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
                                                 </div>
                                             </div>
                                         
@@ -211,15 +268,40 @@
                                                             <th>Select</th>
                                                             <th>Date</th>
                                                             <th>Order ID</th>
+                                                            <th>Payment Status</th>
                                                             <th>Due Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($orders as $order)
                                                             <tr>
-                                                                <td><input type="checkbox" name="sale_ids[]" value="{{ $order->id }}" id="sale_id" data-due_amount="{{ $order->due }}"></td>
+                                                                <td>
+                                                                    <input type="checkbox" name="sale_ids[]" value="{{ $order->id }}" id="sale_id" data-due_amount="{{ $order->due }}">
+                                                                </td>
+
                                                                 <td>{{ $order->date }}</td>
-                                                                <td>{{ $order->invoice_id }}</td>
+
+                                                                <td>
+                                                                    <a class="details_button" title="Details" href="{{ route('sales.order.show', [$order->id]) }}">{{ $order->invoice_id }}</a>
+                                                                </td>
+
+                                                                <td>
+                                                                    @php
+                                                                        $payable = $order->total_payable_amount - $order->sale_return_amount;
+                                                                    @endphp
+
+                                                                    @if ($order->due <= 0) 
+
+                                                                        <span class="text-success"><b>Paid</b></span>
+                                                                    @elseif ($order->due > 0 && $order->due < $payable) 
+
+                                                                         <span class="text-primary"><b>Partial</b></span>
+                                                                    @elseif ($payable == $order->due) 
+
+                                                                        <span class="text-danger"><b>Due</b></span>
+                                                                    @endif
+                                                                </td>
+                                                                
                                                                 <td>{{ App\Utils\Converter::format_in_bdt($order->due) }}</td>
                                                             </tr>
                                                         @endforeach
@@ -241,7 +323,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
@@ -270,12 +352,17 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>Reference By :</strong> </label>
-                                <input type="text" name="reference_by" class="form-control" step="any" placeholder="Payment Reference" autocomplete="off"/>
+                                <label><strong>Reference :</strong> </label>
+                                <input type="text" name="reference" class="form-control" step="any" placeholder="Payment Reference" autocomplete="off"/>
                             </div>
                         </div>
         
                         <div class="form-group row mt-2">
+                            <div class="col-md-4">
+                                <label><strong>Less Amount :</strong> </label>
+                                <input type="number" step="any" name="less_amount" class="form-control" id="p_less_amount" placeholder="Less Amount" autocomplete="off"/>
+                            </div>
+
                             <div class="col-md-4">
                                 <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
@@ -316,8 +403,6 @@
                                     <span class="error error_p_account_id"></span>
                                 </div>
                             </div>
-        
-                            
                         </div>
         
                         <div class="form-group row mt-2">
@@ -485,20 +570,46 @@
             }
         });
 
-        console.log(total);
-
         $('#total_amount').html(parseFloat(total).toFixed(2));
         $('#p_paying_amount').val(parseFloat(total).toFixed(2));
+        calculateTotalDue();
     });
 
+    
     $(document).on('click', '#close', function (e) {
         e.preventDefault();
 
-        $('.due_table').hide();
-        $('.payment_against').prop('checked', false);
-        $('.all').prop('checked', false);
+        var saleIds = document.querySelectorAll('#sale_id');
+        
+        saleIds.forEach(function(input){
+
+            $(input).prop('checked', false);
+        });
+
         $('#total_amount').html(0.00);
         $('#p_paying_amount').val(0.00);
+        calculateTotalDue();
     });
+
+    $(document).on('input', '#p_paying_amount', function (e) {
+
+        calculateTotalDue();
+    });
+
+    $(document).on('input', '#p_less_amount', function (e) {
+
+        calculateTotalDue();
+    });
+
+    function calculateTotalDue() {
+        
+        var p_paying_amount = $('#p_paying_amount').val() ? $('#p_paying_amount').val() : 0;
+        var card_total_due = $('#card_total_due').val() ? $('#card_total_due').val() : 0;
+        var p_less_amount = $('#p_less_amount').val() ? $('#p_less_amount').val() : 0;
+
+        var totalDue = parseFloat(card_total_due) - parseFloat(p_paying_amount) - parseFloat(p_less_amount);
+
+        $('#card_total_due_show').text(bdFormat(totalDue));
+    }
 </script>
 

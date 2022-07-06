@@ -87,19 +87,19 @@ class CustomerUtil
 
                 return $row->credit_limit > 0 ? $row->credit_limit : 'No Limit';
             })
-            
+
             ->editColumn('opening_balance', fn ($row) => '<span class="opening_balance" data-value="' . $row->opening_balance . '">' . $this->converter->format_in_bdt($row->opening_balance) . '</span>')
-            
+
             ->editColumn('total_sale', fn ($row) => '<span class="total_sale" data-value="' . $row->total_sale . '">' . $this->converter->format_in_bdt($row->total_sale) . '</span>')
-            
+
             ->editColumn('total_paid', fn ($row) => '<span class="total_paid text-success" data-value="' . $row->total_paid . '">' . $this->converter->format_in_bdt($row->total_paid) . '</span>')
-            
+
             ->editColumn('total_sale_due', fn ($row) => '<span class="total_sale_due text-danger" data-value="' . $row->total_sale_due . '">' . $this->converter->format_in_bdt($row->total_sale_due) . '</span>')
-            
+
             ->editColumn('total_return', fn ($row) => '<span class="total_return" data-value="' . $row->total_return . '">' . $this->converter->format_in_bdt($row->total_return) . '</span>')
-            
+
             ->editColumn('total_sale_return_due', fn ($row) => '<span class="total_sale_return_due" data-value="' . $row->total_sale_return_due . '">' . $this->converter->format_in_bdt($row->total_sale_return_due) . '</span>')
-            
+
             ->editColumn('status', function ($row) {
 
                 if ($row->status == 1) {
@@ -122,7 +122,10 @@ class CustomerUtil
             ->select(DB::raw('sum(total_payable_amount) as total_sale'))->groupBy('customer_id')->get();
 
         $totalCustomerPayment = DB::table('customer_payments')
-            ->select(DB::raw('sum(paid_amount) as c_paid'))
+            ->select(
+                DB::raw('sum(paid_amount) as c_paid'),
+                DB::raw('sum(less_amount) as less')
+            )
             ->where('customer_id', $customerId)
             ->where('type', 1)
             ->groupBy('customer_id')->get();
@@ -153,13 +156,17 @@ class CustomerUtil
 
         $totalSale = $totalCustomerSale->sum('total_sale');
         $totalPaid = $totalCustomerPayment->sum('c_paid') + $totalSalePayment->sum('s_paid');
+        $totalLess = $totalCustomerPayment->sum('less');
         $totalReturn = $totalSaleReturn->sum('total_return_amt');
         $totalReturnPaid = $totalInvoiceReturnPayment->sum('total_inv_return_paid') + $totalCustomerReturnPayment->sum('cr_paid');
-        $totalDue = ($totalSale + $customer->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn;
+
+        $totalDue = ($totalSale + $customer->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn - $totalLess;
+
         $totalReturnDue = $totalReturn - ($totalSale + $customer->opening_balance - $totalPaid) - $totalReturnPaid;
 
         $customer->total_sale = $totalSale;
         $customer->total_paid = $totalPaid;
+        $customer->total_less = $totalLess;
         $customer->total_sale_due = $totalDue;
         $customer->total_return = $totalReturn;
         $customer->total_sale_return_due = $totalReturnDue > 0 ? $totalReturnDue : 0;;

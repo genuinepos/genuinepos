@@ -11,7 +11,7 @@
     .due_order_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .seperate_area {border: 1px solid gray; padding: 6px;}
 </style>
-<div class="modal-dialog col-80-modal" role="document">
+<div class="modal-dialog five-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h6 class="modal-title" id="exampleModalLabel">Add Payment <span class="type_name"></span></h6>
@@ -36,22 +36,26 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
+
                                 <li><strong>Total Purchase : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text">
                                         <b>{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</b>
                                     </span>
                                 </li>
+
                                 <li><strong>Total Paid : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}</b>
                                     </span>
                                 </li>
+
                                 <li><strong>Total Due : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-danger">
-                                        <b>{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</b> 
+                                        <b id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</b> 
+                                        <input type="hidden" id="card_total_due" value="{{ $supplier->total_purchase_due }}">
                                     </span>
                                 </li>
                             </ul>
@@ -63,7 +67,7 @@
             <form id="payment_form" action="{{ route('suppliers.payment.add', $supplier->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="seperate_area">
                             <div class="row">
                                 <div class="col-md-12">
@@ -112,30 +116,61 @@
                                                         <p><strong>All </strong></p>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-6">
+                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                </div>
                                             </div>
 
                                             <div class="due_all_table">
                                                 <table class="table modal-table table-sm table-bordered mt-1">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-start">SL</th>
+                                                            <th class="text-start">Select</th>
                                                             <th class="text-start">Date</th>
                                                             <th class="text-start">Order/Invoice ID</th>
                                                             <th class="text-start">Status</th>
+                                                            <th class="text-start">Payment Status</th>
                                                             <th class="text-start">Due Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($allPurchaseAndOrders as $row)
                                                             <tr>
-                                                                <td class="text-start">{{ $loop->index + 1 }}</td>
+                                                                <td><input type="checkbox" name="purchase_ids[]" value="{{ $row->id }}" id="purchase_id" data-due_amount="{{ $row->due }}"></td>
                                                                 <td class="text-start">{{  date('d/m/Y', strtotime($row->date)) }}</td>
-                                                                <td class="text-start">{{ $row->invoice_id }}</td>
                                                                 <td class="text-start">
                                                                     @if ($row->purchase_status == 1)
+
+                                                                        <a class="details_button" title="Details" href="{{ route('purchases.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
+                                                                    @else 
+
+                                                                        <a class="details_button" title="Details" href="{{ route('purchases.show.order', [$row->id]) }}">{{ $row->invoice_id }}</a>
+                                                                    @endif
+                                                                </td>
+                                                                <td class="text-start">
+                                                                    @if ($row->purchase_status == 1)
+
                                                                         Purchased
                                                                     @else
+
                                                                         Order
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @php
+                                                                        $payable = $row->total_purchase_amount - $row->purchase_return_amount;
+                                                                    @endphp
+                                                                    
+                                                                    @if ($row->due <= 0)
+
+                                                                        <span class="text-success"><b>Paid</b></span>
+                                                                    @elseif ($row->due > 0 && $row->due < $payable) 
+
+                                                                        <span class="text-primary"><b>Partial</b></span>
+                                                                    @elseif ($payable == $row->due)
+
+                                                                        <span class="text-danger"><b>Due</b></span>
                                                                     @endif
                                                                 </td>
                                                                 <td class="text-start">{{ $row->due }}</td>
@@ -159,7 +194,7 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Cancel</a>
+                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
                                                 </div>
                                             </div>
                                         
@@ -170,6 +205,7 @@
                                                             <th>Select</th>
                                                             <th>Date</th>
                                                             <th>Invoice ID</th>
+                                                            <th>Payment Status</th>
                                                             <th>Due Amount</th>
                                                         </tr>
                                                     </thead>
@@ -178,7 +214,25 @@
                                                             <tr>
                                                                 <td><input type="checkbox" name="purchase_ids[]" value="{{ $purchase->id }}" id="purchase_id" data-due_amount="{{ $purchase->due }}"></td>
                                                                 <td>{{ date('d/m/Y', strtotime($purchase->date)) }}</td>
-                                                                <td>{{ $purchase->invoice_id }}</td>
+                                                                <td>
+                                                                    <a class="details_button" title="Details" href="{{ route('purchases.show', [$purchase->id]) }}">{{ $purchase->invoice_id }}</a>
+                                                                </td>
+                                                                <td>
+                                                                    @php
+                                                                        $payable = $purchase->total_purchase_amount - $purchase->purchase_return_amount;
+                                                                    @endphp
+                                                                    
+                                                                    @if ($row->due <= 0)
+
+                                                                        <span class="text-success"><b>Paid</b></span>
+                                                                    @elseif ($purchase->due > 0 && $purchase->due < $payable) 
+
+                                                                        <span class="text-primary"><b>Partial</b></span>
+                                                                    @elseif ($payable == $purchase->due)
+
+                                                                        <span class="text-danger"><b>Due</b></span>
+                                                                    @endif
+                                                                </td>
                                                                 <td>{{ $purchase->due }}</td>
                                                             </tr>
                                                         @endforeach
@@ -200,7 +254,7 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Cancel</a>
+                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
                                                 </div>
                                             </div>
                                         
@@ -211,6 +265,7 @@
                                                             <th>Select</th>
                                                             <th>Date</th>
                                                             <th>Order ID</th>
+                                                            <th>Payment Status</th>
                                                             <th>Due Amount</th>
                                                         </tr>
                                                     </thead>
@@ -220,6 +275,22 @@
                                                                 <td><input type="checkbox" name="purchase_ids[]" value="{{ $order->id }}" id="purchase_id" data-due_amount="{{ $order->due }}"></td>
                                                                 <td>{{ date('d/m/Y', strtotime($order->date)) }}</td>
                                                                 <td>{{ $order->invoice_id }}</td>
+                                                                <td>
+                                                                    @php
+                                                                        $payable = $order->total_purchase_amount - $order->purchase_return_amount;
+                                                                    @endphp
+                                                                    
+                                                                    @if ($row->due <= 0)
+
+                                                                        <span class="text-success"><b>Paid</b></span>
+                                                                    @elseif ($order->due > 0 && $order->due < $payable) 
+
+                                                                        <span class="text-primary"><b>Partial</b></span>
+                                                                    @elseif ($payable == $order->due)
+
+                                                                        <span class="text-danger"><b>Due</b></span>
+                                                                    @endif
+                                                                </td>
                                                                 <td>{{ $order->due }}</td>
                                                             </tr>
                                                         @endforeach
@@ -241,7 +312,7 @@
                         </div>
                     </div>
                   
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
                                 <strong>Amount :</strong> <span class="text-danger">*</span>
@@ -277,26 +348,8 @@
         
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <strong>Credit Account :</strong> 
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
-                                    </div>
-                                    <select name="account_id" class="form-control" id="p_account_id">
-                                        @foreach ($accounts as $account)
-                                            <option value="{{ $account->id }}">
-                                                @php
-                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                    $bank = $account->bank ? ', BK : '.$account->bank : '';
-                                                    $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
-                                                    $balance = ', BL : '.$account->balance;
-                                                @endphp
-                                                {{ $account->name.$accountType.$bank.$ac_no.$balance }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <span class="error error_p_account_id"></span>
-                                </div>
+                                <label><strong>Less Amount :</strong> </label>
+                                <input type="number" step="any" name="less_amount" id="p_less_amount" class="form-control" placeholder="Less Amount" autocomplete="off"/>
                             </div>
 
                             <div class="col-md-4">
@@ -315,6 +368,30 @@
                                         @endforeach
                                     </select>
                                     <span class="error error_p_payment_method_id"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <strong>Credit Account :</strong> 
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
+                                    </div>
+                                    <select name="account_id" class="form-control" id="p_account_id">
+                                        @foreach ($accounts as $account)
+                                            <option value="{{ $account->id }}">
+                                                @php
+                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                    $bank = $account->bank ? ', BK : '.$account->bank : '';
+                                                    $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
+                                                    $balance = ', BL : '.$account->balance;
+                                                @endphp
+                                                
+                                                {{ $account->name.$accountType.$bank.$ac_no.$balance }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error error_p_account_id"></span>
                                 </div>
                             </div>
                         </div>
@@ -453,7 +530,7 @@
 
     setMethodAccount($('#p_payment_method_id').find('option:selected').data('account_id'));
 
-        $(document).on('click', '#payment_against', function() {
+    $(document).on('click', '#payment_against', function() {
 
         var purchaseIds = document.querySelectorAll('#purchase_id');
 
@@ -467,6 +544,8 @@
         $('.'+show_table).show(300);
         $('#total_amount').html(0.00);
         $('#p_paying_amount').val(parseFloat(0).toFixed(2));
+        
+        calculateTotalDue();
     });
 
     $(document).on('click', '#purchase_id', function() {
@@ -484,16 +563,43 @@
 
         $('#total_amount').html(parseFloat(total).toFixed(2));
         $('#p_paying_amount').val(parseFloat(total).toFixed(2));
+
+        calculateTotalDue();
     });
 
     $(document).on('click', '#close', function (e) {
         e.preventDefault();
 
-        $('.due_table').hide();
-        $('.all_purchase_and_orders_area').show();
-        $('.payment_against').prop('checked', false);
-        $('.all').prop('checked', true);
+        var purchaseIds = document.querySelectorAll('#purchase_id');
+        
+        purchaseIds.forEach(function(input){
+
+            $(input).prop('checked', false);
+        });
+
         $('#total_amount').html(0.00);
         $('#p_paying_amount').val(0.00);
+        calculateTotalDue();
     });
+
+    $(document).on('input', '#p_paying_amount', function (e) {
+
+        calculateTotalDue();
+    });
+
+    $(document).on('input', '#p_less_amount', function (e) {
+
+        calculateTotalDue();
+    });
+
+    function calculateTotalDue() {
+        
+        var p_paying_amount = $('#p_paying_amount').val() ? $('#p_paying_amount').val() : 0;
+        var card_total_due = $('#card_total_due').val() ? $('#card_total_due').val() : 0;
+        var p_less_amount = $('#p_less_amount').val() ? $('#p_less_amount').val() : 0;
+
+        var totalDue = parseFloat(card_total_due) - parseFloat(p_paying_amount) - parseFloat(p_less_amount);
+
+        $('#card_total_due_show').text(bdFormat(totalDue));
+    }
 </script>

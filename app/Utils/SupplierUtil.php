@@ -12,9 +12,8 @@ use Yajra\DataTables\Facades\DataTables;
 class SupplierUtil
 {
     public $converter;
-    public function __construct(
-        Converter $converter,
-    ) {
+    public function __construct(Converter $converter)
+    {
 
         $this->converter = $converter;
     }
@@ -404,7 +403,10 @@ class SupplierUtil
         $totalSupplierPayment = DB::table('supplier_payments')
             ->where('supplier_id', $supplierId)
             ->where('type', 1)
-            ->select(DB::raw('sum(paid_amount) as s_paid'))
+            ->select(
+                DB::raw('sum(paid_amount) as s_paid'),
+                DB::raw('sum(less_amount) as less')
+            )
             ->groupBy('supplier_id')->get();
 
         $totalPurchasePayment = DB::table('purchase_payments')
@@ -452,6 +454,7 @@ class SupplierUtil
 
         $totalPurchase = $totalSupplierPurchase->sum('total_purchase');
         $totalPaid = $totalSupplierPayment->sum('s_paid') + $totalPurchasePayment->sum('p_paid');
+        $totalLess = $totalSupplierPayment->sum('less');
         $totalReturn = $totalInvoiceReturn->sum('total_inv_return_amt')
             + $totalSupplierReturn->sum('total_sup_return_amt');
 
@@ -459,11 +462,12 @@ class SupplierUtil
             + $totalSupplierReturnPayment->sum('sr_paid')
             + $__totalInvoiceReturnPayment->sum('total_inv_return_paid');
 
-        $totalDue = ($totalPurchase + $supplier->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn;
+        $totalDue = ($totalPurchase + $supplier->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn - $totalLess;
         $returnDue = $totalReturn - ($totalPurchase + $supplier->opening_balance - $totalPaid) - $totalReturnPaid;
 
         $supplier->total_purchase = $totalPurchase;
         $supplier->total_paid = $totalPaid;
+        $supplier->total_less = $totalLess;
         $supplier->total_purchase_due = $totalDue;
         $supplier->total_return = $totalReturn;
         $supplier->total_purchase_return_due = $returnDue > 0 ? $returnDue : 0;

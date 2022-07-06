@@ -38,10 +38,13 @@
                      
                              <li><strong>Phone : </strong>
                                 @if ($purchase->branch)
+
                                     {{ $purchase->branch->phone }}, <br>
                                 @elseif($purchase->warehouse_id)
+
                                     {{ $purchase->warehouse->phone }}
                                 @else
+
                                     {{ json_decode($generalSettings->business, true)['phone'] }}
                                 @endif
                              </li>
@@ -134,16 +137,15 @@
                                                         <table class="table modal-table table-sm table-striped">
                                                             <thead>
                                                                 <tr class="bg-secondary">
-                                                                    <th>Challan No</th>
-                                                                    <th>Lot Number</th>
-                                                                    <th>Received Date</th>
-                                                                    <th>Received Quantity</th>
+                                                                    <th class="text-white">Challan No</th>
+                                                                    <th class="text-white">Lot Number</th>
+                                                                    <th class="text-white">Received Date</th>
+                                                                    <th class="text-white">Received Quantity</th>
                                                                 </tr>
-                                                                
                                                             </thead>
                                                             <tbody>
                                                                 @foreach ($product->receives as $receive)
-                                                                    <tr class="text-end">
+                                                                    <tr>
                                                                         <td>{{ $receive->purchase_challan }}</td>
 
                                                                         <td>{{ $receive->lot_number }}</td>
@@ -367,7 +369,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h3 class="bill_name">Purchase Order Bill</h3>
+                            <h3 class="bill_name">Purchase Order</h3>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
@@ -542,7 +544,7 @@
                 </div>
 
                 <div class="col-6">
-                    <table class="table table-sm table-bordered">
+                    <table class="table modal-table table-sm table-bordered">
                         <thead>
                             <tr>
                                 <th colspan="11" class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>

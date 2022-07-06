@@ -44,7 +44,7 @@
 
                     <div class="col-4">
                         <div class="heading text-center">
-                            <h4 class="bill_name">PURCHASE BILL</h4>
+                            <h4 class="bill_name">PURCHASE Invoice</h4>
                         </div>
                     </div>
 

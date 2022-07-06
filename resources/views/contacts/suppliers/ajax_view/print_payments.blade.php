@@ -50,11 +50,13 @@
                 <tr>
                     <th class="text-start">Date</th>
                     <th class="text-start">Voucher No</th>
+                    <th class="text-start">Reference</th>
                     <th class="text-start">Against Invoice</th>
                     {{-- <th>Created By</th> --}}
                     <th class="text-start">Payment Status</th>
                     <th class="text-start">Payment Type</th>
                     <th class="text-start">Account</th>
+                    <th class="text-end">Less Amount</th>
                     <th class="text-end">Paid Amount</th>
                 </tr>
             </thead>
@@ -74,6 +76,8 @@
                         <td class="text-start">
                             {{ $row->supplier_payment_voucher . $row->purchase_payment_voucher }}
                         </td>
+
+                        <td class="text-start">{{ $row->reference }}</td>
 
                         <td class="text-start">
                             @if ($row->purchase_inv || $row->return_inv) 
@@ -110,6 +114,10 @@
 
                                 {{ $row->pp_account . '(A/C:' . $row->pp_account_number . ')' }}
                             @endif
+                        </td>
+
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($row->less_amount) }}
                         </td>
 
                         <td class="text-end">

@@ -1594,3 +1594,7 @@ table.display tbody tr:hover {
 .display td {font-size: 11px; padding-left: 3px!important; padding-right: 9px!important; padding-top: 0px!important; padding-bottom: 0px!important;}
 
 .display tfoot th {padding-left: 3px!important; padding-right: 9px!important; padding-top: 10px!important; padding-bottom: 10px!important;}
+
+.modal {
+    overflow: scroll !important;
+}

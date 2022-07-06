@@ -320,7 +320,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h1 class="bill_name">Purchase Bill</h1>
+                            <h1 class="bill_name">Purchase Invoice</h1>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">

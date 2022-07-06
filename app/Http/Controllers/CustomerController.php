@@ -1070,6 +1070,15 @@ class CustomerController extends Controller
 
                             return 'Sale Return : ' . $row->return_inv;
                         }
+                    } else {
+
+                        if ($row->customer_payment_id) {
+
+                            return '<a href="' . route('customers.view.details', $row->customer_payment_id) . '" class="btn btn-sm text-info" id="payment_details"> Details</a>';
+                        } else {
+
+                            return '<a href="' . route('sales.payment.details', $row->sale_payment_id) . '" class="btn btn-sm text-info" id="payment_details"> Details</a>';
+                        }
                     }
                 })
                 ->editColumn('type', function ($row) {

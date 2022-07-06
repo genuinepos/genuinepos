@@ -1052,6 +1052,14 @@ class SupplierController extends Controller
 
                             return 'Purchase Return : ' . $row->return_inv;
                         }
+                    }else{
+                        if ($row->supplier_payment_id) {
+
+                            return '<a href="' . route('suppliers.view.details', $row->supplier_payment_id) . '" id="payment_details" class="btn btn-sm text-info"> Details</a>';
+                        } else {
+    
+                            return '<a href="' . route('purchases.payment.details', $row->purchase_payment_id) . '" id="payment_details" class="btn btn-sm text-info"> Details</a>';
+                        }
                     }
                 })
                 ->editColumn('type', function ($row) {

@@ -291,6 +291,9 @@ class PurchaseOrderReceiveController extends Controller
 
             DB::rollBack();
         }
+
+        session()->flash('successMsg', ['Successfully order receiving is modified', 'uncompleted_orders']);
+       
         return response()->json('Successfully order receiving is modified.');
     }
 }

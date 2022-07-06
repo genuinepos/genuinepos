@@ -790,6 +790,7 @@ class PurchaseController extends Controller
 
             session()->flash('successMsg', ['Successfully purchase is updated', 'purchases']);
         }
+        
         return response()->json('Successfully purchase is updated');
     }
 

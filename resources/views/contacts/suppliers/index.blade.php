@@ -315,7 +315,7 @@
     $.ajaxSetup({ headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
     // call jquery method
-    $(document).ready(function(){
+    $(document).ready(function(){ 
         // Add Supplier by ajax
         $('#add_supplier_form').on('submit', function(e) {
             e.preventDefault();
@@ -354,10 +354,10 @@
                 success:function(data){
                     toastr.success(data);
                     $('#add_supplier_form')[0].reset();
-                    getAllSupplier();
                     $('.loading_button').hide();
                     $('#addModal').modal('hide');
                     $('.submit_button').prop('type', 'submit');
+                    table.ajax.reload();
                 }
             });
         });
@@ -406,7 +406,7 @@
                     toastr.success(data);
                     $('.loading_button').hide();
                     $('#edit_supplier_form')[0].reset();
-                    getAllSupplier();
+                    table.ajax.reload();
                     $('#editModal').modal('hide');
                 }
             });
@@ -437,7 +437,7 @@
                 async:false,
                 data:request,
                 success:function(data){
-                    getAllSupplier();
+                    table.ajax.reload();
                     toastr.error(data);
                     $('#deleted_form')[0].reset();
                 }
@@ -453,7 +453,7 @@
                 type:'get',
                 success:function(data){
                     toastr.success(data);
-                    getAllSupplier();
+                    table.ajax.reload();
                 }
             });
         });

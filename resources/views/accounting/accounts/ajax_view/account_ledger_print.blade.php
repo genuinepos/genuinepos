@@ -50,6 +50,9 @@
     </div>
 </div>
 @php
+
+    $balanceType = $accountUtil->accountBalanceType($account->account_type);     
+
     $totalDebit = 0;
     $totalCredit = 0;
 @endphp
@@ -68,7 +71,36 @@
             </thead>
             
             <tbody>
+                @php
+                    $previousBalance = 0;
+                    $i = 0;
+                @endphp
                 @foreach ($ledgers as $row)
+                    @php
+                        $debit = $row->debit;
+                        $credit = $row->credit;
+
+                        if($i == 0) {
+
+                            if ($balanceType == 'debit') {
+
+                                $previousBalance = $debit - $credit;
+                            }elseif($balanceType == 'credit') {
+
+                                $previousBalance = $credit - $debit;
+                            }
+                        } else {
+
+                            if ($balanceType == 'debit') {
+
+                                $previousBalance = $previousBalance + ($debit - $credit);
+                            }elseif($balanceType == 'credit') {
+
+                                $previousBalance = $previousBalance + ($credit - $debit);
+                            }
+                        }
+                    @endphp
+
                     <tr>
                         <td class="text-start">
                             @php
@@ -112,8 +144,9 @@
                             @endphp
                         </td>
 
-                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($row->running_balance) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($previousBalance) }}</td>
                     </tr>
+                    @php $i++; @endphp
                 @endforeach
             </tbody>
         </table>
@@ -147,11 +180,14 @@
                     <td class="text-end"><strong>Closing Balance :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}</td>
                     <td class="text-end">
                         @php
-                            $balanceType = $accountUtil->accountBalanceType($account->account_type);
+
                             $closingBalance = 0;
+                            
                             if ($balanceType == 'debit') {
+
                                 $closingBalance = $totalDebit - $totalCredit;
                             }elseif ($balanceType == 'credit') {
+
                                 $closingBalance = $totalCredit - $totalDebit;
                             }
                         @endphp

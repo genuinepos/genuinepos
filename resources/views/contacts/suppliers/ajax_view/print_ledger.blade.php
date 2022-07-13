@@ -58,7 +58,25 @@
             </thead>
         
             <tbody>
+                @php
+                    $previousBalance = 0;
+                    $i = 0;
+                @endphp
+
                 @foreach ($ledgers as $row)
+                    @php
+                        $debit = $row->debit;
+                        $credit = $row->credit;
+
+                        if($i == 0) {
+
+                            $previousBalance =  $credit - $debit;
+                        } else {
+
+                            $previousBalance = $previousBalance + ($credit - $debit);
+                        }
+                    @endphp
+
                     <tr>
                         <td class="text-start">
                             @php
@@ -93,14 +111,17 @@
                                 $totalDebit += $row->debit;
                             @endphp
                         </td>
+
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($row->credit) }}
                             @php
                                 $totalCredit += $row->credit;
                             @endphp
                         </td>
-                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($row->running_balance) }}</td>
+
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($previousBalance) }}</td>
                     </tr>
+                    @php $i++; @endphp
                 @endforeach
             </tbody>
         </table>

@@ -308,6 +308,7 @@
     </script>
 
     @if ($balanceType == 'debit')
+
         <script>
             function getRunningBalance() {
 
@@ -333,6 +334,7 @@
             }
         </script>
     @elseif($balanceType == 'credit')   
+    
         <script>
             function getRunningBalance() {
 

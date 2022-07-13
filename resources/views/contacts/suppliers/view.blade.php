@@ -642,11 +642,14 @@
                 {data: 'credit', name: 'credit', className: 'text-end'},
                 {data: 'running_balance', name: 'running_balance', className: 'text-end'},
             ],fnDrawCallback: function() {
+
                 var debit = sum_table_col($('.data_tbl'), 'debit');
                 $('#debit').text(bdFormat(debit));
+
                 var credit = sum_table_col($('.data_tbl'), 'credit');
                 $('#credit').text(bdFormat(credit));
                 $('.data_preloader').hide();
+                getRunningBalance();
             }
         });
 
@@ -1225,5 +1228,30 @@
         }
 
         // getSupplier();
+    </script>
+
+    <script>
+        function getRunningBalance() {
+
+            var i=0;
+            var previousBalance=0;
+            $('.ledger_table').find('tbody').find('tr').each(function() { 
+
+                var debit = parseFloat($(this).find('.debit').data('value')); 
+                var credit = parseFloat($(this).find('.credit').data('value'));  
+
+                if(parseFloat(i) == 0) {
+
+                    previousBalance =  parseFloat(credit) - parseFloat(debit);
+                }else {
+
+                    previousBalance = parseFloat(previousBalance) + (parseFloat(credit) - parseFloat(debit));
+                } 
+                
+                i++;
+                
+                $(this).find('.running_balance').html(bdFormat(previousBalance));
+            });
+        }
     </script>
 @endpush

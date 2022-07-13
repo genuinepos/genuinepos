@@ -137,11 +137,11 @@ class AccountController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        $accountUtil = $this->accountUtil;
+
         if ($request->ajax()) {
 
             $settings = DB::table('general_settings')->first();
-
-            $accountUtil = $this->accountUtil;
 
             $ledgers = '';
 
@@ -254,13 +254,14 @@ class AccountController extends Controller
                 })
                 ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . $this->converter->format_in_bdt($row->debit) . '</span>')
                 ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . $this->converter->format_in_bdt($row->credit) . '</span>')
-                ->editColumn('running_balance', fn ($row) => '<span class="running_balance" data-value="' . $row->running_balance . '">' . $this->converter->format_in_bdt($row->running_balance) . '</span>')
+                ->editColumn('running_balance', fn ($row) => '<span class="running_balance"></span>')
                 ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
                 ->make(true);
         }
 
         $account = Account::with(['bank'])->where('id', $accountId)->first();
-        return view('accounting.accounts.account_book', compact('account'));
+        
+        return view('accounting.accounts.account_book', compact('account', 'accountUtil'));
     }
 
     // Store bank

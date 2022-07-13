@@ -4,6 +4,9 @@
 @endpush
 @section('title', 'Account Book - ')
 @section('content')
+    @php
+        $balanceType = $accountUtil->accountBalanceType($account->account_type);
+    @endphp
     <div class="body-woaper">
         <div class="container-fluid">
             <div class="row">
@@ -176,127 +179,183 @@
     </div>
 @endsection
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
 
-    var account_ledger_table = $('.data_tbl').DataTable({
-        "processing": true,
-        "serverSide": true,
-        "searching" : false,
-        dom: "lBfrtip",
-        buttons: [
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary'},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary'},
-        ],
-        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
-        "ajax": {
-            "url": "{{ route('accounting.accounts.book', $account->id) }}",
-            "data": function(d) {
-                d.voucher_type = $('#voucher_type').val();
-                d.transaction_type = $('#transaction_type').val();
-                d.from_date = $('.from_date').val();
-                d.to_date = $('.to_date').val();
-            }
-        },
-        columns: [
-            {data: 'date', name: 'account_ledgers.date'},
-            {data: 'particulars', name: 'particulars'},
-            {data: 'voucher_no', name: 'voucher_no'},
-            {data: 'debit', name: 'account_ledgers.debit', className: 'text-end'},
-            {data: 'credit', name: 'account_ledgers.credit', className: 'text-end'},
-            {data: 'running_balance', name: 'account_ledgers.running_balance', className: 'text-end'},
-        ],fnDrawCallback: function() {
-            var debit = sum_table_col($('.data_tbl'), 'debit');
-            $('#debit').text(bdFormat(debit));
-            var credit = sum_table_col($('.data_tbl'), 'credit');
-            $('#credit').text(bdFormat(credit));
-            $('.data_preloader').hide();
-        }
-    });
+        var account_ledger_table = $('.data_tbl').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "searching" : false,
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary'},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary'},
+            ],
+            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "ajax": {
+                "url": "{{ route('accounting.accounts.book', $account->id) }}",
+                "data": function(d) {
+                    d.voucher_type = $('#voucher_type').val();
+                    d.transaction_type = $('#transaction_type').val();
+                    d.from_date = $('.from_date').val();
+                    d.to_date = $('.to_date').val();
+                }
+            },
+            columns: [
+                {data: 'date', name: 'account_ledgers.date'},
+                {data: 'particulars', name: 'particulars'},
+                {data: 'voucher_no', name: 'voucher_no'},
+                {data: 'debit', name: 'account_ledgers.debit', className: 'text-end'},
+                {data: 'credit', name: 'account_ledgers.credit', className: 'text-end'},
+                {data: 'running_balance', name: 'account_ledgers.running_balance', className: 'text-end'},
+            ],fnDrawCallback: function() {
 
-    function sum_table_col(table, class_name) {
-        var sum = 0;
-        table.find('tbody').find('tr').each(function() {
-            if (parseFloat($(this).find('.' + class_name).data('value'))) {
-                sum += parseFloat(
-                    $(this).find('.' + class_name).data('value')
-                );
+                var debit = sum_table_col($('.data_tbl'), 'debit');
+                $('#debit').text(bdFormat(debit));
+
+                var credit = sum_table_col($('.data_tbl'), 'credit');
+                $('#credit').text(bdFormat(credit));
+
+                $('.data_preloader').hide();
+                getRunningBalance();
             }
         });
-        return sum;
-    }
 
-    //Submit filter form by select input changing
-    $(document).on('submit', '#filter_account_ledgers', function (e) {
-        e.preventDefault();
-        $('.data_preloader').show();
-        account_ledger_table.ajax.reload();
-    });
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
 
-    //Print account ledger
-    $(document).on('click', '#print_report', function (e) {
-        e.preventDefault();
-        var url = "{{ route('accounting.accounts.ledger.print', $account->id) }}";
-        var voucher_type = $('#voucher_type').val();
-        var transaction_type = $('#transaction_type').val();
-        var from_date = $('.from_date').val();
-        var to_date = $('.to_date').val();
-        $.ajax({
-            url: url,
-            type: 'get',
-            data: { voucher_type, transaction_type, from_date, to_date },
-            success:function(data){
-                $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,        
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_account_ledgers', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            account_ledger_table.ajax.reload();
+        });
+
+        //Print account ledger
+        $(document).on('click', '#print_report', function (e) {
+            e.preventDefault();
+            var url = "{{ route('accounting.accounts.ledger.print', $account->id) }}";
+            var voucher_type = $('#voucher_type').val();
+            var transaction_type = $('#transaction_type').val();
+            var from_date = $('.from_date').val();
+            var to_date = $('.to_date').val();
+            $.ajax({
+                url: url,
+                type: 'get',
+                data: { voucher_type, transaction_type, from_date, to_date },
+                success:function(data){
+                    $(data).printThis({
+                        debug: false,                   
+                        importCSS: true,                
+                        importStyle: true,          
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                        removeInline: false, 
+                        printDelay: 700, 
+                        header: null,        
+                    });
+                }
+            }); 
+        });
+    </script>
+
+    <script type="text/javascript">
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker2'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+    </script>
+
+    @if ($balanceType == 'debit')
+        <script>
+            function getRunningBalance() {
+
+                var i=0;
+                var previousBalance=0;
+                $('.data_tbl').find('tbody').find('tr').each(function() { 
+
+                    var debit = parseFloat($(this).find('.debit').data('value')); 
+                    var credit = parseFloat($(this).find('.credit').data('value'));  
+
+                    if(parseFloat(i) == 0) {
+
+                        previousBalance = parseFloat(debit) - parseFloat(credit);
+                    }else {
+
+                        previousBalance = parseFloat(previousBalance) + (parseFloat(debit) - parseFloat(credit));
+                    } 
+                    
+                    i++;
+                    
+                    $(this).find('.running_balance').html(bdFormat(previousBalance));
                 });
             }
-        }); 
-    });
-</script>
+        </script>
+    @elseif($balanceType == 'credit')   
+        <script>
+            function getRunningBalance() {
 
-<script type="text/javascript">
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('datepicker'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: 'DD-MM-YYYY'
-    });
+                var i=0;
+                var previousBalance=0;
+                $('.data_tbl').find('tbody').find('tr').each(function() { 
 
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('datepicker2'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: 'DD-MM-YYYY',
-    });
-</script>
+                    var debit = parseFloat($(this).find('.debit').data('value')); 
+                    var credit = parseFloat($(this).find('.credit').data('value'));  
+
+                    if(parseFloat(i) == 0) {
+
+                        previousBalance = parseFloat(credit) - parseFloat(debit);
+                    }else {
+
+                        previousBalance = parseFloat(previousBalance) + (parseFloat(credit) - parseFloat(debit));
+                    } 
+                    
+                    i++;
+
+                    $(this).find('.running_balance').html(parseFloat(previousBalance).toFixed(2));
+                });
+            }
+        </script>
+    @endif
 @endpush

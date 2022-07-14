@@ -272,8 +272,9 @@ class CustomerUtil
         if ($updateCustomerLedger) {
 
             //$updateCustomerLedger->customer_id = $customer_id;
+            $previousTime = date('H:i:s', strtotime($updateCustomerLedger->report_date));
             $updateCustomerLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
-            $updateCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+            $updateCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . $previousTime));
             $updateCustomerLedger->{$voucher_type['amt']} = $amount;
             $updateCustomerLedger->amount = $amount;
             $updateCustomerLedger->running_balance = $this->adjustCustomerAmountForSalePaymentDue($customer_id);

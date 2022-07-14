@@ -202,8 +202,10 @@ class AccountUtil
         if ($update) {
 
             $previousAccountId = $update->account_id;
+            
+            $previousTime = date('H:i:s', strtotime($update->date));
 
-            $update->date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+            $update->date = date('Y-m-d H:i:s', strtotime($date . $previousTime));
             $update->account_id = $account_id;
             $update->{$voucherType['amt']} = $amount;
             $update->save();

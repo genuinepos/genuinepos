@@ -570,8 +570,9 @@ class SupplierUtil
             ->first();
 
         //$updateSupplierLedger->supplier_id = $supplier_id;
+        $previousTime = date('H:i:s', strtotime($updateSupplierLedger->report_date));
         $updateSupplierLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
-        $updateSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $updateSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . $previousTime));
         $updateSupplierLedger->{$voucher_type['amt']} = $amount;
         $updateSupplierLedger->amount = $amount;
         $updateSupplierLedger->save();

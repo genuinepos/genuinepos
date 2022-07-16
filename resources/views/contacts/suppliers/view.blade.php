@@ -4,11 +4,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('content')
-    <style>
-        .contract_info_area ul li strong{color:#495677}
-        .account_summary_area .heading h4{background:#0F3057;color:white}
-        .contract_info_area ul li strong i {color: #495b77;font-size: 13px;}
-    </style>
+<style>
+    .contract_info_area ul li strong{color:#495677}
+    .account_summary_area .heading h5{ background:#0F3057; color:white}
+    .contract_info_area ul li strong i {color: #495b77;font-size: 13px;}
+    .account_summary_area {margin-bottom: -18px;}
+</style>
 
 <div class="body-woaper">
     <div class="container-fluid">
@@ -19,7 +20,7 @@
                     <div class="sec-name">
                         <div class="name-head">
                             <span class="fas fa-people-arrows"></span>
-                            <h5>Supplier View OF <b>{!! $supplier->name.'</b> (ID: '.$supplier->contact_id.')' !!}</h5>
+                            <h6><strong>{{ $supplier->name }}</strong></h6>
                         </div>
                         <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                     </div>
@@ -66,62 +67,13 @@
                         <div class="tab_contant ledger">
                             <div class="row">
                                 <div class="col-md-4 col-sm-12 col-lg-4">
-                                    <div class="account_summary_area">
-                                        <div class="heading py-2">
-                                            <h4 class="py-2 pl-1">Account Summary</h4>
-                                        </div>
-
-                                        <div class="account_summary_table">
-                                            <table class="table modal-table table-sm">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end opening_balance">{{ App\Utils\Converter::format_in_bdt($supplier->opening_balance) }}</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-end"><strong>Total Purchase : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end total_purchase">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end text-success total_paid">
-                                                            {{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($supplier->total_return) }}</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-end"><strong>Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end total_less">{{ App\Utils\Converter::format_in_bdt($supplier->total_less) }}</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end text-danger total_purchase_due">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-end"><strong>Total Returnable/Refundable Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end total_purchase_return_due">
-                                                            {{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_return_due) }}
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                    @include('contacts.suppliers.partials.account_summery_area')
                                 </div>
 
                                 <div class="col-md-7 col-sm-12 col-lg-8">
                                     <div class="account_summary_area">
-                                        <div class="heading py-2">
-                                            <h4 class="py-2 pl-1">Filter Area</h4>
+                                        <div class="heading">
+                                            <h5 class="py-1 pl-1 text-center">Filter Area</h5>
                                         </div>
 
                                         <div class="account_summary_table">
@@ -130,37 +82,33 @@
                                                     <div class="col-md-3">
                                                         <label><strong>Voucher Type :</strong></label>
                                                         <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
-                                                            <option value="">All</option> 
+                                                            <option value="">All</option>
                                                             @foreach (App\Utils\SupplierUtil::voucherTypes() as $key => $type)
                                                                 <option value="{{ $key }}">{{ $type }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
-    
+
                                                     <div class="col-md-3">
                                                         <label><strong>From Date :</strong></label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon1"><i
-                                                                        class="fas fa-calendar-week input_f"></i></span>
+                                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                             </div>
-                                                            <input type="text" name="from_date" id="datepicker"
-                                                                class="form-control from_date date"
-                                                                autocomplete="off">
+                                                            <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
                                                         </div>
                                                     </div>
-    
+
                                                     <div class="col-md-3">
                                                         <label><strong>To Date :</strong></label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon1"><i
-                                                                        class="fas fa-calendar-week input_f"></i></span>
+                                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                             </div>
                                                             <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                                         </div>
                                                     </div>
-    
+
                                                     <div class="col-md-3">
                                                         <div class="row">
                                                             <div class="col-md-7">
@@ -169,9 +117,9 @@
                                                                     <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                                 </div>
                                                             </div>
-                
+
                                                             <div class="col-md-5 mt-3">
-                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_ledger"><i class="fas fa-print"></i> Print</a>
+                                                                <a href="#" class="btn btn-sm btn-primary float-end mt-2" id="print_ledger"><i class="fas fa-print"></i> Print</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -287,6 +235,82 @@
                         </div>
 
                         <div class="tab_contant purchases d-none">
+
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12 col-lg-4">
+                                    @include('contacts.suppliers.partials.account_summery_area')
+                                </div>
+
+                                <div class="col-md-7 col-sm-12 col-lg-8">
+                                    <div class="account_summary_area">
+                                        <div class="heading">
+                                            <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                        </div>
+
+                                        <div class="account_summary_table">
+                                            <form id="filter_supplier_purchases" method="get" class="px-2">
+                                                <div class="form-group row mt-4">
+                                                    @if ($addons->branches == 1)
+                                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                            <div class="col-md-3">
+                                                                <label><strong>Business Location :</strong></label>
+                                                                <select name="branch_id" class="form-control submit_able"
+                                                                    id="purchase_branch_id" autofocus>
+                                                                    <option value="">All</option>
+                                                                    <option value="NULL">
+                                                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                    </option>
+                                                                    @foreach ($branches as $branch)
+                                                                        <option value="{{ $branch->id }}">
+                                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        @endif
+                                                    @endif
+
+                                                    <div class="col-md-3">
+                                                        <label><strong>From Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                            </div>
+                                                            <input type="text" name="from_date" id="form_purchase_date" class="form-control form_purchase_date date" autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label><strong>To Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                            </div>
+                                                            <input type="text" name="to_date" id="to_purchase_date" class="form-control to_purchase_date date" autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label><strong></strong></label>
+                                                                <div class="input-group">
+                                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6 mt-1">
+                                                                <a href="#" class="btn btn-sm btn-primary float-end mt-4" id="print_purchase_statements"><i class="fas fa-print"></i> Print</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="widget_content table_area">
@@ -334,6 +358,81 @@
                         </div>
 
                         <div class="tab_contant uncompleted_orders d-none">
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12 col-lg-4">
+                                    @include('contacts.suppliers.partials.account_summery_area')
+                                </div>
+
+                                <div class="col-md-7 col-sm-12 col-lg-8">
+                                    <div class="account_summary_area">
+                                        <div class="heading">
+                                            <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                        </div>
+
+                                        <div class="account_summary_table">
+                                            <form id="filter_supplier_orders" method="get" class="px-2">
+                                                <div class="form-group row mt-4">
+                                                    @if ($addons->branches == 1)
+                                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                            <div class="col-md-3">
+                                                                <label><strong>Business Location :</strong></label>
+                                                                <select name="branch_id" class="form-control submit_able"
+                                                                    id="order_branch_id" autofocus>
+                                                                    <option value="">All</option>
+                                                                    <option value="NULL">
+                                                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                    </option>
+                                                                    @foreach ($branches as $branch)
+                                                                        <option value="{{ $branch->id }}">
+                                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        @endif
+                                                    @endif
+
+                                                    <div class="col-md-3">
+                                                        <label><strong>From Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                            </div>
+                                                            <input type="text" name="from_date" id="form_order_date" class="form-control form_order_date date" autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label><strong>To Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                            </div>
+                                                            <input type="text" name="to_date" id="to_order_date" class="form-control to_order_date date" autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label><strong></strong></label>
+                                                                <div class="input-group">
+                                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                </div>
+                                                            </div>
+
+                                                            {{-- <div class="col-md-6 mt-1">
+                                                                <a href="#" class="btn btn-sm btn-primary float-end mt-4" id="print_purchase_orderss"><i class="fas fa-print"></i> Print</a>
+                                                            </div> --}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="widget_content table_area">
@@ -384,108 +483,81 @@
 
                         @if (auth()->user()->permission->purchase['purchase_payment'] == '1') 
                             <div class="tab_contant payments d-none">
+
                                 <div class="row">
-                                    <div class="col-md-3 col-sm-12 col-lg-3">
-                                        <table class="table modal-table table-sm mt-3">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                    <td class="text-end opening_balance">{{ App\Utils\Converter::format_in_bdt($supplier->opening_balance) }}</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-end"><strong>Total Purchase : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                    <td class="text-end total_purchase">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                    <td class="text-end text-success total_paid">
-                                                        {{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                    <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($supplier->total_return) }}</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-end"><strong>Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                    <td class="text-end total_less">{{ App\Utils\Converter::format_in_bdt($supplier->total_less) }}</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                    <td class="text-end text-danger total_purchase_due">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="col-md-4 col-sm-12 col-lg-4">
+                                        @include('contacts.suppliers.partials.account_summery_area')
                                     </div>
-
-                                    <div class="col-md-7 col-sm-12 col-lg-7">
-                                        <div class="card mt-3 pb-5">
-                                            <form id="filter_supplier_payments" class="py-2 px-2 mt-2" method="get">
-
-                                                <div class="form-group row">
-                                                    <div class="col-md-3">
-                                                        <label><strong>Payment Status :</strong></label>
-                                                        <select name="type" class="form-control submit_able" id="type" autofocus>
-                                                            <option value="">All</option> 
-                                                            <option value="1">Payment</option>
-                                                            <option value="2">Return Payment</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <label><strong>From Date :</strong></label>
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon1"><i
-                                                                        class="fas fa-calendar-week input_f"></i></span>
-                                                            </div>
-                                                            <input type="text" name="p_from_date" id="p_from_date" class="form-control p_from_date date"autocomplete="off">
-                                                        </div>
-                                                    </div>
-        
-                                                    <div class="col-md-3">
-                                                        <label><strong>To Date :</strong></label>
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon1"><i
-                                                                        class="fas fa-calendar-week input_f"></i></span>
-                                                            </div>
-                                                            <input type="text" name="p_to_date" id="p_to_date" class="form-control p_to_date date" autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <label><strong></strong></label>
-                                                                <div class="input-group">
-                                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+    
+                                    <div class="col-md-8 col-sm-12 col-lg-8">
+                                        <div class="account_summary_area">
+                                            <div class="heading">
+                                                <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                            </div>
+    
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <div class="card mt-3 pb-5">
+                                                        <form id="filter_supplier_payments" class="py-2 px-2 mt-2" method="get">
+                                                            <div class="form-group row">
+                                                                <div class="col-md-3">
+                                                                    <label><strong>Payment Status :</strong></label>
+                                                                    <select name="type" class="form-control submit_able" id="type" autofocus>
+                                                                        <option value="">All</option>
+                                                                        <option value="1">Payment</option>
+                                                                        <option value="2">Return Payment</option>
+                                                                    </select>
+                                                                </div>
+            
+                                                                <div class="col-md-3">
+                                                                    <label><strong>From Date :</strong></label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                                        </div>
+                                                                        <input type="text" name="p_from_date" id="p_from_date" class="form-control p_from_date date"autocomplete="off">
+                                                                    </div>
+                                                                </div>
+            
+                                                                <div class="col-md-3">
+                                                                    <label><strong>To Date :</strong></label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                                        </div>
+                                                                        <input type="text" name="p_to_date" id="p_to_date" class="form-control p_to_date date" autocomplete="off">
+                                                                    </div>
+                                                                </div>
+            
+                                                                <div class="col-md-3">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <label><strong></strong></label>
+                                                                            <div class="input-group">
+                                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2 col-sm-12 col-lg-2">
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-12">
+                                                            <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-success"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
+                                                            <a class="btn btn-success return_payment_btn mt-2 {{ $supplier->total_purchase_return_due > 0 ? '' : 'd-none' }} " id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund Amount</a>
+                                                        </div>
+                                                    </div>
+            
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-12">
+                                                            <a href="{{ route('suppliers.all.payment.print', $supplier->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2 col-sm-12 col-lg-2">
-
-                                        <div class="row mt-2">
-                                            <div class="col-md-12">
-                                                <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-success mt-2"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
-                                                <a class="btn btn-success return_payment_btn mt-2 {{ $supplier->total_purchase_return_due > 0 ? '' : 'd-none' }} " id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund Amount</a> 
-                                            </div>
-                                        </div>
-                                    
-                                        <div class="row mt-2">
-                                            <div class="col-md-12">
-                                                <a href="{{ route('suppliers.all.payment.print', $supplier->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
                                             </div>
                                         </div>
                                     </div>
@@ -611,6 +683,7 @@
             $('.'+dataName).addClass('tab_active');
         @endif
     </script>
+
     <script>
         var ledger_table = $('.ledger_table').DataTable({
             "processing": true,
@@ -658,7 +731,15 @@
             "serverSide": true,
             "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-            ajax:"{{ url('contacts/suppliers/view', $supplierId) }}",
+
+            "ajax": {
+                "url": "{{ route('contacts.supplier.view', $supplierId) }}",
+                "data": function(d) {
+                    d.branch_id = $('#purchase_branch_id').val();
+                    d.from_date = $('.form_purchase_date').val();
+                    d.to_date = $('.to_purchase_date').val();
+                }
+            },
 
             columnDefs: [{
                 "targets": [0, 5, 6],
@@ -681,17 +762,23 @@
                 {data: 'return_due', name: 'purchase_return_due'},
                 {data: 'created_by', name: 'created_by.name'},
             ],fnDrawCallback: function() {
+
                 var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
                 $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
+
                 var paid = sum_table_col($('.data_tbl'), 'paid');
                 $('#paid').text(bdFormat(paid));
+
                 var due = sum_table_col($('.data_tbl'), 'due');
                 $('#due').text(bdFormat(due));
+
                 var return_amount = sum_table_col($('.data_tbl'), 'return_amount');
                 $('#return_amount').text(bdFormat(return_amount));
+
                 var return_due = sum_table_col($('.data_tbl'), 'return_due');
                 $('#return_due').text(bdFormat(return_due));
-                $('.data_preloader').hide();
+
+                $('#purchase_preloader').hide();
             }
         });
 
@@ -700,7 +787,15 @@
             "serverSide": true,
             "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-            ajax:"{{ route('suppliers.uncompleted.orders', $supplierId) }}",
+            
+            "ajax": {
+                "url": "{{ route('suppliers.uncompleted.orders', $supplierId) }}",
+                "data": function(d) {
+                    d.branch_id = $('#order_branch_id').val();
+                    d.from_date = $('.form_order_date').val();
+                    d.to_date = $('.to_order_date').val();
+                }
+            },
 
             columnDefs: [{
                 "targets": [0, 5, 13],
@@ -723,23 +818,28 @@
                 {data: 'paid', name: 'paid', className: 'text-end'},
                 {data: 'due', name: 'due', className: 'text-end'},
                 {data: 'payment_status', name: 'payment_status'},
-                
+
             ],fnDrawCallback: function() {
 
                 var po_qty = sum_table_col($('.data_tbl'), 'po_qty');
                 $('#po_qty').text(bdFormat(po_qty));
+
                 var po_received_qty = sum_table_col($('.data_tbl'), 'po_received_qty');
                 $('#po_received_qty').text(bdFormat(po_received_qty));
+
                 var po_pending_qty = sum_table_col($('.data_tbl'), 'po_pending_qty');
                 $('#po_pending_qty').text(bdFormat(po_pending_qty));
+
                 var total_purchase_amount = sum_table_col($('.data_tbl'), 'po_total_purchase_amount');
                 $('#po_total_purchase_amount').text(bdFormat(total_purchase_amount));
+
                 var paid = sum_table_col($('.data_tbl'), 'po_paid');
                 $('#po_paid').text(bdFormat(paid));
+
                 var due = sum_table_col($('.data_tbl'), 'po_due');
                 $('#po_due').text(bdFormat(due));
-               
-                $('.data_preloader').hide();
+
+                $('#order_preloader').hide();
             }
         });
 
@@ -815,6 +915,22 @@
             e.preventDefault();
             $('.data_preloader').show();
             ledger_table.ajax.reload();
+        });
+
+         //Submit filter form by select input changing
+         $(document).on('submit', '#filter_supplier_purchases', function (e) {
+            e.preventDefault();
+
+            $('#purchase_preloader').show();
+            $('.purchase_table').DataTable().ajax.reload();
+        });
+
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_supplier_orders', function (e) {
+            e.preventDefault();
+
+            $('#order_preloader').show();
+            $('.uncompleted_orders_table').DataTable().ajax.reload();
         });
 
         //Submit filter form by select input changing
@@ -1075,6 +1191,35 @@
             }); 
         });
 
+        $(document).on('click', '#print_purchase_statements', function (e) {
+            e.preventDefault();
+
+            var url = "{{ route('reports.purchases.statement.print') }}";
+
+            var branch_id = $('#purchase_branch_id').val();
+            var supplier_id = "{{ $supplier->id }}";
+            var from_date = $('.form_purchase_date').val();
+            var to_date = $('.to_purchase_date').val();
+
+            $.ajax({
+                url : url,
+                type : 'get',
+                data : {branch_id , supplier_id , from_date, to_date},
+                success:function(data){
+                    
+                    $(data).printThis({
+                        debug: false,                   
+                        importCSS: true,                
+                        importStyle: true,          
+                        loadCSS: "{{ asset('public/assets/css/print/purchase.print.css') }}",                      
+                        removeInline: false, 
+                        printDelay: 500, 
+                        formValues: false,   
+                    });
+                }
+            }); 
+        });
+
         //Print Ledger
         $(document).on('click', '#print_payments', function (e) {
             e.preventDefault();
@@ -1185,6 +1330,82 @@
         new Litepicker({
             singleMode: true,
             element: document.getElementById('p_to_date'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('form_purchase_date'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('to_purchase_date'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('form_order_date'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('to_order_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,

@@ -234,32 +234,52 @@ class CustomerController extends Controller
             $generalSettings = DB::table('general_settings')->first();
 
             $sales = '';
+            $query = DB::table('sales')
+                ->where('sales.customer_id', $customerId)
+                ->leftJoin('branches', 'sales.branch_id', 'branches.id')
+                ->leftJoin('customers', 'sales.customer_id', 'customers.id');
+
+            if ($request->branch_id) {
+
+                if ($request->branch_id == 'NULL') {
+
+                    $query->where('sales.branch_id', NULL);
+                } else {
+
+                    $query->where('sales.branch_id', $request->branch_id);
+                }
+            }
+
+            if ($request->from_date) {
+
+                $from_date = date('Y-m-d', strtotime($request->from_date));
+                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+                $query->whereBetween('sales.report_date', $date_range); // Final
+            }
+
+            $query->select(
+                'sales.*',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'customers.name as customer_name',
+            );
+
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                $sales = DB::table('sales')
-                    ->leftJoin('branches', 'sales.branch_id', 'branches.id')
-                    ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-                    ->select(
-                        'sales.*',
-                        'branches.name as branch_name',
-                        'branches.branch_code',
-                        'customers.name as customer_name',
-                    )->where('sales.customer_id', $customerId)
-                    ->where('sales.status', 1)
+                $sales = $query->where('sales.status', 1)
+                    ->where('sales.created_by', 1)
                     ->orderBy('sales.report_date', 'desc');
             } else {
 
-                $sales = DB::table('sales')
-                    ->leftJoin('branches', 'sales.branch_id', 'branches.id')
-                    ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-                    ->select(
-                        'sales.*',
-                        'branches.name as branch_name',
-                        'branches.branch_code',
-                        'customers.name as customer_name',
-                    )->where('sales.customer_id', $customerId)
+                if (auth()->user()->can('view_own_sale')) {
+
+                    $query->where('sales.admin_id', auth()->user()->id);
+                }
+
+                $sales = $query->where('sales.branch_id', auth()->user()->branch_id)
                     ->where('sales.status', 1)
-                    ->where('sales.branch_id', auth()->user()->branch_id)
+                    ->where('created_by', 1)
                     ->orderBy('sales.report_date', 'desc');
             }
 
@@ -315,8 +335,7 @@ class CustomerController extends Controller
 
                         if (auth()->user()->permission->sale['sale_payment'] == '1') {
 
-                            $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '" 
-                        ><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                            $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '" ><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                         }
                     }
 
@@ -383,8 +402,8 @@ class CustomerController extends Controller
         }
 
         $customer = DB::table('customers')->where('id', $customerId)->first();
-
-        return view('contacts.customers.view', compact('customerId', 'customer'));
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        return view('contacts.customers.view', compact('customerId', 'customer', 'branches'));
     }
 
     // Customer ledger list
@@ -462,7 +481,7 @@ class CustomerController extends Controller
 
                 ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . $this->converter->format_in_bdt($row->credit) . '</span>')
 
-                ->editColumn('running_balance', function($row){
+                ->editColumn('running_balance', function ($row) {
 
                     return '<span class="running_balance"></span>';
                 })

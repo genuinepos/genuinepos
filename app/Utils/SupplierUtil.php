@@ -23,10 +23,32 @@ class SupplierUtil
         $generalSettings = DB::table('general_settings')->first();
         $purchases = '';
         $query = DB::table('purchases')
+            ->where('purchases.branch_id', auth()->user()->branch_id)
+            ->where('purchases.supplier_id', $supplierId)
+            ->where('purchases.is_purchased', 1)
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
             ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
             ->leftJoin('admin_and_users as created_by', 'purchases.admin_id', 'created_by.id');
+
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('purchases.branch_id', NULL);
+            } else {
+
+                $query->where('purchases.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $query->whereBetween('purchases.report_date', $date_range); // Final
+        }
 
         $purchases = $query->select(
             'purchases.*',
@@ -38,10 +60,7 @@ class SupplierUtil
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
-        )->where('purchases.branch_id', auth()->user()->branch_id)
-            ->where('purchases.supplier_id', $supplierId)
-            ->where('purchases.is_purchased', 1)
-            ->orderBy('purchases.report_date', 'desc');
+        )->orderBy('purchases.report_date', 'desc');
 
         return DataTables::of($purchases)
             ->addColumn('action', function ($row) {
@@ -276,6 +295,25 @@ class SupplierUtil
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
         );
+
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('purchases.branch_id', NULL);
+            } else {
+
+                $query->where('purchases.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $query->whereBetween('purchases.report_date', $date_range); // Final
+        }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 

@@ -177,7 +177,7 @@
             <thead>
           
                 <tr>
-                    <th class="text-end">Total Sold Item : </th>
+                    <th class="text-end">Total Item : </th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalItems) }}
                     </td>

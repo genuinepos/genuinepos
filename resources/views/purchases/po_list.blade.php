@@ -232,7 +232,7 @@
     <script>
         // Show session message by toster alert.
         @if (Session::has('successMsg'))
-            toastr.success('{{ session('successMsg') }}');
+            toastr.success("{{ session('successMsg')[0] }}");
         @endif
 
         purchase_table = $('.data_tbl').DataTable({

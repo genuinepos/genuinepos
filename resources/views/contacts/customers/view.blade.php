@@ -4,7 +4,10 @@
         <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
         <style>
-            .contract_info_area ul li strong{color:#495677}.account_summary_area .heading h4{background:#0F3057;color:white}.contract_info_area ul li strong i {color: #495b77;font-size: 13px;}
+            .contract_info_area ul li strong{color:#495677}
+            .account_summary_area .heading h5{background:#0F3057;color:white}
+            .contract_info_area ul li strong i {color: #495b77; font-size: 13px;}
+            .account_summary_area {margin-bottom: -18px;}
         </style>
     @endpush
     <div class="body-woaper">
@@ -16,7 +19,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-people-arrows"></span>
-                                <h5>Customer View OF <b>{!! $customer->name.'</b> (ID: '.$customer->contact_id.')' !!}</h5>
+                                <h6><strong>{{ $customer->name }}</strong></h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
@@ -56,6 +59,106 @@
                                         </li>
                                     @endif
                                 </ul>
+                            </div>
+
+                            <div class="tab_contant ledger">
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-12 col-lg-4">
+                                        @include('contacts.customers.partials.account_summery_area')
+                                    </div>
+
+                                    <div class="col-md-8 col-sm-12 col-lg-8">
+                                        <div class="account_summary_area">
+                                            <div class="heading py-1">
+                                                <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                            </div>
+
+                                            <div class="account_summary_table">
+                                                <form id="filter_customer_ledgers" method="get" class="px-2">
+                                                    <div class="form-group row mt-4">
+                                                        <div class="col-md-3">
+                                                            <label><strong>Voucher Type :</strong></label>
+                                                            <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
+                                                                <option value="">All</option>
+                                                                @foreach (App\Utils\CustomerUtil::voucherTypes() as $key => $type)
+                                                                    <option value="{{ $key }}">{{ $type }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-3">
+                                                            <label><strong>From Date :</strong></label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                                </div>
+                                                                <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3">
+                                                            <label><strong>To Date :</strong></label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                                </div>
+
+                                                                <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3">
+                                                            <div class="row">
+                                                                <div class="col-md-7">
+                                                                    <label><strong></strong></label>
+                                                                    <div class="input-group">
+                                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-5 mt-3">
+                                                                    <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="ladger_table">
+                                            <div class="table-responsive" id="payment_list_table">
+                                                <table class="display data_tbl data__table ledger_table">
+                                                    <thead>
+                                                        <tr>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Particulars</th>
+                                                                <th>Voucher/Invoice</th>
+                                                                <th>Debit</th>
+                                                                <th>Credit</th>
+                                                                <th>Running Balance</th>
+                                                            </tr>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                    <tfoot>
+                                                        <tr class="bg-secondary">
+                                                            <th colspan="3" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                            <th id="debit" class="text-white text-end"></th>
+                                                            <th id="credit" class="text-white text-end"></th>
+                                                            <th class="text-white text-end">---</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tab_contant contract_info_area d-none">
@@ -126,102 +229,61 @@
                                 </div>
                             </div>
 
-                            <div class="tab_contant ledger">
+                            <div class="tab_contant sale d-none">
                                 <div class="row">
                                     <div class="col-md-4 col-sm-12 col-lg-4">
-                                        <div class="account_summary_area">
-                                            <div class="heading py-2">
-                                                <h4 class="py-2 pl-1">Account Summary</h4>
-                                            </div>
-
-                                            <div class="account_summary_table">
-                                                <table class="table modal-table table-sm">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> </td>
-                                                            <td class="text-end opening_balance"> {{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="text-end"><strong>Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                            <td class="text-end total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                            <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="text-end"><strong>Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                            <td class="text-end total_less">{{ App\Utils\Converter::format_in_bdt($customer->total_less) }}</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                            <td class="text-end total_paid"> 
-                                                                {{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                            <td class="text-end total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td class="text-end"><strong>Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                            <td class="text-end total_sale_return_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                        @include('contacts.customers.partials.account_summery_area')
                                     </div>
 
                                     <div class="col-md-8 col-sm-12 col-lg-8">
                                         <div class="account_summary_area">
-                                            <div class="heading py-2">
-                                                <h4 class="py-2 pl-1">Filter Area</h4>
+                                            <div class="heading py-1">
+                                                <h5 class="py-1 pl-1 text-center">Filter Area</h5>
                                             </div>
 
                                             <div class="account_summary_table">
-                                                <form id="filter_customer_ledgers" method="get" class="px-2">
+                                                <form id="filter_customer_sales" method="get" class="px-2">
                                                     <div class="form-group row mt-4">
-                                                        <div class="col-md-3">
-                                                            <label><strong>Voucher Type :</strong></label>
-                                                            <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
-                                                                <option value="">All</option> 
-                                                                @foreach (App\Utils\CustomerUtil::voucherTypes() as $key => $type)
-                                                                    <option value="{{ $key }}">{{ $type }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-        
+                                                        @if ($addons->branches == 1)
+                                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                                <div class="col-md-3">
+                                                                    <label><strong>Business Location :</strong></label>
+                                                                    <select name="branch_id" class="form-control submit_able" id="sale_branch_id" autofocus>
+                                                                        <option value="">All</option>
+                                                                        <option value="NULL">
+                                                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                        </option>
+                                                                        @foreach ($branches as $branch)
+                                                                            <option value="{{ $branch->id }}">
+                                                                                {{ $branch->name . '/' . $branch->branch_code }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            @endif
+                                                        @endif
+
                                                         <div class="col-md-3">
                                                             <label><strong>From Date :</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
-                                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                                            class="fas fa-calendar-week input_f"></i></span>
+                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                 </div>
-                                                                <input type="text" name="from_date" id="datepicker"
-                                                                    class="form-control from_date date"
-                                                                    autocomplete="off">
+                                                                <input type="text" name="from_date" id="from_sale_date" class="form-control from_sale_date date" autocomplete="off">
                                                             </div>
                                                         </div>
-        
+
                                                         <div class="col-md-3">
                                                             <label><strong>To Date :</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
-                                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                                            class="fas fa-calendar-week input_f"></i></span>
+                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                 </div>
-                                                                <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                                
+                                                                <input type="text" name="to_date" id="to_sale_date" class="form-control to_sale_date date" autocomplete="off">
                                                             </div>
                                                         </div>
-        
+
                                                         <div class="col-md-3">
                                                             <div class="row">
                                                                 <div class="col-md-7">
@@ -230,9 +292,9 @@
                                                                         <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                                     </div>
                                                                 </div>
-                    
-                                                                <div class="col-md-5 mt-3">
-                                                                    <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+
+                                                                <div class="col-md-5">
+                                                                    <a href="#" class="btn btn-sm btn-primary float-end mt-4" id="print_sale_statement"><i class="fas fa-print"></i> Print</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -243,40 +305,6 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="ladger_table">
-                                            <div class="table-responsive" id="payment_list_table">
-                                                <table class="display data_tbl data__table ledger_table">
-                                                    <thead>
-                                                        <tr>
-                                                            <tr>
-                                                                <th>Date</th>
-                                                                <th>Particulars</th>
-                                                                <th>Voucher/Invoice</th>
-                                                                <th>Debit</th>
-                                                                <th>Credit</th>
-                                                                <th>Running Balance</th>
-                                                            </tr>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                    <tfoot>
-                                                        <tr class="bg-secondary">
-                                                            <th colspan="3" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                            <th id="debit" class="text-white text-end"></th>
-                                                            <th id="credit" class="text-white text-end"></th>
-                                                            <th class="text-white text-end">---</th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab_contant sale d-none">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table_area">
@@ -320,106 +348,84 @@
                                 <div class="tab_contant payments d-none">
                                     <div class="row">
                                         <div class="col-md-3 col-sm-12 col-lg-3">
-                                            <table class="table modal-table table-sm mt-3">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-end"><strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end opening_balance">{{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</td>
-                                                    </tr>
-        
-                                                    <tr>
-                                                        <td class="text-end"><strong>Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</td>
-                                                    </tr>
-        
-                                                    <tr>
-                                                        <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end text-success total_paid">
-                                                            {{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}
-                                                        </td>
-                                                    </tr>
-        
-                                                    <tr>
-                                                        <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-end"><strong>Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end text-success total_less">
-                                                            {{ App\Utils\Converter::format_in_bdt($customer->total_less) }}
-                                                        </td>
-                                                    </tr>
-        
-                                                    <tr>
-                                                        <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                                                        <td class="text-end text-danger total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            @include('contacts.customers.partials.account_summery_area')
                                         </div>
-        
-                                        <div class="col-md-7 col-sm-12 col-lg-7">
-                                            <div class="card mt-3 pb-5">
-                                                <form id="filter_customer_payments" class="py-2 px-2 mt-2" method="get">
-        
-                                                    <div class="form-group row">
-                                                        <div class="col-md-3">
-                                                            <label><strong>Payment Status :</strong></label>
-                                                            <select name="type" class="form-control submit_able" id="type" autofocus>
-                                                                <option value="">All</option> 
-                                                                <option value="1">Received Payment</option>
-                                                                <option value="2">Return Payment</option>
-                                                            </select>
-                                                        </div>
-        
-                                                        <div class="col-md-3">
-                                                            <label><strong>From Date :</strong></label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
-                                                                </div>
-                                                                <input type="text" name="p_from_date" id="p_from_date" class="form-control p_from_date date"autocomplete="off">
+    
+                                        <div class="col-md-9 col-sm-12 col-lg-9">
+                                            <div class="account_summary_area">
+                                                <div class="heading py-1">
+                                                    <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                                </div>
+    
+                                                <div class="account_summary_table">
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-9">
+                                                            <div class="card pb-5">
+                                                                <form id="filter_customer_payments" class="py-2 px-2 mt-2" method="get">
+                                                                    <div class="form-group row">
+                                                                        <div class="col-md-3">
+                                                                            <label><strong>Payment Status :</strong></label>
+                                                                            <select name="type" class="form-control submit_able" id="type" autofocus>
+                                                                                <option value="">All</option>
+                                                                                <option value="1">Received Payment</option>
+                                                                                <option value="2">Return Payment</option>
+                                                                            </select>
+                                                                        </div>
+                
+                                                                        <div class="col-md-3">
+                                                                            <label><strong>From Date :</strong></label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                                                </div>
+                                                                                <input type="text" name="p_from_date" id="p_from_date" class="form-control p_from_date date"autocomplete="off">
+                                                                            </div>
+                                                                        </div>
+                
+                                                                        <div class="col-md-3">
+                                                                            <label><strong>To Date :</strong></label>
+                                                                            <div class="input-group">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                                                </div>
+                                                                                <input type="text" name="p_to_date" id="p_to_date" class="form-control p_to_date date" autocomplete="off">
+                                                                            </div>
+                                                                        </div>
+                
+                                                                        <div class="col-md-3">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <label><strong></strong></label>
+                                                                                    <div class="input-group">
+                                                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </div>
-            
+    
                                                         <div class="col-md-3">
-                                                            <label><strong>To Date :</strong></label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <a href="{{ route('customers.payment', $customer->id) }}" id="add_payment" class="btn btn-success"><i class="far fa-money-bill-alt text-white"></i> Receive</a>
+                    
+                                                                        <a class="btn btn-success return_payment_btn mt-2 {{ $customer->total_sale_return_due > 0 ? '' : 'd-none' }} " id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund </a>
+                                                                    </div>
                                                                 </div>
-                                                                <input type="text" name="p_to_date" id="p_to_date" class="form-control p_to_date date" autocomplete="off">
-                                                            </div>
-                                                        </div>
-        
-                                                        <div class="col-md-3">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <label><strong></strong></label>
-                                                                    <div class="input-group">
-                                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                    
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <a href="{{ route('customers.all.payment.print', $customer->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </form>
-                                            </div>
-                                        </div>
-        
-                                        <div class="col-md-2 col-sm-12 col-lg-2">
-                                            <div class="row mt-2">
-                                                <div class="col-md-12">
-                                                    <a href="{{ route('customers.payment', $customer->id) }}" id="add_payment" class="btn btn-success mt-2"><i class="far fa-money-bill-alt text-white"></i> Receive</a>
-            
-                                                    <a class="btn btn-success return_payment_btn mt-2 {{ $customer->total_sale_return_due > 0 ? '' : 'd-none' }} " id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund Amount</a> 
-                                                </div>
-                                            </div>
-                                        
-                                            <div class="row mt-2">
-                                                <div class="col-md-12">
-                                                    <a href="{{ route('customers.all.payment.print', $customer->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -481,9 +487,7 @@
    <!-- Edit Shipping modal -->
    <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content" id="edit_shipment_modal_content">
-
-            </div>
+            <div class="modal-content" id="edit_shipment_modal_content"></div>
         </div>
     </div>
 
@@ -590,8 +594,15 @@
 
             "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-            
-            ajax:"{{ url('contacts/customers/view', $customerId) }}",
+
+            "ajax": {
+                "url": "{{ route('contacts.customer.view', $customerId) }}",
+                "data": function(d) {
+                    d.branch_id = $('.sale_branch_id').val();
+                    d.from_date = $('.from_sale_date').val();
+                    d.to_date = $('.to_sale_date').val();
+                }
+            },
 
             columnDefs: [{
                 "targets": [0, 10],
@@ -615,14 +626,19 @@
 
                 var total_payable_amount = sum_table_col($('.data_tbl'), 'total_payable_amount');
                 $('#total_payable_amount').text(bdFormat(total_payable_amount));
+
                 var paid = sum_table_col($('.data_tbl'), 'paid');
                 $('#paid').text(bdFormat(paid));
+
                 var due = sum_table_col($('.data_tbl'), 'due');
                 $('#due').text(bdFormat(due));
+
                 var sale_return_amount = sum_table_col($('.data_tbl'), 'sale_return_amount');
                 $('#sale_return_amount').text(bdFormat(sale_return_amount));
+
                 var sale_return_due = sum_table_col($('.data_tbl'), 'sale_return_due');
                 $('#sale_return_due').text(bdFormat(sale_return_due));
+
                 $('.data_preloader').hide();
             }
         });
@@ -699,6 +715,14 @@
             e.preventDefault();
             $('.data_preloader').show();
             ledger_table.ajax.reload();
+        });
+
+         //Submit filter form by select input changing
+         $(document).on('submit', '#filter_customer_sales', function (e) {
+            e.preventDefault();
+
+            $('.data_preloader').show();
+            sales_table.ajax.reload();
         });
 
         //Submit filter form by select input changing
@@ -1034,6 +1058,37 @@
             }); 
         });
 
+         //Print purchase Payment report
+         $(document).on('click', '#print_sale_statement', function (e) {
+            e.preventDefault();
+
+            var url = "{{ route('reports.sale.statement.print') }}";
+
+            var branch_id = $('#sale_branch_id').val();
+            var customer_id = "{{ $customer->id }}";
+            var from_date = $('.from_sale_date').val();
+            var to_date = $('.to_sale_date').val();
+
+            $.ajax({
+                url:url,
+                type:'get',
+                data: {branch_id, customer_id, from_date, to_date},
+                success:function(data){
+                    
+                    $(data).printThis({
+                        debug: false,                   
+                        importCSS: true,                
+                        importStyle: true,          
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
+                        removeInline: false, 
+                        printDelay: 500, 
+                        header: "", 
+                        pageTitle: "",   
+                    });
+                }
+            }); 
+        });
+
         //Print Ledger
         $(document).on('click', '#print_payments', function (e) {
             e.preventDefault();
@@ -1085,6 +1140,44 @@
         new Litepicker({
             singleMode: true,
             element: document.getElementById('datepicker2'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('from_sale_date'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('to_sale_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -1169,16 +1262,19 @@
 
     <script>
         
+        var previousBalance = 0;
+        var per = 0;
         function getRunningBalance() {
 
+            per++;
             var i=0;
-            var previousBalance=0;
+            
             $('.ledger_table').find('tbody').find('tr').each(function() { 
 
                 var debit = parseFloat($(this).find('.debit').data('value')); 
                 var credit = parseFloat($(this).find('.credit').data('value'));  
 
-                if(parseFloat(i)==0) {
+                if(parseFloat(i) == 0) {
 
                     previousBalance = parseFloat(debit) - parseFloat(credit);
                 }else {
@@ -1191,5 +1287,7 @@
                 $(this).find('.running_balance').html(bdFormat(previousBalance));
             });
         }
+
+        // getRunningBalance();
     </script>
 @endpush

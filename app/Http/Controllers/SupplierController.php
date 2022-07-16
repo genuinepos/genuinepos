@@ -69,7 +69,7 @@ class SupplierController extends Controller
                     $html .= '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
 
-                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . url('contacts/suppliers/view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.supplier.view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
 
                     if (auth()->user()->permission->contact['supplier_edit'] == '1') :
 
@@ -264,7 +264,8 @@ class SupplierController extends Controller
         }
 
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
-        return view('contacts.suppliers.view', compact('supplierId', 'supplier'));
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        return view('contacts.suppliers.view', compact('supplierId', 'supplier', 'branches'));
     }
 
     public function uncompletedOrders(Request $request, $supplierId)

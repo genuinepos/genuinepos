@@ -29,22 +29,7 @@ class CustomerUtil
                 $html .= '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
 
-                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . url('contacts/customers/view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
-
-                // if (auth()->user()->permission->sale['sale_payment'] == '1') {
-
-                //     $html .= '<a class="dropdown-item" id="view_payment" href="' . route('customers.view.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-
-                //     if ($row->total_sale_due > 0) {
-
-                //         $html .= '<a class="dropdown-item" id="pay_button" href="' . route('customers.payment', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                //     }
-
-                //     if ($row->total_sale_return_due > 0) {
-
-                //         $html .= '<a class="dropdown-item" id="pay_return_button" href="' . route('customers.return.payment', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Due</a>';
-                //     }
-                // }
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . url('contacts.customer.view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
 
                 $html .= '<a class="dropdown-item" id="money_receipt_list" href="' . route('money.receipt.voucher.list', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Payment Receipt Voucher</a>';
 
@@ -119,7 +104,9 @@ class CustomerUtil
         $customer = Customer::where('id', $customerId)->first();
 
         $totalCustomerSale = DB::table('sales')->where('customer_id', $customerId)
-            ->select(DB::raw('sum(total_payable_amount) as total_sale'))->groupBy('customer_id')->get();
+            ->whereIn('sales.status', [1, 3])
+            ->select(DB::raw('sum(total_payable_amount) as total_sale'))
+            ->groupBy('customer_id')->get();
 
         $totalCustomerPayment = DB::table('customer_payments')
             ->select(

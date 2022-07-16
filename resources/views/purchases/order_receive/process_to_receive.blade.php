@@ -3,6 +3,7 @@
     <style>
         .input-group-text {font-size: 12px !important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        .sale-item-sec {height: 330px!important;}
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
@@ -31,8 +32,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class=" col-4"><b>Supplier :</b><span
-                                                        class="text-danger">*</span></label>
+                                                <label class="col-4"><b>Supplier :</b><span class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <input readonly type="text" id="supplier_name" class="form-control" value="{{ $purchase->supplier->name.' ('.$purchase->supplier->phone.')' }}">
                                                 </div>
@@ -40,8 +40,7 @@
 
                                             @if ($purchase->warehouse_id)
                                                 <div class="input-group mt-1">
-                                                    <label class="col-4"><b>Warehouse :</b><span
-                                                        class="text-danger">*</span></label>
+                                                    <label class="col-4"><b>Warehouse :</b><span class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <select class="form-control changeable add_input"
                                                             name="warehouse_id" data-name="Warehouse" id="warehouse_id">
@@ -55,8 +54,7 @@
                                                 </div>
                                             @else 
                                                 <div class="input-group mt-1">
-                                                    <label class="col-4"><span
-                                                        class="text-danger">*</span> <b>B.Location :</b> </label>
+                                                    <label class="col-4"><span class="text-danger">*</span> <b>B.Location :</b> </label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}">
                                                     </div>
@@ -156,13 +154,13 @@
                                                                         </td>
                                                                         
                                                                         @if (count($row->receives) > 0)
-                                                                            @foreach ($row->receives as $receive)
-                                                                                <tr>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td colspan="4">
-                                                                                        <table class="display data__table">
-                                                                                            <tbody id="{{ $row->id }}">
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td colspan="4">
+                                                                                    <table class="display data__table">
+                                                                                        <tbody id="{{ $row->id }}">
+                                                                                            @foreach ($row->receives as $receive)
                                                                                                 <tr class="text-end">
                                                                                                     <td>
                                                                                                         <input type="text" name="or_receive_rows[{{ $row->id }}][purchase_challan][]" value="{{ $receive->purchase_challan }}" placeholder="Challan No">
@@ -184,18 +182,17 @@
 
                                                                                                     <td></td>
                                                                                                 </tr>
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            @endforeach
+                                                                                            @endforeach
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
                                                                         @else 
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td colspan="4">
                                                                                     <table class="display data__table">
-                                                                                    
                                                                                         <tbody id="{{ $row->id }}">
                                                                                             <tr class="text-end">
                                                                                                 <td>

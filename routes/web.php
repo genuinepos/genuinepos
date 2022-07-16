@@ -181,6 +181,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'App\Http\Controllers'], fun
 Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], function () {
     // Supplier route group
     Route::group(['prefix' => 'suppliers'], function () {
+
         Route::get('/', 'SupplierController@index')->name('contacts.supplier.index');
         Route::get('add', 'SupplierController@create')->name('contacts.supplier.create');
         Route::post('store', 'SupplierController@store')->name('contacts.supplier.store');
@@ -188,7 +189,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('update', 'SupplierController@update')->name('contacts.supplier.update');
         Route::delete('delete/{supplierId}', 'SupplierController@delete')->name('contacts.supplier.delete');
         Route::get('change/status/{supplierId}', 'SupplierController@changeStatus')->name('contacts.supplier.change.status');
-        Route::get('view/{supplierId}', 'SupplierController@view');
+        Route::get('view/{supplierId}', 'SupplierController@view')->name('contacts.supplier.view');
         Route::get('uncompleted/orders/{supplierId}', 'SupplierController@uncompletedOrders')->name('suppliers.uncompleted.orders');
         Route::get('ledgers/{supplierId}', 'SupplierController@ledgers')->name('contacts.supplier.ledgers');
         Route::get('print/ledger/{supplierId}', 'SupplierController@ledgerPrint')->name('contacts.supplier.ledger.print');
@@ -217,7 +218,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('update', 'CustomerController@update')->name('contacts.customer.update');
         Route::delete('delete/{customerId}', 'CustomerController@delete')->name('contacts.customer.delete');
         Route::get('change/status/{customerId}', 'CustomerController@changeStatus')->name('contacts.customer.change.status');
-        Route::get('view/{customerId}', 'CustomerController@view');
+        Route::get('view/{customerId}', 'CustomerController@view')->name('contacts.customer.view');
         Route::get('ledgers/list/{customerId}', 'CustomerController@ledgerList')->name('contacts.customer.ledger.list');
         Route::get('print/ledger/{customerId}', 'CustomerController@ledgerPrint')->name('contacts.customer.ledger.print');
         Route::get('payment/{customerId}', 'CustomerController@payment')->name('customers.payment');

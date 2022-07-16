@@ -30,6 +30,7 @@ class SaleStatementController extends Controller
             $userPermission = auth()->user()->permission;
 
             $query = DB::table('sales')
+                ->whereIn('sales.status', [1, 3])
                 ->leftJoin('branches', 'sales.branch_id', 'branches.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id')
                 ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');

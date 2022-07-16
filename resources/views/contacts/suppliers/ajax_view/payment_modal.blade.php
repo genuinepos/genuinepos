@@ -6,16 +6,16 @@
     .payment_list_table {position: relative;}
     .payment_details_contant{background: azure!important;}
 
-    .due_all_table {min-height: 200px; max-height: 200px; overflow-x: scroll;}
+    .due_all_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .due_purchase_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .due_order_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .seperate_area {border: 1px solid gray; padding: 6px;}
 </style>
-<div class="modal-dialog five-col-modal" role="document">
+<div class="modal-dialog five-col-modal" role="document" z-index="-1">
     <div class="modal-content">
         <div class="modal-header">
             <h6 class="modal-title" id="exampleModalLabel">Add Payment <span class="type_name"></span></h6>
-            <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+            <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
             <div class="info_area mb-2">
@@ -36,7 +36,6 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-
                                 <li><strong>Total Purchase : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text">
@@ -67,6 +66,7 @@
             <form id="payment_form" action="{{ route('suppliers.payment.add', $supplier->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
+                 
                     <div class="col-md-5">
                         <div class="seperate_area">
                             <div class="row">
@@ -125,20 +125,20 @@
                                             <div class="due_all_table">
                                                 <table class="table modal-table table-sm table-bordered mt-1">
                                                     <thead>
-                                                        <tr>
-                                                            <th class="text-start">Select</th>
-                                                            <th class="text-start">Date</th>
-                                                            <th class="text-start">Order/Invoice ID</th>
-                                                            <th class="text-start">Status</th>
-                                                            <th class="text-start">Payment Status</th>
-                                                            <th class="text-start">Due Amount</th>
+                                                        <tr class="bg-primary">
+                                                            <th class="text-start text-white">SL</th>
+                                                            <th class="text-start text-white">Date</th>
+                                                            <th class="text-start text-white">Order/Invoice ID</th>
+                                                            <th class="text-start text-white">Status</th>
+                                                            <th class="text-start text-white">Payment Status</th>
+                                                            <th class="text-start text-white">Due Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($allPurchaseAndOrders as $row)
                                                             <tr>
-                                                                <td><input type="checkbox" name="purchase_ids[]" value="{{ $row->id }}" id="purchase_id" data-due_amount="{{ $row->due }}"></td>
-                                                                <td class="text-start">{{  date('d/m/Y', strtotime($row->date)) }}</td>
+                                                                <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $row->id }}" id="purchase_id" data-due_amount="{{ $row->due }}"></td>
+                                                                <td class="text-start">{{ date('d/m/Y', strtotime($row->date)) }}</td>
                                                                 <td class="text-start">
                                                                     @if ($row->purchase_status == 1)
 
@@ -157,7 +157,7 @@
                                                                         Order
                                                                     @endif
                                                                 </td>
-                                                                <td>
+                                                                <td class="text-start">
                                                                     @php
                                                                         $payable = $row->total_purchase_amount - $row->purchase_return_amount;
                                                                     @endphp
@@ -201,28 +201,31 @@
                                             <div class="due_order_table">
                                                 <table class="table modal-table table-sm table-bordered mt-1">
                                                     <thead>
-                                                        <tr>
-                                                            <th>Select</th>
-                                                            <th>Date</th>
-                                                            <th>Invoice ID</th>
-                                                            <th>Payment Status</th>
-                                                            <th>Due Amount</th>
+                                                        <tr class="bg-primary">
+                                                            <th class="text-start text-white">Select</th>
+                                                            <th class="text-start text-white">Date</th>
+                                                            <th class="text-start text-white">Invoice ID</th>
+                                                            <th class="text-start text-white">Payment Status</th>
+                                                            <th class="text-start text-white">Due Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($purchases as $purchase)
                                                             <tr>
-                                                                <td><input type="checkbox" name="purchase_ids[]" value="{{ $purchase->id }}" id="purchase_id" data-due_amount="{{ $purchase->due }}"></td>
-                                                                <td>{{ date('d/m/Y', strtotime($purchase->date)) }}</td>
-                                                                <td>
+                                                                <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $purchase->id }}" id="purchase_id" data-due_amount="{{ $purchase->due }}"></td>
+
+                                                                <td class="text-start">{{ date('d/m/Y', strtotime($purchase->date)) }}</td>
+
+                                                                <td class="text-start">
                                                                     <a class="details_button" title="Details" href="{{ route('purchases.show', [$purchase->id]) }}">{{ $purchase->invoice_id }}</a>
                                                                 </td>
-                                                                <td>
+
+                                                                <td class="text-start">
                                                                     @php
                                                                         $payable = $purchase->total_purchase_amount - $purchase->purchase_return_amount;
                                                                     @endphp
                                                                     
-                                                                    @if ($row->due <= 0)
+                                                                    @if ($purchase->due <= 0)
 
                                                                         <span class="text-success"><b>Paid</b></span>
                                                                     @elseif ($purchase->due > 0 && $purchase->due < $payable) 
@@ -233,7 +236,8 @@
                                                                         <span class="text-danger"><b>Due</b></span>
                                                                     @endif
                                                                 </td>
-                                                                <td>{{ $purchase->due }}</td>
+
+                                                                <td class="text-start">{{ $purchase->due }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -261,28 +265,30 @@
                                             <div class="due_orders_table">
                                                 <table class="table modal-table table-sm table-bordered mt-1">
                                                     <thead>
-                                                        <tr>
-                                                            <th>Select</th>
-                                                            <th>Date</th>
-                                                            <th>Order ID</th>
-                                                            <th>Payment Status</th>
-                                                            <th>Due Amount</th>
+                                                        <tr class="bg-primary">
+                                                            <th class="text-start text-white">Select</th>
+                                                            <th class="text-start text-white">Date</th>
+                                                            <th class="text-start text-white">Order ID</th>
+                                                            <th class="text-start text-white">Payment Status</th>
+                                                            <th class="text-start text-white">Due Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($orders as $order)
                                                             <tr>
-                                                                <td><input type="checkbox" name="purchase_ids[]" value="{{ $order->id }}" id="purchase_id" data-due_amount="{{ $order->due }}"></td>
-                                                                <td>{{ date('d/m/Y', strtotime($order->date)) }}</td>
-                                                                <td>
+                                                                <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $order->id }}" id="purchase_id" data-due_amount="{{ $order->due }}"></td>
+                                                                <td class="text-start">{{ date('d/m/Y', strtotime($order->date)) }}</td>
+
+                                                                <td class="text-start">
                                                                     <a class="details_button" title="Details" href="{{ route('purchases.show.order', [$order->id]) }}">{{ $order->invoice_id }}</a>
                                                                 </td>
-                                                                <td>
+
+                                                                <td class="text-start">
                                                                     @php
                                                                         $payable = $order->total_purchase_amount - $order->purchase_return_amount;
                                                                     @endphp
                                                                     
-                                                                    @if ($row->due <= 0)
+                                                                    @if ($order->due <= 0)
 
                                                                         <span class="text-success"><b>Paid</b></span>
                                                                     @elseif ($order->due > 0 && $order->due < $payable) 
@@ -293,7 +299,7 @@
                                                                         <span class="text-danger"><b>Due</b></span>
                                                                     @endif
                                                                 </td>
-                                                                <td>{{ $order->due }}</td>
+                                                                <td class="text-start">{{ $order->due }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -320,7 +326,7 @@
                                 <strong>Amount :</strong> <span class="text-danger">*</span>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
+                                        <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_f"></i></span>
                                     </div>
 
                                     <input type="hidden" id="p_available_amount" value="{{ $supplier->total_purchase_due }}">
@@ -334,7 +340,7 @@
                                 <strong for="p_date">Date :</strong> <span class="text-danger">*</span>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
+                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_f"></i></span>
                                     </div>
                                     <input type="text" name="date" class="form-control p_input"
                                         autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
@@ -355,6 +361,29 @@
                             </div>
 
                             <div class="col-md-4">
+                                <strong>Credit Account :</strong> 
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_f"></i></span>
+                                    </div>
+                                    <select name="account_id" class="form-control" id="p_account_id">
+                                        @foreach ($accounts as $account)
+                                            <option value="{{ $account->id }}">
+                                                @php
+                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                    $bank = $account->bank ? ', BK : '.$account->bank : '';
+                                                    $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
+                                                    $balance = ', BL : '.$account->balance;
+                                                @endphp
+                                                {{ $account->name.$accountType.$bank.$ac_no.$balance }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error error_p_account_id"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
                                 <strong>Payment Method :</strong> <span class="text-danger">*</span>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -372,30 +401,6 @@
                                     <span class="error error_p_payment_method_id"></span>
                                 </div>
                             </div>
-
-                            <div class="col-md-4">
-                                <strong>Credit Account :</strong> 
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
-                                    </div>
-                                    <select name="account_id" class="form-control" id="p_account_id">
-                                        @foreach ($accounts as $account)
-                                            <option value="{{ $account->id }}">
-                                                @php
-                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                    $bank = $account->bank ? ', BK : '.$account->bank : '';
-                                                    $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
-                                                    $balance = ', BL : '.$account->balance;
-                                                @endphp
-                                                
-                                                {{ $account->name.$accountType.$bank.$ac_no.$balance }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <span class="error error_p_account_id"></span>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="form-group row mt-2">
@@ -407,6 +412,12 @@
                             <div class="col-md-8">
                                 <strong> Payment Note :</strong>
                                 <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-12">
+                                <label><strong>IN WORD : </strong> <strong><span class="text-danger text-uppercase" id="in_word"></span></strong></label>
                             </div>
                         </div>
                     </div>
@@ -456,7 +467,7 @@
                 $('.error').html('');
                 if(!$.isEmptyObject(data.errorMsg)){
 
-                    toastr.error(data.errorMsg,'ERROR');
+                    toastr.error(data.errorMsg);
                 }else{
 
                     $('#paymentModal').modal('hide');
@@ -546,8 +557,7 @@
         $('.'+show_table).show(300);
         $('#total_amount').html(0.00);
         $('#p_paying_amount').val(parseFloat(0).toFixed(2));
-        
-        calculateTotalDue();
+        document.getElementById('in_word').innerHTML = '';
     });
 
     $(document).on('click', '#purchase_id', function() {
@@ -565,7 +575,6 @@
 
         $('#total_amount').html(parseFloat(total).toFixed(2));
         $('#p_paying_amount').val(parseFloat(total).toFixed(2));
-
         calculateTotalDue();
     });
 
@@ -586,7 +595,7 @@
 
     $(document).on('input', '#p_paying_amount', function (e) {
 
-        calculateTotalDue();
+        calculateTotalDue(); 
     });
 
     $(document).on('input', '#p_less_amount', function (e) {
@@ -603,5 +612,30 @@
         var totalDue = parseFloat(card_total_due) - parseFloat(p_paying_amount) - parseFloat(p_less_amount);
 
         $('#card_total_due_show').text(bdFormat(totalDue));
+
+        if (parseFloat(p_paying_amount) && parseFloat(p_paying_amount) > 0) {
+
+            document.getElementById('in_word').innerHTML = inWords(parseInt(p_paying_amount)) + 'ONLY';
+        }else {
+
+            document.getElementById('in_word').innerHTML = '';
+        }
     }
+</script>
+
+<script>
+    var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
+    var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+  
+      function inWords (num) {
+          if ((num = num.toString()).length > 9) return 'overflow';
+          n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+          if (!n) return; var str = '';
+          str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+          str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+          str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+          str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+          str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' ' : '';
+          return str;
+      }
 </script>

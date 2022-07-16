@@ -124,21 +124,21 @@
                                             <div class="due_all_table">
                                                 <table class="table modal-table table-sm table-bordered mt-1">
                                                     <thead>
-                                                        <tr>
-                                                            <th>SL</th>
-                                                            <th>Date</th>
-                                                            <th>Order/Invoice ID</th>
-                                                            <th>Status</th>
-                                                            <th>Payment Status</th>
-                                                            <th>Due Amount</th>
+                                                        <tr class="bg-primary">
+                                                            <th class="text-start text-white">SL</th>
+                                                            <th class="text-start text-white">Date</th>
+                                                            <th class="text-start text-white">Order/Invoice ID</th>
+                                                            <th class="text-start text-white">Status</th>
+                                                            <th class="text-start text-white">Payment Status</th>
+                                                            <th class="text-start text-white">Due Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($allSalesAndOrders as $row)
                                                             <tr>
-                                                                <td><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $row->id }}" id="sale_id" data-due_amount="{{ $row->due }}"></td>
-                                                                <td>{{ $row->date }}</td>
-                                                                <td>
+                                                                <td class="text-start"><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $row->id }}" id="sale_id" data-due_amount="{{ $row->due }}"></td>
+                                                                <td class="text-start">{{ $row->date }}</td>
+                                                                <td class="text-start">
                                                                     @if ($row->status == 1)
                                                                     
                                                                         <a class="details_button" title="Details" href="{{ route('sales.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
@@ -147,7 +147,7 @@
                                                                         <a class="details_button" title="Details" href="{{ route('sales.order.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
                                                                     @endif
                                                                 </td>
-                                                                <td>
+                                                                <td class="text-start">
                                                                     @if ($row->status == 1)
 
                                                                         Sale
@@ -156,7 +156,7 @@
                                                                         Order
                                                                     @endif
                                                                 </td>
-                                                                <td>
+                                                                <td class="text-start">
                                                                     @php
                                                                         $payable = $row->total_payable_amount - $row->sale_return_amount;
                                                                     @endphp
@@ -172,7 +172,7 @@
                                                                         <span class="text-danger"><b>Due</b></span>
                                                                     @endif
                                                                 </td>
-                                                                <td>{{ App\Utils\Converter::format_in_bdt($row->due) }}</td>
+                                                                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->due) }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -200,26 +200,26 @@
                                             <div class="due_invoice_table">
                                                 <table class="table modal-table table-sm table-bordered mt-1">
                                                     <thead>
-                                                        <tr>
-                                                            <th>Select</th>
-                                                            <th>Date</th>
-                                                            <th>Invoice ID</th>
-                                                            <th>Payment Status</th>
-                                                            <th>Due Amount</th>
+                                                        <tr class="bg-primary">
+                                                            <th class="text-start text-white">Select</th>
+                                                            <th class="text-start text-white">Date</th>
+                                                            <th class="text-start text-white">Invoice ID</th>
+                                                            <th class="text-start text-white">Payment Status</th>
+                                                            <th class="text-start text-white">Due Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($invoices as $invoice)
                                                             <tr>
-                                                                <td><input type="checkbox" name="sale_ids[]" value="{{ $invoice->id }}" id="sale_id" data-due_amount="{{ $invoice->due }}"></td>
+                                                                <td class="text-start"><input type="checkbox" name="sale_ids[]" value="{{ $invoice->id }}" id="sale_id" data-due_amount="{{ $invoice->due }}"></td>
 
-                                                                <td>{{ $invoice->date }}</td>
+                                                                <td class="text-start">{{ $invoice->date }}</td>
 
-                                                                <td>
+                                                                <td class="text-start">
                                                                     <a class="details_button" title="Details" href="{{ route('sales.show', [$invoice->id]) }}">{{ $invoice->invoice_id }}</a>
                                                                 </td>
                                                                 
-                                                                <td>
+                                                                <td class="text-start">
                                                                     @php
                                                                         $payable = $invoice->total_payable_amount - $invoice->sale_return_amount;
                                                                     @endphp
@@ -236,7 +236,7 @@
                                                                     @endif
                                                                 </td>
 
-                                                                <td>{{ App\Utils\Converter::format_in_bdt($invoice->due) }}</td>
+                                                                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($invoice->due) }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -264,28 +264,28 @@
                                             <div class="due_orders_table">
                                                 <table class="table modal-table table-sm table-bordered mt-1">
                                                     <thead>
-                                                        <tr>
-                                                            <th>Select</th>
-                                                            <th>Date</th>
-                                                            <th>Order ID</th>
-                                                            <th>Payment Status</th>
-                                                            <th>Due Amount</th>
+                                                        <tr class="bg-primary">
+                                                            <th class="text-start text-white">Select</th>
+                                                            <th class="text-start text-white">Date</th>
+                                                            <th class="text-start text-white">Order ID</th>
+                                                            <th class="text-start text-white">Payment Status</th>
+                                                            <th class="text-start text-white">Due Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($orders as $order)
                                                             <tr>
-                                                                <td>
+                                                                <td class="text-start">
                                                                     <input type="checkbox" name="sale_ids[]" value="{{ $order->id }}" id="sale_id" data-due_amount="{{ $order->due }}">
                                                                 </td>
 
-                                                                <td>{{ $order->date }}</td>
+                                                                <td class="text-start">{{ $order->date }}</td>
 
-                                                                <td>
+                                                                <td class="text-start">
                                                                     <a class="details_button" title="Details" href="{{ route('sales.order.show', [$order->id]) }}">{{ $order->invoice_id }}</a>
                                                                 </td>
 
-                                                                <td>
+                                                                <td class="text-start">
                                                                     @php
                                                                         $payable = $order->total_payable_amount - $order->sale_return_amount;
                                                                     @endphp
@@ -302,7 +302,7 @@
                                                                     @endif
                                                                 </td>
                                                                 
-                                                                <td>{{ App\Utils\Converter::format_in_bdt($order->due) }}</td>
+                                                                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($order->due) }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -413,14 +413,18 @@
 
                             <div class="col-md-8">
                                 <label><strong> Payment Note :</strong></label>
-                                <textarea name="note" class="form-control" id="note" cols="30" rows="3"
-                                    placeholder="Note"></textarea>
+                                <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-12">
+                                <label><strong>IN WORD : </strong> <strong><span class="text-danger text-uppercase" id="in_word"></span></strong></label>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -610,6 +614,30 @@
         var totalDue = parseFloat(card_total_due) - parseFloat(p_paying_amount) - parseFloat(p_less_amount);
 
         $('#card_total_due_show').text(bdFormat(totalDue));
+
+        if (parseFloat(p_paying_amount) && parseFloat(p_paying_amount) > 0) {
+
+            document.getElementById('in_word').innerHTML = inWords(parseInt(p_paying_amount)) + 'ONLY';
+        }else {
+
+            document.getElementById('in_word').innerHTML = '';
+        }
     }
 </script>
 
+<script>
+    var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
+    var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+  
+      function inWords (num) {
+          if ((num = num.toString()).length > 9) return 'overflow';
+          n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+          if (!n) return; var str = '';
+          str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+          str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+          str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+          str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+          str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' ' : '';
+          return str;
+      }
+</script>

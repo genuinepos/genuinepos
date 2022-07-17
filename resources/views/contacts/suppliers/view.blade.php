@@ -79,6 +79,31 @@
                                         <div class="account_summary_table">
                                             <form id="filter_supplier_ledgers" method="get" class="px-2">
                                                 <div class="form-group row mt-4">
+                                                    @if ($addons->branches == 1)
+
+                                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+
+                                                            <div class="col-md-3">
+                                                                <label><strong>Business Location :</strong></label>
+                                                                <select name="branch_id" class="form-control submit_able"
+                                                                    id="ledger_branch_id" autofocus>
+                                                                    <option value="">All</option>
+                                                                    <option value="NULL">
+                                                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                    </option>
+                                                                    @foreach ($branches as $branch)
+                                                                        <option value="{{ $branch->id }}">
+                                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        @endif
+                                                    @else
+                                                    
+                                                        <input type="hidden" name="branch_id" id="ledger_branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}">
+                                                    @endif
+
                                                     <div class="col-md-3">
                                                         <label><strong>Voucher Type :</strong></label>
                                                         <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
@@ -701,6 +726,7 @@
             "ajax": {
                 "url": "{{ route('contacts.supplier.ledgers', $supplier->id) }}",
                 "data": function(d) {
+                    d.branch_id = $('#ledger_branch_id').val();
                     d.voucher_type = $('#voucher_type').val();
                     d.from_date = $('.from_date').val();
                     d.to_date = $('.to_date').val();
@@ -1169,26 +1195,27 @@
             e.preventDefault();
 
             var url = "{{ route('contacts.supplier.ledger.print', $supplierId) }}";
+            var branch_id = $('#ledger_branch_id').val();
             var voucher_type = $('#voucher_type').val();
             var from_date = $('.from_date').val();
             var to_date = $('.to_date').val();
             $.ajax({
                 url: url,
                 type: 'get',
-                data: { voucher_type, from_date, to_date },
+                data: { branch_id, voucher_type, from_date, to_date },
                 success: function(data) {
 
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",                      
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",
                         removeInline: false,
-                        printDelay: 700, 
-                        header: null,        
+                        printDelay: 700,
+                        header: null,
                     });
                 }
-            }); 
+            });
         });
 
         $(document).on('click', '#print_purchase_statements', function (e) {

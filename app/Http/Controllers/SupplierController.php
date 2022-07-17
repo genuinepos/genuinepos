@@ -295,8 +295,10 @@ class SupplierController extends Controller
         )->first();
 
         $supplierUtil = $this->supplierUtil;
-
+        $branch_id = $request->branch_id;
         $ledgers = '';
+        $fromDate = '';
+        $toDate = '';
 
         $query = DB::table('supplier_ledgers')->where('supplier_ledgers.supplier_id', $supplierId)
             ->leftJoin('purchases', 'supplier_ledgers.purchase_id', 'purchases.id')
@@ -321,14 +323,24 @@ class SupplierController extends Controller
                 'agp_purchase.invoice_id as agp_purchase',
             )->orderBy('supplier_ledgers.report_date', 'asc');
 
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('supplier_ledgers.branch_id', NULL);
+            } else {
+
+                $query->where('supplier_ledgers.branch_id', $request->branch_id);
+            }
+        }
+        
         if ($request->voucher_type) {
+
             $query->where('supplier_ledgers.voucher_type', $request->voucher_type); // Final
         }
 
-        $fromDate = '';
-        $toDate = '';
-
         if ($request->from_date) {
+
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
@@ -338,9 +350,16 @@ class SupplierController extends Controller
             $toDate = $to_date;
         }
 
-        $ledgers = $query->get();
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-        return view('contacts.suppliers.ajax_view.print_ledger', compact('ledgers', 'supplier', 'supplierUtil', 'fromDate', 'toDate'));
+            $ledgers = $query->orderBy('supplier_ledgers.report_date', 'asc')->get();
+        } else {
+
+            $ledgers = $query->where('supplier_ledgers.branch_id', auth()->user()->branch_id)
+                ->orderBy('supplier_ledgers.report_date', 'asc')->get();
+        }
+
+        return view('contacts.suppliers.ajax_view.print_ledger', compact('branch_id', 'ledgers', 'supplier', 'supplierUtil', 'fromDate', 'toDate'));
     }
 
     // Supplier payment view
@@ -1053,12 +1072,12 @@ class SupplierController extends Controller
 
                             return 'Purchase Return : ' . $row->return_inv;
                         }
-                    }else{
+                    } else {
                         if ($row->supplier_payment_id) {
 
                             return '<a href="' . route('suppliers.view.details', $row->supplier_payment_id) . '" id="payment_details" class="btn btn-sm text-info"> Details</a>';
                         } else {
-    
+
                             return '<a href="' . route('purchases.payment.details', $row->purchase_payment_id) . '" id="payment_details" class="btn btn-sm text-info"> Details</a>';
                         }
                     }
@@ -1088,7 +1107,7 @@ class SupplierController extends Controller
                     }
                 })
                 ->editColumn('less_amount', fn ($row) => '<span class="less_amount" data-value="' . $row->less_amount . '">' . $this->converter->format_in_bdt($row->less_amount) . '</span>')
-                
+
                 ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
 
                 ->rawColumns(['date', 'against_invoice', 'type', 'method', 'account', 'less_amount', 'amount', 'action'])

@@ -441,6 +441,17 @@ class CustomerController extends Controller
                     'ags_sale.invoice_id as ags_sale',
                 )->orderBy('customer_ledgers.report_date', 'asc');
 
+            if ($request->branch_id) {
+
+                if ($request->branch_id == 'NULL') {
+
+                    $query->where('customer_ledgers.branch_id', NULL);
+                } else {
+
+                    $query->where('customer_ledgers.branch_id', $request->branch_id);
+                }
+            }
+
             if ($request->voucher_type) {
 
                 $query->where('customer_ledgers.voucher_type', $request->voucher_type); // Final
@@ -454,7 +465,14 @@ class CustomerController extends Controller
                 $query->whereBetween('customer_ledgers.report_date', $date_range); // Final
             }
 
-            $customerLedgers = $query;
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+                $customerLedgers = $query->orderBy('customer_ledgers.report_date', 'asc');
+            } else {
+
+                $customerLedgers = $query->where('customer_ledgers.branch_id', auth()->user()->branch_id)
+                    ->orderBy('customer_ledgers.report_date', 'desc');
+            }
 
             return DataTables::of($customerLedgers)
                 ->editColumn('date', function ($row) use ($settings) {
@@ -498,40 +516,33 @@ class CustomerController extends Controller
     public function ledgerPrint(Request $request, $customerId)
     {
         $customerUtil = $this->customerUtil;
-
+        $branch_id = $request->branch_id;
         $ledgers = '';
+        $fromDate = '';
+        $toDate = '';
 
         $query = DB::table('customer_ledgers')->where('customer_ledgers.customer_id', $customerId)
             ->leftJoin('sales', 'customer_ledgers.sale_id', 'sales.id')
             ->leftJoin('sale_returns', 'customer_ledgers.sale_return_id', 'sale_returns.id')
             ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
             ->leftJoin('customer_payments', 'customer_ledgers.customer_payment_id', 'customer_payments.id')
-            ->leftJoin('sales as ags_sale', 'sale_payments.sale_id', 'ags_sale.id')
-            ->select(
-                'customer_ledgers.report_date',
-                'customer_ledgers.voucher_type',
-                'customer_ledgers.debit',
-                'customer_ledgers.credit',
-                'customer_ledgers.running_balance',
-                'sales.invoice_id as sale_inv_id',
-                'sales.sale_note as sale_par',
-                'sales.status as sale_status',
-                'sale_returns.invoice_id as return_inv_id',
-                'sale_returns.date as sale_return_par',
-                'sale_payments.invoice_id as sale_payment_voucher',
-                'sale_payments.note as sale_payment_par',
-                'customer_payments.voucher_no as customer_payment_voucher',
-                'customer_payments.note as customer_payment_par',
-                'ags_sale.invoice_id as ags_sale',
-            )->orderBy('customer_ledgers.report_date', 'asc');
+            ->leftJoin('sales as ags_sale', 'sale_payments.sale_id', 'ags_sale.id');
+
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('customer_ledgers.branch_id', NULL);
+            } else {
+
+                $query->where('customer_ledgers.branch_id', $request->branch_id);
+            }
+        }
 
         if ($request->voucher_type) {
 
             $query->where('customer_ledgers.voucher_type', $request->voucher_type); // Final
         }
-
-        $fromDate = '';
-        $toDate = '';
 
         if ($request->from_date) {
 
@@ -544,12 +555,37 @@ class CustomerController extends Controller
             $toDate = $to_date;
         }
 
-        $ledgers = $query->get();
+        $query->select(
+            'customer_ledgers.report_date',
+            'customer_ledgers.voucher_type',
+            'customer_ledgers.debit',
+            'customer_ledgers.credit',
+            'customer_ledgers.running_balance',
+            'sales.invoice_id as sale_inv_id',
+            'sales.sale_note as sale_par',
+            'sales.status as sale_status',
+            'sale_returns.invoice_id as return_inv_id',
+            'sale_returns.date as sale_return_par',
+            'sale_payments.invoice_id as sale_payment_voucher',
+            'sale_payments.note as sale_payment_par',
+            'customer_payments.voucher_no as customer_payment_voucher',
+            'customer_payments.note as customer_payment_par',
+            'ags_sale.invoice_id as ags_sale',
+        );
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $ledgers = $query->orderBy('customer_ledgers.report_date', 'asc')->get();
+        } else {
+
+            $ledgers = $query->where('customer_ledgers.branch_id', auth()->user()->branch_id)
+                ->orderBy('customer_ledgers.report_date', 'asc')->get();
+        }
 
         $customer = DB::table('customers')->where('id', $customerId)
             ->select('id', 'contact_id', 'name', 'phone', 'address',)->first();
 
-        return view('contacts.customers.ajax_view.print_ledger', compact('ledgers', 'customer', 'customerUtil', 'fromDate', 'toDate'));
+        return view('contacts.customers.ajax_view.print_ledger', compact('branch_id', 'ledgers', 'customer', 'customerUtil', 'fromDate', 'toDate'));
     }
 
     // Customer payment view

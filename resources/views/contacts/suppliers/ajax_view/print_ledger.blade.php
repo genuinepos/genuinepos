@@ -19,8 +19,31 @@
 </style>
 <div class="row">
     <div class="col-12 text-center">
-        <h6 style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-        <p>{{ json_decode($generalSettings->business, true)['address'] }}</p>
+        @if ($branch_id == '')
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} </h5>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+
+            @if ($addons->branches == 1)
+
+                <p><strong>All Business Location</strong></p>
+            @endif
+
+        @elseif ($branch_id == 'NULL')
+
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} </h5>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+        @else
+
+            @php
+                $branch = DB::table('branches')
+                    ->where('id', $branch_id)
+                    ->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')
+                    ->first();
+            @endphp
+            <h5>{{ $branch->name }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
+        @endif
+
         @if ($fromDate && $toDate)
             <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
         @endif 

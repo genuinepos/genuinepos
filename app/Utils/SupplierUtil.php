@@ -187,7 +187,6 @@ class SupplierUtil
 
     public function supplierLedgers($request, $supplierId)
     {
-
         $settings = DB::table('general_settings')->first();
 
         $supplierLedgers = '';
@@ -215,6 +214,17 @@ class SupplierUtil
                 'agp_purchase.invoice_id as agp_purchase',
             )->orderBy('supplier_ledgers.report_date', 'asc');
 
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('supplier_ledgers.branch_id', NULL);
+            } else {
+
+                $query->where('supplier_ledgers.branch_id', $request->branch_id);
+            }
+        }
+
         if ($request->voucher_type) {
 
             $query->where('supplier_ledgers.voucher_type', $request->voucher_type); // Final
@@ -228,7 +238,14 @@ class SupplierUtil
             $query->whereBetween('supplier_ledgers.report_date', $date_range); // Final
         }
 
-        $supplierLedgers = $query;
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $supplierLedgers = $query->orderBy('supplier_ledgers.report_date', 'asc');
+        } else {
+
+            $supplierLedgers = $query->where('supplier_ledgers.branch_id', auth()->user()->branch_id)
+                ->orderBy('supplier_ledgers.report_date', 'asc');
+        }
 
         return DataTables::of($supplierLedgers)
             ->editColumn('date', function ($row) use ($settings) {

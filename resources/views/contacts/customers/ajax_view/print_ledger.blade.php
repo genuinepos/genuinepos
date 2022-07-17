@@ -21,19 +21,47 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        @if (auth()->user()->branch_id)
+        @if ($branch_id == '')
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} </h5>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+
+            @if ($addons->branches == 1)
+
+                <p><strong>All Business Location</strong></p>
+            @endif
+            
+        @elseif ($branch_id == 'NULL')
+
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} </h5>
+            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+        @else
+
+            @php
+                $branch = DB::table('branches')
+                    ->where('id', $branch_id)
+                    ->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')
+                    ->first();
+            @endphp
+            <h5>{{ $branch->name }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
+        @endif
+
+        @if ($fromDate && $toDate)
+
+            <p><strong>Date :</strong> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <strong>To</strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
+        @endif 
+        
+        {{-- @if (auth()->user()->branch_id)
+
             <h6>{{ auth()->user()->branch->name }}</h6>
             <p style="width: 60%; margin:0 auto;">{{ auth()->user()->branch->city.', '.auth()->user()->branch->state.', '.auth()->user()->branch->zip_code.','.auth()->user()->branch->country }}</p>
         @else
+
             <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-        @endif
+        @endif --}}
         
-         @if ($fromDate && $toDate)
-            <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
-        @endif 
-        
-        <p><b>Customer Ledger </b></p> 
+        <p><strong>Customer Ledger </strong></p> 
     </div>
 </div>
 

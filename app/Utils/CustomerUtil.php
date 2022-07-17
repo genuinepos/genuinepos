@@ -235,6 +235,7 @@ class CustomerUtil
     {
         $voucher_type = $this->voucherType($voucher_type_id);
         $addCustomerLedger = new CustomerLedger();
+        $addCustomerLedger->branch_id = auth()->user()->branch_id;
         $addCustomerLedger->customer_id = $customer_id;
         $addCustomerLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
         $addCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));

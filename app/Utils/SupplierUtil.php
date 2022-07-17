@@ -216,10 +216,12 @@ class SupplierUtil
             )->orderBy('supplier_ledgers.report_date', 'asc');
 
         if ($request->voucher_type) {
+
             $query->where('supplier_ledgers.voucher_type', $request->voucher_type); // Final
         }
 
         if ($request->from_date) {
+
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
@@ -586,6 +588,7 @@ class SupplierUtil
     {
         $voucher_type = $this->voucherType($voucher_type_id);
         $addSupplierLedger = new SupplierLedger();
+        $addSupplierLedger->branch_id = auth()->user()->branch_id;
         $addSupplierLedger->supplier_id = $supplier_id;
         $addSupplierLedger->date = $date;
         $addSupplierLedger->report_date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));

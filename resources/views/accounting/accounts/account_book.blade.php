@@ -312,25 +312,25 @@
         <script>
             function getRunningBalance() {
 
-                var i=0;
-                var previousBalance=0;
-                $('.data_tbl').find('tbody').find('tr').each(function() { 
+                // var i=0;
+                // var previousBalance=0;
+                // $('.data_tbl').find('tbody').find('tr').each(function() { 
 
-                    var debit = parseFloat($(this).find('.debit').data('value')); 
-                    var credit = parseFloat($(this).find('.credit').data('value'));  
+                //     var debit = parseFloat($(this).find('.debit').data('value')); 
+                //     var credit = parseFloat($(this).find('.credit').data('value'));  
 
-                    if(parseFloat(i) == 0) {
+                //     if(parseFloat(i) == 0) {
 
-                        previousBalance = parseFloat(debit) - parseFloat(credit);
-                    }else {
+                //         previousBalance = parseFloat(debit) - parseFloat(credit);
+                //     }else {
 
-                        previousBalance = parseFloat(previousBalance) + (parseFloat(debit) - parseFloat(credit));
-                    } 
+                //         previousBalance = parseFloat(previousBalance) + (parseFloat(debit) - parseFloat(credit));
+                //     } 
                     
-                    i++;
+                //     i++;
                     
-                    $(this).find('.running_balance').html(bdFormat(previousBalance));
-                });
+                //     $(this).find('.running_balance').html(bdFormat(previousBalance));
+                // });
             }
         </script>
     @elseif($balanceType == 'credit')   
@@ -338,25 +338,25 @@
         <script>
             function getRunningBalance() {
 
-                var i=0;
-                var previousBalance=0;
-                $('.data_tbl').find('tbody').find('tr').each(function() { 
+                // var i=0;
+                // var previousBalance=0;
+                // $('.data_tbl').find('tbody').find('tr').each(function() { 
 
-                    var debit = parseFloat($(this).find('.debit').data('value')); 
-                    var credit = parseFloat($(this).find('.credit').data('value'));  
+                //     var debit = parseFloat($(this).find('.debit').data('value')); 
+                //     var credit = parseFloat($(this).find('.credit').data('value'));  
 
-                    if(parseFloat(i) == 0) {
+                //     if(parseFloat(i) == 0) {
 
-                        previousBalance = parseFloat(credit) - parseFloat(debit);
-                    }else {
+                //         previousBalance = parseFloat(credit) - parseFloat(debit);
+                //     }else {
 
-                        previousBalance = parseFloat(previousBalance) + (parseFloat(credit) - parseFloat(debit));
-                    } 
+                //         previousBalance = parseFloat(previousBalance) + (parseFloat(credit) - parseFloat(debit));
+                //     } 
                     
-                    i++;
+                //     i++;
 
-                    $(this).find('.running_balance').html(parseFloat(previousBalance).toFixed(2));
-                });
+                //     $(this).find('.running_balance').html(parseFloat(previousBalance).toFixed(2));
+                // });
             }
         </script>
     @endif

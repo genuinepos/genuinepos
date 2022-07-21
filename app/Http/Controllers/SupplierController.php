@@ -58,7 +58,6 @@ class SupplierController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-
         if ($request->ajax()) {
 
             $suppliers = DB::table('suppliers');
@@ -402,7 +401,12 @@ class SupplierController extends Controller
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
-        return view('contacts.suppliers.ajax_view.payment_modal', compact('supplier', 'accounts', 'methods', 'allPurchaseAndOrders', 'purchases', 'orders'));
+        $totalInvoiceReturnDue = DB::table('purchases') 
+            ->where('purchases.supplier_id', $supplierId)
+            ->select(DB::raw('sum(purchase_return_due) as total_return_due'))
+            ->groupBy('purchases.supplier_id')->get();
+
+        return view('contacts.suppliers.ajax_view.payment_modal', compact('supplier', 'accounts', 'methods', 'allPurchaseAndOrders', 'purchases', 'orders', 'totalInvoiceReturnDue'));
     }
 
     // Supplier Payment add

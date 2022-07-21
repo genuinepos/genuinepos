@@ -1481,25 +1481,25 @@
     <script>
         function getRunningBalance() {
 
-            var i=0;
-            var previousBalance=0;
-            $('.ledger_table').find('tbody').find('tr').each(function() { 
+            // var i=0;
+            // var previousBalance=0;
+            // $('.ledger_table').find('tbody').find('tr').each(function() { 
 
-                var debit = parseFloat($(this).find('.debit').data('value')); 
-                var credit = parseFloat($(this).find('.credit').data('value'));  
+            //     var debit = parseFloat($(this).find('.debit').data('value')); 
+            //     var credit = parseFloat($(this).find('.credit').data('value'));  
 
-                if(parseFloat(i) == 0) {
+            //     if(parseFloat(i) == 0) {
 
-                    previousBalance =  parseFloat(credit) - parseFloat(debit);
-                }else {
+            //         previousBalance =  parseFloat(credit) - parseFloat(debit);
+            //     }else {
 
-                    previousBalance = parseFloat(previousBalance) + (parseFloat(credit) - parseFloat(debit));
-                } 
+            //         previousBalance = parseFloat(previousBalance) + (parseFloat(credit) - parseFloat(debit));
+            //     } 
                 
-                i++;
+            //     i++;
                 
-                $(this).find('.running_balance').html(bdFormat(previousBalance));
-            });
+            //     $(this).find('.running_balance').html(bdFormat(previousBalance));
+            // });
         }
     </script>
 @endpush

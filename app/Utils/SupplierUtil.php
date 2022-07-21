@@ -247,6 +247,14 @@ class SupplierUtil
                 ->orderBy('supplier_ledgers.report_date', 'asc');
         }
 
+        $supplierLedgers = $supplierLedgers->get();
+        $tempRunning = 0;
+        foreach ($supplierLedgers as $supplierLedger) {
+
+            $supplierLedger->running_balance =  $tempRunning  + ($supplierLedger->credit - $supplierLedger->debit);
+            $tempRunning = $supplierLedger->running_balance;
+        }
+
         return DataTables::of($supplierLedgers)
             ->editColumn('date', function ($row) use ($settings) {
 
@@ -272,7 +280,7 @@ class SupplierUtil
 
             ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . $this->converter->format_in_bdt($row->credit) . '</span>')
 
-            ->editColumn('running_balance', fn ($row) => '<span class="running_balance"></span>')
+            ->editColumn('running_balance', fn ($row) => '<span class="running_balance">' . $this->converter->format_in_bdt($row->running_balance) . '</span>')
 
             ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
             ->make(true);
@@ -463,8 +471,7 @@ class SupplierUtil
             ->select(
                 DB::raw('sum(paid_amount) as s_paid'),
                 DB::raw('sum(less_amount) as less')
-            )
-            ->groupBy('supplier_id')->get();
+            )->groupBy('supplier_id')->get();
 
         $totalPurchasePayment = DB::table('purchase_payments')
             ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')

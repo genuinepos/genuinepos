@@ -42,7 +42,7 @@
                             <td width="50%" class="text-start"><strong>Paid Amount :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $supplierPayment->paid_amount }}
+                                {{ App\Utils\Converter::format_in_bdt($supplierPayment->paid_amount) }}
                             </td>
                         </tr>
 
@@ -116,14 +116,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $total_paid = 0;
+                    @endphp
                     @foreach ($supplierPayment->supplier_payment_invoices as $pi)
                         <tr>
                             <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->purchase->date)) }}</td>
                             <td class="text-start">{{ $pi->purchase->invoice_id }}</h6></td>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $pi->paid_amount }}</td>
+                            <td class="text-start">{{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}</td>
+                            @php
+                                $total_paid += $pi->paid_amount;
+                            @endphp
                         </tr>
                     @endforeach
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2" class="text-end">Total : </th>
+                        <th class="text-start">{{ App\Utils\Converter::format_in_bdt($total_paid) }}</th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>

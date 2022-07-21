@@ -139,6 +139,8 @@ class AccountController extends Controller
 
         $accountUtil = $this->accountUtil;
 
+        $account = Account::with(['bank'])->where('id', $accountId)->first();
+
         if ($request->ajax()) {
 
             $settings = DB::table('general_settings')->first();
@@ -231,6 +233,23 @@ class AccountController extends Controller
                 'sender_ac.name as sender_acn',
             )->orderBy('account_ledgers.date', 'asc');
 
+            $ledgers = $ledgers->get();
+            $balanceType = $accountUtil->accountBalanceType($account->account_type);
+            $tempRunning = 0;
+
+            foreach ($ledgers as $ledger) {
+
+                if ($balanceType == 'debit') {
+
+                    $ledger->running_balance =  $tempRunning + ($ledger->debit - $ledger->credit);
+                    $tempRunning = $ledger->running_balance;
+                } elseif ($balanceType == 'credit') {
+
+                    $ledger->running_balance =  $tempRunning + ($ledger->credit - $ledger->debit);
+                    $tempRunning = $ledger->running_balance;
+                }
+            }
+
             return DataTables::of($ledgers)
                 ->editColumn('date', function ($row) use ($settings) {
 
@@ -254,13 +273,11 @@ class AccountController extends Controller
                 })
                 ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . $this->converter->format_in_bdt($row->debit) . '</span>')
                 ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . $this->converter->format_in_bdt($row->credit) . '</span>')
-                ->editColumn('running_balance', fn ($row) => '<span class="running_balance"></span>')
+                ->editColumn('running_balance', fn ($row) => '<span class="running_balance">' . $this->converter->format_in_bdt($row->running_balance) . '</span>')
                 ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
                 ->make(true);
         }
 
-        $account = Account::with(['bank'])->where('id', $accountId)->first();
-        
         return view('accounting.accounts.account_book', compact('account', 'accountUtil'));
     }
 
@@ -495,7 +512,7 @@ class AccountController extends Controller
     }
 
     public function ledgerPrint(Request $request, $accountId)
-    { 
+    {
         $accountUtil = $this->accountUtil;
 
         $ledgers = '';
@@ -529,7 +546,7 @@ class AccountController extends Controller
         }
 
         if (isset($request->voucher_type)) {
-            
+
             $query->where('account_ledgers.voucher_type', $request->voucher_type); // Final
         }
 

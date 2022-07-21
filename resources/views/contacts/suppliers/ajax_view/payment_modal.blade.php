@@ -173,7 +173,7 @@
                                                                         <span class="text-danger"><b>Due</b></span>
                                                                     @endif
                                                                 </td>
-                                                                <td class="text-start">{{ $row->due }}</td>
+                                                                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->due) }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -237,7 +237,7 @@
                                                                     @endif
                                                                 </td>
 
-                                                                <td class="text-start">{{ $purchase->due }}</td>
+                                                                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($purchase->due) }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -299,7 +299,7 @@
                                                                         <span class="text-danger"><b>Due</b></span>
                                                                     @endif
                                                                 </td>
-                                                                <td class="text-start">{{ $order->due }}</td>
+                                                                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($order->due) }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -310,6 +310,13 @@
                                 </div>
 
                                 <div class="total_amount_area mt-1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p><strong>Purchase Invoice Refundable : </strong> <span class="text-danger">{{ App\Utils\Converter::format_in_bdt($totalInvoiceReturnDue->sum('total_return_due')) }}</span> </p>
+                                            <input type="hidden" name="pi_refundable" id="pi_refundable" value="{{ $totalInvoiceReturnDue->sum('total_return_due') }}">
+                                        </div>
+                                    </div>
+
                                     <div class="row">
                                         <div class="col-md-12">
                                             <p><strong>Total Amount : </strong> <span id="total_amount">0.00</span></p>
@@ -573,8 +580,11 @@
             }
         });
 
-        $('#total_amount').html(parseFloat(total).toFixed(2));
-        $('#p_paying_amount').val(parseFloat(total).toFixed(2));
+        var pi_refundable = $('#pi_refundable').val();
+        var __total = parseFloat(total) - parseFloat(pi_refundable);
+
+        $('#total_amount').html(parseFloat(__total).toFixed(2));
+        $('#p_paying_amount').val(parseFloat(__total).toFixed(2));
         calculateTotalDue();
     });
 

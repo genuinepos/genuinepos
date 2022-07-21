@@ -474,6 +474,14 @@ class CustomerController extends Controller
                     ->orderBy('customer_ledgers.report_date', 'desc');
             }
 
+            $customerLedgers = $customerLedgers->get();
+            $tempRunning = 0;
+            foreach($customerLedgers as $customerLedger)
+            {
+                $customerLedger->running_balance =  $tempRunning  + ($customerLedger->debit - $customerLedger->credit);
+                $tempRunning = $customerLedger->running_balance;
+            }
+
             return DataTables::of($customerLedgers)
                 ->editColumn('date', function ($row) use ($settings) {
 
@@ -501,7 +509,7 @@ class CustomerController extends Controller
 
                 ->editColumn('running_balance', function ($row) {
 
-                    return '<span class="running_balance"></span>';
+                    return '<span class="running_balance">'. $this->converter->format_in_bdt($row->running_balance) .'</span>';
                 })
 
                 ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])

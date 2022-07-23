@@ -634,14 +634,20 @@ class SupplierUtil
             ->where('voucher_type', $voucher_type_id)
             ->first();
 
-        //$updateSupplierLedger->supplier_id = $supplier_id;
-        $previousTime = date('H:i:s', strtotime($updateSupplierLedger->report_date));
-        $updateSupplierLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
-        $updateSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . $previousTime));
-        $updateSupplierLedger->{$voucher_type['amt']} = $amount;
-        $updateSupplierLedger->amount = $amount;
-        $updateSupplierLedger->save();
-        $updateSupplierLedger->running_balance = $this->adjustSupplierForSalePaymentDue($supplier_id);
-        $updateSupplierLedger->save();
+        if ($updateSupplierLedger) {
+
+            //$updateSupplierLedger->supplier_id = $supplier_id;
+            $previousTime = date('H:i:s', strtotime($updateSupplierLedger->report_date));
+            $updateSupplierLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
+            $updateSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . $previousTime));
+            $updateSupplierLedger->{$voucher_type['amt']} = $amount;
+            $updateSupplierLedger->amount = $amount;
+            $updateSupplierLedger->save();
+            $updateSupplierLedger->running_balance = $this->adjustSupplierForSalePaymentDue($supplier_id);
+            $updateSupplierLedger->save();
+        }else {
+
+            $this->addSupplierLedger($voucher_type_id, $supplier_id, $date, $trans_id, $amount);
+        }
     }
 }

@@ -158,19 +158,19 @@
             <tbody>
                 <tr>
                     <td class="text-end">
-                        <strong>Total Debit :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>Total Credit :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
                     </td>
-                    <td class="text-end">
-                        {{ App\Utils\Converter::format_in_bdt($totalDebit) }}
+                    <td class="text-end"> 
+                        {{ App\Utils\Converter::format_in_bdt($totalCredit) }}
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-end">
-                        <strong>Total Credit :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>Total Debit :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
                     </td>
-                    <td class="text-end"> 
-                        {{ App\Utils\Converter::format_in_bdt($totalCredit) }}
+                    <td class="text-end">
+                        ({{ App\Utils\Converter::format_in_bdt($totalDebit) }})
                     </td>
                 </tr>
 

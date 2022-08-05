@@ -468,9 +468,14 @@ p.address-name {
 
 .sub_total {
     /* bottom: 52px; */
-    width: 100%;
-    overflow: hidden;
+    /* width: 100%;
+    overflow: hidden; */
     /* position: fixed; */
+
+    bottom: 52px; 
+    width: 42%;
+    overflow: hidden;
+    position: fixed!important;
 }
 
 a.resent-tn:hover {
@@ -538,10 +543,15 @@ a.resent-tn:hover {
 }
 
 .cart-table-inner-pos {
+    /* background: #fff;
+    border: 1px solid #43132d;
+    border-radius: 3px;
+    height: 100%; */
     background: #fff;
     border: 1px solid #43132d;
     border-radius: 3px;
-    height: 100%;
+    height: 78vh;
+    overflow-y: scroll;
 }
 
 .pos-right-inner {

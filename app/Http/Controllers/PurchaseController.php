@@ -857,6 +857,13 @@ class PurchaseController extends Controller
 
         if ($product) {
 
+            $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)->where('product_id', $product->id)->first();
+
+            if (!$productBranch) {
+
+                return response()->json(['errorMsg' => 'Product is not available in the Business Location']);
+            }
+
             return response()->json(['product' => $product]);
         } else {
 
@@ -865,6 +872,14 @@ class PurchaseController extends Controller
                 ->first();
 
             if ($variant_product) {
+
+                $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)
+                    ->where('product_id', $variant_product->product_id)->first();
+
+                if (!$productBranch) {
+
+                    return response()->json(['errorMsg' => 'Product is not available in the Business Location']);
+                }
 
                 return response()->json(['variant_product' => $variant_product]);
             }

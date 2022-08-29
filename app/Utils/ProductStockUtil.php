@@ -719,90 +719,43 @@ class ProductStockUtil
             ->where('id', $product_id)->select('id', 'is_manage_stock')
             ->first();
 
-        if ($product->is_manage_stock == 1 || ($product->is_manage_stock == 0 && $force_add == 1)) {
+        $checkExistsProductInBranch = DB::table('product_branches')
+            ->where('branch_id', $branch_id)
+            ->where('product_id', $product_id)->first();
 
-            $checkExistsProductInBranch = DB::table('product_branches')
-                ->where('branch_id', $branch_id)
-                ->where('product_id', $product_id)->first();
+        if ($checkExistsProductInBranch) {
 
-            if ($checkExistsProductInBranch) {
+            if ($variant_id) {
 
-                if ($variant_id) {
+                $checkVariantInBranch = DB::table('product_branch_variants')
+                    ->where('product_branch_id', $checkExistsProductInBranch->id)
+                    ->where('product_id', $product_id)
+                    ->where('product_variant_id', $variant_id)
+                    ->first();
 
-                    $checkVariantInBranch = DB::table('product_branch_variants')
-                        ->where('product_branch_id', $checkExistsProductInBranch->id)
-                        ->where('product_id', $product_id)
-                        ->where('product_variant_id', $variant_id)
-                        ->first();
-
-                    if (!$checkVariantInBranch) {
-
-                        $productBranchVariant = new ProductBranchVariant();
-                        $productBranchVariant->product_branch_id = $checkExistsProductInBranch->id;
-                        $productBranchVariant->product_id = $product_id;
-                        $productBranchVariant->product_variant_id = $variant_id;
-                        $productBranchVariant->save();
-                    }
-                }
-            } else {
-
-                $productBranch = new ProductBranch();
-                $productBranch->branch_id = auth()->user()->branch_id;
-                $productBranch->product_id = $product_id;
-                $productBranch->save();
-
-                if ($variant_id) {
+                if (!$checkVariantInBranch) {
 
                     $productBranchVariant = new ProductBranchVariant();
-                    $productBranchVariant->product_branch_id = $productBranch->id;
+                    $productBranchVariant->product_branch_id = $checkExistsProductInBranch->id;
                     $productBranchVariant->product_id = $product_id;
                     $productBranchVariant->product_variant_id = $variant_id;
                     $productBranchVariant->save();
                 }
             }
-        }
-    }
+        } else {
 
-    public function minusBranchStock($product_id, $variant_id, $quantity, $branch_id)
-    {
-        $productBranch = ProductBranch::where('branch_id', $branch_id)->where('product_id', $product_id)->first();
-
-        if ($productBranch) {
-
-            $productBranch->product_quantity -= abs($quantity);
+            $productBranch = new ProductBranch();
+            $productBranch->branch_id = auth()->user()->branch_id;
+            $productBranch->product_id = $product_id;
             $productBranch->save();
 
             if ($variant_id) {
 
-                $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                    ->where('product_variant_id', $variant_id)
-                    ->first();
-
-                $productBranchVariant->variant_quantity -= abs($quantity);
+                $productBranchVariant = new ProductBranchVariant();
+                $productBranchVariant->product_branch_id = $productBranch->id;
+                $productBranchVariant->product_id = $product_id;
+                $productBranchVariant->product_variant_id = $variant_id;
                 $productBranchVariant->save();
-            }
-        }
-    }
-
-    public function minusWarehouseStock($product_id, $variant_id, $quantity, $warehouse_id)
-    {
-        $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_id)
-            ->where('product_id', $product_id)
-            ->first();
-
-        if ($productWarehouse) {
-
-            $productWarehouse->product_quantity -= abs($quantity);
-            $productWarehouse->save();
-
-            if ($variant_id) {
-
-                $productWarehouseVariant = ProductWarehouseVariant::where('product_branch_id', $productBranch->id)
-                    ->where('product_variant_id', $variant_id)
-                    ->first();
-
-                $productWarehouseVariant->variant_quantity -= abs($quantity);
-                $productWarehouseVariant->save();
             }
         }
     }

@@ -5,7 +5,7 @@
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
     <link href="{{ asset('public/backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link href="{{ asset('public/backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -178,7 +178,7 @@
                                                             <div class="input-group">
                                                                 <select class="form-control" name="warranty_id" id="warranty_id">
                                                                     <option value="">Select Warranty</option>
-                                                                    @foreach ($warrantities as $warranty)
+                                                                    @foreach ($warranties as $warranty)
                                                                         @php
                                                                             $type = $warranty->type == 1 ? 'Warranty' : 'Guaranty';
                                                                         @endphp
@@ -196,14 +196,37 @@
                                                 </div>
                                             @endif
                                             
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Expired Date :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="text" name="expired_date" class="form-control" id="datepicker" autocomplete="off" value="{{ $product->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($product->expire_date)) : '' }}" placeholder="Expired Date">
+                                            @if ($addons->branches == 1)
+                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <label class="col-4"><b>Business Location :</b> </label>
+                                                            <div class="col-8">
+                                                                <input type="hidden" name="branch_count" value="branch_count">
+                                                                <select class="form-control select2" name="branch_ids[]" id="branch_ids" multiple>
+                                                                    <option 
+                                                                        @foreach ($productBranches as $productBranch)
+                                                                            {{ $productBranch->branch_id == NULL ? 'SELECTED' : '' }}
+                                                                        @endforeach
+                                                                    value="">
+                                                                        {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
+                                                                    </option>
+                                                                    @foreach ($branches as $branch)
+                                                                        <option 
+                                                                            @foreach ($productBranches as $productBranch)
+                                                                                {{ $productBranch->branch_id == $branch->id ? 'SELECTED' : '' }}
+                                                                            @endforeach
+                                                                        value="{{ $branch->id }}">
+                                                                            {{ $branch->name.'/'.$branch->branch_code }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                                <span class="error error_branch_ids"></span>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                @endif
+                                            @endif
                                         </div>
 
                                         <div class="row mt-1">
@@ -853,8 +876,11 @@
 @endsection
 @push('scripts')
 <script src="{{asset('public/backend/asset/js/jquery.cleditor.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{{asset('public/backend/asset/js/select2.min.js')}}"></script>
 <script>
+
+    $('.select2').select2();
+
     // Set parent category in parent category form field
     $('.combo_price').hide();
     $('.combo_pro_table_field').hide();
@@ -871,10 +897,12 @@
     });
 
     function costCalculate() {
+
         var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
         var tax_type = $('#tax_type').val();
         var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent);
         if (tax_type == 2){
+
             var __tax_percent = 100 + parseFloat(tax_percent);
             var calc_tax = parseFloat(product_cost) / parseFloat(__tax_percent) * 100;
             var calc_product_cost_tax = parseFloat(product_cost) - parseFloat(calc_tax);
@@ -883,11 +911,14 @@
         var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
         $('#product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
         var profit = $('#profit').val() ? $('#profit').val() : 0;
+
         if (parseFloat(profit) > 0) {
+
             var calculate_profit = parseFloat(product_cost) / 100 * parseFloat(profit);
             var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
             $('#product_price').val(parseFloat(product_price).toFixed(2));
         }
+
         // calc package product profit
         var netTotalComboPrice = $('#total_combo_price').val() ? $('#total_combo_price').val() : 0;
         var calcTotalComboPrice = parseFloat(netTotalComboPrice) / 100 * parseFloat(profit) + parseFloat(netTotalComboPrice);
@@ -899,6 +930,7 @@
     });
 
     $(document).on('input', '#product_price',function() {
+
         var selling_price = $(this).val() ? $(this).val() : 0;
         var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
         var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
@@ -909,14 +941,17 @@
     });
 
     $('#tax_id').on('change', function() {
+
         costCalculate();
     });
 
     $('#tax_type').on('change', function() {
+
         costCalculate();
     });
 
     $(document).on('input', '#profit',function() {
+
         costCalculate();
     });
 
@@ -929,9 +964,12 @@
             type: 'get',
             dataType: 'json',
             success: function(variants) {
+
                 variantsWithChild = variants;
                 $('#variants').append('<option value="">Create Combination</option>');
+
                 $.each(variants, function(key, val) {
+
                     $('#variants').append('<option value="' + val.id + '">' + val
                         .bulk_variant_name + '</option>');
                 });
@@ -942,18 +980,22 @@
 
     var variant_row_index = 0;
     $(document).on('change', '#variants', function() {
+
         var id = $(this).val();
         var parentTableRow = $(this).closest('tr');
         variant_row_index = parentTableRow.index();
         $('.modal_variant_child').empty();
         var html = '';
+
         var variant = variantsWithChild.filter(function(variant) {
+
             return variant.id == id;
         });
+
         $.each(variant[0].bulk_variant_child, function(key, child) {
+
             html += '<li class="modal_variant_child_list">';
-            html += '<a class="select_variant_child" data-child="' + child.child_name + '" href="#">' +
-                child.child_name + '</a>';
+            html += '<a class="select_variant_child" data-child="' + child.child_name + '" href="#">' + child.child_name + '</a>';
             html += '</li>';
         });
 
@@ -1096,14 +1138,19 @@
                     if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product)){
                         $('#search_product').addClass('is-valid');
                         if(!$.isEmptyObject(product.product)){
+
                             var product = product.product;
+
                             if(product.product_variants.length == 0){
+
                                 $('.select_area').hide();
                                 $('#search_product').val('');
                                 product_ids = document.querySelectorAll('#product_id');
                                 var sameProduct = 0;
                                 product_ids.forEach(function(input){
+
                                     if(input.value == product.id){
+
                                         sameProduct += 1;
                                         var className = input.getAttribute('class');
                                         // get closest table row for increasing qty and re calculate product amount
@@ -1124,6 +1171,7 @@
                                 });
 
                                 if(sameProduct == 0){
+
                                     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
                                     var tax_amount = parseFloat(product.tax != null ? product.product_price/100 * product.tax.tax_percent : 0);
                                     var tr = '';
@@ -1159,22 +1207,24 @@
                                     calculateTotalAmount(); 
                                 }
                             }else{
+
                                 var li = "";
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
+
                                 $.each(product.product_variants, function(key, variant){
+
                                     var tax_amount = parseFloat(product.tax != null ? variant.variant_price/100 * product.tax.tax_percent : 0.00);
                                     var variantPriceIncTax = variant.variant_price + tax_amount;
                                     li += '<li>';
-                                    li += '<a class="select_variant_product" data-p_id="' +
-                                    product.id + '" data-v_id="' + variant.id +
+                                    li += '<a class="select_variant_product" data-p_id="' + product.id + '" data-v_id="' + variant.id +
                                         '" data-p_name="' + product.name +
                                         '" data-v_code="' + variant.product_code +
                                         '" data-v_price="' + parseFloat(variantPriceIncTax).toFixed(2) +
                                         '" data-v_name="' + variant.variant_name +
-                                        '" href="#">' + product.name + ' [' + variant
-                                        .variant_name + ']' + '</a>';
+                                        '" href="#">' + product.name + ' [' + variant.variant_name + ']' + '</a>';
                                     li += '</li>';
                                 });
+
                                 $('.variant_list_area').append(li);
                                 $('.select_area').show();
                                 $('#search_product').val('');
@@ -1267,8 +1317,11 @@
             var variant_ids = document.querySelectorAll('#variant_id');
             var sameVariant = 0;
             variant_ids.forEach(function(input){
+
                 if(input.value != 'noid'){
+
                     if(input.value == variant_id){
+
                         sameVariant += 1;
                         var className = input.getAttribute('class');
                         var className = input.getAttribute('class');
@@ -1291,6 +1344,7 @@
             });
 
             if(sameVariant == 0){
+
                 var tr = '';
                 tr += '<tr class="text-center">';
                 tr += '<td>';
@@ -1324,64 +1378,72 @@
         });
 
         @if ($product->is_combo == 1) 
-        function getComboProducts() {
-            $.ajax({
-                url: "{{ route('products.get.combo.products', $product->id) }}",
-                async: true,
-                type: 'get',
-                dataType: 'json',
-                success: function(comboProducts) {
-                    $('.dynamic_variant_body').empty();
-                    $.each(comboProducts, function(key, comboProduct) {
-                        var tax_percent = comboProduct.parent_product.tax_id != null ? comboProduct.parent_product.tax.tax_percent : 0;
-                        var tr = '';
-                        tr += '<tr class="text-center">';
-                        tr += '<td>';
-                        tr += '<input type="hidden" value="'+comboProduct.id+'" id="combo_id" name="combo_ids[]">';
-                        tr += '<span class="product_name">'+comboProduct.parent_product.name+'</span><br>';
-                        var variantName = comboProduct.product_variant ? comboProduct.product_variant.variant_name : '';
-                        var variantCode = comboProduct.product_variant ? comboProduct.product_variant.variant_code : '';
-                        var variantId = comboProduct.product_variant ? comboProduct.product_variant.id : 'noid';
-                        tr += '<span class="product_code">('+variantCode+')</span><br>';
-                        tr += '<span class="product_variant">('+variantName+')</span>';  
-                        tr += '<input value="'+comboProduct.parent_product.id+'" type="hidden" class="productId-'+comboProduct.parent_product.id+'" id="product_id" name="product_ids[]">';
-                        tr += '<input value="'+variantId+'" type="hidden" class="variantId-'+variantId+'" id="variant_id" name="variant_ids[]">';
-                        tr += '</td>';
+            function getComboProducts() {
+                $.ajax({
+                    url: "{{ route('products.get.combo.products', $product->id) }}",
+                    async: true,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(comboProducts) {
 
-                        tr += '<td>';
-                        tr += '<input value="'+comboProduct.quantity+'" required name="combo_quantities[]" type="text" class="form-control" id="combo_quantity">';
-                        tr += '</td>';
+                        $('.dynamic_variant_body').empty();
 
-                        var unitPriceIncTax = 0;
-                        if (comboProduct.product_variant) {
-                            unitPriceIncTax = (parseFloat(comboProduct.product_variant.variant_price) / 100 * parseFloat(tax_percent)) + parseFloat(comboProduct.product_variant.variant_price);
-                        }else{
-                            unitPriceIncTax = (parseFloat(comboProduct.parent_product.product_price) / 100 * parseFloat(tax_percent)) + parseFloat(comboProduct.parent_product.product_price);
-                        }
+                        $.each(comboProducts, function(key, comboProduct) {
 
-                        tr += '<td>';
-                        tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" required name="unit_prices_inc_tax[]" type="text" class="form-control" id="unit_price_inc_tax">';
-                        tr += '</td>';
+                            var tax_percent = comboProduct.parent_product.tax_id != null ? comboProduct.parent_product.tax.tax_percent : 0;
+                            var tr = '';
+                            tr += '<tr class="text-center">';
+                            tr += '<td>';
+                            tr += '<input type="hidden" value="'+comboProduct.id+'" id="combo_id" name="combo_ids[]">';
+                            tr += '<span class="product_name">'+comboProduct.parent_product.name+'</span><br>';
+                            var variantName = comboProduct.product_variant ? comboProduct.product_variant.variant_name : '';
+                            var variantCode = comboProduct.product_variant ? comboProduct.product_variant.variant_code : '';
+                            var variantId = comboProduct.product_variant ? comboProduct.product_variant.id : 'noid';
+                            tr += '<span class="product_code">('+variantCode+')</span><br>';
+                            tr += '<span class="product_variant">('+variantName+')</span>';  
+                            tr += '<input value="'+comboProduct.parent_product.id+'" type="hidden" class="productId-'+comboProduct.parent_product.id+'" id="product_id" name="product_ids[]">';
+                            tr += '<input value="'+variantId+'" type="hidden" class="variantId-'+variantId+'" id="variant_id" name="variant_ids[]">';
+                            tr += '</td>';
 
-                        var subTotal = parseFloat(unitPriceIncTax) * comboProduct.quantity;
-                        tr += '<td>';
-                        tr += '<input readonly value="'+parseFloat(subTotal).toFixed(2)+'" type="text" name="subtotal[]" id="subtotal" class="form-control">';
-                        tr += '</td>';
+                            tr += '<td>';
+                            tr += '<input value="'+comboProduct.quantity+'" required name="combo_quantities[]" type="text" class="form-control" id="combo_quantity">';
+                            tr += '</td>';
 
-                        tr += '<td class="text-right">';
-                        tr += '<a href="" id="remove_combo_product_btn" class="btn btn-sm btn-danger">-</a>';
-                        tr += '</td>';
+                            var unitPriceIncTax = 0;
 
-                        tr += '</tr>';
-                        $('#combo_products').append(tr);
-                        calculateTotalAmount(); 
-                    });
-                }
-            }); 
-        }
-        getComboProducts();
-    @endif
+                            if (comboProduct.product_variant) {
+
+                                unitPriceIncTax = (parseFloat(comboProduct.product_variant.variant_price) / 100 * parseFloat(tax_percent)) + parseFloat(comboProduct.product_variant.variant_price);
+                            }else{
+
+                                unitPriceIncTax = (parseFloat(comboProduct.parent_product.product_price) / 100 * parseFloat(tax_percent)) + parseFloat(comboProduct.parent_product.product_price);
+                            }
+
+                            tr += '<td>';
+                            tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" required name="unit_prices_inc_tax[]" type="text" class="form-control" id="unit_price_inc_tax">';
+                            tr += '</td>';
+
+                            var subTotal = parseFloat(unitPriceIncTax) * comboProduct.quantity;
+                            tr += '<td>';
+                            tr += '<input readonly value="'+parseFloat(subTotal).toFixed(2)+'" type="text" name="subtotal[]" id="subtotal" class="form-control">';
+                            tr += '</td>';
+
+                            tr += '<td class="text-right">';
+                            tr += '<a href="" id="remove_combo_product_btn" class="btn btn-sm btn-danger">-</a>';
+                            tr += '</td>';
+
+                            tr += '</tr>';
+                            $('#combo_products').append(tr);
+                            calculateTotalAmount(); 
+                        });
+                    }
+                }); 
+            }
+            getComboProducts();
+        @endif
+
         function calculateTotalAmount() {
+
             var subtotals = document.querySelectorAll('#subtotal');
             var netTotalAmount = 0;
             subtotals.forEach(function(subtotal){
@@ -1472,7 +1534,7 @@
                     }
                 },error: function(err) {
 
-                    $('.loading_button').addClass('d-none');
+                    $('.loading_button').hide();
                     $('.error').html('');
 
                     if (err.status == 0) {
@@ -1668,17 +1730,23 @@
                 type: 'get',
                 dataType: 'json',
                 success: function(variants) {
+
                     $('.dynamic_variant_body').empty();
+
                     $.each(variants, function(key, variant) {
+
                         var html = '';
                         html += '<tr id="more_new_variant">';
                         html += '<td>';
                         html += '<input type="hidden" name="variant_ids[]" id="variant_id"  value="'+variant.id+'">'
                         html += '<select class="form-control" name="" id="variants">';
                         html += '<option value="">Create Combination</option>';
+
                         $.each(variantsWithChild, function(key, val) {
+
                             html += '<option value="' + val.id + '">' + val.bulk_variant_name + '</option>';
                         });
+
                         html += '</select>';
                         html += '<input type="text" name="variant_combinations[]" id="variant_combination" class="form-control " placeholder="Variant Combination" value="'+variant.variant_name+'">';
                         html += '</td>';
@@ -1703,6 +1771,7 @@
                         html += '</td>';
                         html += '<td><a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a></td>';
                         html += '</tr>';
+                        
                         $('.dynamic_variant_body').prepend(html);
                     });
                 }
@@ -1712,30 +1781,6 @@
     @endif
 
     $('#myEditor').cleditor();
-
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
-    var _expectedDateFormat = '' ;
-    _expectedDateFormat = dateFormat.replace('d', 'DD');
-    _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
-    _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('datepicker'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: _expectedDateFormat,
-    });
 
     $(document).on('click', '#digital_product',function () {
 

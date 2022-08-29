@@ -56,8 +56,9 @@ class ProductController extends Controller
         $brands = DB::table('brands')->get(['id', 'name']);
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
         $taxes = DB::table('taxes')->get(['id', 'tax_name']);
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
 
-        return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxes'));
+        return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxes', 'branches'));
     }
 
     // Add product view
@@ -77,13 +78,9 @@ class ProductController extends Controller
                 ->orderBy('products.id', 'desc');
 
             return DataTables::of($products)
-                ->addColumn('action', function ($row) {
-
-                    return '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                })->editColumn('name', function ($row) {
-
-                    return Str::limit($row->name, 17);
-                })->rawColumns(['action'])->make(true);
+                ->addColumn('action', fn ($row) => '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>')
+                ->editColumn('name', fn ($row) => Str::limit($row->name, 17))
+                ->rawColumns(['action'])->make(true);
         }
 
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
@@ -96,7 +93,9 @@ class ProductController extends Controller
 
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
 
-        return view('product.products.create_v2', compact('units', 'categories', 'brands', 'warranties', 'taxes'));
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
+        return view('product.products.create_v2', compact('units', 'categories', 'brands', 'warranties', 'taxes', 'branches'));
     }
 
     public function store(Request $request)
@@ -114,6 +113,15 @@ class ProductController extends Controller
                 'unit_id.required' => 'Product unit field is required.',
             ]
         );
+
+        if (isset($request->branch_count)) {
+
+            $this->validate(
+                $request,
+                ['branch_ids' => 'required'],
+                ['branch_ids.required' => 'Business Location field is required.']
+            );
+        }
 
         $addProduct = new Product();
 
@@ -151,7 +159,7 @@ class ProductController extends Controller
 
         if ($request->file('image')) {
 
-            if (count($request->file('image')) > 2) {
+            if (count($request->file('image')) > 4) {
 
                 return response()->json(['errorMsg' => 'You can upload only 2 product images.']);
             }
@@ -208,12 +216,7 @@ class ProductController extends Controller
                     return response()->json(['errorMsg' => 'You have selected variant option but there is no variant at all.']);
                 }
 
-                $this->validate(
-                    $request,
-                    [
-                        'variant_image.*' => 'sometimes|image|max:2048',
-                    ],
-                );
+                $this->validate($request, ['variant_image.*' => 'sometimes|image|max:2048',],);
 
                 $addProduct->save();
 
@@ -239,24 +242,11 @@ class ProductController extends Controller
 
                     $addVariant->save();
 
-                    $this->productStockUtil->addBranchProduct(
-                        product_id: $addProduct->id,
-                        variant_id: $addVariant->id,
-                        branch_id: auth()->user()->branch_id
-                    );
-
                     $index++;
                 }
             } else {
 
                 $addProduct->save();
-
-                $this->productStockUtil->addBranchProduct(
-                    product_id: $addProduct->id,
-                    variant_id: NULL,
-                    branch_id: auth()->user()->branch_id,
-                    force_add: 1
-                );
             }
         }
 
@@ -285,8 +275,8 @@ class ProductController extends Controller
                 $addComboProducts->combo_product_id = $id;
                 $addComboProducts->quantity = $combo_quantities[$index];
                 $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : NULL;
-                $index++;
                 $addComboProducts->save();
+                $index++;
             }
         }
 
@@ -294,6 +284,8 @@ class ProductController extends Controller
 
             $this->userActivityLogUtil->addLog(action: 1, subject_type: 26, data_obj: $addProduct);
         }
+
+        $this->productUtil->addOrUpdateProductInBranchAndUpdateStatus($request, $addProduct->id);
 
         session()->flash('successMsg', 'Product create Successfully');
         return response()->json('Product create Successfully');
@@ -576,8 +568,19 @@ class ProductController extends Controller
         $units = DB::table('units')->get();
         $brands = DB::table('brands')->get();
         $taxes = DB::table('taxes')->get();
-        $warrantities = DB::table('warranties')->get();
-        return view('product.products.edit_v2', compact('product', 'categories', 'units', 'brands', 'taxes', 'warrantities'));
+        $warranties = DB::table('warranties')->get();
+        $branches = DB::table('branches')->get();
+
+        $productBranches = '';
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $productBranches = DB::table('product_branches')->where('product_id', $productId)->where('status', 1)->get();
+        }
+
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
+        return view('product.products.edit_v2', compact('product', 'categories', 'units', 'brands', 'taxes', 'warranties', 'productBranches', 'branches'));
     }
 
     // Get product variants 
@@ -616,6 +619,15 @@ class ProductController extends Controller
                 'unit_id.required' => 'Product unit field is required.',
             ]
         );
+
+        if (isset($request->branch_count)) {
+
+            $this->validate(
+                $request,
+                ['branch_ids' => 'required'],
+                ['branch_ids.required' => 'Business Location field is required.']
+            );
+        }
 
         $updateProduct->name = $request->name;
         $updateProduct->product_code = $request->code ? $request->code : $request->auto_generated_code;
@@ -765,12 +777,6 @@ class ProductController extends Controller
                         }
 
                         $addVariant->save();
-
-                        $this->productStockUtil->addBranchProduct(
-                            product_id: $updateProduct->id,
-                            variant_id: $addVariant->id,
-                            branch_id: auth()->user()->branch_id
-                        );
                     }
 
                     $index++;
@@ -793,12 +799,6 @@ class ProductController extends Controller
             } else {
 
                 $updateProduct->save();
-
-                $this->productStockUtil->addBranchProduct(
-                    product_id: $updateProduct->id,
-                    variant_id: NULL,
-                    branch_id: auth()->user()->branch_id
-                );
             }
         }
 
@@ -843,6 +843,7 @@ class ProductController extends Controller
                     $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : NULL;
                     $addComboProducts->save();
                 }
+
                 $index++;
             }
         }
@@ -858,6 +859,8 @@ class ProductController extends Controller
 
             $this->userActivityLogUtil->addLog(action: 2, subject_type: 26, data_obj: $updateProduct);
         }
+
+        $this->productUtil->addOrUpdateProductInBranchAndUpdateStatus($request, $updateProduct->id);
 
         session()->flash('successMsg', 'Successfully product is updated');
         return response()->json('Successfully product is updated');
@@ -920,7 +923,7 @@ class ProductController extends Controller
 
             $deleteProduct->delete();
         }
-        
+
         return response()->json('Product deleted successfully');
     }
 

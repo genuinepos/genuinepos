@@ -13,8 +13,7 @@
                                 <span class="fas fa-shopping-cart"></span>
                                 <h6>Products</h6>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         <div class="row">
@@ -23,6 +22,25 @@
                                     <div class="col-md-12">
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-2">
+                                                            <label><b>Business Location :</b> </label>
+                                                            <select class="form-control submit_able" name="branch_id" id="branch_id">
+                                                                <option value="">All</option>
+                                                                <option selected value="NULL">
+                                                                    {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
+                                                                </option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name.'/'.$branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
+                                                @endif
+
                                                 <div class="col-md-2">
                                                     <label><b>Type :</b></label>
                                                     <select name="product_type" id="product_type"
@@ -147,7 +165,6 @@
                                                     <th>Category</th>
                                                     <th>Brand</th>
                                                     <th>Tax</th>
-                                                    <th>Expire Date</th>
                                                     <th>Status</th>
                                                 </tr>
                                             </thead>
@@ -215,6 +232,7 @@
         "ajax": {
             "url": "{{ route('products.all.product') }}",
             "data": function(d) {
+                d.branch_id = $('#branch_id').val();
                 d.type = $('#product_type').val();
                 d.category_id = $('#category_id').val();
                 d.brand_id = $('#brand_id').val();
@@ -224,12 +242,11 @@
                 d.is_for_sale = $('#is_for_sale').val();
             }
         },
-        columnDefs: [{"targets": [0, 1, 2, 12], "orderable": false, "searchable": false}],
         columns: [
-            {data: 'multiple_delete',},
-            {data: 'photo',name: 'photo'},
-            {data: 'action',name: 'action'},
-            {data: 'name',name: 'products.name'},
+            {data: 'multiple_delete', name: 'products.name'},
+            {data: 'photo', name: 'products.name'},
+            {data: 'action', name: 'products.name'},
+            {data: 'name', name: 'products.name'},
             {data: 'product_cost_with_tax', name: 'products.product_cost_with_tax'},
             {data: 'product_price', name: 'products.product_price'},
             {data: 'product_quantity', name: 'product_branches.product_quantity'},
@@ -237,7 +254,6 @@
             {data: 'cate_name', name: 'categories.name'},
             {data: 'brand_name', name: 'brands.name'},
             {data: 'tax_name', name: 'taxes.tax_name'},
-            {data: 'expire_date',name: 'products.expire_date'},
             {data: 'status', name: 'products.status'},
         ],
     });

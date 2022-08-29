@@ -56,7 +56,7 @@ class WarehouseController extends Controller
                 $warehouses = $query->orderBy('warehouses.id', 'desc');
             } else {
 
-                $warehouses = $query->where('branch_id', auth()->user()->branch_id)
+                $warehouses = $query->where('warehouse_branches.branch_id', auth()->user()->branch_id)
                     ->orWhere('warehouse_branches.is_global', 1)
                     ->orderBy('warehouses.id', 'desc');
             }

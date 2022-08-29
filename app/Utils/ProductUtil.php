@@ -4,13 +4,16 @@ namespace App\Utils;
 
 use App\Models\Unit;
 use App\Models\Brand;
+use App\Models\Product;
 use App\Models\Category;
 use App\Models\Warranty;
 use App\Utils\PurchaseUtil;
+use App\Models\ProductBranch;
 use App\Models\PurchaseProduct;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
+use App\Models\ProductBranchVariant;
 use App\Utils\PurchaseSaleChainUtil;
 
 class ProductUtil
@@ -30,54 +33,81 @@ class ProductUtil
         $img_url = asset('public/uploads/product/thumbnail');
         $products = '';
 
-        // $query = DB::table('products')->join('units', 'products.unit_id', 'units.id')
-        //     ->leftJoin('categories', 'products.category_id', 'categories.id')
-        //     ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
-        //     ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
-        //     ->leftJoin('brands', 'products.brand_id', 'brands.id');
-
         $query = DB::table('product_branches')
             ->leftJoin('products', 'product_branches.product_id', 'products.id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
             ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
             ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
-            ->leftJoin('brands', 'products.brand_id', 'brands.id');
+            ->leftJoin('brands', 'products.brand_id', 'brands.id')
+            ->where('product_branches.status', 1);
+
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('product_branches.branch_id', NULL);
+            } else {
+
+                $query->where('product_branches.branch_id', $request->branch_id);
+            }
+        }
 
         if ($request->type == 1) {
+
+            $query->where('products.type', 1)->where('products.is_variant', 0);
+        }
+
+        if ($request->type == 1) {
+
             $query->where('products.type', 1)->where('products.is_variant', 0);
         }
 
         if ($request->type == 2) {
+
             $query->where('products.is_variant', 1)->where('products.type', 1);
         }
 
         if ($request->type == 3) {
+
             $query->where('products.type', 2)->where('products.is_combo', 1);
         }
 
         if ($request->category_id) {
+
             $query->where('products.category_id', $request->category_id);
         }
 
         if ($request->unit_id) {
+
             $query->where('products.unit_id', $request->unit_id);
         }
 
         if ($request->tax_id) {
+
             $query->where('products.tax_id', $request->tax_id);
         }
 
         if ($request->brand_id) {
+
             $query->where('products.brand_id', $request->brand_id);
         }
 
         if ($request->status != '') {
+
             $query->where('products.status', $request->status);
         }
 
         // if ($request->is_for_sale) {
         //     $query->where('products.is_for_sale', '0');
         // }
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $query;
+        } else {
+
+            $query->where('product_branches.branch_id', auth()->user()->branch_id);
+        }
 
         $products = $query->select(
             [
@@ -99,7 +129,7 @@ class ProductUtil
                 'sub_cate.name as sub_cate_name',
                 'brands.name as brand_name',
             ]
-        )->where('product_branches.branch_id', auth()->user()->branch_id)->orderBy('id', 'desc');
+        )->orderBy('id', 'desc');
 
         return DataTables::of($products)
             ->addColumn('multiple_delete', function ($row) {
@@ -112,25 +142,32 @@ class ProductUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('products.view', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
                 $html .= '<a class="dropdown-item" id="check_pur_and_gan_bar_button" href="' . route('products.check.purchase.and.generate.barcode', [$row->id]) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
+
                 if (auth()->user()->permission->product['product_edit']  == '1') {
+
                     $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                 }
 
                 if (auth()->user()->permission->product['product_delete']  == '1') {
+
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
                 if ($row->status == 1) {
+
                     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
                 } else {
+
                     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
                 }
 
                 if (auth()->user()->permission->product['openingStock_add']  == '1') {
+
                     $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '"><i class="fas fa-database text-primary"></i> Add or edit opening stock</a>';
                 }
 
                 if ($countPriceGroup > 0) {
+
                     $html .= '<a class="dropdown-item" href="' . route('products.add.price.groups', [$row->id, $row->is_variant]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add or edit price group</a>';
                 }
 
@@ -143,41 +180,34 @@ class ProductUtil
                 $html .= $row->is_manage_stock == 0 ? ' <span class="badge bg-primary pt-1"><i class="fas fa-wrench mr-1 text-white"></i></span>' : '';
                 return $html;
             })->editColumn('type', function ($row) {
+
                 if ($row->type == 1 && $row->is_variant == 1) {
+
                     return '<span class="text-primary">Variant</span>';
                 } elseif ($row->type == 1 && $row->is_variant == 0) {
+
                     return '<span class="text-success">Single</span>';
                 } elseif ($row->type == 2) {
+
                     return '<span class="text-info">Combo</span>';
                 } elseif ($row->type == 3) {
+
                     return '<span class="text-info">Digital</span>';
                 }
-            })->editColumn('cate_name', function ($row) {
-                return '<span>' . ($row->cate_name ? $row->cate_name : '...') . ($row->sub_cate_name ? '<br>--' . $row->sub_cate_name : '') . '</span>';
-            })->editColumn('status', function ($row) {
+            })->editColumn('cate_name', fn ($row) => '<span>' . ($row->cate_name ? $row->cate_name : '...') . ($row->sub_cate_name ? '<br>--' . $row->sub_cate_name : '') . '</span>')
+            ->editColumn('status', function ($row) {
+
                 if ($row->status == 1) {
+
                     return '<span class="text-success">Active</span>';
                 } else {
+
                     return '<span class="text-danger">Inactive</span>';
                 }
-            })->editColumn('brand_name', function ($row) {
-                return $row->brand_name ? $row->brand_name : '...';
-            })->editColumn('tax_name', function ($row) {
-                return $row->tax_name ? $row->tax_name : '...';
-            })->editColumn('expire_date', function ($row) use ($generalSettings) {
-                return $row->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->expire_date)) : '...';
-            })->rawColumns([
-                'multiple_delete',
-                'photo',
-                'action',
-                'name',
-                'type',
-                'cate_name',
-                'status',
-                'expire_date',
-                'tax_name',
-                'brand_name',
-            ])->smart(true)->make(true);
+            })->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
+            ->editColumn('tax_name', fn ($row) =>  $row->tax_name ? $row->tax_name : '...')
+            ->rawColumns(['multiple_delete', 'photo', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name',])
+            ->smart(true)->make(true);
     }
 
     public function addQuickCategory($request)
@@ -282,5 +312,76 @@ class ProductUtil
             subTotal: $subtotal,
             createdAt: date('Y-m-d H:i:s'),
         );
+    }
+
+    public function addOrUpdateProductInBranchAndUpdateStatus($request, $productId)
+    {
+        $product = Product::with('product_variants')->where('id', $productId)->first();
+
+        if (isset($request->branch_count)) {
+
+            $productBranches = ProductBranch::where('product_id', $product->id)->get();
+
+            foreach ($productBranches as $productBranch) {
+
+                $productBranch->status = 0;
+                $productBranch->save();
+            }
+
+            foreach ($request->branch_ids as $branchId) {
+
+                $this->addOrUpdateProductInBranchAndUpdateStatusPrivateMethod($product, $branchId);
+            }
+        } else {
+
+            $this->addOrUpdateProductInBranchAndUpdateStatusPrivateMethod($product, auth()->user()->branch_id);
+        }
+    }
+
+    private function addOrUpdateProductInBranchAndUpdateStatusPrivateMethod($product, $branchId)
+    {
+        $productBranch = ProductBranch::where('branch_id', $branchId)->where('product_id', $product->id)->first();
+
+        if ($productBranch) {
+
+            $productBranch->status = 1;
+            $productBranch->save();
+
+            if (count($product->product_variants) > 0) {
+
+                foreach ($product->product_variants as $variant) {
+
+                    $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
+                        ->where('product_id', $variant->product_id)->where('product_variant', $variant->id)->first();
+
+                    if (!$productBranchVariant) {
+
+                        $addProductBranchVariant = new ProductBranchVariant();
+                        $addProductBranchVariant->product_branch_id = $productBranch->id;
+                        $addProductBranchVariant->product_id = $variant->product_id;
+                        $addProductBranchVariant->product_variant_id = $variant->id;
+                        $addProductBranchVariant->save();
+                    }
+                }
+            }
+        } else {
+
+            $addProductBranch = new ProductBranch();
+            $addProductBranch->branch_id = $branchId;
+            $addProductBranch->product_id = $product->id;
+            $addProductBranch->save();
+
+            if (count($product->product_variants) > 0) {
+
+                foreach ($product->product_variants as $variant) {
+
+                    $addProductBranchVariant = new ProductBranchVariant();
+                    $addProductBranchVariant->product_branch_id = $addProductBranch->id;
+                    $addProductBranchVariant->product_id = $variant->product_id;
+                    $addProductBranchVariant->product_variant_id = $variant->id;
+                    $addProductBranchVariant->save();
+                }
+            }
+        }
     }
 }

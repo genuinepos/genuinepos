@@ -352,7 +352,7 @@ class ProductUtil
                 foreach ($product->product_variants as $variant) {
 
                     $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
-                        ->where('product_id', $variant->product_id)->where('product_variant', $variant->id)->first();
+                        ->where('product_id', $variant->product_id)->where('product_variant_id', $variant->id)->first();
 
                     if (!$productBranchVariant) {
 

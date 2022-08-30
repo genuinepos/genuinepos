@@ -554,6 +554,7 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
 
     //Transfer Stock Branch To Branch
     Route::group(['prefix' => 'branch/to/branch'], function () {
+
         Route::get('transfer/list', 'TransferStockBranchToBranchController@transferList')->name('transfer.stock.branch.to.branch.transfer.list');
 
         Route::get('create', 'TransferStockBranchToBranchController@create')->name('transfer.stock.branch.to.branch.create');
@@ -568,11 +569,11 @@ Route::group(['prefix' => 'transfer/stocks', 'namespace' => 'App\Http\Controller
 
         Route::delete('delete/{transferId}', 'TransferStockBranchToBranchController@delete')->name('transfer.stock.branch.to.branch.delete');
 
-        Route::get('search/product/{product_code}/{warehouse_id}', 'TransferStockBranchToBranchController@searchProduct');
+        Route::get('search/product/{product_code}/{warehouse_id}/{receiver_branch_id?}', 'TransferStockBranchToBranchController@searchProduct');
 
-        Route::get('check/single/product/stock/{product_id}/{warehouse_id}', 'TransferStockBranchToBranchController@checkSingleProductStock');
+        Route::get('check/single/product/stock/{product_id}/{warehouse_id}/{receiver_branch_id?}', 'TransferStockBranchToBranchController@checkSingleProductStock');
 
-        Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', 'TransferStockBranchToBranchController@checkVariantProductStock');
+        Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}/{receiver_branch_id?}', 'TransferStockBranchToBranchController@checkVariantProductStock');
 
         Route::group(['prefix' => 'receive'], function () {
 
@@ -615,6 +616,7 @@ Route::group(['prefix' => 'stock/adjustments', 'namespace' => 'App\Http\Controll
 
 //Transfer stock to warehouse all route
 Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::get('/', 'TransferToWarehouseController@index')->name('transfer.stock.to.warehouse.index');
     Route::get('show/{id}', 'TransferToWarehouseController@show')->name('transfer.stock.to.warehouse.show');
     Route::get('create', 'TransferToWarehouseController@create')->name('transfer.stock.to.warehouse.create');
@@ -630,6 +632,7 @@ Route::group(['prefix' => 'transfer/stocks/to/warehouse', 'namespace' => 'App\Ht
 
     // Receive stock from branch **route group**
     Route::group(['prefix' => 'receive'], function () {
+
         Route::get('/', 'BranchReceiveStockController@index')->name('transfer.stocks.to.warehouse.receive.stock.index');
         Route::get('show/{sendStockId}', 'BranchReceiveStockController@show')->name('transfer.stocks.to.warehouse.receive.stock.show');
         Route::get('all/send/stocks', 'BranchReceiveStockController@allSendStock')->name('transfer.stocks.to.warehouse.receive.stock.all.send.stocks');
@@ -1042,4 +1045,3 @@ Auth::routes();
 // Route::get('dbal', function() {
 //     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
 // });
-

@@ -144,40 +144,21 @@
                                                 <th>Invoice ID</th>
                                                 <th>Stock Location</th>
                                                 <th>Customer</th>
-                                                <th>Inv. Status</th> 
-                                                <th>Inv. Payable</th>
-                                                <th>Pre. Due</th>
+                                                <th>Payment Status</th> 
                                                 <th>Total Payable</th>
-                                                <th>Gross Pay</th>
-                                                <th>Inv. Paid</th>
-                                                <th>PRE. Due Paid</th>
-                                                <th>Inv. Due</th>
-                                                <th>Cr. Balance</th>
-                                                <th>Inv. Return</th>
-                                                <th>Inv. Return Due</th>
+                                                <th>Paid</th>
+                                                <th>Due</th>
+                                                <th>Return</th>
+                                                <th>Return Due</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
-                                            {{-- <tr class="bg-secondary">
-                                                <th colspan="5" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th id="sale_return_amount" class="text-white text-end"></th>
-                                                <th id="sale_return_due" class="text-white text-end"></th>
-                                                <th class="text-white text-end">---</th>
-                                                <th id="due" class="text-white text-end"></th>
-                                                <th id="total_payable_amount" class="text-white text-end"></th>
-                                                <th id="paid" class="text-white text-end"></th>
-                                            </tr> --}}
                                             <tr class="bg-secondary">
                                                 <th colspan="6" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th id="total_payable_amount" class="text-white text-end"></th>
-                                                <th id="previous_due" class="text-white text-end">---</th>
-                                                <th id="all_total_payable" class="text-white text-end">---</th>
-                                                <th id="gross_pay" class="text-white text-end"></th>
                                                 <th id="paid" class="text-white text-end"></th>
-                                                <th id="previous_due_paid" class="text-white text-end"></th>
                                                 <th id="due" class="text-white text-end"></th>
-                                                <th id="customer_running_balance" class="text-white text-end">---</th>
                                                 <th id="sale_return_amount" class="text-white text-end"></th>
                                                 <th id="sale_return_due" class="text-white text-end"></th>
                                             </tr>
@@ -305,27 +286,14 @@
                 {data: 'customer', name: 'customers.name'},
                 {data: 'paid_status', name: 'paid_status', className: 'text-end'},
                 {data: 'total_payable_amount', name: 'total_payable_amount', className: 'text-end'},
-                {data: 'previous_due', name: 'previous_due', className: 'text-end'},
-                {data: 'all_total_payable', name: 'all_total_payable', className: 'text-end'},
-                {data: 'gross_pay', name: 'gross_pay', className: 'text-end'},
                 {data: 'paid', name: 'paid', className: 'text-end'},
-                {data: 'previous_due_paid', name: 'previous_due_paid', className: 'text-end'},
                 {data: 'due', name: 'due', className: 'text-end'},
-                {data: 'customer_running_balance', name: 'customer_running_balance', className: 'text-end'},
-                
-              
                 {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end'},
                 {data: 'sale_return_due', name: 'sale_return_due', className: 'text-end'},
              
             ],fnDrawCallback: function() {
                 var total_payable_amount = sum_table_col($('.data_tbl'), 'total_payable_amount');
                 $('#total_payable_amount').text(bdFormat(total_payable_amount));
-
-                var gross_pay = sum_table_col($('.data_tbl'), 'gross_pay');
-                $('#gross_pay').text(bdFormat(gross_pay));
-
-                var previous_due_paid = sum_table_col($('.data_tbl'), 'previous_due_paid');
-                $('#previous_due_paid').text(bdFormat(previous_due_paid));
 
                 var paid = sum_table_col($('.data_tbl'), 'paid');
                 $('#paid').text(bdFormat(paid));
@@ -338,6 +306,7 @@
 
                 var sale_return_due = sum_table_col($('.data_tbl'), 'sale_return_due');
                 $('#sale_return_due').text(bdFormat(sale_return_due));
+                
                 $('.data_preloader').hide();
             }
         });

@@ -335,9 +335,7 @@ class TransferStockBranchToBranchController extends Controller
                 'transfer_products.product.tax',
                 'transfer_products.variant',
             ]
-        )
-            ->where('id', $transferId)
-            ->first();
+        )->where('id', $transferId)->first();
 
         $qty_limits = $this->transferStockUtil->getStockLimitProducts($transfer);
 
@@ -541,8 +539,17 @@ class TransferStockBranchToBranchController extends Controller
         return view('transfer_stock.branch_to_branch.ajax_view.show', compact('transfer'));
     }
 
-    public function searchProduct($product_code, $warehouse_id)
+    public function searchProduct($product_code, $warehouse_id, $receiver_branch_id)
     {
+        $receiverBranchId = $receiver_branch_id ? $receiver_branch_id : '';
+
+        if ($receiverBranchId == '') {
+
+            return response()->json(['errorMsg' => 'Please select receiver Business Location']);
+        }
+
+        $__receiverBranchId = $receiverBranchId == 'NULL' ? NULL : $receiverBranchId;
+
         $product_code = (string)$product_code;
         $__product_code = str_replace('~', '/', $product_code);
         $branch_id = auth()->user()->branch_id;
@@ -563,6 +570,33 @@ class TransferStockBranchToBranchController extends Controller
                 'is_show_emi_on_pos',
             ])->first();
 
+        if ($product) {
+
+            $productBranch = DB::table('product_branches')
+                ->where('branch_id', $__receiverBranchId)->where('product_id', $product->id)
+                ->where('status', 1)->first();
+
+            if (is_null($productBranch)) {
+
+                return response()->json(['errorMsg' => 'Product dose not available in the receiver Business Location.']);
+            }
+        } else {
+
+            $variantProduct = ProductVariant::where('variant_code', $product_code)->first();
+
+            if ($variantProduct) {
+
+                $productBranch = DB::table('product_branches')
+                    ->where('branch_id', $__receiverBranchId)->where('product_id', $variantProduct->product_id)
+                    ->where('status', 1)->first();
+
+                if (is_null($productBranch)) {
+
+                    return response()->json(['errorMsg' => 'Product(Variant) dose not available in the receiver Business Location.']);
+                }
+            }
+        }
+
         if ($warehouse_id != 'no_id') {
 
             return $this->nameSearchUtil->searchStockToWarehouse($product, $__product_code, $warehouse_id);
@@ -572,8 +606,26 @@ class TransferStockBranchToBranchController extends Controller
         }
     }
 
-    public function checkSingleProductStock($product_id, $warehouse_id)
+    public function checkSingleProductStock($product_id, $warehouse_id, $receiver_branch_id)
     {
+        $receiverBranchId = $receiver_branch_id ? $receiver_branch_id : '';
+
+        if ($receiverBranchId == '') {
+
+            return response()->json(['errorMsg' => 'Please select receiver Business Location']);
+        }
+
+        $__receiverBranchId = $receiverBranchId == 'NULL' ? NULL : $receiverBranchId;
+
+        $productBranch = DB::table('product_branches')
+            ->where('branch_id', $__receiverBranchId)->where('product_id', $product_id)
+            ->where('status', 1)->first();
+
+        if (is_null($productBranch)) {
+
+            return response()->json(['errorMsg' => 'Product dose not available in the receiver Business Location.']);
+        }
+
         if ($warehouse_id != 'no_id') {
 
             return $this->nameSearchUtil->checkWarehouseSingleProduct($product_id, $warehouse_id);
@@ -583,8 +635,26 @@ class TransferStockBranchToBranchController extends Controller
         }
     }
 
-    public function checkVariantProductStock($product_id, $variant_id, $warehouse_id)
+    public function checkVariantProductStock($product_id, $variant_id, $warehouse_id, $receiver_branch_id)
     {
+        $receiverBranchId = $receiver_branch_id ? $receiver_branch_id : '';
+
+        if ($receiverBranchId == '') {
+
+            return response()->json(['errorMsg' => 'Please select receiver Business Location']);
+        }
+
+        $__receiverBranchId = $receiverBranchId == 'NULL' ? NULL : $receiverBranchId;
+
+        $productBranch = DB::table('product_branches')
+            ->where('branch_id', $__receiverBranchId)->where('product_id', $product_id)
+            ->where('status', 1)->first();
+
+        if (is_null($productBranch)) {
+
+            return response()->json(['errorMsg' => 'Product dose not available in the receiver Business Location.']);
+        }
+
         if ($warehouse_id != 'no_id') {
 
             return $this->nameSearchUtil->checkWarehouseProductVariant($product_id, $variant_id, $warehouse_id);

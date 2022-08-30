@@ -22,6 +22,7 @@ class WarehouseReceiveStockController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+
             $generalSettings = DB::table('general_settings')->first();
             $transfers = DB::table('transfer_stock_to_warehouses')
                 ->leftJoin('warehouses', 'transfer_stock_to_warehouses.warehouse_id', 'warehouses.id')
@@ -46,25 +47,32 @@ class WarehouseReceiveStockController extends Controller
                     return $html;
                 })
                 ->editColumn('date', function ($row) {
+
                     return date('d/m/Y', strtotime($row->date));
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
+
                         return $row->branch_name . '/' . $row->branch_code;
                     } else {
+
                         return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('to',  function ($row) {
+
                     return $row->warehouse_name . '/' . $row->warehouse_code;
                 })
                 ->editColumn('status', function ($row) {
                     $html = '';
                     if ($row->status == 1) {
+
                         $html .= '<span class="badge bg-danger">Pending</span>';
                     } else if ($row->status == 2) {
+
                         $html .= '<span class="badge bg-warning text-white">Partial</span>';
                     } else if ($row->status == 3) {
+
                         $html .= '<span class="badge bg-success">Completed</span>';
                     }
                     return $html;
@@ -98,6 +106,7 @@ class WarehouseReceiveStockController extends Controller
     {
         $sandStocks = TransferStockToWarehouse::with(['branch', 'warehouse', 'transfer_products', 'transfer_products.product', 'transfer_products.variant'])
             ->where('id', $sendStockId)->first();
+
         return response()->json($sandStocks);
     }
 
@@ -108,10 +117,13 @@ class WarehouseReceiveStockController extends Controller
 
         $status = 0;
         if ($request->total_received_quantity == 0) {
+
             $status = 1;
         } elseif ($request->total_received_quantity > 0 && $updateSandStocks->total_send_qty == $request->total_received_quantity) {
+
             $status = 3;
         } elseif ($request->total_received_quantity > 0 && $request->total_received_quantity < $updateSandStocks->total_send_qty) {
+
             $status = 2;
         }
 
@@ -125,6 +137,7 @@ class WarehouseReceiveStockController extends Controller
 
         $index = 0;
         foreach ($product_ids as $product_id) {
+            
             $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
             $updateTransferProduct = TransferStockToWarehouseProduct::where('transfer_stock_id', $updateSandStocks->id)
                 ->where('product_id', $product_id)

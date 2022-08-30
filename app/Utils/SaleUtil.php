@@ -752,13 +752,8 @@ class SaleUtil
                     return '<span class="text-danger"><b>Due</b></span>';
                 }
             })
-            ->editColumn('all_total_payable', fn ($row) => '<span class="text-danger" data-value="' . $row->all_total_payable . '">' . $this->converter->format_in_bdt($row->all_total_payable) . '</span>')
-            ->editColumn('gross_pay', fn ($row) => '<span class="gross_pay text-danger" data-value="' . $row->gross_pay . '">' . $this->converter->format_in_bdt($row->gross_pay) . '</span>')
-            ->editColumn('previous_due', fn ($row) => '<span class="text-danger" data-value="' . $row->previous_due . '">' . $this->converter->format_in_bdt($row->previous_due) . '</span>')
-            ->editColumn('previous_due_paid', fn ($row) => '<span class="previous_due_paid text-danger" data-value="' . $row->previous_due_paid . '">' . $this->converter->format_in_bdt($row->previous_due_paid) . '</span>')
-            ->editColumn('customer_running_balance', fn ($row) => '<span class="customer_running_balance text-danger" data-value="' . $row->customer_running_balance . '">' . $this->converter->format_in_bdt($row->customer_running_balance) . '</span>')
-            
-            ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status', 'all_total_payable', 'gross_pay', 'previous_due', 'previous_due_paid', 'customer_running_balance'])
+           
+            ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status', 'all_total_payable'])
             ->make(true);
     }
 

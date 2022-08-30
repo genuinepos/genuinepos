@@ -405,11 +405,11 @@ class NameSearchUtil
                 ]);
             } else {
 
-                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop/business Location.']);
+                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of the Business Location.']);
             }
         } else {
 
-            return response()->json(['errorMsg' => 'This product is not available in this shop/business Location.']);
+            return response()->json(['errorMsg' => 'This product is not available in the Business Location.']);
         }
     }
 
@@ -500,15 +500,15 @@ class NameSearchUtil
                     ]);
                 } else {
 
-                    return response()->json(['errorMsg' => 'Stock is out of this product(variant) from this Shop/Business Location']);
+                    return response()->json(['errorMsg' => 'Stock is out of this product(variant) from the Business Location']);
                 }
             } else {
 
-                return response()->json(['errorMsg' => 'This variant is not available in this Shop/Business Location.']);
+                return response()->json(['errorMsg' => 'This variant is not available in the Business Location.']);
             }
         } else {
 
-            return response()->json(['errorMsg' => 'This product is not available in this Shop/Business Location.']);
+            return response()->json(['errorMsg' => 'This product is not available in the Business Location.']);
         }
     }
 
@@ -619,13 +619,22 @@ class NameSearchUtil
             }
         } else {
 
-            return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
+            return response()->json(['errorMsg' => 'This variant is not available in this Business Location.']);
         }
     }
 
     public function searchStockToWarehouse($product, $product_code, $warehouse_id)
     {
         if ($product) {
+
+            $productBranch = DB::table('product_branches')
+                ->where('branch_id', auth()->user()->branch_id)
+                ->where('product_id', $product->id)->where('status', 1)->first();
+
+            if (!$productBranch) {
+
+                return response()->json(['errorMsg' => 'Product is not available in business Location']);
+            }
 
             $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouse_id)
                 ->where('product_id', $product->id)
@@ -663,6 +672,15 @@ class NameSearchUtil
 
             if ($variant_product) {
 
+                $productBranch = DB::table('product_branches')
+                    ->where('branch_id', auth()->user()->branch_id)
+                    ->where('product_id', $variant_product->product_id)->where('status', 1)->first();
+
+                if (!$productBranch) {
+
+                    return response()->json(['errorMsg' => 'Product is not available in business Location']);
+                }
+
                 $productWarehouse = DB::table('product_warehouses')
                     ->where('warehouse_id', $warehouse_id)
                     ->where('product_id', $variant_product->product_id)
@@ -670,7 +688,7 @@ class NameSearchUtil
 
                 if (is_null($productWarehouse)) {
 
-                    return response()->json(['errorMsg' => 'This product is not available in this warehouse']);
+                    return response()->json(['errorMsg' => 'Product is not available in the warehouse']);
                 }
 
                 $productWarehouseVariant = DB::table('product_warehouse_variants')
@@ -681,7 +699,7 @@ class NameSearchUtil
 
                 if (is_null($productWarehouseVariant)) {
 
-                    return response()->json(['errorMsg' => 'This variant is not available in this warehouse']);
+                    return response()->json(['errorMsg' => 'Product(variant) is not available in the warehouse']);
                 }
 
                 if ($productWarehouse && $productWarehouseVariant) {

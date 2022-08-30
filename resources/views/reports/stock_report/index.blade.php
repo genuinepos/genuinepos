@@ -196,9 +196,15 @@
                                                         </select>
                                                     @else 
                                                         @php
-                                                            $wh = DB::table('warehouses')
-                                                            ->where('branch_id', auth()->user()->branch_id)
-                                                            ->get(['id', 'warehouse_name', 'warehouse_code']);
+                                                            $wh = DB::table('warehouse_branches')
+                                                                ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+                                                                ->orWhere('warehouse_branches.is_global', 1)
+                                                                ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+                                                                ->select(
+                                                                    'warehouses.id',
+                                                                    'warehouses.warehouse_name',
+                                                                    'warehouses.warehouse_code',
+                                                                )->get();
                                                         @endphp
 
                                                         <label><strong>Warehouse :</strong></label>

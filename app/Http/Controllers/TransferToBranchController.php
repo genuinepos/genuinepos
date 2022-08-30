@@ -481,11 +481,14 @@ class TransferToBranchController extends Controller
         $productWarehouse = ProductWarehouse::where('product_id', $product_id)->where('warehouse_id', $warehouse_id)->first();
         if ($productWarehouse) {
             if ($productWarehouse->product_quantity > 0) {
+
                 return response()->json($productWarehouse->product_quantity);
             } else {
+
                 return response()->json(['errorMsg' => 'Stock is out of this product from this warehouse']);
             }
         } else {
+
             return response()->json(['errorMsg' => 'This product is not available in this warehouse.']);
         }
     }
@@ -496,19 +499,24 @@ class TransferToBranchController extends Controller
         $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_id)->where('product_id', $product_id)->first();
 
         if (is_null($productWarehouse)) {
+
             return response()->json(['errorMsg' => 'This product is not available in this warehouse']);
         }
 
         $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
 
         if (is_null($productWarehouseVariant)) {
+
             return response()->json(['errorMsg' => 'This variant is not available in this warehouse']);
         }
 
         if ($productWarehouse && $productWarehouseVariant) {
+
             if ($productWarehouseVariant->variant_quantity > 0) {
+
                 return response()->json($productWarehouseVariant->variant_quantity);
             } else {
+
                 return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this warehouse']);
             }
         } else {

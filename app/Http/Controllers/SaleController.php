@@ -1092,8 +1092,7 @@ class SaleController extends Controller
             'tax:id,tax_percent',
             'unit:id,name',
             'updateProductCost'
-        ])
-            ->where('product_code', $__product_code)
+        ])->where('product_code', $__product_code)
             ->select([
                 'id',
                 'name',

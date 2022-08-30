@@ -265,15 +265,19 @@ class TransferToWarehouseController extends Controller
 
         $invoiceId = 1;
         $lastTransfer = DB::table('transfer_stock_to_warehouses')->orderBy('id', 'desc')->first();
+
         if ($lastTransfer) {
+
             $invoiceId = ++$lastTransfer->id;
         }
 
         $updateTransferToWarehouse = TransferStockToWarehouse::with('transfer_products')
             ->where('id', $transferId)
             ->first();
+
         // Update is delete in update status
         foreach ($updateTransferToWarehouse->transfer_products as $transfer_product) {
+
             $transfer_product->is_delete_in_update = 1;
             $transfer_product->save();
         }
@@ -343,6 +347,7 @@ class TransferToWarehouseController extends Controller
                 $addTransferStockToBranchProduct->subtotal = $subtotals[$index2];
                 $addTransferStockToBranchProduct->save();
             }
+            
             $index2++;
         }
 
@@ -421,8 +426,10 @@ class TransferToWarehouseController extends Controller
             $productBranch = DB::table('product_branches')
                 ->where('branch_id', $branch_id)
                 ->where('product_id', $product->id)
+                ->where('status', 1)
                 ->select('product_quantity')
                 ->first();
+
             if ($productBranch) {
 
                 if ($product->type == 2) {
@@ -440,12 +447,12 @@ class TransferToWarehouseController extends Controller
                         );
                     } else {
 
-                        return response()->json(['errorMsg' => 'Stock is out of this product in this shop/branch']);
+                        return response()->json(['errorMsg' => 'Stock is out of this product in this Business Location']);
                     }
                 }
             } else {
 
-                return response()->json(['errorMsg' => 'This product is not available in this branch.']);
+                return response()->json(['errorMsg' => 'This product is not available in the Business Location.']);
             }
         } else {
 
@@ -462,11 +469,12 @@ class TransferToWarehouseController extends Controller
                     $productBranch = DB::table('product_branches')
                         ->where('branch_id', $branch_id)
                         ->where('product_id', $variant_product->product_id)
+                        ->where('status', 1)
                         ->first();
 
                     if (is_null($productBranch)) {
 
-                        return response()->json(['errorMsg' => 'This product is not available in this shop']);
+                        return response()->json(['errorMsg' => 'This product is not available in the Business Location']);
                     }
 
                     $productBranchVariant = DB::table('product_branch_variants')
@@ -478,7 +486,7 @@ class TransferToWarehouseController extends Controller
 
                     if (is_null($productBranchVariant)) {
 
-                        return response()->json(['errorMsg' => 'This variant is not available in this shop']);
+                        return response()->json(['errorMsg' => 'This variant is not available in the Business Location']);
                     }
 
                     if ($productBranch && $productBranchVariant) {
@@ -515,11 +523,11 @@ class TransferToWarehouseController extends Controller
                 return response()->json($productBranch->product_quantity);
             } else {
 
-                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop/branch']);
+                return response()->json(['errorMsg' => 'Stock is out of this product(variant) of the Business Location']);
             }
         } else {
 
-            return response()->json(['errorMsg' => 'This product is not available in this shop/branch.']);
+            return response()->json(['errorMsg' => 'This product is not available in the Business Location.']);
         }
     }
 
@@ -539,14 +547,14 @@ class TransferToWarehouseController extends Controller
                     return response()->json($productBranchVariant->variant_quantity);
                 } else {
 
-                    return response()->json(['errorMsg' => 'Stock is out of this product(variant) of this shop']);
+                    return response()->json(['errorMsg' => 'Stock is out of this product(variant) of the Business Location']);
                 }
             } else {
 
-                return response()->json(['errorMsg' => 'This variant is not available in this shop.']);
+                return response()->json(['errorMsg' => 'This variant is not available in the Business Location.']);
             }
         } else {
-            return response()->json(['errorMsg' => 'This product is not available in this shop.']);
+            return response()->json(['errorMsg' => 'This product is not available in the Business Location.']);
         }
     }
 

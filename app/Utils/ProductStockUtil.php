@@ -274,13 +274,16 @@ class ProductStockUtil
                 + $receivedFromAnotherLocation->sum('total_qty')
                 - $usedProductionQty->sum('total_quantity');
 
+            $totalReceived = $received->sum('total_qty') + $receivedFromAnotherLocation->sum('total_qty');
+            $totalTransferred = $transferred->sum('total_qty') + $transferredToAnotherLocation->sum('total_qty');
+
             $productBranch = ProductBranch::where('branch_id', $branch_id)->where('product_id', $product_id)->first();
             $productBranch->product_quantity = $currentMbStock;
             $productBranch->total_sale = $productSale->sum('total_sale');
             $productBranch->total_purchased = $productPurchase->sum('total_purchase');
             $productBranch->total_adjusted = $adjustment->sum('total_qty');
-            $productBranch->total_transferred = $transferred->sum('total_qty');
-            $productBranch->total_received = $received->sum('total_qty');
+            $productBranch->total_transferred = $totalTransferred;
+            $productBranch->total_received = $totalReceived;
             $productBranch->total_opening_stock = $productOpeningStock->sum('po_stock');
             $productBranch->total_sale_return = $saleReturn->sum('total_return');
             $productBranch->total_purchase_return = $supplierReturn->sum('total_return') + $purchaseReturn->sum('total_return');
@@ -424,16 +427,18 @@ class ProductStockUtil
                     ->where('product_variant_id', $variant_id)
                     ->first();
 
+                $totalReceived = $received->sum('total_qty') + $receivedFromAnotherLocation->sum('total_qty'); 
+                $totalTransferred = $transferred->sum('total_qty') + $transferredToAnotherLocation->sum('total_qty'); 
+
                 $productBranchVariant->variant_quantity = $currentMbStock;
                 $productBranchVariant->total_sale = $productSale->sum('total_sale');
                 $productBranchVariant->total_purchased = $productPurchase->sum('total_purchase');
                 $productBranchVariant->total_adjusted = $adjustment->sum('total_qty');
-                $productBranchVariant->total_transferred = $transferred->sum('total_qty');
-                $productBranchVariant->total_received = $received->sum('total_qty');
+                $productBranchVariant->total_transferred = $totalTransferred;
+                $productBranchVariant->total_received = $totalReceived;
                 $productBranchVariant->total_opening_stock = $productOpeningStock->sum('po_stock');
                 $productBranchVariant->total_sale_return = $saleReturn->sum('total_return');
-                $productBranchVariant->total_purchase_return = $supplierReturn->sum('total_return')
-                    + $purchaseReturn->sum('total_return');
+                $productBranchVariant->total_purchase_return = $supplierReturn->sum('total_return') + $purchaseReturn->sum('total_return');
                 $productBranchVariant->save();
             }
         }
@@ -543,12 +548,15 @@ class ProductStockUtil
                 + $receivedFromAnotherLocation->sum('total_qty')
                 - $usedProductionQty->sum('total_quantity');
 
+            $totalReceived = $received->sum('total_qty') + $receivedFromAnotherLocation->sum('total_qty');
+            $totalTransferred = $transferred->sum('total_qty') + $transferredToAnotherLocation->sum('total_qty');
+
             $productWarehouse = ProductWarehouse::where('warehouse_id', $warehouse_id)->where('product_id', $product_id)->first();
             $productWarehouse->product_quantity = $currentMbStock;
             $productWarehouse->total_purchased = $productPurchase->sum('total_purchase');
             $productWarehouse->total_adjusted = $adjustment->sum('total_qty');
-            $productWarehouse->total_transferred = $transferred->sum('total_qty');
-            $productWarehouse->total_received = $received->sum('total_qty');
+            $productWarehouse->total_transferred = $totalTransferred;
+            $productWarehouse->total_received = $totalReceived;
             $productWarehouse->save();
 
             if ($variant_id) {
@@ -656,6 +664,9 @@ class ProductStockUtil
                     + $receivedFromAnotherLocation->sum('total_qty')
                     - $usedProductionQty->sum('total_quantity');
 
+                    $totalReceived = $received->sum('total_qty') + $receivedFromAnotherLocation->sum('total_qty');
+                    $totalTransferred = $transferred->sum('total_qty') + $transferredToAnotherLocation->sum('total_qty');
+
                 $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
                     ->where('product_id', $product_id)
                     ->where('product_variant_id', $variant_id)
@@ -664,8 +675,8 @@ class ProductStockUtil
                 $productWarehouseVariant->variant_quantity = $currentMbStock;
                 $productWarehouseVariant->total_purchased = $productPurchase->sum('total_purchase');
                 $productWarehouseVariant->total_adjusted = $adjustment->sum('total_qty');
-                $productWarehouseVariant->total_transferred = $transferred->sum('total_qty');
-                $productWarehouseVariant->total_received = $received->sum('total_qty');
+                $productWarehouseVariant->total_transferred = $totalTransferred;
+                $productWarehouseVariant->total_received = $totalReceived;
                 $productWarehouseVariant->save();
             }
         }

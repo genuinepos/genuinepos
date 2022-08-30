@@ -30,7 +30,7 @@
                                             </h6>
                                         </div>
 
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
@@ -387,20 +387,28 @@
             $('.variant_list_area').empty();
             $('.select_area').hide();
 
+            var receiver_branch_id = $('#receiver_branch_id').val();
+
+            if (receiver_branch_id == '') {
+
+                toastr.error('Please select receiver Business Location First.'); 
+                $(this).val('');
+                return;
+            }
+
             var product_code = $(this).val();
             var __product_code = product_code.replaceAll('/', '~');
             var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : 'no_id';
 
             delay(function() { searchProduct(__product_code, warehouse_id); }, 200); //sendAjaxical is the name of remote-command
-
         });
 
         // add Transfer product by searching product code
-        function searchProduct(product_code, warehouse_id){
+        function searchProduct(product_code, warehouse_id, receiver_branch_id){
 
             $.ajax({
 
-                url:"{{ url('transfer/stocks/branch/to/branch/search/product/') }}" + "/"+ product_code + "/" + warehouse_id,
+                url:"{{ url('transfer/stocks/branch/to/branch/search/product/') }}" + "/"+ product_code + "/" + warehouse_id+ "/" + receiver_branch_id,
                 dataType: 'json',
                 success:function(product){
 
@@ -440,10 +448,13 @@
                                         var closestTr = $('.'+className).closest('tr');
                                         var presentQty = closestTr.find('#quantity').val();
                                         var qty_limit = closestTr.find('#qty_limit').val();
+
                                         if(parseFloat(qty_limit) == parseFloat(presentQty)){
+
                                             alert('Quantity Limit is - '+qty_limit+' '+product.unit.name);
                                             return;
                                         }
+
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                         
@@ -461,7 +472,6 @@
 
                                     var tr = '';
                                     tr += '<tr>';
-
                                     tr += '<td class="text-start" colspan="2">';
                                     tr += '<a href="#" class="text-success" id="edit_product">';
                                     tr += '<span class="product_name">'+product.name+'</span>';
@@ -529,7 +539,7 @@
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
-                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0); 
+                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0);
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
 
@@ -668,6 +678,15 @@
                 document.getElementById('search_product').focus();
             }
 
+            var receiver_branch_id = $('#receiver_branch_id').val();
+
+            if (receiver_branch_id == '') {
+
+                toastr.error('Please select receiver Business Location First.'); 
+                $(this).val('');
+                return;
+            }
+
             document.getElementById('search_product').focus();
             var branch_id = $('#branch_id').val();
             var product_id = e.getAttribute('data-p_id');
@@ -682,7 +701,7 @@
             var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : 'no_id';
 
             $.ajax({
-                url:"{{ url('transfer/stocks/branch/to/branch/check/single/product/stock/') }}"+"/"+product_id+"/"+warehouse_id,
+                url:"{{ url('transfer/stocks/branch/to/branch/check/single/product/stock/') }}"+"/"+product_id+"/"+warehouse_id+"/"+receiver_branch_id,
                 async:true,
                 type:'get',
                 dataType: 'json',
@@ -796,6 +815,15 @@
                 document.getElementById('search_product').focus();
             }
 
+            var receiver_branch_id = $('#receiver_branch_id').val();
+
+            if (receiver_branch_id == '') {
+
+                toastr.error('Please select receiver Business Location First.'); 
+                $(this).val('');
+                return;
+            }
+
             $('.select_area').hide();
             $('#search_product').val('');
             var product_id = e.getAttribute('data-p_id');
@@ -811,7 +839,7 @@
             var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : 'no_id';
 
             $.ajax({
-                url:"{{url('transfer/stocks/branch/to/branch/check/variant/product/stock')}}"+"/"+product_id+"/"+variant_id+"/"+warehouse_id,
+                url:"{{url('transfer/stocks/branch/to/branch/check/variant/product/stock')}}"+"/"+product_id+"/"+variant_id+"/"+warehouse_id+"/"+receiver_branch_id,
                 async:true,
                 type:'get',
                 dataType: 'json',

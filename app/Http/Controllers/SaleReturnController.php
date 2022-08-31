@@ -158,6 +158,7 @@ class SaleReturnController extends Controller
                 //     }
                     
                 // })
+                
                 ->editColumn('customer', function ($row) {
 
                     return $row->cus_name ? $row->cus_name : 'Walk-In-Customer';

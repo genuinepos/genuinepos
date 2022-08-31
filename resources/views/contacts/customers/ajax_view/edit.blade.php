@@ -4,48 +4,41 @@
     <div class="form-group row">
         <div class="col-md-3">
             <label><b>Name</b> <span class="text-danger">*</span></label>
-            <input type="text" name="name" class="form-control edit_input"
-                data-name="Customer name" id="e_name" placeholder="Customer name" value="{{ $customer->name }}"/>
+            <input type="text" name="name" class="form-control edit_input" data-name="Customer name" id="e_name" placeholder="Customer name" value="{{ $customer->name }}"/>
             <span class="error error_e_name"></span>
         </div>
 
         <div class="col-md-3">
             <label><b>Phone</b> : <span class="text-danger">*</span></label>
-            <input type="text" name="phone" class="form-control edit_input"
-                data-name="Phone number" placeholder="Phone number" value="{{ $customer->phone }}"/>
+            <input type="text" name="phone" class="form-control edit_input" data-name="Phone number" placeholder="Phone number" value="{{ $customer->phone }}"/>
             <span class="error error_e_phone"></span>
         </div>
 
         <div class="col-md-3">
             <label><b>Customer ID</b> : </label>
-            <input readonly type="text" name="contact_id" class="form-control"
-                placeholder="Customer ID" value="{{ $customer->contact_id }}"/>
+            <input readonly type="text" name="contact_id" class="form-control" placeholder="Customer ID" value="{{ $customer->contact_id }}"/>
         </div>
 
         <div class="col-md-3">
             <label><b>Business Name</b> : </label>
-            <input type="text" name="business_name" class="form-control"
-                placeholder="Business name" id="e_business_name" value="{{ $customer->business_name }}"/>
+            <input type="text" name="business_name" class="form-control" placeholder="Business name" id="e_business_name" value="{{ $customer->business_name }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-3">
             <label><b>Alternative Number</b> : </label>
-            <input type="text" name="alternative_phone" class="form-control"
-                placeholder="Alternative phone number" value="{{ $customer->alternative_phone }}"/>
+            <input type="text" name="alternative_phone" class="form-control" placeholder="Alternative phone number" value="{{ $customer->alternative_phone }}"/>
         </div>
         
         <div class="col-md-3">
             <label><b>Landline</b> : </label>
-            <input type="text" name="landline" class="form-control"
-                placeholder="landline number" value="{{ $customer->landline }}"/>
+            <input type="text" name="landline" class="form-control" placeholder="landline number" value="{{ $customer->landline }}"/>
         </div>
 
         <div class="col-md-3">
             <label><b>Email</b> : </label>
-            <input type="text" name="email" class="form-control"
-                placeholder="Email address" value="{{ $customer->email }}"/>
+            <input type="text" name="email" class="form-control" placeholder="Email address" value="{{ $customer->email }}"/>
         </div>
     </div>
 
@@ -57,29 +50,26 @@
 
         <div class="col-md-3">
             <label><strong>Opening Balance :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
-            <input type="number" step="any" name="opening_balance" class="form-control" id="e_opening_balance"
-                placeholder="Opening balance" value="{{ $customer->opening_balance }}" />
+            <input type="number" step="any" name="opening_balance" class="form-control" id="e_opening_balance" placeholder="Opening balance" value="{{ $branchOpeningBalance ? $branchOpeningBalance->amount : 0.00 }}" />
         </div>
 
         <div class="col-md-3">
-            <label><strong>Credit Limit :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
-            <input type="number" step="any" name="credit_limit" class="form-control"
-                placeholder="Credit Limit" value="{{ $customer->credit_limit }}"/>
+            <label><strong>Credit Limit :</strong> </label>
+            <input type="number" step="any" name="credit_limit" class="form-control" id="e_credit_limit" placeholder="Credit Limit" value="{{ $customerCreditLimit ? $customerCreditLimit->credit_limit : '' }}"/>
         </div>
 
         <div class="col-md-3">
             <label><b>Pay Term</b> : </label>
             <div class="row">
                 <div class="col-md-5">
-                    <input type="text" name="pay_term_number" class="form-control"
-                    id="e_pay_term_number" value="{{ $customer->pay_term_number }}"/>
+                    <input type="text" name="pay_term_number" class="form-control" id="e_pay_term_number" value="{{ $customerCreditLimit ? $customerCreditLimit->pay_term_number : '' }}" placeholder="Number"/>
                 </div>
-                
+
                 <div class="col-md-7">
                     <select name="pay_term" class="form-control">
                         <option value="">Select term</option>
-                        <option {{ $customer->pay_term == 1 ? 'SELECTED' : '' }} value="1">Days</option>
-                        <option {{ $customer->pay_term == 2 ? 'SELECTED' : '' }} value="2">Months</option>
+                        <option {{  $customerCreditLimit ? ($customerCreditLimit->pay_term == 1 ? 'SELECTED' : '') : '' }} value="1">Days</option>
+                        <option {{  $customerCreditLimit ? ($customerCreditLimit->pay_term == 2 ? 'SELECTED' : '') : '' }} value="2">Months</option>
                     </select>
                 </div>
             </div>
@@ -103,8 +93,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                 </div>
-                <input type="text" name="date_of_birth" id="e_date_of_birth" class="form-control"
-                    autocomplete="off" value="{{ $customer->date_of_birth }}" placeholder="YYYY-MM-DD">
+                <input type="text" name="date_of_birth" id="e_date_of_birth" class="form-control" autocomplete="off" value="{{ $customer->date_of_birth }}" placeholder="YYYY-MM-DD">
             </div>
         </div>
 
@@ -139,8 +128,7 @@
     <div class="form-group row mt-1">
         <div class="col-md-5">
             <label><b>Shipping Address</b> : </label>
-            <input type="text" name="shipping_address" class="form-control"
-                placeholder="Shipping address" value="{{ $customer->shipping_address }}"/>
+            <input type="text" name="shipping_address" class="form-control" placeholder="Shipping address" value="{{ $customer->shipping_address }}"/>
         </div>
     </div>
 
@@ -166,10 +154,13 @@
         var inputs = $('.edit_input');
         $('.error').html('');
         var countErrorField = 0;
+
         $.each(inputs, function(key, val) {
+
             var inputId = $(val).attr('id');
             var idValue = $('#' + inputId).val();
             if (idValue == '') {
+
                 countErrorField += 1;
                 var fieldName = $('#' + inputId).data('name');
                 $('.error_' + inputId).html(fieldName + ' is required.');
@@ -177,6 +168,7 @@
         });
 
         if (countErrorField > 0) {
+
             $('.loading_button').hide();
             return;
         }

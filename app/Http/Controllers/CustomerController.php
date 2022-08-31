@@ -20,6 +20,8 @@ use App\Models\CustomerPayment;
 use App\Utils\CustomerPaymentUtil;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
+use App\Models\CustomerCreditLimit;
+use App\Models\CustomerOpeningBalance;
 use App\Models\CustomerPaymentInvoice;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use Yajra\DataTables\Facades\DataTables;
@@ -55,6 +57,8 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
+
+        
         if (auth()->user()->permission->contact['customer_all'] == '0') {
 
             abort(403, 'Access Forbidden.');
@@ -62,11 +66,12 @@ class CustomerController extends Controller
 
         if ($request->ajax()) {
 
-            return $this->customerUtil->customerListTable();
+            return $this->customerUtil->customerListTable($request);
         }
 
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $groups = DB::table('customer_groups')->get();
-        return view('contacts.customers.index', compact('groups'));
+        return view('contacts.customers.index', compact('groups', 'branches'));
     }
 
     public function store(Request $request)
@@ -85,6 +90,8 @@ class CustomerController extends Controller
 
         $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
 
+        $creditLimit = $request->credit_limit ? $request->credit_limit : 0;
+
         $addCustomer = Customer::create([
             'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
@@ -95,8 +102,8 @@ class CustomerController extends Controller
             'landline' => $request->landline,
             'date_of_birth' => $request->date_of_birth,
             'tax_number' => $request->tax_number,
-            'pay_term' => $request->pay_term,
-            'pay_term_number' => $request->pay_term_number,
+            // 'pay_term' => $request->pay_term,
+            // 'pay_term_number' => $request->pay_term_number,
             'customer_group_id' => $request->customer_group_id,
             'address' => $request->address,
             'city' => $request->city,
@@ -104,19 +111,36 @@ class CustomerController extends Controller
             'country' => $request->country,
             'state' => $request->state,
             'shipping_address' => $request->shipping_address,
-            'opening_balance' => $request->opening_balance ? $request->opening_balance : 0.00,
-            'credit_limit' => $request->credit_limit,
+            // 'opening_balance' => $request->opening_balance ? $request->opening_balance : 0.00,
+            // 'credit_limit' => $request->credit_limit,
             'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
         ]);
+
+        $addCreditLimit = new CustomerCreditLimit();
+        $addCreditLimit->customer_id = $addCustomer->id;
+        $addCreditLimit->branch_id = auth()->user()->branch_id;
+        $addCreditLimit->created_by_id = auth()->user()->id;
+        $addCreditLimit->credit_limit = $creditLimit ? $creditLimit : 0;
+        $addCreditLimit->pay_term = $request->pay_term;
+        $addCreditLimit->pay_term_number = $request->pay_term_number;
+        $addCreditLimit->save();
 
         // Add Customer Ledger
         $this->customerUtil->addCustomerLedger(
             voucher_type_id: 0,
             customer_id: $addCustomer->id,
+            branch_id: auth()->user()->branch_id,
             date: date('Y-m-d'),
             trans_id: NULL,
             amount: $request->opening_balance ? $request->opening_balance : 0.00
         );
+
+        $addCustomerOpeningBalance = new CustomerOpeningBalance();
+        $addCustomerOpeningBalance->customer_id = $addCustomer->id;
+        $addCustomerOpeningBalance->branch_id = auth()->user()->branch_id;
+        $addCustomerOpeningBalance->created_by_id = auth()->user()->id;
+        $addCustomerOpeningBalance->amount = $request->opening_balance ? $request->opening_balance : 0.00;
+        $addCustomerOpeningBalance->save();
 
         $this->userActivityLogUtil->addLog(action: 1, subject_type: 1, data_obj: $addCustomer);
 
@@ -132,7 +156,18 @@ class CustomerController extends Controller
 
         $customer = DB::table('customers')->where('id', $customerId)->first();
         $groups = DB::table('customer_groups')->get();
-        return view('contacts.customers.ajax_view.edit', compact('customer', 'groups'));
+
+        $branchOpeningBalance = DB::table('customer_opening_balances')
+            ->where('customer_id', $customer->id)->where('branch_id', auth()->user()->branch_id)
+            ->first();
+
+        $customerCreditLimit = DB::table('customer_credit_limits')
+            ->where('customer_id', $customer->id)->where('branch_id', auth()->user()->branch_id)
+            ->first();
+
+        $groups = DB::table('customer_groups')->get();
+
+        return view('contacts.customers.ajax_view.edit', compact('customer', 'groups', 'branchOpeningBalance', 'customerCreditLimit'));
     }
 
     public function update(Request $request)
@@ -146,6 +181,8 @@ class CustomerController extends Controller
             'name' => 'required',
             'phone' => 'required',
         ]);
+
+        $creditLimit = $request->credit_limit ? $request->credit_limit : 0;
 
         $updateCustomer = Customer::where('id', $request->id)->first();
         $updateCustomer->name = $request->name;
@@ -165,17 +202,68 @@ class CustomerController extends Controller
         $updateCustomer->country = $request->country;
         $updateCustomer->state = $request->state;
         $updateCustomer->shipping_address = $request->shipping_address;
-        $updateCustomer->credit_limit = $request->credit_limit;
-        $updateCustomer->opening_balance = $request->opening_balance ? $request->opening_balance : 0;
+        // $updateCustomer->credit_limit = $request->credit_limit;
+        // $updateCustomer->opening_balance = $request->opening_balance ? $request->opening_balance : 0;
         $updateCustomer->save();
+
+        $customerCreditLimit = CustomerCreditLimit::where('customer_id', $updateCustomer->id)->where('branch_id', auth()->user()->branch_id)->first();
+
+        if ($customerCreditLimit) {
+
+            $customerCreditLimit->credit_limit = $creditLimit ? $creditLimit : 0;
+            $customerCreditLimit->pay_term = $request->pay_term;
+            $customerCreditLimit->pay_term_number = $request->pay_term_number;
+            $customerCreditLimit->save();
+        } else {
+
+            $addCreditLimit = new CustomerCreditLimit();
+            $addCreditLimit->customer_id = $updateCustomer->id;
+            $addCreditLimit->branch_id = auth()->user()->branch_id;
+            $addCreditLimit->created_by_id = auth()->user()->id;
+            $addCreditLimit->credit_limit = $creditLimit ? $creditLimit : 0;
+            $addCreditLimit->pay_term = $request->pay_term;
+            $addCreditLimit->pay_term_number = $request->pay_term_number;
+            $addCreditLimit->save();
+        }
+
+        $userOpeningBalance = CustomerOpeningBalance::where('customer_id', $updateCustomer->id)->where('branch_id', auth()->user()->branch_id)->first();
+
+        if ($userOpeningBalance) {
+
+            $userOpeningBalance->amount = $request->opening_balance ? $request->opening_balance : 0.00;
+            $userOpeningBalance->save();
+        } else {
+
+            $addCustomerOpeningBalance = new CustomerOpeningBalance();
+            $addCustomerOpeningBalance->customer_id = $updateCustomer->id;
+            $addCustomerOpeningBalance->branch_id = auth()->user()->branch_id;
+            $addCustomerOpeningBalance->created_by_id = auth()->user()->id;
+            $addCustomerOpeningBalance->amount = $request->opening_balance ? $request->opening_balance : 0.00;
+            $addCustomerOpeningBalance->save();
+        }
+
+        $calcOpeningBalance = DB::table('customer_opening_balances')
+            ->where('customer_id', $updateCustomer->id)
+            ->select(DB::raw('SUM(amount) as op_amount'))
+            ->groupBy('customer_id')->get();
+
+        $updateCustomer->opening_balance = $calcOpeningBalance->sum('op_amount');
+        $updateCustomer->save();
+
+        $customer = DB::table('customers')
+            ->where('id', $updateCustomer->id)
+            ->select('name', 'phone', 'contact_id', 'total_sale_due')
+            ->first();
 
         $this->customerUtil->updateCustomerLedger(
             voucher_type_id: 0,
             customer_id: $updateCustomer->id,
+            previous_branch_id: auth()->user()->branch_id,
+            new_branch_id: auth()->user()->branch_id,
             date: $updateCustomer->created_at,
             trans_id: NULL,
-            amount: $updateCustomer->opening_balance,
-            fixed_date: $updateCustomer->created_at
+            amount: $request->opening_balance ? $request->opening_balance : 0.00,
+            fixed_date: $updateCustomer->created_at,
         );
 
         $customer = DB::table('customers')->where('id', $updateCustomer->id)
@@ -476,8 +564,7 @@ class CustomerController extends Controller
 
             $customerLedgers = $customerLedgers->get();
             $tempRunning = 0;
-            foreach($customerLedgers as $customerLedger)
-            {
+            foreach ($customerLedgers as $customerLedger) {
                 $customerLedger->running_balance =  $tempRunning  + ($customerLedger->debit - $customerLedger->credit);
                 $tempRunning = $customerLedger->running_balance;
             }
@@ -509,7 +596,7 @@ class CustomerController extends Controller
 
                 ->editColumn('running_balance', function ($row) {
 
-                    return '<span class="running_balance">'. $this->converter->format_in_bdt($row->running_balance) .'</span>';
+                    return '<span class="running_balance">' . $this->converter->format_in_bdt($row->running_balance) . '</span>';
                 })
 
                 ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])

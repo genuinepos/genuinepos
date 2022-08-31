@@ -82,6 +82,7 @@ class ProductStockUtil
             $product->save();
 
             if ($variant_id) {
+
                 $variantOpeningStock = DB::table('product_opening_stocks')
                     ->where('product_variant_id', $variant_id)
                     ->select(DB::raw('sum(quantity) as vo_stock'))
@@ -427,8 +428,8 @@ class ProductStockUtil
                     ->where('product_variant_id', $variant_id)
                     ->first();
 
-                $totalReceived = $received->sum('total_qty') + $receivedFromAnotherLocation->sum('total_qty'); 
-                $totalTransferred = $transferred->sum('total_qty') + $transferredToAnotherLocation->sum('total_qty'); 
+                $totalReceived = $received->sum('total_qty') + $receivedFromAnotherLocation->sum('total_qty');
+                $totalTransferred = $transferred->sum('total_qty') + $transferredToAnotherLocation->sum('total_qty');
 
                 $productBranchVariant->variant_quantity = $currentMbStock;
                 $productBranchVariant->total_sale = $productSale->sum('total_sale');
@@ -664,8 +665,8 @@ class ProductStockUtil
                     + $receivedFromAnotherLocation->sum('total_qty')
                     - $usedProductionQty->sum('total_quantity');
 
-                    $totalReceived = $received->sum('total_qty') + $receivedFromAnotherLocation->sum('total_qty');
-                    $totalTransferred = $transferred->sum('total_qty') + $transferredToAnotherLocation->sum('total_qty');
+                $totalReceived = $received->sum('total_qty') + $receivedFromAnotherLocation->sum('total_qty');
+                $totalTransferred = $transferred->sum('total_qty') + $transferredToAnotherLocation->sum('total_qty');
 
                 $productWarehouseVariant = ProductWarehouseVariant::where('product_warehouse_id', $productWarehouse->id)
                     ->where('product_id', $product_id)

@@ -4,24 +4,24 @@ namespace App\Utils;
 
 use App\Models\Customer;
 use App\Models\CustomerLedger;
-use App\Utils\Converter;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class CustomerUtil
 {
-    public $converter;
-    public function __construct(
-        Converter $converter,
-    ) {
-        $this->converter = $converter;
-    }
-
-    public function customerListTable()
+    public function customerListTable($request)
     {
         $customers = DB::table('customers')
             ->leftJoin('customer_groups', 'customers.customer_group_id', 'customer_groups.id')
-            ->select('customers.*', 'customer_groups.group_name');
+            ->select(
+                'customers.id',
+                'customers.contact_id',
+                'customers.name',
+                'customers.business_name',
+                'customers.status',
+                'customers.phone',
+                'customer_groups.group_name'
+            );
 
         return DataTables::of($customers)
             ->addColumn('action', function ($row) {
@@ -55,35 +55,64 @@ class CustomerUtil
                 $html .= '</div>';
                 return $html;
             })
-            ->editColumn('business_name', function ($row) {
+            ->editColumn('business_name', fn ($row) => $row->business_name ? $row->business_name : '...')
 
-                return $row->business_name ? $row->business_name : '...';
+            ->editColumn('group_name', fn ($row) => $row->group_name ? $row->group_name : '...')
+
+            ->editColumn('credit_limit', function ($row) use ($request) {
+
+                if ($request->branch_id == '') {
+
+                    return '...';
+                } else {
+
+                    $branch_id = $request->branch_id == 'NULL' ? NULL : $request->branch_id;
+                    $creditLimit = DB::table('customer_credit_limits')->where('branch_id', $branch_id)->where('customer_id', $row->id)->first(['credit_limit']);
+                    return $creditLimit ? $creditLimit->credit_limit : '';
+                }
             })
-            ->editColumn('tax_number', function ($row) {
 
-                return $row->tax_number ? $row->tax_number : '...';
-            })
-            ->editColumn('group_name', function ($row) {
+            ->editColumn('opening_balance', function ($row) use ($request) {
 
-                return $row->group_name ? $row->group_name : '...';
-            })
-
-            ->editColumn('credit_limit', function ($row) {
-
-                return $row->credit_limit > 0 ? $row->credit_limit : 'No Limit';
+                $BranchWiseCustomerAmountUtil =  new \App\Utils\BranchWiseCustomerAmountUtil();
+                $openingBalance = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['opening_balance'];
+                return '<span class="opening_balance" data-value="' . $openingBalance . '">' . \App\Utils\Converter::format_in_bdt($openingBalance) . '</span>';
             })
 
-            ->editColumn('opening_balance', fn ($row) => '<span class="opening_balance" data-value="' . $row->opening_balance . '">' . $this->converter->format_in_bdt($row->opening_balance) . '</span>')
+            ->editColumn('total_sale', function ($row) use ($request) {
 
-            ->editColumn('total_sale', fn ($row) => '<span class="total_sale" data-value="' . $row->total_sale . '">' . $this->converter->format_in_bdt($row->total_sale) . '</span>')
+                $BranchWiseCustomerAmountUtil = new \App\Utils\BranchWiseCustomerAmountUtil();
+                $totalSale = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale'];
+                return '<span class="total_sale" data-value="' . $totalSale . '">' . \App\Utils\Converter::format_in_bdt($totalSale) . '</span>';
+            })
 
-            ->editColumn('total_paid', fn ($row) => '<span class="total_paid text-success" data-value="' . $row->total_paid . '">' . $this->converter->format_in_bdt($row->total_paid) . '</span>')
+            ->editColumn('total_paid', function ($row) use ($request) {
 
-            ->editColumn('total_sale_due', fn ($row) => '<span class="total_sale_due text-danger" data-value="' . $row->total_sale_due . '">' . $this->converter->format_in_bdt($row->total_sale_due) . '</span>')
+                $BranchWiseCustomerAmountUtil = new \App\Utils\BranchWiseCustomerAmountUtil();
+                $totalPaid = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_paid'];
+                return '<span class="total_paid" data-value="' . $totalPaid . '">' . \App\Utils\Converter::format_in_bdt($totalPaid) . '</span>';
+            })
 
-            ->editColumn('total_return', fn ($row) => '<span class="total_return" data-value="' . $row->total_return . '">' . $this->converter->format_in_bdt($row->total_return) . '</span>')
+            ->editColumn('total_sale_due', function ($row) use ($request) {
 
-            ->editColumn('total_sale_return_due', fn ($row) => '<span class="total_sale_return_due" data-value="' . $row->total_sale_return_due . '">' . $this->converter->format_in_bdt($row->total_sale_return_due) . '</span>')
+                $BranchWiseCustomerAmountUtil = new \App\Utils\BranchWiseCustomerAmountUtil();
+                $totalSaleDue = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_due'];
+                return '<span class="total_sale_due" data-value="' . $totalSaleDue . '">' . \App\Utils\Converter::format_in_bdt($totalSaleDue) . '</span>';
+            })
+
+            ->editColumn('total_return', function ($row) use ($request) {
+
+                $BranchWiseCustomerAmountUtil = new \App\Utils\BranchWiseCustomerAmountUtil();
+                $totalReturn = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_return'];
+                return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
+            })
+
+            ->editColumn('total_sale_return_due', function ($row) use ($request) {
+
+                $BranchWiseCustomerAmountUtil = new \App\Utils\BranchWiseCustomerAmountUtil();
+                $totalSaleReturnDue = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_return_due'];
+                return '<span class="total_sale_return_due" data-value="' . $totalSaleReturnDue . '">' . \App\Utils\Converter::format_in_bdt($totalSaleReturnDue) . '</span>';
+            })
 
             ->editColumn('status', function ($row) {
 
@@ -95,69 +124,124 @@ class CustomerUtil
                     return '<i class="far fa-thumbs-down text-danger"></i>';
                 }
             })
-            ->rawColumns(['action', 'credit_limit', 'business_name', 'tax_number', 'group_name', 'opening_balance', 'total_sale', 'total_paid', 'total_sale_due', 'total_return', 'total_sale_return_due', 'status'])
+            ->rawColumns(['action', 'credit_limit', 'business_name', 'group_name', 'opening_balance', 'total_sale', 'total_paid', 'total_sale_due', 'total_return', 'total_sale_return_due', 'status'])
             ->make(true);
     }
+
+    // public function adjustCustomerAmountForSalePaymentDue($customerId)
+    // {
+    //     $customer = Customer::where('id', $customerId)->first();
+
+    //     $totalCustomerSale = DB::table('sales')->where('customer_id', $customerId)
+    //         ->whereIn('sales.status', [1, 3])
+    //         ->select(DB::raw('sum(total_payable_amount) as total_sale'))
+    //         ->groupBy('customer_id')->get();
+
+    //     $totalCustomerPayment = DB::table('customer_payments')
+    //         ->select(
+    //             DB::raw('sum(paid_amount) as c_paid'),
+    //             DB::raw('sum(less_amount) as less')
+    //         )->where('customer_id', $customerId)
+    //         ->where('type', 1)
+    //         ->groupBy('customer_id')->get();
+
+    //     $totalSalePayment = DB::table('sale_payments')
+    //         ->where('sale_payments.customer_payment_id', NULL)
+    //         ->where('sale_payments.payment_type', 1)
+    //         ->where('sale_payments.customer_id', $customerId)->select(DB::raw('sum(paid_amount) as s_paid'))
+    //         ->groupBy('sale_payments.customer_id')->get();
+
+    //     $totalSaleReturn = DB::table('sale_returns')
+    //         ->where('sale_returns.customer_id', $customerId)
+    //         ->select(DB::raw('sum(total_return_amount) as total_return_amt'))
+    //         ->groupBy('sale_returns.customer_id')->get();
+
+    //     $totalInvoiceReturnPayment = DB::table('sale_payments') // Paid on invoice return due.
+    //         ->where('sale_payments.customer_payment_id', NULL)
+    //         ->where('sale_payments.payment_type', 2)
+    //         ->where('sale_payments.customer_id', $customerId)
+    //         ->select(DB::raw('sum(paid_amount) as total_inv_return_paid'))
+    //         ->groupBy('sale_payments.customer_id')->get();
+
+    //     $totalCustomerReturnPayment = DB::table('customer_payments') // Paid on Total customer return due.
+    //         ->where('customer_id', $customerId)
+    //         ->where('type', 2)
+    //         ->select(DB::raw('sum(paid_amount) as cr_paid'))
+    //         ->groupBy('customer_id')->get();
+
+    //     $totalSale = $totalCustomerSale->sum('total_sale');
+    //     $totalPaid = $totalCustomerPayment->sum('c_paid') + $totalSalePayment->sum('s_paid');
+    //     $totalLess = $totalCustomerPayment->sum('less');
+    //     $totalReturn = $totalSaleReturn->sum('total_return_amt');
+    //     $totalReturnPaid = $totalInvoiceReturnPayment->sum('total_inv_return_paid') + $totalCustomerReturnPayment->sum('cr_paid');
+
+    //     $totalDue = ($totalSale + $customer->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn - $totalLess;
+
+    //     $totalReturnDue = $totalReturn - ($totalSale + $customer->opening_balance - $totalPaid) - $totalReturnPaid;
+
+    //     $customer->total_sale = $totalSale;
+    //     $customer->total_paid = $totalPaid;
+    //     $customer->total_less = $totalLess;
+    //     $customer->total_sale_due = $totalDue;
+    //     $customer->total_return = $totalReturn;
+    //     $customer->total_sale_return_due = $totalReturnDue > 0 ? $totalReturnDue : 0;;
+    //     $customer->save();
+    //     return $totalDue;
+    // }
 
     public function adjustCustomerAmountForSalePaymentDue($customerId)
     {
         $customer = Customer::where('id', $customerId)->first();
 
-        $totalCustomerSale = DB::table('sales')->where('customer_id', $customerId)
-            ->whereIn('sales.status', [1, 3])
-            ->select(DB::raw('sum(total_payable_amount) as total_sale'))
-            ->groupBy('customer_id')->get();
+        $amounts = DB::table('customer_ledgers')
+            ->where('customer_ledgers.customer_id', $customerId)->select('voucher_type', DB::raw('SUM(amount) as amt'))
+            ->groupBy('customer_ledgers.voucher_type')->get();
 
-        $totalCustomerPayment = DB::table('customer_payments')
-            ->select(
-                DB::raw('sum(paid_amount) as c_paid'),
-                DB::raw('sum(less_amount) as less')
-            )
-            ->where('customer_id', $customerId)
-            ->where('type', 1)
-            ->groupBy('customer_id')->get();
+        $openingBalance = 0;
+        $totalSaleAndOrder = 0;
+        $totalPaid = 0;
+        $totalReturn = 0;
+        $totalLess = 0;
+        $totalRefund = 0;
 
-        $totalSalePayment = DB::table('sale_payments')
-            ->where('sale_payments.customer_payment_id', NULL)
-            ->where('sale_payments.payment_type', 1)
-            ->where('sale_payments.customer_id', $customerId)->select(DB::raw('sum(paid_amount) as s_paid'))
-            ->groupBy('sale_payments.customer_id')->get();
+        foreach ($amounts as $amount) {
 
-        $totalSaleReturn = DB::table('sale_returns')
-            ->where('sale_returns.customer_id', $customerId)
-            ->select(DB::raw('sum(total_return_amount) as total_return_amt'))
-            ->groupBy('sale_returns.customer_id')->get();
+            if ($amount->voucher_type == 0) {
 
-        $totalInvoiceReturnPayment = DB::table('sale_payments') // Paid on invoice return due.
-            ->where('sale_payments.customer_payment_id', NULL)
-            ->where('sale_payments.payment_type', 2)
-            ->where('sale_payments.customer_id', $customerId)
-            ->select(DB::raw('sum(paid_amount) as total_inv_return_paid'))
-            ->groupBy('sale_payments.customer_id')->get();
+                $openingBalance += $amount->amt;
+            } elseif ($amount->voucher_type == 1) {
 
-        $totalCustomerReturnPayment = DB::table('customer_payments') // Paid on Total customer return due.
-            ->where('customer_id', $customerId)
-            ->where('type', 2)
-            ->select(DB::raw('sum(paid_amount) as cr_paid'))
-            ->groupBy('customer_id')->get();
+                $totalSaleAndOrder += $amount->amt;
+            } elseif ($amount->voucher_type == 2) {
 
-        $totalSale = $totalCustomerSale->sum('total_sale');
-        $totalPaid = $totalCustomerPayment->sum('c_paid') + $totalSalePayment->sum('s_paid');
-        $totalLess = $totalCustomerPayment->sum('less');
-        $totalReturn = $totalSaleReturn->sum('total_return_amt');
-        $totalReturnPaid = $totalInvoiceReturnPayment->sum('total_inv_return_paid') + $totalCustomerReturnPayment->sum('cr_paid');
+                $totalReturn += $amount->amt;
+            } elseif ($amount->voucher_type == 3) {
 
-        $totalDue = ($totalSale + $customer->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn - $totalLess;
+                $totalPaid += $amount->amt;
+            } elseif ($amount->voucher_type == 4) {
 
-        $totalReturnDue = $totalReturn - ($totalSale + $customer->opening_balance - $totalPaid) - $totalReturnPaid;
+                $totalRefund += $amount->amt;
+            } elseif ($amount->voucher_type == 5) {
 
-        $customer->total_sale = $totalSale;
+                $totalPaid += $amount->amt;
+            } elseif ($amount->voucher_type == 6) {
+
+                $totalRefund += $amount->amt;
+            }
+        }
+
+        $totalDue = ($totalSaleAndOrder + $openingBalance + $totalRefund) - $totalPaid - $totalReturn - $totalLess;
+
+        $totalReturnDue = $totalReturn - ($totalSaleAndOrder + $openingBalance - $totalPaid) - $totalRefund;
+
+        $customer->total_sale = $totalSaleAndOrder;
         $customer->total_paid = $totalPaid;
         $customer->total_less = $totalLess;
         $customer->total_sale_due = $totalDue;
         $customer->total_return = $totalReturn;
-        $customer->total_sale_return_due = $totalReturnDue > 0 ? $totalReturnDue : 0;;
+        $customer->total_sale_return_due = $totalReturnDue > 0 ? $totalReturnDue : 0;
         $customer->save();
+
         return $totalDue;
     }
 
@@ -231,11 +315,11 @@ class CustomerUtil
         return $data[$voucher_type_id];
     }
 
-    public function addCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount, $fixed_date = null)
+    public function addCustomerLedger($voucher_type_id, $customer_id, $branch_id, $date, $trans_id, $amount, $fixed_date = null)
     {
         $voucher_type = $this->voucherType($voucher_type_id);
         $addCustomerLedger = new CustomerLedger();
-        $addCustomerLedger->branch_id = auth()->user()->branch_id;
+        $addCustomerLedger->branch_id = $branch_id;
         $addCustomerLedger->customer_id = $customer_id;
         $addCustomerLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
         $addCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
@@ -244,15 +328,16 @@ class CustomerUtil
         $addCustomerLedger->amount = $amount;
         $addCustomerLedger->amount_type = $voucher_type['amt'];
         $addCustomerLedger->voucher_type = $voucher_type_id;
-        $addCustomerLedger->running_balance = $this->adjustCustomerAmountForSalePaymentDue($customer_id);
+        $addCustomerLedger->running_balance = 0;
         $addCustomerLedger->save();
     }
 
-    public function updateCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount, $fixed_date = null)
+    public function updateCustomerLedger($voucher_type_id, $customer_id, $previous_branch_id, $new_branch_id, $date, $trans_id, $amount, $fixed_date = null)
     {
         $voucher_type = $this->voucherType($voucher_type_id);
 
         $updateCustomerLedger = CustomerLedger::where('customer_id', $customer_id)
+            ->where('branch_id', $previous_branch_id)
             ->where($voucher_type['id'], $trans_id)
             ->where('voucher_type', $voucher_type_id)
             ->first();
@@ -261,15 +346,16 @@ class CustomerUtil
 
             //$updateCustomerLedger->customer_id = $customer_id;
             $previousTime = date('H:i:s', strtotime($updateCustomerLedger->report_date));
+            $updateCustomerLedger->branch_id = $new_branch_id ? $new_branch_id : $previous_branch_id;
             $updateCustomerLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
             $updateCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . $previousTime));
             $updateCustomerLedger->{$voucher_type['amt']} = $amount;
             $updateCustomerLedger->amount = $amount;
-            $updateCustomerLedger->running_balance = $this->adjustCustomerAmountForSalePaymentDue($customer_id);
+            $updateCustomerLedger->running_balance = 0;
             $updateCustomerLedger->save();
         } else {
 
-            $this->addCustomerLedger($voucher_type_id, $customer_id, $date, $trans_id, $amount, $fixed_date);
+            $this->addCustomerLedger($voucher_type_id, $customer_id, $new_branch_id, $date, $trans_id, $amount, $fixed_date);
         }
     }
 }

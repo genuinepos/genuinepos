@@ -16,6 +16,43 @@
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="sec-name">
+                                    <div class="col-md-12">
+                                        <form id="filter_form" class="px-2">
+                                            <div class="form-group row">
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-2">
+                                                            <label><strong>Business Location :</strong></label>
+                                                            <select name="branch_id"
+                                                                class="form-control submit_able" id="branch_id" autofocus>
+                                                                <option value="">All</option>
+                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
+                                                @endif
+
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row margin_row mt-1">
@@ -338,9 +375,14 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [[0, 'asc']],
-            ajax: "{{ route('contacts.customer.index') }}",
             "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "ajax": {
+                "url": "{{ route('contacts.customer.index') }}",
+                "data": function(d) {
+                    d.branch_id = $('#branch_id').val();
+                }
+            },
             columnDefs: [{"targets": [0, 7],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'action',name: 'action'},
@@ -371,6 +413,8 @@
                 $('#total_return').text(bdFormat(total_return));
                 var total_sale_return_due = sum_table_col($('.data_tbl'), 'total_sale_return_due');
                 $('#total_sale_return_due').text(bdFormat(total_sale_return_due));
+
+                $('.data_preloader').hide();
             }
         });
 
@@ -388,6 +432,13 @@
             });
             return sum;
         }
+
+         //Submit filter form by select input changing
+         $(document).on('submit', '#filter_form', function (e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            table.ajax.reload();
+        });
 
         // Setup ajax for csrf token.
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});

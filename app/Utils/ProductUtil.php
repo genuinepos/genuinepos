@@ -97,10 +97,6 @@ class ProductUtil
             $query->where('products.status', $request->status);
         }
 
-        // if ($request->is_for_sale) {
-        //     $query->where('products.is_for_sale', '0');
-        // }
-
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             $query;
@@ -122,6 +118,7 @@ class ProductUtil
                 'products.thumbnail_photo',
                 'products.expire_date',
                 'products.is_combo',
+                // 'products.quantity',
                 'product_branches.product_quantity',
                 // 'units.name as unit_name',
                 'taxes.tax_name',
@@ -133,10 +130,13 @@ class ProductUtil
 
         return DataTables::of($products)
             ->addColumn('multiple_delete', function ($row) {
+
                 return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="' . $row->id . '"/>';
             })->editColumn('photo', function ($row) use ($img_url) {
+
                 return '<img loading="lazy" class="rounded" style="height:40px; width:40px; padding:2px 0px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
             })->addColumn('action', function ($row) use ($countPriceGroup) {
+
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
@@ -194,7 +194,8 @@ class ProductUtil
 
                     return '<span class="text-info">Digital</span>';
                 }
-            })->editColumn('cate_name', fn ($row) => '<span>' . ($row->cate_name ? $row->cate_name : '...') . ($row->sub_cate_name ? '<br>--' . $row->sub_cate_name : '') . '</span>')
+            })
+            ->editColumn('cate_name', fn ($row) => '<span>' . ($row->cate_name ? $row->cate_name : '...') . ($row->sub_cate_name ? '<br>--' . $row->sub_cate_name : '') . '</span>')
             ->editColumn('status', function ($row) {
 
                 if ($row->status == 1) {
@@ -204,7 +205,8 @@ class ProductUtil
 
                     return '<span class="text-danger">Inactive</span>';
                 }
-            })->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
+            })
+            ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
             ->editColumn('tax_name', fn ($row) =>  $row->tax_name ? $row->tax_name : '...')
             ->rawColumns(['multiple_delete', 'photo', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name',])
             ->smart(true)->make(true);

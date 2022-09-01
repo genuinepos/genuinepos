@@ -237,11 +237,4 @@ class CommonAjaxCallController extends Controller
             ->first();
         return response()->json($supplier);
     }
-
-    public function getCustomer($customerId)
-    {
-        $customer = DB::table('customers')
-            ->where('id', $customerId)->first();
-        return response()->json($customer);
-    }
 }

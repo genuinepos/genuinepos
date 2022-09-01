@@ -64,7 +64,7 @@
                             <div class="tab_contant ledger">
                                 <div class="row">
                                     <div class="col-md-3 col-sm-12 col-lg-3">
-                                        @include('contacts.customers.partials.account_summery_area')
+                                        @include('contacts.customers.partials.account_summery_area_by_ledgers')
                                     </div>
 
                                     <div class="col-md-9 col-sm-12 col-lg-9">
@@ -99,16 +99,6 @@
                                                         @endif
 
                                                         <div class="col-md-3">
-                                                            <label><strong>Voucher Type :</strong></label>
-                                                            <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
-                                                                <option value="">All</option>
-                                                                @foreach (App\Utils\CustomerUtil::voucherTypes() as $key => $type)
-                                                                    <option value="{{ $key }}">{{ $type }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-md-3">
                                                             <label><strong>From Date :</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
@@ -131,14 +121,14 @@
 
                                                         <div class="col-md-3">
                                                             <div class="row">
-                                                                <div class="col-md-7">
+                                                                <div class="col-md-6">
                                                                     <label><strong></strong></label>
                                                                     <div class="input-group">
                                                                         <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-md-5 mt-3">
+                                                                <div class="col-md-6 mt-3">
                                                                     <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
                                                                 </div>
                                                             </div>
@@ -254,7 +244,7 @@
                             <div class="tab_contant sale d-none">
                                 <div class="row">
                                     <div class="col-md-4 col-sm-12 col-lg-4">
-                                        @include('contacts.customers.partials.account_summery_area')
+                                        @include('contacts.customers.partials.account_summery_area_by_sales')
                                     </div>
 
                                     <div class="col-md-8 col-sm-12 col-lg-8">
@@ -370,7 +360,7 @@
                                 <div class="tab_contant payments d-none">
                                     <div class="row">
                                         <div class="col-md-3 col-sm-12 col-lg-3">
-                                            @include('contacts.customers.partials.account_summery_area')
+                                            @include('contacts.customers.partials.account_summery_area_by_payments')
                                         </div>
     
                                         <div class="col-md-9 col-sm-12 col-lg-9">
@@ -385,22 +375,33 @@
                                                             <div class="card pb-5">
                                                                 <form id="filter_customer_payments" class="py-2 px-2 mt-2" method="get">
                                                                     <div class="form-group row">
-                                                                        <div class="col-md-3">
-                                                                            <label><strong>Payment Status :</strong></label>
-                                                                            <select name="type" class="form-control submit_able" id="type" autofocus>
-                                                                                <option value="">All</option>
-                                                                                <option value="1">Received Payment</option>
-                                                                                <option value="2">Return Payment</option>
-                                                                            </select>
-                                                                        </div>
-                
+
+                                                                        @if ($addons->branches == 1)
+                                                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                                                <div class="col-md-3">
+                                                                                    <label><strong>Business Location :</strong></label>
+                                                                                    <select name="branch_id" class="form-control submit_able" id="payment_branch_id" autofocus>
+                                                                                        <option value="">All</option>
+                                                                                        <option value="NULL">
+                                                                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                                        </option>
+                                                                                        @foreach ($branches as $branch)
+                                                                                            <option value="{{ $branch->id }}">
+                                                                                                {{ $branch->name . '/' . $branch->branch_code }}
+                                                                                            </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </div>
+                                                                            @endif
+                                                                        @endif
+                                                        
                                                                         <div class="col-md-3">
                                                                             <label><strong>From Date :</strong></label>
                                                                             <div class="input-group">
                                                                                 <div class="input-group-prepend">
                                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                                 </div>
-                                                                                <input type="text" name="p_from_date" id="p_from_date" class="form-control p_from_date date"autocomplete="off">
+                                                                                <input type="text" name="p_from_date" id="payment_from_date" class="form-control date"autocomplete="off">
                                                                             </div>
                                                                         </div>
                 
@@ -410,7 +411,7 @@
                                                                                 <div class="input-group-prepend">
                                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                                 </div>
-                                                                                <input type="text" name="p_to_date" id="p_to_date" class="form-control p_to_date date" autocomplete="off">
+                                                                                <input type="text" name="p_to_date" id="payment_to_date" class="form-control" autocomplete="off">
                                                                             </div>
                                                                         </div>
                 
@@ -435,7 +436,7 @@
                                                                     <div class="col-md-12">
                                                                         <a href="{{ route('customers.payment', $customer->id) }}" id="add_payment" class="btn btn-success"><i class="far fa-money-bill-alt text-white"></i> Receive</a>
                     
-                                                                        <a class="btn btn-success return_payment_btn mt-2 {{ $customer->total_sale_return_due > 0 ? '' : 'd-none' }} " id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund </a>
+                                                                        <a class="btn btn-success return_payment_btn mt-2" id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund </a>
                                                                     </div>
                                                                 </div>
                     
@@ -447,7 +448,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -583,7 +583,6 @@
                 "url": "{{ route('contacts.customer.ledger.list', $customer->id) }}",
                 "data": function(d) {
                     d.branch_id = $('#ledger_branch_id').val();
-                    d.voucher_type = $('#voucher_type').val();
                     d.from_date = $('.from_date').val();
                     d.to_date = $('.to_date').val();
                 }
@@ -604,8 +603,6 @@
                 var credit = sum_table_col($('.data_tbl'), 'credit');
                 $('#credit').text(bdFormat(credit));
                 $('.data_preloader').hide();
-
-                getRunningBalance();
             }
         });
 
@@ -685,8 +682,8 @@
                     "url": "{{ route('customers.all.payment.list', $customer->id) }}",
                     "data": function(d) {
                         d.type = $('#type').val();
-                        d.p_from_date = $('.p_from_date').val();
-                        d.p_to_date = $('.p_to_date').val();
+                        d.p_from_date = $('#payment_from_date').val();
+                        d.p_to_date = $('#payment_to_date').val();
                     }
                 },
 
@@ -733,11 +730,25 @@
             return sum;
         }
 
+        var filterObj = {
+            branch_id : null,
+            from_date : null,
+            to_date : null,
+        };
+
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_customer_ledgers', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
             ledger_table.ajax.reload();
+            
+            filterObj = {
+                branch_id : $('#ledger_branch_id').val(),
+                from_date : $('.from_date').val(),
+                to_date : $('.to_date').val(),
+            };
+
+            var data = getCustomerAmountsUserWise(filterObj, 'ladger_', false);
         });
 
          //Submit filter form by select input changing
@@ -746,6 +757,14 @@
 
             $('.data_preloader').show();
             sales_table.ajax.reload();
+
+            filterObj = {
+                branch_id : $('#sale_branch_id').val(),
+                from_date : $('.from_sale_date').val(),
+                to_date : $('.to_sale_date').val(),
+            };
+
+            var data = getCustomerAmountsUserWise(filterObj, 'sales_', false);
         });
 
         //Submit filter form by select input changing
@@ -754,8 +773,16 @@
 
             $('.data_preloader').show();
             payments_table.ajax.reload();
+
+            filterObj = {
+                branch_id : $('#payment_branch_id').val(),
+                from_date : $('.payment_from_date').val(),
+                to_date : $('.payment_to_date').val(),
+            };
+
+            var data = getCustomerAmountsUserWise(filterObj, 'cus_payments_', false);
         });
-        
+
         $(document).on('click', '#tab_btn', function(e) {
             e.preventDefault();
             
@@ -1224,7 +1251,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('p_from_date'),
+            element: document.getElementById('payment_from_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -1243,7 +1270,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('p_to_date'),
+            element: document.getElementById('payment_to_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -1260,62 +1287,35 @@
             format: 'DD-MM-YYYY',
         });
 
-        
-        function getCustomer() {
-
-            $.ajax({
-                url:"{{ url('common/ajax/call/get/customer', $customer->id) }}",
-                type:'get',
-                success:function(data){
-
-                    $('.opening_balance').text(bdFormat(data.opening_balance));
-                    $('.total_sale').text(bdFormat(data.total_sale));
-                    $('.total_return').text(bdFormat(data.total_return));
-                    $('.total_paid').text(bdFormat(data.total_paid));
-                    $('.total_sale_due').text(bdFormat(data.total_sale_due));
-                    $('.total_sale_return_due').text(bdFormat(data.total_sale_return_due));
-                    $('.total_less').text(bdFormat(data.total_less));
-
-                    if (data.total_sale_return_due > 0) {
-
-                        $('.return_payment_btn').removeClass('d-none');
-                    }else{
-
-                        $('.return_payment_btn').addClass('d-none');
-                    }
-                }
-            });
-        }
     </script>
 
     <script>
         
-        // var previousBalance = 0;
-        // var per = 0;
-        function getRunningBalance() {
+       function getCustomerAmountsUserWise(filterObj, showPrefix = 'ledger', is_show_all = true) {
 
-            // per++;
-            // var i=0;
-            
-            // $('.ledger_table').find('tbody').find('tr').each(function() { 
+            $.ajax({
+               url :"{{ route('customers.branch.wise.amounts', $customer->id) }}",
+                type :'get',
+                data : filterObj,
+                success:function(data){
+                    var keys = Object.keys(data);
 
-            //     var debit = parseFloat($(this).find('.debit').data('value')); 
-            //     var credit = parseFloat($(this).find('.credit').data('value'));  
+                    keys.forEach(function (val) {
 
-            //     if(parseFloat(i) == 0) {
+                        if (is_show_all) {
 
-            //         previousBalance = parseFloat(debit) - parseFloat(credit);
-            //     }else {
+                            $('.'+val).html(bdFormat(data[val]));
+                        }else {
 
-            //         previousBalance = parseFloat(previousBalance) + (parseFloat(debit) - parseFloat(credit));
-            //     } 
-                
-            //     i++;
-                
-            //     $(this).find('.running_balance').html(bdFormat(previousBalance));
-            // });
+                            $('#'+showPrefix+val).html(bdFormat(data[val]));
+                        }
+                    });
+
+                    $('#card_total_due').val(data['total_sale_due']);
+                }
+            });
         }
 
-        // getRunningBalance();
+        getCustomerAmountsUserWise(filterObj)
     </script>
 @endpush

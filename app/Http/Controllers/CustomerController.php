@@ -25,6 +25,7 @@ use App\Models\CustomerOpeningBalance;
 use App\Models\CustomerPaymentInvoice;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use Yajra\DataTables\Facades\DataTables;
+use App\Utils\BranchWiseCustomerAmountUtil;
 
 class CustomerController extends Controller
 {
@@ -35,6 +36,7 @@ class CustomerController extends Controller
     public $userActivityLogUtil;
     public $saleUtil;
     public $customerPaymentUtil;
+    public $branchWiseCustomerAmountUtil;
 
     public function __construct(
         CustomerUtil $customerUtil,
@@ -43,7 +45,8 @@ class CustomerController extends Controller
         SaleUtil $saleUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         UserActivityLogUtil $userActivityLogUtil,
-        CustomerPaymentUtil $customerPaymentUtil
+        CustomerPaymentUtil $customerPaymentUtil,
+        BranchWiseCustomerAmountUtil $branchWiseCustomerAmountUtil
     ) {
         $this->customerUtil = $customerUtil;
         $this->accountUtil = $accountUtil;
@@ -52,13 +55,12 @@ class CustomerController extends Controller
         $this->saleUtil = $saleUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->customerPaymentUtil = $customerPaymentUtil;
+        $this->branchWiseCustomerAmountUtil = $branchWiseCustomerAmountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
     public function index(Request $request)
     {
-
-        
         if (auth()->user()->permission->contact['customer_all'] == '0') {
 
             abort(403, 'Access Forbidden.');
@@ -686,6 +688,7 @@ class CustomerController extends Controller
     // Customer payment view
     public function payment($customerId)
     {
+        $branch_id = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
         $customer = DB::table('customers')->where('id', $customerId)->first();
 
         $accounts = DB::table('account_branches')
@@ -720,7 +723,11 @@ class CustomerController extends Controller
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
-        return view('contacts.customers.ajax_view.payment_modal', compact('customer', 'accounts', 'methods', 'allSalesAndOrders', 'invoices', 'orders'));
+        $amounts = $this->branchWiseCustomerAmountUtil->branchWiseCustomerAmount($customerId, $branch_id);
+
+        $branchWiseCustomerInvoiceAndOrders = $this->branchWiseCustomerAmountUtil->branchWiseCustomerInvoiceAndOrders($customerId);
+
+        return view('contacts.customers.ajax_view.payment_modal', compact('customer', 'accounts', 'methods', 'allSalesAndOrders', 'invoices', 'orders', 'amounts', 'branchWiseCustomerInvoiceAndOrders'));
     }
 
     public function paymentAdd(Request $request, $customerId)
@@ -770,6 +777,7 @@ class CustomerController extends Controller
             $this->customerUtil->addCustomerLedger(
                 voucher_type_id: 5,
                 customer_id: $customerId,
+                branch_id: auth()->user()->branch_id,
                 date: $request->date,
                 trans_id: $customerPayment->id,
                 amount: $request->paying_amount
@@ -807,8 +815,6 @@ class CustomerController extends Controller
                 )->first();
 
             $this->userActivityLogUtil->addLog(action: 1, subject_type: 27, data_obj: $receive);
-
-            // $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customerId);
 
             DB::commit();
         } catch (Exception $e) {
@@ -873,6 +879,7 @@ class CustomerController extends Controller
         $this->customerUtil->addCustomerLedger(
             voucher_type_id: 6,
             customer_id: $customerId,
+            branch_id: auth()->user()->branch_id,
             date: $request->date,
             trans_id: $customerPayment->id,
             amount: $request->paying_amount
@@ -1179,7 +1186,15 @@ class CustomerController extends Controller
                 'sp_account.account_number as sp_account_number',
                 'sales.invoice_id as sale_inv',
                 'sales.invoice_id as return_inv',
-            )->orderBy('customer_ledgers.report_date', 'desc')->get();
+            );
+
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+                $payments = $paymentsQuery->orderBy('customer_ledgers.report_date', 'desc');
+            } else {
+
+                $payments = $paymentsQuery->where('customer_ledgers.branch_id', auth()->user()->branch_id)->orderBy('customer_ledgers.report_date', 'desc');
+            }
 
             return DataTables::of($payments)
                 ->addColumn('action', function ($row) {
@@ -1281,7 +1296,6 @@ class CustomerController extends Controller
             ->leftJoin('customer_payments', 'customer_ledgers.customer_payment_id', 'customer_payments.id')
             ->leftJoin('payment_methods as cp_pay_method', 'customer_payments.payment_method_id', 'cp_pay_method.id')
             ->leftJoin('accounts as cp_account', 'customer_payments.account_id', 'cp_account.id')
-
             ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
             ->leftJoin('payment_methods as sp_pay_method', 'sale_payments.payment_method_id', 'sp_pay_method.id')
             ->leftJoin('accounts as sp_account', 'sale_payments.account_id', 'sp_account.id')
@@ -1333,8 +1347,21 @@ class CustomerController extends Controller
             'sp_account.account_number as sp_account_number',
             'sales.invoice_id as sale_inv',
             'sales.invoice_id as return_inv',
-        )->orderBy('customer_ledgers.report_date', 'desc')->get();
+        );
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $payments = $paymentsQuery->orderBy('customer_ledgers.report_date', 'desc')->get();
+        } else {
+
+            $payments = $paymentsQuery->where('customer_ledgers.branch_id', auth()->user()->branch_id)->orderBy('customer_ledgers.report_date', 'desc')->get();
+        }
 
         return view('contacts.customers.ajax_view.print_payments', compact('payments', 'fromDate', 'toDate', 'customer'));
+    }
+
+    public function customerAmountsBranchWise(Request $request, $customerId)
+    {
+        return $this->branchWiseCustomerAmountUtil->branchWiseCustomerAmount($customerId, $request->branch_id, $request->from_date, $request->to_date);
     }
 }

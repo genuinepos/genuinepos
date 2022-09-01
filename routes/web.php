@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
 if (env('APP_DEBUG') === true) {
+    
     include_once __DIR__ . '/dev_routes.php';
 }
 
@@ -41,7 +42,6 @@ Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controlle
     Route::get('branch/allow/login/users/{branchId}', 'CommonAjaxCallController@branchAllowLoginUsers');
     Route::get('branch/users/{branchId}', 'CommonAjaxCallController@branchUsers');
     Route::get('get/supplier/{supplierId}', 'CommonAjaxCallController@getSupplier');
-    Route::get('get/customer/{customerId}', 'CommonAjaxCallController@getCustomer');
 });
 
 //Product section route group
@@ -227,7 +227,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('return/payment/{customerId}', 'CustomerController@returnPayment')->name('customers.return.payment');
         Route::post('return/payment/{customerId}', 'CustomerController@returnPaymentAdd')->name('customers.return.payment.add');
 
-        // Route::get('view/payment/{customerId}', 'CustomerController@viewPayment')->name('customers.view.payment');
+        Route::get('view/payment/{customerId}', 'CustomerController@customerAmountsBranchWise')->name('customers.branch.wise.amounts');
         Route::get('all/payment/list/{customerId}', 'CustomerController@allPaymentList')->name('customers.all.payment.list');
         Route::get('all/payment/print/{customerId}', 'CustomerController@allPaymentPrint')->name('customers.all.payment.print');
         Route::get('payment/details/{paymentId}', 'CustomerController@paymentDetails')->name('customers.view.details');

@@ -75,6 +75,7 @@ class CustomerPaymentUtil
         if ($request->paying_amount > 0) {
 
             $dueInvoices = Sale::where('customer_id', $customerId)
+                ->where('branch_id', auth()->user()->branch_id)
                 ->where('due', '>', 0)
                 ->orderBy('report_date', 'asc')
                 ->get();
@@ -131,6 +132,7 @@ class CustomerPaymentUtil
     public function randomInvoiceOrSalesOrderPayment($request, $customerPayment, $customerId, $paymentInvoicePrefix)
     {
         $dueInvoices = Sale::where('customer_id', $customerId)
+            ->where('branch_id', auth()->user()->branch_id)
             ->where('due', '>', 0)
             ->orderBy('report_date', 'asc')
             ->get();
@@ -187,6 +189,7 @@ class CustomerPaymentUtil
     {
         $addSalePayment = new SalePayment();
         $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
+        $addSalePayment->branch_id = auth()->user()->branch_id;
         $addSalePayment->sale_id = $dueInvoice->id;
         $addSalePayment->customer_id = $customerId;
         $addSalePayment->account_id = $request->account_id;

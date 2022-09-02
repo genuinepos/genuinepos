@@ -10,6 +10,7 @@
 
 <div class="head-pos">
     <input type="hidden" name="action" id="action" value="">
+    <input type="hidden" id="branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}">
     <input type="text" class="d-none" name="ex_sale_id" id="ex_sale_id" value="">
     <input type="hidden" name="cash_register_id" value="{{ $openedCashRegister->id }}">
     <input type="hidden" name="sale_account_id" value="{{ $openedCashRegister->sale_account_id }}">
@@ -22,20 +23,15 @@
                 <div class="pos-logo">
                     @if (auth()->user()->branch)
                         @if (auth()->user()->branch->logo != 'default.png')
-                            <img style="height: auto;width: 99%"
-                            src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                            <img style="height: auto;width: 99%" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
-                            auth()->user()->branch->name }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()->branch->name }}</span>
                         @endif
                     @else
                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                        <img style="height: auto;width: 99%"
-                            src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
-                            alt="logo" class="logo__img">
+                        <img style="height: auto;width: 99%" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
-                            json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -107,10 +103,9 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-barcode"></i></span>
                                         </div>
-                                        <input type="text" name="search_product" class="form-control"
-                                            id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus
-                                            autocomplete="off">
+                                        <input type="text" name="search_product" class="form-control" id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus autocomplete="off">
                                         @if (auth()->user()->permission->product['product_add'] == '1')
+
                                             <div class="input-group-append add_button" id="add_product">
                                                 <span class="input-group-text"><i class="fas fa-plus"></i></span>
                                             </div>
@@ -316,20 +311,32 @@
         $('#order_discount_amount').val(parseFloat(calcDiscount).toFixed(2));
         $('#pre_redeemed_amount').val(0);
 
-        var url = "{{ url('common/ajax/call/customer_info') }}"+'/'+customerId;
+        var url = "{{ route('contacts.customer.amounts.branch.wise', ':customerId') }}";
+        var route = url.replace(':customerId', customerId);
 
-        $.get(url, function(data) {
+        var filterObj = {
+            branch_id : $('#branch_id').val(),
+            from_date : null,
+            to_date : null,
+        };
 
-            $('#previous_due').val(data.total_sale_due);
+        $.ajax({
+            url : route,
+            type :'get',
+            data : filterObj,
+            success:function(data){
+                console.log(data);
+                $('#previous_due').val(data['total_sale_due']);
 
-            if (rp_settings.enable_rp == '1') {
+                if (rp_settings.enable_rp == '1') {
 
-                $('#earned_point').val(data.point);
-                var __point_amount = parseFloat(data.point) * parseFloat(rp_settings.redeem_amount_per_unit_rp);
-                $('#trial_point_amount').val(parseFloat(__point_amount).toFixed(2));
+                    $('#earned_point').val(data['point']);
+                    var __point_amount = parseFloat(data['point']) * parseFloat(rp_settings.redeem_amount_per_unit_rp);
+                    $('#trial_point_amount').val(parseFloat(__point_amount).toFixed(2));
+                }
+
+                calculateTotalAmount();
             }
-
-            calculateTotalAmount();
         });
 
         calculateTotalAmount();

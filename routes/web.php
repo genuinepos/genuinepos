@@ -214,6 +214,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('/', 'CustomerController@index')->name('contacts.customer.index');
         Route::get('add', 'CustomerController@create')->name('contacts.customer.create');
         Route::post('store', 'CustomerController@store')->name('contacts.customer.store');
+        Route::post('addOpeningBalance', 'CustomerController@addOpeningBalance')->name('contacts.customer.add.opening.balance');
         Route::get('edit/{customerId}', 'CustomerController@edit')->name('contacts.customer.edit');
         Route::post('update', 'CustomerController@update')->name('contacts.customer.update');
         Route::delete('delete/{customerId}', 'CustomerController@delete')->name('contacts.customer.delete');
@@ -227,11 +228,11 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::get('return/payment/{customerId}', 'CustomerController@returnPayment')->name('customers.return.payment');
         Route::post('return/payment/{customerId}', 'CustomerController@returnPaymentAdd')->name('customers.return.payment.add');
 
-        Route::get('view/payment/{customerId}', 'CustomerController@customerAmountsBranchWise')->name('customers.branch.wise.amounts');
         Route::get('all/payment/list/{customerId}', 'CustomerController@allPaymentList')->name('customers.all.payment.list');
         Route::get('all/payment/print/{customerId}', 'CustomerController@allPaymentPrint')->name('customers.all.payment.print');
         Route::get('payment/details/{paymentId}', 'CustomerController@paymentDetails')->name('customers.view.details');
         Route::delete('payment/delete/{paymentId}', 'CustomerController@paymentDelete')->name('customers.payment.delete');
+        Route::get('amountsBranchWise/{customerId}', 'CustomerController@customerAmountsBranchWise')->name('contacts.customer.amounts.branch.wise');
 
         Route::group(['prefix' => 'money/receipt'], function () {
             Route::get('/voucher/list/{customerId}', 'MoneyReceiptController@moneyReceiptList')->name('money.receipt.voucher.list');

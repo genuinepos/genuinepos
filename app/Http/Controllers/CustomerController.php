@@ -613,7 +613,7 @@ class CustomerController extends Controller
     public function ledgerPrint(Request $request, $customerId)
     {
         $customerUtil = $this->customerUtil;
-        $branch_id = $request->branch_id;
+        $branch_id = $request->branch_id ? $request->branch_id : auth()->user()->branch_id;
         $ledgers = '';
         $fromDate = '';
         $toDate = '';
@@ -1146,14 +1146,14 @@ class CustomerController extends Controller
                 ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
                 ->leftJoin('sale_returns', 'sale_payments.sale_return_id', 'sale_returns.id');
 
-            if ($request->type) {
+            if ($request->branch_id) {
 
-                if ($request->type == 1) {
+                if ($request->branch_id == 'NULL') {
 
-                    $paymentsQuery->whereIn('customer_ledgers.voucher_type', [3, 5]);
+                    $paymentsQuery->where('customer_ledgers.branch_id', NULL);
                 } else {
 
-                    $paymentsQuery->whereIn('customer_ledgers.voucher_type', [4, 6]);
+                    $paymentsQuery->where('customer_ledgers.branch_id', $request->branch_id);
                 }
             }
 
@@ -1363,5 +1363,48 @@ class CustomerController extends Controller
     public function customerAmountsBranchWise(Request $request, $customerId)
     {
         return $this->branchWiseCustomerAmountUtil->branchWiseCustomerAmount($customerId, $request->branch_id, $request->from_date, $request->to_date);
+    }
+
+    public function addOpeningBalance(Request $request)
+    {
+        $updateCustomer = Customer::where('id', $request->customer_id)->first();
+
+        $branchOpeningBalance = CustomerOpeningBalance::where('customer_id', $request->customer_id)->where('branch_id', $request->branch_id)->first();
+
+        if ($branchOpeningBalance) {
+
+            $branchOpeningBalance->amount = $request->opening_balance ? $request->opening_balance : 0.00;
+            $branchOpeningBalance->is_show_again = isset($request->never_show_again) ? 0 : 1;
+            $branchOpeningBalance->save();
+        } else {
+
+            $addCustomerOpeningBalance = new CustomerOpeningBalance();
+            $addCustomerOpeningBalance->customer_id = $updateCustomer->id;
+            $addCustomerOpeningBalance->branch_id = $request->branch_id;
+            $addCustomerOpeningBalance->amount = $request->opening_balance ? $request->opening_balance : 0.00;
+            $addCustomerOpeningBalance->is_show_again = isset($request->never_show_again) ? 0 : 1;
+            $addCustomerOpeningBalance->save();
+        }
+
+        $calcOpeningBalance = DB::table('customer_opening_balances')
+            ->where('customer_id', $request->customer_id)
+            ->select(DB::raw('SUM(amount) as op_amount'))
+            ->groupBy('customer_id')->get();
+
+        $updateCustomer->opening_balance = $calcOpeningBalance->sum('op_amount');
+        $updateCustomer->save();
+
+        $this->customerUtil->updateCustomerLedger(
+            voucher_type_id: 0,
+            customer_id: $updateCustomer->id,
+            previous_branch_id: auth()->user()->branch_id,
+            new_branch_id: auth()->user()->branch_id,
+            date: $updateCustomer->created_at,
+            trans_id: NULL,
+            amount: $request->opening_balance ? $request->opening_balance : 0.00,
+            fixed_date: $updateCustomer->created_at,
+        );
+
+        return 'success';
     }
 }

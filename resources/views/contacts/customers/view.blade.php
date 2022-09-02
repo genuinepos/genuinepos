@@ -281,7 +281,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                 </div>
-                                                                <input type="text" name="from_date" id="from_sale_date" class="form-control from_sale_date date" autocomplete="off">
+                                                                <input type="text" name="from_date" id="from_sale_date" class="form-control" autocomplete="off">
                                                             </div>
                                                         </div>
 
@@ -292,7 +292,7 @@
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                 </div>
                                                                 
-                                                                <input type="text" name="to_date" id="to_sale_date" class="form-control to_sale_date date" autocomplete="off">
+                                                                <input type="text" name="to_date" id="to_sale_date" class="form-control" autocomplete="off">
                                                             </div>
                                                         </div>
 
@@ -401,7 +401,7 @@
                                                                                 <div class="input-group-prepend">
                                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                                 </div>
-                                                                                <input type="text" name="p_from_date" id="payment_from_date" class="form-control date"autocomplete="off">
+                                                                                <input type="text" name="p_from_date" id="payment_from_date" class="form-control" autocomplete="off">
                                                                             </div>
                                                                         </div>
                 
@@ -618,9 +618,9 @@
             "ajax": {
                 "url": "{{ route('contacts.customer.view', $customerId) }}",
                 "data": function(d) {
-                    d.branch_id = $('.sale_branch_id').val();
-                    d.from_date = $('.from_sale_date').val();
-                    d.to_date = $('.to_sale_date').val();
+                    d.branch_id = $('#sale_branch_id').val();
+                    d.from_date = $('#from_sale_date').val();
+                    d.to_date = $('#to_sale_date').val();
                 }
             },
 
@@ -681,7 +681,7 @@
                 "ajax": {
                     "url": "{{ route('customers.all.payment.list', $customer->id) }}",
                     "data": function(d) {
-                        d.type = $('#type').val();
+                        d.branch_id = $('#payment_branch_id').val();
                         d.p_from_date = $('#payment_from_date').val();
                         d.p_to_date = $('#payment_to_date').val();
                     }
@@ -748,7 +748,7 @@
                 to_date : $('.to_date').val(),
             };
 
-            var data = getCustomerAmountsUserWise(filterObj, 'ladger_', false);
+            var data = getCustomerAmountsBranchWise(filterObj, 'ladger_', false);
         });
 
          //Submit filter form by select input changing
@@ -760,11 +760,11 @@
 
             filterObj = {
                 branch_id : $('#sale_branch_id').val(),
-                from_date : $('.from_sale_date').val(),
-                to_date : $('.to_sale_date').val(),
+                from_date : $('#from_sale_date').val(),
+                to_date : $('#to_sale_date').val(),
             };
 
-            var data = getCustomerAmountsUserWise(filterObj, 'sales_', false);
+            var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
         });
 
         //Submit filter form by select input changing
@@ -776,11 +776,11 @@
 
             filterObj = {
                 branch_id : $('#payment_branch_id').val(),
-                from_date : $('.payment_from_date').val(),
-                to_date : $('.payment_to_date').val(),
+                from_date : $('#payment_from_date').val(),
+                to_date : $('#payment_to_date').val(),
             };
 
-            var data = getCustomerAmountsUserWise(filterObj, 'cus_payments_', false);
+            var data = getCustomerAmountsBranchWise(filterObj, 'cus_payments_', false);
         });
 
         $(document).on('click', '#tab_btn', function(e) {
@@ -1291,10 +1291,10 @@
 
     <script>
         
-       function getCustomerAmountsUserWise(filterObj, showPrefix = 'ledger', is_show_all = true) {
+       function getCustomerAmountsBranchWise(filterObj, showPrefix = 'ledger', is_show_all = true) {
 
             $.ajax({
-               url :"{{ route('customers.branch.wise.amounts', $customer->id) }}",
+               url :"{{ route('contacts.customer.amounts.branch.wise', $customer->id) }}",
                 type :'get',
                 data : filterObj,
                 success:function(data){
@@ -1316,6 +1316,6 @@
             });
         }
 
-        getCustomerAmountsUserWise(filterObj)
+        getCustomerAmountsBranchWise(filterObj)
     </script>
 @endpush

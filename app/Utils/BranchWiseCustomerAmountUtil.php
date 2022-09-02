@@ -9,10 +9,12 @@ class BranchWiseCustomerAmountUtil
 {
     public function branchWiseCustomerAmount($customerId, $branch_id = null, $from_date = null, $to_date = null)
     {
-        // $openingBalanceDetails = DB::table('customer_opening_balances')->where('customer_opening_balances.customer_id', $customerId)
-        //     ->where('customer_opening_balances.branch_id', $branch_id)
-        //     ->select('customer_opening_balances.amount', 'customer_opening_balances.is_show_again')
-        //     ->first();
+        $openingBalanceDetails = DB::table('customer_opening_balances')->where('customer_opening_balances.customer_id', $customerId)
+            ->where('customer_opening_balances.branch_id', ($branch_id == 'NULL' ? NULL : $branch_id))
+            ->select('customer_opening_balances.amount', 'customer_opening_balances.is_show_again')
+            ->first();
+
+        $customer = DB::table('customers')->where('id', $customerId)->select('id', 'point')->first();
 
         $amounts = '';
 
@@ -97,7 +99,8 @@ class BranchWiseCustomerAmountUtil
             'totalRefund' => $totalRefund,
             'total_sale_due' => $totalDue,
             'total_sale_return_due' => $totalReturnDue > 0 ? $totalReturnDue : 0,
-            // 'openingBalanceDetails' => $openingBalanceDetails,
+            'openingBalanceDetails' => $openingBalanceDetails,
+            'point' => $customer->point,
         ];
     }
 
@@ -144,12 +147,12 @@ class BranchWiseCustomerAmountUtil
             //     $ordersQuery->where('sales.order_by_id', auth()->user()->id);
             // }
 
-            $allSalesAndOrdersQuery->where('sales.branch_id', auth()->user()->branch_id)->select('id', 'date', 'invoice_id', 'order_date', 'total_payable_amount', 'sale_return_amount', 'due', 'status')->orderBy('report_date', 'desc');
+            $allSalesAndOrdersQuery->where('sales.branch_id', auth()->user()->branch_id)->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due', 'status')->orderBy('report_date', 'desc');
 
-            $invoicesQuery->where('sales.branch_id', auth()->user()->branch_id)->select('id', 'date', 'total_payable_amount', 'sale_return_amount', 'due')
+            $invoicesQuery->where('sales.branch_id', auth()->user()->branch_id)->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due')
                 ->orderBy('report_date', 'desc');
 
-            $ordersQuery->where('sales.branch_id', auth()->user()->branch_id)->select('id', 'date', 'invoice_id', 'order_date', 'total_payable_amount', 'sale_return_amount', 'due', 'status')->orderBy('report_date', 'desc');
+            $ordersQuery->where('sales.branch_id', auth()->user()->branch_id)->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due', 'status')->orderBy('report_date', 'desc');
         }
 
         $allSalesAndOrders = $allSalesAndOrdersQuery->get();

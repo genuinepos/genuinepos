@@ -57,8 +57,8 @@
                                 </li>
 
                                 <li><strong>Total Due : </strong>
-                                    <span class="card_text text-danger" id="customer_payment_total_sale_due">
-                                        {{ App\Utils\Converter::format_in_bdt($amounts['total_sale_due']) }}
+                                    <span class="card_text text-danger" >
+                                        <span id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($amounts['total_sale_due']) }}</span>
                                         <input type="hidden" id="card_total_due" value="{{ $amounts['total_sale_due'] }}">
                                     </span>
                                 </li>
@@ -800,16 +800,7 @@
         e.preventDefault();
 
         $('.loading_button').show();
-        // var available_amount = $('#p_available_amount').val();
-        // var paying_amount = $('#p_paying_amount').val();
         
-        // if (parseFloat(paying_amount) > parseFloat(available_amount)) {
-
-        //     $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
-        //     $('.loading_button').hide();
-        //     return;
-        // }
-
         var url = $(this).attr('action');
         
         $.ajax({
@@ -851,7 +842,7 @@
 
                 $.each(err.responseJSON.errors, function(key, error) {
 
-                    $('.error_p_' + key + '').html(error[0]);
+                    $('.error_cp_' + key + '').html(error[0]);
                 });
             }
         });
@@ -883,7 +874,7 @@
         format: _expectedDateFormat,
     });
 
-    $('#p_payment_method_id').on('change', function () {
+    $('#cp_payment_method_id').on('change', function () {
 
         var account_id = $(this).find('option:selected').data('account_id');
         setMethodAccount(account_id);
@@ -893,14 +884,14 @@
 
         if (account_id) {
 
-            $('#p_account_id').val(account_id);
+            $('#cp_account_id').val(account_id);
         }else if(account_id === ''){
 
-            $('#p_account_id option:first-child').prop("selected", true);
+            $('#cp_account_id option:first-child').prop("selected", true);
         }
     }
 
-    setMethodAccount($('#p_payment_method_id').find('option:selected').data('account_id'));
+    setMethodAccount($('#cp_payment_method_id').find('option:selected').data('account_id'));
 
     $(document).on('click', '#payment_against', function() {
 
@@ -915,7 +906,9 @@
         $('.due_table').hide();
         $('.'+show_table).show(300);
         $('#total_amount').html(0.00);
-        $('#p_paying_amount').val(parseFloat(0).toFixed(2));
+        $('#cp_paying_amount').val(parseFloat(0).toFixed(2));
+        var card_total_due = $('#card_total_due').val() ? $('#card_total_due').val() : 0;
+        $('#card_total_due_show').text(bdFormat(card_total_due));
     });
 
     $(document).on('click', '#sale_id', function() {
@@ -932,7 +925,8 @@
         });
 
         $('#total_amount').html(parseFloat(total).toFixed(2));
-        $('#p_paying_amount').val(parseFloat(total).toFixed(2));
+        $('#cp_paying_amount').val(parseFloat(total).toFixed(2));
+
         calculateTotalDue();
     });
 
@@ -948,33 +942,33 @@
         });
 
         $('#total_amount').html(0.00);
-        $('#p_paying_amount').val(0.00);
+        $('#cp_paying_amount').val(0.00);
         calculateTotalDue();
     });
 
-    $(document).on('input', '#p_paying_amount', function (e) {
+    $(document).on('input', '#cp_paying_amount', function (e) {
 
         calculateTotalDue();
     });
 
-    $(document).on('input', '#p_less_amount', function (e) {
+    $(document).on('input', '#cp_less_amount', function (e) {
 
         calculateTotalDue();
     });
 
     function calculateTotalDue() {
         
-        var p_paying_amount = $('#p_paying_amount').val() ? $('#p_paying_amount').val() : 0;
+        var cp_paying_amount = $('#cp_paying_amount').val() ? $('#cp_paying_amount').val() : 0;
         var card_total_due = $('#card_total_due').val() ? $('#card_total_due').val() : 0;
-        var p_less_amount = $('#p_less_amount').val() ? $('#p_less_amount').val() : 0;
+        var cp_less_amount = $('#cp_less_amount').val() ? $('#cp_less_amount').val() : 0;
 
-        var totalDue = parseFloat(card_total_due) - parseFloat(p_paying_amount) - parseFloat(p_less_amount);
+        var totalDue = parseFloat(card_total_due) - parseFloat(cp_paying_amount) - parseFloat(cp_less_amount);
 
         $('#card_total_due_show').text(bdFormat(totalDue));
 
-        if (parseFloat(p_paying_amount) && parseFloat(p_paying_amount) > 0) {
+        if (parseFloat(cp_paying_amount) && parseFloat(cp_paying_amount) > 0) {
 
-            document.getElementById('in_word').innerHTML = inWords(parseInt(p_paying_amount)) + 'ONLY';
+            document.getElementById('in_word').innerHTML = inWords(parseInt(cp_paying_amount)) + 'ONLY';
         }else {
 
             document.getElementById('in_word').innerHTML = '';

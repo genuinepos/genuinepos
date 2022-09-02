@@ -934,39 +934,22 @@
 
         $('#previous_due').val(parseFloat(0).toFixed(2));
         $('#display_pre_due').val(parseFloat(0).toFixed(2));
-        var id = $(this).val(); 
+        var customer_id = $('#customer_id').val();
 
-        var url = "{{ url('common/ajax/call/customer_info') }}"+'/'+id;
+        var customer_id = $(this).val();
 
-        if(id != 0){
+        if (customer_id == '') {
 
-            $.get(url, function(customer) {
+            return;
+        }
 
-                if (customer) {
+        
 
-                    $('#display_pre_due').val(customer.total_sale_due);
-                    $('#previous_due').val(customer.total_sale_due);
+        var branch_id = $('branch_id').val() ? $('branch_id').val() : '';
 
-                    if (customer.pay_term != null && customer.pay_term_number != null) {
+        if(customer_id){
 
-                        $('#pay_term').val(customer.pay_term);
-                        $('#pay_term_number').val(customer.pay_term_number);
-                    }else{
-
-                        $('#pay_term').val('');
-                        $('#pay_term_number').val('');
-                    }
-                }else{
-
-                    $('#pay_term').val('');
-                    $('#pay_term_number').val('');
-                }
-
-                calculateTotalAmount();
-            });
-        }else{
-
-            calculateTotalAmount();
+            getCustomerAmountsBranchWise(customer_id);
         }
     });
 
@@ -1626,12 +1609,6 @@
         }
     });
 
-    // $(document).on('mouseenter', '#list>li>a',function () {
-
-    //     $('#list>li>a').removeClass('selectProduct');
-    //     $(this).addClass('selectProduct');
-    // });
-
     function afterCreateSale() {
 
         $('.loading_button').hide();
@@ -1843,7 +1820,85 @@
 
         $('.select2-search__field').focus();
         $('.select2-search__field').select();
-      
     });
+
+    $('#add_customer_opening_balance').on('submit', function(e){
+        e.preventDefault();
+
+        $('.op_loading_button').show();
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+        $.ajax({
+            url:url,
+            type:'post',
+            data: request,
+            success:function(data){
+
+                $('.op_loading_button').hide();
+                var branch_id = $('#branch_id').val();
+                var customer_id = $('#customer_id').val();
+                getCustomerAmountsBranchWise(branch_id, customer_id, false);
+                $('#addCustomerOpeingBalanceModal').modal('hide');
+                $('#add_customer_opening_balance')[0].reset();
+            },error: function(err) {
+                $('.op_loading_button').hide();
+
+                if (err.status == 0) {
+
+                    toastr.error('Net Connetion Error. Reload This Page.');
+                    return;
+                }else if (err.status == 500) {
+
+                    toastr.error('Server Error. Please contact to the support team.');
+                    return;
+                }
+            }
+        });
+    });
+
+    function getCustomerAmountsBranchWise(customer_id, is_show_modal = true) {
+
+        var url = "{{ route('contacts.customer.amounts.branch.wise', ':customer_id') }}";
+        var route = url.replace(':customer_id', customer_id);
+
+        var filterObj = {
+            branch_id : $('#branch_id').val(),
+            from_date : null,
+            to_date : null,
+        };
+
+        $.ajax({
+            url : route,
+            type :'get',
+            data : filterObj,
+            success:function(data){
+
+                $('#previous_due').val(parseFloat(data['total_sale_due']).toFixed(2));
+                $('#display_pre_due').val(parseFloat(data['total_sale_due']).toFixed(2));
+                $('.op_customer_name').html($('#customer_id').find('option:selected').data('customer_name'));
+                $('.op_customer_phone').html($('#customer_id').find('option:selected').data('customer_phone'));
+                $('.op_branch_name').html($('branch_name').val());
+                $('#op_branch_id').val($('branch_id').val());
+                $('#op_customer_id').val(customer_id);
+
+                calculateTotalAmount();
+
+                if (is_show_modal) {
+
+                    if (data['openingBalanceDetails'] != null) {
+
+                        if (data['openingBalanceDetails'].amount == 0 && data['openingBalanceDetails'].is_show_again == 1) {
+
+                            $('#addCustomerOpeingBalanceModal').modal('show');
+                        }
+                    }else{
+
+                        $('#addCustomerOpeingBalanceModal').modal('show');
+                    }
+                }
+
+            }
+        });
+    }
 
 </script>

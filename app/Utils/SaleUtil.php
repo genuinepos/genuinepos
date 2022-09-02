@@ -95,6 +95,7 @@ class SaleUtil
 
                         $dueAmounts = $payingPreviousDue;
                         $dueInvoices = Sale::where('customer_id', $request->customer_id)
+                            ->where('branch_id', auth()->user()->branch_id)
                             ->where('due', '>', 0)
                             ->get();
 
@@ -432,6 +433,7 @@ class SaleUtil
         $addSalePayment = new SalePayment();
         $addSalePayment->invoice_id = 'SRPV' . $this->invoiceVoucherRefIdUtil->getLastId('sale_payments');
         $addSalePayment->sale_id = $sale ? $sale->id : NULL;
+        $addSalePayment->branch_id = auth()->user()->branch_id;
         $addSalePayment->sale_return_id = $sale_return_id;
         $addSalePayment->customer_id = $sale ? $sale->customer_id : $request->customer_id;
         $addSalePayment->account_id = $request->account_id;
@@ -629,9 +631,9 @@ class SaleUtil
             'sales.due',
             'sales.is_return_available',
             'all_total_payable', 
-            'gross_pay', 
-            'previous_due', 
-            'previous_due_paid', 
+            'gross_pay',
+            'previous_due',
+            'previous_due_paid',
             'customer_running_balance',
             'branches.name as branch_name',
             'branches.branch_code',

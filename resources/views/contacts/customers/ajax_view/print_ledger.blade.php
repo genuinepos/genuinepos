@@ -9,7 +9,7 @@
         tfoot { display:table-footer-group }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 4%;margin-right: 4%;}
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 20px;margin-right: 20px;}
     .header, .header-space,
     .footer, .footer-space {height: 20px;}
     .header {position: fixed;top: 0;}
@@ -50,16 +50,6 @@
 
             <p><strong>Date :</strong> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <strong>To</strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
         @endif 
-        
-        {{-- @if (auth()->user()->branch_id)
-
-            <h6>{{ auth()->user()->branch->name }}</h6>
-            <p style="width: 60%; margin:0 auto;">{{ auth()->user()->branch->city.', '.auth()->user()->branch->state.', '.auth()->user()->branch->zip_code.','.auth()->user()->branch->country }}</p>
-        @else
-
-            <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-        @endif --}}
         
         <p><strong>Customer Ledger </strong></p> 
     </div>

@@ -66,13 +66,17 @@
                                                             <select style="margin-bottom: 2px;" name="customer_id" class="form-control select2" id="customer_id">
                                                             <option value="">Walk-In-Customer</option>
                                                             @foreach ($customers as $customer)
-                                                                <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
+                                                                <option data-customer_name="{{ $customer->name }}" data-customer_phone="{{ $customer->phone }}" value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
                                                             @endforeach
                                                         </select></div>
-                                                        <div style="display: inline-block"> <div class="input-group-prepend">
-                                                            <span class="input-group-text add_button" id="addCustomer"><i class="fas fa-plus-square text-dark"></i></span>
-                                                        </div></div> 
-                                                       
+
+                                                        <div style="display: inline-block"> 
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text add_button" id="addCustomer">
+                                                                    <i class="fas fa-plus-square text-dark"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -80,7 +84,8 @@
                                             <div class="input-group mt-1">
                                                 <label class="col-4"> <b>Warehouse :</b> </label>
                                                 <div class="col-8">
-                                                    {{-- <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1"> --}}
+                                                    <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" id="branch_name">
+                                                    <input type="hidden" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}" id="branch_id">
                                                     <select name="warehouse_id" class="form-control" id="warehouse_id">
                                                         <option value="">Select Warehouse</option>
                                                         @foreach ($warehouses as $warehouse)
@@ -129,11 +134,8 @@
                                                 <label class=" col-4"><b>Date : <span
                                                     class="text-danger">*</span></b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="date" class="form-control add_input" data-name="Date"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="date">
-                                                    {{-- <input type="date" name="date" class="form-control add_input" data-name="Date"
-                                                        value="" autocomplete="off"> --}}
-                                                        <span class="error error_date"></span>
+                                                    <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="date">
+                                                    <span class="error error_date"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -505,6 +507,58 @@
         </div>
     </div> 
     <!--Add Customer Modal-->
+
+    <!--Add Customer Opening Balance Modal-->
+    <div class="modal fade" id="addCustomerOpeingBalanceModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true"
+    aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Add Customer Opening Balance</h6>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body">
+                    <form id="add_customer_opening_balance" action="{{ route('contacts.customer.add.opening.balance') }}" method="POST">
+                        @csrf
+                        <input type="hidden" id="op_branch_id" name="branch_id">
+                        <input type="hidden" id="op_customer_id" name="customer_id">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <p><strong>Customer : </strong> <span class="op_customer_name"></span></p>
+                                <p><strong>Phone No. : </strong> <span class="op_customer_phone"></span></p>
+                            </div>
+
+                            <div class="col-md-6">
+                                <p><strong>User : </strong> <span class="op_user_name"></span></p>
+                            </div>
+
+                            <div class="col-md-12 mt-2">
+                                <label><b>Opening Balance :</b> </label>
+                                <input type="number" step="any" name="opening_balance" class="form-control" placeholder="Opening Balance">
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <div class="row">
+                                    <p class="checkbox_input_wrap">
+                                        <input type="checkbox" name="never_show_again" id="never_show_again" class="is_show_again">&nbsp;<b>Never Show Again.</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-3">
+                            <div class="col-md-12">
+                                <button type="button" class="btn op_loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                <button name="action" value="save" type="submit" class="c-btn button-success float-end">Save</button>
+                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Add Customer Opening Balance Modal End-->
 
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">

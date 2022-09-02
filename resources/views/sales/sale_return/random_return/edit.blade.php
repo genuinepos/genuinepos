@@ -66,6 +66,7 @@
                                                 <label class="col-4"><b>B. Location :</b></label>
                                                 <div class="col-8">
                                                     <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1">
+                                                    <input type="hidden" value="{{ $return->branch_id ? $return->branch_id : 'NULL' }}" id="branch_id">
                                                 </div>
                                             </div>
                                         </div>
@@ -360,7 +361,7 @@
                                                     <div class="input-group customer_pre_due_field {{ $return->sale_id ? 'd-none' : '' }}">
                                                         <label class="col-4"><b>Customer Previous Due :</b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="number" step="any" name="customer_previous_due" id="customer_previous_due" class="form-control text-danger" value="{{ $return->customer ? $return->customer->total_sale_due : 0.00 }}" tabindex="-1">
+                                                            <input readonly type="number" step="any" name="customer_previous_due" id="customer_previous_due" class="form-control text-danger" value="{{ $customerBalance > 0 ? $customerBalance : 0.00 }}" tabindex="-1">
                                                         </div>
                                                     </div>
 
@@ -540,22 +541,34 @@
         $('#customer_id').on('change', function () {
 
             $('#customer_previous_due').val(parseFloat(0).toFixed(2));
-    
-            var id = $(this).val(); 
+
+            var customer_id = $(this).val(); 
             var sale_id = $('#sale_id').val(); 
 
-            var url = "{{ url('common/ajax/call/customer_info') }}"+'/'+id;
+            var url = "{{ route('contacts.customer.amounts.branch.wise', ':customer_id') }}";
+            var route = url.replace(':customer_id', customer_id);
 
-            if(id != '' && sale_id == ''){
+            var filterObj = {
+                branch_id : $('#branch_id').val(),
+                from_date : null,
+                to_date : null,
+            };
 
-                $.get(url, function(customer) {
+            if(customer_id != '' && sale_id == ''){
 
-                    if (customer) {
+                $.ajax({
+                    url : route,
+                    type :'get',
+                    data : filterObj,
+                    success:function(customerAmounts){
 
-                        $('#customer_previous_due').val(customer.total_sale_due);
+                        if (customerAmounts) {
+
+                            $('#customer_previous_due').val(customerAmounts['total_sale_due']);
+                        }
+
+                        calculateTotalAmount();
                     }
-
-                    calculateTotalAmount();
                 });
             }else{
 

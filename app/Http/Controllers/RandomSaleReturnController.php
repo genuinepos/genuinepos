@@ -124,153 +124,167 @@ class RandomSaleReturnController extends Controller
             'sale_return_account_id.required' => 'Sale Return A/C is required',
         ]);
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_return'];
+        try {
 
-        $sale = Sale::where('id', $request->sale_id)->first();
+            DB::beginTransaction();
+            // database queries here. Access any $var_N directly
 
-        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_returns'), 4, "0", STR_PAD_LEFT);
+            $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+            $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_return'];
 
-        $addSaleReturn = new SaleReturn();
-        $addSaleReturn->total_item = $request->total_item;
-        $addSaleReturn->total_qty = $request->total_qty;
-        $addSaleReturn->sale_id = $request->sale_id;
-        $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
-        $addSaleReturn->customer_id = $request->customer_id;
-        $addSaleReturn->branch_id = $sale ? $sale->branch_id : auth()->user()->branch_id;
-        $addSaleReturn->sale_return_account_id = $request->sale_return_account_id;
-        $addSaleReturn->admin_id = auth()->user()->id;
-        $addSaleReturn->return_discount_type = $request->return_discount_type;
-        $addSaleReturn->return_discount = $request->return_discount;
-        $addSaleReturn->return_discount_amount = $request->return_discount_amount;
-        $addSaleReturn->return_tax = $request->return_tax;
-        $addSaleReturn->return_tax_amount = $request->return_tax_amount;
-        $addSaleReturn->net_total_amount = $request->net_total_amount;
-        $addSaleReturn->total_return_amount = $request->total_return_amount;
-        $addSaleReturn->total_return_due_pay = $request->paying_amount;
-        $addSaleReturn->total_return_due = $request->total_return_amount - $request->paying_amount;
-        $addSaleReturn->date = $request->date;
-        $addSaleReturn->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-        $addSaleReturn->month = date('F');
-        $addSaleReturn->year = date('Y');
-        $addSaleReturn->save();
+            $sale = Sale::where('id', $request->sale_id)->first();
 
-        // Add sale return products
-        $index = 0;
-        foreach ($request->product_ids as $product_id) {
+            $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_returns'), 4, "0", STR_PAD_LEFT);
 
-            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
-            $addReturnProduct = new SaleReturnProduct();
-            $addReturnProduct->sale_return_id = $addSaleReturn->id;
-            $addReturnProduct->sale_product_id = $request->sale_product_ids[$index];
-            $addReturnProduct->product_id = $product_id;
-            $addReturnProduct->product_variant_id = $variant_id;
-            $addReturnProduct->tax_type = $request->tax_types[$index];
-            $addReturnProduct->unit_tax_percent = $request->unit_tax_percents[$index];
-            $addReturnProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
-            $addReturnProduct->unit_discount_type = $request->unit_discount_types[$index];
-            $addReturnProduct->unit_discount = $request->unit_discounts[$index];
-            $addReturnProduct->unit_discount_amount = $request->unit_discount_amounts[$index];
-            $addReturnProduct->return_qty = $request->return_quantities[$index];
-            $addReturnProduct->unit = $request->units[$index];
-            $addReturnProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
-            $addReturnProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$index];
-            $addReturnProduct->unit_price_inc_tax = $request->unit_prices[$index];
-            $addReturnProduct->return_subtotal = $request->subtotals[$index];
-            $addReturnProduct->save();
+            $addSaleReturn = new SaleReturn();
+            $addSaleReturn->total_item = $request->total_item;
+            $addSaleReturn->total_qty = $request->total_qty;
+            $addSaleReturn->sale_id = $request->sale_id;
+            $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
+            $addSaleReturn->customer_id = $request->customer_id;
+            $addSaleReturn->branch_id = $sale ? $sale->branch_id : auth()->user()->branch_id;
+            $addSaleReturn->sale_return_account_id = $request->sale_return_account_id;
+            $addSaleReturn->admin_id = auth()->user()->id;
+            $addSaleReturn->return_discount_type = $request->return_discount_type;
+            $addSaleReturn->return_discount = $request->return_discount;
+            $addSaleReturn->return_discount_amount = $request->return_discount_amount;
+            $addSaleReturn->return_tax = $request->return_tax;
+            $addSaleReturn->return_tax_amount = $request->return_tax_amount;
+            $addSaleReturn->net_total_amount = $request->net_total_amount;
+            $addSaleReturn->total_return_amount = $request->total_return_amount;
+            $addSaleReturn->total_return_due_pay = $request->paying_amount;
+            $addSaleReturn->total_return_due = $request->total_return_amount - $request->paying_amount;
+            $addSaleReturn->date = $request->date;
+            $addSaleReturn->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+            $addSaleReturn->month = date('F');
+            $addSaleReturn->year = date('Y');
+            $addSaleReturn->save();
 
-            $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
-                tranColName: 'sale_return_product_id',
-                transId: $addReturnProduct->id,
-                branchId: auth()->user()->branch_id,
-                productId: $product_id,
-                quantity: $request->return_quantities[$index],
-                variantId: $variant_id,
-                unitCostIncTax: $request->unit_costs_inc_tax[$index],
-                sellingPrice: $request->unit_prices_exc_tax[$index],
-                subTotal: $request->subtotals[$index],
-                createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
-            );
+            // Add sale return products
+            $index = 0;
+            foreach ($request->product_ids as $product_id) {
 
-            $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
-            $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
+                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+                $addReturnProduct = new SaleReturnProduct();
+                $addReturnProduct->sale_return_id = $addSaleReturn->id;
+                $addReturnProduct->sale_product_id = $request->sale_product_ids[$index];
+                $addReturnProduct->product_id = $product_id;
+                $addReturnProduct->product_variant_id = $variant_id;
+                $addReturnProduct->tax_type = $request->tax_types[$index];
+                $addReturnProduct->unit_tax_percent = $request->unit_tax_percents[$index];
+                $addReturnProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
+                $addReturnProduct->unit_discount_type = $request->unit_discount_types[$index];
+                $addReturnProduct->unit_discount = $request->unit_discounts[$index];
+                $addReturnProduct->unit_discount_amount = $request->unit_discount_amounts[$index];
+                $addReturnProduct->return_qty = $request->return_quantities[$index];
+                $addReturnProduct->unit = $request->units[$index];
+                $addReturnProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
+                $addReturnProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$index];
+                $addReturnProduct->unit_price_inc_tax = $request->unit_prices[$index];
+                $addReturnProduct->return_subtotal = $request->subtotals[$index];
+                $addReturnProduct->save();
 
-            $index++;
-        }
+                $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
+                    tranColName: 'sale_return_product_id',
+                    transId: $addReturnProduct->id,
+                    branchId: auth()->user()->branch_id,
+                    productId: $product_id,
+                    quantity: $request->return_quantities[$index],
+                    variantId: $variant_id,
+                    unitCostIncTax: $request->unit_costs_inc_tax[$index],
+                    sellingPrice: $request->unit_prices_exc_tax[$index],
+                    subTotal: $request->subtotals[$index],
+                    createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+                );
 
-        // Add Sale Return A/C ledger
-        $this->accountUtil->addAccountLedger(
-            voucher_type_id: 2,
-            date: $request->date,
-            account_id: $request->sale_return_account_id,
-            trans_id: $addSaleReturn->id,
-            amount: $request->total_return_amount,
-            balance_type: 'debit'
-        );
+                $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+                $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
 
-        if ($request->customer_id) {
+                $index++;
+            }
 
-            $this->customerUtil->addCustomerLedger(
-                voucher_type_id: 2,
-                customer_id: $request->customer_id,
-                date: $request->date,
-                trans_id: $addSaleReturn->id,
-                amount: $request->total_return_amount
-            );
-        }
-
-        if ($request->paying_amount > 0) {
-
-            $saleReturnPaymentGetId = $this->saleUtil->saleReturnPaymentGetId(
-                request: $request,
-                sale: $sale,
-                customer_payment_id: NULL,
-                sale_return_id: $addSaleReturn->id
-            );
-
-            // Add bank A/C ledger
+            // Add Sale Return A/C ledger
             $this->accountUtil->addAccountLedger(
-                voucher_type_id: 12,
+                voucher_type_id: 2,
                 date: $request->date,
-                account_id: $request->account_id,
-                trans_id: $saleReturnPaymentGetId,
-                amount: $request->paying_amount,
+                account_id: $request->sale_return_account_id,
+                trans_id: $addSaleReturn->id,
+                amount: $request->total_return_amount,
                 balance_type: 'debit'
             );
 
             if ($request->customer_id) {
 
-                // add customer ledger
                 $this->customerUtil->addCustomerLedger(
-                    voucher_type_id: 4,
+                    voucher_type_id: 2,
                     customer_id: $request->customer_id,
+                    branch_id: auth()->user()->branch_id,
                     date: $request->date,
-                    trans_id: $saleReturnPaymentGetId,
-                    amount: $request->paying_amount
+                    trans_id: $addSaleReturn->id,
+                    amount: $request->total_return_amount
                 );
             }
+
+            if ($request->paying_amount > 0) {
+
+                $saleReturnPaymentGetId = $this->saleUtil->saleReturnPaymentGetId(
+                    request: $request,
+                    sale: $sale,
+                    customer_payment_id: NULL,
+                    sale_return_id: $addSaleReturn->id
+                );
+
+                // Add bank A/C ledger
+                $this->accountUtil->addAccountLedger(
+                    voucher_type_id: 12,
+                    date: $request->date,
+                    account_id: $request->account_id,
+                    trans_id: $saleReturnPaymentGetId,
+                    amount: $request->paying_amount,
+                    balance_type: 'debit'
+                );
+
+                if ($request->customer_id) {
+
+                    // add customer ledger
+                    $this->customerUtil->addCustomerLedger(
+                        voucher_type_id: 4,
+                        customer_id: $request->customer_id,
+                        branch_id: auth()->user()->branch_id,
+                        date: $request->date,
+                        trans_id: $saleReturnPaymentGetId,
+                        amount: $request->paying_amount
+                    );
+                }
+            }
+
+            if ($sale) {
+
+                $sale->is_return_available = 1;
+
+                $this->saleUtil->adjustSaleInvoiceAmounts($sale);
+            }
+
+            $saleReturn = SaleReturn::with([
+                'customer',
+                'branch',
+                'sale_return_products',
+                'sale_return_products.product',
+                'sale_return_products.variant',
+            ])->where('id', $addSaleReturn->id)->first();
+
+            $this->userActivityLogUtil->addLog(
+                action: 1,
+                subject_type: 9,
+                data_obj: $saleReturn
+            );
+
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
-
-        if ($sale) {
-
-            $sale->is_return_available = 1;
-
-            $this->saleUtil->adjustSaleInvoiceAmounts($sale);
-        }
-
-        $saleReturn = SaleReturn::with([
-            'customer',
-            'branch',
-            'sale_return_products',
-            'sale_return_products.product',
-            'sale_return_products.variant',
-        ])->where('id', $addSaleReturn->id)->first();
-
-        $this->userActivityLogUtil->addLog(
-            action: 1,
-            subject_type: 9,
-            data_obj: $saleReturn
-        );
 
         if ($request->action == 'save_and_print') {
 
@@ -288,7 +302,6 @@ class RandomSaleReturnController extends Controller
             'sale.sale_products',
             'sale.sale_products.product',
             'sale.sale_products.variant',
-            'customer',
             'branch',
             'sale_return_products',
             'sale_return_products.product',
@@ -318,7 +331,12 @@ class RandomSaleReturnController extends Controller
 
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
 
-        return view('sales.sale_return.random_return.edit', compact('return', 'customers', 'methods', 'accounts', 'saleReturnAccounts', 'price_groups', 'taxes'));
+        $branch_id = $return->branch_id ? $return->branch_id : 'NULL';
+
+        $branchWiseCustomerAmountUtil = new \App\Utils\BranchWiseCustomerAmountUtil();
+        $customerBalance = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($return->customer_id, $branch_id)['total_sale_due'];
+
+        return view('sales.sale_return.random_return.edit', compact('return', 'customers', 'methods', 'accounts', 'saleReturnAccounts', 'price_groups', 'taxes', 'customerBalance'));
     }
 
     public function update(Request $request, $returnId)
@@ -476,6 +494,8 @@ class RandomSaleReturnController extends Controller
             $this->customerUtil->updateCustomerLedger(
                 voucher_type_id: 2,
                 customer_id: $request->customer_id,
+                previous_branch_id: auth()->user()->branch_id,
+                new_branch_id: auth()->user()->branch_id,
                 date: $request->date,
                 trans_id: $updateSaleReturn->id,
                 amount: $request->total_return_amount
@@ -507,6 +527,7 @@ class RandomSaleReturnController extends Controller
                 $this->customerUtil->addCustomerLedger(
                     voucher_type_id: 4,
                     customer_id: $request->customer_id,
+                    branch_id: auth()->user()->branch_id,
                     date: $request->date,
                     trans_id: $saleReturnPaymentGetId,
                     amount: $request->paying_amount

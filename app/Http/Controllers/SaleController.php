@@ -288,16 +288,17 @@ class SaleController extends Controller
 
             if ($request->customer_id && ($request->status == 1 || $request->status == 3)) {
 
-                $customer = DB::table('customers')->where('id', $request->customer_id)
-                    ->select('credit_limit', 'total_sale_due')
-                    ->first();
-
                 if ($request->total_due > 0) {
 
-                    $__credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
+                    $customerCreditLimit = DB::table('customer_credit_limits')->where('customer_id', $request->customer_id)->where('branch_id', auth()->user()->branch_id)
+                        ->select('credit_limit')
+                        ->first();
+
+                    $creditLimit = $customerCreditLimit ? $customerCreditLimit->credit_limit : 0;
+                    $__credit_limit = $creditLimit ? $creditLimit : 0;
                     $msg_1 = 'Customer does not have any credit limit.';
                     $msg_2 = "Customer Credit Limit is ${__credit_limit}.";
-                    $__show_msg = $customer->credit_limit ? $msg_2 : $msg_1;
+                    $__show_msg = $__credit_limit ? $msg_2 : $msg_1;
 
                     if ($request->total_due > $__credit_limit) {
 
@@ -579,7 +580,7 @@ class SaleController extends Controller
 
             DB::rollBack();
         }
-        
+
         if ($request->action == 'save_and_print') {
 
             if ($request->status == 1 || $request->status == 3) {

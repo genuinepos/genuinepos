@@ -844,7 +844,11 @@ class CustomerController extends Controller
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
-        return view('contacts.customers.ajax_view.return_payment_modal', compact('customer', 'accounts', 'methods'));
+        $branch_id = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+
+        $returnDue = $this->branchWiseCustomerAmountUtil->branchWiseCustomerAmount($customerId, $branch_id)['total_sale_return_due'];
+
+        return view('contacts.customers.ajax_view.return_payment_modal', compact('customer', 'accounts', 'methods', 'returnDue'));
     }
 
     public function returnPaymentAdd(Request $request, $customerId)
@@ -897,6 +901,7 @@ class CustomerController extends Controller
 
         // $returnSales = Sale::with(['sale_return'])->where('sale_return_due', '>', 0)->get();
         $saleReturns = SaleReturn::with(['sale'])->where('customer_id', $customerId)
+            ->where('branch_id', auth()->user()->branch_id)
             ->where('total_return_due', '>', 0)
             ->orderBy('report_date', 'asc')
             ->get();
@@ -1367,9 +1372,10 @@ class CustomerController extends Controller
 
     public function addOpeningBalance(Request $request)
     {
+        $branch_id = $request->branch_id == 'NULL' ? NULL : $request->branch_id;
         $updateCustomer = Customer::where('id', $request->customer_id)->first();
 
-        $branchOpeningBalance = CustomerOpeningBalance::where('customer_id', $request->customer_id)->where('branch_id', $request->branch_id)->first();
+        $branchOpeningBalance = CustomerOpeningBalance::where('customer_id', $request->customer_id)->where('branch_id', $branch_id)->first();
 
         if ($branchOpeningBalance) {
 
@@ -1380,7 +1386,7 @@ class CustomerController extends Controller
 
             $addCustomerOpeningBalance = new CustomerOpeningBalance();
             $addCustomerOpeningBalance->customer_id = $updateCustomer->id;
-            $addCustomerOpeningBalance->branch_id = $request->branch_id;
+            $addCustomerOpeningBalance->branch_id = $branch_id;
             $addCustomerOpeningBalance->amount = $request->opening_balance ? $request->opening_balance : 0.00;
             $addCustomerOpeningBalance->is_show_again = isset($request->never_show_again) ? 0 : 1;
             $addCustomerOpeningBalance->created_by_id = auth()->user()->id;
@@ -1398,8 +1404,8 @@ class CustomerController extends Controller
         $this->customerUtil->updateCustomerLedger(
             voucher_type_id: 0,
             customer_id: $updateCustomer->id,
-            previous_branch_id: auth()->user()->branch_id,
-            new_branch_id: auth()->user()->branch_id,
+            previous_branch_id: $branch_id,
+            new_branch_id: $branch_id,
             date: $updateCustomer->created_at,
             trans_id: NULL,
             amount: $request->opening_balance ? $request->opening_balance : 0.00,

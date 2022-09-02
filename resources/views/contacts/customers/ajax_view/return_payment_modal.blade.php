@@ -34,7 +34,7 @@
                                 <li><strong>Total Sale Return Due : </strong>
                                     <span class="card_text branch">
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
-                                        {{ $customer->total_sale_return_due }}
+                                        {{ $returnDue }}
                                     </span>
                                 </li>
                             </ul>
@@ -51,12 +51,10 @@
                         <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i
-                                        class="far fa-money-bill-alt text-dark input_i"></i></span>
+                                <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
                             </div>
-                            <input type="hidden" id="p_available_amount" value="{{ $customer->total_sale_return_due }}">
-                            <input type="number" name="paying_amount" class="form-control p_input" step="any"
-                                data-name="Amount" id="p_paying_amount" value="{{ $customer->total_sale_return_due }}" />
+                            <input type="hidden" id="p_available_amount" value="{{ $returnDue }}">
+                            <input required type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value=""/>
                         </div>
                         <span class="error error_p_paying_amount"></span>
                     </div>

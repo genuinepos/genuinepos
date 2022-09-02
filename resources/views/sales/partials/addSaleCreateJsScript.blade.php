@@ -943,8 +943,6 @@
             return;
         }
 
-        
-
         var branch_id = $('branch_id').val() ? $('branch_id').val() : '';
 
         if(customer_id){
@@ -1835,9 +1833,8 @@
             success:function(data){
 
                 $('.op_loading_button').hide();
-                var branch_id = $('#branch_id').val();
                 var customer_id = $('#customer_id').val();
-                getCustomerAmountsBranchWise(branch_id, customer_id, false);
+                getCustomerAmountsBranchWise(customer_id, false);
                 $('#addCustomerOpeingBalanceModal').modal('hide');
                 $('#add_customer_opening_balance')[0].reset();
             },error: function(err) {
@@ -1877,8 +1874,8 @@
                 $('#display_pre_due').val(parseFloat(data['total_sale_due']).toFixed(2));
                 $('.op_customer_name').html($('#customer_id').find('option:selected').data('customer_name'));
                 $('.op_customer_phone').html($('#customer_id').find('option:selected').data('customer_phone'));
-                $('.op_branch_name').html($('branch_name').val());
-                $('#op_branch_id').val($('branch_id').val());
+                $('.op_branch_name').html($('#branch_name').val());
+                $('#op_branch_id').val($('#branch_id').val());
                 $('#op_customer_id').val(customer_id);
 
                 calculateTotalAmount();

@@ -435,8 +435,12 @@
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <a href="{{ route('customers.payment', $customer->id) }}" id="add_payment" class="btn btn-success"><i class="far fa-money-bill-alt text-white"></i> Receive</a>
-                    
-                                                                        <a class="btn btn-success return_payment_btn mt-2" id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund </a>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row mt-2">
+                                                                    <div class="col-md-12">
+                                                                        <a class="btn btn-success return_payment_btn" id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund </a>
                                                                     </div>
                                                                 </div>
                     

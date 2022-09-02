@@ -529,7 +529,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <p><strong>User : </strong> <span class="op_user_name"></span></p>
+                                <p><strong>Business Location : </strong> <span class="op_branch_name"></span></p>
                             </div>
 
                             <div class="col-md-12 mt-2">

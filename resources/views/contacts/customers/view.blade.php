@@ -887,7 +887,30 @@
 
                      $('.data_tbl').DataTable().ajax.reload();
                     toastr.error(data);
-                    getCustomer();
+
+                    var filterObj = {
+                        branch_id : $('#sale_branch_id').val(),
+                        from_date : $('#from_sale_date').val(),
+                        to_date : $('#to_sale_date').val(),
+                    };
+
+                    getCustomerAmountsBranchWise(filterObj, 'sales_', false);
+
+                    filterObj = {
+                        branch_id : $('#payment_branch_id').val(),
+                        from_date : $('#payment_from_date').val(),
+                        to_date : $('#payment_to_date').val(),
+                    };
+
+                    getCustomerAmountsBranchWise(filterObj, 'cus_payments_', false);
+
+                    filterObj = {
+                        branch_id : $('#ledger_branch_id').val(),
+                        from_date : $('.from_date').val(),
+                        to_date : $('.to_date').val(),
+                    };
+
+                    getCustomerAmountsBranchWise(filterObj, 'ladger_', false);
                 }
             });
         });
@@ -1066,7 +1089,30 @@
                     $('.data_tbl').DataTable().ajax.reload();
                     $('#paymentViewModal').modal('hide');
                     toastr.error(data);
-                    getCustomer();
+
+                    var filterObj = {
+                        branch_id : $('#payment_branch_id').val(),
+                        from_date : $('#payment_from_date').val(),
+                        to_date : $('#payment_to_date').val(),
+                    };
+
+                    getCustomerAmountsBranchWise(filterObj, 'cus_payments_', false);
+
+                    filterObj = {
+                        branch_id : $('#ledger_branch_id').val(),
+                        from_date : $('.from_date').val(),
+                        to_date : $('.to_date').val(),
+                    };
+
+                    getCustomerAmountsBranchWise(filterObj, 'ladger_', false);
+
+                    filterObj = {
+                        branch_id : $('#sale_branch_id').val(),
+                        from_date : $('#from_sale_date').val(),
+                        to_date : $('#to_sale_date').val(),
+                    };
+
+                    getCustomerAmountsBranchWise(filterObj, 'sales_', false);
                 }
             });
         });
@@ -1117,8 +1163,8 @@
             }); 
         });
 
-         //Print purchase Payment report
-         $(document).on('click', '#print_sale_statement', function (e) {
+        //Print purchase Payment report
+        $(document).on('click', '#print_sale_statement', function (e) {
             e.preventDefault();
 
             var url = "{{ route('reports.sale.statement.print') }}";

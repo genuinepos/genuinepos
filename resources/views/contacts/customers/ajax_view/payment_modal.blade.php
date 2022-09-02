@@ -822,7 +822,30 @@
                     $('#paymentModal').modal('hide');
                     toastr.success(data);
                     $('.data_tbl').DataTable().ajax.reload();
-                    getCustomer();
+
+                    var filterObj = {
+                        branch_id : $('#payment_branch_id').val(),
+                        from_date : $('#payment_from_date').val(),
+                        to_date : $('#payment_to_date').val(),
+                    };
+
+                    getCustomerAmountsBranchWise(filterObj, 'cus_payments_', false);
+
+                    filterObj = {
+                        branch_id : $('#ledger_branch_id').val(),
+                        from_date : $('.from_date').val(),
+                        to_date : $('.to_date').val(),
+                    };
+
+                    getCustomerAmountsBranchWise(filterObj, 'ladger_', false);
+
+                    filterObj = {
+                        branch_id : $('#sale_branch_id').val(),
+                        from_date : $('#from_sale_date').val(),
+                        to_date : $('#to_sale_date').val(),
+                    };
+
+                    getCustomerAmountsBranchWise(filterObj, 'sales_', false);
                 }
             },
             error: function(err) {

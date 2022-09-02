@@ -1290,6 +1290,7 @@ class CustomerController extends Controller
 
     public function allPaymentPrint(Request $request, $customerId)
     {
+        $branch_id = $request->branch_id ? $request->branch_id : auth()->user()->branch_id;
         $payments = '';
         $fromDate  = '';
         $toDate = '';
@@ -1362,7 +1363,7 @@ class CustomerController extends Controller
             $payments = $paymentsQuery->where('customer_ledgers.branch_id', auth()->user()->branch_id)->orderBy('customer_ledgers.report_date', 'desc')->get();
         }
 
-        return view('contacts.customers.ajax_view.print_payments', compact('payments', 'fromDate', 'toDate', 'customer'));
+        return view('contacts.customers.ajax_view.print_payments', compact('payments', 'fromDate', 'toDate', 'customer', 'branch_id'));
     }
 
     public function customerAmountsBranchWise(Request $request, $customerId)

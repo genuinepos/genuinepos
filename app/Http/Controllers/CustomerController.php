@@ -1383,6 +1383,7 @@ class CustomerController extends Controller
             $addCustomerOpeningBalance->branch_id = $request->branch_id;
             $addCustomerOpeningBalance->amount = $request->opening_balance ? $request->opening_balance : 0.00;
             $addCustomerOpeningBalance->is_show_again = isset($request->never_show_again) ? 0 : 1;
+            $addCustomerOpeningBalance->created_by_id = auth()->user()->id;
             $addCustomerOpeningBalance->save();
         }
 

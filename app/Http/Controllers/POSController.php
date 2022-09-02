@@ -805,12 +805,6 @@ class POSController extends Controller
         return view('sales.ajax_view.quick_add_customer', compact('customerGroups'));
     }
 
-    //Add customer from pos
-    public function addCustomer(Request $request)
-    {
-        return $this->util->storeQuickCustomer($request);
-    }
-
     // Get pos product list
     public function posProductList(Request $request)
     {

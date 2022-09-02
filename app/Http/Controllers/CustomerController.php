@@ -113,7 +113,7 @@ class CustomerController extends Controller
             'country' => $request->country,
             'state' => $request->state,
             'shipping_address' => $request->shipping_address,
-            // 'opening_balance' => $request->opening_balance ? $request->opening_balance : 0.00,
+            'opening_balance' => $request->opening_balance ? $request->opening_balance : 0.00,
             // 'credit_limit' => $request->credit_limit,
             'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
         ]);
@@ -146,7 +146,7 @@ class CustomerController extends Controller
 
         $this->userActivityLogUtil->addLog(action: 1, subject_type: 1, data_obj: $addCustomer);
 
-        return response()->json('Customer created successfully');
+        return $addCustomer;
     }
 
     public function edit($customerId)

@@ -107,52 +107,6 @@ class Util
         return response()->json($addProduct);
     }
 
-    public function storeQuickCustomer($request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'phone' => 'required',
-        ]);
-
-        $generalSettings = DB::table('general_settings')->first('prefix');
-        $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
-
-        $addCustomer = Customer::create([
-            'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, "0", STR_PAD_LEFT),
-            'name' => $request->name,
-            'business_name' => $request->business_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'alternative_phone' => $request->alternative_phone,
-            'landline' => $request->landline,
-            'date_of_birth' => $request->date_of_birth,
-            'tax_number' => $request->tax_number,
-            'pay_term' => $request->pay_term,
-            'pay_term_number' => $request->pay_term_number,
-            'customer_group_id' => $request->customer_group_id,
-            'address' => $request->address,
-            'city' => $request->city,
-            'zip_code' => $request->zip_code,
-            'country' => $request->country,
-            'state' => $request->state,
-            'shipping_address' => $request->shipping_address,
-            'credit_limit' => $request->credit_limit,
-            'opening_balance' => $request->opening_balance ? $request->opening_balance : 0.00,
-            'total_sale_due' => $request->opening_balance ? $request->opening_balance : 0.00,
-        ]);
-
-        // Add Customer Ledger
-        $this->customerUtil->addCustomerLedger(
-            voucher_type_id: 0,
-            customer_id: $addCustomer->id,
-            date: date('Y-m-d'),
-            trans_id: NULL,
-            amount: $request->opening_balance ? $request->opening_balance : 0
-        );
-
-        return response()->json($addCustomer);
-    }
-
     public function storeQuickSupplier($request)
     {
         $request->validate([

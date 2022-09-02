@@ -1,4 +1,4 @@
-<form id="add_customer_form" action="{{ route('sales.pos.add.customer') }}">
+<form id="add_customer_form" action="{{ route('contacts.customer.store') }}">
     @csrf
     <div class="form-group row">
         <div class="col-md-3">

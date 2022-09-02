@@ -132,7 +132,7 @@ class StockAdjustmentReportController extends Controller
 
     public function print(Request $request)
     {
-        $branch_id = $request->branch_id;
+        $branch_id = $request->branch_id ? $request->branch_id : auth()->user()->branch_id;
         $fromDate = '';
         $toDate = '';
         $adjustments = '';

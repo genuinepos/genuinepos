@@ -266,7 +266,7 @@ class StockReportController extends Controller
     // Print Branch Stock
     public function printBranchStock(Request $request)
     {
-        $branch_id = $request->branch_id;
+        $branch_id = $request->branch_id ? $request->branch_id : auth()->user()->branch_id;
         $branch_stock = '';
         
         $query = DB::table('product_branches')

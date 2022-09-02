@@ -21,11 +21,13 @@ class SupplierReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            
             $generalSettings = DB::table('general_settings')->first();
             $suppliers = '';
             $query = DB::table('suppliers')->where('status', 1);
 
             if ($request->supplier_id) {
+
                 $query->where('suppliers.id', $request->supplier_id);
             }
 

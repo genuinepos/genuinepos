@@ -127,7 +127,7 @@ class SaleStatementController extends Controller
 
     public function print(Request $request)
     {
-        $branch_id = $request->branch_id;
+        $branch_id = $request->branch_id ? $request->branch_id : auth()->user()->branch_id;
         $fromDate = $request->from_date;
         $toDate = $request->to_date ? $request->to_date : $request->from_date;
 

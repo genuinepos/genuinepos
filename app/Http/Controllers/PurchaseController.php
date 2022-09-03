@@ -458,7 +458,7 @@ class PurchaseController extends Controller
             DB::rollBack();
         }
 
-        // $this->supplierUtil->adjustSupplierForSalePaymentDue($request->supplier_id);
+        // $this->supplierUtil->adjustSupplierForPurchasePaymentDue($request->supplier_id);
         if ($request->action == 2) {
 
             return response()->json(['successMsg' => 'Successfully purchase is created.']);
@@ -978,7 +978,7 @@ class PurchaseController extends Controller
             }
         }
 
-        $this->supplierUtil->adjustSupplierForSalePaymentDue($supplier->id);
+        $this->supplierUtil->adjustSupplierForPurchasePaymentDue($supplier->id);
 
         return response()->json('Successfully purchase is deleted');
     }
@@ -1007,9 +1007,7 @@ class PurchaseController extends Controller
     // Get recent added product which has been added from purchase
     public function getRecentProduct($product_id)
     {
-        $product = Product::with(['tax', 'unit'])
-            ->where('id', $product_id)
-            ->first();
+        $product = Product::with(['tax', 'unit'])->where('id', $product_id)->first();
         $units = DB::table('units')->select('id', 'name')->get();
         return view('purchases.ajax_view.recent_product_view', compact('product', 'units'));
     }
@@ -1018,12 +1016,6 @@ class PurchaseController extends Controller
     public function addQuickSupplierModal()
     {
         return view('purchases.ajax_view.add_quick_supplier');
-    }
-
-    // Change purchase status
-    public function addSupplier(Request $request)
-    {
-        return $this->util->storeQuickSupplier($request);
     }
 
     // Change purchase status
@@ -1445,7 +1437,7 @@ class PurchaseController extends Controller
                     $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
                 }
 
-                $this->supplierUtil->adjustSupplierForSalePaymentDue($storedSupplierId);
+                $this->supplierUtil->adjustSupplierForPurchasePaymentDue($storedSupplierId);
             } else {
                 if ($deletePurchasePayment->purchase) {
 
@@ -1460,7 +1452,7 @@ class PurchaseController extends Controller
                     }
 
                     $this->purchaseUtil->adjustPurchaseInvoiceAmounts($storedPurchase);
-                    $this->supplierUtil->adjustSupplierForSalePaymentDue($storedPurchase->supplier_id);
+                    $this->supplierUtil->adjustSupplierForPurchasePaymentDue($storedPurchase->supplier_id);
                 } else {
 
                     $purchaseReturn = PurchaseReturn::where('id', $deletePurchasePayment->supplier_return->id)->first();
@@ -1468,7 +1460,7 @@ class PurchaseController extends Controller
                     $purchaseReturn->total_return_due += $deletePurchasePayment->paid_amount;
                     $purchaseReturn->save();
                     $deletePurchasePayment->delete();
-                    $this->supplierUtil->adjustSupplierForSalePaymentDue($purchaseReturn->supplier_id);
+                    $this->supplierUtil->adjustSupplierForPurchasePaymentDue($purchaseReturn->supplier_id);
                 }
             }
 

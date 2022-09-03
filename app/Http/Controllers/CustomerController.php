@@ -157,7 +157,6 @@ class CustomerController extends Controller
         }
 
         $customer = DB::table('customers')->where('id', $customerId)->first();
-        $groups = DB::table('customer_groups')->get();
 
         $branchOpeningBalance = DB::table('customer_opening_balances')
             ->where('customer_id', $customer->id)->where('branch_id', auth()->user()->branch_id)
@@ -704,30 +703,13 @@ class CustomerController extends Controller
                 'accounts.balance'
             ]);
 
-        $allSalesAndOrders = DB::table('sales')->where('sales.customer_id', $customerId)
-            ->whereIn('sales.status', [1, 3])
-            ->where('sales.due', '>', 0)
-            ->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due', 'status')->get();
-
-        $invoices = DB::table('sales')
-            ->where('sales.branch_id', auth()->user()->branch_id)
-            ->where('sales.customer_id', $customerId)
-            ->where('sales.status', 1)->where('sales.due', '>', 0)
-            ->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due')->orderBy('report_date', 'desc')
-            ->get();
-
-        $orders = DB::table('sales')->where('sales.customer_id', $customerId)
-            ->where('sales.status', 3)->where('sales.due', '>', 0)
-            ->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due')->orderBy('report_date', 'desc')
-            ->get();
-
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
         $amounts = $this->branchWiseCustomerAmountUtil->branchWiseCustomerAmount($customerId, $branch_id);
 
-        $branchWiseCustomerInvoiceAndOrders = $this->branchWiseCustomerAmountUtil->branchWiseCustomerInvoiceAndOrders($customerId);
+        $branchWiseCustomerInvoiceAndOrders = $this->branchWiseCustomerAmountUtil->branchWiseCustomerInvoiceAndOrders($customerId, $branch_id);
 
-        return view('contacts.customers.ajax_view.payment_modal', compact('customer', 'accounts', 'methods', 'allSalesAndOrders', 'invoices', 'orders', 'amounts', 'branchWiseCustomerInvoiceAndOrders'));
+        return view('contacts.customers.ajax_view.payment_modal', compact('customer', 'accounts', 'methods', 'amounts', 'branchWiseCustomerInvoiceAndOrders'));
     }
 
     public function paymentAdd(Request $request, $customerId)

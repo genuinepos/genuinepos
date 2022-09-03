@@ -4,18 +4,108 @@ namespace App\Utils;
 
 use Carbon\Carbon;
 use App\Models\Supplier;
-use App\Utils\Converter;
 use App\Models\SupplierLedger;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class SupplierUtil
 {
-    public $converter;
-    public function __construct(Converter $converter)
+    public function supplierListTable($request)
     {
+        $branchWiseSupplierAmountUtil =  new \App\Utils\BranchWiseSupplierAmountsUtil();
 
-        $this->converter = $converter;
+        $suppliers = DB::table('suppliers');
+        
+        return DataTables::of($suppliers)
+
+            ->addColumn('action', function ($row) {
+                $html = '';
+                $html .= '<div class="btn-group" role="group">';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.supplier.view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
+
+                if (auth()->user()->permission->contact['supplier_edit'] == '1') :
+
+                    $html .= '<a class="dropdown-item" href="' . route('contacts.supplier.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
+                endif;
+
+                if (auth()->user()->permission->contact['supplier_delete'] == '1') :
+
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.supplier.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                endif;
+
+                if ($row->status == 1) :
+
+                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
+                else :
+
+                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
+                endif;
+
+                $html .= '</div>';
+                $html .= '</div>';
+                return $html;
+            })
+
+            ->editColumn('business_name', function ($row) {
+
+                return $row->business_name ? $row->business_name : '...';
+            })
+
+            ->editColumn('tax_number', function ($row) {
+
+                return $row->tax_number ? $row->tax_number : '...';
+            })
+
+            ->editColumn('opening_balance', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
+ 
+                $openingBalance = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['opening_balance'];
+                return '<span class="opening_balance" data-value="' . $openingBalance . '">' . \App\Utils\Converter::format_in_bdt($openingBalance) . '</span>';
+            })
+
+            ->editColumn('total_purchase', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
+ 
+                $totalPurchase = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_purchase'];
+                return '<span class="total_purchase" data-value="' . $totalPurchase . '">' . \App\Utils\Converter::format_in_bdt($totalPurchase) . '</span>';
+            })
+
+            ->editColumn('total_paid', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
+ 
+                $totalPaid = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_paid'];
+                return '<span class="total_paid" data-value="' . $totalPaid . '">' . \App\Utils\Converter::format_in_bdt($totalPaid) . '</span>';
+            })
+
+            ->editColumn('total_purchase_due', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
+ 
+                $totalPurchaseDue = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_purchase_due'];
+                return '<span class="total_purchase_due" data-value="' . $totalPurchaseDue . '">' . \App\Utils\Converter::format_in_bdt($totalPurchaseDue) . '</span>';
+            })
+
+            ->editColumn('total_return',function ($row) use ($request, $branchWiseSupplierAmountUtil) {
+ 
+                $totalReturn = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_return'];
+                return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
+            })
+
+            ->editColumn('total_purchase_return_due', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
+ 
+                $totalPurchaseReturnDue = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_purchase_return_due'];
+                return '<span class="total_purchase_return_due" data-value="' . $totalPurchaseReturnDue . '">' . \App\Utils\Converter::format_in_bdt($totalPurchaseReturnDue) . '</span>';
+            })
+
+            ->editColumn('status', function ($row) {
+
+                if ($row->status == 1) :
+
+                    return '<i class="far fa-thumbs-up text-success"></i>';
+                else :
+
+                    return '<i class="far fa-thumbs-down text-danger"></i>';
+                endif;
+            })
+            ->rawColumns(['action', 'business_name', 'tax_number', 'opening_balance', 'total_purchase', 'total_paid', 'total_purchase_due', 'total_return', 'total_purchase_return_due', 'status'])
+            ->make(true);
     }
 
     public function supplierPurchaseList($request, $supplierId)
@@ -136,15 +226,15 @@ class SupplierUtil
                 }
             })
 
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
 
-            ->editColumn('return_amount', fn ($row) => '<span class="return_amount" data-value="' . $row->purchase_return_amount . '">' . $this->converter->format_in_bdt($row->purchase_return_amount) . '</span>')
+            ->editColumn('return_amount', fn ($row) => '<span class="return_amount" data-value="' . $row->purchase_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->purchase_return_amount) . '</span>')
 
-            ->editColumn('return_due', fn ($row) => '<span class="return_due text-danger" data-value="' . $row->purchase_return_due . '">' . $this->converter->format_in_bdt($row->purchase_return_due) . '</span>')
+            ->editColumn('return_due', fn ($row) => '<span class="return_due text-danger" data-value="' . $row->purchase_return_due . '">' . \App\Utils\Converter::format_in_bdt($row->purchase_return_due) . '</span>')
 
             ->editColumn('status', function ($row) {
 
@@ -276,11 +366,11 @@ class SupplierUtil
                 return $row->{$type['voucher_no']};
             })
 
-            ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . $this->converter->format_in_bdt($row->debit) . '</span>')
+            ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . \App\Utils\Converter::format_in_bdt($row->debit) . '</span>')
 
-            ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . $this->converter->format_in_bdt($row->credit) . '</span>')
+            ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . \App\Utils\Converter::format_in_bdt($row->credit) . '</span>')
 
-            ->editColumn('running_balance', fn ($row) => '<span class="running_balance">' . $this->converter->format_in_bdt($row->running_balance) . '</span>')
+            ->editColumn('running_balance', fn ($row) => '<span class="running_balance">' . \App\Utils\Converter::format_in_bdt($row->running_balance) . '</span>')
 
             ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
             ->make(true);
@@ -409,17 +499,17 @@ class SupplierUtil
                 }
             })
 
-            ->editColumn('po_qty', fn ($row) => '<span class="po_qty" data-value="' . $row->po_qty . '">' . $this->converter->format_in_bdt($row->po_qty) . '</span>')
+            ->editColumn('po_qty', fn ($row) => '<span class="po_qty" data-value="' . $row->po_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_qty) . '</span>')
 
-            ->editColumn('po_received_qty', fn ($row) => '<span class="po_received_qty text-success" data-value="' . $row->po_received_qty . '">' . $this->converter->format_in_bdt($row->po_received_qty) . '</span>')
+            ->editColumn('po_received_qty', fn ($row) => '<span class="po_received_qty text-success" data-value="' . $row->po_received_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_received_qty) . '</span>')
 
-            ->editColumn('po_pending_qty', fn ($row) => '<span class="po_pending_qty text-danger" data-value="' . $row->po_pending_qty . '">' . $this->converter->format_in_bdt($row->po_pending_qty) . '</span>')
+            ->editColumn('po_pending_qty', fn ($row) => '<span class="po_pending_qty text-danger" data-value="' . $row->po_pending_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_pending_qty) . '</span>')
 
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="po_total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="po_total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="po_paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="po_paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="po_due" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span></span>')
+            ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="po_due" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span></span>')
 
             ->editColumn('po_receiving_status', function ($row) {
 
@@ -456,86 +546,142 @@ class SupplierUtil
             ->make(true);
     }
 
-    public function adjustSupplierForSalePaymentDue($supplierId)
+    // public function adjustSupplierForPurchasePaymentDue($supplierId)
+    // {
+    //     $supplier = Supplier::where('id', $supplierId)->first();
+
+    //     $totalSupplierPurchase = DB::table('purchases')
+    //         ->where('supplier_id', $supplierId)
+    //         ->select(DB::raw('sum(total_purchase_amount) as total_purchase'))
+    //         ->groupBy('supplier_id')->get();
+
+    //     $totalSupplierPayment = DB::table('supplier_payments')
+    //         ->where('supplier_id', $supplierId)
+    //         ->where('type', 1)
+    //         ->select(
+    //             DB::raw('sum(paid_amount) as s_paid'),
+    //             DB::raw('sum(less_amount) as less')
+    //         )->groupBy('supplier_id')->get();
+
+    //     $totalPurchasePayment = DB::table('purchase_payments')
+    //         ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
+    //         ->where('purchase_payments.supplier_payment_id', NULL)
+    //         ->where('purchase_payments.payment_type', 1)
+    //         ->where('purchases.supplier_id', $supplierId)
+    //         ->select(DB::raw('sum(paid_amount) as p_paid'))
+    //         ->groupBy('purchases.supplier_id')->get();
+
+    //     $totalInvoiceReturn = DB::table('purchase_returns')
+    //         ->join('purchases', 'purchase_returns.purchase_id', 'purchases.id')
+    //         ->where('purchases.supplier_id', $supplierId)
+    //         ->select(DB::raw('sum(total_return_amount) as total_inv_return_amt'))
+    //         ->groupBy('purchases.supplier_id')->get();
+
+    //     $totalSupplierReturn = DB::table('purchase_returns')
+    //         ->where('purchase_returns.purchase_id', NULL)
+    //         ->where('purchase_returns.supplier_id', $supplierId)
+    //         ->select(
+    //             DB::raw('sum(total_return_amount) as total_sup_return_amt')
+    //         )->groupBy('purchase_returns.supplier_id')->get();
+
+    //     $totalInvoiceReturnPayment = DB::table('purchase_payments') // Paid on purchase return invoice due.
+    //         ->join('purchases', 'purchase_payments.purchase_id', 'purchases.id')
+    //         ->where('purchase_payments.supplier_payment_id', NULL)
+    //         ->where('purchase_payments.payment_type', 2)
+    //         ->where('purchases.supplier_id', $supplierId)
+    //         ->select(DB::raw('sum(paid_amount) as total_inv_return_paid'))
+    //         ->groupBy('purchases.supplier_id')->get();
+
+    //     $totalSupplierReturnPayment = DB::table('supplier_payments') // Paid on Total supplier return due.
+    //         ->where('supplier_id', $supplierId)
+    //         ->where('type', 2)
+    //         ->select(DB::raw('sum(paid_amount) as sr_paid'))
+    //         ->groupBy('supplier_id')->get();
+
+    //     $__totalInvoiceReturnPayment = DB::table('purchase_payments') // Paid on supplier return invoice due.
+    //         ->where('purchase_payments.purchase_id', NULL)
+    //         ->where('purchase_payments.supplier_payment_id', NULL)
+    //         ->where('purchase_payments.payment_type', 2)
+    //         ->where('purchase_payments.supplier_id', $supplierId)
+    //         ->select(DB::raw('sum(paid_amount) as total_inv_return_paid'))
+    //         ->groupBy('purchase_payments.supplier_id')->get();
+
+    //     $totalPurchase = $totalSupplierPurchase->sum('total_purchase');
+    //     $totalPaid = $totalSupplierPayment->sum('s_paid') + $totalPurchasePayment->sum('p_paid');
+    //     $totalLess = $totalSupplierPayment->sum('less');
+    //     $totalReturn = $totalInvoiceReturn->sum('total_inv_return_amt')
+    //         + $totalSupplierReturn->sum('total_sup_return_amt');
+
+    //     $totalReturnPaid = $totalInvoiceReturnPayment->sum('total_inv_return_paid')
+    //         + $totalSupplierReturnPayment->sum('sr_paid')
+    //         + $__totalInvoiceReturnPayment->sum('total_inv_return_paid');
+
+    //     $totalDue = ($totalPurchase + $supplier->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn - $totalLess;
+    //     $returnDue = $totalReturn - ($totalPurchase + $supplier->opening_balance - $totalPaid) - $totalReturnPaid;
+
+    //     $supplier->total_purchase = $totalPurchase;
+    //     $supplier->total_paid = $totalPaid;
+    //     $supplier->total_less = $totalLess;
+    //     $supplier->total_purchase_due = $totalDue;
+    //     $supplier->total_return = $totalReturn;
+    //     $supplier->total_purchase_return_due = $returnDue > 0 ? $returnDue : 0;
+    //     $supplier->save();
+    //     return $totalDue;
+    // }
+
+    public function adjustSupplierForPurchasePaymentDue($supplierId)
     {
         $supplier = Supplier::where('id', $supplierId)->first();
 
-        $totalSupplierPurchase = DB::table('purchases')
-            ->where('supplier_id', $supplierId)
-            ->select(DB::raw('sum(total_purchase_amount) as total_purchase'))
-            ->groupBy('supplier_id')->get();
+        $amounts = DB::table('supplier_ledgers')
+            ->where('supplier_ledgers.customer_id', $customerId)->select('voucher_type', DB::raw('SUM(amount) as amt'))
+            ->groupBy('supplier_ledgers.voucher_type')->get();
 
-        $totalSupplierPayment = DB::table('supplier_payments')
-            ->where('supplier_id', $supplierId)
-            ->where('type', 1)
-            ->select(
-                DB::raw('sum(paid_amount) as s_paid'),
-                DB::raw('sum(less_amount) as less')
-            )->groupBy('supplier_id')->get();
+        $openingBalance = 0;
+        $totalPurchaseAndOrder = 0;
+        $totalPaid = 0;
+        $totalReturn = 0;
+        $totalLess = 0;
+        $totalRefund = 0;
 
-        $totalPurchasePayment = DB::table('purchase_payments')
-            ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
-            ->where('purchase_payments.supplier_payment_id', NULL)
-            ->where('purchase_payments.payment_type', 1)
-            ->where('purchases.supplier_id', $supplierId)
-            ->select(DB::raw('sum(paid_amount) as p_paid'))
-            ->groupBy('purchases.supplier_id')->get();
+        foreach ($amounts as $amount) {
 
-        $totalInvoiceReturn = DB::table('purchase_returns')
-            ->join('purchases', 'purchase_returns.purchase_id', 'purchases.id')
-            ->where('purchases.supplier_id', $supplierId)
-            ->select(DB::raw('sum(total_return_amount) as total_inv_return_amt'))
-            ->groupBy('purchases.supplier_id')->get();
+            if ($amount->voucher_type == 0) {
 
-        $totalSupplierReturn = DB::table('purchase_returns')
-            ->where('purchase_returns.purchase_id', NULL)
-            ->where('purchase_returns.supplier_id', $supplierId)
-            ->select(
-                DB::raw('sum(total_return_amount) as total_sup_return_amt')
-            )->groupBy('purchase_returns.supplier_id')->get();
+                $openingBalance += $amount->amt;
+            } elseif ($amount->voucher_type == 1) {
 
-        $totalInvoiceReturnPayment = DB::table('purchase_payments') // Paid on purchase return invoice due.
-            ->join('purchases', 'purchase_payments.purchase_id', 'purchases.id')
-            ->where('purchase_payments.supplier_payment_id', NULL)
-            ->where('purchase_payments.payment_type', 2)
-            ->where('purchases.supplier_id', $supplierId)
-            ->select(DB::raw('sum(paid_amount) as total_inv_return_paid'))
-            ->groupBy('purchases.supplier_id')->get();
+                $totalPurchaseAndOrder += $amount->amt;
+            } elseif ($amount->voucher_type == 2) {
 
-        $totalSupplierReturnPayment = DB::table('supplier_payments') // Paid on Total supplier return due.
-            ->where('supplier_id', $supplierId)
-            ->where('type', 2)
-            ->select(DB::raw('sum(paid_amount) as sr_paid'))
-            ->groupBy('supplier_id')->get();
+                $totalReturn += $amount->amt;
+            } elseif ($amount->voucher_type == 3) {
 
-        $__totalInvoiceReturnPayment = DB::table('purchase_payments') // Paid on supplier return invoice due.
-            ->where('purchase_payments.purchase_id', NULL)
-            ->where('purchase_payments.supplier_payment_id', NULL)
-            ->where('purchase_payments.payment_type', 2)
-            ->where('purchase_payments.supplier_id', $supplierId)
-            ->select(DB::raw('sum(paid_amount) as total_inv_return_paid'))
-            ->groupBy('purchase_payments.supplier_id')->get();
+                $totalPaid += $amount->amt;
+            } elseif ($amount->voucher_type == 4) {
 
-        $totalPurchase = $totalSupplierPurchase->sum('total_purchase');
-        $totalPaid = $totalSupplierPayment->sum('s_paid') + $totalPurchasePayment->sum('p_paid');
-        $totalLess = $totalSupplierPayment->sum('less');
-        $totalReturn = $totalInvoiceReturn->sum('total_inv_return_amt')
-            + $totalSupplierReturn->sum('total_sup_return_amt');
+                $totalRefund += $amount->amt;
+            } elseif ($amount->voucher_type == 5) {
 
-        $totalReturnPaid = $totalInvoiceReturnPayment->sum('total_inv_return_paid')
-            + $totalSupplierReturnPayment->sum('sr_paid')
-            + $__totalInvoiceReturnPayment->sum('total_inv_return_paid');
+                $totalPaid += $amount->amt;
+            } elseif ($amount->voucher_type == 6) {
 
-        $totalDue = ($totalPurchase + $supplier->opening_balance + $totalReturnPaid) - $totalPaid - $totalReturn - $totalLess;
-        $returnDue = $totalReturn - ($totalPurchase + $supplier->opening_balance - $totalPaid) - $totalReturnPaid;
+                $totalRefund += $amount->amt;
+            }
+        }
 
-        $supplier->total_purchase = $totalPurchase;
+        $totalDue = ($totalPurchaseAndOrder + $openingBalance + $totalRefund) - $totalPaid - $totalReturn - $totalLess;
+
+        $totalReturnDue = $totalReturn - ($totalPurchaseAndOrder + $openingBalance - $totalPaid) - $totalRefund;
+
+        $supplier->total_purchase = $totalPurchaseAndOrder;
         $supplier->total_paid = $totalPaid;
         $supplier->total_less = $totalLess;
         $supplier->total_purchase_due = $totalDue;
         $supplier->total_return = $totalReturn;
-        $supplier->total_purchase_return_due = $returnDue > 0 ? $returnDue : 0;
+        $supplier->total_purchase_return_due = $totalReturnDue > 0 ? $totalReturnDue : 0;
         $supplier->save();
+
         return $totalDue;
     }
 
@@ -608,40 +754,46 @@ class SupplierUtil
         return $data[$voucher_type_id];
     }
 
-    public function addSupplierLedger($voucher_type_id, $supplier_id, $date, $trans_id, $amount)
+    public function addSupplierLedger($voucher_type_id, $supplier_id, $branch_id, $date, $trans_id, $amount, $fixed_date = null)
     {
         $voucher_type = $this->voucherType($voucher_type_id);
         $addSupplierLedger = new SupplierLedger();
-        $addSupplierLedger->branch_id = auth()->user()->branch_id;
+        $addSupplierLedger->branch_id = $branch_id;
         $addSupplierLedger->supplier_id = $supplier_id;
-        $addSupplierLedger->date = $date;
-        $addSupplierLedger->report_date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $addSupplierLedger->date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $addSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         $addSupplierLedger->{$voucher_type['id']} = $trans_id;
         $addSupplierLedger->{$voucher_type['amt']} = $amount;
         $addSupplierLedger->amount = $amount;
         $addSupplierLedger->amount_type = $voucher_type['amt'];
         $addSupplierLedger->voucher_type = $voucher_type_id;
-        $addSupplierLedger->running_balance = $this->adjustSupplierForSalePaymentDue($supplier_id);
+        $addSupplierLedger->running_balance = 0;
         $addSupplierLedger->save();
     }
 
-    public function updateSupplierLedger($voucher_type_id, $supplier_id, $date, $trans_id, $amount, $fixed_date = null)
+    public function updateSupplierLedger($voucher_type_id, $supplier_id, $previous_branch_id, $new_branch_id, $date, $trans_id, $amount, $fixed_date = null)
     {
         $voucher_type = $this->voucherType($voucher_type_id);
 
         $updateSupplierLedger = SupplierLedger::where($voucher_type['id'], $trans_id)
+            ->where('branch_id', $previous_branch_id)
             ->where('supplier_id', $supplier_id)
             ->where('voucher_type', $voucher_type_id)
             ->first();
 
-        //$updateSupplierLedger->supplier_id = $supplier_id;
-        $previousTime = date('H:i:s', strtotime($updateSupplierLedger->report_date));
-        $updateSupplierLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
-        $updateSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . $previousTime));
-        $updateSupplierLedger->{$voucher_type['amt']} = $amount;
-        $updateSupplierLedger->amount = $amount;
-        $updateSupplierLedger->save();
-        $updateSupplierLedger->running_balance = $this->adjustSupplierForSalePaymentDue($supplier_id);
-        $updateSupplierLedger->save();
+        if ($updateSupplierLedger) {
+
+            //$updateSupplierLedger->supplier_id = $supplier_id;
+            $previousTime = date('H:i:s', strtotime($updateSupplierLedger->report_date));
+            $updateSupplierLedger->branch_id = $new_branch_id ? $new_branch_id : $previous_branch_id;
+            $updateSupplierLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
+            $updateSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . $previousTime));
+            $updateSupplierLedger->{$voucher_type['amt']} = $amount;
+            $updateSupplierLedger->amount = $amount;
+            $updateSupplierLedger->save();
+        } else {
+
+            $this->addSupplierLedger($voucher_type_id, $supplier_id, $new_branch_id, $date, $trans_id, $amount, $fixed_date);
+        }
     }
 }

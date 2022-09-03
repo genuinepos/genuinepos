@@ -19,9 +19,11 @@ use App\Models\SupplierPayment;
 use App\Utils\SupplierPaymentUtil;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
+use App\Models\SupplierOpeningBalance;
 use App\Models\SupplierPaymentInvoice;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use Yajra\DataTables\Facades\DataTables;
+use App\Utils\BranchWiseSupplierAmountsUtil;
 
 class SupplierController extends Controller
 {
@@ -32,6 +34,7 @@ class SupplierController extends Controller
     public $converter;
     public $userActivityLogUtil;
     public $supplierPaymentUtil;
+    public $branchWiseSupplierAmountsUtil;
     public function __construct(
         SupplierUtil $supplierUtil,
         PurchaseUtil $purchaseUtil,
@@ -39,7 +42,8 @@ class SupplierController extends Controller
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         Converter $converter,
         UserActivityLogUtil $userActivityLogUtil,
-        SupplierPaymentUtil $supplierPaymentUtil
+        SupplierPaymentUtil $supplierPaymentUtil,
+        BranchWiseSupplierAmountsUtil $branchWiseSupplierAmountsUtil
     ) {
         $this->supplierUtil = $supplierUtil;
         $this->purchaseUtil = $purchaseUtil;
@@ -48,6 +52,7 @@ class SupplierController extends Controller
         $this->converter = $converter;
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->supplierPaymentUtil = $supplierPaymentUtil;
+        $this->branchWiseSupplierAmountsUtil = $branchWiseSupplierAmountsUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -60,77 +65,11 @@ class SupplierController extends Controller
 
         if ($request->ajax()) {
 
-            $suppliers = DB::table('suppliers');
-
-            return DataTables::of($suppliers)
-                ->addColumn('action', function ($row) {
-                    $html = '';
-                    $html .= '<div class="btn-group" role="group">';
-                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
-
-                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.supplier.view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
-
-                    if (auth()->user()->permission->contact['supplier_edit'] == '1') :
-
-                        $html .= '<a class="dropdown-item" href="' . route('contacts.supplier.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    endif;
-
-                    if (auth()->user()->permission->contact['supplier_delete'] == '1') :
-
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.supplier.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                    endif;
-
-                    if ($row->status == 1) :
-
-                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
-                    else :
-
-                        $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
-                    endif;
-
-                    $html .= '</div>';
-                    $html .= '</div>';
-                    return $html;
-                })
-
-                ->editColumn('business_name', function ($row) {
-
-                    return $row->business_name ? $row->business_name : '...';
-                })
-
-                ->editColumn('tax_number', function ($row) {
-
-                    return $row->tax_number ? $row->tax_number : '...';
-                })
-
-                ->editColumn('opening_balance', fn ($row) => '<span class="opening_balance" data-value="' . $row->opening_balance . '">' . $this->converter->format_in_bdt($row->opening_balance) . '</span>')
-
-                ->editColumn('total_purchase', fn ($row) => '<span class="total_purchase" data-value="' . $row->total_purchase . '">' . $this->converter->format_in_bdt($row->total_purchase) . '</span>')
-
-                ->editColumn('total_paid', fn ($row) => '<span class="total_paid text-success" data-value="' . $row->total_paid . '">' . $this->converter->format_in_bdt($row->total_paid) . '</span>')
-
-                ->editColumn('total_purchase_due', fn ($row) => '<span class="total_purchase_due text-danger" data-value="' . $row->total_purchase_due . '">' . $this->converter->format_in_bdt($row->total_purchase_due) . '</span>')
-
-                ->editColumn('total_return', fn ($row) => '<span class="total_return" data-value="' . $row->total_return . '">' . $this->converter->format_in_bdt($row->total_return) . '</span>')
-
-                ->editColumn('total_purchase_return_due', fn ($row) => '<span class="total_purchase_return_due" data-value="' . $row->total_purchase_return_due . '">' . $this->converter->format_in_bdt($row->total_purchase_return_due) . '</span>')
-
-                ->editColumn('status', function ($row) {
-
-                    if ($row->status == 1) :
-
-                        return '<i class="far fa-thumbs-up text-success"></i>';
-                    else :
-
-                        return '<i class="far fa-thumbs-down text-danger"></i>';
-                    endif;
-                })
-                ->rawColumns(['action', 'business_name', 'tax_number', 'opening_balance', 'total_purchase', 'total_paid', 'total_purchase_due', 'total_return', 'total_purchase_return_due', 'status'])
-                ->make(true);
+            return $this->supplierUtil->supplierListTable($request);
         }
 
-
-        return view('contacts.suppliers.index');
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        return view('contacts.suppliers.index', compact('branches'));
     }
 
     public function store(Request $request)
@@ -166,22 +105,33 @@ class SupplierController extends Controller
             'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
         ]);
 
-        // Add supplier Ledger
+        // Add Customer Ledger
         $this->supplierUtil->addSupplierLedger(
             voucher_type_id: 0,
             supplier_id: $addSupplier->id,
+            branch_id: auth()->user()->branch_id,
             date: date('Y-m-d'),
             trans_id: NULL,
-            amount: $request->opening_balance ? $request->opening_balance : 0
+            amount: $request->opening_balance ? $request->opening_balance : 0.00
         );
 
-        return response()->json('Supplier created successfully');
+        $addSupplierOpeningBalance = new SupplierOpeningBalance();
+        $addSupplierOpeningBalance->supplier_id = $addSupplier->id;
+        $addSupplierOpeningBalance->branch_id = auth()->user()->branch_id;
+        $addSupplierOpeningBalance->created_by_id = auth()->user()->id;
+        $addSupplierOpeningBalance->amount = $request->opening_balance ? $request->opening_balance : 0.00;
+        $addSupplierOpeningBalance->save();
+
+        return $addSupplier;
     }
 
     public function edit($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->select('suppliers.*')->first();
-        return view('contacts.suppliers.ajax_view.edit', compact('supplier'));
+        $branchOpeningBalance = DB::table('supplier_opening_balances')->where('supplier_id', $supplierId)
+            ->where('branch_id', auth()->user()->branch_id)->first();
+
+        return view('contacts.suppliers.ajax_view.edit', compact('supplier', 'branchOpeningBalance'));
     }
 
     public function update(Request $request)
@@ -216,9 +166,47 @@ class SupplierController extends Controller
         $this->supplierUtil->updateSupplierLedger(
             voucher_type_id: 0,
             supplier_id: $updateSupplier->id,
+            previous_branch_id: auth()->user()->branch_id,
+            new_branch_id: auth()->user()->branch_id,
             date: $updateSupplier->created_at,
             trans_id: NULL,
             amount: $updateSupplier->opening_balance,
+            fixed_date: $updateSupplier->created_at,
+        );
+
+        $branchOpeningBalance = SupplierOpeningBalance::where('supplier_id', $updateSupplier->id)
+            ->where('branch_id', auth()->user()->branch_id)->first();
+
+        if ($branchOpeningBalance) {
+
+            $branchOpeningBalance->amount = $request->opening_balance ? $request->opening_balance : 0.00;
+            $branchOpeningBalance->save();
+        } else {
+
+            $addCustomerOpeningBalance = new SupplierOpeningBalance();
+            $addCustomerOpeningBalance->supplier_id = $updateSupplier->id;
+            $addCustomerOpeningBalance->branch_id = auth()->user()->branch_id;
+            $addCustomerOpeningBalance->created_by_id = auth()->user()->id;
+            $addCustomerOpeningBalance->amount = $request->opening_balance ? $request->opening_balance : 0.00;
+            $addCustomerOpeningBalance->save();
+        }
+
+        $calcOpeningBalance = DB::table('supplier_opening_balances')
+            ->where('supplier_id', $updateSupplier->id)
+            ->select(DB::raw('SUM(amount) as op_amount'))
+            ->groupBy('supplier_id')->get();
+
+        $updateSupplier->opening_balance = $calcOpeningBalance->sum('op_amount');
+        $updateSupplier->save();
+
+        $this->supplierUtil->updateSupplierLedger(
+            voucher_type_id: 0,
+            supplier_id: $updateSupplier->id,
+            previous_branch_id: auth()->user()->branch_id,
+            new_branch_id: auth()->user()->branch_id,
+            date: $updateSupplier->created_at,
+            trans_id: NULL,
+            amount: $request->opening_balance ? $request->opening_balance : 0.00,
             fixed_date: $updateSupplier->created_at,
         );
 
@@ -332,7 +320,7 @@ class SupplierController extends Controller
                 $query->where('supplier_ledgers.branch_id', $request->branch_id);
             }
         }
-        
+
         if ($request->voucher_type) {
 
             $query->where('supplier_ledgers.voucher_type', $request->voucher_type); // Final
@@ -365,6 +353,7 @@ class SupplierController extends Controller
     public function payment($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->first();
+        $branch_id = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -381,32 +370,29 @@ class SupplierController extends Controller
                 'banks.name as bank'
             )->get();
 
-        $allPurchaseAndOrders = DB::table('purchases')->where('supplier_id', $supplierId)->whereIn('purchase_status', [1, 3])
-            ->where('purchases.due', '>', 0)
-            ->select('id', 'invoice_id', 'date', 'due', 'total_purchase_amount', 'purchase_return_amount', 'purchase_status')
-            ->orderBy('purchases.report_date', 'desc')
-            ->get();
+        // $allPurchaseAndOrders = DB::table('purchases')->where('supplier_id', $supplierId)->whereIn('purchase_status', [1, 3])
+        //     ->where('purchases.due', '>', 0)
+        //     ->select('id', 'invoice_id', 'date', 'due', 'total_purchase_amount', 'purchase_return_amount', 'purchase_status')
+        //     ->orderBy('purchases.report_date', 'desc')
+        //     ->get();
 
-        $purchases = DB::table('purchases')->where('supplier_id', $supplierId)->where('purchase_status', 1)
-            ->where('purchases.due', '>', 0)
-            ->select('id', 'invoice_id', 'date', 'total_purchase_amount', 'purchase_return_amount', 'purchase_return_amount', 'due')
-            ->orderBy('purchases.report_date', 'desc')
-            ->get();
+        // $purchases = DB::table('purchases')->where('supplier_id', $supplierId)->where('purchase_status', 1)
+        //     ->where('purchases.due', '>', 0)
+        //     ->select('id', 'invoice_id', 'date', 'total_purchase_amount', 'purchase_return_amount', 'purchase_return_amount', 'due')
+        //     ->orderBy('purchases.report_date', 'desc')
+        //     ->get();
 
-        $orders = DB::table('purchases')->where('supplier_id', $supplierId)->where('purchase_status', 3)
-            ->where('purchases.due', '>', 0)
-            ->select('id', 'invoice_id', 'date', 'total_purchase_amount', 'purchase_return_amount', 'due')
-            ->orderBy('purchases.report_date', 'desc')
-            ->get();
+        // $orders = DB::table('purchases')->where('supplier_id', $supplierId)->where('purchase_status', 3)
+        //     ->where('purchases.due', '>', 0)
+        //     ->select('id', 'invoice_id', 'date', 'total_purchase_amount', 'purchase_return_amount', 'due')
+        //     ->orderBy('purchases.report_date', 'desc')
+        //     ->get();
+
+        $branchWiseSupplierPurchasesAndOrders = $this->branchWiseSupplierAmountsUtil->branchWiseSupplierPurchasesAndOrders($supplierId, $branch_id);
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
-        $totalInvoiceReturnDue = DB::table('purchases') 
-            ->where('purchases.supplier_id', $supplierId)
-            ->select(DB::raw('sum(purchase_return_due) as total_return_due'))
-            ->groupBy('purchases.supplier_id')->get();
-
-        return view('contacts.suppliers.ajax_view.payment_modal', compact('supplier', 'accounts', 'methods', 'allPurchaseAndOrders', 'purchases', 'orders', 'totalInvoiceReturnDue'));
+        return view('contacts.suppliers.ajax_view.payment_modal', compact('supplier', 'accounts', 'methods', 'branchWiseSupplierPurchasesAndOrders'));
     }
 
     // Supplier Payment add
@@ -481,7 +467,7 @@ class SupplierController extends Controller
                 $this->supplierPaymentUtil->randomPurchaseOrOrderPayment($request, $supplierPayment, $supplierId, $paymentInvoicePrefix);
             }
 
-            $this->supplierUtil->adjustSupplierForSalePaymentDue($supplierId);
+            $this->supplierUtil->adjustSupplierForPurchasePaymentDue($supplierId);
 
             $payment = DB::table('supplier_payments')
                 ->where('supplier_payments.id', $supplierPayment->id)
@@ -856,7 +842,7 @@ class SupplierController extends Controller
             }
         }
 
-        $this->supplierUtil->adjustSupplierForSalePaymentDue($supplierId);
+        $this->supplierUtil->adjustSupplierForPurchasePaymentDue($supplierId);
 
         return response()->json('Return amount received successfully.');
     }
@@ -970,7 +956,7 @@ class SupplierController extends Controller
             $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
         }
 
-        $this->supplierUtil->adjustSupplierForSalePaymentDue($deleteSupplierPayment->supplier_id);
+        $this->supplierUtil->adjustSupplierForPurchasePaymentDue($deleteSupplierPayment->supplier_id);
         return response()->json('Payment deleted successfully.');
     }
 
@@ -992,14 +978,14 @@ class SupplierController extends Controller
                 // ->leftJoin('admin_and_users', 'supplier_ledgers.user_id', 'admin_and_users.id')
             ;
 
-            if ($request->type) {
+            if ($request->branch_id) {
 
-                if ($request->type == 1) {
-
-                    $paymentsQuery->whereIn('supplier_ledgers.voucher_type', [3, 5]);
+                if ($request->branch_id == 'NULL') {
+    
+                    $paymentsQuery->where('supplier_ledgers.branch_id', NULL);
                 } else {
-
-                    $paymentsQuery->whereIn('supplier_ledgers.voucher_type', [4, 6]);
+    
+                    $paymentsQuery->where('supplier_ledgers.branch_id', $request->branch_id);
                 }
             }
 
@@ -1186,5 +1172,10 @@ class SupplierController extends Controller
         )->orderBy('supplier_ledgers.report_date', 'desc')->get();
 
         return view('contacts.suppliers.ajax_view.print_payments', compact('payments', 'fromDate', 'toDate', 'supplier'));
+    }
+
+    public function supplierAmountsBranchWise(Request $request, $customerId)
+    {
+        return $this->branchWiseSupplierAmountsUtil->branchWiseSupplierAmount($customerId, $request->branch_id, $request->from_date, $request->to_date);
     }
 }

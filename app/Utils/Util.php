@@ -107,52 +107,6 @@ class Util
         return response()->json($addProduct);
     }
 
-    public function storeQuickSupplier($request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'phone' => 'required',
-        ]);
-
-        $generalSettings = DB::table('general_settings')->first('prefix');
-        $subIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
-        $firstLetterOfSupplier = str_split($request->name)[0];
-
-        $addSupplier = Supplier::create([
-            'contact_id' => $request->contact_id ? $request->contact_id : $subIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
-            'name' => $request->name,
-            'business_name' => $request->business_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'alternative_phone' => $request->alternative_phone,
-            'landline' => $request->landline,
-            'date_of_birth' => $request->date_of_birth,
-            'tax_number' => $request->tax_number,
-            'pay_term' => $request->pay_term,
-            'pay_term_number' => $request->pay_term_number,
-            'prefix' => $firstLetterOfSupplier . $this->invoiceVoucherRefIdUtil->getLastId('suppliers'),
-            'address' => $request->address,
-            'city' => $request->city,
-            'zip_code' => $request->zip_code,
-            'country' => $request->country,
-            'state' => $request->state,
-            'shipping_address' => $request->shipping_address,
-            'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
-            'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
-        ]);
-
-        // Add supplier Ledger
-        $this->supplierUtil->addSupplierLedger(
-            voucher_type_id: 0,
-            supplier_id: $addSupplier->id,
-            date: date('Y-m-d'),
-            trans_id: NULL,
-            amount: $request->opening_balance ? $request->opening_balance : 0
-        );
-
-        return response()->json($addSupplier);
-    }
-
     public function addQuickProductFromPurchase($request)
     {
         $addProduct = new Product();

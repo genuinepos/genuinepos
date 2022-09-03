@@ -67,7 +67,7 @@
                         <div class="tab_contant ledger">
                             <div class="row">
                                 <div class="col-md-4 col-sm-12 col-lg-4">
-                                    @include('contacts.suppliers.partials.account_summery_area')
+                                    @include('contacts.suppliers.partials.account_summery_area_by_ledger')
                                 </div>
 
                                 <div class="col-md-7 col-sm-12 col-lg-8">
@@ -105,22 +105,12 @@
                                                     @endif
 
                                                     <div class="col-md-3">
-                                                        <label><strong>Voucher Type :</strong></label>
-                                                        <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
-                                                            <option value="">All</option>
-                                                            @foreach (App\Utils\SupplierUtil::voucherTypes() as $key => $type)
-                                                                <option value="{{ $key }}">{{ $type }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-md-3">
                                                         <label><strong>From Date :</strong></label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                             </div>
-                                                            <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
+                                                            <input type="text" name="from_date" id="ledger_from_date" class="form-control" autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -130,7 +120,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                             </div>
-                                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                            <input type="text" name="to_date" id="ledger_to_date" class="form-control" autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -160,6 +150,7 @@
                                 <div class="data_preloader d-none">
                                     <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                 </div>
+
                                 <div class="col-md-12">
                                     <div class="ledger_list_table">
                                         <div class="table-responsive">
@@ -263,7 +254,7 @@
 
                             <div class="row">
                                 <div class="col-md-4 col-sm-12 col-lg-4">
-                                    @include('contacts.suppliers.partials.account_summery_area')
+                                    @include('contacts.suppliers.partials.account_summery_area_by_purchases')
                                 </div>
 
                                 <div class="col-md-7 col-sm-12 col-lg-8">
@@ -301,7 +292,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                             </div>
-                                                            <input type="text" name="from_date" id="form_purchase_date" class="form-control form_purchase_date date" autocomplete="off">
+                                                            <input type="text" name="from_date" id="purchase_from_date" class="form-control" autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -311,7 +302,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                             </div>
-                                                            <input type="text" name="to_date" id="to_purchase_date" class="form-control to_purchase_date date" autocomplete="off">
+                                                            <input type="text" name="to_date" id="purchase_to_date" class="form-control" autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -385,7 +376,7 @@
                         <div class="tab_contant uncompleted_orders d-none">
                             <div class="row">
                                 <div class="col-md-4 col-sm-12 col-lg-4">
-                                    @include('contacts.suppliers.partials.account_summery_area')
+                                    @include('contacts.suppliers.partials.account_summery_area_by_purchase_order')
                                 </div>
 
                                 <div class="col-md-7 col-sm-12 col-lg-8">
@@ -423,7 +414,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                             </div>
-                                                            <input type="text" name="from_date" id="form_order_date" class="form-control form_order_date date" autocomplete="off">
+                                                            <input type="text" name="from_date" id="order_from_date" class="form-control" autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -433,7 +424,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                             </div>
-                                                            <input type="text" name="to_date" id="to_order_date" class="form-control to_order_date date" autocomplete="off">
+                                                            <input type="text" name="to_date" id="order_to_date" class="form-control" autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -511,7 +502,7 @@
 
                                 <div class="row">
                                     <div class="col-md-4 col-sm-12 col-lg-4">
-                                        @include('contacts.suppliers.partials.account_summery_area')
+                                        @include('contacts.suppliers.partials.account_summery_area_payments')
                                     </div>
     
                                     <div class="col-md-8 col-sm-12 col-lg-8">
@@ -525,14 +516,30 @@
                                                     <div class="card mt-3 pb-5">
                                                         <form id="filter_supplier_payments" class="py-2 px-2 mt-2" method="get">
                                                             <div class="form-group row">
-                                                                <div class="col-md-3">
-                                                                    <label><strong>Payment Status :</strong></label>
-                                                                    <select name="type" class="form-control submit_able" id="type" autofocus>
-                                                                        <option value="">All</option>
-                                                                        <option value="1">Payment</option>
-                                                                        <option value="2">Return Payment</option>
-                                                                    </select>
-                                                                </div>
+                                                                @if ($addons->branches == 1)
+
+                                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+
+                                                                        <div class="col-md-3">
+                                                                            <label><strong>Business Location :</strong></label>
+                                                                            <select name="branch_id" class="form-control submit_able"
+                                                                                id="payments_branch_id" autofocus>
+                                                                                <option value="">All</option>
+                                                                                <option value="NULL">
+                                                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                                </option>
+                                                                                @foreach ($branches as $branch)
+                                                                                    <option value="{{ $branch->id }}">
+                                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    @endif
+                                                                @else
+                                                                
+                                                                    <input type="hidden" name="branch_id" id="ledger_branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}">
+                                                                @endif
             
                                                                 <div class="col-md-3">
                                                                     <label><strong>From Date :</strong></label>
@@ -540,7 +547,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                         </div>
-                                                                        <input type="text" name="p_from_date" id="p_from_date" class="form-control p_from_date date"autocomplete="off">
+                                                                        <input type="text" name="p_from_date" id="payments_from_date" class="form-control"autocomplete="off">
                                                                     </div>
                                                                 </div>
             
@@ -550,7 +557,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                         </div>
-                                                                        <input type="text" name="p_to_date" id="p_to_date" class="form-control p_to_date date" autocomplete="off">
+                                                                        <input type="text" name="p_to_date" id="payments_to_date" class="form-control" autocomplete="off">
                                                                     </div>
                                                                 </div>
             
@@ -573,10 +580,15 @@
                                                     <div class="row mt-3">
                                                         <div class="col-md-12">
                                                             <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-success"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
-                                                            <a class="btn btn-success return_payment_btn mt-2 {{ $supplier->total_purchase_return_due > 0 ? '' : 'd-none' }} " id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund Amount</a>
                                                         </div>
                                                     </div>
             
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-12">
+                                                            <a class="btn btn-success return_payment_btn" id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i>Refund </a>
+                                                        </div>
+                                                    </div>
+
                                                     <div class="row mt-2">
                                                         <div class="col-md-12">
                                                             <a href="{{ route('suppliers.all.payment.print', $supplier->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
@@ -727,9 +739,8 @@
                 "url": "{{ route('contacts.supplier.ledgers', $supplier->id) }}",
                 "data": function(d) {
                     d.branch_id = $('#ledger_branch_id').val();
-                    d.voucher_type = $('#voucher_type').val();
-                    d.from_date = $('.from_date').val();
-                    d.to_date = $('.to_date').val();
+                    d.from_date = $('#ledger_from_date').val();
+                    d.to_date = $('#ledger_to_date').val();
                 }
             },
 
@@ -748,7 +759,6 @@
                 var credit = sum_table_col($('.data_tbl'), 'credit');
                 $('#credit').text(bdFormat(credit));
                 $('.data_preloader').hide();
-                getRunningBalance();
             }
         });
 
@@ -762,8 +772,8 @@
                 "url": "{{ route('contacts.supplier.view', $supplierId) }}",
                 "data": function(d) {
                     d.branch_id = $('#purchase_branch_id').val();
-                    d.from_date = $('.form_purchase_date').val();
-                    d.to_date = $('.to_purchase_date').val();
+                    d.from_date = $('#purchase_from_date').val();
+                    d.to_date = $('#purchase_to_date').val();
                 }
             },
 
@@ -818,8 +828,8 @@
                 "url": "{{ route('suppliers.uncompleted.orders', $supplierId) }}",
                 "data": function(d) {
                     d.branch_id = $('#order_branch_id').val();
-                    d.from_date = $('.form_order_date').val();
-                    d.to_date = $('.to_order_date').val();
+                    d.from_date = $('#order_from_date').val();
+                    d.to_date = $('#order_to_date').val();
                 }
             },
 
@@ -887,9 +897,9 @@
                 "ajax": {
                     "url": "{{ route('suppliers.all.payment.list', $supplier->id) }}",
                     "data": function(d) {
-                        d.type = $('#type').val();
-                        d.p_from_date = $('.p_from_date').val();
-                        d.p_to_date = $('.p_to_date').val();
+                        d.branch_id = $('#payments_branch_id').val();
+                        d.p_from_date = $('#payments_from_date').val();
+                        d.p_to_date = $('#payments_to_date').val();
                     }
                 },
 
@@ -936,11 +946,25 @@
             return sum;
         }
 
+        var filterObj = {
+            branch_id : null,
+            from_date : null,
+            to_date : null,
+        };
+
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_supplier_ledgers', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
             ledger_table.ajax.reload();
+
+            filterObj = {
+                branch_id : $('#ledger_branch_id').val(),
+                from_date : $('#ledger_from_date').val(),
+                to_date : $('#ledger_to_date').val(),
+            };
+
+            getSupplierAmountsBranchWise(filterObj, 'ledger_', false);
         });
 
          //Submit filter form by select input changing
@@ -949,6 +973,14 @@
 
             $('#purchase_preloader').show();
             $('.purchase_table').DataTable().ajax.reload();
+
+            filterObj = {
+                branch_id : $('#purchase_branch_id').val(),
+                from_date : $('#purchase_from_date').val(),
+                to_date : $('#purchase_to_date').val(),
+            };
+
+            getSupplierAmountsBranchWise(filterObj, 'purchase_', false);
         });
 
         //Submit filter form by select input changing
@@ -957,6 +989,14 @@
 
             $('#order_preloader').show();
             $('.uncompleted_orders_table').DataTable().ajax.reload();
+
+            filterObj = {
+                branch_id : $('#order_branch_id').val(),
+                from_date : $('#order_from_date').val(),
+                to_date : $('#order_to_date').val(),
+            };
+
+            getSupplierAmountsBranchWise(filterObj, 'purchase_order_', false);
         });
 
         //Submit filter form by select input changing
@@ -964,6 +1004,14 @@
             e.preventDefault();
             $('.data_preloader').show();
             payments_table.ajax.reload();
+
+            filterObj = {
+                branch_id : $('#payments_branch_id').val(),
+                from_date : $('#payments_from_date').val(),
+                to_date : $('#payments_to_date').val(),
+            };
+
+            getSupplierAmountsBranchWise(filterObj, 'payments_', false);
         });
 
         $(document).on('click', '#tab_btn', function(e) {
@@ -1024,7 +1072,6 @@
                 success: function(data) {
 
                     $('.data_tbl').DataTable().ajax.reload();
-                    getSupplier();
                     toastr.error(data);
                 }
             });
@@ -1184,7 +1231,6 @@
                 success:function(data){
 
                     $('.data_tbl').DataTable().ajax.reload();
-                    getSupplier();
                     toastr.error(data);
                 }
             });
@@ -1225,7 +1271,7 @@
 
             var branch_id = $('#purchase_branch_id').val();
             var supplier_id = "{{ $supplier->id }}";
-            var from_date = $('.form_purchase_date').val();
+            var from_date = $('.from_purchase_date').val();
             var to_date = $('.to_purchase_date').val();
 
             $.ajax({
@@ -1299,7 +1345,7 @@
     <script type="text/javascript">
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('datepicker'),
+            element: document.getElementById('ledger_from_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -1318,7 +1364,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('datepicker2'),
+            element: document.getElementById('ledger_to_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -1337,7 +1383,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('p_from_date'),
+            element: document.getElementById('payments_from_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -1356,7 +1402,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('p_to_date'),
+            element: document.getElementById('payments_to_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -1375,7 +1421,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('form_purchase_date'),
+            element: document.getElementById('purchase_from_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -1394,7 +1440,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('to_purchase_date'),
+            element: document.getElementById('purchase_to_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -1413,7 +1459,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('form_order_date'),
+            element: document.getElementById('order_from_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -1432,7 +1478,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('to_order_date'),
+            element: document.getElementById('order_to_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -1448,58 +1494,34 @@
             },
             format: 'DD-MM-YYYY',
         });
+    </script>
 
-        function getSupplier() {
+    <script>
+         function getSupplierAmountsBranchWise(filterObj, showPrefix = 'ledger', is_show_all = true) {
 
             $.ajax({
-                url:"{{ url('common/ajax/call/get/supplier', $supplier->id) }}",
-                type:'get',
+               url :"{{ route('contacts.supplier.amounts.branch.wise', $supplier->id) }}",
+                type :'get',
+                data : filterObj,
                 success:function(data){
+                    var keys = Object.keys(data);
 
-                    $('.opening_balance').text(bdFormat(data.opening_balance));
-                    $('.total_purchase').text(bdFormat(data.total_purchase));
-                    $('.total_return').text(bdFormat(data.total_return));
-                    $('.total_paid').text(bdFormat(data.total_paid));
-                    $('.total_less').text(bdFormat(data.total_less));
-                    $('.total_purchase_due').text(bdFormat(data.total_purchase_due));
-                    $('.total_purchase_return_due').text(bdFormat(data.total_purchase_return_due));
+                    keys.forEach(function (val) {
 
-                    if (data.total_purchase_return_due > 0) {
+                        if (is_show_all) {
 
-                        $('.return_payment_btn').removeClass('d-none');
-                    } else {
+                            $('.'+val).html(bdFormat(data[val]));
+                        }else {
 
-                        $('.return_payment_btn').addClass('d-none');
-                    }
+                            $('#'+showPrefix+val).html(bdFormat(data[val]));
+                        }
+                    });
+
+                    $('#card_total_due').val(data['total_sale_due']);
                 }
             });
         }
 
-        // getSupplier();
-    </script>
-
-    <script>
-        function getRunningBalance() {
-
-            // var i=0;
-            // var previousBalance=0;
-            // $('.ledger_table').find('tbody').find('tr').each(function() { 
-
-            //     var debit = parseFloat($(this).find('.debit').data('value')); 
-            //     var credit = parseFloat($(this).find('.credit').data('value'));  
-
-            //     if(parseFloat(i) == 0) {
-
-            //         previousBalance =  parseFloat(credit) - parseFloat(debit);
-            //     }else {
-
-            //         previousBalance = parseFloat(previousBalance) + (parseFloat(credit) - parseFloat(debit));
-            //     } 
-                
-            //     i++;
-                
-            //     $(this).find('.running_balance').html(bdFormat(previousBalance));
-            // });
-        }
+        getSupplierAmountsBranchWise(filterObj)
     </script>
 @endpush

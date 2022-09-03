@@ -416,7 +416,7 @@ class PurchaseReturnController extends Controller
             $this->accountUtil->adjustAccountBalance('credit', $storePurchaseReturnAccountId);
         }
 
-        $this->supplierUtil->adjustSupplierForSalePaymentDue($storeSupplierId);
+        $this->supplierUtil->adjustSupplierForPurchasePaymentDue($storeSupplierId);
 
         return response()->json('Successfully purchase return is deleted');
     }

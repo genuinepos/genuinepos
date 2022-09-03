@@ -11,6 +11,8 @@ class CustomerUtil
 {
     public function customerListTable($request)
     {
+        $branchWiseCustomerAmountUtil =  new \App\Utils\BranchWiseCustomerAmountUtil();
+
         $customers = DB::table('customers')
             ->leftJoin('customer_groups', 'customers.customer_group_id', 'customer_groups.id')
             ->select(
@@ -72,45 +74,39 @@ class CustomerUtil
                 }
             })
 
-            ->editColumn('opening_balance', function ($row) use ($request) {
-
-                $BranchWiseCustomerAmountUtil =  new \App\Utils\BranchWiseCustomerAmountUtil();
-                $openingBalance = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['opening_balance'];
+            ->editColumn('opening_balance', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+ 
+                $openingBalance = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['opening_balance'];
                 return '<span class="opening_balance" data-value="' . $openingBalance . '">' . \App\Utils\Converter::format_in_bdt($openingBalance) . '</span>';
             })
 
-            ->editColumn('total_sale', function ($row) use ($request) {
+            ->editColumn('total_sale', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
 
-                $BranchWiseCustomerAmountUtil = new \App\Utils\BranchWiseCustomerAmountUtil();
-                $totalSale = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale'];
+                $totalSale = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale'];
                 return '<span class="total_sale" data-value="' . $totalSale . '">' . \App\Utils\Converter::format_in_bdt($totalSale) . '</span>';
             })
 
-            ->editColumn('total_paid', function ($row) use ($request) {
+            ->editColumn('total_paid', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
 
-                $BranchWiseCustomerAmountUtil = new \App\Utils\BranchWiseCustomerAmountUtil();
-                $totalPaid = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_paid'];
+                $totalPaid = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_paid'];
                 return '<span class="total_paid" data-value="' . $totalPaid . '">' . \App\Utils\Converter::format_in_bdt($totalPaid) . '</span>';
             })
 
-            ->editColumn('total_sale_due', function ($row) use ($request) {
+            ->editColumn('total_sale_due', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
 
-                $BranchWiseCustomerAmountUtil = new \App\Utils\BranchWiseCustomerAmountUtil();
-                $totalSaleDue = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_due'];
+                $totalSaleDue = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_due'];
                 return '<span class="total_sale_due" data-value="' . $totalSaleDue . '">' . \App\Utils\Converter::format_in_bdt($totalSaleDue) . '</span>';
             })
 
-            ->editColumn('total_return', function ($row) use ($request) {
+            ->editColumn('total_return', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
 
-                $BranchWiseCustomerAmountUtil = new \App\Utils\BranchWiseCustomerAmountUtil();
-                $totalReturn = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_return'];
+                $totalReturn = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_return'];
                 return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
             })
 
-            ->editColumn('total_sale_return_due', function ($row) use ($request) {
+            ->editColumn('total_sale_return_due', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
 
-                $BranchWiseCustomerAmountUtil = new \App\Utils\BranchWiseCustomerAmountUtil();
-                $totalSaleReturnDue = $BranchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_return_due'];
+                $totalSaleReturnDue = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_return_due'];
                 return '<span class="total_sale_return_due" data-value="' . $totalSaleReturnDue . '">' . \App\Utils\Converter::format_in_bdt($totalSaleReturnDue) . '</span>';
             })
 

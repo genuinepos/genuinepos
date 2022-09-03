@@ -142,7 +142,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="ladger_table">
+                                        <div class="ledger_table_area">
                                             <div class="table-responsive" id="payment_list_table">
                                                 <table class="display data_tbl data__table ledger_table">
                                                     <thead>
@@ -752,7 +752,7 @@
                 to_date : $('.to_date').val(),
             };
 
-            var data = getCustomerAmountsBranchWise(filterObj, 'ladger_', false);
+            var data = getCustomerAmountsBranchWise(filterObj, 'ledger_', false);
         });
 
          //Submit filter form by select input changing
@@ -910,7 +910,7 @@
                         to_date : $('.to_date').val(),
                     };
 
-                    getCustomerAmountsBranchWise(filterObj, 'ladger_', false);
+                    getCustomerAmountsBranchWise(filterObj, 'ledger_', false);
                 }
             });
         });
@@ -1104,7 +1104,7 @@
                         to_date : $('.to_date').val(),
                     };
 
-                    getCustomerAmountsBranchWise(filterObj, 'ladger_', false);
+                    getCustomerAmountsBranchWise(filterObj, 'ledger_', false);
 
                     filterObj = {
                         branch_id : $('#sale_branch_id').val(),

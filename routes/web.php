@@ -201,6 +201,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
         Route::post('return/payment/{supplierId}', 'SupplierController@returnPaymentAdd')->name('suppliers.return.payment.add');
         Route::get('payment/details/{paymentId}', 'SupplierController@paymentDetails')->name('suppliers.view.details');
         Route::delete('payment/delete/{paymentId}', 'SupplierController@paymentDelete')->name('suppliers.payment.delete');
+        Route::get('amountsBranchWise/{supplierId}', 'SupplierController@supplierAmountsBranchWise')->name('contacts.supplier.amounts.branch.wise');
 
         Route::group(['prefix' => 'import'], function () {
             Route::get('/', 'SupplierImportController@create')->name('contacts.suppliers.import.create');
@@ -276,6 +277,7 @@ Route::group(['prefix' => 'contacts', 'namespace' => 'App\Http\Controllers'], fu
 
 // Purchase route group
 Route::group(['prefix' => 'purchases', 'namespace' => 'App\Http\Controllers'], function () {
+
     Route::get('v2', 'PurchaseController@index_v2')->name('purchases.index_v2');
     Route::get('product/list', 'PurchaseController@purchaseProductList')->name('purchases.product.list');
     Route::get('po/list', 'PurchaseController@poList')->name('purchases.po.list');

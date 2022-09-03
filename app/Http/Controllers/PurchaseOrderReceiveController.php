@@ -282,7 +282,7 @@ class PurchaseOrderReceiveController extends Controller
             }
 
             $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
-            $this->supplierUtil->adjustSupplierForSalePaymentDue($purchase->supplier_id);
+            $this->supplierUtil->adjustSupplierForPurchasePaymentDue($purchase->supplier_id);
 
             $this->purchaseUtil->updatePoInvoiceQtyAndStatusPortion($purchase);
             

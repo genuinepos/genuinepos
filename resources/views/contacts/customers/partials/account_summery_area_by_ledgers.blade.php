@@ -11,7 +11,7 @@
                         <strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
                     </td>
 
-                    <td class="text-end opening_balance" id="ladger_opening_balance">0.00</td>
+                    <td class="text-end opening_balance" id="ledger_opening_balance">0.00</td>
                 </tr>
 
                 <tr>
@@ -19,34 +19,34 @@
                         <strong>Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                     </td>
 
-                    <td class="text-end total_sale" id="ladger_total_sale">0.00</td>
+                    <td class="text-end total_sale" id="ledger_total_sale">0.00</td>
                 </tr>
 
                 <tr>
                     <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                    <td class="text-end total_return" id="ladger_total_return">0.00</td>
+                    <td class="text-end total_return" id="ledger_total_return">0.00</td>
                 </tr>
 
                 <tr>
                     <td class="text-end"><strong>Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                    <td class="text-end total_less" id="ladger_total_less">0.00</td>
+                    <td class="text-end total_less" id="ledger_total_less">0.00</td>
                 </tr>
 
                 <tr>
                     <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                    <td class="text-end total_paid" id="ladger_total_paid">
+                    <td class="text-end total_paid" id="ledger_total_paid">
                         0.00
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                    <td class="text-end total_sale_due" id="ladger_total_sale_due">0.00</td>
+                    <td class="text-end total_sale_due" id="ledger_total_sale_due">0.00</td>
                 </tr>
 
                 <tr>
                     <td class="text-end"><strong>Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                    <td class="text-end total_sale_return_due" id="ladger_total_sale_return_due">0.00</td>
+                    <td class="text-end total_sale_return_due" id="ledger_total_sale_return_due">0.00</td>
                 </tr>
             </tbody>
         </table>

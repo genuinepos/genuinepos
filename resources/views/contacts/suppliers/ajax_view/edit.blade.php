@@ -2,14 +2,14 @@
     <input type="hidden" name="id" id="id" value="{{ $supplier->id }}">
     <div class="form-group row mt-1">
         <div class="col-md-3">
-            <b>Name :</b>  <span class="text-danger">*</span>
-            <input type="text" name="name" class="form-control edit_input" data-name="Supplier name" id="e_name" placeholder="Supplier name" value="{{ $supplier->name }}"/>
+            <label><b>Name :</b></label><span class="text-danger">*</span>
+            <input type="text" name="name" class="form-control edit_input" data-name="Supplier name" id="e_name" placeholder="Supplier Name" value="{{ $supplier->name }}"/>
             <span class="error error_e_name"></span>
         </div>
 
         <div class="col-md-3">
             <b>Phone :</b> <span class="text-danger">*</span>
-            <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number" value="{{ $supplier->phone }}"/>
+            <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone Number" value="{{ $supplier->phone }}"/>
             <span class="error error_e_phone"></span>
         </div>
 
@@ -20,24 +20,24 @@
 
         <div class="col-md-3">
             <b>Business Name :</b>
-            <input type="text" name="business_name" class="form-control" placeholder="Business name" id="e_business_name" value="{{ $supplier->business_name }}"/>
+            <input type="text" name="business_name" class="form-control" placeholder="Business Name" id="e_business_name" value="{{ $supplier->business_name }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-3">
             <b>Alternative Number :</b>
-            <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative phone number" id="e_alternative_phone" value="{{ $supplier->alternative_phone }}"/>
+            <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative Phone Number" id="e_alternative_phone" value="{{ $supplier->alternative_phone }}"/>
         </div>
 
         <div class="col-md-3">
             <b>Landline :</b>
-            <input type="text" name="landline" class="form-control " placeholder="landline number" id="e_landline" value="{{ $supplier->landline }}"/>
+            <input type="text" name="landline" class="form-control " placeholder="Landline Number" id="e_landline" value="{{ $supplier->landline }}"/>
         </div>
 
         <div class="col-md-3">
             <b>Email :</b>
-            <input type="text" name="email" class="form-control" placeholder="Email address" id="e_email" value="{{ $supplier->email }}"/>
+            <input type="text" name="email" class="form-control" placeholder="Email Address" id="e_email" value="{{ $supplier->email }}"/>
         </div>
 
         <div class="col-md-3">
@@ -59,7 +59,7 @@
 
         <div class="col-md-3">
             <label><b>Opening Balance :</b></label>
-            <input type="text" name="opening_balance" class="form-control " placeholder="Tax number" id="e_opening_balance" value="{{ $supplier->opening_balance }}"/>
+            <input type="text" name="opening_balance" class="form-control " placeholder="Opening Balance" id="e_opening_balance" value="{{ $branchOpeningBalance ? $branchOpeningBalance->amount : 0.00 }}"/>
         </div>
 
         <div class="col-md-3">

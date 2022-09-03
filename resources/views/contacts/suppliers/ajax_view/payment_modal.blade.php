@@ -17,6 +17,7 @@
             <h6 class="modal-title" id="exampleModalLabel">Add Payment <span class="type_name"></span></h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
+
         <div class="modal-body">
             <div class="info_area mb-2">
                 <div class="row">
@@ -135,7 +136,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($allPurchaseAndOrders as $row)
+                                                        @foreach ($branchWiseSupplierPurchasesAndOrders['allPurchasesAndOrders'] as $row)
                                                             <tr>
                                                                 <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $row->id }}" id="purchase_id" data-due_amount="{{ $row->due }}"></td>
                                                                 <td class="text-start">{{ date('d/m/Y', strtotime($row->date)) }}</td>
@@ -210,7 +211,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($purchases as $purchase)
+                                                        @foreach ($branchWiseSupplierPurchasesAndOrders['purchases'] as $purchase)
                                                             <tr>
                                                                 <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $purchase->id }}" id="purchase_id" data-due_amount="{{ $purchase->due }}"></td>
 
@@ -274,7 +275,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($orders as $order)
+                                                        @foreach ($branchWiseSupplierPurchasesAndOrders['orders'] as $order)
                                                             <tr>
                                                                 <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $order->id }}" id="purchase_id" data-due_amount="{{ $order->due }}"></td>
                                                                 <td class="text-start">{{ date('d/m/Y', strtotime($order->date)) }}</td>

@@ -2,9 +2,13 @@
 
 use App\Models\Sale;
 use App\Models\AdminAndUser;
+use Illuminate\Support\Facades\DB;
+use App\Models\CustomerCreditLimit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use App\Models\CustomerOpeningBalance;
+use App\Models\SupplierOpeningBalance;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
@@ -1040,6 +1044,34 @@ Route::get('/test', function () {
     //     $p->is_last_created = 0;
     //     $p->save();
     // } 
+
+    $customers = DB::table('customers')->get();
+
+    foreach ($customers as $customer){
+
+        $customerOpeningBalance = new CustomerOpeningBalance();
+        $customerOpeningBalance->customer_id = $customer->id;
+        $customerOpeningBalance->amount = $customer->opening_balance;
+        $customerOpeningBalance->created_by_id = auth()->user()->id;
+        $customerOpeningBalance->save();
+
+        $customerCreditLimit = new CustomerCreditLimit();
+        $customerCreditLimit->customer_id = $customer->id;
+        $customerCreditLimit->credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
+        $customerCreditLimit->created_by_id = auth()->user()->id;
+        $customerCreditLimit->save();
+    }
+
+    $suppliers = DB::table('suppliers')->get();
+
+    foreach ($suppliers as $supplier){
+
+        $supplierOpeningBalance = new SupplierOpeningBalance();
+        $supplierOpeningBalance->supplier_id = $supplier->id;
+        $supplierOpeningBalance->amount = $supplier->opening_balance;
+        $supplierOpeningBalance->created_by_id = auth()->user()->id;
+        $supplierOpeningBalance->save();
+    }
 });
 
 // All authenticated routes

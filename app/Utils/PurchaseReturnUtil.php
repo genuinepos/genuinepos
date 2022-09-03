@@ -116,6 +116,7 @@ class PurchaseReturnUtil
         $this->supplierUtil->addSupplierLedger(
             voucher_type_id: 2,
             supplier_id: $purchase->supplier_id,
+            branch_id: auth()->user()->branch_id,
             date: $request->date,
             trans_id: $addPurchaseReturn->id,
             amount: $request->total_return_amount
@@ -203,6 +204,7 @@ class PurchaseReturnUtil
         $this->supplierUtil->updateSupplierLedger(
             voucher_type_id: 2,
             supplier_id: $purchase->supplier_id,
+            branch_id: auth()->user()->branch_id,
             date: $request->date,
             trans_id: $purchaseReturn->id,
             amount: $request->total_return_amount

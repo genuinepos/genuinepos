@@ -40,22 +40,22 @@
                                 <li><strong>Total Purchase : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text">
-                                        <b>{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</b>
+                                        <b>{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase']) }}</b>
                                     </span>
                                 </li>
 
                                 <li><strong>Total Paid : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-success">
-                                        <b>{{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}</b>
+                                        <b>{{ App\Utils\Converter::format_in_bdt($amounts['total_paid']) }}</b>
                                     </span>
                                 </li>
 
                                 <li><strong>Total Due : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-danger">
-                                        <b id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</b> 
-                                        <input type="hidden" id="card_total_due" value="{{ $supplier->total_purchase_due }}">
+                                        <b id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase_due']) }}</b> 
+                                        <input type="hidden" id="card_total_due" value="{{ $amounts['total_purchase_due'] }}">
                                     </span>
                                 </li>
                             </ul>
@@ -67,7 +67,6 @@
             <form id="payment_form" action="{{ route('suppliers.payment.add', $supplier->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                 
                     <div class="col-md-5">
                         <div class="seperate_area">
                             <div class="row">
@@ -450,16 +449,7 @@
         e.preventDefault();
 
         $('.loading_button').show();
-        // var available_amount = $('#p_available_amount').val();
-        // var paying_amount = $('#p_paying_amount').val();
-
-        // if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
-            
-        //     $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
-        //     $('.loading_button').hide();
-        //     return;
-        // }
-
+  
         var url = $(this).attr('action');
         
         $.ajax({
@@ -481,7 +471,38 @@
                     $('#paymentModal').modal('hide');
                     toastr.success(data);
                     $('.data_tbl').DataTable().ajax.reload();
-                    getSupplier();
+
+                    var filterObj = {
+                        branch_id : $('#payments_branch_id').val(),
+                        from_date : $('#payments_from_date').val(),
+                        to_date : $('#payments_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'payments_', false);
+
+                    filterObj = {
+                        branch_id : $('#ledger_branch_id').val(),
+                        from_date : $('#ledger_from_date').val(),
+                        to_date : $('#ledger_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'ledger_', false);
+
+                    filterObj = {
+                        branch_id : $('#purchase_branch_id').val(),
+                        from_date : $('#purchase_from_date').val(),
+                        to_date : $('#purchase_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'purchase_', false);
+
+                    filterObj = {
+                        branch_id : $('#order_branch_id').val(),
+                        from_date : $('#order_from_date').val(),
+                        to_date : $('#order_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'purchase_order_', false);
                 }
             },
             error: function(err) {

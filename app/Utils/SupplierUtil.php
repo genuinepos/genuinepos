@@ -634,7 +634,7 @@ class SupplierUtil
         $supplier = Supplier::where('id', $supplierId)->first();
 
         $amounts = DB::table('supplier_ledgers')
-            ->where('supplier_ledgers.customer_id', $customerId)->select('voucher_type', DB::raw('SUM(amount) as amt'))
+            ->where('supplier_ledgers.supplier_id', $supplierId)->select('voucher_type', DB::raw('SUM(amount) as amt'))
             ->groupBy('supplier_ledgers.voucher_type')->get();
 
         $openingBalance = 0;

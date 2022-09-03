@@ -363,6 +363,7 @@ class PurchaseController extends Controller
             $this->supplierUtil->addSupplierLedger(
                 voucher_type_id: 1,
                 supplier_id: $request->supplier_id,
+                branch_id: auth()->user()->branch_id,
                 date: $request->date,
                 trans_id: $addPurchase->id,
                 amount: $request->total_purchase_amount,
@@ -394,6 +395,7 @@ class PurchaseController extends Controller
                 $this->supplierUtil->addSupplierLedger(
                     voucher_type_id: 3,
                     supplier_id: $request->supplier_id,
+                    branch_id: auth()->user()->branch_id,
                     date: $request->date,
                     trans_id: $addPurchasePaymentGetId,
                     amount: $request->paying_amount,
@@ -401,8 +403,6 @@ class PurchaseController extends Controller
             }
 
             // update main product and variant price
-
-
             $loop = 0;
             foreach ($product_ids as $productId) {
 
@@ -776,6 +776,8 @@ class PurchaseController extends Controller
             $this->supplierUtil->updateSupplierLedger(
                 voucher_type_id: 1,
                 supplier_id: $updatePurchase->supplier_id,
+                previous_branch_id: auth()->user()->branch_id,
+                new_branch_id: auth()->user()->branch_id,
                 date: $request->date,
                 trans_id: $updatePurchase->id,
                 amount: $request->total_purchase_amount
@@ -1094,6 +1096,7 @@ class PurchaseController extends Controller
             $this->supplierUtil->addSupplierLedger(
                 voucher_type_id: 3,
                 supplier_id: $purchase->supplier_id,
+                branch_id: auth()->user()->branch_id,
                 date: $request->date,
                 trans_id: $addPurchasePaymentGetId,
                 amount: $request->paying_amount,
@@ -1183,6 +1186,8 @@ class PurchaseController extends Controller
                 $this->supplierUtil->updateSupplierLedger(
                     voucher_type_id: 3,
                     supplier_id: $purchase->supplier_id,
+                    previous_branch_id: auth()->user()->branch_id,
+                    new_branch_id: auth()->user()->branch_id,
                     date: $request->date,
                     trans_id: $updatePurchasePayment->id,
                     amount: $request->paying_amount
@@ -1269,6 +1274,7 @@ class PurchaseController extends Controller
             $this->supplierUtil->addSupplierLedger(
                 voucher_type_id: 4,
                 supplier_id: $purchase->supplier_id,
+                branch_id: auth()->user()->branch_id,
                 date: $request->date,
                 trans_id: $purchaseReturnPaymentGetId,
                 amount: $request->paying_amount,
@@ -1344,6 +1350,8 @@ class PurchaseController extends Controller
                 $this->supplierUtil->updateSupplierLedger(
                     voucher_type_id: 4,
                     supplier_id: $purchase->supplier_id,
+                    previous_branch_id: auth()->user()->branch_id,
+                    new_branch_id: auth()->user()->branch_id,
                     date: $request->date,
                     trans_id: $updatePurchasePayment->id,
                     amount: $request->paying_amount

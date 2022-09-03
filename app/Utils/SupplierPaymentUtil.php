@@ -22,6 +22,7 @@ class SupplierPaymentUtil
     public function specificPurchaseOrOrderByPayment($request, $supplierPayment, $supplierId, $paymentInvoicePrefix)
     {
         $dueInvoices = Purchase::where('supplier_id', $supplierId)
+            ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('id', $request->purchase_ids)
             ->get();
 
@@ -73,6 +74,7 @@ class SupplierPaymentUtil
         if ($request->paying_amount > 0) {
 
             $dueInvoices = Purchase::where('supplier_id', $supplierId)
+                ->where('branch_id', auth()->user()->branch_id)
                 ->where('due', '>', 0)
                 ->orderBy('report_date', 'asc')
                 ->get();
@@ -112,12 +114,13 @@ class SupplierPaymentUtil
                             $this->purchaseDueFillupBySupplierPayment($request, $supplierPayment, $paymentInvoicePrefix, $dueInvoice, $dueInvoice->due);
 
                             $this->supplierPaymentInvoice($supplierPayment, $dueInvoice, $dueInvoice->due);
-                  
+
                             // Calculate next payment amount
                             $request->paying_amount -= $dueInvoice->due;
                             $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                         }
                     }
+                    
                     $index++;
                 }
             }
@@ -127,6 +130,7 @@ class SupplierPaymentUtil
     public function randomPurchaseOrOrderPayment($request, $supplierPayment, $supplierId, $paymentInvoicePrefix)
     {
         $dueInvoices = Purchase::where('supplier_id', $supplierId)
+            ->where('branch_id', auth()->user()->branch_id)
             ->where('due', '>', 0)
             ->orderBy('report_date', 'asc')
             ->get();
@@ -173,6 +177,7 @@ class SupplierPaymentUtil
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
                 }
+
                 $index++;
             }
         }
@@ -183,6 +188,7 @@ class SupplierPaymentUtil
         $addPurchasePayment = new PurchasePayment();
         $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);
         $addPurchasePayment->purchase_id = $dueInvoice->id;
+        $addPurchasePayment->branch_id = auth()->user()->branch_id;
         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
         $addPurchasePayment->account_id = $request->account_id;
         $addPurchasePayment->paid_amount = $payingAmount;

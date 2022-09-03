@@ -1073,6 +1073,38 @@
 
                     $('.data_tbl').DataTable().ajax.reload();
                     toastr.error(data);
+
+                    var filterObj = {
+                        branch_id : $('#purchase_branch_id').val(),
+                        from_date : $('#purchase_from_date').val(),
+                        to_date : $('#purchase_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'purchase_', false);
+
+                    filterObj = {
+                        branch_id : $('#order_branch_id').val(),
+                        from_date : $('#order_from_date').val(),
+                        to_date : $('#order_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'purchase_order_', false);
+
+                    filterObj = {
+                        branch_id : $('#payments_branch_id').val(),
+                        from_date : $('#payments_from_date').val(),
+                        to_date : $('#payments_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'payments_', false);
+
+                    filterObj = {
+                        branch_id : $('#ledger_branch_id').val(),
+                        from_date : $('#ledger_from_date').val(),
+                        to_date : $('#ledger_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'ledger_', false);
                 }
             });
         });
@@ -1232,6 +1264,38 @@
 
                     $('.data_tbl').DataTable().ajax.reload();
                     toastr.error(data);
+
+                    var filterObj = {
+                        branch_id : $('#payments_branch_id').val(),
+                        from_date : $('#payments_from_date').val(),
+                        to_date : $('#payments_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'payments_', false);
+
+                    filterObj = {
+                        branch_id : $('#purchase_branch_id').val(),
+                        from_date : $('#purchase_from_date').val(),
+                        to_date : $('#purchase_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'purchase_', false);
+
+                    filterObj = {
+                        branch_id : $('#order_branch_id').val(),
+                        from_date : $('#order_from_date').val(),
+                        to_date : $('#order_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'purchase_order_', false);
+
+                    filterObj = {
+                        branch_id : $('#ledger_branch_id').val(),
+                        from_date : $('#ledger_from_date').val(),
+                        to_date : $('#ledger_to_date').val(),
+                    };
+
+                    getSupplierAmountsBranchWise(filterObj, 'ledger_', false);
                 }
             });
         });

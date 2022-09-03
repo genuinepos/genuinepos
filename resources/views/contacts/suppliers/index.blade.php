@@ -18,14 +18,14 @@
                         <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="sec-name">
+                    @if ($addons->branches == 1)
+                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                            <div class="row">
                                 <div class="col-md-12">
-                                    <form id="filter_form" class="px-2">
-                                        <div class="form-group row">
-                                            @if ($addons->branches == 1)
-                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                    <div class="sec-name">
+                                        <div class="col-md-12">
+                                            <form id="filter_form" class="px-2">
+                                                <div class="form-group row">
                                                     <div class="col-md-2">
                                                         <label><strong>Business Location :</strong></label>
                                                         <select name="branch_id"
@@ -39,21 +39,21 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                @endif
-                                            @endif
-
-                                            <div class="col-md-2">
-                                                <label><strong></strong></label>
-                                                <div class="input-group">
-                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        
+                                                    <div class="col-md-2">
+                                                        <label><strong></strong></label>
+                                                        <div class="input-group">
+                                                            <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        @endif
+                    @endif
                 </div>
                 
                 <div class="row margin_row mt-1">

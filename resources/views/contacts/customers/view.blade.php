@@ -99,6 +99,16 @@
                                                         @endif
 
                                                         <div class="col-md-3">
+                                                            <label><strong>Voucher Type :</strong></label>
+                                                            <select name="voucher_type" class="form-control submit_able" id="ledger_voucher_type" autofocus>
+                                                                <option value="">All</option>
+                                                                @foreach (App\Utils\CustomerUtil::voucherTypes() as $key => $type)
+                                                                    <option value="{{ $key }}">{{ $type }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-3">
                                                             <label><strong>From Date :</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
@@ -587,6 +597,7 @@
                 "url": "{{ route('contacts.customer.ledger.list', $customer->id) }}",
                 "data": function(d) {
                     d.branch_id = $('#ledger_branch_id').val();
+                    d.voucher_type = $('#ledger_voucher_type').val();
                     d.from_date = $('.from_date').val();
                     d.to_date = $('.to_date').val();
                 }
@@ -1140,7 +1151,7 @@
             var url = "{{ route('contacts.customer.ledger.print', $customerId) }}";
 
             var branch_id = $('#ledger_branch_id').val();
-            var voucher_type = $('#voucher_type').val();
+            var voucher_type = $('#ledger_voucher_type').val();
             var from_date = $('.from_date').val();
             var to_date = $('.to_date').val();
 

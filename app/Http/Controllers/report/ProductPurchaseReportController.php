@@ -81,7 +81,7 @@ class ProductPurchaseReportController extends Controller
                 'suppliers.name as supplier_name'
             );
 
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $purchaseProducts = $query->where('purchases.is_purchased', 1)
                     ->orderBy('purchases.report_date', 'desc');
             } else {
@@ -185,7 +185,7 @@ class ProductPurchaseReportController extends Controller
             'suppliers.name as supplier_name'
         );
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $purchaseProducts = $query->orderBy('purchases.report_date', 'desc')->get();
         } else {
             $purchaseProducts = $query->where('purchases.branch_id', auth()->user()->branch_id)

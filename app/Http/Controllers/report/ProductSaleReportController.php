@@ -82,7 +82,7 @@ class ProductSaleReportController extends Controller
                 'customers.name as customer_name'
             );
 
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $saleProducts = $query->orderBy('sales.report_date', 'desc');
             } else {
                 $saleProducts = $query->where('sales.branch_id', auth()->user()->branch_id)
@@ -174,7 +174,7 @@ class ProductSaleReportController extends Controller
             'customers.name as customer_name'
         );
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $saleProducts = $query->orderBy('sales.report_date', 'desc')->get();
         } else {
             $saleProducts = $query->where('sales.branch_id', auth()->user()->branch_id)

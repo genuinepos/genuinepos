@@ -36,7 +36,7 @@ class PayrollPaymentReportController extends Controller
                 $payrollPaymentQ->whereBetween('hrm_payroll_payments.report_date', $date_range); // Final
             }
 
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $payrollPayments = $payrollPaymentQ->select(
                     'hrm_payroll_payments.date',
                     'hrm_payroll_payments.reference_no as voucher_no',
@@ -114,7 +114,7 @@ class PayrollPaymentReportController extends Controller
             $payrollPaymentQ->whereBetween('hrm_payroll_payments.report_date', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $payrollPayments = $payrollPaymentQ->select(
                 'hrm_payroll_payments.date',
                 'hrm_payroll_payments.reference_no as voucher_no',

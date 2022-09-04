@@ -40,7 +40,7 @@ class PayrollReportController extends Controller
                 $query->whereBetween('hrm_payrolls.report_date_ts', $date_range); // Final
             }
 
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $payrolls = $query->select(
                     'hrm_payrolls.*',
                     'admin_and_users.prefix as emp_prefix',
@@ -138,7 +138,7 @@ class PayrollReportController extends Controller
             $query->whereBetween('hrm_payrolls.report_date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $payrolls = $query->select(
                 'hrm_payrolls.*',
                 'admin_and_users.prefix as emp_prefix',

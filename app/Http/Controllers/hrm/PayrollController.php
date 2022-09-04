@@ -81,7 +81,7 @@ class PayrollController extends Controller
                 'created_by.last_name as user_last_name',
             );
 
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $payrolls = $query;
             } else {
                 $payrolls = $query->where('admin_and_users.branch_id', auth()->user()->branch_id);

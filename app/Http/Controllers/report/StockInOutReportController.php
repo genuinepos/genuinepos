@@ -108,7 +108,7 @@ class StockInOutReportController extends Controller
                 'purchase_products.lot_no',
             );
 
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
                 $stockInOuts = $query->orderBy('sales.report_date', 'desc');
             } else {
@@ -306,7 +306,7 @@ class StockInOutReportController extends Controller
             'purchase_products.created_at as stock_in_date',
         );
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 1) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             $stockInOuts = $query->orderBy('sales.report_date', 'desc')->get();
         } else {

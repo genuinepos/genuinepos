@@ -74,6 +74,11 @@
                 <div class="row">
                     <div class="col-md-5">
                         <div class="row">
+                            <div class="col-lg-12">
+                                <label><strong>Business Location : </strong> </label>
+                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
+                            </div>
+
                             <div class="col-md-12 mt-2">
                                 <div class="seperate_area">
                                     <div class="row">

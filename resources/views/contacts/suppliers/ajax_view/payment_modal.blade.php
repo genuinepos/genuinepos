@@ -27,6 +27,7 @@
                                 <li><strong>Supplier : </strong>
                                     <span class="card_text customer_name">{{ $supplier->name }}</span>
                                 </li>
+
                                 <li><strong>Business : </strong>
                                     <span class="card_text customer_business">{{ $supplier->business_name }}</span>
                                 </li>
@@ -64,262 +65,273 @@
                 </div>
             </div>
 
+            
+
             <form id="payment_form" action="{{ route('suppliers.payment.add', $supplier->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-md-5">
-                        <div class="seperate_area">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="input-group mt-1">
-                                        <div class="col-12">
-                                            <div class="row">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="radio" checked name="payment_against" id="payment_against" class="all"  data-show_table="all_purchase_and_orders_area" value="all"> &nbsp; <b>All</b>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="input-group mt-1">
-                                        <div class="col-12">
-                                            <div class="row">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="radio" name="payment_against" id="payment_against" class="payment_against"  data-show_table="due_purchase_table_area" value="purchases"> &nbsp; <b>Payment Against Specific Purchase</b>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="input-group mt-1">
-                                        <div class="col-12">
-                                            <div class="row">
-                                                <p class="checkbox_input_wrap">
-                                                <input type="radio" name="payment_against" id="payment_against" class="payment_against" data-show_table="due_purchase_orders_table_area"  value="purchase_orders"> &nbsp; <b> Payment Against Specific Purchase Orderes</b> </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="row">
+                            <div class="col-lg-12 mt-2">
+                                <label><strong>Business Location : </strong> </label>
+                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
                             </div>
 
-                            <div class="purchase_and_order_table_area mt-2">
-                                <div class="all_purchase_and_orders_area due_table">
+                            <div class="col-lg-12 mt-2">
+                                <div class="seperate_area">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="heading_area">
-                                                        <p><strong>All </strong></p>
+                                            <div class="input-group mt-1">
+                                                <div class="col-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap">
+                                                            <input type="radio" checked name="payment_against" id="payment_against" class="all"  data-show_table="all_purchase_and_orders_area" value="all"> &nbsp; <b>All</b>
+                                                        </p>
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-6">
-                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
-                                                </div>
-                                            </div>
-
-                                            <div class="due_all_table">
-                                                <table class="table modal-table table-sm table-bordered mt-1">
-                                                    <thead>
-                                                        <tr class="bg-primary">
-                                                            <th class="text-start text-white">SL</th>
-                                                            <th class="text-start text-white">Date</th>
-                                                            <th class="text-start text-white">Order/Invoice ID</th>
-                                                            <th class="text-start text-white">Status</th>
-                                                            <th class="text-start text-white">Payment Status</th>
-                                                            <th class="text-start text-white">Due Amount</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($branchWiseSupplierPurchasesAndOrders['allPurchasesAndOrders'] as $row)
-                                                            <tr>
-                                                                <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $row->id }}" id="purchase_id" data-due_amount="{{ $row->due }}"></td>
-                                                                <td class="text-start">{{ date('d/m/Y', strtotime($row->date)) }}</td>
-                                                                <td class="text-start">
-                                                                    @if ($row->purchase_status == 1)
-
-                                                                        <a class="details_button" title="Details" href="{{ route('purchases.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
-                                                                    @else 
-
-                                                                        <a class="details_button" title="Details" href="{{ route('purchases.show.order', [$row->id]) }}">{{ $row->invoice_id }}</a>
-                                                                    @endif
-                                                                </td>
-                                                                <td class="text-start">
-                                                                    @if ($row->purchase_status == 1)
-
-                                                                        Purchased
-                                                                    @else
-
-                                                                        Order
-                                                                    @endif
-                                                                </td>
-                                                                <td class="text-start">
-                                                                    @php
-                                                                        $payable = $row->total_purchase_amount - $row->purchase_return_amount;
-                                                                    @endphp
-                                                                    
-                                                                    @if ($row->due <= 0)
-
-                                                                        <span class="text-success"><b>Paid</b></span>
-                                                                    @elseif ($row->due > 0 && $row->due < $payable) 
-
-                                                                        <span class="text-primary"><b>Partial</b></span>
-                                                                    @elseif ($payable == $row->due)
-
-                                                                        <span class="text-danger"><b>Due</b></span>
-                                                                    @endif
-                                                                </td>
-                                                                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->due) }}</td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <div class="due_purchase_table_area due_table d-none">
-                                    <div class="row">
                                         <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="heading_area">
-                                                        <p><strong>Due Purchase Invoice List</strong></p>
+                                            <div class="input-group mt-1">
+                                                <div class="col-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap">
+                                                            <input type="radio" name="payment_against" id="payment_against" class="payment_against"  data-show_table="due_purchase_table_area" value="purchases"> &nbsp; <b>Payment Against Specific Purchase</b>
+                                                        </p>
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-6">
-                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
-                                                </div>
-                                            </div>
-                                        
-                                            <div class="due_order_table">
-                                                <table class="table modal-table table-sm table-bordered mt-1">
-                                                    <thead>
-                                                        <tr class="bg-primary">
-                                                            <th class="text-start text-white">Select</th>
-                                                            <th class="text-start text-white">Date</th>
-                                                            <th class="text-start text-white">Invoice ID</th>
-                                                            <th class="text-start text-white">Payment Status</th>
-                                                            <th class="text-start text-white">Due Amount</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($branchWiseSupplierPurchasesAndOrders['purchases'] as $purchase)
-                                                            <tr>
-                                                                <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $purchase->id }}" id="purchase_id" data-due_amount="{{ $purchase->due }}"></td>
-
-                                                                <td class="text-start">{{ date('d/m/Y', strtotime($purchase->date)) }}</td>
-
-                                                                <td class="text-start">
-                                                                    <a class="details_button" title="Details" href="{{ route('purchases.show', [$purchase->id]) }}">{{ $purchase->invoice_id }}</a>
-                                                                </td>
-
-                                                                <td class="text-start">
-                                                                    @php
-                                                                        $payable = $purchase->total_purchase_amount - $purchase->purchase_return_amount;
-                                                                    @endphp
-                                                                    
-                                                                    @if ($purchase->due <= 0)
-
-                                                                        <span class="text-success"><b>Paid</b></span>
-                                                                    @elseif ($purchase->due > 0 && $purchase->due < $payable) 
-
-                                                                        <span class="text-primary"><b>Partial</b></span>
-                                                                    @elseif ($payable == $purchase->due)
-
-                                                                        <span class="text-danger"><b>Due</b></span>
-                                                                    @endif
-                                                                </td>
-
-                                                                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($purchase->due) }}</td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <div class="due_purchase_orders_table_area due_table d-none">
-                                    <div class="row">
                                         <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="heading_area">
-                                                        <p><strong>Due Purchase Order List</strong> </p>
+                                            <div class="input-group mt-1">
+                                                <div class="col-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap">
+                                                        <input type="radio" name="payment_against" id="payment_against" class="payment_against" data-show_table="due_purchase_orders_table_area"  value="purchase_orders"> &nbsp; <b> Payment Against Specific Purchase Orderes</b> </p>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                                <div class="col-md-6">
-                                                    <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                    <div class="purchase_and_order_table_area mt-2">
+                                        <div class="all_purchase_and_orders_area due_table">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="heading_area">
+                                                                <p><strong>All </strong></p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="due_all_table">
+                                                        <table class="table modal-table table-sm table-bordered mt-1">
+                                                            <thead>
+                                                                <tr class="bg-primary">
+                                                                    <th class="text-start text-white">SL</th>
+                                                                    <th class="text-start text-white">Date</th>
+                                                                    <th class="text-start text-white">Order/Invoice ID</th>
+                                                                    <th class="text-start text-white">Status</th>
+                                                                    <th class="text-start text-white">Payment Status</th>
+                                                                    <th class="text-start text-white">Due Amount</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($branchWiseSupplierPurchasesAndOrders['allPurchasesAndOrders'] as $row)
+                                                                    <tr>
+                                                                        <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $row->id }}" id="purchase_id" data-due_amount="{{ $row->due }}"></td>
+                                                                        <td class="text-start">{{ date('d/m/Y', strtotime($row->date)) }}</td>
+                                                                        <td class="text-start">
+                                                                            @if ($row->purchase_status == 1)
+
+                                                                                <a class="details_button" title="Details" href="{{ route('purchases.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
+                                                                            @else 
+
+                                                                                <a class="details_button" title="Details" href="{{ route('purchases.show.order', [$row->id]) }}">{{ $row->invoice_id }}</a>
+                                                                            @endif
+                                                                        </td>
+                                                                        <td class="text-start">
+                                                                            @if ($row->purchase_status == 1)
+
+                                                                                Purchased
+                                                                            @else
+
+                                                                                Order
+                                                                            @endif
+                                                                        </td>
+                                                                        <td class="text-start">
+                                                                            @php
+                                                                                $payable = $row->total_purchase_amount - $row->purchase_return_amount;
+                                                                            @endphp
+                                                                            
+                                                                            @if ($row->due <= 0)
+
+                                                                                <span class="text-success"><b>Paid</b></span>
+                                                                            @elseif ($row->due > 0 && $row->due < $payable) 
+
+                                                                                <span class="text-primary"><b>Partial</b></span>
+                                                                            @elseif ($payable == $row->due)
+
+                                                                                <span class="text-danger"><b>Due</b></span>
+                                                                            @endif
+                                                                        </td>
+                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->due) }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        
-                                            <div class="due_orders_table">
-                                                <table class="table modal-table table-sm table-bordered mt-1">
-                                                    <thead>
-                                                        <tr class="bg-primary">
-                                                            <th class="text-start text-white">Select</th>
-                                                            <th class="text-start text-white">Date</th>
-                                                            <th class="text-start text-white">Order ID</th>
-                                                            <th class="text-start text-white">Payment Status</th>
-                                                            <th class="text-start text-white">Due Amount</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($branchWiseSupplierPurchasesAndOrders['orders'] as $order)
-                                                            <tr>
-                                                                <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $order->id }}" id="purchase_id" data-due_amount="{{ $order->due }}"></td>
-                                                                <td class="text-start">{{ date('d/m/Y', strtotime($order->date)) }}</td>
+                                        </div>
 
-                                                                <td class="text-start">
-                                                                    <a class="details_button" title="Details" href="{{ route('purchases.show.order', [$order->id]) }}">{{ $order->invoice_id }}</a>
-                                                                </td>
+                                        <div class="due_purchase_table_area due_table d-none">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="heading_area">
+                                                                <p><strong>Due Purchase Invoice List</strong></p>
+                                                            </div>
+                                                        </div>
 
-                                                                <td class="text-start">
-                                                                    @php
-                                                                        $payable = $order->total_purchase_amount - $order->purchase_return_amount;
-                                                                    @endphp
-                                                                    
-                                                                    @if ($order->due <= 0)
+                                                        <div class="col-md-6">
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="due_order_table">
+                                                        <table class="table modal-table table-sm table-bordered mt-1">
+                                                            <thead>
+                                                                <tr class="bg-primary">
+                                                                    <th class="text-start text-white">Select</th>
+                                                                    <th class="text-start text-white">Date</th>
+                                                                    <th class="text-start text-white">Invoice ID</th>
+                                                                    <th class="text-start text-white">Payment Status</th>
+                                                                    <th class="text-start text-white">Due Amount</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($branchWiseSupplierPurchasesAndOrders['purchases'] as $purchase)
+                                                                    <tr>
+                                                                        <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $purchase->id }}" id="purchase_id" data-due_amount="{{ $purchase->due }}"></td>
 
-                                                                        <span class="text-success"><b>Paid</b></span>
-                                                                    @elseif ($order->due > 0 && $order->due < $payable) 
+                                                                        <td class="text-start">{{ date('d/m/Y', strtotime($purchase->date)) }}</td>
 
-                                                                        <span class="text-primary"><b>Partial</b></span>
-                                                                    @elseif ($payable == $order->due)
+                                                                        <td class="text-start">
+                                                                            <a class="details_button" title="Details" href="{{ route('purchases.show', [$purchase->id]) }}">{{ $purchase->invoice_id }}</a>
+                                                                        </td>
 
-                                                                        <span class="text-danger"><b>Due</b></span>
-                                                                    @endif
-                                                                </td>
-                                                                <td class="text-start">{{ App\Utils\Converter::format_in_bdt($order->due) }}</td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
+                                                                        <td class="text-start">
+                                                                            @php
+                                                                                $payable = $purchase->total_purchase_amount - $purchase->purchase_return_amount;
+                                                                            @endphp
+                                                                            
+                                                                            @if ($purchase->due <= 0)
+
+                                                                                <span class="text-success"><b>Paid</b></span>
+                                                                            @elseif ($purchase->due > 0 && $purchase->due < $payable) 
+
+                                                                                <span class="text-primary"><b>Partial</b></span>
+                                                                            @elseif ($payable == $purchase->due)
+
+                                                                                <span class="text-danger"><b>Due</b></span>
+                                                                            @endif
+                                                                        </td>
+
+                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($purchase->due) }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <div class="total_amount_area mt-1">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <p><strong>Purchase Invoice Refundable : </strong> <span class="text-danger">{{ App\Utils\Converter::format_in_bdt($totalInvoiceReturnDue->sum('total_return_due')) }}</span> </p>
-                                            <input type="hidden" name="pi_refundable" id="pi_refundable" value="{{ $totalInvoiceReturnDue->sum('total_return_due') }}">
+                                        <div class="due_purchase_orders_table_area due_table d-none">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="heading_area">
+                                                                <p><strong>Due Purchase Order List</strong> </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="due_orders_table">
+                                                        <table class="table modal-table table-sm table-bordered mt-1">
+                                                            <thead>
+                                                                <tr class="bg-primary">
+                                                                    <th class="text-start text-white">Select</th>
+                                                                    <th class="text-start text-white">Date</th>
+                                                                    <th class="text-start text-white">Order ID</th>
+                                                                    <th class="text-start text-white">Payment Status</th>
+                                                                    <th class="text-start text-white">Due Amount</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($branchWiseSupplierPurchasesAndOrders['orders'] as $order)
+                                                                    <tr>
+                                                                        <td class="text-start"><input type="checkbox" name="purchase_ids[]" value="{{ $order->id }}" id="purchase_id" data-due_amount="{{ $order->due }}"></td>
+                                                                        <td class="text-start">{{ date('d/m/Y', strtotime($order->date)) }}</td>
+
+                                                                        <td class="text-start">
+                                                                            <a class="details_button" title="Details" href="{{ route('purchases.show.order', [$order->id]) }}">{{ $order->invoice_id }}</a>
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            @php
+                                                                                $payable = $order->total_purchase_amount - $order->purchase_return_amount;
+                                                                            @endphp
+                                                                            
+                                                                            @if ($order->due <= 0)
+
+                                                                                <span class="text-success"><b>Paid</b></span>
+                                                                            @elseif ($order->due > 0 && $order->due < $payable) 
+
+                                                                                <span class="text-primary"><b>Partial</b></span>
+                                                                            @elseif ($payable == $order->due)
+
+                                                                                <span class="text-danger"><b>Due</b></span>
+                                                                            @endif
+                                                                        </td>
+                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($order->due) }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <p><strong>Total Amount : </strong> <span id="total_amount">0.00</span></p>
+                                        <div class="total_amount_area mt-1">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p><strong>Purchase Invoice Refundable : </strong> <span class="text-danger">{{ App\Utils\Converter::format_in_bdt($totalInvoiceReturnDue->sum('total_return_due')) }}</span> </p>
+                                                    <input type="hidden" name="pi_refundable" id="pi_refundable" value="{{ $totalInvoiceReturnDue->sum('total_return_due') }}">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p><strong>Total Amount : </strong> <span id="total_amount">0.00</span></p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -118,6 +118,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $total = 0;
+                    @endphp
                     @foreach ($customerPayment->customer_payment_invoices as $pi)
                         @if ($pi->sale)
                             <tr>
@@ -128,6 +131,9 @@
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
+                                    @php
+                                        $total += $pi->paid_amount;
+                                    @endphp
                                 </td>
                             </tr>
                         @elseif($pi->sale_return)
@@ -139,11 +145,20 @@
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
+                                    @php
+                                        $total += $pi->paid_amount;
+                                    @endphp
                                 </td>
                             </tr>
                         @endif
                     @endforeach
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td>{{ App\Utils\Converter::format_in_bdt($total) }}</td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>

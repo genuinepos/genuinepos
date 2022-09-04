@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
 if (env('APP_DEBUG') === true) {
-    
+
     include_once __DIR__ . '/dev_routes.php';
 }
 

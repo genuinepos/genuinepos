@@ -238,6 +238,7 @@ class PurchaseOrderReceiveController extends Controller
                 $this->supplierUtil->addSupplierLedger(
                     voucher_type_id: 3,
                     supplier_id: $purchase->supplier_id,
+                    branch_id: auth()->user()->branch_id,
                     date: $request->fixed_payment_date,
                     trans_id: $addPurchasePaymentGetId,
                     amount: $request->paying_amount,

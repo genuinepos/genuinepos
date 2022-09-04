@@ -156,7 +156,7 @@
                 <tfoot>
                     <tr>
                         <td colspan="2"></td>
-                        <td>{{ App\Utils\Converter::format_in_bdt($total) }}</td>
+                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($total) }}</td>
                     </tr>
                 </tfoot>
             </table>

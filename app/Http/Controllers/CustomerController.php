@@ -356,9 +356,7 @@ class CustomerController extends Controller
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                $sales = $query->where('sales.status', 1)
-                    ->where('sales.created_by', 1)
-                    ->orderBy('sales.report_date', 'desc');
+                $sales = $query->where('sales.status', 1)->orderBy('sales.report_date', 'desc');
             } else {
 
                 if (auth()->user()->can('view_own_sale')) {
@@ -366,10 +364,7 @@ class CustomerController extends Controller
                     $query->where('sales.admin_id', auth()->user()->id);
                 }
 
-                $sales = $query->where('sales.branch_id', auth()->user()->branch_id)
-                    ->where('sales.status', 1)
-                    ->where('created_by', 1)
-                    ->orderBy('sales.report_date', 'desc');
+                $sales = $query->where('sales.branch_id', auth()->user()->branch_id)->where('sales.status', 1)->orderBy('sales.report_date', 'desc');
             }
 
             return DataTables::of($sales)

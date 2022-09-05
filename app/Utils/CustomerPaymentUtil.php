@@ -7,6 +7,7 @@ use App\Utils\SaleUtil;
 use App\Models\SalePayment;
 use App\Models\CustomerPaymentInvoice;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use Illuminate\Support\Facades\Log;
 
 class CustomerPaymentUtil
 {
@@ -39,8 +40,8 @@ class CustomerPaymentUtil
                         // Add Customer Payment invoice
                         $this->customerPaymentInvoice($customerPayment, $dueInvoice, $request->paying_amount);
 
-                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                         $request->paying_amount -= $request->paying_amount;
+                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                     }
                 } elseif ($dueInvoice->due == $request->paying_amount) {
 
@@ -51,8 +52,8 @@ class CustomerPaymentUtil
                         // Add Customer Payment invoice
                         $this->customerPaymentInvoice($customerPayment, $dueInvoice, $request->paying_amount);
 
-                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                         $request->paying_amount -= $request->paying_amount;
+                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                     }
                 } elseif ($dueInvoice->due < $request->paying_amount) {
 
@@ -63,8 +64,8 @@ class CustomerPaymentUtil
                         // Add Customer Payment invoice
                         $this->customerPaymentInvoice($customerPayment, $dueInvoice, $dueInvoice->due);
 
-                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                         $request->paying_amount -= $dueInvoice->due;
+                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                     }
                 }
 
@@ -94,8 +95,8 @@ class CustomerPaymentUtil
                             // Add Customer Payment invoice
                             $this->customerPaymentInvoice($customerPayment, $dueInvoice, $request->paying_amount);
 
-                            $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                             $request->paying_amount -= $request->paying_amount;
+                            $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                         }
                     } elseif ($dueInvoice->due == $request->paying_amount) {
 
@@ -106,8 +107,8 @@ class CustomerPaymentUtil
                             // Add Customer Payment invoice
                             $this->customerPaymentInvoice($customerPayment, $dueInvoice, $request->paying_amount);
 
-                            $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                             $request->paying_amount -= $request->paying_amount;
+                            $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                         }
                     } elseif ($dueInvoice->due < $request->paying_amount) {
 
@@ -118,8 +119,8 @@ class CustomerPaymentUtil
                             // Add Customer Payment invoice
                             $this->customerPaymentInvoice($customerPayment, $dueInvoice, $dueInvoice->due);
 
-                            $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                             $request->paying_amount -= $dueInvoice->due;
+                            $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                         }
                     }
 
@@ -151,8 +152,8 @@ class CustomerPaymentUtil
                         // Add Customer Payment invoice
                         $this->customerPaymentInvoice($customerPayment, $dueInvoice, $request->paying_amount);
 
-                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                         $request->paying_amount -= $request->paying_amount;
+                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                     }
                 } elseif ($dueInvoice->due == $request->paying_amount) {
 
@@ -163,8 +164,8 @@ class CustomerPaymentUtil
                         // Add Customer Payment invoice
                         $this->customerPaymentInvoice($customerPayment, $dueInvoice, $request->paying_amount);
 
-                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                         $request->paying_amount -= $request->paying_amount;
+                        $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                     }
                 } elseif ($dueInvoice->due < $request->paying_amount) {
 

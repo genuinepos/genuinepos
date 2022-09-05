@@ -502,6 +502,7 @@ class CustomerController extends Controller
             $customerLedgers = '';
 
             $query = DB::table('customer_ledgers')->where('customer_ledgers.customer_id', $customerId)
+                ->leftJoin('branches', 'customer_ledgers.branch_id', 'branches.id')
                 ->leftJoin('sales', 'customer_ledgers.sale_id', 'sales.id')
                 ->leftJoin('sale_returns', 'customer_ledgers.sale_return_id', 'sale_returns.id')
                 ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
@@ -513,6 +514,7 @@ class CustomerController extends Controller
                     'customer_ledgers.debit',
                     'customer_ledgers.credit',
                     'customer_ledgers.running_balance',
+                    'branches.name as b_name',
                     'sales.invoice_id as sale_inv_id',
                     'sales.status as sale_status',
                     'sales.sale_note as sale_par',
@@ -580,6 +582,17 @@ class CustomerController extends Controller
                     return '<b>' . $type['name'] . ($row->sale_status == 3 ? '-Order' : '') . '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
                 })
 
+                ->editColumn('b_name', function ($row) use ($settings) {
+
+                    if ($row->b_name) {
+
+                        return $row->b_name;
+                    } else {
+    
+                        return json_decode($settings->business, true)['shop_name'];
+                    }
+                })
+
                 ->editColumn('voucher_no', function ($row) use ($customerUtil) {
 
                     $type = $customerUtil->voucherType($row->voucher_type);
@@ -595,7 +608,7 @@ class CustomerController extends Controller
                     return '<span class="running_balance">' . $this->converter->format_in_bdt($row->running_balance) . '</span>';
                 })
 
-                ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
+                ->rawColumns(['date', 'particulars', 'b_name','voucher_no', 'debit', 'credit', 'running_balance'])
                 ->make(true);
         }
 

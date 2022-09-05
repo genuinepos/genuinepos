@@ -159,6 +159,7 @@
                                                     <tr>
                                                         <th>Date</th>
                                                         <th>Particulars</th>
+                                                        <th>Business Location</th>
                                                         <th>Voucher/P.Invoice</th>
                                                         <th>Debit</th>
                                                         <th>Credit</th>
@@ -747,6 +748,7 @@
             columns: [
                 {data: 'date', name: 'supplier_ledgers.report_date'},
                 {data: 'particulars', name: 'particulars'},
+                {data: 'b_name', name: 'branches.name'},
                 {data: 'voucher_no', name: 'voucher_no'},
                 {data: 'debit', name: 'debit', className: 'text-end'},
                 {data: 'credit', name: 'credit', className: 'text-end'},

@@ -15,7 +15,7 @@ class SupplierUtil
         $branchWiseSupplierAmountUtil =  new \App\Utils\BranchWiseSupplierAmountsUtil();
 
         $suppliers = DB::table('suppliers');
-        
+
         return DataTables::of($suppliers)
 
             ->addColumn('action', function ($row) {
@@ -59,37 +59,37 @@ class SupplierUtil
             })
 
             ->editColumn('opening_balance', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
- 
+
                 $openingBalance = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['opening_balance'];
                 return '<span class="opening_balance" data-value="' . $openingBalance . '">' . \App\Utils\Converter::format_in_bdt($openingBalance) . '</span>';
             })
 
             ->editColumn('total_purchase', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
- 
+
                 $totalPurchase = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_purchase'];
                 return '<span class="total_purchase" data-value="' . $totalPurchase . '">' . \App\Utils\Converter::format_in_bdt($totalPurchase) . '</span>';
             })
 
             ->editColumn('total_paid', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
- 
+
                 $totalPaid = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_paid'];
                 return '<span class="total_paid" data-value="' . $totalPaid . '">' . \App\Utils\Converter::format_in_bdt($totalPaid) . '</span>';
             })
 
             ->editColumn('total_purchase_due', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
- 
+
                 $totalPurchaseDue = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_purchase_due'];
                 return '<span class="total_purchase_due" data-value="' . $totalPurchaseDue . '">' . \App\Utils\Converter::format_in_bdt($totalPurchaseDue) . '</span>';
             })
 
-            ->editColumn('total_return',function ($row) use ($request, $branchWiseSupplierAmountUtil) {
- 
+            ->editColumn('total_return', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
+
                 $totalReturn = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_return'];
                 return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
             })
 
             ->editColumn('total_purchase_return_due', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
- 
+
                 $totalPurchaseReturnDue = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_purchase_return_due'];
                 return '<span class="total_purchase_return_due" data-value="' . $totalPurchaseReturnDue . '">' . \App\Utils\Converter::format_in_bdt($totalPurchaseReturnDue) . '</span>';
             })
@@ -289,6 +289,7 @@ class SupplierUtil
         $supplierLedgers = '';
 
         $query = DB::table('supplier_ledgers')->where('supplier_ledgers.supplier_id', $supplierId)
+            ->leftJoin('branches', 'supplier_ledgers.branch_id', 'branches.id')
             ->leftJoin('purchases', 'supplier_ledgers.purchase_id', 'purchases.id')
             ->leftJoin('purchase_returns', 'supplier_ledgers.purchase_return_id', 'purchase_returns.id')
             ->leftJoin('purchase_payments', 'supplier_ledgers.purchase_payment_id', 'purchase_payments.id')
@@ -300,6 +301,7 @@ class SupplierUtil
                 'supplier_ledgers.debit',
                 'supplier_ledgers.credit',
                 'supplier_ledgers.running_balance',
+                'branches.name as b_name',
                 'purchases.invoice_id as purchase_inv_id',
                 'purchases.purchase_note as purchase_par',
                 'purchase_returns.invoice_id as return_inv_id',
@@ -367,6 +369,17 @@ class SupplierUtil
                 return '<b>' . $type['name'] . '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
             })
 
+            ->editColumn('b_name', function ($row) use ($settings) {
+
+                if ($row->b_name) {
+
+                    return $row->b_name;
+                } else {
+
+                    return json_decode($settings->business, true)['shop_name'];
+                }
+            })
+
             ->editColumn('voucher_no',  function ($row) {
 
                 $type = $this->voucherType($row->voucher_type);
@@ -379,7 +392,7 @@ class SupplierUtil
 
             ->editColumn('running_balance', fn ($row) => '<span class="running_balance">' . \App\Utils\Converter::format_in_bdt($row->running_balance) . '</span>')
 
-            ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
+            ->rawColumns(['date', 'particulars', 'b_name', 'voucher_no', 'debit', 'credit', 'running_balance'])
             ->make(true);
     }
 

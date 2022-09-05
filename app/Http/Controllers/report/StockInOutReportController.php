@@ -243,7 +243,9 @@ class StockInOutReportController extends Controller
             ->leftJoin('purchase_products', 'purchase_sale_product_chains.purchase_product_id', 'purchase_products.id')
             ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
             ->leftJoin('productions', 'purchase_products.production_id', 'productions.id')
-            ->leftJoin('product_opening_stocks', 'purchase_products.opening_stock_id', 'product_opening_stocks.id');
+            ->leftJoin('product_opening_stocks', 'purchase_products.opening_stock_id', 'product_opening_stocks.id')
+            ->leftJoin('sale_return_products', 'purchase_products.sale_return_product_id', 'sale_return_products.id')
+            ->leftJoin('sale_returns', 'sale_return_products.sale_return_id', 'sale_returns.id');
 
         if ($request->product_id) {
 
@@ -304,6 +306,8 @@ class StockInOutReportController extends Controller
             'purchase_products.net_unit_cost',
             'purchase_products.quantity as stock_in_qty',
             'purchase_products.created_at as stock_in_date',
+            'sale_returns.id as sale_return_id',
+            'sale_returns.invoice_id as sale_return_invoice',
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

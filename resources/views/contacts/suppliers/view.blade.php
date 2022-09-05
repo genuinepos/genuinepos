@@ -146,7 +146,6 @@
                             </div>
 
                             <div class="row">
-                                
                                 <div class="data_preloader d-none">
                                     <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                 </div>
@@ -169,7 +168,7 @@
                                                 <tbody></tbody>
                                                 <tfoot>
                                                     <tr class="bg-secondary">
-                                                        <th colspan="3" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                        <th colspan="4" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                         <th id="debit" class="text-white text-end"></th>
                                                         <th id="credit" class="text-white text-end"></th>
                                                         <th class="text-white text-end">---</th>

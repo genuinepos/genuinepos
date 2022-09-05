@@ -8,9 +8,12 @@
         tfoot { display:table-footer-group }
     }
 
-    @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 4%;margin-right: 4%;}
+    div#footer {position:fixed;bottom:24px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+
+    @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
 </style>
 @php
+    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
     $totalStockInQty = 0;
     $totalStockOutQty = 0;
 @endphp
@@ -18,33 +21,38 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}                                                                                            </h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
             <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
+
             @php
                 $branch = DB::table('branches')
                     ->where('id', $branch_id)
                     ->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')
                     ->first();
             @endphp
-            <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
+            <h5>{{ $branch->name }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
 
+        <h6 style="margin-top: 10px;"><b>Stock In-Out Report </b></h6>
+
         @if ($fromDate && $toDate)
-            <p><b>Date :</b>
+
+            <p style="margin-top: 10px;"><b>From :</b>
                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
                 <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
-        <h6 style="margin-top: 10px;"><b>Stock In-Out Report </b></h6>
     </div>
 </div>
-<br>
+
 <div class="row">
     <div class="col-12">
         <table class="table modal-table table-sm table-bordered">
@@ -97,12 +105,21 @@
                         <td class="text-start">{{ $row->customer_name ? $row->customer_name : 'Walk-In-Customer'; }}</td>
                         
                         <td class="text-start">
-                            @if ($row->purchase_inv) 
+                            @if ($row->purchase_inv)
+
                                 {{ 'Purchase:'. $row->purchase_inv }}  
                             @elseif ($row->production_voucher_no) 
+
                                 {{ 'Production:' . $row->production_voucher_no }}
-                            @elseif ($row->pos_id) 
+                            @elseif ($row->pos_id)
+
                                 {{ 'Opening Stock' }}
+                            @elseif ($row->sale_return_id) 
+
+                                {{ 'Sale Returned Stock:'  . $row->sale_return_invoice }}
+                            @else 
+
+                                Non-Manageable-Stock        
                             @endif
                         </td>
 
@@ -144,16 +161,20 @@
     </div>
 </div>
 
-@if (env('PRINT_SD_OTHERS') == 'true')
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+<div id="footer">
+    <div class="row mt-1">
+        <div class="col-4 text-start">
+            <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+        </div>
+
+        <div class="col-4 text-center">
+            @if (env('PRINT_SD_SALE') == true)
+                <small>Powered By <b>SpeedDigit Software Solution.</b></small>
+            @endif
+        </div>
+
+        <div class="col-4 text-end">
+            <small>Print Time : {{ date($timeFormat) }}</small>
         </div>
     </div>
-@endif
-
-<div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
-    <small style="font-size: 5px;" class="text-end">
-        Print Date: {{ date('d-m-Y , h:iA') }}
-    </small>
 </div>

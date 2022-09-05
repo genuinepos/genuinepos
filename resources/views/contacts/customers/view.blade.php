@@ -171,7 +171,7 @@
                                                     <tbody></tbody>
                                                     <tfoot>
                                                         <tr class="bg-secondary">
-                                                            <th colspan="3" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                            <th colspan="4" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                             <th id="debit" class="text-white text-end"></th>
                                                             <th id="credit" class="text-white text-end"></th>
                                                             <th class="text-white text-end">---</th>

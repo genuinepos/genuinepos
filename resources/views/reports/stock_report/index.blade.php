@@ -438,7 +438,6 @@
         });
     })
     
-
     $(document).on('click', '.tab_btn', function(e) {
         e.preventDefault();
         $('.tab_btn').removeClass('tab_active');
@@ -451,12 +450,15 @@
         //Print purchase Payment report
     $(document).on('click', '#branch_stock_print_report', function (e) {
         e.preventDefault();
+
         var url = "{{ route('reports.stock.print.branch.stock') }}";
+
         var branch_id = $('#branch_id').val();
         var category_id = $('#category_id').val();
         var brand_id = $('#brand_id').val();
         var unit_id = $('#unit_id').val();
         var tax_id = $('#tax_id').val();
+
         $.ajax({
             url:url,
             type:'get',
@@ -468,14 +470,7 @@
                     importStyle: true,          
                     loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
                     removeInline: false, 
-                    printDelay: 500, 
-                    header: "", 
-                    pageTitle: "",
-                    // footer: 'Footer Text',
-                    formValues: false,         
-                    canvas: false, 
-                    beforePrint: null,
-                    afterPrint: null      
+                    printDelay: 1000, 
                 });
             }
         }); 

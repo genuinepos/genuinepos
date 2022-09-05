@@ -8,24 +8,24 @@
         tfoot { display:table-footer-group }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
-    th { font-size:10px!important; font-weight: 550!important;}
-    td { font-size:9px;}
+    div#footer {position:fixed;bottom:24px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+
+    @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
 </style>
 @php
-    $totalExpense = 0;
-    $totalPaid = 0;
-    $totalDue = 0;
+    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
             <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php
@@ -34,7 +34,7 @@
                     ->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')
                     ->first();
             @endphp
-            <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
+            <h5>{{ $branch->name }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
 
@@ -77,7 +77,7 @@
                         <tr>
                             <td class="text-start">{{ $row->product_code }}</td>
                             <td class="text-start">{{ $row->name }}</td>
-                            <td class="text-start">{!! $row->b_name ? $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' : json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}</td>
+                            <td class="text-start">{!! $row->b_name ? $row->b_name : json_decode($generalSettings->business, true)['shop_name'] !!}</td>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($row->product_price) }}</td>
                             <td class="text-end">{{ $row->product_quantity.'('.$row->code_name.')' }}</td>
                             <td class="text-end">
@@ -95,16 +95,20 @@
     </div>
 </div>
 
-@if (env('PRINT_SD_OTHERS') == 'true')
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+<div id="footer">
+    <div class="row mt-1">
+        <div class="col-4 text-start">
+            <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+        </div>
+
+        <div class="col-4 text-center">
+            @if (env('PRINT_SD_SALE') == true)
+                <small>Powered By <b>SpeedDigit Software Solution.</b></small>
+            @endif
+        </div>
+
+        <div class="col-4 text-end">
+            <small>Print Time : {{ date($timeFormat) }}</small>
         </div>
     </div>
-@endif
-
-<div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
-    <small style="font-size: 5px;" class="text-end">
-        Print Date: {{ date('d-m-Y , h:iA') }}
-    </small>
 </div>

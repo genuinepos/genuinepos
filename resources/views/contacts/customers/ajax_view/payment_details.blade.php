@@ -1,36 +1,46 @@
 <style>
     @media print
-   {
-       table { page-break-after:auto }
-       tr    { page-break-inside:avoid; page-break-after:auto }
-       td    { page-break-inside:avoid; page-break-after:auto }
-       thead { display:table-header-group }
-       tfoot { display:table-footer-group }
-   }
+    {
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+    }
 
-   @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
+    div#footer {position:fixed;bottom:24px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+
+    @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
 </style>
+@php
+    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+@endphp
 @php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
 <div class="sale_payment_print_area">
     <div class="header_area d-none">
         <div class="company_name text-center">
             <div class="company_name text-center">
-            
-                <h3>
+                <h4>
                     @if ($customerPayment->branch)
     
-                        <img style="height: 45px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $customerPayment->branch->logo) }}">
-                        <p style="text-transform: uppercase;"><strong>{{ $customerPayment->branch->name }}</strong></p>
+                        @if ($customerPayment->branch->logo != 'default.png')
+                            <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $customerPayment->branch->logo) }}">
+                        @else 
+                            <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $customerPayment->branch->name }}</span>
+                        @endif
                     @else
     
-                        <img style="height: 45px; width:200px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                        <p style="text-transform: uppercase;"><strong>{{ json_decode($generalSettings->business, true)['shop_name'] }}</strong></p>
+                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                            <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                        @else 
+                            <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                        @endif
                     @endif
-                </h3>
+                </h4>
     
                 <p>
                     @if ($customerPayment->branch)
-    
+
                         <p style="width: 60%; margin:0 auto;">{{ $customerPayment->branch->city . ', ' . $customerPayment->branch->state . ', ' . $customerPayment->branch->zip_code . ', ' . $customerPayment->branch->country }}</p>
                     @else
     
@@ -124,64 +134,66 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="heading_area">
-                <p><strong>{{ $customerPayment->type == 1 ? 'RECEIVED AGAINST SALES/ORDERS:' : 'PAYMENT AGAINST RETURN INVOICES :' }} </strong></p>
+    @if (count($customerPayment->customer_payment_invoices))
+        <div class="row">
+            <div class="col-12">
+                <div class="heading_area">
+                    <p><strong>{{ $customerPayment->type == 1 ? 'RECEIVED AGAINST SALES/ORDERS:' : 'PAYMENT AGAINST RETURN INVOICES :' }} </strong></p>
+                </div>
+            </div>
+            <div class="col-12">
+                <table class="table modal-table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-start">Sale Date</th>
+                            <th class="text-start">Sale Invoice ID</th>
+                            <th class="text-start">Paid Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $total = 0;
+                        @endphp
+                        @foreach ($customerPayment->customer_payment_invoices as $pi)
+                            @if ($pi->sale)
+                                <tr>
+                                    <td class="text-start">
+                                        {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale->date)) }}
+                                    </td>
+                                    <td class="text-start">{{ $pi->sale->invoice_id }}</h6></td>
+                                    <td class="text-start">
+                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                        {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
+                                        @php $total += $pi->paid_amount; @endphp
+                                    </td>
+                                </tr>
+                            @elseif($pi->sale_return)
+                                <tr>
+                                    <td class="text-start">
+                                        {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale_return->date)) }}
+                                    </td>
+                                    <td class="text-start">{{ $pi->sale_return->invoice_id }}</h6></td>
+                                    <td class="text-start">
+                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                        {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
+                                        @php $total += $pi->paid_amount; @endphp
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="2" class="text-end">Total : </th>
+                            <th class="text-start">{{ App\Utils\Converter::format_in_bdt($total) }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
-        <div class="col-12">
-            <table class="table modal-table table-sm table-bordered">
-                <thead>
-                    <tr>
-                        <th class="text-start">Sale Date</th>
-                        <th class="text-start">Sale Invoice ID</th>
-                        <th class="text-start">Paid Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $total = 0;
-                    @endphp
-                    @foreach ($customerPayment->customer_payment_invoices as $pi)
-                        @if ($pi->sale)
-                            <tr>
-                                <td class="text-start">
-                                    {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale->date)) }}
-                                </td>
-                                <td class="text-start">{{ $pi->sale->invoice_id }}</h6></td>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
-                                    @php $total += $pi->paid_amount; @endphp
-                                </td>
-                            </tr>
-                        @elseif($pi->sale_return)
-                            <tr>
-                                <td class="text-start">
-                                    {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->sale_return->date)) }}
-                                </td>
-                                <td class="text-start">{{ $pi->sale_return->invoice_id }}</h6></td>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                    {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
-                                    @php $total += $pi->paid_amount; @endphp
-                                </td>
-                            </tr>
-                        @endif
-                    @endforeach
-                </tbody>
-
-                <tfoot>
-                    <tr>
-                        <th colspan="2" class="text-end">Total : </th>
-                        <th class="text-start">{{ App\Utils\Converter::format_in_bdt($total) }}</th>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-
+    @endif
+    
     <div class="footer_area d-none">
         <br><br>
         <div class="row">

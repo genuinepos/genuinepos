@@ -24,6 +24,7 @@ class CustomerPaymentUtil
     {
         $dueInvoices = Sale::where('customer_id', $customerId)
             ->whereIn('id', $request->sale_ids)
+            ->orderBy('report_date', 'asc')
             ->get();
 
         if (count($dueInvoices) > 0) {

@@ -67,15 +67,14 @@ table-sm th,.table-sm td {padding: 1px!important;}
     padding:8px;
 } */
 
-div#footer {position:fixed;bottom:0px;left:0px;width:100%;color:#CCC;background:#333;
-    /* padding:8px; */}
+/* div#footer {position:fixed;bottom:20px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;} */
 
 @page 
 {
     /* size:21cm 29.7cm; */
      /* margin:1cm 1cm 1cm 1cm; */
-    margin:20px 20px 10px;
-    mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer;
+    /* margin:20px 20px 0px; */
+    /* mso-title-page:yes;mso-page-orientation: portrait;mso-header: header;mso-footer: footer; */
 }
 /* Test End */
 

@@ -1052,17 +1052,18 @@
         // Print single payment details
         $('#print_payment').on('click', function (e) {
            e.preventDefault(); 
-            var body = $('.sale_payment_print_area').html();
-            var header = $('.print_header').html();
-            var footer = $('.signature_area').html();
+           var body = $('.sale_payment_print_area').html();
+            var header = $('.header_area').html();
+            var footer = $('.footer_area').html();
+
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                removeInline: false, 
-                printDelay: 500, 
-                header: header,  
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
+                removeInline: false,
+                printDelay: 500,
+                header: header,
                 footer: footer
             });
         });

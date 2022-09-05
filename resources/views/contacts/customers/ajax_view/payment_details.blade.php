@@ -1,43 +1,65 @@
+<style>
+    @media print
+   {
+       table { page-break-after:auto }
+       tr    { page-break-inside:avoid; page-break-after:auto }
+       td    { page-break-inside:avoid; page-break-after:auto }
+       thead { display:table-header-group }
+       tfoot { display:table-footer-group }
+   }
+
+   @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
+</style>
 @php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
 <div class="sale_payment_print_area">
     <div class="header_area d-none">
         <div class="company_name text-center">
-            <h3>
-                <strong>
+            <div class="company_name text-center">
+            
+                <h3>
                     @if ($customerPayment->branch)
-
-                        {{ $customerPayment->branch->name . '/' . $customerPayment->branch->branch_code }}
+    
+                        <img style="height: 45px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $customerPayment->branch->logo) }}">
+                        <p style="text-transform: uppercase;"><strong>{{ $customerPayment->branch->name }}</strong></p>
                     @else
-
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} 
+    
+                        <img style="height: 45px; width:200px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                        <p style="text-transform: uppercase;"><strong>{{ json_decode($generalSettings->business, true)['shop_name'] }}</strong></p>
                     @endif
-                </strong>
-            </h3>
-            <h6>
-                @if ($customerPayment->branch)
-
-                    {{ $customerPayment->branch->city . ', ' . $customerPayment->branch->state . ', ' . $customerPayment->branch->zip_code . ', ' . $customerPayment->branch->country }}
-                @else
-
-                    {{ json_decode($generalSettings->business, true)['address'] }}
-                @endif
-            </h6>
-            <h6>Payment Details</h6>
+                </h3>
+    
+                <p>
+                    @if ($customerPayment->branch)
+    
+                        <p style="width: 60%; margin:0 auto;">{{ $customerPayment->branch->city . ', ' . $customerPayment->branch->state . ', ' . $customerPayment->branch->zip_code . ', ' . $customerPayment->branch->country }}</p>
+                    @else
+    
+                        <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+                    @endif
+                </p>
+    
+                <h6 style="margin-top: 10px;">Payment Receive Voucher</h6>
+            </div>
         </div>
     </div>
+    <br>
+    <div class="row">
+        <div class="col-6">
+            <p><strong>Customer :</strong> {{ $customerPayment->customer->name }}</p>
+            <p><strong>Phone :</strong> {{ $customerPayment->customer->phone }}</p>
+            <p><strong>Address :</strong> {{ $customerPayment->customer->address }}</p>
+        </div>
 
-    <div class="reference_area">
-        <p><strong>Title :</strong>
-            {{ $customerPayment->type == 1 ? 'Customer Payment' : 'Customer Return Payment' }} 
-        </p>
-        <p><strong>Customer :</strong> {{ $customerPayment->customer->name }}</p>
-        <p><strong>Phone :</strong> {{ $customerPayment->customer->phone }}</p>
-        <p><strong>Address :</strong> {{ $customerPayment->customer->address }}</p>
+        <div class="col-6">
+            <p><strong>Type :</strong>
+                {{ $customerPayment->type == 1 ? 'Receive Payment' : 'Refund' }} 
+            </p>
+        </div>
     </div>
 
     <div class="total_amount_table_area">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-6">
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
@@ -63,7 +85,7 @@
                 </table>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-6">
                 <table class="table table-sm">
                     <tbody>
                         <tr>
@@ -105,7 +127,7 @@
     <div class="row">
         <div class="col-12">
             <div class="heading_area">
-                <p><b>{{ $customerPayment->type == 1 ? 'RECEIVED AGAINST INVOICES :' : 'PAYMENT AGAINST RETURN INVOICES :' }} </b></p>
+                <p><strong>{{ $customerPayment->type == 1 ? 'RECEIVED AGAINST SALES/ORDERS:' : 'PAYMENT AGAINST RETURN INVOICES :' }} </strong></p>
             </div>
         </div>
         <div class="col-12">
@@ -131,9 +153,7 @@
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
-                                    @php
-                                        $total += $pi->paid_amount;
-                                    @endphp
+                                    @php $total += $pi->paid_amount; @endphp
                                 </td>
                             </tr>
                         @elseif($pi->sale_return)
@@ -145,17 +165,16 @@
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
-                                    @php
-                                        $total += $pi->paid_amount;
-                                    @endphp
+                                    @php $total += $pi->paid_amount; @endphp
                                 </td>
                             </tr>
                         @endif
                     @endforeach
                 </tbody>
+
                 <tfoot>
                     <tr>
-                        <th colspan="2">Total : </th>
+                        <th colspan="2" class="text-end">Total : </th>
                         <th class="text-start">{{ App\Utils\Converter::format_in_bdt($total) }}</th>
                     </tr>
                 </tfoot>
@@ -163,28 +182,45 @@
         </div>
     </div>
 
-    <div class="signature_area pt-5 mt-5 d-none">
-        <br>
-        <table class="w-100 pt-5">
-            <tbody>
-                <tr>
-                    <th width="50%">Signature Of Authority</th>
-                    <th width="50%" class="text-end">Signature Of Receiver</th>
-                </tr>
+    <div class="footer_area d-none">
+        <br><br>
+        <div class="row">
+            <div class="col-4 text-start">
+                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">RECEIVED BY</p>
+            </div>
 
-                <tr>
-                    <td colspan="2" class="text-center">
-                        <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($customerPayment->voucher_no, $generator::TYPE_CODE_128)) }}">
-                        <p>{{ $customerPayment->voucher_no }}</p>
-                    </td>
-                </tr>
+            <div class="col-4 text-center">
+                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">PREPARED BY</p>
+            </div>
 
-                @if (env('PRINT_SD_PAYMENT') == true)
-                    <tr>
-                        <td colspan="2" class="text-center">Software by SpeedDigit Pvt. Ltd.</td>
-                    </tr>
-                @endif
-            </tbody>
-        </table>
+            <div class="col-4 text-end">
+                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">AUTHORIZED BY</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($customerPayment->voucher_no, $generator::TYPE_CODE_128)) }}">
+                <p>{{ $customerPayment->voucher_no }}</p>
+            </div>
+        </div>
+
+        <div id="footer">
+            <div class="row mt-1">
+                <div class="col-4 text-start">
+                    <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+                </div>
+        
+                <div class="col-4 text-center">
+                    @if (env('PRINT_SD_SALE') == true)
+                        <small>Powered By <b>SpeedDigit Software Solution.</b></small>
+                    @endif
+                </div>
+        
+                <div class="col-4 text-end">
+                    <small>Print Time : {{ date($timeFormat) }}</small>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

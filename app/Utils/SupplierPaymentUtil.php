@@ -24,6 +24,7 @@ class SupplierPaymentUtil
         $dueInvoices = Purchase::where('supplier_id', $supplierId)
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('id', $request->purchase_ids)
+            ->orderBy('report_date', 'asc')
             ->get();
 
         if (count($dueInvoices) > 0) {

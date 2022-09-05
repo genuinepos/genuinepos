@@ -113,7 +113,6 @@ class SupplierUtil
         $generalSettings = DB::table('general_settings')->first();
         $purchases = '';
         $query = DB::table('purchases')
-            ->where('purchases.branch_id', auth()->user()->branch_id)
             ->where('purchases.supplier_id', $supplierId)
             ->where('purchases.is_purchased', 1)
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
@@ -138,6 +137,14 @@ class SupplierUtil
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('purchases.report_date', $date_range); // Final
+        }
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $query;
+        } else {
+
+            $query->where('purchases.branch_id', auth()->user()->branch_id);
         }
 
         $purchases = $query->select(

@@ -213,6 +213,19 @@ class ProductUtil
                     return '<span class="text-danger">Inactive</span>';
                 }
             })
+            ->editColumn('access_locations', function ($row) use ($generalSettings) {
+
+                $productBranches = DB::table('product_branches')->where('product_branches.product_id', $row->id)
+                ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
+
+                $text = '';
+                foreach ($productBranches as $productBranch) {
+
+                    $text .= '<p class="m-0 p-0">'.($productBranch->b_name != null ? $productBranch->b_name : json_decode($generalSettings->business, true)['shop_name']).',</p>';
+                }
+                
+                return $text;
+            })
             ->editColumn('quantity', function ($row) use ($productStock, $request) {
 
                 $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);

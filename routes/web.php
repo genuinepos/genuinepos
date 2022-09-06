@@ -35,9 +35,7 @@ Route::get('dashboard/today/summery', 'App\Http\Controllers\DashboardController@
 Route::group(['prefix' => 'common/ajax/call', 'namespace' => 'App\Http\Controllers'], function () {
     Route::get('branch/authenticated/users/{branchId}', 'CommonAjaxCallController@branchAuthenticatedUsers');
     Route::get('category/subcategories/{categoryId}', 'CommonAjaxCallController@categorySubcategories');
-
     Route::get('only/search/product/for/reports/{product_name}', 'CommonAjaxCallController@onlySearchProductForReports')->name('common.ajax.call.search.products.only.for.report.filter');
-    
     Route::get('search/final/sale/invoices/{invoiceId}', 'CommonAjaxCallController@searchFinalSaleInvoices');
     Route::get('get/sale/products/{saleId}', 'CommonAjaxCallController@getSaleProducts');
     Route::get('customer_info/{customerId}', 'CommonAjaxCallController@customerInfo');
@@ -1047,76 +1045,33 @@ Route::get('/test', function () {
     //     $p->save();
     // } 
 
-    // $customers = DB::table('customers')->get();
+    $customers = DB::table('customers')->get();
 
-    // foreach ($customers as $customer){
+    foreach ($customers as $customer){
 
-    //     $customerOpeningBalance = new CustomerOpeningBalance();
-    //     $customerOpeningBalance->customer_id = $customer->id;
-    //     $customerOpeningBalance->amount = $customer->opening_balance;
-    //     $customerOpeningBalance->created_by_id = auth()->user()->id;
-    //     $customerOpeningBalance->save();
+        $customerOpeningBalance = new CustomerOpeningBalance();
+        $customerOpeningBalance->customer_id = $customer->id;
+        $customerOpeningBalance->amount = $customer->opening_balance;
+        $customerOpeningBalance->created_by_id = auth()->user()->id;
+        $customerOpeningBalance->save();
 
-    //     $customerCreditLimit = new CustomerCreditLimit();
-    //     $customerCreditLimit->customer_id = $customer->id;
-    //     $customerCreditLimit->credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
-    //     $customerCreditLimit->created_by_id = auth()->user()->id;
-    //     $customerCreditLimit->save();
-    // }
-
-    // $suppliers = DB::table('suppliers')->get();
-
-    // foreach ($suppliers as $supplier){
-
-    //     $supplierOpeningBalance = new SupplierOpeningBalance();
-    //     $supplierOpeningBalance->supplier_id = $supplier->id;
-    //     $supplierOpeningBalance->amount = $supplier->opening_balance;
-    //     $supplierOpeningBalance->created_by_id = auth()->user()->id;
-    //     $supplierOpeningBalance->save();
-    // }
-
-    $branch_id = '';
-    $product_id = 377;
-    $productBranches = '';
-    $productWarehouse = '';
-
-    $productBranchesQuery = DB::table('product_branches')->where('product_id', $product_id);
-
-    $productWarehouseQuery = DB::table('product_warehouses')->where('product_id', $product_id)
-        ->leftJoin('warehouse_branches', 'product_warehouses.warehouse_id', 'warehouse_branches.warehouse_id');
-
-    if ($branch_id) {
-
-        if ($branch_id == 'NULL') {
-
-            $productBranchesQuery->where('product_branches.branch_id', NULL);
-            $productWarehouseQuery->where('warehouse_branches.branch_id', NULL)->where('warehouse_branches.is_global', 0);
-        } else {
-
-            $productBranchesQuery->where('product_branches.branch_id', $branch_id);
-            $productWarehouseQuery->where('warehouse_branches.branch_id', $branch_id)->where('warehouse_branches.is_global', 0);
-        }
+        $customerCreditLimit = new CustomerCreditLimit();
+        $customerCreditLimit->customer_id = $customer->id;
+        $customerCreditLimit->credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
+        $customerCreditLimit->created_by_id = auth()->user()->id;
+        $customerCreditLimit->save();
     }
 
-    if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+    $suppliers = DB::table('suppliers')->get();
 
-        $productBranches = $productBranchesQuery->select(DB::raw('SUM(product_branches.product_quantity) as total_branch_stock'))
-            ->groupBy('product_branches.product_id')->get();
+    foreach ($suppliers as $supplier){
 
-        $productWarehouse = $productWarehouseQuery->select(DB::raw('SUM(product_warehouses.product_quantity) as total_warehouse_stock'))
-            ->groupBy('product_warehouses.product_id')->get();
-    } else {
-
-        $productBranches = $productBranchesQuery->where('product_branches.branch_id', auth()->user()->branch_id)
-            ->select(DB::raw('SUM(product_branches.product_quantity) as total_branch_stock'))->groupBy('product_branches.product_id')->get();
-
-        $productWarehouse = $productWarehouseQuery->where('warehouse_branches.branch_id', auth()->user()->branch_id)
-            ->where('warehouse_branches.is_global', 0)
-            ->select(DB::raw('SUM(product_warehouses.product_quantity) as total_warehouse_stock'))
-            ->groupBy('product_warehouses.product_id')->get();
+        $supplierOpeningBalance = new SupplierOpeningBalance();
+        $supplierOpeningBalance->supplier_id = $supplier->id;
+        $supplierOpeningBalance->amount = $supplier->opening_balance;
+        $supplierOpeningBalance->created_by_id = auth()->user()->id;
+        $supplierOpeningBalance->save();
     }
-
-    return $productBranches->sum('total_branch_stock') + $productWarehouse->sum('total_warehouse_stock');
 });
 
 // All authenticated routes

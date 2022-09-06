@@ -201,7 +201,7 @@ class ProductUtil
                     return '<span class="text-info">Digital</span>';
                 }
             })
-            ->editColumn('cate_name', fn ($row) => '<p class="p-0">' . ($row->cate_name ? $row->cate_name : '...').'</p><p class="p-0">' . ($row->sub_cate_name ? ' --- '.$row->sub_cate_name : '') . '</p>')
+            ->editColumn('cate_name', fn ($row) => '<p class="p-0">' . ($row->cate_name ? $row->cate_name : '...') . '</p><p class="p-0">' . ($row->sub_cate_name ? ' --- ' . $row->sub_cate_name : '') . '</p>')
 
             ->editColumn('status', function ($row) {
 

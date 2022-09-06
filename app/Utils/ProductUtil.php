@@ -213,11 +213,29 @@ class ProductUtil
                     return '<span class="text-danger">Inactive</span>';
                 }
             })
-            ->editColumn('access_locations', function ($row) use ($generalSettings) {
+            ->editColumn('access_locations', function ($row) use ($generalSettings, $request) {
 
-                $productBranches = DB::table('product_branches')->where('product_branches.product_id', $row->id)
-                ->leftJoin('branches', 'product_branches.branch_id', 'branches.id')->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
+                $productBranches = '';
+                $query = DB::table('product_branches')->leftJoin('branches', 'product_branches.branch_id', 'branches.id')->where('product_branches.product_id', $row->id);
+                if ($request->branch_id) {
 
+                    if ($request->branch_id == 'NULL') {
+        
+                        $query->where('product_branches.branch_id', NULL);
+                    } else {
+        
+                        $query->where('product_branches.branch_id', $request->branch_id);
+                    }
+                }
+
+                if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+                    $productBranches = $query->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
+                }else {
+                    
+                    $productBranches = $query->where('product_branches.branch_id', auth()->user()->branch_id)->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
+                }
+                 
                 $text = '';
                 foreach ($productBranches as $productBranch) {
 

@@ -233,7 +233,7 @@ class ProductUtil
             })
             ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
             ->editColumn('tax_name', fn ($row) =>  $row->tax_name ? $row->tax_name : '...')
-            ->rawColumns(['multiple_delete', 'photo', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name',])
+            ->rawColumns(['multiple_delete', 'photo', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name', 'access_locations'])
             ->smart(true)->make(true);
     }
 

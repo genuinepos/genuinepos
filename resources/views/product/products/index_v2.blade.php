@@ -28,7 +28,7 @@
                                                             <label><b>Business Location :</b> </label>
                                                             <select class="form-control submit_able" name="branch_id" id="branch_id">
                                                                 <option value="">All</option>
-                                                                <option selected value="NULL">
+                                                                <option value="NULL">
                                                                     {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
                                                                 </option>
                                                                 @foreach ($branches as $branch)
@@ -249,7 +249,7 @@
             {data: 'name', name: 'products.name'},
             {data: 'product_cost_with_tax', name: 'products.product_cost_with_tax'},
             {data: 'product_price', name: 'products.product_price'},
-            {data: 'product_quantity', name: 'product_branches.product_quantity'},
+            {data: 'quantity', name: 'products.product_price'},
             {data: 'type', name: 'products.type'},
             {data: 'cate_name', name: 'categories.name'},
             {data: 'brand_name', name: 'brands.name'},

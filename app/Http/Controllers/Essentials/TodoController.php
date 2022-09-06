@@ -136,6 +136,7 @@ class TodoController extends Controller
         }
 
         if (auth()->user()->permission->essential['assign_todo'] == '0') {
+            
             return response()->json(['errorMsg' => 'You do\'t have any permission to assign the todo.']);
         }
 

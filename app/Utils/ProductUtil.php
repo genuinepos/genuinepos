@@ -10,6 +10,7 @@ use App\Models\Warranty;
 use App\Utils\PurchaseUtil;
 use App\Models\ProductBranch;
 use App\Models\PurchaseProduct;
+use App\Utils\ProductStockUtil;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
@@ -20,14 +21,20 @@ class ProductUtil
 {
     public $purchaseUtil;
     public $purchaseSaleChainUtil;
-    public function __construct(PurchaseUtil $purchaseUtil, PurchaseSaleChainUtil $purchaseSaleChainUtil)
-    {
+    public $productStockUtil;
+    public function __construct(
+        PurchaseUtil $purchaseUtil,
+        PurchaseSaleChainUtil $purchaseSaleChainUtil,
+        ProductStockUtil $productStockUtil
+    ) {
         $this->purchaseUtil = $purchaseUtil;
         $this->purchaseSaleChainUtil = $purchaseSaleChainUtil;
+        $this->productStockUtil = $productStockUtil;
     }
 
     public function productListTable($request)
     {
+        $productStock = $this->productStockUtil;
         $generalSettings = DB::table('general_settings')->select('business')->first();
         $countPriceGroup = DB::table('price_groups')->where('status', 'Active')->count();
         $img_url = asset('public/uploads/product/thumbnail');
@@ -39,6 +46,7 @@ class ProductUtil
             ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
             ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
             ->leftJoin('brands', 'products.brand_id', 'brands.id')
+            ->leftJoin('units', 'products.unit_id', 'units.id')
             ->where('product_branches.status', 1);
 
         if ($request->branch_id) {
@@ -118,15 +126,13 @@ class ProductUtil
                 'products.thumbnail_photo',
                 'products.expire_date',
                 'products.is_combo',
-                // 'products.quantity',
-                'product_branches.product_quantity',
-                // 'units.name as unit_name',
+                'units.name as unit_name',
                 'taxes.tax_name',
                 'categories.name as cate_name',
                 'sub_cate.name as sub_cate_name',
                 'brands.name as brand_name',
             ]
-        )->orderBy('id', 'desc');
+        )->distinct('product_branches.branch_id')->orderBy('id', 'desc');
 
         return DataTables::of($products)
             ->addColumn('multiple_delete', function ($row) {
@@ -196,6 +202,7 @@ class ProductUtil
                 }
             })
             ->editColumn('cate_name', fn ($row) => '<span>' . ($row->cate_name ? $row->cate_name : '...') . ($row->sub_cate_name ? '<br>--' . $row->sub_cate_name : '') . '</span>')
+
             ->editColumn('status', function ($row) {
 
                 if ($row->status == 1) {
@@ -206,9 +213,14 @@ class ProductUtil
                     return '<span class="text-danger">Inactive</span>';
                 }
             })
+            ->editColumn('quantity', function ($row) use ($productStock, $request){
+
+                $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);
+                return \App\Utils\Converter::format_in_bdt($quantity).'/'.$row->unit_name;
+            })
             ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
             ->editColumn('tax_name', fn ($row) =>  $row->tax_name ? $row->tax_name : '...')
-            ->rawColumns(['multiple_delete', 'photo', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name',])
+            ->rawColumns(['multiple_delete', 'photo', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name',])
             ->smart(true)->make(true);
     }
 

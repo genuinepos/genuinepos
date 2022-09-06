@@ -254,7 +254,6 @@
             return sum;
         }
 
-        
         // Show details modal with data
         $(document).on('click', '.details_button', function(e) {
             e.preventDefault();
@@ -366,17 +365,22 @@
         $('#search_product').on('input', function () {
             $('.search_result').hide();
             $('#list').empty();
+
             var product_name = $(this).val();
+            
             if (product_name === '') {
+
                 $('.search_result').hide();
                 $('#product_id').val('');
                 $('#variant_id').val('');
                 return;
             }
 
+            var url = "{{ route('common.ajax.call.search.products.only.for.report.filter', ':product_name') }}";
+            var route = url.replace(':product_name', product_name);
+
             $.ajax({
-                // url:"{{ url('reports/product/purchases/search/product') }}"+"/"+product_name,
-                url:"{{ url('common/ajax/call/only/search/product/for/reports') }}"+"/"+product_name,
+                route,
                 async:true,
                 type:'get',
                 success:function(data){

@@ -28,23 +28,33 @@ class CommonAjaxCallController extends Controller
 
     public function onlySearchProductForReports($product_name)
     {
-        $products = DB::table('product_branches')
+        $products = '';
+        $query = DB::table('product_branches')
             ->leftJoin('products', 'product_branches.product_id', 'products.id')
             ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
             ->where('name', 'like', "%{$product_name}%")
-            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
-            ->select(
-                'products.id as product_id',
-                'products.name',
-                'products.product_code',
-                'product_variants.id as variant_id',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-            )->get();
+            ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id');
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $query->distinct('product_branches.branch_id')->get(); 
+        }else{
+
+            $query->where('product_branches.branch_id', auth()->user()->branch_id)->distinct('product_branches.branch_id')->get(); 
+        }
+
+        $products = $query->select(
+            'products.id as product_id',
+            'products.name',
+            'products.product_code',
+            'product_variants.id as variant_id',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+        )->get();
 
         if (count($products) > 0) {
 
-            return view('reports.product_purchase_report.ajax_view.search_result', compact('products'));
+            return view('common_ajax_view.product_search_result_for_report_filter', compact('products'));
         } else {
 
             return response()->json(['noResult' => 'no result']);
@@ -160,7 +170,7 @@ class CommonAjaxCallController extends Controller
     // Search product 
     public function searchProductForReportFilter($product_name)
     {
-        $products = DB::table('products')
+        return $products = DB::table('products')
             ->where('name', 'like', "%{$product_name}%")
             ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
             ->select(

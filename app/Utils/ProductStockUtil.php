@@ -771,4 +771,48 @@ class ProductStockUtil
             }
         }
     }
+
+    public function branchWiseSingleProductStock($product_id, $branch_id)
+    {
+        $productBranches = '';
+        $productWarehouse = '';
+    
+        $productBranchesQuery = DB::table('product_branches')->where('product_id', $product_id);
+    
+        $productWarehouseQuery = DB::table('product_warehouses')->where('product_id', $product_id)
+            ->leftJoin('warehouse_branches', 'product_warehouses.warehouse_id', 'warehouse_branches.warehouse_id');
+    
+        if ($branch_id) {
+    
+            if ($branch_id == 'NULL') {
+    
+                $productBranchesQuery->where('product_branches.branch_id', NULL);
+                $productWarehouseQuery->where('warehouse_branches.branch_id', NULL)->where('warehouse_branches.is_global', 0);
+            } else {
+    
+                $productBranchesQuery->where('product_branches.branch_id', $branch_id);
+                $productWarehouseQuery->where('warehouse_branches.branch_id', $branch_id)->where('warehouse_branches.is_global', 0);
+            }
+        }
+    
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+    
+            $productBranches = $productBranchesQuery->select(DB::raw('SUM(product_branches.product_quantity) as total_branch_stock'))
+                ->groupBy('product_branches.product_id')->get();
+    
+            $productWarehouse = $productWarehouseQuery->select(DB::raw('SUM(product_warehouses.product_quantity) as total_warehouse_stock'))
+                ->groupBy('product_warehouses.product_id')->get();
+        } else {
+    
+            $productBranches = $productBranchesQuery->where('product_branches.branch_id', auth()->user()->branch_id)
+                ->select(DB::raw('SUM(product_branches.product_quantity) as total_branch_stock'))->groupBy('product_branches.product_id')->get();
+    
+            $productWarehouse = $productWarehouseQuery->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+                ->where('warehouse_branches.is_global', 0)
+                ->select(DB::raw('SUM(product_warehouses.product_quantity) as total_warehouse_stock'))
+                ->groupBy('product_warehouses.product_id')->get();
+        }
+    
+        return $productBranches->sum('total_branch_stock') + $productWarehouse->sum('total_warehouse_stock');
+    }
 }

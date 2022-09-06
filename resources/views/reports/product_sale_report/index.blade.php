@@ -259,8 +259,11 @@
             return;
         }
 
+        var url = "{{ route('common.ajax.call.search.products.only.for.report.filter', ':product_name') }}";
+        var route = url.replace(':product_name', product_name);
+
         $.ajax({
-            url:"{{ url('common/ajax/call/only/search/product/for/reports') }}"+"/"+product_name,
+            url:route,
             async:true,
             type:'get',
             success:function(data){

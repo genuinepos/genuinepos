@@ -158,6 +158,7 @@
                                                     <th>Image</th>
                                                     <th>Actions</th>
                                                     <th>Product</th>
+                                                    <th>Access Locations</th>
                                                     <th>Purchase Cost</th>
                                                     <th>Selling Price</th>
                                                     <th>Current Stock</th>
@@ -247,6 +248,7 @@
             {data: 'photo', name: 'products.name'},
             {data: 'action', name: 'products.name'},
             {data: 'name', name: 'products.name'},
+            {data: 'access_locations', name: 'products.name'},
             {data: 'product_cost_with_tax', name: 'products.product_cost_with_tax'},
             {data: 'product_price', name: 'products.product_price'},
             {data: 'quantity', name: 'products.product_price'},

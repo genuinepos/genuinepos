@@ -213,10 +213,10 @@ class ProductUtil
                     return '<span class="text-danger">Inactive</span>';
                 }
             })
-            ->editColumn('quantity', function ($row) use ($productStock, $request){
+            ->editColumn('quantity', function ($row) use ($productStock, $request) {
 
                 $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);
-                return \App\Utils\Converter::format_in_bdt($quantity).'/'.$row->unit_name;
+                return \App\Utils\Converter::format_in_bdt($quantity) . '/' . $row->unit_name;
             })
             ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
             ->editColumn('tax_name', fn ($row) =>  $row->tax_name ? $row->tax_name : '...')

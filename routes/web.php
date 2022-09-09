@@ -1045,65 +1045,33 @@ Route::get('/test', function () {
     //     $p->save();
     // } 
 
-    // $customers = DB::table('customers')->get();
+    $customers = DB::table('customers')->get();
 
-    // foreach ($customers as $customer){
+    foreach ($customers as $customer){
 
-    //     $customerOpeningBalance = new CustomerOpeningBalance();
-    //     $customerOpeningBalance->customer_id = $customer->id;
-    //     $customerOpeningBalance->amount = $customer->opening_balance;
-    //     $customerOpeningBalance->created_by_id = auth()->user()->id;
-    //     $customerOpeningBalance->save();
+        $customerOpeningBalance = new CustomerOpeningBalance();
+        $customerOpeningBalance->customer_id = $customer->id;
+        $customerOpeningBalance->amount = $customer->opening_balance;
+        $customerOpeningBalance->created_by_id = auth()->user()->id;
+        $customerOpeningBalance->save();
 
-    //     $customerCreditLimit = new CustomerCreditLimit();
-    //     $customerCreditLimit->customer_id = $customer->id;
-    //     $customerCreditLimit->credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
-    //     $customerCreditLimit->created_by_id = auth()->user()->id;
-    //     $customerCreditLimit->save();
-    // }
-
-    // $suppliers = DB::table('suppliers')->get();
-
-    // foreach ($suppliers as $supplier){
-
-    //     $supplierOpeningBalance = new SupplierOpeningBalance();
-    //     $supplierOpeningBalance->supplier_id = $supplier->id;
-    //     $supplierOpeningBalance->amount = $supplier->opening_balance;
-    //     $supplierOpeningBalance->created_by_id = auth()->user()->id;
-    //     $supplierOpeningBalance->save();
-    // }
-
-    // (A) SETTINGS
-    $settings = [
-        "apiKey" => "9f25d1062d7a41698fb058bf18a16c83",
-        "ip" => $_SERVER["REMOTE_ADDR"],
-        "lang" => "en",
-        "fields" => "*"
-    ];
-
-    // (B) INIT CURL + OPTIONS
-    $ch = curl_init();
-    $url = "https://api.ipgeolocation.io/ipgeo?";
-    foreach ($settings as $k => $v) {
-        $url .= urlencode($k) . "=" . urlencode($v) . "&";
+        $customerCreditLimit = new CustomerCreditLimit();
+        $customerCreditLimit->customer_id = $customer->id;
+        $customerCreditLimit->credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
+        $customerCreditLimit->created_by_id = auth()->user()->id;
+        $customerCreditLimit->save();
     }
-    $url = substr($url, 0, -1);
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    // (C) CURL FETCH
-    $result = curl_exec($ch);
-    if (curl_errno($ch)) {
-        // (C1) CURL FETCH ERROR
-        echo curl_error($ch);
-    } else {
-        // (C2) CURL FETCH OK
-        $info = curl_getinfo($ch);
-        $result = json_decode($result, 1);
-        print_r($result); // GEO IP INFORMATION
-        print_r($info); // MORE INFORMATION ON THE CURL CALL
+    $suppliers = DB::table('suppliers')->get();
+
+    foreach ($suppliers as $supplier){
+
+        $supplierOpeningBalance = new SupplierOpeningBalance();
+        $supplierOpeningBalance->supplier_id = $supplier->id;
+        $supplierOpeningBalance->amount = $supplier->opening_balance;
+        $supplierOpeningBalance->created_by_id = auth()->user()->id;
+        $supplierOpeningBalance->save();
     }
-    curl_close($ch);
 });
 
 // All authenticated routes

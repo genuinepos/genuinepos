@@ -1074,7 +1074,7 @@ Route::get('/test', function () {
     // }
 
     $user_ip = getenv('REMOTE_ADDR');
-    return $geo = unserialize(file_get_contents("http://www.geoplugin.net/php.gp?"));
+    $geo = unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$user_ip"));
     $country = $geo["geoplugin_countryName"];
     $city = $geo["geoplugin_city"];
 });

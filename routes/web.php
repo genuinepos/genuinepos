@@ -1045,33 +1045,33 @@ Route::get('/test', function () {
     //     $p->save();
     // } 
 
-    // $customers = DB::table('customers')->get();
+    $customers = DB::table('customers')->get();
 
-    // foreach ($customers as $customer){
+    foreach ($customers as $customer){
 
-    //     $customerOpeningBalance = new CustomerOpeningBalance();
-    //     $customerOpeningBalance->customer_id = $customer->id;
-    //     $customerOpeningBalance->amount = $customer->opening_balance;
-    //     $customerOpeningBalance->created_by_id = auth()->user()->id;
-    //     $customerOpeningBalance->save();
+        $customerOpeningBalance = new CustomerOpeningBalance();
+        $customerOpeningBalance->customer_id = $customer->id;
+        $customerOpeningBalance->amount = $customer->opening_balance;
+        $customerOpeningBalance->created_by_id = auth()->user()->id;
+        $customerOpeningBalance->save();
 
-    //     $customerCreditLimit = new CustomerCreditLimit();
-    //     $customerCreditLimit->customer_id = $customer->id;
-    //     $customerCreditLimit->credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
-    //     $customerCreditLimit->created_by_id = auth()->user()->id;
-    //     $customerCreditLimit->save();
-    // }
+        $customerCreditLimit = new CustomerCreditLimit();
+        $customerCreditLimit->customer_id = $customer->id;
+        $customerCreditLimit->credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
+        $customerCreditLimit->created_by_id = auth()->user()->id;
+        $customerCreditLimit->save();
+    }
 
-    // $suppliers = DB::table('suppliers')->get();
+    $suppliers = DB::table('suppliers')->get();
 
-    // foreach ($suppliers as $supplier){
+    foreach ($suppliers as $supplier){
 
-    //     $supplierOpeningBalance = new SupplierOpeningBalance();
-    //     $supplierOpeningBalance->supplier_id = $supplier->id;
-    //     $supplierOpeningBalance->amount = $supplier->opening_balance;
-    //     $supplierOpeningBalance->created_by_id = auth()->user()->id;
-    //     $supplierOpeningBalance->save();
-    // }
+        $supplierOpeningBalance = new SupplierOpeningBalance();
+        $supplierOpeningBalance->supplier_id = $supplier->id;
+        $supplierOpeningBalance->amount = $supplier->opening_balance;
+        $supplierOpeningBalance->created_by_id = auth()->user()->id;
+        $supplierOpeningBalance->save();
+    }
 });
 
 // All authenticated routes

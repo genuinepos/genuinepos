@@ -9,12 +9,14 @@
                     </a>
                 </li>
 
-                <li data-menu="superadmin" class="">
-                    <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/superadmin.svg') }}">
-                        <p class="title">@lang('menu.superadmin')</p>
-                    </a>
-                </li>
-
+                @if ($addons->branches == 1)
+                    <li data-menu="superadmin" class="">
+                        <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/superadmin.svg') }}">
+                            <p class="title">@lang('menu.superadmin')</p>
+                        </a>
+                    </li>
+                @endif
+                
                 @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
                     @if (
                         auth()->user()->permission->contact['supplier_all'] == '1' || 
@@ -89,8 +91,7 @@
 
                             @if (auth()->user()->permission->purchase['purchase_all'] == '1')
 
-                                <li data-menu="purchases"
-                                    class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
+                                <li data-menu="purchases" class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
                                     <a href="#" class="">
                                         <img src="{{ asset('public/backend/asset/img/icon/bill.svg') }}">
                                         <p class="title">@lang('menu.purchases')</p>
@@ -585,22 +586,23 @@
                 </div>
             </div>
 
-            <div class="sub-menu_t" id="superadmin">
-                <div class="sub-menu-width">
-                    <div class="model__close bg-secondary-2">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>Superadmin</strong></p>
-                            </div>
-                            <div class="col-md-4">
-                                <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            @if ($addons->branches == 1)
+
+                <div class="sub-menu_t" id="superadmin">
+                    <div class="sub-menu-width">
+                        <div class="model__close bg-secondary-2">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p class="text-muted float-start mt-1"><strong>Superadmin</strong></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#" class="btn text-white btn-sm btn-info close-model float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            @if ($addons->branches == 1)
+                        <div class="container-fluid">
+                            <div class="row">
                                 @if (auth()->user()->permission->setup['branch'] == '1')
                                     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column">
                                         <div class="switch_bar">
@@ -611,12 +613,11 @@
                                         <p class="switch_text">@lang('menu.branches')</p>
                                     </div>
                                 @endif
-                            @endif
+                            </div>
                         </div>
                     </div>
-
                 </div>
-            </div>
+            @endif
 
             @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
 
@@ -632,6 +633,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="container-fluid">
                             <div class="row">
                                 @if (auth()->user()->permission->contact['supplier_all'] == '1')

@@ -213,7 +213,7 @@
                                             @if ($sale_product->warranty_id)
 
                                                 {{ $sale_product->w_duration . ' ' .$sale_product->w_duration_type }}
-                                                {{ $sale_product->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
+                                                {{ $sale_product->w_type == 1 ? 'Warranty' : 'Guaranty' }}
                                                 @if ($sale_product->w_description)
 
                                                     {!! '<br><small>'.$sale_product->w_description.'</small>'  !!}

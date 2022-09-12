@@ -22,11 +22,13 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if (auth()->user()->permission->user['user_view'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
 
+            $generalSettings = DB::table('general_settings')->first();
             $users = '';
             $query = DB::table('admin_and_users')
                 ->leftJoin('branches', 'admin_and_users.branch_id', 'branches.id')
@@ -74,14 +76,14 @@ class UserController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
-                ->editColumn('branch', function ($row) {
+                ->editColumn('branch', function ($row) use ($generalSettings) {
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>B.L</b>)';
+                        return $row->branch_name . '/' . $row->branch_code;
                     } else {
 
-                        return '(<b>Head Office</b>)';
+                        return json_decode($generalSettings->business, true)['shop_name'];
                     }
                 })
                 ->editColumn('role_name',  function ($row) {
@@ -207,7 +209,7 @@ class UserController extends Controller
         $addUser->salary = $request->salary ? $request->salary : 0.00;
         $addUser->salary_type = $request->pay_type;
         $addUser->save();
-        
+
         session()->flash('successMsg', 'User created successfully');
         return response()->json('User created successfully');
     }
@@ -271,7 +273,7 @@ class UserController extends Controller
         }
 
         $addons = DB::table('addons')->first();
-     
+
         //return $request->all();
         $updateUser->prefix = $request->prefix;
         $updateUser->name = $request->first_name;
@@ -290,7 +292,7 @@ class UserController extends Controller
             $updateUser->allow_login = 1;
             $updateUser->username = $request->username;
             $updateUser->password = $request->password ? Hash::make($request->password) : $updateUser->password;
-            
+
             if (!$request->role_id) {
 
                 $superAdminPermission = RolePermission::where('is_super_admin_role', 1)->first();
@@ -337,7 +339,7 @@ class UserController extends Controller
         $updateUser->salary = $request->salary ? $request->salary : 0;
         $updateUser->salary_type = $request->pay_type;
         $updateUser->save();
-        
+
         session()->flash('successMsg', 'Successfully user updated');
         return response()->json('User updated successfully');
     }

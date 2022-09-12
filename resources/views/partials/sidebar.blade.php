@@ -62,7 +62,6 @@
                         isset(auth()->user()->permission->product['stock_report']) && 
                         auth()->user()->permission->product['stock_report'] == '1'
                     ) ||
-                    
                     (
                         isset(auth()->user()->permission->product['stock_in_out_report']) && 
                         auth()->user()->permission->product['stock_in_out_report'] == '1'

@@ -228,14 +228,12 @@
                                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->unit_price_inc_tax) }} </td>
 
                                     @if ($defaultLayout->product_discount)
-                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->unit_discount_amount) }}
-                                        </td>
+                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->unit_discount_amount) }}</td>
                                     @endif
 
                                     @if ($defaultLayout->product_tax)
-                                        <td class="text-end">
-                                            {{ $sale_product->unit_tax_percent }}%
-                                        </td>
+                                    
+                                        <td class="text-end">{{ $sale_product->unit_tax_percent }}%</td>
                                     @endif
 
                                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->subtotal) }}</td>

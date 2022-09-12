@@ -10,6 +10,7 @@
     .due_invoice_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .due_orders_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .seperate_area {border: 1px solid gray;padding: 6px;}
+    .all_orders_and_invoices_area.due_table table th,td {font-size: 8px;}
 </style>
 <div class="modal-dialog modal-dialog five-col-modal" role="document">
     <div class="modal-content">
@@ -143,16 +144,17 @@
                                                                     <th class="text-start text-white">Order/Invoice</th>
                                                                     <th class="text-start text-white">Status</th>
                                                                     <th class="text-start text-white">Pay Status</th>
-                                                                    <th class="text-start text-white">Due Amount</th>
+                                                                    <th class="text-start text-white">Sold Amt.</th>
+                                                                    <th class="text-start text-white">Due</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 @foreach ($branchWiseCustomerInvoiceAndOrders['allSalesAndOrders'] as $row)
                                                                     <tr>
-                                                                        <td><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $row->id }}" id="sale_id" data-due_amount="{{ $row->due }}"></td>
-                                                                        <td>{{ $row->date }}</td>
+                                                                        <td class="text-start"><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $row->id }}" id="sale_id" data-due_amount="{{ $row->due }}"></td>
+                                                                        <td class="text-start">{{ $row->date }}</td>
         
-                                                                        <td>
+                                                                        <td class="text-start">
                                                                             @if ($row->status == 1)
                                                                             
                                                                                 <a class="details_button" title="Details" href="{{ route('sales.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
@@ -161,14 +163,14 @@
                                                                                 <a class="details_button" title="Details" href="{{ route('sales.order.show', [$row->id]) }}">{{ $row->order_id }}</a>
                                                                             @endif
                                                                         </td>
-                                                                        <td>
+                                                                        <td class="text-start">
                                                                             @if ($row->status == 1)
                                                                                 Sale
                                                                             @else
                                                                                 Order
                                                                             @endif
                                                                         </td>
-                                                                        <td>
+                                                                        <td class="text-start">
                                                                             @php
                                                                                 $payable = $row->total_payable_amount - $row->sale_return_amount;
                                                                             @endphp
@@ -184,7 +186,8 @@
                                                                                 <span class="text-danger"><b>Due</b></span>
                                                                             @endif
                                                                         </td>
-                                                                        <td>{{ $row->due }}</td>
+                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->total_payable_amount) }}</td>
+                                                                        <td class="text-start text-danger"><strong>{{ App\Utils\Converter::format_in_bdt($row->due) }}</strong></td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
@@ -217,18 +220,19 @@
                                                                     <th class="text-start text-white">Date</th>
                                                                     <th class="text-start text-white">Invoice ID</th>
                                                                     <th class="text-start text-white">Pay Status</th>
+                                                                    <th class="text-start text-white">Sold Amt.</th>
                                                                     <th class="text-start text-white">Due Amount</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 @foreach ($branchWiseCustomerInvoiceAndOrders['invoices'] as $invoice)
                                                                     <tr>
-                                                                        <td><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $invoice->id }}" id="sale_id" data-due_amount="{{ $invoice->due }}"></td>
-                                                                        <td>{{ $invoice->date }}</td>
+                                                                        <td class="text-start"><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $invoice->id }}" id="sale_id" data-due_amount="{{ $invoice->due }}"></td>
+                                                                        <td class="text-start">{{ $invoice->date }}</td>
                                                                         <td>
                                                                             <a class="details_button" title="Details" href="{{ route('sales.show', [$invoice->id]) }}">{{ $invoice->invoice_id }}</a>
                                                                         </td>
-                                                                        <td>
+                                                                        <td class="text-start">
                                                                             @php
                                                                                 $payable = $invoice->total_payable_amount - $invoice->sale_return_amount;
                                                                             @endphp
@@ -244,7 +248,8 @@
                                                                                 <span class="text-danger"><b>Due</b></span>
                                                                             @endif
                                                                         </td>
-                                                                        <td>{{ $invoice->due }}</td>
+                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->total_payable_amount) }}</td>
+                                                                        <td class="text-start text-danger"><strong>{{ App\Utils\Converter::format_in_bdt($invoice->due) }}</strong></td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
@@ -277,18 +282,19 @@
                                                                     <th class="text-start text-white">Date</th>
                                                                     <th class="text-start text-white">Order ID</th>
                                                                     <th class="text-start text-white">Pay Status</th>
+                                                                    <th class="text-start text-white">Sold Amt.</th>
                                                                     <th class="text-start text-white">Due Amount</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 @foreach ($branchWiseCustomerInvoiceAndOrders['orders'] as $order)
                                                                     <tr>
-                                                                        <td><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $order->id }}" id="sale_id" data-due_amount="{{ $order->due }}"></td>
-                                                                        <td>{{ $order->order_date }}</td>
-                                                                        <td>
+                                                                        <td class="text-start"><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $order->id }}" id="sale_id" data-due_amount="{{ $order->due }}"></td>
+                                                                        <td class="text-start">{{ $order->order_date }}</td>
+                                                                        <td class="text-start">
                                                                             <a class="details_button" title="Details" href="{{ route('sales.order.show', [$order->id]) }}">{{ $order->order_id }}</a>
                                                                         </td>
-                                                                        <td>
+                                                                        <td class="text-start">
                                                                             @php
                                                                                 $payable = $order->total_payable_amount - $order->sale_return_amount;
                                                                             @endphp
@@ -304,7 +310,8 @@
                                                                                 <span class="text-danger"><b>Due</b></span>
                                                                             @endif
                                                                         </td>
-                                                                        <td>{{ $order->due }}</td>
+                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->total_payable_amount) }}</td>
+                                                                        <td class="text-start text-danger"><strong>{{ App\Utils\Converter::format_in_bdt($order->due) }}</strong></td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>

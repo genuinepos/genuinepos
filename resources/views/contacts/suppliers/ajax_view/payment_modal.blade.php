@@ -10,6 +10,7 @@
     .due_purchase_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .due_order_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .seperate_area {border: 1px solid gray; padding: 6px;}
+    .all_purchase_and_orders_area.due_table table th,td {font-size: 8px;}
 </style>
 <div class="modal-dialog five-col-modal" role="document" z-index="-1">
     <div class="modal-content">
@@ -140,7 +141,8 @@
                                                                     <th class="text-start text-white">Date</th>
                                                                     <th class="text-start text-white">Order/Invoice ID</th>
                                                                     <th class="text-start text-white">Status</th>
-                                                                    <th class="text-start text-white">Payment Status</th>
+                                                                    <th class="text-start text-white">Pay Status</th>
+                                                                    <th class="text-start text-white">Purchased Amt.</th>
                                                                     <th class="text-start text-white">Due Amount</th>
                                                                 </tr>
                                                             </thead>
@@ -183,7 +185,8 @@
                                                                                 <span class="text-danger"><b>Due</b></span>
                                                                             @endif
                                                                         </td>
-                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->due) }}</td>
+                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->total_purchase_amount) }}</td>
+                                                                        <td class="text-start text-danger"><strong>{{ App\Utils\Converter::format_in_bdt($row->due) }}</strong></td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
@@ -216,6 +219,7 @@
                                                                     <th class="text-start text-white">Date</th>
                                                                     <th class="text-start text-white">Invoice ID</th>
                                                                     <th class="text-start text-white">Payment Status</th>
+                                                                    <th class="text-start text-white">Purchased Amt.</th>
                                                                     <th class="text-start text-white">Due Amount</th>
                                                                 </tr>
                                                             </thead>
@@ -246,8 +250,8 @@
                                                                                 <span class="text-danger"><b>Due</b></span>
                                                                             @endif
                                                                         </td>
-
-                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($purchase->due) }}</td>
+                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}</td>
+                                                                        <td class="text-start text-danger"><strong>{{ App\Utils\Converter::format_in_bdt($purchase->due) }}</strong></td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
@@ -280,6 +284,7 @@
                                                                     <th class="text-start text-white">Date</th>
                                                                     <th class="text-start text-white">Order ID</th>
                                                                     <th class="text-start text-white">Payment Status</th>
+                                                                    <th class="text-start text-white">Purchased Amt.</th>
                                                                     <th class="text-start text-white">Due Amount</th>
                                                                 </tr>
                                                             </thead>
@@ -309,7 +314,8 @@
                                                                                 <span class="text-danger"><b>Due</b></span>
                                                                             @endif
                                                                         </td>
-                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($order->due) }}</td>
+                                                                        <td class="text-start">{{ App\Utils\Converter::format_in_bdt($order->total_purchase_amount) }}</td>
+                                                                        <td class="text-start text-danger"><strong>{{ App\Utils\Converter::format_in_bdt($order->due) }}</strong></td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>

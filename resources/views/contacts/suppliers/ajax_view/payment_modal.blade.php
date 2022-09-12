@@ -10,7 +10,8 @@
     .due_purchase_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .due_order_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .seperate_area {border: 1px solid gray; padding: 6px;}
-    .all_purchase_and_orders_area.due_table table th,td {font-size: 8px;}
+    .purchase_and_order_table_area  th {font-size: 8px!important;}
+    .purchase_and_order_table_area  td {font-size: 8px!important;}
 </style>
 <div class="modal-dialog five-col-modal" role="document" z-index="-1">
     <div class="modal-content">
@@ -65,8 +66,6 @@
                     </div>
                 </div>
             </div>
-
-            
 
             <form id="payment_form" action="{{ route('suppliers.payment.add', $supplier->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -134,7 +133,7 @@
                                                     </div>
 
                                                     <div class="due_all_table">
-                                                        <table class="table modal-table table-sm table-bordered mt-1">
+                                                        <table class="table modal-table table-sm mt-1">
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">SL</th>
@@ -212,7 +211,7 @@
                                                     </div>
                                                 
                                                     <div class="due_order_table">
-                                                        <table class="table modal-table table-sm table-bordered mt-1">
+                                                        <table class="table modal-table table-sm mt-1">
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">Select</th>
@@ -277,7 +276,7 @@
                                                     </div>
                                                 
                                                     <div class="due_orders_table">
-                                                        <table class="table modal-table table-sm table-bordered mt-1">
+                                                        <table class="table modal-table table-sm mt-1">
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">Select</th>

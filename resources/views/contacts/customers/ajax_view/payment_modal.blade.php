@@ -10,7 +10,8 @@
     .due_invoice_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .due_orders_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .seperate_area {border: 1px solid gray;padding: 6px;}
-    .all_orders_and_invoices_area.due_table table th,td {font-size: 8px;}
+    .invoice_and_order_table_area th {font-size: 8px!important;}
+    .invoice_and_order_table_area td {font-size: 8px!important;}
 </style>
 <div class="modal-dialog modal-dialog five-col-modal" role="document">
     <div class="modal-content">
@@ -136,7 +137,7 @@
                                                     </div>
         
                                                     <div class="due_all_table">
-                                                        <table class="table modal-table table-sm table-bordered mt-1">
+                                                        <table class="table modal-table table-sm mt-1">
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">Select</th>
@@ -213,7 +214,7 @@
                                                     </div>
                                                 
                                                     <div class="due_invoice_table">
-                                                        <table class="table modal-table table-sm table-bordered mt-1">
+                                                        <table class="table modal-table table-sm mt-1 custom-tbl">
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">Select</th>
@@ -275,7 +276,7 @@
                                                     </div>
                                                 
                                                     <div class="due_orders_table">
-                                                        <table class="table modal-table table-sm table-bordered mt-1">
+                                                        <table class="table modal-table table-sm mt-1">
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">Select</th>

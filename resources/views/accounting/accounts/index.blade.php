@@ -14,8 +14,7 @@
                                 <span class="fas fa-money-check-alt"></span>
                                 <h5>Accounts</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         <div class="row">
@@ -54,9 +53,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="submit"
-                                                            class="btn text-white btn-sm btn-secondary float-start"><i
-                                                                class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -76,8 +73,7 @@
 
                                 <div class="col-md-2">
                                     <div class="btn_30_blue float-end">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" id="add"><i
-                                                class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" id="add"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
                                     </div>
                                 </div>
                             </div>
@@ -154,9 +150,7 @@
                                     <select name="bank_id" class="form-control add_input" data-name="Bank name" id="bank_id">
                                         <option value="">Select Bank</option>
                                         @foreach ($banks as $bank)
-                                            <option value="{{ $bank->id }}">
-                                                {{ $bank->name . ' (' . $bank->branch_name . ')' }}
-                                            </option>
+                                            <option value="{{ $bank->id }}">{{ $bank->name . ' (' . $bank->branch_name . ')' }}</option>
                                         @endforeach
                                     </select>
                                     <span class="error error_bank_id"></span>
@@ -164,16 +158,15 @@
 
                                 <div class="col-md-12">
                                     <label><strong>Account Number : </strong><span class="text-danger">*</span></label>
-                                    <input type="text" name="account_number" class="form-control add_input"
-                                        data-name="Type name" id="account_number" placeholder="Account number" />
+                                    <input type="text" name="account_number" class="form-control add_input" data-name="Type name" id="account_number" placeholder="Account number" />
                                     <span class="error error_account_number"></span>
                                 </div>
 
                                 <div class="col-md-12">
                                     <label><strong>Access Business Location :</strong> <span class="text-danger">*</span></label>
                                     <select name="business_location[]" id="business_location" class="form-control select2" multiple="multiple">
-                                        <option value="NULL">
-                                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (HO)
+                                        <option {{ $addons->branches == 0 ? 'SELECTED' : '' }} value="NULL">
+                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}(HO)
                                         </option>
 
                                         @foreach ($branches as $branch)
@@ -187,8 +180,7 @@
                         
                         <div class="form-group mt-1">
                             <label><strong>Opening Balance :</strong></label>
-                            <input type="number" name="opening_balance" class="form-control" 
-                                id="opening_balance" value="0.00" step="any" />
+                            <input type="number" name="opening_balance" class="form-control" id="opening_balance" value="0.00" step="any"/>
                         </div>
 
                         <div class="form-group mt-1">

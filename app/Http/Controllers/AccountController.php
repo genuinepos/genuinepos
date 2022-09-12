@@ -41,6 +41,7 @@ class AccountController extends Controller
     public function index(Request $request)
     {
         if (auth()->user()->permission->accounting['ac_access'] == '0') {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -284,7 +285,6 @@ class AccountController extends Controller
     // Store bank
     public function store(Request $request)
     {
-        //return $request->branch_ids;
         $this->validate($request, [
             'name' => 'required',
             'account_type' => 'required',
@@ -316,7 +316,7 @@ class AccountController extends Controller
 
         if ($request->account_type == 2) {
 
-            foreach ($request->business_location as $branch_id) {
+            foreach($request->business_location as $branch_id) {
 
                 AccountBranch::insert(
                     [

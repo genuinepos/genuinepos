@@ -236,9 +236,12 @@
 
     $('#search_product').on('input', function () {
         $('.search_result').hide();
+
         $('#list').empty();
         var product_name = $(this).val();
+
         if (product_name === '') {
+
             $('.search_result').hide();
             $('#product_id').val('');
             $('#variant_id').val('');
@@ -247,9 +250,8 @@
 
         var url = "{{ route('common.ajax.call.search.products.only.for.report.filter', ':product_name') }}";
         var route = url.replace(':product_name', product_name);
-
+     
         $.ajax({
-
             url:route,
             async:true,
             type:'get',

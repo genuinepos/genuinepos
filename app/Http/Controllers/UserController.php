@@ -80,7 +80,7 @@ class UserController extends Controller
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name . '/' . $row->branch_code;
+                        return $row->branch_name;
                     } else {
 
                         return json_decode($generalSettings->business, true)['shop_name'];

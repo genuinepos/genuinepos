@@ -19,7 +19,8 @@ class BranchWiseCustomerAmountUtil
         $amounts = '';
 
         $query = DB::table('customer_ledgers')
-            ->where('customer_ledgers.customer_id', $customerId);
+            ->where('customer_ledgers.customer_id', $customerId)
+            ->leftJoin('customer_payments', 'customer_ledgers.customer_payment_id', 'customer_payments.id');
 
         if ($branch_id) {
 
@@ -42,13 +43,19 @@ class BranchWiseCustomerAmountUtil
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $query->select('voucher_type', DB::raw('SUM(amount) as amt'))
-                ->groupBy('customer_ledgers.voucher_type');
+            $query->select(
+                'voucher_type',
+                DB::raw('SUM(amount) as amt'),
+                DB::raw('SUM(customer_payments.less_amount) as less_amt'),
+            )->groupBy('customer_ledgers.voucher_type');
         } else {
 
             $query->where('customer_ledgers.branch_id', auth()->user()->branch_id)
-                ->select('voucher_type', DB::raw('SUM(amount) as amt'))
-                ->groupBy('customer_ledgers.voucher_type');
+                ->select(
+                    'voucher_type',
+                    DB::raw('SUM(amount) as amt'),
+                    DB::raw('SUM(customer_payments.less_amount) as less_amt'),
+                )->groupBy('customer_ledgers.voucher_type');
         }
 
         $amounts = $query->get();
@@ -80,6 +87,7 @@ class BranchWiseCustomerAmountUtil
             } elseif ($amount->voucher_type == 5) {
 
                 $totalPaid += $amount->amt;
+                $totalLess += $amount->less_amt;
             } elseif ($amount->voucher_type == 6) {
 
                 $totalRefund += $amount->amt;
@@ -134,7 +142,6 @@ class BranchWiseCustomerAmountUtil
                 $invoicesQuery->where('sales.branch_id', $branch_id);
                 $ordersQuery->where('sales.branch_id', $branch_id);
             }
-            
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -149,7 +156,7 @@ class BranchWiseCustomerAmountUtil
 
             $allSalesAndOrdersQuery->where('sales.branch_id', auth()->user()->branch_id)->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due', 'status')->orderBy('report_date', 'desc');
 
-            $invoicesQuery->where('sales.branch_id', auth()->user()->branch_id)->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due') ->orderBy('report_date', 'desc');
+            $invoicesQuery->where('sales.branch_id', auth()->user()->branch_id)->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due')->orderBy('report_date', 'desc');
 
             $ordersQuery->where('sales.branch_id', auth()->user()->branch_id)->select('id', 'date', 'invoice_id', 'total_payable_amount', 'sale_return_amount', 'due', 'status')->orderBy('report_date', 'desc');
         }

@@ -306,6 +306,7 @@ class SupplierController extends Controller
                 'purchase_payments.invoice_id as payment_voucher_no',
                 'purchase_payments.note as purchase_payment_par',
                 'supplier_payments.voucher_no as supplier_payment_voucher',
+                'supplier_payments.less_amount',
                 'supplier_payments.note as supplier_payment_par',
                 'agp_purchase.invoice_id as agp_purchase',
             )->orderBy('supplier_ledgers.report_date', 'asc');

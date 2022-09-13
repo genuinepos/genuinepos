@@ -65,6 +65,7 @@
 @php
     $totalDebit = 0;
     $totalCredit = 0;
+    $totalLess = 0;
 @endphp
 <div class="row mt-1">
     <div class="col-12">
@@ -90,13 +91,14 @@
                     @php
                         $debit = $row->debit;
                         $credit = $row->credit;
+                        $less = $row->less_amount;
 
                         if($i == 0) {
 
                             $previousBalance =  $credit - $debit;
                         } else {
 
-                            $previousBalance = $previousBalance + ($credit - $debit);
+                            $previousBalance = $previousBalance + ($credit - ($debit + $less));
                         }
                     @endphp
 
@@ -114,7 +116,8 @@
                             @php
                                 $type = $supplierUtil->voucherType($row->voucher_type);
                                 $__agp = $row->agp_purchase ? '/' . 'AGP: ' . $row->agp_purchase : '';
-                                $particulars = '<b>' . $type['name'] . '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                                $__less = $row->less_amount > 0 ? '/' . 'Less:(<b class="text-success">' . $row->less_amount . '</b>)' : '';
+                                $particulars = '<b>' . $type['name'] . '</b>' . $__agp. $__less . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
                             @endphp 
 
                             {!! $particulars !!}
@@ -132,6 +135,7 @@
                             {{ App\Utils\Converter::format_in_bdt($row->debit) }}
                             @php
                                 $totalDebit += $row->debit;
+                                $totalLess += $row->less_amount;
                             @endphp
                         </td>
 
@@ -175,10 +179,19 @@
                 </tr>
 
                 <tr>
+                    <td class="text-end">
+                        <strong>Total Less :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                    </td>
+                    <td class="text-end">
+                        ({{ App\Utils\Converter::format_in_bdt($totalLess) }})
+                    </td>
+                </tr>
+
+                <tr>
                     <td class="text-end"><strong>Closing Balance :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}</td>
                     <td class="text-end">
                         @php
-                            $closingBalance = $totalCredit - $totalDebit;
+                            $closingBalance = $totalCredit - ($totalDebit + $totalLess);
                         @endphp
                         {{ App\Utils\Converter::format_in_bdt($closingBalance) }}
                     </td>

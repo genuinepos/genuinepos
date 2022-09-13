@@ -309,6 +309,7 @@ class SupplierUtil
                 'purchase_payments.invoice_id as payment_voucher_no',
                 'purchase_payments.note as purchase_payment_par',
                 'supplier_payments.voucher_no as supplier_payment_voucher',
+                'supplier_payments.less_amount',
                 'supplier_payments.note as supplier_payment_par',
                 'agp_purchase.invoice_id as agp_purchase',
             )->orderBy('supplier_ledgers.report_date', 'asc');
@@ -350,7 +351,7 @@ class SupplierUtil
         $tempRunning = 0;
         foreach ($supplierLedgers as $supplierLedger) {
 
-            $supplierLedger->running_balance =  $tempRunning  + ($supplierLedger->credit - $supplierLedger->debit);
+            $supplierLedger->running_balance =  $tempRunning  + ($supplierLedger->credit - ($supplierLedger->debit + $supplierLedger->less_amount));
             $tempRunning = $supplierLedger->running_balance;
         }
 
@@ -366,7 +367,8 @@ class SupplierUtil
 
                 $type = $this->voucherType($row->voucher_type);
                 $__agp = $row->agp_purchase ? '/' . 'AGP:<b>' . $row->agp_purchase . '</b>' : '';
-                return '<b>' . $type['name'] . '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                $__less = $row->less_amount > 0 ? '/' . 'Less:(<b class="text-success">' . $row->less_amount . '</b>)' : '';
+                return '<b>' . $type['name'] . '</b>' . $__agp .$__less. ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
             })
 
             ->editColumn('b_name', function ($row) use ($settings) {

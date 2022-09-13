@@ -523,6 +523,7 @@ class CustomerController extends Controller
                     'sale_payments.invoice_id as sale_payment_voucher',
                     'sale_payments.note as sale_payment_par',
                     'customer_payments.voucher_no as customer_payment_voucher',
+                    'customer_payments.less_amount',
                     'customer_payments.note as customer_payment_par',
                     'ags_sale.invoice_id as ags_sale',
                 )->orderBy('customer_ledgers.report_date', 'asc');
@@ -563,7 +564,8 @@ class CustomerController extends Controller
             $customerLedgers = $customerLedgers->get();
             $tempRunning = 0;
             foreach ($customerLedgers as $customerLedger) {
-                $customerLedger->running_balance =  $tempRunning  + ($customerLedger->debit - $customerLedger->credit);
+
+                $customerLedger->running_balance =  $tempRunning + ($customerLedger->debit - ($customerLedger->credit + $customerLedger->less_amount));
                 $tempRunning = $customerLedger->running_balance;
             }
 
@@ -579,7 +581,8 @@ class CustomerController extends Controller
 
                     $type = $customerUtil->voucherType($row->voucher_type);
                     $__agp = $row->ags_sale ? '/' . 'AGS:<b>' . $row->ags_sale . '</b>' : '';
-                    return '<b>' . $type['name'] . ($row->sale_status == 3 ? '-Order' : '') . '</b>' . $__agp . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                    $__less = $row->less_amount > 0 ? '/' . 'Less:(<b class="text-danger">' . $row->less_amount . '</b>)' : '';
+                    return '<b>' . $type['name'] . ($row->sale_status == 3 ? '-Order' : '') . '</b>' . $__agp .$__less. ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
                 })
 
                 ->editColumn('b_name', function ($row) use ($settings) {
@@ -673,6 +676,7 @@ class CustomerController extends Controller
             'sale_payments.invoice_id as sale_payment_voucher',
             'sale_payments.note as sale_payment_par',
             'customer_payments.voucher_no as customer_payment_voucher',
+            'customer_payments.less_amount',
             'customer_payments.note as customer_payment_par',
             'ags_sale.invoice_id as ags_sale',
         );

@@ -17,7 +17,8 @@ class BranchWiseSupplierAmountsUtil
         $amounts = '';
 
         $query = DB::table('supplier_ledgers')
-            ->where('supplier_ledgers.supplier_id', $supplierId);
+            ->where('supplier_ledgers.supplier_id', $supplierId)
+            ->leftJoin('supplier_payments', 'supplier_ledgers.supplier_payment_id', 'supplier_payments.id');
 
         if ($branch_id) {
 
@@ -40,13 +41,19 @@ class BranchWiseSupplierAmountsUtil
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $query->select('voucher_type', DB::raw('SUM(amount) as amt'))
-                ->groupBy('supplier_ledgers.voucher_type');
+            $query->select(
+                'voucher_type',
+                DB::raw('SUM(amount) as amt'),
+                DB::raw('SUM(supplier_payments.less_amount) as less_amt'),
+            )->groupBy('supplier_ledgers.voucher_type');
         } else {
 
             $query->where('supplier_ledgers.branch_id', auth()->user()->branch_id)
-                ->select('voucher_type', DB::raw('SUM(amount) as amt'))
-                ->groupBy('supplier_ledgers.voucher_type');
+                ->select(
+                    'voucher_type',
+                    DB::raw('SUM(amount) as amt'),
+                    DB::raw('SUM(supplier_payments.less_amount) as less_amt'),
+                )->groupBy('supplier_ledgers.voucher_type');
         }
 
         $amounts = $query->get();
@@ -78,6 +85,7 @@ class BranchWiseSupplierAmountsUtil
             } elseif ($amount->voucher_type == 5) {
 
                 $totalPaid += $amount->amt;
+                $totalLess += $amount->less_amt;
             } elseif ($amount->voucher_type == 6) {
 
                 $totalRefund += $amount->amt;

@@ -5,6 +5,7 @@
     <div class="sale_print_template">
         <style>
             @page {size:a4;margin-top: 0.8cm;/* margin-bottom: 35px;  */margin-left: 4%;margin-right: 4%;}
+            div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
         </style>
         <div class="details_area">
             @if ($defaultLayout->is_header_less == 0)
@@ -19,8 +20,9 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="col-md-4 col-sm-4 col-lg-4">
+                        <div class="col-4">
                             @if ($defaultLayout->show_shop_logo == 1)
                                 @if ($sale->branch)
                                     @if ($sale->branch->logo != 'default.png')
@@ -38,32 +40,7 @@
                             @endif
                         </div>
                         
-                        <div class="col-md-4 col-sm-4 col-lg-4">
-                            <div class="middle_header_text text-center">
-                                <h5 style="text-transform: uppercase;">
-                                    {{ $sale->status == 1 ? $defaultLayout->invoice_heading : 'SALE ORDER' }}
-                                </h5>
-                                
-                                <h6>
-                                    @php
-                                        $payable = $sale->total_payable_amount - $sale->sale_return_amount;
-                                    @endphp
-
-                                    @if ($sale->due <= 0)
-
-                                        PAID
-                                    @elseif ($sale->due > 0 && $sale->due < $payable) 
-
-                                        PARTIAL
-                                    @elseif($payable==$sale->due)
-
-                                        DUE
-                                    @endif
-                                </h6>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4 col-sm-4 col-lg-4">
+                        <div class="col-8">
                             <div class="heading text-end">
                                 @if ($sale->branch)
                                     <p class="company_name" style="text-transform: uppercase;">
@@ -101,6 +78,31 @@
                                         <p><strong>Email :</strong> {{ json_decode($generalSettings->business, true)['email'] }}</p>
                                     @endif
                                 @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="middle_header_text text-center">
+                                <h5 style="text-transform: uppercase;">{{ $sale->status == 1 ? $defaultLayout->invoice_heading : 'SALE ORDER' }}</h5>
+                                
+                                <h6>
+                                    @php
+                                        $payable = $sale->total_payable_amount - $sale->sale_return_amount;
+                                    @endphp
+
+                                    @if ($sale->due <= 0)
+
+                                        PAID
+                                    @elseif ($sale->due > 0 && $sale->due < $payable) 
+
+                                        PARTIAL
+                                    @elseif($payable==$sale->due)
+
+                                        DUE
+                                    @endif
+                                </h6>
                             </div>
                         </div>
                     </div>
@@ -222,7 +224,7 @@
                                 @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
                                     <td class="text-start">
                                         @if ($sale_product->warranty_id)
-                                            {{ $sale_product->product->w_duration . ' ' . $sale_product->w_duration_type }}
+                                            {{ $sale_product->w_duration . ' ' . $sale_product->w_duration_type }}
                                             {{ $sale_product->w_type == 1 ? 'Warranty' : 'Guaranty' }}
                                             {!! $defaultLayout->product_w_discription ? '<br><small class="text-muted">' . $sale_product->w_description . '</small>' : '' !!}
                                         @else 
@@ -416,7 +418,7 @@
 
             <div id="footer">
                 <div class="row mt-1">
-                    <div class="col-4 text-center">
+                    <div class="col-4 text-start">
                         <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                     </div>
                     
@@ -426,7 +428,7 @@
                         @endif
                     </div>
                     
-                    <div class="col-4 text-center">
+                    <div class="col-4 text-end">
                         <small>Print Time : {{ date($timeFormat) }}</small>
                     </div>
                 </div>

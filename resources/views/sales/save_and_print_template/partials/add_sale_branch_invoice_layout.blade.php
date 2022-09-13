@@ -2,6 +2,7 @@
     <div class="sale_print_template">
         <style>
             @page {size:a4;margin-top: 0.8cm;/* margin-bottom: 35px;  */margin-left: 4%;margin-right: 4%;}
+            div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
         </style>
         <div class="details_area">
             @if ($sale->branch->add_sale_invoice_layout->is_header_less == 0)
@@ -17,7 +18,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4 col-sm-4 col-lg-4">
+                        <div class="col-4">
                             @if ($sale->branch->add_sale_invoice_layout->show_shop_logo == 1)
                                 @if ($sale->branch->logo != 'default.png')
                                     <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
@@ -27,7 +28,30 @@
                             @endif
                         </div>
                         
-                        <div class="col-md-4 col-sm-4 col-lg-4">
+                        <div class="col-8">
+                            <div class="heading text-end">
+                                <p class="company_name" style="text-transform: uppercase;"><strong>{{ $sale->branch->name }}</strong></p>
+                                
+                                <p class="company_address">
+                                    {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
+                                    {{ $sale->branch->add_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
+                                    {{ $sale->branch->add_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
+                                    {{ $sale->branch->add_sale_invoice_layout->branch_country == 1 ? $sale->branch->country : '' }}.
+                                </p>
+
+                                @if ($sale->branch->add_sale_invoice_layout->branch_phone)
+                                    <p><strong>Phone :</strong> {{ $sale->branch->phone }}</p>
+                                @endif
+
+                                @if ($sale->branch->add_sale_invoice_layout->branch_email)
+                                    <p><strong>Email :</strong> {{ $sale->branch->email }}</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
                             <div class="middle_header_text text-center">
                                 <h5 style="text-transform: uppercase;">
                                     {{ $sale->status == 1 ? $sale->branch->add_sale_invoice_layout->invoice_heading : 'SALE ORDER' }}
@@ -46,26 +70,6 @@
                                         Due
                                     @endif
                                 </h6>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-lg-4">
-                            <div class="heading text-end">
-                                <p class="company_name" style="text-transform: uppercase;"><strong>{{ $sale->branch->name }}</strong></p>
-                                
-                                <p class="company_address">
-                                    {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
-                                    {{ $sale->branch->add_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
-                                    {{ $sale->branch->add_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
-                                    {{ $sale->branch->add_sale_invoice_layout->branch_country == 1 ? $sale->branch->country : '' }}.
-                                </p>
-
-                                @if ($sale->branch->add_sale_invoice_layout->branch_phone)
-                                    <p><strong>Phone :</strong> {{ $sale->branch->phone }}</p>
-                                @endif
-
-                                @if ($sale->branch->add_sale_invoice_layout->branch_email)
-                                    <p><strong>Email :</strong> {{ $sale->branch->email }}</p>
-                                @endif
                             </div>
                         </div>
                     </div>

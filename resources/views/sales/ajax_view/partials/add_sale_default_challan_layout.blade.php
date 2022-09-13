@@ -4,6 +4,7 @@
 <div class="challan_print_template d-none">
     <style>
         @page {size:a4;margin-top: 0.8cm; /*margin-bottom: 35px;*/ margin-left: 4%;margin-right: 4%;}
+        div#footer {position:fixed;bottom:20px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
     </style>
     <div class="details_area">
         @if ($defaultLayout->is_header_less == 0)
@@ -19,7 +20,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 col-sm-4 col-lg-4">
+                    <div class="col-4">
                         @if ($defaultLayout->show_shop_logo == 1)
                             @if ($sale->branch)
                                 @if ($sale->branch->logo != 'default.png')
@@ -36,12 +37,12 @@
                             @endif
                         @endif
                     </div>
-                    <div class="col-md-4 col-sm-4 col-lg-4">
+                    <div class="col-4">
                         <div class="middle_header_text text-center">
                             <h1>{{ $defaultLayout->challan_heading }}</h1>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-4 col-lg-4">
+                    <div class="col-4">
                         <div class="heading text-end">
                             @if ($sale->branch)
                                 <h5 class="company_name">

@@ -149,13 +149,14 @@ class StockReportController extends Controller
 
             $converter = $this->converter;
             $generalSettings = DB::table('general_settings')->first();
-            $branch_stock = '';
+            $warehouse_stock = '';
             $query = DB::table('product_warehouses')
                 ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
                 ->leftJoin('products', 'product_warehouses.product_id', 'products.id')
                 ->leftJoin('product_variants', 'product_warehouse_variants.product_variant_id', 'product_variants.id')
                 ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
-                ->leftJoin('branches', 'warehouses.branch_id', 'branches.id')
+                ->leftJoin('warehouse_branches', 'product_warehouses.warehouse_id', 'warehouse_branches.warehouse_id')
+                ->leftJoin('branches', 'warehouse_branches.branch_id', 'branches.id')
                 ->leftJoin('units', 'products.unit_id', 'units.id')
                 ->leftJoin('categories', 'products.category_id', 'categories.id')
                 ->leftJoin('brands', 'products.brand_id', 'brands.id')
@@ -165,16 +166,16 @@ class StockReportController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('warehouses.branch_id', NULL);
+                    $query->where('warehouse_branches.branch_id', NULL);
                 } else {
 
-                    $query->where('warehouses.branch_id', $request->branch_id);
+                    $query->where('warehouse_branches.branch_id', $request->branch_id);
                 }
             }
 
             if ($request->warehouse_id) {
                 
-                $query->where('warehouses.id', $request->warehouse_id);
+                $query->where('product_warehouses.warehouse_id', $request->warehouse_id);
             }
 
             if ($request->category_id) {
@@ -199,7 +200,7 @@ class StockReportController extends Controller
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                $branch_stock = $query->select(
+                $warehouse_stock = $query->select(
                     'units.code_name',
                     'warehouses.warehouse_name as w_name',
                     'warehouses.warehouse_code as w_code',
@@ -218,7 +219,7 @@ class StockReportController extends Controller
                 );
             } else {
 
-                $branch_stock = $query->select(
+                $warehouse_stock = $query->select(
                     'units.code_name',
                     'warehouses.warehouse_name as w_name',
                     'warehouses.warehouse_code as w_code',
@@ -234,10 +235,10 @@ class StockReportController extends Controller
                     'product_variants.variant_price',
                     'product_warehouses.product_quantity',
                     'product_warehouse_variants.variant_quantity',
-                )->where('warehouses.branch_id', auth()->user()->branch_id);
+                )->where('warehouse_branches.branch_id', auth()->user()->branch_id)->get();
             }
 
-            return DataTables::of($branch_stock)
+            return DataTables::of($warehouse_stock)
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
                 ->editColumn('name',  fn ($row) => Str::limit($row->name, 25, '') . ' ' . $row->variant_name)
                 ->editColumn('branch',  function ($row) use ($generalSettings) {

@@ -11,7 +11,7 @@
     .due_orders_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .seperate_area {border: 1px solid gray;padding: 6px;}
     .invoice_and_order_table_area th {font-size: 8px!important;}
-    .invoice_and_order_table_area td {font-size: 8px!important;}
+    .invoice_and_order_table_area td {font-size: 9px!important;}
     .invoice_and_order_table_area table tbody tr:hover{background: gray;}
 </style>
 <div class="modal-dialog modal-dialog five-col-modal" role="document">
@@ -159,10 +159,10 @@
                                                                         <td class="text-start">
                                                                             @if ($row->status == 1)
                                                                             
-                                                                                <a class="details_button" title="Details" href="{{ route('sales.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
+                                                                                <a class="details_button text-info" title="Details" href="{{ route('sales.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
                                                                             @elseif($row->status == 3 || $row->status == 7)
         
-                                                                                <a class="details_button" title="Details" href="{{ route('sales.order.show', [$row->id]) }}">{{ $row->order_id }}</a>
+                                                                                <a class="details_button text-info" title="Details" href="{{ route('sales.order.show', [$row->id]) }}">{{ $row->order_id }}</a>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">
@@ -232,7 +232,7 @@
                                                                         <td class="text-start"><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $invoice->id }}" id="sale_id" data-due_amount="{{ $invoice->due }}"></td>
                                                                         <td class="text-start">{{ $invoice->date }}</td>
                                                                         <td>
-                                                                            <a class="details_button" title="Details" href="{{ route('sales.show', [$invoice->id]) }}">{{ $invoice->invoice_id }}</a>
+                                                                            <a class="details_button text-info" title="Details" href="{{ route('sales.show', [$invoice->id]) }}">{{ $invoice->invoice_id }}</a>
                                                                         </td>
                                                                         <td class="text-start">
                                                                             @php
@@ -294,7 +294,7 @@
                                                                         <td class="text-start"><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $order->id }}" id="sale_id" data-due_amount="{{ $order->due }}"></td>
                                                                         <td class="text-start">{{ $order->order_date }}</td>
                                                                         <td class="text-start">
-                                                                            <a class="details_button" title="Details" href="{{ route('sales.order.show', [$order->id]) }}">{{ $order->order_id }}</a>
+                                                                            <a class="details_button text-info" title="Details" href="{{ route('sales.order.show', [$order->id]) }}">{{ $order->order_id }}</a>
                                                                         </td>
                                                                         <td class="text-start">
                                                                             @php
@@ -382,9 +382,7 @@
                                     </div>
                                     <select name="payment_method_id" class="form-control" id="cp_payment_method_id">
                                         @foreach ($methods as $method)
-                                            <option 
-                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
-                                                value="{{ $method->id }}">
+                                            <option data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" value="{{ $method->id }}">
                                                 {{ $method->name }}
                                             </option>
                                         @endforeach
@@ -670,7 +668,7 @@
       }
 
         $(document).on('click', '.invoice_and_order_table_area table tbody tr', function () {
-            $('.purchase_and_order_table_area table tbody tr').removeClass('active_tr'); 
+            $('.invoice_and_order_table_area table tbody tr').removeClass('active_tr'); 
             $(this).addClass('active_tr');
         });
 </script>

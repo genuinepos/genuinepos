@@ -12,6 +12,7 @@
     .seperate_area {border: 1px solid gray;padding: 6px;}
     .invoice_and_order_table_area th {font-size: 8px!important;}
     .invoice_and_order_table_area td {font-size: 8px!important;}
+    .invoice_and_order_table_area table tbody tr:hover{background: gray;}
 </style>
 <div class="modal-dialog modal-dialog five-col-modal" role="document">
     <div class="modal-content">
@@ -667,4 +668,9 @@
           str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' ' : '';
           return str;
       }
+
+        $(document).on('click', '.invoice_and_order_table_area table tbody tr', function () {
+            $('.purchase_and_order_table_area table tbody tr').removeClass('active_tr'); 
+            $(this).addClass('active_tr');
+        });
 </script>

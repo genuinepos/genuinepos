@@ -11,7 +11,8 @@
     .due_order_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
     .seperate_area {border: 1px solid gray; padding: 6px;}
     .purchase_and_order_table_area  th {font-size: 8px!important;}
-    .purchase_and_order_table_area  td {font-size: 8px!important;}
+    .purchase_and_order_table_area  td {font-size: 9px!important;}
+    .purchase_and_order_table_area table tbody tr:hover{background: gray;}
 </style>
 <div class="modal-dialog five-col-modal" role="document" z-index="-1">
     <div class="modal-content">
@@ -153,10 +154,10 @@
                                                                         <td class="text-start">
                                                                             @if ($row->purchase_status == 1)
 
-                                                                                <a class="details_button" title="Details" href="{{ route('purchases.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
+                                                                                <a class="details_button text-info" title="Details" href="{{ route('purchases.show', [$row->id]) }}"><strong>{{ $row->invoice_id }}</strong></a>
                                                                             @else 
 
-                                                                                <a class="details_button" title="Details" href="{{ route('purchases.show.order', [$row->id]) }}">{{ $row->invoice_id }}</a>
+                                                                                <a class="details_button text-info" title="Details" href="{{ route('purchases.show.order', [$row->id]) }}"><strong>{{ $row->invoice_id }}</strong></a>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">
@@ -209,7 +210,7 @@
                                                             <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
                                                         </div>
                                                     </div>
-                                                
+
                                                     <div class="due_order_table">
                                                         <table class="table modal-table table-sm mt-1">
                                                             <thead>
@@ -230,7 +231,7 @@
                                                                         <td class="text-start">{{ date('d/m/Y', strtotime($purchase->date)) }}</td>
 
                                                                         <td class="text-start">
-                                                                            <a class="details_button" title="Details" href="{{ route('purchases.show', [$purchase->id]) }}">{{ $purchase->invoice_id }}</a>
+                                                                            <a class="details_button text-info" title="Details" href="{{ route('purchases.show', [$purchase->id]) }}"><strong>{{ $purchase->invoice_id }}</strong></a>
                                                                         </td>
 
                                                                         <td class="text-start">
@@ -294,7 +295,7 @@
                                                                         <td class="text-start">{{ date('d/m/Y', strtotime($order->date)) }}</td>
 
                                                                         <td class="text-start">
-                                                                            <a class="details_button" title="Details" href="{{ route('purchases.show.order', [$order->id]) }}">{{ $order->invoice_id }}</a>
+                                                                            <a class="details_button text-info" title="Details" href="{{ route('purchases.show.order', [$order->id]) }}"><strong>{{ $order->invoice_id }}</strong></a>
                                                                         </td>
 
                                                                         <td class="text-start">
@@ -354,8 +355,7 @@
                                     </div>
 
                                     <input type="hidden" id="p_available_amount" value="{{ $supplier->total_purchase_due }}">
-                                    <input type="number" name="paying_amount" class="form-control p_input" step="any"
-                                        data-name="Amount" id="p_paying_amount" value="" autocomplete="off" autofocus/>
+                                    <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="" autocomplete="off" autofocus/>
                                 </div>
                                 <span class="error error_p_paying_amount"></span>
                             </div>
@@ -687,4 +687,9 @@
           str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' ' : '';
           return str;
       }
+
+        $(document).on('click', '.purchase_and_order_table_area table tbody tr', function () {
+            $('.purchase_and_order_table_area table tbody tr').removeClass('active_tr'); 
+            $(this).addClass('active_tr');
+        });
 </script>

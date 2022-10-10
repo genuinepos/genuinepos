@@ -701,7 +701,7 @@ class SaleUtil
                 // }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
-                    
+
                     if ($userPermission->sale['edit_add_sale'] == '1') {
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
@@ -755,6 +755,7 @@ class SaleUtil
             ->editColumn('paid_status', function ($row) {
 
                 $payable = $row->total_payable_amount - $row->sale_return_amount;
+
                 if ($row->due <= 0) {
 
                     return '<span class="text-success"><b>Paid</b></span>';

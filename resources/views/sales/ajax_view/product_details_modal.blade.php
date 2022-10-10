@@ -184,8 +184,7 @@
                                             @endif
                                         </td>
                                         <td class="text-end">{{ $saleProduct->quantity }}</td>
-                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_exc_tax) }}
-                                        </td>
+                                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_exc_tax) }}</td>
                                         @php
                                             $DiscountType = $saleProduct->unit_discount_type == 1 ? ' (Fixed)' : ' (' . $saleProduct->unit_discount . '%)';
                                         @endphp
@@ -313,13 +312,20 @@
             </div>
             
             <div class="modal-footer">
-                @if ($sale->created_by == 1)
-                    @if (auth()->user()->permission->sale['edit_add_sale'] == '1') 
-                        <a class="btn btn-sm btn-secondary" href="{{ route('sales.edit', $sale->id) }}"> Edit</a>
-                    @endif
-                @else 
-                    @if (auth()->user()->permission->sale['pos_edit'] == '1') 
-                        <a class="footer_btn btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}"> Edit</a>
+                @if ($sale->branch_id == auth()->user()->branch_id)
+                
+                    @if ($sale->created_by == 1)
+
+                        @if (auth()->user()->permission->sale['edit_add_sale'] == '1') 
+
+                            <a class="btn btn-sm btn-secondary" href="{{ route('sales.edit', $sale->id) }}"> Edit</a>
+                        @endif
+                    @else 
+
+                        @if (auth()->user()->permission->sale['pos_edit'] == '1') 
+
+                            <a class="footer_btn btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}"> Edit</a>
+                        @endif
                     @endif
                 @endif
 

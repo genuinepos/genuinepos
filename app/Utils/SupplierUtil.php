@@ -487,11 +487,11 @@ class SupplierUtil
                             $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Payment</a>';
                         } 
                     }
-                }
 
-                if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
+                    if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
 
-                    $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
+                    }
                 }
 
                 if (auth()->user()->permission->purchase['purchase_delete'] == '1') {

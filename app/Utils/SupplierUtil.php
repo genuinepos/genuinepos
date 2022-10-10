@@ -476,6 +476,8 @@ class SupplierUtil
                     $html .= '<a class="dropdown-item" href="' . route('purchases.po.receive.process', [$row->id]) . '"><i class="fas fa-check-double text-primary"></i> PO To Receive</a>';
                 }
 
+                $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payments</a>';
+
                 if (auth()->user()->branch_id == $row->branch_id) {
 
                     if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
@@ -483,20 +485,18 @@ class SupplierUtil
                         if ($row->due > 0) {
 
                             $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Payment</a>';
-                        }
-
-                        $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payments</a>';
+                        } 
                     }
+                }
 
-                    if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
+                if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
 
-                        $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
-                    }
+                    $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
+                }
 
-                    if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
+                if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
 
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                    }
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
                 $html .= '</div>';

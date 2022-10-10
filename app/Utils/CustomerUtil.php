@@ -65,7 +65,9 @@ class CustomerUtil
 
                 if ($request->branch_id == '') {
 
-                    return '...';
+                    $branch_id = auth()->user()->branch_id;
+                    $creditLimit = DB::table('customer_credit_limits')->where('branch_id', $branch_id)->where('customer_id', $row->id)->first(['credit_limit']);
+                    return $creditLimit ? $creditLimit->credit_limit : '';
                 } else {
 
                     $branch_id = $request->branch_id == 'NULL' ? NULL : $request->branch_id;

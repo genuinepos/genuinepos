@@ -105,9 +105,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class="col-4">
-                                                    <b>Return Date : <span class="text-danger">*</span></b>
-                                                </label>
+                                                <label class="col-4"><b>Return Date : <span class="text-danger">*</span></b></label>
                                                 
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="date">
@@ -116,10 +114,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class="col-4">
-                                                    <b> Price Group : </b>
-                                                </label>
-                                                
+                                                <label class="col-4"><b> Price Group : </b></label>
                                                 <div class="col-8">
                                                     <select name="price_group_id" class="form-control"
                                                         id="price_group_id">

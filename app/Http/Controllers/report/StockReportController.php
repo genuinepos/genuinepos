@@ -70,43 +70,29 @@ class StockReportController extends Controller
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                $branch_stock = $query->select(
-                    'units.code_name',
-                    'branches.name as b_name',
-                    'branches.branch_code',
-                    'products.name',
-                    'products.product_code',
-                    'products.product_cost_with_tax',
-                    'products.product_price',
-                    'product_variants.variant_name',
-                    'product_variants.variant_code',
-                    'product_variants.variant_cost_with_tax',
-                    'product_variants.variant_price',
-                    'product_branches.product_quantity',
-                    'product_branches.total_sale',
-                    'product_branch_variants.variant_quantity',
-                    'product_branch_variants.total_sale as v_total_sale',
-                );
+                $branch_stock = $query;
             } else {
 
-                $branch_stock = $query->select(
-                    'units.code_name',
-                    'branches.name as b_name',
-                    'branches.branch_code',
-                    'products.name',
-                    'products.product_code',
-                    'products.product_cost_with_tax',
-                    'products.product_price',
-                    'product_variants.variant_name',
-                    'product_variants.variant_code',
-                    'product_variants.variant_cost_with_tax',
-                    'product_variants.variant_price',
-                    'product_branches.product_quantity',
-                    'product_branches.total_sale',
-                    'product_branch_variants.variant_quantity',
-                    'product_branch_variants.total_sale as v_total_sale',
-                )->where('product_branches.branch_id', auth()->user()->branch_id);
+                $branch_stock = $query->where('product_branches.branch_id', auth()->user()->branch_id);
             }
+
+            $query->select(
+                'units.code_name',
+                'branches.name as b_name',
+                'branches.branch_code',
+                'products.name',
+                'products.product_code',
+                'products.product_cost_with_tax',
+                'products.product_price',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'product_variants.variant_cost_with_tax',
+                'product_variants.variant_price',
+                'product_branches.product_quantity',
+                'product_branches.total_sale',
+                'product_branch_variants.variant_quantity',
+                'product_branch_variants.total_sale as v_total_sale',
+            );
 
             return DataTables::of($branch_stock)
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
@@ -121,8 +107,7 @@ class StockReportController extends Controller
                         return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
                     }
                 })
-                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' . ($row->variant_quantity ? '<strong>'.$row->variant_quantity.'</strong>' : '<strong>'.$row->product_quantity.'</strong>') . '/' . $row->code_name . '</span>')
-
+                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' . ($row->variant_quantity ? '<strong>' . $row->variant_quantity . '</strong>' : '<strong>' . $row->product_quantity . '</strong>') . '/' . $row->code_name . '</span>')
                 ->editColumn('price',  fn ($row) => $row->variant_price ? $row->variant_price : $row->product_price)
                 ->editColumn('stock_value',  function ($row) use ($converter) {
                     $price = $row->variant_cost_with_tax ? $row->variant_cost_with_tax : $row->product_cost_with_tax;
@@ -162,19 +147,8 @@ class StockReportController extends Controller
                 ->leftJoin('brands', 'products.brand_id', 'brands.id')
                 ->leftJoin('taxes', 'products.tax_id', 'taxes.id');
 
-            if ($request->branch_id) {
-
-                if ($request->branch_id == 'NULL') {
-
-                    $query->where('warehouse_branches.branch_id', NULL);
-                } else {
-
-                    $query->where('warehouse_branches.branch_id', $request->branch_id);
-                }
-            }
-
             if ($request->warehouse_id) {
-                
+
                 $query->where('product_warehouses.warehouse_id', $request->warehouse_id);
             }
 
@@ -200,54 +174,52 @@ class StockReportController extends Controller
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                $warehouse_stock = $query->select(
-                    'units.code_name',
-                    'warehouses.warehouse_name as w_name',
-                    'warehouses.warehouse_code as w_code',
-                    'branches.name as b_name',
-                    'branches.branch_code',
-                    'products.name',
-                    'products.product_code',
-                    'products.product_cost_with_tax',
-                    'products.product_price',
-                    'product_variants.variant_name',
-                    'product_variants.variant_code',
-                    'product_variants.variant_cost_with_tax',
-                    'product_variants.variant_price',
-                    'product_warehouses.product_quantity',
-                    'product_warehouse_variants.variant_quantity',
-                );
+                $query;
             } else {
 
-                $warehouse_stock = $query->select(
-                    'units.code_name',
-                    'warehouses.warehouse_name as w_name',
-                    'warehouses.warehouse_code as w_code',
-                    'branches.name as b_name',
-                    'branches.branch_code',
-                    'products.name',
-                    'products.product_code',
-                    'products.product_cost_with_tax',
-                    'products.product_price',
-                    'product_variants.variant_name',
-                    'product_variants.variant_code',
-                    'product_variants.variant_cost_with_tax',
-                    'product_variants.variant_price',
-                    'product_warehouses.product_quantity',
-                    'product_warehouse_variants.variant_quantity',
-                )->where('warehouse_branches.branch_id', auth()->user()->branch_id)->get();
+                if (empty($request->warehouse_id)) {
+                    
+                    $query->where('warehouse_branches.branch_id', auth()->user()->branch_id);
+                    $query->orWhere('warehouse_branches.is_global', 1);
+                }
             }
+
+            $warehouse_stock = $query->select(
+                'units.code_name',
+                'warehouses.warehouse_name as w_name',
+                'warehouses.warehouse_code as w_code',
+                'warehouse_branches.is_global',
+                'branches.name as b_name',
+                'branches.branch_code',
+                'products.name',
+                'products.product_code',
+                'products.product_cost_with_tax',
+                'products.product_price',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'product_variants.variant_cost_with_tax',
+                'product_variants.variant_price',
+                'product_warehouses.product_quantity',
+                'product_warehouse_variants.variant_quantity',
+            );
 
             return DataTables::of($warehouse_stock)
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
                 ->editColumn('name',  fn ($row) => Str::limit($row->name, 25, '') . ' ' . $row->variant_name)
                 ->editColumn('branch',  function ($row) use ($generalSettings) {
-                    if ($row->b_name) {
 
-                        return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                    if ($row->is_global == 1) {
+
+                        return 'Global Access';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        if ($row->b_name) {
+
+                            return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                        } else {
+
+                            return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        }
                     }
                 })
                 ->editColumn('warehouse', fn ($row) => $row->w_name . '/' . $row->w_code)
@@ -269,7 +241,7 @@ class StockReportController extends Controller
     {
         $branch_id = $request->branch_id ? $request->branch_id : auth()->user()->branch_id;
         $branch_stock = '';
-        
+
         $query = DB::table('product_branches')
             ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
             ->leftJoin('products', 'product_branches.product_id', 'products.id')
@@ -313,43 +285,29 @@ class StockReportController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $branch_stock = $query->select(
-                'units.code_name',
-                'branches.name as b_name',
-                'branches.branch_code',
-                'products.name',
-                'products.product_code',
-                'products.product_cost_with_tax',
-                'products.product_price',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-                'product_variants.variant_cost_with_tax',
-                'product_variants.variant_price',
-                'product_branches.product_quantity',
-                'product_branches.total_sale',
-                'product_branch_variants.variant_quantity',
-                'product_branch_variants.total_sale as v_total_sale',
-            )->get();
+            $query;
         } else {
 
-            $branch_stock = $query->select(
-                'units.code_name',
-                'branches.name as b_name',
-                'branches.branch_code',
-                'products.name',
-                'products.product_code',
-                'products.product_cost_with_tax',
-                'products.product_price',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-                'product_variants.variant_cost_with_tax',
-                'product_variants.variant_price',
-                'product_branches.product_quantity',
-                'product_branches.total_sale',
-                'product_branch_variants.variant_quantity',
-                'product_branch_variants.total_sale as v_total_sale',
-            )->where('product_branches.branch_id', auth()->user()->branch_id)->get();
+             $query->where('product_branches.branch_id', auth()->user()->branch_id);
         }
+
+        $branch_stock = $query->select(
+            'units.code_name',
+            'branches.name as b_name',
+            'branches.branch_code',
+            'products.name',
+            'products.product_code',
+            'products.product_cost_with_tax',
+            'products.product_price',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'product_variants.variant_cost_with_tax',
+            'product_variants.variant_price',
+            'product_branches.product_quantity',
+            'product_branches.total_sale',
+            'product_branch_variants.variant_quantity',
+            'product_branch_variants.total_sale as v_total_sale',
+        )->get();
 
         return view('reports.stock_report.ajax_view.branch_stock_print', compact('branch_stock', 'branch_id'));
     }

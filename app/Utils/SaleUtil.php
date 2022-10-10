@@ -630,7 +630,7 @@ class SaleUtil
             'sales.paid',
             'sales.due',
             'sales.is_return_available',
-            'all_total_payable', 
+            'all_total_payable',
             'gross_pay',
             'previous_due',
             'previous_due_paid',
@@ -677,40 +677,37 @@ class SaleUtil
                     $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
 
-                if (auth()->user()->branch_id == $row->branch_id) {
+                // if ($userPermission->sale['sale_payment'] == '1') {
 
-                    // if ($userPermission->sale['sale_payment'] == '1') {
+                //     if ($row->due > 0) {
 
-                    //     if ($row->due > 0) {
+                //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                //     }
+                // }
 
-                    //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                    //     }
-                    // }
+                // if ($userPermission->sale['sale_payment'] == '1') {
 
-                    // if ($userPermission->sale['sale_payment'] == '1') {
+                //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
+                //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
+                //         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                // }
 
-                    //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                    //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
-                    //         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-                    // }
+                // if ($row->sale_return_due > 0) {
 
-                    // if ($row->sale_return_due > 0) {
+                //     if ($userPermission->sale['sale_payment'] == '1') {
 
-                    //     if ($userPermission->sale['sale_payment'] == '1') {
+                //         $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                //     }
+                // }
 
-                    //         $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
-                    //     }
-                    // }
+                if ($userPermission->sale['edit_add_sale'] == '1') {
 
-                    if ($userPermission->sale['edit_add_sale'] == '1') {
+                    $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                }
 
-                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    }
+                if ($userPermission->sale['delete_add_sale'] == '1') {
 
-                    if ($userPermission->sale['delete_add_sale'] == '1') {
-
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                    }
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
                 // $html .= '<a class="dropdown-item" id="send_notification" href="' . route('sales.notification.form', [$row->id]) . '"><i class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
@@ -766,7 +763,7 @@ class SaleUtil
                     return '<span class="text-danger"><b>Due</b></span>';
                 }
             })
-           
+
             ->rawColumns(['action', 'date', 'invoice_id', 'from', 'customer', 'total_payable_amount', 'paid', 'due', 'sale_return_amount', 'sale_return_due', 'paid_status', 'all_total_payable'])
             ->make(true);
     }
@@ -821,38 +818,35 @@ class SaleUtil
                     $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
 
-                if (auth()->user()->branch_id == $row->branch_id) {
+                // if (auth()->user()->permission->sale['sale_payment'] == '1') {
 
-                    // if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                //     if ($row->due > 0) {
 
-                    //     if ($row->due > 0) {
+                //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                //     }
+                // }
 
-                    //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                    //     }
-                    // }
+                // if (auth()->user()->permission->sale['sale_payment'] == '1') {
 
-                    // if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal" data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                // }
 
-                    //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal" data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-                    // }
+                // if ($row->sale_return_due > 0) {
 
-                    // if ($row->sale_return_due > 0) {
+                //     if (auth()->user()->permission->sale['sale_payment'] == '1') {
 
-                    //     if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                //         $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                //     }
+                // }
 
-                    //         $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
-                    //     }
-                    // }
+                if (auth()->user()->permission->sale['pos_edit'] == '1') {
 
-                    if (auth()->user()->permission->sale['pos_edit'] == '1') {
+                    $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                }
 
-                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    }
+                if (auth()->user()->permission->sale['pos_delete'] == '1') {
 
-                    if (auth()->user()->permission->sale['pos_delete'] == '1') {
-
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                    }
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
                 // $html .= '<a class="dropdown-item" id="items_notification" href=""><i class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
@@ -959,32 +953,29 @@ class SaleUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
-                if (auth()->user()->branch_id == $row->branch_id) {
+                // if ($userPermission->sale['sale_payment'] == '1') {
 
-                    // if ($userPermission->sale['sale_payment'] == '1') {
+                //     if ($row->due > 0) {
 
-                    //     if ($row->due > 0) {
+                //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                //     }
+                // }
 
-                    //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                    //     }
-                    // }
+                // if ($userPermission->sale['sale_payment'] == '1') {
 
-                    // if ($userPermission->sale['sale_payment'] == '1') {
+                //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
+                //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
+                //         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                // }
 
-                    //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                    //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
-                    //         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-                    // }
+                if ($userPermission->sale['edit_add_sale'] == '1') {
 
-                    if ($userPermission->sale['edit_add_sale'] == '1') {
+                    $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                }
 
-                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    }
+                if ($userPermission->sale['delete_add_sale'] == '1') {
 
-                    if ($userPermission->sale['delete_add_sale'] == '1') {
-
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                    }
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
                 // $html .= '<a class="dropdown-item" id="send_notification" href="' . route('sales.notification.form', [$row->id]) . '"><i class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
@@ -1208,18 +1199,15 @@ class SaleUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('sales.quotations.details', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i>View</a>';
 
-                if (auth()->user()->branch_id == $row->branch_id) {
+                if ($row->created_by == 1) {
 
-                    if ($row->created_by == 1) {
+                    $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                } else {
 
-                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                    } else {
-
-                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                    }
-
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                 }
+
+                $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>';
 
                 $html .= '</div>';
                 $html .= '</div>';
@@ -1296,14 +1284,15 @@ class SaleUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('sales.quotations.details', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
-                if (auth()->user()->branch_id == $row->branch_id) {
-                    if ($row->created_by == 1) {
-                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                    } else {
-                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                    }
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
+                if ($row->created_by == 1) {
+                    
+                    $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                } else {
+
+                    $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                 }
+
+                $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
 
                 $html .= '</div>';
                 $html .= '</div>';
@@ -1363,7 +1352,7 @@ class SaleUtil
                 ->where('shipment_status', '!=', 'NULL')
                 ->orderBy('sales.report_date', 'desc');
         } else {
-            
+
             $sales = $this->filteredQuery($request, $query)
                 ->where('sales.created_by', 1)->where('branch_id', auth()->user()->branch_id)
                 ->where('sales.status', 1)
@@ -1625,7 +1614,7 @@ class SaleUtil
                 $variant_id = $sale_product->product_variant_id ? $sale_product->product_variant_id : NULL;
 
                 $sold_qty = $sale_product->quantity;
-                
+
                 $salePurchaseProductChains = PurchaseSaleProductChain::with('purchaseProduct')
                     ->where('sale_product_id', $sale_product->id)->get();
 

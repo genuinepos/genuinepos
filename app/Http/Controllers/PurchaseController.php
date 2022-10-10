@@ -223,6 +223,14 @@ class PurchaseController extends Controller
             $this->validate($request, ['warehouse_id' => 'required']);
         }
 
+        if (!isset($request->product_ids)) {
+
+            return response()->json(['errorMsg' => 'Product table is empty.']);
+        } elseif (count($request->product_ids) > 60) {
+
+            return response()->json(['errorMsg' => 'Purchase invoice items must be less than 60 or equal.']);
+        }
+
         try {
 
             DB::beginTransaction();
@@ -230,16 +238,6 @@ class PurchaseController extends Controller
             $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
             $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
             $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
-
-            $this->validate($request, ['supplier_id' => 'required']);
-
-            if (!isset($request->product_ids)) {
-
-                return response()->json(['errorMsg' => 'Product table is empty.']);
-            } elseif (count($request->product_ids) > 60) {
-
-                return response()->json(['errorMsg' => 'Purchase invoice items must be less than 60 or equal.']);
-            }
 
             $product_ids = $request->product_ids;
             $variant_ids = $request->variant_ids;
@@ -535,6 +533,16 @@ class PurchaseController extends Controller
             'purchase_account_id.required' => 'Purchase A/C is required.',
         ]);
 
+        if (isset($request->warehouse_count)) {
+
+            $this->validate($request, ['warehouse_id' => 'required']);
+        }
+
+        if (!isset($request->product_ids)) {
+
+            return response()->json(['errorMsg' => 'Product table is empty.']);
+        }
+
         try {
 
             DB::beginTransaction();
@@ -542,16 +550,6 @@ class PurchaseController extends Controller
             $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'purchase'])->first();
             $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
             $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
-
-            if (isset($request->warehouse_count)) {
-
-                $this->validate($request, ['warehouse_id' => 'required']);
-            }
-
-            if (!isset($request->product_ids)) {
-
-                return response()->json(['errorMsg' => 'Product table is empty.']);
-            }
 
             $product_ids = $request->product_ids;
             $variant_ids = $request->variant_ids;

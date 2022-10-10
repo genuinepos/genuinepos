@@ -24,6 +24,7 @@ use App\Utils\ProductStockUtil;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\BranchWiseCustomerAmountUtil;
 
 class SaleController extends Controller
 {
@@ -37,6 +38,7 @@ class SaleController extends Controller
     protected $invoiceVoucherRefIdUtil;
     protected $purchaseUtil;
     protected $userActivityLogUtil;
+    protected $branchWiseCustomerAmountUtil;
     public function __construct(
         NameSearchUtil $nameSearchUtil,
         SaleUtil $saleUtil,
@@ -47,7 +49,8 @@ class SaleController extends Controller
         AccountUtil $accountUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         PurchaseUtil $purchaseUtil,
-        UserActivityLogUtil $userActivityLogUtil
+        UserActivityLogUtil $userActivityLogUtil,
+        BranchWiseCustomerAmountUtil $branchWiseCustomerAmountUtil,
     ) {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->saleUtil = $saleUtil;
@@ -59,6 +62,7 @@ class SaleController extends Controller
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
+        $this->branchWiseCustomerAmountUtil = $branchWiseCustomerAmountUtil;
         $this->middleware('auth:admin_and_user');
     }
 
@@ -290,7 +294,9 @@ class SaleController extends Controller
 
                 if ($request->total_due > 0) {
 
-                    $customerCreditLimit = DB::table('customer_credit_limits')->where('customer_id', $request->customer_id)->where('branch_id', auth()->user()->branch_id)
+                    $customerCreditLimit = DB::table('customer_credit_limits')
+                        ->where('customer_id', $request->customer_id)
+                        ->where('branch_id', auth()->user()->branch_id)
                         ->select('credit_limit')
                         ->first();
 
@@ -719,17 +725,23 @@ class SaleController extends Controller
 
             if ($request->total_due > 0) {
 
-                $customer = DB::table('customers')->where('id', $updateSale->customer_id)
-                    ->select('credit_limit', 'total_sale_due')
+                $customerCreditLimit = DB::table('customer_credit_limits')
+                    ->where('customer_id', $updateSale->customer_id)
+                    ->where('branch_id', auth()->user()->branch_id)
+                    ->select('credit_limit')
                     ->first();
 
-                $presentDue = $customer->total_sale_due + $request->total_due;
-                $__credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
+                $customerAmounts =  $this->branchWiseCustomerAmountUtil->branchWiseCustomerAmount($updateSale->customer_id, auth()->user()->branch_id);
+
+                $newInvoiceDue = $request->total_due - $updateSale->due;
+                $presentDue = $customerAmounts['total_sale_due'] + $newInvoiceDue;
+
+                $__credit_limit = $customerCreditLimit->credit_limit ? $customerCreditLimit->credit_limit : 0;
 
                 $msg_1 = 'Customer does not have any credit limit.';
                 $msg_2 = "Customer Credit Limit is ${__credit_limit}.";
 
-                $__show_msg = $customer->credit_limit ? $msg_2 : $msg_1;
+                $__show_msg = $customerCreditLimit->credit_limit ? $msg_2 : $msg_1;
 
                 if ($presentDue > $__credit_limit) {
 

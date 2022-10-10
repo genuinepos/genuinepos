@@ -777,22 +777,25 @@ class PurchaseUtil
 
         $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
 
-        if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
+        if (auth()->user()->branch_id == $row->branch_id) {
+            
+            if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
 
-            if ($row->due > 0) {
+                if ($row->due > 0) {
 
-                $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                    $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                }
+
+                if ($row->purchase_return_due > 0) {
+
+                    $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Return Amount</a>';
+                }
             }
 
-            if ($row->purchase_return_due > 0) {
+            if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
 
-                $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Return Amount</a>';
+                $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'purchased']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
             }
-        }
-
-        if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
-
-            $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'purchased']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
         }
 
         if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
@@ -824,24 +827,26 @@ class PurchaseUtil
             $html .= '<a class="dropdown-item" href="' . route('purchases.po.receive.process', [$row->id]) . '"><i class="fas fa-check-double text-primary"></i> PO To Receive</a>';
         }
         // $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
+        $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payments</a>';
 
-        if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
+        if (auth()->user()->branch_id == $row->branch_id) {
 
-            if ($row->due > 0) {
+            if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
 
-                $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                if ($row->due > 0) {
+
+                    $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                }
             }
 
-            $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payments</a>';
-        }
+            if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
 
-        if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
-
-            $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
+                $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
+            }
         }
 
         if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
-            
+
             $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
         }
 

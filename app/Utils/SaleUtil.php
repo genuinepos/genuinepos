@@ -700,9 +700,12 @@ class SaleUtil
                 //     }
                 // }
 
-                if ($userPermission->sale['edit_add_sale'] == '1') {
+                if (auth()->user()->branch_id == $row->branch_id) {
+                    
+                    if ($userPermission->sale['edit_add_sale'] == '1') {
 
-                    $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    }
                 }
 
                 if ($userPermission->sale['delete_add_sale'] == '1') {
@@ -839,9 +842,12 @@ class SaleUtil
                 //     }
                 // }
 
-                if (auth()->user()->permission->sale['pos_edit'] == '1') {
+                if (auth()->user()->branch_id == $row->branch_id) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    if (auth()->user()->permission->sale['pos_edit'] == '1') {
+
+                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    }
                 }
 
                 if (auth()->user()->permission->sale['pos_delete'] == '1') {
@@ -968,9 +974,12 @@ class SaleUtil
                 //         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
                 // }
 
-                if ($userPermission->sale['edit_add_sale'] == '1') {
+                if (auth()->user()->branch_id == $row->branch_id) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    if ($userPermission->sale['edit_add_sale'] == '1') {
+
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    }
                 }
 
                 if ($userPermission->sale['delete_add_sale'] == '1') {
@@ -1199,12 +1208,15 @@ class SaleUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('sales.quotations.details', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i>View</a>';
 
-                if ($row->created_by == 1) {
+                if (auth()->user()->branch_id == $row->branch_id) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                } else {
+                    if ($row->created_by == 1) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                    } else {
+
+                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                    }
                 }
 
                 $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>';
@@ -1284,12 +1296,15 @@ class SaleUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('sales.quotations.details', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
-                if ($row->created_by == 1) {
-                    
-                    $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                } else {
+                if (auth()->user()->branch_id == $row->branch_id) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                    if ($row->created_by == 1) {
+
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                    } else {
+
+                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                    }
                 }
 
                 $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';

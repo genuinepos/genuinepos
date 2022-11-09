@@ -79,7 +79,7 @@
                              </li>
                              <li>
                                  <strong>Created By : </strong>
-                                {{ $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name }}
+                                {{ $purchase->admin ? $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name : 'N/A' }}
                              </li>
                          </ul>
                      </div>
@@ -401,7 +401,7 @@
                                @endif
                             </li>
                             <li><strong>Created By : </strong>
-                                {{ $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name }}
+                                {{ $purchase->admin ? $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name : '' }}
                             </li>
                         </ul>
                     </div>

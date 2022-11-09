@@ -5,7 +5,7 @@
       letter-spacing: -3px!important;
       padding: 0px 3px 0px 0px!important;
       font-weight: 700!important;
-    }  
+    }
 </style>
 
 <div class="col-lg-3 p-1">
@@ -15,12 +15,12 @@
                 <div class="row">
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" 
+                            <a href="#"
                                 @if (json_decode($generalSettings->pos, true)['is_enabled_draft'] == '1')
-                                    data-button_type="0" 
+                                    data-button_type="0"
                                     data-action_id="2"
-                                    id="submit_btn" 
-                                @else 
+                                    id="submit_btn"
+                                @else
                                     onclick="
                                         event.preventDefault();
                                         toastr.error('Creating draft is disabled in POS.');
@@ -35,10 +35,10 @@
                         <div class="btn-bg">
                             <a href="#"
                                 @if (json_decode($generalSettings->pos, true)['is_enabled_quotation'] == '1')
-                                    data-action_id="4" 
-                                    data-button_type="0" 
-                                    id="submit_btn" 
-                                @else 
+                                    data-action_id="4"
+                                    data-button_type="0"
+                                    id="submit_btn"
+                                @else
                                     onclick="
                                         event.preventDefault();
                                         toastr.error('Creating quotaion is disabled in POS.');
@@ -48,7 +48,7 @@
                             </a>
                         </div>
                     </div>
-                    
+
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#" class="bg-orange function-card" id="exchange_btn" data-bs-toggle="modal" data-bs-target="#exchangeModal" tabindex="-1">
@@ -66,12 +66,12 @@
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" 
+                            <a href="#"
                                 @if (json_decode($generalSettings->pos, true)['is_enabled_hold_invoice'] == '1')
                                     data-button_type="0"
                                     data-action_id="5"
-                                    id="submit_btn" 
-                                @else 
+                                    id="submit_btn"
+                                @else
                                     onclick="
                                         event.preventDefault();
                                         toastr.error('Hold invoice is disabled in POS.');
@@ -84,10 +84,10 @@
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" 
+                            <a href="#"
                                 @if (json_decode($generalSettings->pos, true)['is_enabled_hold_invoice'] == '1')
                                     id="pick_hold_btn"
-                                @else 
+                                @else
                                     onclick="
                                         event.preventDefault();
                                         toastr.error('Hold invoice is disabled in POS.');
@@ -97,7 +97,7 @@
                             </a>
                         </div>
                     </div>
-              
+
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="{{ route('settings.general.index') }}" class="bg-swit function-card" tabindex="-1">
@@ -108,12 +108,12 @@
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" 
+                            <a href="#"
                                 @if (json_decode($generalSettings->pos, true)['is_enabled_suspend'] == '1')
                                     data-button_type="0"
-                                    data-action_id="6" 
-                                    id="submit_btn" 
-                                @else 
+                                    data-action_id="6"
+                                    id="submit_btn"
+                                @else
                                     onclick="
                                         event.preventDefault();
                                         toastr.error('Suspend is disabled in POS.');
@@ -161,7 +161,7 @@
                                         <input name="order_discount" type="number" step="any" class="form-control pos-amounts" id="order_discount" value="0.00">
                                     </div>
                                 </div>
-                                
+
                                 <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
                                     value="0.00" tabindex="-1">
                             </div>
@@ -206,7 +206,7 @@
                         <div class="col-sm-9 ">
                             <input readonly class="form-control pos-amounts" type="number" step="any"
                                 name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
-                                
+
                             <input class="d-none" type="number" step="any" name="total_invoice_payable"
                                 id="total_invoice_payable" value="0.00" tabindex="-1">
                         </div>
@@ -218,7 +218,7 @@
                             {{-- <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
                                 class="form-control pos-amounts" autocomplete="off"> --}}
 
-                            <div class="input-group"> 
+                            <div class="input-group">
                                 <span class="input-group-text cash_receive_input">>></span>
                                 <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
                                 class="form-control pos-amounts input_i" autocomplete="off">
@@ -247,11 +247,11 @@
                     <div class="row">
                         <div class="col-lg-4 col-12 p-1 pb-1">
                             <div class="btn-bg mb-1">
-                                <a href="#" class="bg-orange btn-pos"  
+                                <a href="#" class="bg-orange btn-pos"
                                     @if (json_decode($generalSettings->pos, true)['is_enabled_credit_full_sale'] == '1')
                                         data-button_type="0"
                                         id="full_due_button"
-                                    @else 
+                                    @else
                                         onclick="
                                             event.preventDefault();
                                             toastr.error('Full credit sale is disabled.');
@@ -259,7 +259,7 @@
                                     @endif
                                     tabindex="-1"><i class="fas fa-check"></i> Credit Sale</a>
                             </div>
-                    
+
                             <div class="btn-bg">
                                 <a href="#" class="bg-parpal btn-pos" id="reedem_point_button" tabindex="-1">Reedem Point</a>
                             </div>
@@ -306,7 +306,7 @@
             success:function(data){
                 $('.loading_button').hide();
                 $('.submit_preloader').hide();
-                
+
                 if(!$.isEmptyObject(data.errorMsg)){
 
                     toastr.error(data.errorMsg,'Attention');
@@ -342,16 +342,16 @@
                 $('.submit_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact the support team.'); 
+                    toastr.error('Server error. Please contact the support team.');
                     return;
                 }
 
                 $.each(err.responseJSON.errors, function(key, error) {
-                    toastr.error(error[0]); 
+                    toastr.error(error[0]);
                 });
             }
         });

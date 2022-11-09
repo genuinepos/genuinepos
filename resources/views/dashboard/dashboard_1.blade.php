@@ -9,15 +9,15 @@
         <div id="dashboard" class="pb-5">
             <div class="row">
                 <div class="main__content">
-                    <div class="row mx-3 mt-3 switch_bar_cards">
-            
+                    <div class="d-flex mx-3 mt-3 switch_bar_cards">
+
                         {{-- <div class="switch_bar">
                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                 <a href="{{ route('transfer.stock.to.branch.create') }}" class="bar-link">
                                     <span><i class="fas fa-exchange-alt"></i></span>
                                     <p>Add Transfer</p>
                                 </a>
-                            @else 
+                            @else
                                 <a href="{{ route('transfer.stock.to.warehouse.create') }}" class="bar-link">
                                     <span><i class="fas fa-exchange-alt"></i></span>
                                     <p>Add Transfer</p>
@@ -27,15 +27,15 @@
 
                         <div class="switch_bar">
                             <a href="{{ route('short.menus.modal.form') }}" class="bar-link" id="addShortcutBtn">
-                                <span><i class="fas fa-plus-square text-success"></i></span>
-                                <p>Add Shortcut</p>
+                                <span><i class="fas fa-plus-square text-white"></i></span>
                             </a>
+                            <p>Add Shortcut</p>
                         </div>
                     </div>
 
                     <div class="">
                         <div class="row mx-2 mt-3">
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-end align-items-center gap-3">
                                 <input type="hidden" id="date_range" value="{{ $thisMonth }}">
                                 @if ($addons->branches == 1)
                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -56,7 +56,7 @@
                                         <input type="hidden" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                     @endif
                                 @endif
-                                <div class="button-group">
+                                {{-- <div class="button-group">
                                     <label class="button-group__btn" id="date" data-value="{{ $toDay }}">
                                         <input type="radio" name="group" />
                                         <span class="button-group__label">Current Day</span>
@@ -81,6 +81,15 @@
                                         <input type="radio" name="group" />
                                         <span class="button-group__label">All Time</span>
                                     </label>
+                                </div> --}}
+                                <div class="select-dropdown">
+                                    <select name="" id="">
+                                        <option value="">Current Day</option>
+                                        <option value="">This Week</option>
+                                        <option value="">This Month</option>
+                                        <option value="">This Year</option>
+                                        <option value="">All Time</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -220,11 +229,11 @@
                         <div class="form_element">
                             <div class="section-header">
                                 <h6>
-                                    <span class="fas fa-table"></span>Stock Alert Of 
+                                    <span class="fas fa-table"></span>Stock Alert Of
                                     <b>
                                         @if (auth()->user()->branch_id)
                                             {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
-                                        @else 
+                                        @else
                                             {{ json_decode($generalSettings->business, true)['shop_name'] }}
                                         @endif
                                     </b>
@@ -375,7 +384,7 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <h1 class="text-primary display-5">Welcome,
-                        <strong>{{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}!</strong> 
+                        <strong>{{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}!</strong>
                     </h1>
                 </div>
             </div>

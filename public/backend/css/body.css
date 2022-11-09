@@ -542,14 +542,6 @@
 /*--SWITCH BAR--*/
 
 .switch_bar {
-    text-align: center;
-    margin: 0px;
-    padding: 10px 0px;
-    background: #eee;
-    border-bottom: #ddd 1px solid;
-    -moz-box-shadow: 0 0 3px #eee;
-    -webkit-box-shadow: 0 0 3px #eee;
-    box-shadow: 0 0 3px #eee;
 }
 
 .switch_bar li {
@@ -9105,7 +9097,6 @@ tr.el-finder-droppable td.icon p {
 
 .breadCrumb {
     display: block;
-    height: 30px;
     padding: 5px;
     background: #fff;
 }
@@ -9113,17 +9104,14 @@ tr.el-finder-droppable td.icon p {
 .breadCrumb ul {
     margin: 0;
     padding: 0px;
-    height: 22px;
-    display: block;
+    height: max-content;
+    display: flex;
 }
 
 .breadCrumb ul li {
     display: block;
-    float: left;
     position: relative;
-    height: 21px;
     overflow: hidden;
-    line-height: 24px;
     margin: 0px 6px 0px 0;
     padding: 0px 10px 0px 0;
     font-size: 0.9167em;
@@ -9146,13 +9134,12 @@ tr.el-finder-droppable td.icon p {
 .breadCrumb ul li a {
     display: block;
     position: relative;
-    height: 21px;
-    line-height: 21px;
-    overflow: hidden;
+    height: 35px;
     float: left;
     background: linear-gradient(to right, #2d9dcf, #0d55a2);
-    padding: 0px 10px;
-    border-radius: 10px;
+    border: 1px solid var(--blue-color-1);
+    border-radius: 18px;
+    padding-right: 15px;
 }
 
 .breadCrumb ul li.first a {
@@ -9167,6 +9154,20 @@ tr.el-finder-droppable td.icon p {
 
 .breadCrumb ul li.first a:hover {
     background-position: 0 -16px;
+}
+
+.breadCrumb ul li a i {
+    text-align: center;
+    width: 33px;
+    height: 33px;
+    line-height: 33px;
+    background: linear-gradient(to right, #2d9dcf, #0d55a2);
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.breadCrumb ul li a i.text-primary {
+    background: var(--white-color) !important;
 }
 
 .breadCrumb ul li.last {

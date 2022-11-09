@@ -7,6 +7,9 @@
         ul.menus_unorder_list .menu_list {border: 1px solid lightgray;display: block;text-align: center;background: linear-gradient(#8c0437ee, #1e000d);}
         ul.menus_unorder_list .menu_list .menu_btn {color: white;padding: 6px 1px;display: block; font-size: 11px;}
         .menu_active {background: white;color: #504d4d!important;font-weight: 700;}
+        .hide-all {
+            display: none;
+        }
     </style>
 @endpush
 @section('content')
@@ -14,15 +17,15 @@
         <div class="container-fluid pt-1">
             <div class="form_element">
                 <div class="py-2 px-2 form-header">
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col-6"><h5>General Settings</h5></div>
 
                         <div class="col-6">
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
                         </div>
                     </div>
                 </div>
-               
+
                 <div class="element-body">
                     <div class="settings_form_area">
                         <div class="row">
@@ -37,7 +40,7 @@
                                         <li class="menu_list">
                                             <a class="menu_btn" data-form="tax_settings_form" href="#">Tax Settings</a>
                                         </li>
-                                     
+
                                         <li class="menu_list">
                                             <a class="menu_btn" data-form="dashboard_settings_form" href="#">Dashboard Settings</a>
                                         </li>
@@ -130,7 +133,7 @@
                                             <label><strong>Business Logo :</strong> <small class="red-label-notice">Required Size : H : 40px; W: 110px;</small></label>
                                             <input type="file" class="form-control" name="business_logo" id="business_logo">
                                             <small>Previous logo (if exists) will be replaced</small><br>
-                                            
+
                                             <span class="error error_business_logo"></span>
                                         </div>
 
@@ -176,7 +179,7 @@
                                                 @endforeach
                                             </select>
                                             <span class="error error_financial_year_start"></span>
-                                        </div> 
+                                        </div>
                                     </div>
 
                                     <div class="form-group row mt-1">
@@ -234,7 +237,7 @@
                                     </div>
                                 </form>
 
-                                <form id="tax_settings_form" class="setting_form d-none"
+                                <form id="tax_settings_form" class="setting_form hide-all"
                                     action="{{ route('settings.tax.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
@@ -273,7 +276,7 @@
                                             <div class="row mt-5">
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->tax, true)['is_tax_en_purchase_sale'] == '1' ? 'CHECKED' : '' }} name="is_tax_en_purchase_sale" id="is_tax_en_purchase_sale"> 
+                                                        {{ json_decode($generalSettings->tax, true)['is_tax_en_purchase_sale'] == '1' ? 'CHECKED' : '' }} name="is_tax_en_purchase_sale" id="is_tax_en_purchase_sale">
                                                         &nbsp; Enable inline tax in purchase and sell
                                                 </p>
                                             </div>
@@ -289,7 +292,7 @@
                                     </div>
                                 </form>
 
-                                <form id="dashboard_settings_form" class="setting_form d-none"
+                                <form id="dashboard_settings_form" class="setting_form hide-all"
                                     action="{{ route('settings.dashboard.settings') }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -324,7 +327,7 @@
                                     </div>
                                 </form>
 
-                                <form id="prefix_settings_form" class="setting_form d-none"
+                                <form id="prefix_settings_form" class="setting_form hide-all"
                                     action="{{ route('settings.prefix.settings') }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -388,7 +391,7 @@
                                                 autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['expanse_payment'] }}">
                                         </div>
-                                      
+
                                         <div class="col-md-4">
                                             <label><strong>Purchase Payment :</strong></label>
                                             <input type="text" name="purchase_payment" class="form-control"
@@ -426,7 +429,7 @@
                                     </div>
                                 </form>
 
-                                <form id="system_settings_form" class="setting_form d-none"
+                                <form id="system_settings_form" class="setting_form hide-all"
                                 action="{{ route('settings.system.settings') }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -438,10 +441,11 @@
                                         <div class="col-md-4">
                                             <label><strong>Theme Color :</strong></label>
                                             <select name="theme_color" class="form-control" id="theme_color">
+                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">Default Theme</option>
                                                 <option  {{ json_decode($generalSettings->system, true)['theme_color'] == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">Red Theme</option>
                                                 <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'blue-theme' ? 'SELECTED' : '' }} value="blue-theme">Blue Theme</option>
-                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">Dark Theme</option>
                                                 <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'light-theme' ? 'SELECTED' : '' }} value="light-theme">Light Theme</option>
+                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'orange-theme' ? 'SELECTED' : '' }} value="orange-theme">Orange Theme</option>
                                             </select>
                                         </div>
 
@@ -467,7 +471,7 @@
                                     </div>
                                 </form>
 
-                                <form id="point_settings_form" class="setting_form d-none"
+                                <form id="point_settings_form" class="setting_form hide-all"
                                     action="{{ route('settings.reward.point.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
@@ -478,7 +482,7 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1' ? 'CHECKED' : '' }} name="enable_cus_point"> &nbsp; <b>Enable Reward Point</b>  
+                                                    <input type="checkbox" {{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1' ? 'CHECKED' : '' }} name="enable_cus_point"> &nbsp; <b>Enable Reward Point</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -509,9 +513,9 @@
                                     </div>
 
                                     <div class="form-group row mt-2">
-                                        
+
                                         <h6 class="text-primary mb-1"><b>Redeem Points Settings</b></h6>
-                                       
+
                                         <div class="col-md-4">
                                             <label><strong>Redeem amount per unit point : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="top" title="example: If 1 point is $1 then enter the value as 1. If 2 points is $1 then enter the value as 0.50" class="fas fa-info-circle tp"></i></label>
@@ -548,7 +552,7 @@
                                     </div>
                                 </form>
 
-                                <form id="module_settings_form" class="setting_form d-none"
+                                <form id="module_settings_form" class="setting_form hide-all"
                                     action="{{ route('settings.module.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
@@ -563,7 +567,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['purchases'] == '1' ? 'CHECKED' : '' }}
-                                                        name="purchases" autocomplete="off"> &nbsp; <b>Purchases</b>  
+                                                        name="purchases" autocomplete="off"> &nbsp; <b>Purchases</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -573,7 +577,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['add_sale'] == '1' ? 'CHECKED' : '' }}
-                                                        name="add_sale" autocomplete="off"> &nbsp; <b>Add Sale</b> 
+                                                        name="add_sale" autocomplete="off"> &nbsp; <b>Add Sale</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -583,7 +587,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['pos'] == '1' ? 'CHECKED' : '' }}
-                                                        name="pos" autocomplete="off"> &nbsp; <b>POS</b> 
+                                                        name="pos" autocomplete="off"> &nbsp; <b>POS</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -596,7 +600,7 @@
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['transfer_stock'] == '1' ? 'CHECKED' : '' }}
                                                         name="transfer_stock" autocomplete="off">
-                                                    &nbsp; <b>Transfers Stock</b> 
+                                                    &nbsp; <b>Transfers Stock</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -606,7 +610,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['stock_adjustment'] == '1' ? 'CHECKED' : '' }}
-                                                        name="stock_adjustment" autocomplete="off"> &nbsp; <b>Stock Adjustment</b> 
+                                                        name="stock_adjustment" autocomplete="off"> &nbsp; <b>Stock Adjustment</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -616,7 +620,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['expenses'] == '1' ? 'CHECKED' : '' }}
-                                                        name="expenses" autocomplete="off"> &nbsp; <b>Expenses</b> 
+                                                        name="expenses" autocomplete="off"> &nbsp; <b>Expenses</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -628,7 +632,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['accounting'] == '1' ? 'CHECKED' : '' }}
-                                                        name="accounting" autocomplete="off"> &nbsp; <b>Accounting</b> 
+                                                        name="accounting" autocomplete="off"> &nbsp; <b>Accounting</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -638,7 +642,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['contacts'] == '1' ? 'CHECKED' : '' }}
-                                                        name="contacts" autocomplete="off"> &nbsp; <b>Contacts</b> 
+                                                        name="contacts" autocomplete="off"> &nbsp; <b>Contacts</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -649,7 +653,7 @@
                                                     <p class="checkbox_input_wrap">
                                                         <input type="checkbox"
                                                             {{ json_decode($generalSettings->modules, true)['hrms'] == '1' ? 'CHECKED' : '' }}
-                                                            name="hrms" autocomplete="off"> &nbsp; <b>Human Resource Management</b> 
+                                                            name="hrms" autocomplete="off"> &nbsp; <b>Human Resource Management</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -660,7 +664,7 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->modules, true)['requisite'] == '1' ? 'CHECKED' : '' }} name="requisite" autocomplete="off"> &nbsp; <b>Requisite</b> 
+                                                    <input type="checkbox" {{ json_decode($generalSettings->modules, true)['requisite'] == '1' ? 'CHECKED' : '' }} name="requisite" autocomplete="off"> &nbsp; <b>Requisite</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -673,8 +677,8 @@
                                                             @if (isset(json_decode($generalSettings->modules, true)['manufacturing']))
                                                                 {{ json_decode($generalSettings->modules, true)['manufacturing'] == '1' ? 'CHECKED' : '' }}
                                                             @endif
-                                                            name="manufacturing" autocomplete="off"> 
-                                                        &nbsp;<b>Manufacture</b> 
+                                                            name="manufacturing" autocomplete="off">
+                                                        &nbsp;<b>Manufacture</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -688,8 +692,8 @@
                                                             @if (isset(json_decode($generalSettings->modules, true)['service']))
                                                                 {{ json_decode($generalSettings->modules, true)['service'] == '1' ? 'CHECKED' : '' }}
                                                             @endif
-                                                            name="service" autocomplete="off"> 
-                                                        &nbsp;<b>Service</b> 
+                                                            name="service" autocomplete="off">
+                                                        &nbsp;<b>Service</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -705,7 +709,7 @@
                                     </div>
                                 </form>
 
-                                <form id="es_settings_form" class="setting_form d-none"
+                                <form id="es_settings_form" class="setting_form hide-all"
                                     action="{{ route('settings.send.email.sms.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
@@ -718,7 +722,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>Send Invoice After Sale Via Email</b> 
+                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>Send Invoice After Sale Via Email</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -726,7 +730,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>Send Notification After Sale Via SMS</b> 
+                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>Send Notification After Sale Via SMS</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -734,7 +738,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_email'] == '1' ? 'CHECKED' : '' }} name="cmr_due_rmdr_via_email"> &nbsp; <b>Customer Due Remainder Via Email</b> 
+                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_email'] == '1' ? 'CHECKED' : '' }} name="cmr_due_rmdr_via_email"> &nbsp; <b>Customer Due Remainder Via Email</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -744,7 +748,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>Customer Due Remainder Via SMS</b> 
+                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>Customer Due Remainder Via SMS</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -776,7 +780,7 @@
                 $('.setting_form').hide(500);
                 $('#' + form_name).show(500);
                 $('.menu_btn').removeClass('menu_active');
-                $(this).addClass('menu_active');
+                $(this).addClass('menu_active d-block');
             });
         });
 
@@ -929,7 +933,7 @@
                 }
             });
         });
-        
+
         $('#point_settings_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();

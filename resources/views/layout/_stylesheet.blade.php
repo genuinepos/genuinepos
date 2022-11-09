@@ -1,6 +1,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('public/backend/asset/css/fontawesome/css/all.min.css') }}">
+@if($rtl)
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css" integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
+
+@else
 <link rel="stylesheet" href="{{ asset('public/backend/asset/css/bootstrap.min.css') }}">
+@endif
+
 <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
 <link href="{{ asset('public/backend/css/reset.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('public/backend/css/typography.css') }}" rel="stylesheet" type="text/css">
@@ -71,9 +80,7 @@
     }
 
     .sub-menu-width .switch_text {
-        font-size: 10px !important;
-        /* font-family: monospace; */
-        /* text-align: left; */
+        font-size: 13px !important;
     }
 
     body {
@@ -148,4 +155,101 @@
         width: 50px;
         font-weight: 600
     }
+
+    /* RTL */
+    :root {
+        --red-color-gradient: linear-gradient(#8c0437ee, #1e000d);
+        --red-color-1: #7e0d3d;
+        --red-color-2: #5d1b3f;
+        --red-color-border: rgba(93, 27, 63, .3);
+        --blue-color-gradient: linear-gradient(#036dad 0%, #29b0fd 100%);
+        --blue-color-1: #29b0fd;
+        --blue-color-2: #036dad;
+        --blue-color-border: rgba(3, 109, 173, .3);
+        --orange-color-gradient: linear-gradient(#bd5e1e, #ff934b);
+        --orange-color-gradient-2: linear-gradient(to right, #bd5e1e, #ff934b);
+        --orange-color-1: #bd5e1e;
+        --orange-color-2: #ff934b;
+        --orange-color-border: rgba(255, 147, 75, .3);
+        --light-color-gradient: linear-gradient(#e1e1e1, #989898);
+        --light-color-1: #c4c4c4;
+        --light-color-2: #989898;
+        --light-color-border: rgba(152, 152, 152, .3);
+        --white-color: #fff;
+        --black-color: #000;
+        --black-color-1: #232323;
+        --black-color-border: rgba(0, 0, 0, .3);
+        --bs-primary: var(--dark-color-gradient) !important;
+        --bs-blue: var(--dark-color-gradient) !important;
+    }
+
+    .orange-theme .top-icon {
+        border: #ffffff 2px solid;
+        background: #ff934b47;
+    }
+
+    .rtl .navigation {
+        right: 142px;
+        padding-right: 0px;
+        padding-left: 142px !important;
+        margin-left: 0px !important;
+    }
+
+    .rtl .category-bar {
+        margin-right: 80px;
+        margin-left: 6px;
+    }
+
+    .rtl .sub-menu_t {
+        right: 0px !important;
+        left: 142px;
+        padding-right: 142px;
+    }
+
+    .rtl .main-woaper {
+        padding-left: 0px !important;
+        padding-right: 142px !important;
+    }
+
+    .rtl .logo__sec {
+        display: inline-block;
+        float: right;
+        margin-right: 5px;
+    }
+
+    .rtl .name-head span {
+        margin-left: 5px;
+    }
+    .rtl .dropdown-item span, .rtl .dropdown-item i {
+        padding: 0px 5px;
+    }
+
+    .rtl #calculatorModal.modal.show .modal-dialog {
+        top: 24px;
+        left: 6%;
+        right: auto;
+    }
+    .orange-theme .main__nav {
+        background: var(--orange-color-gradient);
+    }
+
+    .rtl .main__nav ul li {
+        border-left: 1px solid var(--orange-color-2);
+        border-right: 0px;
+    }
+
+    .rtl .sub-menu-width .switch_text {
+        font-size: 14px !important;
+    }
+    .rtl .section-header span {
+        padding-left: 9px;
+    }
+
+    html {
+        color: red;
+    }
+    .rtl {
+        font-family: Arial, 'Noto Naskh Arabic', serif;
+    }
+
 </style>

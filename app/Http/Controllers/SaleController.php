@@ -1688,7 +1688,7 @@ class SaleController extends Controller
         } else {
 
             return response()->json([
-                'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this branch.'
+                'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock.'
             ]);
         }
     }

@@ -128,6 +128,7 @@ class SupplierController extends Controller
     public function edit($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->select('suppliers.*')->first();
+        
         $branchOpeningBalance = DB::table('supplier_opening_balances')->where('supplier_id', $supplierId)
             ->where('branch_id', auth()->user()->branch_id)->first();
 

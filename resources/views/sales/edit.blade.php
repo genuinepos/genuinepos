@@ -29,7 +29,7 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -110,7 +110,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-3">
                                             <div class="input-group">
                                                 <label class="col-4"> <b>Sale Date :</b> <span
@@ -160,14 +160,14 @@
                                                         </div>
 
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                                        
+
                                                         @if (auth()->user()->permission->product['product_add'] == '1')
                                                             <div class="input-group-prepend">
                                                                 <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
-                                                            </div> 
+                                                            </div>
                                                         @endif
                                                     </div>
-    
+
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>
                                                     </div>
@@ -210,20 +210,20 @@
                                                                         <td class="text-start">
                                                                             <a href="#" class="text-success" id="edit_product">
                                                                                 @php
-                                                                                    $variant = $s_product->product_variant_id != null ? ' -'.$s_product->variant->variant_name : ''; 
+                                                                                    $variant = $s_product->product_variant_id != null ? ' -'.$s_product->variant->variant_name : '';
                                                                                 @endphp
-                                                                                
+
                                                                                 <span class="product_name">{{ $s_product->product->name.$variant }}</span>
 
                                                                             </a><br/><input type="{{ $s_product->product->is_show_emi_on_pos == 1 ? 'text' : 'hidden'}}" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here." value="{{ $s_product->description ? $s_product->description : '' }}">
                                                                             <input value="{{ $s_product->product_id }}" type="hidden" id="product_id" name="product_ids[]">
-                                                        
+
                                                                             @if ($s_product->product_variant_id != null)
 
                                                                                 <input value="{{ $s_product->product_variant_id }}" type="hidden" class="variantId-{{ $s_product->product_variant_id }}" id="variant_id" name="variant_ids[]">
                                                                             @else
 
-                                                                                <input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]"> 
+                                                                                <input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">
                                                                             @endif
 
                                                                             <input type="hidden" id="tax_type" value="{{ $s_product->product->tax_type }}">
@@ -239,7 +239,7 @@
                                                                             <input name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount" value="{{ $s_product->unit_discount_amount }}">
 
                                                                             <input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="{{ $s_product->unit_cost_inc_tax }}">
-                                                                            
+
                                                                             @php
                                                                                 $previous_sold_quantity = 0;
                                                                                 if ($sale->status == 1) {
@@ -257,29 +257,29 @@
                                                                             <input type="hidden" class="{{ $s_product->product_id . $s_product->stock_branch_id . $s_product->stock_warehouse_id }}" id="unique_id" value="{{ $s_product->product_id . $s_product->stock_branch_id . $s_product->stock_warehouse_id }}">
                                                                             <input type="hidden" name="branch_ids[]" id="branch_id" value="{{ $s_product->stock_branch_id }}">
                                                                             <input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="{{ $s_product->stock_warehouse_id ? $s_product->stock_warehouse_id : 'NULL' }}">
-                                                    
-                                                                            @if ($s_product->stock_warehouse_id) 
-                                                    
+
+                                                                            @if ($s_product->stock_warehouse_id)
+
                                                                                 <span>{{ $s_product->warehouse->warehouse_name.'/'.$s_product->warehouse->warehouse_code }}</span>
                                                                             @else
                                                                                 @if ($s_product->stock_branch_id)
 
                                                                                     {{ $s_product->branch->name.'/'.$s_product->branch->branch_code }}
-                                                                                @else 
-                                
+                                                                                @else
+
                                                                                     {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                                                                 @endif
                                                                             @endif
-                                                    
+
                                                                         </td>
-                                                    
+
                                                                         <td>
                                                                             <input value="{{ $s_product->quantity }}" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">
                                                                             <p class="text-danger" id="stock_error"></p>
                                                                         </td>
 
                                                                         <td class="text">
-                                                                            <span class="span_unit">{{ $s_product->unit }}</span> 
+                                                                            <span class="span_unit">{{ $s_product->unit }}</span>
 
                                                                             <input  name="units[]" type="hidden" id="unit" value="{{ $s_product->unit }}">
                                                                         </td>
@@ -289,7 +289,7 @@
 
                                                                             <input readonly name="unit_prices[]" type="text" class="form-control text-center" id="unit_price" value="{{ $s_product->unit_price_inc_tax }}" tabindex="-1">
                                                                         </td>
-                                                                        
+
                                                                         <td class="text text-center">
                                                                             <strong><span class="span_subtotal">{{ $s_product->subtotal }}</span></strong>
                                                                             <input value="{{ $s_product->subtotal }}" readonly name="subtotals[]" type="hidden" id="subtotal" tabindex="-1">
@@ -326,7 +326,7 @@
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>Ship Address :</b></label>
                                                     <div class="col-8">
-                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" value="{{ $sale->shipment_address }}" placeholder="Shipment Address"> 
+                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" value="{{ $sale->shipment_address }}" placeholder="Shipment Address">
                                                     </div>
                                                 </div>
                                             </div>
@@ -352,7 +352,7 @@
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>Delivered To :</b></label>
                                                     <div class="col-8">
-                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" value="{{ $sale->delivered_to }}" placeholder="Delivered To"> 
+                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" value="{{ $sale->delivered_to }}" placeholder="Delivered To">
                                                     </div>
                                                 </div>
                                             </div>
@@ -405,8 +405,8 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-4">
-                                                <input name="order_discount" type="number" step="any" class="form-control" id="order_discount" value="{{ $sale->order_discount }}"> 
-                                                <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="{{ $sale->order_discount_amount }}"> 
+                                                <input name="order_discount" type="number" step="any" class="form-control" id="order_discount" value="{{ $sale->order_discount }}">
+                                                <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="{{ $sale->order_discount_amount }}">
                                             </div>
                                         </div>
 
@@ -426,7 +426,7 @@
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Shipment Cost :</label>
                                             <div class="col-sm-7">
-                                                <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="{{ $sale->shipment_charge }}"> 
+                                                <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="{{ $sale->shipment_charge }}">
                                             </div>
                                         </div>
 
@@ -438,7 +438,7 @@
                                         </div>
 
                                         <div class="payment_body {{ $sale->status == 1 || $sale->status == 3 ? '' : 'd-none' }}">
-                                            
+
                                             <div class="row">
                                                 <label class="col-sm-5 col-form-label">Paid :</label>
                                                 <div class="col-sm-7">
@@ -472,8 +472,8 @@
                                                 <div class="col-sm-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                         @foreach ($methods as $method)
-                                                            <option 
-                                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                                            <option
+                                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                                                 value="{{ $method->id }}">
                                                                 {{ $method->name }}
                                                             </option>
@@ -526,7 +526,7 @@
             </form>
         </div>
     </div>
-   
+
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
@@ -542,10 +542,10 @@
                         @if (auth()->user()->permission->sale['view_product_cost_is_sale_screed'] == '1')
                             <p>
                                 <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
-                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span> 
-                                    <span id="unit_cost">1,200.00</span> 
-                                </span>   
-                                 
+                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span>
+                                    <span id="unit_cost">1,200.00</span>
+                                </span>
+
                                 <span class="btn btn-sm btn-info text-white" id="show_cost_button">Cost</span>
                             </p>
                         @endif
@@ -586,7 +586,7 @@
                                 <select class="form-control" id="e_unit_tax">
                                     <option value="0.00">NoTax</option>
                                     @foreach ($taxes as $tax)
-                                       <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option> 
+                                       <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -612,11 +612,11 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- Edit selling product modal End-->
- 
+
     @if (auth()->user()->permission->product['product_add'] == '1')
-        <!--Add Product Modal--> 
+        <!--Add Product Modal-->
         <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">
@@ -628,7 +628,7 @@
                     <div class="modal-body" id="add_product_body"></div>
                 </div>
             </div>
-        </div> 
+        </div>
         <!--Add Product Modal End-->
     @endif
 @endsection

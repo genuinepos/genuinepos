@@ -21,7 +21,7 @@
                                 <span class="fas fa-file-alt"></span>
                                 <h5>Purchases & Sales Report</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -46,7 +46,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    @else 
+                                                    @else
                                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     @endif
                                                 @endif
@@ -103,23 +103,23 @@
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12 col-lg-6">
                                                 <div class="card">
-                                                    <div class="card-body">  
+                                                    <div class="card-body">
                                                         <div class="heading">
                                                             <h6 class="text-primary"><b>Purchases</b></h6>
                                                         </div>
-                
+
                                                         <table class="table modal-table table-sm">
                                                             <tbody>
                                                                 <tr>
                                                                     <th>Total Purchase :</th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th>Purchase Including Tax : </th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th> Purchase Due: </th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
@@ -129,26 +129,26 @@
                                                     </div>
                                                 </div>
                                             </div>
-                    
+
                                             <div class="col-md-12 col-sm-12 col-lg-6">
                                                 <div class="card">
-                                                    <div class="card-body"> 
+                                                    <div class="card-body">
                                                         <div class="heading">
                                                             <h6 class="text-primary"><b>Sales</b></h6>
                                                         </div>
-                
+
                                                         <table class="table modal-table table-sm">
                                                             <tbody>
                                                                 <tr>
                                                                     <th>Total Sale :</th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th>Sale Including Tax : </th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th> Sale Due: </th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
@@ -159,7 +159,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>  
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -200,10 +200,10 @@
                 $('#data_list').html(data);
                 $('.data_preloader').hide();
             }
-        }); 
+        });
     });
 
-    //Print Profit/Loss 
+    //Print Profit/Loss
     $(document).on('click', '#print_report', function (e) {
         e.preventDefault();
         var url = "{{ route('reports.sales.purchases.print') }}";
@@ -216,16 +216,16 @@
             data: {branch_id, from_date, to_date},
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,        
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
                 });
             }
-        }); 
+        });
     });
 </script>
 

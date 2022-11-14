@@ -14,7 +14,7 @@
                                 <span class="fas fa-shopping-cart"></span>
                                 <h5>Version Release Notes</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
 

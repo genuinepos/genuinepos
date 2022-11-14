@@ -14,7 +14,7 @@
                                 <span class="fas fa-undo-alt"></span>
                                 <h5>Purchase Returns</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -250,7 +250,7 @@
                 {data: 'payment_status',name: 'payment_status'},
                 {data: 'total_return_amount',name: 'total_return_amount', className: 'text-end'},
                 {data: 'total_return_due',name: 'total_return_due', className: 'text-end'},
-                
+
             ],
         });
 

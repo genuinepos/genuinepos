@@ -19,13 +19,13 @@
                                     <div class="py-2 px-2 form-header">
                                         <div class="row">
                                             <div class="col-6"><h5>Edit User</h5></div>
-    
+
                                             <div class="col-6">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -106,7 +106,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-    
+
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label class="col-4"> <span
@@ -122,7 +122,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-    
+
                                             <div class="row mt-2">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
@@ -134,7 +134,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-    
+
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label class="col-4"><b><span
@@ -146,7 +146,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         <div class="row mt-2">
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -177,7 +177,7 @@
                                                                 <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.' - '.$branch->branch_code }}</option>
                                                             @endforeach
                                                             </select>
-                                                            
+
                                                             <span class="error error_belonging_branch_id"></span>
                                                         </div>
                                                     </div>
@@ -198,7 +198,7 @@
                                     </div>
 
                                     <div class="element-body">
-                                       
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">

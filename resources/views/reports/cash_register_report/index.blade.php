@@ -1,7 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    
+
 @endpush
 @section('title', 'Cash Register Reports - ')
 @section('content')
@@ -16,7 +16,7 @@
                                 <h5>Cash Register Reports</h5>
                             </div>
 
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -44,7 +44,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    @else 
+                                                    @else
                                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     @endif
                                                 @endif
@@ -53,9 +53,9 @@
                                                     <label><strong>User :</strong></label>
                                                     <select name="user_id" class="form-control submit_able" id="user_id" autofocus>
                                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                            <option value="">All</option> 
-                                                        @else 
-                                                            <option value="">All</option> 
+                                                            <option value="">All</option>
+                                                        @else
+                                                            <option value="">All</option>
                                                             @foreach ($branchUsers as $user)
                                                                 <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
                                                             @endforeach
@@ -126,8 +126,8 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <div class="report_data_area">
-                                    <div class="data_preloader"> 
-                                        <h6> 
+                                    <div class="data_preloader">
+                                        <h6>
                                             <i class="fas fa-spinner text-primary"></i> Processing...
                                         </h6>
                                     </div>
@@ -150,8 +150,8 @@
                                                 <tbody></tbody>
                                                 <tfoot>
                                                     <tr class="bg-secondary">
-                                                        <th colspan="6" class="text-end text-white">Total : 
-                                                            {{ json_decode($generalSettings->business, true)['currency'] }}  
+                                                        <th colspan="6" class="text-end text-white">Total :
+                                                            {{ json_decode($generalSettings->business, true)['currency'] }}
                                                         </th>
                                                         <th id="closed_amount" class="text-end text-white"></th>
                                                         <th></th>
@@ -173,7 +173,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content" id="cash_register_details_content"></div>
         </div>
-    </div> 
+    </div>
 @endsection
 @push('scripts')
 
@@ -213,20 +213,20 @@
             {data: 'status', name: 'status', className: 'text-end'},
             {data: 'closed_amount', name: 'closed_amount', className: 'text-end'},
             {data: 'action'},
-            
+
         ],fnDrawCallback: function() {
             $('.data_preloader').hide();
         }
     });
-        
+
     //Submit filter form by select input changing
     $(document).on('submit', '#filter_form', function (e) {
         e.preventDefault();
         cr_table.ajax.reload();
         $('.data_preloader').show();
     });
-  
-    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) 
+
+    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
         $(document).on('change', '#branch_id', function () {
             var branch_id = $(this).val();
             $('#user_id').empty();
@@ -248,7 +248,7 @@
             });
         });
     @endif
-   
+
     $(document).on('click', '#register_details_btn',function (e) {
         e.preventDefault();
         var url = $(this).attr('href');
@@ -277,22 +277,22 @@
             data: {branch_id, user_id, status, from_date, to_date},
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 500, 
-                    header: "", 
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 500,
+                    header: "",
                     pageTitle: "",
                     // footer: 'Footer Text',
-                    formValues: false,         
-                    canvas: false, 
+                    formValues: false,
+                    canvas: false,
                     beforePrint: null,
-                    afterPrint: null      
+                    afterPrint: null
                 });
             }
-        }); 
+        });
     });
 </script>
 

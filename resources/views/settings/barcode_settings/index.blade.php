@@ -14,7 +14,7 @@
                                 <span class="fas fa-barcode"></span>
                                 <h5>Barcode Sticker Settings</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
@@ -26,7 +26,7 @@
                                     <div class="col-md-6">
                                         <h6>All Barcode Sticker Setting</h6>
                                     </div>
-                               
+
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
                                             <a href="{{ route('settings.barcode.create') }}"><i class="fas fa-plus-square"></i> Add</a>
@@ -69,7 +69,7 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -91,7 +91,7 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
         });
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function(){
             // pass editable data to edit modal fields
             $(document).on('click', '#set_default_btn', function(e){
@@ -110,9 +110,9 @@
             });
 
             $(document).on('click', '#delete',function(e){
-                e.preventDefault(); 
+                e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);       
+                $('#deleted_form').attr('action', url);
                 $.confirm({
                     'title': 'Delete Confirmation',
                     'content': 'Are you sure?',
@@ -125,7 +125,7 @@
                             'class': 'no btn-modal-primary',
                             'action': function() {
                                 // alert('Deleted canceled.');
-                            } 
+                            }
                         }
                     }
                 });

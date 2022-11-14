@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        <div class="sec-name">
+                        {{-- <div class="sec-name">
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul>
@@ -42,66 +42,65 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Settings</h6>
+                        </div> --}}
+                        <div class="row">
+                            <div class="card">
+                                <div class="section-header">
+                                    <div class="col-md-6">
+                                        <h6>Settings</h6>
+                                    </div>
                                 </div>
+
+                                <form id="update_settings_form" action="{{ route('manufacturing.settings.store') }}" method="post" class="p-3">
+                                    @csrf
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <label><strong>Production Reference prefix :</strong></label>
+                                            @php
+                                                $voucherPrefix = '';
+                                                if(isset(json_decode($generalSettings->mf_settings, true)['production_ref_prefix'])){
+                                                    $voucherPrefix = json_decode($generalSettings->mf_settings, true)['production_ref_prefix'];
+                                                }
+                                            @endphp
+                                            <input type="text" name="production_ref_prefix" class="form-control"
+                                                autocomplete="off" placeholder="Production Reference prefix"
+                                                value="{{ $voucherPrefix }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row mt-1">
+                                                <p class="checkbox_input_wrap mt-4">
+                                                    <input type="checkbox"
+                                                        @if(isset(json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty']))
+                                                            {{ json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty'] == '1' ? 'CHECKED' : '' }}
+                                                        @endif
+                                                        name="enable_editing_ingredient_qty"> &nbsp; <b>Enable editing ingredients quantity in production</b> 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5">
+                                            <div class="row mt-1">
+                                                <p class="checkbox_input_wrap mt-4">
+                                                    <input type="checkbox"
+                                                        @if(isset(json_decode($generalSettings->mf_settings, true)['enable_updating_product_price']))
+                                                            {{ json_decode($generalSettings->mf_settings, true)['enable_updating_product_price'] == '1' ? 'CHECKED' : '' }}
+                                                        @endif
+                                                        name="enable_updating_product_price"> &nbsp; <b>Update product cost and selling price based on total production cost, on finalizing production</b>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 text-end">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-
-                            <form id="update_settings_form" action="{{ route('manufacturing.settings.store') }}" method="post" class="p-3">
-                                @csrf
-                                <div class="form-group row">
-                                    <div class="col-md-3">
-                                        <label><strong>Production Reference prefix :</strong></label>
-                                        @php
-                                            $voucherPrefix = '';
-                                            if(isset(json_decode($generalSettings->mf_settings, true)['production_ref_prefix'])){
-                                                $voucherPrefix = json_decode($generalSettings->mf_settings, true)['production_ref_prefix'];
-                                            }
-                                        @endphp
-                                        <input type="text" name="production_ref_prefix" class="form-control"
-                                            autocomplete="off" placeholder="Production Reference prefix"
-                                            value="{{ $voucherPrefix }}">
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="row mt-1">
-                                            <p class="checkbox_input_wrap mt-4">
-                                                <input type="checkbox"
-                                                    @if(isset(json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty']))
-                                                        {{ json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty'] == '1' ? 'CHECKED' : '' }}
-                                                    @endif
-                                                    name="enable_editing_ingredient_qty"> &nbsp; <b>Enable editing ingredients quantity in production</b> 
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-5">
-                                        <div class="row mt-1">
-                                            <p class="checkbox_input_wrap mt-4">
-                                                <input type="checkbox"
-                                                    @if(isset(json_decode($generalSettings->mf_settings, true)['enable_updating_product_price']))
-                                                        {{ json_decode($generalSettings->mf_settings, true)['enable_updating_product_price'] == '1' ? 'CHECKED' : '' }}
-                                                    @endif
-                                                    name="enable_updating_product_price"> &nbsp; <b>Update product cost and selling price based on total production cost, on finalizing production</b>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row mt-2">
-                                    <div class="col-md-12 text-end">
-                                        <button type="button" class="btn loading_button d-none"><i
-                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                        <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>

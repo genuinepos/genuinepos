@@ -19,7 +19,7 @@
                                 <span class="fas fa-shopping-cart"></span>
                                 <h5>User Activities Log</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -43,7 +43,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    @else 
+                                                    @else
                                                         <input type="hidden" id="branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : NULL }}">
                                                     @endif
                                                 @else
@@ -54,7 +54,7 @@
                                                     <label><strong>Action By :</strong></label>
                                                     <select name="user_id" class="form-control" id="user_id" autofocus>
                                                         <option value="">All</option>
-                                                        
+
                                                     </select>
                                                 </div>
 
@@ -161,7 +161,7 @@
     <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
     <script>
         $('.select2').select2();
-        
+
         var log_table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
@@ -210,13 +210,13 @@
         });
 
         $(document).on('change', '#branch_id', function (e) {
-            
+
             var branch_id = $(this).val();
             getBrandAllowLoginUsers(branch_id)
         });
 
         function getBrandAllowLoginUsers(branchId) {
-            
+
             var branchId = branchId ? branchId : 'NULL';
             $.ajax({
                 url:"{{ url('common/ajax/call/branch/allow/login/users/') }}"+"/"+branchId,

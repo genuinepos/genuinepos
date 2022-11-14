@@ -8,13 +8,13 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        
+
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-university"></span>
                                 <h5>Banks</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
@@ -172,7 +172,7 @@
             }
         });
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function() {
             // Add bank by ajax
             $('#add_bank_form').on('submit', function(e) {
@@ -271,7 +271,7 @@
             $(document).on('click', '#delete',function(e){
                 e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);           
+                $('#deleted_form').attr('action', url);
                 $.confirm({
                     'title': 'Delete Confirmation',
                     'message': 'Are you sure?',

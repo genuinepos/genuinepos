@@ -14,7 +14,7 @@
                                 <span class="fas fa-shopping-cart"></span>
                                 <h5>Sales Order</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -107,7 +107,7 @@
                                 <div class="col-md-10">
                                     <h6>Sales Order List</h6>
                                 </div>
-                                
+
                                 @if (auth()->user()->permission->sale['create_add_sale'] == '1')
                                     <div class="col-md-2">
                                         <div class="btn_30_blue float-end">
@@ -399,7 +399,7 @@
             var url = $(this).attr('href');
 
             $.get(url, function(data) {
-                
+
                 $('.data_preloader').hide();
                 $('#edit_shipment_modal_content').html(data);
                 $('#editShipmentModal').modal('show');
@@ -557,7 +557,7 @@
         document.onkeyup = function () {
             var e = e || window.event; // for IE to cover IEs window event-object
             // console.log(e);
-            
+
             if(e.ctrlKey && e.which == 13) {
 
                 // $('#add_btn').click();

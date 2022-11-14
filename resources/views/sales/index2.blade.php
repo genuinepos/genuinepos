@@ -14,7 +14,7 @@
                                 <span class="fas fa-shopping-cart"></span>
                                 <h5>Sales</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -106,7 +106,7 @@
                                 <div class="col-md-10">
                                     <h6>All Sale</h6>
                                 </div>
-                                
+
                                 @if (auth()->user()->permission->sale['create_add_sale'] == '1')
                                     <div class="col-md-2">
                                         <div class="btn_30_blue float-end">
@@ -144,7 +144,7 @@
                                                 <th>Invoice ID</th>
                                                 <th>Stock Location</th>
                                                 <th>Customer</th>
-                                                <th>Payment Status</th> 
+                                                <th>Payment Status</th>
                                                 <th>Total Payable</th>
                                                 <th>Paid</th>
                                                 <th>Due</th>
@@ -289,7 +289,7 @@
                 {data: 'due', name: 'due', className: 'text-end'},
                 {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end'},
                 {data: 'sale_return_due', name: 'sale_return_due', className: 'text-end'},
-             
+
             ],fnDrawCallback: function() {
                 var total_payable_amount = sum_table_col($('.data_tbl'), 'total_payable_amount');
                 $('#total_payable_amount').text(bdFormat(total_payable_amount));
@@ -305,7 +305,7 @@
 
                 var sale_return_due = sum_table_col($('.data_tbl'), 'sale_return_due');
                 $('#sale_return_due').text(bdFormat(sale_return_due));
-                
+
                 $('.data_preloader').hide();
             }
         });
@@ -362,8 +362,8 @@
 
             $.get(url, function(data) {
 
-                $('#paymentModal').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#paymentModal').html(data);
+                $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
         });
@@ -377,8 +377,8 @@
 
             $.get(url, function(data) {
 
-                $('#paymentModal').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#paymentModal').html(data);
+                $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
         });
@@ -393,8 +393,8 @@
 
             $.get(url, function(data) {
 
-                $('#paymentModal').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#paymentModal').html(data);
+                $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
         });
@@ -408,8 +408,8 @@
 
             $.get(url, function(data) {
 
-                $('#paymentModal').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#paymentModal').html(data);
+                $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
         });
@@ -433,7 +433,7 @@
             var url = $(this).attr('href');
 
             $.get(url, function(data) {
-                
+
                 $('.data_preloader').hide();
                 $('#edit_shipment_modal_content').html(data);
                 $('#editShipmentModal').modal('show');
@@ -635,7 +635,7 @@
         document.onkeyup = function () {
             var e = e || window.event; // for IE to cover IEs window event-object
             // console.log(e);
-            
+
             if(e.ctrlKey && e.which == 13) {
 
                 // $('#add_btn').click();

@@ -13,7 +13,7 @@
                                 <span class="fas fa-file-invoice"></span>
                                 <h5>Invoice Layouts</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
@@ -25,7 +25,7 @@
                                     <div class="col-md-6">
                                         <h6>All Invoice Layouts</h6>
                                     </div>
-                               
+
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
                                             <a href="{{ route('invoices.layouts.create') }}"><i class="fas fa-plus-square"></i> Add</a>
@@ -87,11 +87,11 @@
             }
         });
 
-       
+
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -106,7 +106,7 @@
                         'class': 'no btn-danger',
                         'action': function() {
                             // alert('Deleted canceled.')
-                        } 
+                        }
                     }
                 }
             });
@@ -145,6 +145,6 @@
                 }
             });
         });
-        
+
     </script>
 @endpush

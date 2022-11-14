@@ -14,7 +14,7 @@
                                 <span class="fas fa-people-arrows"></span>
                                 <h5>Customers</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         @if ($addons->branches == 1)
@@ -38,7 +38,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        
+
                                                         <div class="col-md-2">
                                                             <label><strong></strong></label>
                                                             <div class="input-group">
@@ -802,16 +802,16 @@
 
                     $('.data_preloader').hide();
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 700, 
-                        header: null,        
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 700,
+                        header: null,
                     });
                 }
-            }); 
+            });
         });
 
         new Litepicker({

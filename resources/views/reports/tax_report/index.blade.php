@@ -22,7 +22,7 @@
                                 <span class="fas fa-money-bill-wave-alt"></span>
                                 <h5>Tax Report <i data-bs-toggle="tooltip" data-bs-placement="right" title="Output: Purchase Order Tax, Input: Sale Order Tax, Expense: Tax On Expense" class="fas fa-info-circle tp"></i></h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -48,11 +48,11 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    @else 
+                                                    @else
                                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-3">
                                                     <label><strong>Date Range :</strong></label>
                                                     <div class="input-group">
@@ -77,12 +77,12 @@
                                 <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
                                 <div class="report_data">
                                     <div class="sale_and_expense_sum_area">
-                                        <div class="card-body card-custom"> 
-                                           
+                                        <div class="card-body card-custom">
+
                                             <div class="heading">
                                                 <h4>Overall (Output - Input - Expense) </h4>
                                             </div>
-                                               
+
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="tax_sum">
@@ -92,7 +92,7 @@
                                             </div>
                                         </div>
                                     </div>
-            
+
                                     <div class="user_sale_and_expense_list">
                                         <div class="card">
                                             <div class="card-body">
@@ -103,19 +103,19 @@
                                                             <a id="tab_btn" data-show="purchase" class="tab_btn tab_active" href="#"><i
                                                                     class="fas fa-info-circle"></i> Input Tax</a>
                                                         </li>
-            
+
                                                         <li>
                                                             <a id="tab_btn" data-show="sale" class="tab_btn" href="#">
                                                             <i class="fas fa-scroll"></i>Output Tax</a>
                                                         </li>
-            
+
                                                         <li>
                                                             <a id="tab_btn" data-show="expense" class="tab_btn" href="#">
                                                             <i class="fas fa-scroll"></i>Expense Tax</a>
                                                         </li>
                                                     </ul>
                                                 </div>
-            
+
                                                 <div class="tab_contant sale">
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -148,7 +148,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-            
+
                                                 <div class="tab_contant purchase d-none">
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -181,7 +181,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-            
+
                                                 <div class="tab_contant expense d-none">
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -212,9 +212,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-            
-                                            </div>  
-                                        </div>  
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -238,8 +238,8 @@
             url:"{{ route('reports.taxes.get') }}",
             type:'get',
             data: {
-                branch_id, 
-                date_range, 
+                branch_id,
+                date_range,
             },
             success:function(data){
                 //console.log(data);
@@ -255,7 +255,7 @@
         $('#filter_tax_report_form').submit();
     });
 
-    //Submit filter form by date-range field blur 
+    //Submit filter form by date-range field blur
     $(document).on('blur', '.submitable_input', function () {
         setTimeout(function() {
             $('#filter_tax_report_form').submit();

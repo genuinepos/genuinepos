@@ -13,7 +13,7 @@
                                 <span class="fas fa-hand-holding-usd"></span>
                                 <h5>Texes</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
      {{-- Edit Modal --}}
      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -139,8 +139,8 @@
                 </div>
             </div>
         </div>
-    </div> 
-    <!-- Modal--> 
+    </div>
+    <!-- Modal-->
 @endsection
 @push('scripts')
 <script>
@@ -166,7 +166,7 @@
         }
     });
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         // Add branch by ajax
         $('#add_tax_form').on('submit', function(e){
@@ -176,8 +176,8 @@
             var request = $(this).serialize();
             var inputs = $('.add_input');
                 inputs.removeClass('is-invalid');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val()
@@ -186,7 +186,7 @@
                     $('#'+inputId).addClass('is-invalid');
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
-                } 
+                }
             });
             if(countErrorField > 0){
                  $('.loading_button').hide();
@@ -227,8 +227,8 @@
             var request = $(this).serialize();
             var inputs = $('.edit_input');
                 inputs.removeClass('is-invalid');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val()
@@ -237,7 +237,7 @@
                     $('#'+inputId).addClass('is-invalid');
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
-                } 
+                }
             });
             if(countErrorField > 0){
                 $('.loading_button').hide();
@@ -268,16 +268,16 @@
         //         dangerMode: true,
         //     })
         //     .then((willDelete) => {
-        //         if (willDelete) { 
+        //         if (willDelete) {
         //             $('#deleted_form').submit();
         //         }
         //     });
         // });
 
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -292,7 +292,7 @@
                         'class': 'no btn-modal-primary',
                         'action': function() {
                             // alert('Deleted canceled.')
-                        } 
+                        }
                     }
                 }
             });
@@ -312,7 +312,7 @@
                         getAllUnit();
                         toastr.error(data);
                     }else{
-                        toastr.error(data.errorMsg); 
+                        toastr.error(data.errorMsg);
                     }
                 }
             });

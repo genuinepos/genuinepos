@@ -12,7 +12,7 @@
                             <div class="name-head">
                                 <span class="fas fa-desktop"></span> <h5> Warranties/Guaranties</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -36,7 +36,7 @@
                                                 id="name" placeholder="Warranty name" />
                                             <span class="error error_name"></span>
                                         </div>
-                
+
                                         <div class="form-group row mt-1">
                                             <div class="col-lg-4">
                                                 <strong>Type :</strong> <span class="text-danger">*</span>
@@ -45,7 +45,7 @@
                                                     <option value="2">Guaranty</option>
                                                 </select>
                                             </div>
-                
+
                                             <div class="col-lg-8">
                                                 <strong>Duration :</strong> <span class="text-danger">*</span>
                                                 <div class="row">
@@ -65,13 +65,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="form-group mt-1">
                                             <strong>Description :</strong>
                                             <textarea name="description" id="description" class="form-control" cols="10" rows="3"
                                                 placeholder="Warranty description"></textarea>
                                         </div>
-                
+
                                         <div class="form-group row mt-3">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i
@@ -100,7 +100,7 @@
                                                 placeholder="Bank name" />
                                             <span class="error error_e_name"></span>
                                         </div>
-                
+
                                         <div class="row mt-1">
                                             <div class="col-md-4">
                                                 <strong>Type :</strong> <span class="text-danger">*</span>
@@ -109,7 +109,7 @@
                                                     <option value="2">Guaranty</option>
                                                 </select>
                                             </div>
-                
+
                                             <div class="col-md-8">
                                                 <strong>Duration :</strong> <span class="text-danger">*</span>
                                                 <div class="row">
@@ -129,13 +129,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="form-group mt-2">
                                             <strong>Description :</strong>
                                             <textarea name="description" id="e_description" class="form-control form-control-sm" cols="10"
                                                 rows="3" placeholder="Warranty description"></textarea>
                                         </div>
-                
+
                                         <div class="form-group row mt-2">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i
@@ -173,12 +173,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-    
+
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-    
+
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -210,7 +210,7 @@
         // Setup ajax for csrf token.
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function() {
             // Add Customar group by ajax
             $('#add_warranty_form').on('submit', function(e) {
@@ -252,9 +252,9 @@
                         $('.loading_button').hide();
                         $('.submit_button').prop('type', 'submit');
                         if (err.status == 0) {
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                         }else{
-                            toastr.error('Server Error, Please contact to the support team.'); 
+                            toastr.error('Server Error, Please contact to the support team.');
                         }
                     }
                 });
@@ -313,9 +313,9 @@
                     },error:function(err){
                         $('.loading_button').hide();
                         if (err.status == 0) {
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                         }else{
-                            toastr.error('Server Error, Please contact to the support team.'); 
+                            toastr.error('Server Error, Please contact to the support team.');
                         }
                     }
                 });
@@ -351,9 +351,9 @@
                         $('#deleted_form')[0].reset();
                     },error: function(err) {
                         if (err.status == 0) {
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                         }else{
-                            toastr.error('Server Error. Please contact to the support team.'); 
+                            toastr.error('Server Error. Please contact to the support team.');
                         }
                     }
                 });

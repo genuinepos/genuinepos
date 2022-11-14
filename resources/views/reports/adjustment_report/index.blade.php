@@ -21,11 +21,11 @@
                                 <span class="fas fa-sliders-h"></span>
                                 <h5>Stock Adjustment Report</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
-                      
+
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="sec-name">
@@ -46,7 +46,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    @else 
+                                                    @else
                                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     @endif
                                                 @endif
@@ -103,19 +103,19 @@
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12 col-lg-6">
                                                 <div class="card">
-                                                    <div class="card-body mt-1">  
+                                                    <div class="card-body mt-1">
                                                         <table class="table modal-table table-sm">
                                                             <tbody>
                                                                 <tr>
                                                                     <th class="text-start">Total Normal : </th>
                                                                     <td class="text-start"> <span class="total_normal"></span></td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start">Total Abnormal : </th>
                                                                     <td class="text-start"><span class="total_abnormal"></span></td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start"> Total Stock Adjustment : </th>
                                                                     <td class="text-start"> <span class="total_adjustment"></span></td>
@@ -125,10 +125,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                    
+
                                             <div class="col-md-12 col-sm-12 col-lg-6">
                                                 <div class="card">
-                                                    <div class="card-body "> 
+                                                    <div class="card-body ">
                                                         <table class="table modal-table table-sm">
                                                             <tbody>
                                                                 <tr>
@@ -137,11 +137,11 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>  
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -165,7 +165,7 @@
                                         <tbody></tbody>
                                     </table>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -199,7 +199,7 @@
 
     var adjustment_table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'}
         ],
@@ -249,16 +249,16 @@
             data: {branch_id, from_date, to_date},
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,        
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
                 });
             }
-        }); 
+        });
     });
 </script>
 

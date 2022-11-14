@@ -13,7 +13,7 @@
                                 <span class="fas fa-shopping-cart"></span>
                                 <h6>Products</h6>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         <div class="row">
@@ -123,7 +123,7 @@
                                 <div class="col-md-4">
                                     <h6>All Product</h6>
                                 </div>
-                                
+
                                 @if (auth()->user()->permission->product['product_add'] == '1')
 
                                     <div class="col-md-8">
@@ -516,7 +516,7 @@
 
     document.onkeyup = function () {
         var e = e || window.event; // for IE to cover IEs window event-object
-        
+
         if(e.ctrlKey && e.which == 13) {
 
             // $('#add_btn').click();

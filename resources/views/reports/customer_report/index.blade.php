@@ -15,13 +15,13 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                    
+
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-people-arrows"></span>
                                 <h5>Customer Report</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -76,7 +76,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            
+
                                                         </tbody>
                                                         <tfoot>
                                                             <tr class="bg-secondary">
@@ -92,8 +92,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>  
-                                </div>  
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
         ],
@@ -160,7 +160,7 @@
     //Print supplier report
     $(document).on('click', '#print_report', function (e) {
         e.preventDefault();
-        
+
         var url = "{{ route('reports.customer.print') }}";
         var customer_id = $('#customer_id').val();
         console.log(customer_id);
@@ -170,16 +170,16 @@
             data: {customer_id},
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,        
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
                 });
             }
-        }); 
+        });
     });
 </script>
 @endpush

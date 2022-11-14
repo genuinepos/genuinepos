@@ -16,7 +16,7 @@
                                 <span class="fas fa-shopping-basket"></span>
                                 <h5>Purchase Orders</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -43,7 +43,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-2">
                                                     <label><strong>Supplier :</strong></label>
                                                     <select name="supplier_id"
@@ -104,7 +104,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
@@ -189,7 +189,7 @@
             aria-hidden="true">
         </div>
         <!--Add Payment modal-->
-        
+
         <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
             aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
@@ -210,7 +210,7 @@
                                     <li class="mt-1" id="payment_attachment"></li>
                                 </ul>
                             </div>
-                            
+
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
                                     <li class="mt-1">
@@ -237,7 +237,7 @@
 
         purchase_table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
@@ -340,9 +340,9 @@
         });
 
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',
@@ -476,9 +476,9 @@
         });
 
         $(document).on('click', '#delete_payment',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);       
+            $('#payment_deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',

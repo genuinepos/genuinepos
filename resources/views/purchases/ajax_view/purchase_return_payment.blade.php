@@ -24,10 +24,10 @@
                             <ul class="list-unstyled">
                                 <li><strong>Supplier : </strong><span>{{ $purchase->supplier->name }}</span></li>
                                 <li><strong>Business : </strong>
-                                    <span>{{ $purchase->supplier->business_name }}</span> 
+                                    <span>{{ $purchase->supplier->business_name }}</span>
                                 </li>
                                 <li><strong>Phone : </strong>
-                                    <span>{{ $purchase->supplier->phone }}</span> 
+                                    <span>{{ $purchase->supplier->phone }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -158,7 +158,7 @@
      //Add purchase return payment request by ajax
      $('#payment_form').on('submit', function(e) {
         e.preventDefault();
-        
+
         $('.loading_button').show();
         var available = $('#p_available_amount').val();
         var paying_amount = $('#p_paying_amount').val();
@@ -171,7 +171,7 @@
         }
 
         var url = $(this).attr('action');
-    
+
         $.ajax({
             url: url,
             type: 'post',
@@ -200,11 +200,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
-                    
-                    toastr.error('Server error. Please contact to the support team.'); 
+
+                    toastr.error('Server error. Please contact to the support team.');
                     return;
                 }
 

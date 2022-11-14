@@ -21,13 +21,13 @@
                                             <div class="col-8">
                                                 <h6>Add Expense | <small class="text-dark"><strong>Save & Print = (Ctrl + Enter), Save = (Shift + Enter)</strong> </small></h6>
                                             </div>
-    
+
                                             <div class="col-4">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
                                         </div>
                                     </div>
-    
+
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -51,7 +51,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                     
+
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>Expense Date :</b> <span
@@ -117,11 +117,11 @@
                                                                             <option value="">Select Expense Category</option>
                                                                         </select>
                                                                     </td>
-        
+
                                                                     <td>
                                                                         <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="Amount">
                                                                     </td>
-        
+
                                                                     <td>
                                                                         <div class="btn_30_blue" >
                                                                             <a id="addMore" href=""><i class="fas fa-plus-square"></i></a>
@@ -245,7 +245,7 @@
                 success:function(categories){
 
                     ex_categories = categories;
-    
+
                     $.each(categories, function (key, category) {
 
                         $('#category_id').append('<option value="'+category.id+'">'+ category.name +' ('+category.code+')'+'</option>');
@@ -277,7 +277,7 @@
             $('#total_amount').val(parseFloat(totalAmount).toFixed(2));
             var tax_percent = $('#tax').val() ? $('#tax').val() : 0;
             var tax_amount = parseFloat(totalAmount) / 100 * parseFloat(tax_percent);
-            var netTotalAmount = parseFloat(totalAmount) + parseFloat(tax_amount); 
+            var netTotalAmount = parseFloat(totalAmount) + parseFloat(tax_amount);
             $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
            // $('#paying_amount').val(parseFloat(netTotalAmount).toFixed(2));
             var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
@@ -315,8 +315,8 @@
             $('.loading_button').show();
             var url = $(this).attr('action');
             var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
 
                 var inputId = $(val).attr('id');
@@ -333,10 +333,10 @@
             if(countErrorField > 0){
 
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.'); 
+                toastr.error('Please check again all form fields.');
                 return;
             }
-            
+
             $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
@@ -351,7 +351,7 @@
                     $('.submit_button').prop('type', 'submit');
                     if(!$.isEmptyObject(data)){
 
-                        toastr.success('Expense created successfully.'); 
+                        toastr.success('Expense created successfully.');
                         $('.loan_amount_field').hide();
                         $('.extra_category').remove();
                         $('#add_expanse_form')[0].reset();
@@ -360,15 +360,15 @@
                         if (action == 'sale_and_print') {
 
                             $(data).printThis({
-                                debug: false,                   
-                                importCSS: true,                
-                                importStyle: true,          
-                                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                                removeInline: false, 
-                                printDelay: 500, 
-                                header: null,  
+                                debug: false,
+                                importCSS: true,
+                                importStyle: true,
+                                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                                removeInline: false,
+                                printDelay: 500,
+                                header: null,
                                 footer: null,
-                            }); 
+                            });
                         }
                     }
                 },error: function(err) {
@@ -407,7 +407,7 @@
                     $('.submit_button').prop('type', 'submit');
 
                     if(!$.isEmptyObject(data)){
-                        
+
                         $('.error_ex_').html('');
                         ex_categories.push(data)
                         $('.category_id').each(function() {
@@ -417,7 +417,7 @@
 
                         $('#addModal').modal('hide');
                         $('#add_quick_expense_category_form')[0].reset();
-                        toastr.success('Expense Category created successfully.'); 
+                        toastr.success('Expense Category created successfully.');
                     }
                 },error: function(err) {
 
@@ -427,11 +427,11 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Please check the connection..'); 
+                        toastr.error('Net Connetion Error. Please check the connection..');
                         return;
                     }else if (err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support.'); 
+                        toastr.error('Server error. Please contact to the support.');
                     }
 
                     $.each(err.responseJSON.errors, function(key, error) {

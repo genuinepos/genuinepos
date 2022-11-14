@@ -17,7 +17,7 @@
                                 <span class="fas fa-book"></span>
                                 <h5>Account Book</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         <div class="row">
@@ -40,12 +40,12 @@
                                                     <td class="text-start"><strong>A/C No. :</strong></td>
                                                     <td class="account_number text-start">{{ $account->account_number }}</td>
                                                 </tr>
-        
+
                                                 <tr>
                                                     <td class="text-start"><strong>A/C Type :</strong></td>
                                                     <td class="account_type text-start">{{ App\Utils\Util::accountType($account->account_type) }}</td>
                                                 </tr>
-        
+
                                                 <tr>
                                                     <td class="text-start"><strong>Balance :</strong> </td>
                                                     <td class="account_balance text-start">{{ App\Utils\Converter::format_in_bdt($account->balance) }}</td>
@@ -65,8 +65,8 @@
                                                 <div class="col-md-2">
                                                     <label><strong>Transaction Type :</strong></label>
                                                     <select name="transaction_type" class="form-control submit_able" id="transaction_type" autofocus>
-                                                        <option value=""><strong>All</strong></option> 
-                                                        <option value="debit"><strong>Debit</strong></option>  
+                                                        <option value=""><strong>All</strong></option>
+                                                        <option value="debit"><strong>Debit</strong></option>
                                                         <option value="credit">Credit</option>
                                                     </select>
                                                 </div>
@@ -74,7 +74,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong>Voucher Type :</strong></label>
                                                     <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
-                                                        <option value="">All</option> 
+                                                        <option value="">All</option>
                                                         @foreach (App\Utils\AccountUtil::voucherTypes() as $key => $type)
                                                             <option value="{{ $key }}">{{ $type }}</option>
                                                         @endforeach
@@ -113,7 +113,7 @@
                                                                 <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                             </div>
                                                         </div>
-            
+
                                                         <div class="col-md-5 mt-3">
                                                             <a href="#" class="btn btn-sm btn-primary float-end " id="print_report">
                                                                 <i class="fas fa-print "></i> Print
@@ -172,7 +172,7 @@
                             </form>
                         </div>
                     </div>
-                   
+
                 </div>
             </div>
         </div>
@@ -254,16 +254,16 @@
                 data: { voucher_type, transaction_type, from_date, to_date },
                 success:function(data){
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 700, 
-                        header: null,        
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 700,
+                        header: null,
                     });
                 }
-            }); 
+            });
         });
     </script>
 
@@ -314,10 +314,10 @@
 
                 // var i=0;
                 // var previousBalance=0;
-                // $('.data_tbl').find('tbody').find('tr').each(function() { 
+                // $('.data_tbl').find('tbody').find('tr').each(function() {
 
-                //     var debit = parseFloat($(this).find('.debit').data('value')); 
-                //     var credit = parseFloat($(this).find('.credit').data('value'));  
+                //     var debit = parseFloat($(this).find('.debit').data('value'));
+                //     var credit = parseFloat($(this).find('.credit').data('value'));
 
                 //     if(parseFloat(i) == 0) {
 
@@ -325,25 +325,25 @@
                 //     }else {
 
                 //         previousBalance = parseFloat(previousBalance) + (parseFloat(debit) - parseFloat(credit));
-                //     } 
-                    
+                //     }
+
                 //     i++;
-                    
+
                 //     $(this).find('.running_balance').html(bdFormat(previousBalance));
                 // });
             }
         </script>
-    @elseif($balanceType == 'credit')   
-    
+    @elseif($balanceType == 'credit')
+
         <script>
             function getRunningBalance() {
 
                 // var i=0;
                 // var previousBalance=0;
-                // $('.data_tbl').find('tbody').find('tr').each(function() { 
+                // $('.data_tbl').find('tbody').find('tr').each(function() {
 
-                //     var debit = parseFloat($(this).find('.debit').data('value')); 
-                //     var credit = parseFloat($(this).find('.credit').data('value'));  
+                //     var debit = parseFloat($(this).find('.debit').data('value'));
+                //     var credit = parseFloat($(this).find('.credit').data('value'));
 
                 //     if(parseFloat(i) == 0) {
 
@@ -351,8 +351,8 @@
                 //     }else {
 
                 //         previousBalance = parseFloat(previousBalance) + (parseFloat(credit) - parseFloat(debit));
-                //     } 
-                    
+                //     }
+
                 //     i++;
 
                 //     $(this).find('.running_balance').html(parseFloat(previousBalance).toFixed(2));

@@ -16,7 +16,7 @@
                                 <span class="fas fa-money-check-alt"></span>
                                 <h5>Contras</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -243,7 +243,7 @@
         // Setup ajax for csrf token.
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function() {
 
             $(document).on('click', '#create', function(e) {
@@ -260,14 +260,14 @@
                     },error:function(err){
                         $('.data_preloader').hide();
                         if (err.status == 0) {
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                         }else{
-                            toastr.error('Server Error. Please contact to the support team.'); 
+                            toastr.error('Server Error. Please contact to the support team.');
                         }
                     }
                 });
             });
-            
+
             // pass editable data to edit modal fields
             $(document).on('click', '#edit', function(e) {
                 e.preventDefault();
@@ -285,10 +285,10 @@
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                         }else{
 
-                            toastr.error('Server Error. Please contact to the support team.'); 
+                            toastr.error('Server Error. Please contact to the support team.');
                         }
                     }
                 });
@@ -311,10 +311,10 @@
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                         }else{
-                            
-                            toastr.error('Server Error. Please contact to the support team.'); 
+
+                            toastr.error('Server Error. Please contact to the support team.');
                         }
                     }
                 });

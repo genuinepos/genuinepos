@@ -30,7 +30,7 @@
                                 <span class="fas fa-cubes"></span>
                                 <h5>Stock In-Out Report</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -67,7 +67,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    @else 
+                                                    @else
                                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     @endif
                                                 @endif
@@ -167,7 +167,7 @@
                                         </tfoot>
                                     </table>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -183,7 +183,7 @@
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
         ],
@@ -248,7 +248,7 @@
         table.ajax.reload();
     });
 
-    //Submit filter form by date-range field blur 
+    //Submit filter form by date-range field blur
     $(document).on('click', '#search_product', function () {
 
         $(this).val('');
@@ -301,7 +301,7 @@
 
     $('body').keyup(function(e){
 
-        if (e.keyCode == 13 || e.keyCode == 9){  
+        if (e.keyCode == 13 || e.keyCode == 9){
 
             $(".selectProduct").click();
             $('.search_result').hide();
@@ -310,7 +310,7 @@
     });
 
     $(document).on('mouseenter', '#list>li>a',function () {
-        
+
         $('#list>li>a').removeClass('selectProduct');
         $(this).addClass('selectProduct');
     });
@@ -318,7 +318,7 @@
     // Show details modal with data
     $(document).on('click', '#details', function (e) {
         e.preventDefault();
-        
+
         $('.data_preloader').show();
         var url = $(this).attr('href');
 
@@ -349,22 +349,22 @@
             success:function(data){
 
                 $(data).printThis({
-                    debug : false,                   
-                    importCSS : true,                
-                    importStyle : true,          
-                    loadCSS : "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline : false, 
-                    printDelay : 500, 
-                    header : "", 
+                    debug : false,
+                    importCSS : true,
+                    importStyle : true,
+                    loadCSS : "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline : false,
+                    printDelay : 500,
+                    header : "",
                     pageTitle : "",
                     // footer: 'Footer Text',
-                    formValues : false,         
-                    canvas : false, 
+                    formValues : false,
+                    canvas : false,
                     beforePrint : null,
-                    afterPrint : null      
+                    afterPrint : null
                 });
             }
-        }); 
+        });
     });
 </script>
 

@@ -30,7 +30,7 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +73,7 @@
                                                     </div>
                                                 </div>
                                             @else
-                                            
+
                                                 <div class="input-group mt-1">
                                                     <label class="col-4"><b>Store Location :</b> </label>
                                                     <div class="col-8">
@@ -133,7 +133,7 @@
                                                             <input type="text" name="pay_term_number" class="form-control"
                                                             id="pay_term_number" placeholder="Number">
                                                         </div>
-                                                        
+
                                                         <div class="col-7">
                                                             <select name="pay_term" class="form-control changeable"
                                                             id="pay_term">
@@ -169,7 +169,7 @@
                                                     </select>
                                                     <span class="error error_purchase_account_id"></span>
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -252,7 +252,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        
+
                                                         <label class="col-4"><b>Total Item :</b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00" tabindex="-1">
@@ -280,7 +280,7 @@
                                                                         <option value="2">Percentage(%)</option>
                                                                     </select>
                                                                 </div>
-        
+
                                                                 <div class="col-md-6">
                                                                     <input name="order_discount" type="number" class="form-control" id="order_discount" value="0.00">
                                                                 </div>
@@ -288,7 +288,7 @@
                                                             <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
-        
+
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>Order Tax :</b><span class="text-danger">*</span></label>
                                                         <div class="col-8">
@@ -307,7 +307,7 @@
                                                             <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00">
                                                         </div>
                                                     </div>
-        
+
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>Shipment Details :</b></label>
                                                         <div class="col-8">
@@ -344,7 +344,7 @@
                                                             <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
-        
+
                                                     <div class="input-group mt-1">
                                                         <label class=" col-4"><b>Total Payable :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
@@ -360,15 +360,15 @@
                                                             <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                         </div>
                                                     </div>
-        
+
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>Payment Method : <span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                                 @foreach ($methods as $method)
-                                                                    <option 
-                                                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                                                    <option
+                                                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                                                         value="{{ $method->id }}">
                                                                         {{ $method->name }}
                                                                     </option>
@@ -400,7 +400,7 @@
                                                             <span class="error error_account_id"></span>
                                                         </div>
                                                     </div>
-        
+
                                                     <div class="input-group mt-1">
                                                         <label class=" col-4"><b>Total Due :</b></label>
                                                         <div class="col-8">

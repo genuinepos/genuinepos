@@ -21,7 +21,7 @@
                                 <span class="fas fa-money-bill-wave"></span>
                                 <h5>Profit / Loss Report</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -46,11 +46,11 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    @else 
+                                                    @else
                                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-3">
                                                     <label><strong>From Date :</strong></label>
                                                     <div class="input-group">
@@ -105,44 +105,44 @@
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12 col-lg-6">
                                                 <div class="card">
-                                                    <div class="card-body mt-1">  
+                                                    <div class="card-body mt-1">
                                                         <table class="table modal-table table-sm">
                                                             <tbody>
                                                                 <tr>
                                                                     <th class="text-start"> Total Stock Adjustment : </th>
                                                                     <td class="text-start"> 0.00</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start"> Total Expense : </th>
                                                                     <td class="text-start"> 0.00</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start">Total transfer shipping charge : </th>
                                                                     <td class="text-start"> 0.00</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start">Total Sell discount : </th>
                                                                     <td class="text-start"> 0.00</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start"> Total customer reward : </th>
                                                                     <td class="text-start"> 0.00</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start">Total Sell Return : </th>
                                                                     <td class="text-start"> 0.00</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start">Total Payroll :</th>
                                                                     <td class="text-start"> 0.00</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start">Total Production Cost :</th>
                                                                     <td class="text-start">0.00</td>
@@ -152,10 +152,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                    
+
                                             <div class="col-md-12 col-sm-12 col-lg-6">
                                                 <div class="card">
-                                                    <div class="card-body "> 
+                                                    <div class="card-body ">
                                                         <table class="table modal-table table-sm">
                                                             <tbody>
                                                                 <tr>
@@ -165,28 +165,28 @@
                                                                     </th>
                                                                     <td class="text-start"> 0.0</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start">Total sell shipping charge : </th>
                                                                     <td class="text-start"> 0.0</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start">Total Stock Recovered : </th>
                                                                     <td class="text-start"> 0.0</td>
                                                                 </tr>
-                        
+
                                                                 <tr>
                                                                     <th class="text-start">Total sell round off : </th>
                                                                     <td class="text-start"> 0.0</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>  
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -226,10 +226,10 @@
                 $('#data_list').html(data);
                 $('.data_preloader').hide();
             }
-        }); 
+        });
     });
 
-    //Print Profit/Loss 
+    //Print Profit/Loss
     $(document).on('click', '#print_report', function (e) {
         e.preventDefault();
         var url = "{{ route('reports.profit.loss.print') }}";
@@ -242,16 +242,16 @@
             data: {branch_id, from_date, to_date},
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,        
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
                 });
             }
-        }); 
+        });
     });
 </script>
 

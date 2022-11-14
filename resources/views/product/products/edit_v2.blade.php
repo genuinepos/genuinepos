@@ -21,9 +21,9 @@
                                     <div class="py-2 px-2 form-header">
                                         <div class="row">
                                             <div class="col-6"><h6>Edit Product | <small class="text-dark"> Save Changes = (Shift + Enter) </small></h6></div>
-    
+
                                             <div class="col-6">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
                                         </div>
                                     </div>
@@ -42,7 +42,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Product code 
+                                                    <label for="inputEmail3" class="col-4"><b>Product code
                                                         <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique. If you leave this field empty, it will be generated automatically." class="fas fa-info-circle tp"></i> :</b></label>
                                                     <div class="col-8">
                                                         <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" placeholder="Product Code" value="{{ $product->product_code }}">
@@ -195,7 +195,7 @@
                                                     </div>
                                                 </div>
                                             @endif
-                                            
+
                                             @if ($addons->branches == 1)
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-md-6">
@@ -204,7 +204,7 @@
                                                             <div class="col-8">
                                                                 <input type="hidden" name="branch_count" value="branch_count">
                                                                 <select class="form-control select2" name="branch_ids[]" id="branch_ids" multiple>
-                                                                    <option 
+                                                                    <option
                                                                         @foreach ($productBranches as $productBranch)
                                                                             {{ $productBranch->branch_id == NULL ? 'SELECTED' : '' }}
                                                                         @endforeach
@@ -212,7 +212,7 @@
                                                                         {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
                                                                     </option>
                                                                     @foreach ($branches as $branch)
-                                                                        <option 
+                                                                        <option
                                                                             @foreach ($productBranches as $productBranch)
                                                                                 {{ $productBranch->branch_id == $branch->id ? 'SELECTED' : '' }}
                                                                             @endforeach
@@ -249,19 +249,19 @@
                                                         <div class="input-group mt-1">
                                                             <div class="col-12">
                                                                 <div class="row">
-                                                                    <p class="checkbox_input_wrap"> 
-                                                                    <input {{ $product->is_manage_stock == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>Manage Stock</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p> 
+                                                                    <p class="checkbox_input_wrap">
+                                                                    <input {{ $product->is_manage_stock == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>Manage Stock</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div class="col-md-6">
                                                         <div class="input-group mt-1">
                                                             <div class="col-12">
                                                                 <div class="row">
-                                                                    <p class="checkbox_input_wrap"> 
-                                                                    <input {{ $product->is_manage_stock == 0 ? 'CHECKED' : '' }} type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> Service/Degital Product</b> </p> 
+                                                                    <p class="checkbox_input_wrap">
+                                                                    <input {{ $product->is_manage_stock == 0 ? 'CHECKED' : '' }} type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> Service/Degital Product</b> </p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -289,20 +289,20 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                        
-                                                    <div class="col-md-6">    
+
+                                                    <div class="col-md-6">
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
                                                                 <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax" value="{{ $product->product_price }}">
-                                                            <span class="error error_product_price"></span>    
+                                                            <span class="error error_product_price"></span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="row mt-1">
-                                                    <div class="col-md-6">                
+                                                    <div class="col-md-6">
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
@@ -317,7 +317,7 @@
                                                             <label for="inputEmail3" class="col-4"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
                                                                 <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $product->profit }}">
-                                                                <span class="error error_profit"></span> 
+                                                                <span class="error error_profit"></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -340,7 +340,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-        
+
                                                     <div class="col-md-6">
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
@@ -354,7 +354,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="row mt-1">                  
+                                                <div class="row mt-1">
                                                     <div class="col-md-6">
                                                         <div class="input-group">
                                                             <label for="inputEmail3" class="col-4"><b>Thumbnail Photo <i data-bs-toggle="tooltip" data-bs-placement="top" title="Previous thumbnail photo (if exists) will be replaced." class="fas fa-info-circle tp"></i> :</b> </label>
@@ -365,9 +365,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                          
+
                                                 @if ($product->is_variant == 1)
-                                                    <div class="row mt-1">                  
+                                                    <div class="row mt-1">
                                                         <div class="dynamic_variant_create_area">
                                                             <div class="row">
                                                                 <div class="col-md-12">
@@ -376,7 +376,7 @@
                                                                             <p class="checkbox_input_wrap"> <input type="checkbox" name="is_variant" CHECKED id="is_variant"> &nbsp; This product has varient. </p>
                                                                         </div>
                                                                     </div>
-                                                                    
+
                                                                     <div class="add_more_btn">
                                                                         <a id="add_more_variant_btn" class="btn btn-sm btn-primary float-end" href="">Add More</a>
                                                                     </div>
@@ -406,34 +406,34 @@
                                                                                             id="variant_combination" class="form-control"
                                                                                             placeholder="Variant Combination">
                                                                                     </td>
-                    
+
                                                                                     <td class="text-start">
                                                                                         <input type="text" name="variant_codes[]" id="variant_code" class="form-control"
                                                                                             placeholder="Variant Code">
                                                                                     </td>
-                    
+
                                                                                     <td class="text-start">
                                                                                         <input type="number" name="variant_costings[]"
                                                                                             class="form-control" placeholder="Cost" id="variant_costing">
                                                                                     </td>
-                    
+
                                                                                     <td class="text-start">
                                                                                         <input type="number" name="variant_costings_with_tax[]"class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax">
                                                                                     </td>
-                    
+
                                                                                     <td class="text-start">
                                                                                         <input type="number" name="variant_profits[]" class="form-control" placeholder="Profit" value="0.00" id="variant_profit">
                                                                                     </td>
-                                
+
                                                                                     <td class="text-start">
                                                                                         <input type="text" name="variant_prices_exc_tax[]"
                                                                                             class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax">
                                                                                     </td>
-                                
+
                                                                                     <td class="text-start">
                                                                                         <input type="file" name="variant_image[]" class="form-control" id="variant_image">
                                                                                     </td>
-                    
+
                                                                                     <td class="text-start">
                                                                                         <a href="#" id="variant_remove_btn"
                                                                                             class="btn btn-xs btn-sm btn-danger">X</a>
@@ -461,15 +461,15 @@
                                                                             autocomplete="off" id="search_product"
                                                                             placeholder="Product search/scan by product code">
                                                                     </div>
-                                            
+
                                                                     <div class="select_area">
                                                                         <ul class="variant_list_area">
-                                            
+
                                                                         </ul>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                            
+
                                                             <div class="col-md-10 offset-1 mt-1">
                                                                 <div class="row">
                                                                     <div class="col-md-12">
@@ -488,14 +488,14 @@
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody id="combo_products">
-                                            
+
                                                                                 </tbody>
                                                                                 <tfoot>
                                                                                     <tr>
                                                                                         <th colspan="3" class="text-center">Net Total Amount :</th>
                                                                                         <th>
                                                                                             {{ json_decode($generalSettings->business, true)['currency']}} <span class="span_total_combo_price">0.00</span>
-                                            
+
                                                                                             <input type="hidden" name="total_combo_price"
                                                                                                 id="total_combo_price"/>
                                                                                         </th>
@@ -509,19 +509,19 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            
+
                                                 <div class="row">
                                                     <div class="col-md-3 offset-3">
                                                         <label><b>xMargin :</b></label>
                                                         <input type="text" name="profit" class="form-control form-control-sm" id="profit"
                                                             value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
                                                     </div>
-                                            
+
                                                     <div class="col-md-3">
                                                         <label><b>Default Price Exc.Tax :</b></label>
                                                         <input type="text" name="combo_price" class="form-control form-control-sm" id="combo_price">
                                                     </div>
-                                                </div>  
+                                                </div>
                                             @endif
                                         </div>
                                     </div>
@@ -587,8 +587,8 @@
                                                 <div class="input-group">
                                                     <div class="col-12">
                                                         <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input {{ $product->is_show_in_ecom == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_in_ecom"> &nbsp; <b>Product wil be displayed in E-Commerce.</b></p> 
+                                                            <p class="checkbox_input_wrap">
+                                                            <input {{ $product->is_show_in_ecom == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_in_ecom"> &nbsp; <b>Product wil be displayed in E-Commerce.</b></p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -598,8 +598,8 @@
                                                 <div class="input-group">
                                                     <div class="col-12">
                                                         <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input {{ $product->is_show_emi_on_pos == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>Enable Product IMEI or Serial Number</b> </p> 
+                                                            <p class="checkbox_input_wrap">
+                                                            <input {{ $product->is_show_emi_on_pos == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>Enable Product IMEI or Serial Number</b> </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -609,8 +609,8 @@
                                                 <div class="input-group">
                                                     <div class="col-12">
                                                         <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input {{ $product->is_for_sale == 0 ? 'CHECKED' : '' }} type="checkbox" name="is_not_for_sale"> &nbsp; <b>Show Not For Sale</b> </p> 
+                                                            <p class="checkbox_input_wrap">
+                                                            <input {{ $product->is_for_sale == 0 ? 'CHECKED' : '' }} type="checkbox" name="is_not_for_sale"> &nbsp; <b>Show Not For Sale</b> </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -649,7 +649,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="col-md-8 text-end mt-1">
                                 <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
                                 <button type="submit" class="btn btn-success submit_button btn-sm">Save Changes</button>
@@ -834,7 +834,7 @@
                                     <option value="2">Guaranty</option>
                                 </select>
                             </div>
-                            
+
                             <div class="col-lg-8">
                                 <label><b>Duration :</b> </label> <span class="text-danger">*</span>
                                 <div class="row">
@@ -846,15 +846,15 @@
                                                 <option value="Days">Days</option>
                                                 <option value="Year">Year</option>
                                             </select>
-                                        </div> 
+                                        </div>
                                         <span class="error error_add_warranty_duration"></span>
                                     </div>
                                 </div>
-                            </div>  
+                            </div>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Description :</b></label> 
+                            <label><b>Description :</b></label>
                             <textarea name="description" id="description" class="form-control" cols="10" rows="3" placeholder="Warranty description"></textarea>
                         </div>
 
@@ -907,7 +907,7 @@
             var calc_tax = parseFloat(product_cost) / parseFloat(__tax_percent) * 100;
             var calc_product_cost_tax = parseFloat(product_cost) - parseFloat(calc_tax);
         }
-        
+
         var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
         $('#product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
         var profit = $('#profit').val() ? $('#profit').val() : 0;
@@ -955,7 +955,7 @@
         costCalculate();
     });
 
-    // Variant all functionality 
+    // Variant all functionality
     var variantsWithChild = '';
     function getAllVariant() {
         $.ajax({
@@ -1093,7 +1093,7 @@
     });
     // Variant all functionality end
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function() {
         // Automatic generate product code
         function autoGeneratedCode() {
@@ -1133,7 +1133,7 @@
                 success: function(product) {
                     if (!$.isEmptyObject(product)) {
                         $('#search_product').addClass('is-valid');
-                    } 
+                    }
 
                     if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product)){
                         $('#search_product').addClass('is-valid');
@@ -1155,7 +1155,7 @@
                                         var className = input.getAttribute('class');
                                         // get closest table row for increasing qty and re calculate product amount
                                         var closestTr = $('.'+className).closest('tr');
-                                        // update same product qty 
+                                        // update same product qty
                                         var presentQty = closestTr.find('#combo_quantity').val();
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#combo_quantity').val(updateQty);
@@ -1180,7 +1180,7 @@
                                     tr += '<input type="hidden" value="noid" id="combo_id" name="combo_ids[]">';
                                     tr += '<span class="product_name">'+product.name+'</span><br>';
                                     tr += '<span class="product_code">('+product.product_code+')</span><br>';
-                                    tr += '<span class="product_variant"></span>';  
+                                    tr += '<span class="product_variant"></span>';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
                                     tr += '</td>';
@@ -1203,8 +1203,8 @@
                                     tr += '</td>';
 
                                     tr += '</tr>';
-                                    $('#combo_products').append(tr); 
-                                    calculateTotalAmount(); 
+                                    $('#combo_products').append(tr);
+                                    calculateTotalAmount();
                                 }
                             }else{
 
@@ -1235,7 +1235,7 @@
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
-                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * tax_percent : 0); 
+                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * tax_percent : 0);
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
@@ -1245,7 +1245,7 @@
                                         var className = input.getAttribute('class');
                                         // get closest table row for increasing qty and re calculate product amount
                                         var closestTr = $('.'+className).closest('tr');
-                                        // update same product qty 
+                                        // update same product qty
                                         var presentQty = closestTr.find('#combo_quantity').val();
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#combo_quantity').val(updateQty);
@@ -1258,9 +1258,9 @@
                                         calculateTotalAmount();
                                         return;
                                     }
-                                }    
+                                }
                             });
-                        
+
                             if(sameVariant == 0){
                                 var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                                 var tax_amount = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * variant_product.product.tax.tax_percent : 0);
@@ -1270,7 +1270,7 @@
                                     tr += '<input type="hidden" value="noid" id="combo_id" name="combo_ids[]">';
                                 tr += '<span class="product_name">'+variant_product.product.name+'</span><br>';
                                 tr += '<span class="product_code">('+variant_product.variant_code+')</span><br>';
-                                tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
+                                tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
                                 tr += '</td>';
@@ -1294,8 +1294,8 @@
 
                                 tr += '</tr>';
                                 $('#combo_products').append(tr);
-                                calculateTotalAmount(); 
-                            }    
+                                calculateTotalAmount();
+                            }
                         }
                     }else{
                         $('#search_product').addClass('is-invalid');
@@ -1313,7 +1313,7 @@
             var variant_id = $(this).data('v_id');
             var variant_name = $(this).data('v_name');
             var variant_code = $(this).data('v_code');
-            var variant_price_inc_tax  = $(this).data('v_price'); 
+            var variant_price_inc_tax  = $(this).data('v_price');
             var variant_ids = document.querySelectorAll('#variant_id');
             var sameVariant = 0;
             variant_ids.forEach(function(input){
@@ -1327,7 +1327,7 @@
                         var className = input.getAttribute('class');
                         // get closest table row for increasing qty and re calculate product amount
                         var closestTr = $('.'+className).closest('tr');
-                        // update same product qty 
+                        // update same product qty
                         var presentQty = closestTr.find('#combo_quantity').val();
                         var updateQty = parseFloat(presentQty) + 1;
                         closestTr.find('#combo_quantity').val(updateQty);
@@ -1340,7 +1340,7 @@
                         calculateTotalAmount();
                         return;
                     }
-                }    
+                }
             });
 
             if(sameVariant == 0){
@@ -1350,7 +1350,7 @@
                 tr += '<td>';
                 tr += '<span class="product_name">'+product_name+'</span><br>';
                 tr += '<span class="product_code">('+variant_code+')</span><br>';
-                tr += '<span class="product_variant">('+variant_name+')</span>';  
+                tr += '<span class="product_variant">('+variant_name+')</span>';
                 tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
                 tr += '</td>';
@@ -1362,7 +1362,7 @@
                 tr += '<td>';
                 tr += '<input readonly value="'+variant_price_inc_tax+'" required name="unit_prices_inc_tax[]" type="number" class="form-control" id="unit_price_inc_tax">';
                 tr += '</td>';
-              
+
                 tr += '<td>';
                 tr += '<input readonly value="'+variant_price_inc_tax+'" required name="subtotals[]" type="number" class="form-control" id="subtotal">';
                 tr += '</td>';
@@ -1372,12 +1372,12 @@
                 tr += '</td>';
 
                 tr += '</tr>';
-                $('#combo_products').append(tr); 
+                $('#combo_products').append(tr);
                 calculateTotalAmount();
             }
         });
 
-        @if ($product->is_combo == 1) 
+        @if ($product->is_combo == 1)
             function getComboProducts() {
                 $.ajax({
                     url: "{{ route('products.get.combo.products', $product->id) }}",
@@ -1400,7 +1400,7 @@
                             var variantCode = comboProduct.product_variant ? comboProduct.product_variant.variant_code : '';
                             var variantId = comboProduct.product_variant ? comboProduct.product_variant.id : 'noid';
                             tr += '<span class="product_code">('+variantCode+')</span><br>';
-                            tr += '<span class="product_variant">('+variantName+')</span>';  
+                            tr += '<span class="product_variant">('+variantName+')</span>';
                             tr += '<input value="'+comboProduct.parent_product.id+'" type="hidden" class="productId-'+comboProduct.parent_product.id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variantId+'" type="hidden" class="variantId-'+variantId+'" id="variant_id" name="variant_ids[]">';
                             tr += '</td>';
@@ -1434,10 +1434,10 @@
 
                             tr += '</tr>';
                             $('#combo_products').append(tr);
-                            calculateTotalAmount(); 
+                            calculateTotalAmount();
                         });
                     }
-                }); 
+                });
             }
             getComboProducts();
         @endif
@@ -1460,7 +1460,7 @@
         $(document).on('input', '#combo_quantity', function() {
             var qty = $(this).val() ? $(this).val() : 0;
             var tr = $(this).closest('tr');
-            //Update subtotal 
+            //Update subtotal
             var unitPriceIncTax = $(this).closest('tr').find('#unit_price_inc_tax').val();
             var calcSubtotal = parseFloat(unitPriceIncTax) * parseFloat(qty);
             var subtotal = tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
@@ -1473,7 +1473,7 @@
             calculateTotalAmount();
         });
 
-        // Dispose Select area 
+        // Dispose Select area
         $(document).on('click', '.remove_select_area_btn', function(e) {
             e.preventDefault();
             $('.select_area').hide();
@@ -1502,7 +1502,7 @@
                 $('#child_category_id').append('<option value="">Select Sub-Category</option>');
 
                 $.each(subCategories, function(key, val) {
-                    
+
                     $('#child_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                 });
             });
@@ -1539,7 +1539,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }
 
@@ -1553,12 +1553,12 @@
             });
         });
 
-        // Automatic remove searching product not found signal 
+        // Automatic remove searching product not found signal
         setInterval(function() {
             $('#search_product').removeClass('is-invalid');
         }, 350);
 
-        // Automatic remove searching product is found signal 
+        // Automatic remove searching product is found signal
         setInterval(function() {
             $('#search_product').removeClass('is-valid');
         }, 1000);
@@ -1722,7 +1722,7 @@
         });
     });
 
-    @if ($product->is_variant == 1) 
+    @if ($product->is_variant == 1)
         function getProductVariants() {
             $.ajax({
                 url: "{{ route('products.get.product.variants', $product->id) }}",
@@ -1771,11 +1771,11 @@
                         html += '</td>';
                         html += '<td><a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a></td>';
                         html += '</tr>';
-                        
+
                         $('.dynamic_variant_body').prepend(html);
                     });
                 }
-            }); 
+            });
         }
         getProductVariants();
     @endif

@@ -14,7 +14,7 @@
                                 <span class="fas fa-money-check-alt"></span>
                                 <h5>Accounts</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         <div class="row">
@@ -130,7 +130,7 @@
                                 placeholder="Account Name" autocomplete="off" autofocus/>
                             <span class="error error_name"></span>
                         </div>
-                        
+
                         <div class="form-group mt-1">
                             <label><strong>Account Type : <span class="text-danger">*</span></strong></label>
                             <select name="account_type" class="form-control add_input" data-name="Account Type"
@@ -177,7 +177,7 @@
                                 </div>
                             </div>
                         @endif
-                        
+
                         <div class="form-group mt-1">
                             <label><strong>Opening Balance :</strong></label>
                             <input type="number" name="opening_balance" class="form-control" id="opening_balance" value="0.00" step="any"/>
@@ -246,7 +246,7 @@
                 "orderable": false,
                 "searchable": false
             }],
-            
+
             columns: [
                 {data: 'account_type', name: 'account_type'},
                 {data: 'name', name: 'accounts.name'},
@@ -256,7 +256,7 @@
                 {data: 'opening_balance', name: 'accounts.opening_balance', className: 'text-end'},
                 {data: 'balance', name: 'accounts.balance', className: 'text-end'},
                 {data: 'action'},
-             
+
             ],fnDrawCallback: function() {
                 $('.data_preloader').hide();
             }
@@ -276,7 +276,7 @@
             }
         });
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function() {
             // Add account by ajax
             $('#add_account_form').on('submit', function(e) {
@@ -332,9 +332,9 @@
                     },error:function(err){
                         $('.data_preloader').hide();
                         if (err.status == 0) {
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                         }else{
-                            toastr.error('Server Error, Please contact to the support team.'); 
+                            toastr.error('Server Error, Please contact to the support team.');
                         }
                     }
                 });

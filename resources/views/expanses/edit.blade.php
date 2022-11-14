@@ -22,15 +22,15 @@
                                                 <div class="col-md-6">
                                                     <h5>Edit Expense</h5>
                                                 </div>
-    
+
                                                 <div class="col-md-6">
-                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                                         class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-    
+
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -54,7 +54,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                     
+
                                             <div class="col-md-6">
                                                 <div class="input-group mt-1">
                                                     <label class="col-4"><b>Expense Date :</b> </label>
@@ -123,11 +123,11 @@
                                                                                 @endforeach
                                                                             </select>
                                                                         </td>
-            
+
                                                                         <td>
                                                                             <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" placeholder="Amount" value="{{ $description->amount }}">
                                                                         </td>
-            
+
                                                                         <td>
                                                                             @if ($loop->index == 0)
                                                                                 <div class="btn_30_blue" >
@@ -292,7 +292,7 @@
             $('#total_amount').val(parseFloat(totalAmount).toFixed(2));
             var tax_percent = $('#tax').val() ? $('#tax').val() : 0;
             var tax_amount = parseFloat(totalAmount) / 100 * parseFloat(tax_percent);
-            var netTotalAmount = parseFloat(totalAmount) + parseFloat(tax_amount); 
+            var netTotalAmount = parseFloat(totalAmount) + parseFloat(tax_amount);
             $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
             var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
             var totalDue = parseFloat(netTotalAmount) - parseFloat(payingAmount);
@@ -325,13 +325,13 @@
         //Add purchase request by ajax
         $('#edit_expanse_form').on('submit', function(e){
             e.preventDefault();
-            
+
             $('.loading_button').show();
             var url = $(this).attr('action');
             var inputs = $('.add_input');
                 inputs.removeClass('is-invalid');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
 
             $.each(inputs, function(key, val){
 
@@ -349,7 +349,7 @@
             if(countErrorField > 0){
 
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.'); 
+                toastr.error('Please check again all form fields.');
                 return;
             }
 
@@ -364,14 +364,14 @@
 
                     if(!$.isEmptyObject(data.errorMsg)){
 
-                        toastr.error(data.errorMsg,'ERROR'); 
+                        toastr.error(data.errorMsg,'ERROR');
                         $('.loading_button').hide();
                     }
 
                     if(!$.isEmptyObject(data.successMsg)){
 
                         $('.loading_button').hide();
-                        toastr.success(data.successMsg); 
+                        toastr.success(data.successMsg);
                         window.location = "{{route('expanses.index')}}";
                     }
                 }
@@ -396,7 +396,7 @@
                     $('.submit_button').prop('type', 'submit');
 
                     if(!$.isEmptyObject(data)){
-                        
+
                         $('.error_ex_').html('');
                         ex_categories.push(data)
                         $('.category_id').each(function() {
@@ -406,7 +406,7 @@
 
                         $('#addModal').modal('hide');
                         $('#add_quick_expense_category_form')[0].reset();
-                        toastr.success('Expense Category created successfully.'); 
+                        toastr.success('Expense Category created successfully.');
                     }
                 },error: function(err) {
 
@@ -416,11 +416,11 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Please check the connection..'); 
+                        toastr.error('Net Connetion Error. Please check the connection..');
                         return;
                     }else if (err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support.'); 
+                        toastr.error('Server error. Please contact to the support.');
                     }
 
                     $.each(err.responseJSON.errors, function(key, error) {

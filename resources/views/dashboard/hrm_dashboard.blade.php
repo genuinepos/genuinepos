@@ -18,7 +18,7 @@
                             <li>
                                 <a href="" class="text-primary"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>
                             </li>
-                            
+
                             @if (auth()->user()->permission->hrms['leave_type'] == '1')
                                 <li>
                                     <a href="{{ route('hrm.leave.type') }}" class="text-dark text-muted"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
@@ -318,7 +318,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col">
                         <div class="form_element">
                             <div class="section-header d-flex justify-content-between align-items-center px-3">

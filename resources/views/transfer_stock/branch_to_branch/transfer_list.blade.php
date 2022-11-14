@@ -9,14 +9,14 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        
+
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
                                 <h5>Transfer Stocks (Business Location To Business Location)</h5>
                             </div>
 
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -35,7 +35,7 @@
                                                                 <option value="">All</option>
 
                                                                 <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                      
+
                                                                 @foreach ($branches as $branch)
                                                                     @if (auth()->user()->branch_id != $branch->id)
                                                                         <option value="{{ $branch->id }}">
@@ -108,7 +108,7 @@
                                         <a href="{{ route('transfer.stock.branch.to.branch.create') }}" id="add_btn"><i class="fas fa-plus-square"></i> Add (Ctrl + Enter)</a>
                                     </div>
                                 </div>
-                               
+
                             </div>
 
                             <div class="widget_content">
@@ -224,7 +224,7 @@
                 {data: 'total_received_qty', name: 'total_received_qty', className: 'text-end'},
                 {data: 'total_pending_qty', name: 'total_pending_qty', className: 'text-end'},
                 {data: 'transfer_cost', name: 'transfer_cost', className: 'text-end'},
-                
+
             ],fnDrawCallback: function() {
 
                 var total_item = sum_table_col($('.data_tbl'), 'total_item');
@@ -349,11 +349,11 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }else if (err.status == 500) {
-                        
-                        toastr.error('Server Error. Please contact to the support team.'); 
+
+                        toastr.error('Server Error. Please contact to the support team.');
                         return;
                     }
                 }
@@ -403,7 +403,7 @@
         document.onkeyup = function () {
             var e = e || window.event; // for IE to cover IEs window event-object
             // console.log(e);
-            
+
             if(e.ctrlKey && e.which == 13) {
 
                 // $('#add_btn').click();

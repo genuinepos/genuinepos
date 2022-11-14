@@ -14,7 +14,7 @@
                                 <span class="fas fa-shopping-basket"></span>
                                 <h5>Purchases</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -250,7 +250,7 @@
     <script>
         // Show session message by toster alert.
         @if (Session::has('successMsg'))
-        
+
             toastr.success('{{ session('successMsg')[0] }}');
         @endif
 
@@ -312,7 +312,7 @@
             table.find('tbody').find('tr').each(function() {
 
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
-                    
+
                     sum += parseFloat(
                         $(this).find('.' + class_name).data('value')
                     );
@@ -366,12 +366,12 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                     }else if (err.status == 500) {
 
                     }{
 
-                        toastr.error('Server Error. Please contact to the support team.'); 
+                        toastr.error('Server Error. Please contact to the support team.');
                     }
                 }
             });
@@ -447,7 +447,7 @@
 
             var url = $(this).attr('href');
             $('.data_preloader').show();
-            
+
             $.get(url,  function(data) {
 
                 $('#paymentModal').html(data);
@@ -498,9 +498,9 @@
                     toastr.success(data);
                 },error: function(err) {
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                     }else{
-                        toastr.error('Server Error. Please contact to the support team.'); 
+                        toastr.error('Server Error. Please contact to the support team.');
                     }
                 }
             });

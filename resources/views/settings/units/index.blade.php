@@ -12,11 +12,11 @@
                                 <span class="fas fa-sort-amount-up"></span>
                                 <h5>Units</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    
+
                     <div class="row mt-1">
                         <div class="col-md-4">
                             <div class="card" id="add_form">
@@ -32,13 +32,13 @@
                                         <input type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="Unit Name"/>
                                         <span class="error error_name"></span>
                                     </div>
-            
+
                                     <div class="form-group mt-1">
                                         <label><b>Short Name :</b> <span class="text-danger">*</span></label>
                                         <input type="text" name="code" class="form-control" data-name="Code name" id="code" placeholder="Short name"/>
                                         <span class="error error_code"></span>
                                     </div>
-            
+
                                     <div class="form-group text-end mt-3">
                                         <button type="button" class="btn loading_button d-none"><i
                                             class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -62,13 +62,13 @@
                                         <input type="text" name="name" class="form-control" data-name="Name" id="e_name" placeholder="Unit Name"/>
                                         <span class="error error_e_name"></span>
                                     </div>
-            
+
                                     <div class="form-group mt-1">
                                         <label><b>Short Name :</b> <span class="text-danger">*</span></label>
                                         <input type="text" name="code" class="form-control" data-name="Code name" id="e_code" placeholder="Short Name"/>
                                         <span class="error error_e_code"></span>
                                     </div>
-            
+
                                     <div class="form-group text-end mt-3">
                                         <button type="button" class="btn loading_button d-none"><i
                                             class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -86,7 +86,7 @@
                                         <h6>All Units</h6>
                                     </div>
                                 </div>
-    
+
                                 <div class="widget_content">
                                     <div class="data_preloader">
                                         <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
@@ -105,7 +105,7 @@
                                         </table>
                                     </div>
                                 </div>
-    
+
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -137,7 +137,7 @@
     // insert branch by ajax
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         // Add Unit by ajax
         $(document).on('submit', '#add_unit_form', function(e) {
@@ -209,9 +209,9 @@
         });
 
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -236,7 +236,7 @@
                         getAllUnit();
                         toastr.error(data);
                     }else{
-                        toastr.error(data.errorMsg, 'Error'); 
+                        toastr.error(data.errorMsg, 'Error');
                     }
                 }
             });

@@ -23,7 +23,7 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                                         <span class="error error_warehouse_id"></span>
                                                     </div>
                                                 </div>
-                                            @else 
+                                            @else
                                                 <div class="input-group mt-1">
                                                     <label class="col-4"><span class="text-danger">*</span> <b>B.Location :</b> </label>
                                                     <div class="col-8">
@@ -152,7 +152,7 @@
                                                                         <td>
                                                                             <a href="#" class="btn btn-sm btn-success" data-id="{{ $row->id }}" id="add_receive">+</a>
                                                                         </td>
-                                                                        
+
                                                                         @if (count($row->receives) > 0)
                                                                             <tr>
                                                                                 <td></td>
@@ -187,7 +187,7 @@
                                                                                     </table>
                                                                                 </td>
                                                                             </tr>
-                                                                        @else 
+                                                                        @else
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -212,7 +212,7 @@
                                                                                                 <td>
                                                                                                     <input required type="number" step="any" name="or_receive_rows[{{ $row->id }}][qty_received][]" id="qty_received-{{ $row->id }}" data-id="{{ $row->id }}" class="qty_received" placeholder="Received Quantity">
                                                                                                 </td>
-                                                                                                
+
                                                                                                 <td>
                                                                                                     <a href="#" class="btn btn-sm btn-danger" data-id="{{ $row->id }}" id="delete_partial_receive">X</a>
                                                                                                 </td>
@@ -220,7 +220,7 @@
                                                                                         </tbody>
                                                                                     </table>
                                                                                 </td>
-                                                                            </tr>     
+                                                                            </tr>
                                                                         @endif
                                                                     </tr>
                                                                 @endforeach
@@ -244,7 +244,7 @@
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            
+
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
@@ -261,7 +261,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class=" col-4"><b>Order Discount :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
-                                                            <input readonly name="order_discount_amount" type="number" step="any" class="form-control" id="order_discount_amount" value="{{ $purchase->order_discount_amount }}" tabindex="-1"> 
+                                                            <input readonly name="order_discount_amount" type="number" step="any" class="form-control" id="order_discount_amount" value="{{ $purchase->order_discount_amount }}" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -279,7 +279,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class=" col-4"><b>Shipment Cost :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
-                                                            <input readonly name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="{{ $purchase->shipment_charge }}" tabindex="-1"> 
+                                                            <input readonly name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="{{ $purchase->shipment_charge }}" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -346,8 +346,8 @@
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                                 @foreach ($methods as $method)
-                                                                    <option 
-                                                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                                                    <option
+                                                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                                                         value="{{ $method->id }}">
                                                                         {{ $method->name }}
                                                                     </option>
@@ -445,14 +445,14 @@
             calulateOnlyReceiveQty(id);
             calulateTotalReceiveAndPendingQty();
         });
-        
+
         $(document).on('input', '.qty_received', function() {
 
             var val = $(this).val();
             var id = $(this).data('id');
 
             var total_qty_received = calulateOnlyReceiveQty(id);
-            
+
             if (parseFloat(total_qty_received) >= 0) {
 
                 var ordered_quantity = $('.ordered_quantity-'+id).val();
@@ -548,7 +548,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    
+
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
                     toastr.success(data);
@@ -559,7 +559,7 @@
                     $('.error').html('');
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                     } else {
 
                         toastr.error('Server error please contact to the support.');

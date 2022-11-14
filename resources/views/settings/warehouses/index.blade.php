@@ -13,7 +13,7 @@
                                 <span class="fas fa-warehouse"></span>
                                 <h5>Warehouses</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -28,7 +28,7 @@
                                                         <div class="col-md-3">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id"
-                                                                class="form-control submit_able" 
+                                                                class="form-control submit_able"
                                                                 id="branch_id" autofocus>
                                                                 <option value="">All</option>
                                                                 <option selected value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
@@ -66,19 +66,19 @@
                                             <input type="text" name="name" class="form-control add_input" data-name="Warehouse name" id="name" placeholder="Warehouse name"/>
                                             <span class="error error_name"></span>
                                         </div>
-                
+
                                         <div class="form-group mt-1">
                                             <label><b>Warehouse Code :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
                                             <input type="text" name="code" class="form-control add_input" data-name="Warehouse code" id="code" placeholder="Warehouse code"/>
                                             <span class="error error_code"></span>
                                         </div>
-                
+
                                         <div class="form-group mt-1">
                                             <label><b>Phone :</b>  <span class="text-danger">*</span></label>
                                             <input type="text" name="phone" class="form-control add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
                                             <span class="error error_phone"></span>
                                         </div>
-                
+
                                         <div class="form-group mt-1">
                                             <label><b>Address :</b>  </label>
                                             <textarea name="address" class="form-control" placeholder="Warehouse address" rows="3"></textarea>
@@ -90,14 +90,14 @@
                                                 <option value="NULL">
                                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (HO)
                                                 </option>
-        
+
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_business_location"></span>
                                         </div>
-                
+
                                         <div class="form-group text-end mt-3">
                                             <button type="button" class="btn loading_button d-none"><i
                                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -128,7 +128,7 @@
                                         <h6>All Warehouse</h6>
                                     </div>
                                 </div>
-        
+
                                 <div class="widget_content">
                                     <div class="data_preloader">
                                         <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
@@ -150,7 +150,7 @@
                                         </table>
                                     </div>
                                 </div>
-        
+
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -175,7 +175,7 @@
         "processing": true,
         "serverSide": true,
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             //{extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -205,7 +205,7 @@
     // Setup CSRF Token for ajax request
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         // Add Warehouse by ajax
         $('#add_warehouse_form').on('submit', function(e){
@@ -215,8 +215,8 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
 
             $.each(inputs, function(key, val){
 
@@ -228,7 +228,7 @@
                     countErrorField += 1;
                     var fieldName = $('#'+inputId).data('name');
                     $('.error_'+inputId).html(fieldName+' is required.');
-                } 
+                }
             });
 
             if(countErrorField > 0){
@@ -271,11 +271,11 @@
         });
 
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
             var id = $(this).data('id');
             $('#deleted_form').attr('action', url);
-            $('#deleteId').val(id);      
+            $('#deleteId').val(id);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -287,7 +287,7 @@
         });
 
         //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){ 
+        $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();
 
             var url = $(this).attr('action');

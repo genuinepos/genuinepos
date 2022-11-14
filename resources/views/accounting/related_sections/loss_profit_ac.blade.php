@@ -16,7 +16,7 @@
                                 <h5>Profit Loss Account</h5>
                             </div>
 
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         <div class="row">
@@ -110,157 +110,157 @@
                                                             {{-- Cash Flow from operations --}}
                                                             <tr>
                                                                 <td class="text-start">
-                                                                <em>Total Sale :</em> 
+                                                                <em>Total Sale :</em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                <em>0.00</em> 
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                <em>Purchase Return :</em> 
-                                                                </td>
-
-                                                                <td class="text-start">
-                                                                <em>0.00</em> 
+                                                                <em>0.00</em>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                <em>Total Purchase : </em>  
+                                                                <em>Purchase Return :</em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <em>(0.00)</em>    
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                <em>Sale Retun : </em> 
-                                                                </td>
-
-                                                                <td class="text-start">
-                                                                    <em>(0.00)</em>    
+                                                                <em>0.00</em>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                <em>Direct Expense :</em>  
+                                                                <em>Total Purchase : </em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <em>(0.00)</em>     
+                                                                    <em>(0.00)</em>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                <em>Total Production Cost :</em>  
+                                                                <em>Sale Retun : </em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <em>(0.00)</em>     
+                                                                    <em>(0.00)</em>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                <em>Direct Expense :</em>
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>(0.00)</em>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                <em>Total Production Cost :</em>
+                                                                </td>
+
+                                                                <td class="text-start">
+                                                                    <em>(0.00)</em>
                                                                 </td>
                                                             </tr>
 
                                                             {{-- <tr>
                                                                 <td class="text-start">
-                                                                <em>Opening Stock :</em>  
+                                                                <em>Opening Stock :</em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <em>(0.00)</em>     
+                                                                    <em>(0.00)</em>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                <em>Closing Stock :</em>  
+                                                                <em>Closing Stock :</em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <em>0.00</em>     
+                                                                    <em>0.00</em>
                                                                 </td>
                                                             </tr> --}}
 
                                                             <tr>
                                                                 <th class="text-end">
-                                                                    <em>Gross Profit :</em>   
+                                                                    <em>Gross Profit :</em>
                                                                 </th>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em></b>  
+                                                                    <b><em>0.00</em></b>
                                                                 </td>
                                                             </tr>
-                                                        
+
                                                             {{-- Cash Flow from investing --}}
                                                             <tr>
                                                                 <th class="text-start" colspan="2">
                                                                     <strong>NET PROFIT LOSS INFORNATION :</strong>
                                                                 </th>
                                                             </tr>
-                                                            
+
                                                             <tr>
                                                                 <td class="text-start">
-                                                                    <em>Gross Profit :</em> 
+                                                                    <em>Gross Profit :</em>
                                                                 </td>
                                                                 <td class="text-start"><em>0.00</em> </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                    <em>Total Stock Adjustment :</em>  
+                                                                    <em>Total Stock Adjustment :</em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <em>(0.00)</em>    
+                                                                    <em>(0.00)</em>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                    <em>Total Adjustment Recovered :</em>  
+                                                                    <em>Total Adjustment Recovered :</em>
                                                                 </td>
-                                    
+
                                                                 <td class="text-start">
-                                                                    <em>0.00</em>    
+                                                                    <em>0.00</em>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                    <em>Total Sale Order Tax :</em>  
+                                                                    <em>Total Sale Order Tax :</em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <em>(0.00)</em>    
+                                                                    <em>(0.00)</em>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                <em>Item Sold Indivitual Tax :</em>  
+                                                                <em>Item Sold Indivitual Tax :</em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <em>(0.00)</em>    
+                                                                    <em>(0.00)</em>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                   <em>Indirect Expense :</em>   
+                                                                   <em>Indirect Expense :</em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <em>0.00</em> 
+                                                                    <em>0.00</em>
                                                                 </td>
-                                                            </tr> 
+                                                            </tr>
 
                                                             <tr>
                                                                 <th class="text-end">
@@ -268,9 +268,9 @@
                                                                 </th>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
-                                                            </tr> 
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </td>

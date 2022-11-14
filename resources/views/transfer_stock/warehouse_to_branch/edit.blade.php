@@ -28,7 +28,7 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@
                                                     <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
 
                                         <div class="col-md-3">
                                             <div class="input-group">
@@ -109,7 +109,7 @@
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>
                                                     </div>
-                                                </div> 
+                                                </div>
                                             </div>
                                         </div>
 
@@ -129,7 +129,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="transfer_list">
-                                                               
+
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -172,7 +172,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class=" col-4">Ship Cost:</label>
                                                 <div class="col-8">
-                                                    <input name="shipping_charge" type="number" class="form-control form-control-sm" id="shipping_charge" value="0.00"> 
+                                                    <input name="shipping_charge" type="number" class="form-control form-control-sm" id="shipping_charge" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -181,7 +181,7 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-2">Note:</label>
                                                 <div class="col-10">
-                                                    <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="Additional note"> 
+                                                    <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="Additional note">
                                                 </div>
                                             </div>
                                         </div>
@@ -260,7 +260,7 @@
                 dataType: 'json',
                 success:function(product){
                     if(!$.isEmptyObject(product.errorMsg)){
-                        toastr.error(product.errorMsg); 
+                        toastr.error(product.errorMsg);
                         $('#search_product').val("");
                         return;
                     }
@@ -290,7 +290,7 @@
                                         }
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                        
+
                                         //Update Subtotal
                                         var unitPrice = closestTr.find('#unit_price').val();
                                         var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
@@ -309,7 +309,7 @@
                                     tr += '<td class="text-start" colspan="2">';
                                     tr += '<a href="#" class="text-success" id="edit_product">';
                                     tr += '<span class="product_name">'+product.name+'</span>';
-                                    tr += '<span class="product_variant"></span>'; 
+                                    tr += '<span class="product_variant"></span>';
                                     tr += '<span class="product_code">'+' ('+product.product_code+')'+'</span>';
                                     tr += '</a>';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
@@ -332,12 +332,12 @@
                                     tr += '</div>';
                                     tr += '</td>';
                                     tr += '<td class="text text-center">';
-                                    tr += '<span class="span_unit">'+product.unit.name+'</span>'; 
+                                    tr += '<span class="span_unit">'+product.unit.name+'</span>';
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
-                                
+
                                     tr += '<td class="text text-center">';
-                                    tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>'; 
+                                    tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>';
                                     tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden"  id="subtotal">';
                                     tr += '</td>';
                                     tr += '<td class="text-center">';
@@ -345,8 +345,8 @@
                                     tr += '</td>';
                                     tr += '</tr>';
                                     $('#transfer_list').prepend(tr);
-                                    calculateTotalAmount(); 
-                                    productTable();  
+                                    calculateTotalAmount();
+                                    productTable();
                                 }
                             }else{
                                 var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
@@ -370,7 +370,7 @@
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
-                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0); 
+                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0);
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
@@ -390,7 +390,7 @@
                                         }
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                        
+
                                         //Update Subtotal
                                         var unitPrice = closestTr.find('#unit_price').val();
                                         var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
@@ -400,9 +400,9 @@
                                         productTable();
                                         return;
                                     }
-                                }    
+                                }
                             });
-                            
+
                             if(sameVariant == 0){
                                 var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                                 var tr = '';
@@ -410,7 +410,7 @@
                                 tr += '<td class="text-start" colspan="2">';
                                 tr += '<a href="#" class="text-success" id="edit_product">';
                                 tr += '<span class="product_name">'+variant_product.product.name+'</span>';
-                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
+                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>';
                                 tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
                                 tr += '</a><br/>';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
@@ -432,11 +432,11 @@
                                 tr += '</div>';
                                 tr += '</td>';
                                 tr += '<td class="text text-center">';
-                                tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
+                                tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>';
                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
                                 tr += '</td>';
                                 tr += '<td class="text text-center">';
-                                tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>'; 
+                                tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>';
                                 tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                                 tr += '</td>';
                                 tr += '<td class="text-center">';
@@ -446,12 +446,12 @@
                                 $('#transfer_list').prepend(tr);
                                 calculateTotalAmount();
                                 productTable();
-                            }    
+                            }
                         }else if (!$.isEmptyObject(product.namedProducts)) {
                             if(product.namedProducts.length > 0){
                                 var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                                 var li = "";
-                                var products = product.namedProducts; 
+                                var products = product.namedProducts;
                                 $.each(products, function (key, product) {
                                     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
                                     if (product.product_variants.length > 0) {
@@ -534,7 +534,7 @@
                                 }
                                 var updateQty = parseFloat(presentQty) + 1;
                                 closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                
+
                                 //Update Subtotal
                                 var unitPrice = closestTr.find('#unit_price').val();
                                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
@@ -548,7 +548,7 @@
                                     keyName = 1;
                                 }
                                 return;
-                            }   
+                            }
                         });
 
                         if(sameProduct == 0){
@@ -557,7 +557,7 @@
                             tr += '<td class="text-start" colspan="2" class="">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant"></span>'; 
+                            tr += '<span class="product_variant"></span>';
                             tr += '<span class="product_code">'+' ('+product_code+')'+'</span>';
                             tr += '</a>';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
@@ -577,14 +577,14 @@
                             tr += '</div>';
                             tr += '</td>';
                             tr += '<td class="text">';
-                            tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
+                            tr += '<b><span class="span_unit">'+product_unit+'</span></b>';
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
-                           
+
                             tr += '<td class="text text-center">';
                             var unitPriceIncTax = parseFloat(product_price_exc_tax) / 100 * parseFloat(p_tax_percent) + parseFloat(product_price_exc_tax);
                             tr += '<input name="unit_prices[]" type="hidden" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
-                            tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>'; 
+                            tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>';
                             tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                             tr += '</td>';
                             tr += '<td class="text-center">';
@@ -592,15 +592,15 @@
                             tr += '</td>';
                             tr += '</tr>';
                             $('#transfer_list').prepend(tr);
-                            calculateTotalAmount(); 
-                            productTable();  
+                            calculateTotalAmount();
+                            productTable();
                             if (keyName == 9) {
                                 $("#quantity").select();
                                 keyName = 1;
                             }
                         }
                     }else{
-                        toastr.error(singleProductQty.errorMsg);   
+                        toastr.error(singleProductQty.errorMsg);
                     }
                 }
             });
@@ -657,7 +657,7 @@
                                     }
                                     var updateQty = parseFloat(presentQty) + 1;
                                     closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                    
+
                                     //Update Subtotal
                                     var unitPrice = closestTr.find('#unit_price').val();
                                     var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
@@ -671,7 +671,7 @@
                                     }
                                     return;
                                 }
-                            } 
+                            }
                         });
 
                         if(sameVariant == 0){
@@ -680,7 +680,7 @@
                             tr += '<td class="text-start" colspan="2">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
+                            tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>';
                             tr += '<span class="product_code">'+'('+variant_code+')'+'</span>';
                             tr += '</a>';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
@@ -704,12 +704,12 @@
                             tr += '</div>';
                             tr += '</td>';
                             tr += '<td class="text text-center">';
-                            tr += '<span class="span_unit">'+product_unit+'</span>'; 
+                            tr += '<span class="span_unit">'+product_unit+'</span>';
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
-                       
+
                             tr += '<td class="text text-center">';
-                            tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>'; 
+                            tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>';
                             tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                             tr += '</td>';
                             tr += '<td class="text-center">';
@@ -725,7 +725,7 @@
                             }
                         }
                     }else{
-                        toastr.warning(warehouseVariantQty.errorMsg);   
+                        toastr.warning(warehouseVariantQty.errorMsg);
                     }
                 }
             });
@@ -746,7 +746,7 @@
                     var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
                     tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                     tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                    calculateTotalAmount();  
+                    calculateTotalAmount();
                     productTable();
                     return;
                 }
@@ -754,7 +754,7 @@
                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
                 tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount();  
+                calculateTotalAmount();
             }
         });
 
@@ -772,7 +772,7 @@
                     var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
                     tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                     tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                    calculateTotalAmount();  
+                    calculateTotalAmount();
                     productTable();
                     return;
                 }
@@ -780,7 +780,7 @@
                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
                 tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount(); 
+                calculateTotalAmount();
             }
         });
 
@@ -789,12 +789,12 @@
             calculateTotalAmount();
         });
 
-        // Remove product form purchase product list (Table) 
+        // Remove product form purchase product list (Table)
         $(document).on('click', '#remove_product_btn',function(e){
             e.preventDefault();
             $(this).closest('tr').remove();
             calculateTotalAmount();
-            productTable(); 
+            productTable();
         });
 
         // Decrease qty
@@ -824,7 +824,7 @@
             e.preventDefault();
             var totalItem = $('#total_item').val();
             if (parseFloat(totalItem) == 0) {
-                toastr.error('Transfer product table is empty.','Some thing went wrong.'); 
+                toastr.error('Transfer product table is empty.','Some thing went wrong.');
                 return;
             }
             $('.loading_button').show();
@@ -832,8 +832,8 @@
             var request = $(this).serialize();
             var inputs = $('.add_input');
                 inputs.removeClass('is-invalid');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -846,7 +846,7 @@
 
             if(countErrorField > 0){
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing went wrong.'); 
+                toastr.error('Please check again all form fields.','Some thing went wrong.');
                 return;
             }
 
@@ -856,29 +856,29 @@
                 data: request,
                 success:function(data){
                     if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR'); 
+                        toastr.error(data.errorMsg,'ERROR');
                         $('.loading_button').hide();
                     }
 
                     if(!$.isEmptyObject(data.successMsg)){
                         $('.loading_button').hide();
-                        toastr.success(data.successMsg); 
+                        toastr.success(data.successMsg);
                          window.location = "{{route('transfer.stock.to.branch.index')}}";
                     }
                 }
             });
         });
 
-        // Automatic remove searching product is found signal 
+        // Automatic remove searching product is found signal
         setInterval(function(){
             $('#search_product').removeClass('is-invalid');
-        }, 500); 
+        }, 500);
 
         setInterval(function(){
             $('#search_product').removeClass('is-valid');
         }, 1000);
 
-        // Disable branch field after add the products 
+        // Disable branch field after add the products
         function productTable(){
             var totalItem = $('#total_item').val() ? $('#total_item').val() : 0;
             var role = $('#role').val();
@@ -891,7 +891,7 @@
 
         $('.submit_button').on('click', function () {
             var value = $(this).val();
-            $('#action').val(value); 
+            $('#action').val(value);
         });
 
         $('#warehouse_id').on('change', function(e){
@@ -907,7 +907,7 @@
         });
 
         $('body').keyup(function(e){
-            if (e.keyCode == 13 || e.keyCode == 9){  
+            if (e.keyCode == 13 || e.keyCode == 9){
                 $(".selectProduct").click();
                 $('#list').empty();
                 keyName = e.keyCode;
@@ -946,17 +946,17 @@
                         tr += '<a href="#" class="text-success" id="edit_product">';
                         tr += '<span class="product_name">'+transferProduct.product.name+'</span>';
                         var variant = transferProduct.product_variant_id != null ? ' -'+transferProduct.variant.variant_name+'- ' : '';
-                        tr += '<span class="product_variant">'+variant+'</span>'; 
+                        tr += '<span class="product_variant">'+variant+'</span>';
                         var code = transferProduct.product_variant_id != null ? transferProduct.variant.variant_code : transferProduct.product.product_code;
                         tr += '<span class="product_code">'+'('+code+')'+'</span>';
                         tr += '</a>';
                         tr += '<input value="'+transferProduct.product_id+'" type="hidden" class="productId-'+transferProduct.product_id+'" id="product_id" name="product_ids[]">';
 
                         if (transferProduct.product_variant_id != null) {
-                            tr += '<input value="'+transferProduct.product_variant_id+'" type="hidden" class="variantId-'+transferProduct.product_variant_id+'" id="variant_id" name="variant_ids[]">'; 
+                            tr += '<input value="'+transferProduct.product_variant_id+'" type="hidden" class="variantId-'+transferProduct.product_variant_id+'" id="variant_id" name="variant_ids[]">';
                         }else{
-                            tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';  
-                        }   
+                            tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
+                        }
 
                         tr += '<input readonly name="unit_prices[]" type="hidden"  id="unit_price" value="'+transferProduct.unit_price+'">';
                         tr += '<input type="hidden" id="previous_quantity" value="'+transferProduct.quantity+'">';
@@ -975,12 +975,12 @@
                         tr += '</div>';
                         tr += '</td>';
                         tr += '<td class="text">';
-                        tr += '<span class="span_unit">'+transferProduct.unit+'</span>'; 
+                        tr += '<span class="span_unit">'+transferProduct.unit+'</span>';
                         tr += '<input  name="units[]" type="hidden" id="unit" value="'+transferProduct.unit+'">';
                         tr += '</td>';
-                        
+
                         tr += '<td class="text text-center">';
-                        tr += '<strong><span class="span_subtotal">'+transferProduct.subtotal+'</span></strong>'; 
+                        tr += '<strong><span class="span_subtotal">'+transferProduct.subtotal+'</span></strong>';
                         tr += '<input value="'+transferProduct.subtotal+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                         tr += '</td>';
                         tr += '<td class="text-center">';

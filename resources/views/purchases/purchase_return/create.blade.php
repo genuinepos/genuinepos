@@ -20,7 +20,7 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -28,15 +28,15 @@
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="m-0"><strong>Invoice ID: </strong> {{ $purchase->invoice_id }} </p> 
-                                            <p class="m-0"><strong>Date: </strong> {{ $purchase->date }}</p> 
+                                            <p class="m-0"><strong>Invoice ID: </strong> {{ $purchase->invoice_id }} </p>
+                                            <p class="m-0"><strong>Date: </strong> {{ $purchase->date }}</p>
                                          </div>
                                          <div class="col-md-6">
-                                            <p class="m-0 "><strong> Supplier : </strong> {{ $purchase->supplier->name }}</p> 
-                                            <p class="m-0 branch"><strong>Business Location : </strong> 
-                                                @if($purchase->branch) 
+                                            <p class="m-0 "><strong> Supplier : </strong> {{ $purchase->supplier->name }}</p>
+                                            <p class="m-0 branch"><strong>Business Location : </strong>
+                                                @if($purchase->branch)
                                                     {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(B.L.)</b>
-                                                @else 
+                                                @else
                                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
                                                 @endif
                                             </p>
@@ -45,7 +45,7 @@
                                                     {{ $purchase->warehouse->warehouse_name.'/'.$purchase->warehouse->warehouse_code }}<b>(WH)</b>
                                                 @elseif($purchase->branch)
                                                     {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }} <b>(B.L.)</b>
-                                                @else 
+                                                @else
                                                     {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                                 @endif
                                             </p>
@@ -186,21 +186,21 @@
                     if (purchase.purchase_return) {
                         $('#purchase_return_account_id').val(purchase.purchase_return.purchase_return_account_id);
                     }
-                    
+
                     $.each(purchase.purchase_return.purchase_return_products, function (key, return_product) {
                         var tr = "";
                         tr += '<tr >';
                         tr += '<td colspan="2" class="text text-dark">';
                         tr += '<span class="product_name">'+return_product.purchase_product.product.name+'</span>';
                         var variant = return_product.purchase_product.variant ? ' ('+return_product.purchase_product.variant.variant_name+')' : '';
-                        
-                        tr += '<span class="product_variant"><small><b>'+variant+'</b></small></span>'; 
+
+                        tr += '<span class="product_variant"><small><b>'+variant+'</b></small></span>';
 
                         var code = return_product.purchase_product.variant ? return_product.purchase_product.variant.variant_code : return_product.purchase_product.product.product_code;
                         tr += ' <span class="product_code"><small>('+code+')</small></span>';
                         tr += '<input value="'+return_product.purchase_product_id+'" type="hidden" id="purchase_product_id" name="purchase_product_ids[]">';
                         tr += '</td>';
-                        
+
                         tr += '<td class="text">';
                         tr += '<span class="span_unit_cost">'+return_product.purchase_product.net_unit_cost+'</span>';
                         tr += '<input value="'+return_product.purchase_product.net_unit_cost+'" type="hidden" name="unit_costs[]" id="unit_cost">';
@@ -237,12 +237,12 @@
                         tr += '<td colspan="2" class="text text-dark">';
                         tr += '<span class="product_name">'+purchase_product.product.name+'</span>';
                         var variant = purchase_product.variant ? ' ('+purchase_product.variant.variant_name+')' : '';
-                        tr += '<span class="product_variant"><small><b>'+variant+'</b></small></span>'; 
+                        tr += '<span class="product_variant"><small><b>'+variant+'</b></small></span>';
                         var code = purchase_product.variant ? purchase_product.variant.variant_code : purchase_product.product.product_code;
                         tr += ' <span class="product_code"><small>('+code+')</small></span>';
                         tr += '<input value="'+purchase_product.id+'" type="hidden" id="purchase_product_id" name="purchase_product_ids[]">';
                         tr += '</td>';
-                        
+
                         tr += '<td class="text">';
                         tr += '<span class="span_unit_cost">'+purchase_product.net_unit_cost+'</span>';
                         tr += '<input value="'+purchase_product.net_unit_cost+'" type="hidden" name="unit_costs[]" id="unit_cost">';
@@ -283,13 +283,13 @@
     function calculateTotalAmount(){
         var quantities = document.querySelectorAll('#return_quantity');
         var subtotals = document.querySelectorAll('#return_subtotal');
-  
+
         // Update Net total Amount
         var netTotalAmount = 0;
         subtotals.forEach(function(subtotal){
             netTotalAmount += parseFloat(subtotal.value);
         });
-        
+
         $('#total_return_amount').val(parseFloat(netTotalAmount).toFixed(2));
     }
 
@@ -316,7 +316,7 @@
                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(return_quantity);
                 tr.find('#return_subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_return_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount(); 
+                calculateTotalAmount();
             }
         }
     });
@@ -336,21 +336,21 @@
                 $('.submit_button').prop('type', 'sumbit');
                 $('.error').html('');
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 }else if(!$.isEmptyObject(data.seccessMsg)) {
-                    toastr.success(data.seccessMsg); 
+                    toastr.success(data.seccessMsg);
                 }else {
                     $('.loading_button').hide();
-                    toastr.success('Successfully purchase return is added.'); 
+                    toastr.success('Successfully purchase return is added.');
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 1000, 
-                        header: null,        
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 1000,
+                        header: null,
                     });
                 }
             },error: function(err) {
@@ -359,7 +359,7 @@
                 $('.error').html('');
 
                 if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }
 

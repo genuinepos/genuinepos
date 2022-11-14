@@ -13,7 +13,7 @@
                                 <span class="fas fa-glass-whiskey"></span>
                                 <h5>Payment Methods</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -26,7 +26,7 @@
                                             <h6>Add Payment Method</h6>
                                         </div>
                                     </div>
-    
+
                                     <form id="add_payment_method_form" class="p-2" action="{{ route('settings.payment.method.store') }}" method="POST">
                                         @csrf
                                         <div class="form-group row">
@@ -36,7 +36,7 @@
                                                 <span class="error error_name"></span>
                                             </div>
                                         </div>
-                
+
                                         <div class="form-group row mt-2">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i
@@ -48,14 +48,14 @@
                                         </div>
                                     </form>
                                 </div>
-    
+
                                 <div class="card d-none" id="edit_form">
                                     <div class="section-header">
                                         <div class="col-md-6">
                                             <h6>Edit Payment Method</h6>
                                         </div>
                                     </div>
-    
+
                                     <div class="form-area px-3 pb-2" id="edit_form_body"></div>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                                             <h6>All Payment Methods</h6>
                                         </div>
                                     </div>
-        
+
                                     <div class="widget_content">
                                         <div class="data_preloader">
                                             <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
@@ -85,7 +85,7 @@
                                             </table>
                                         </div>
                                     </div>
-        
+
                                     <form id="deleted_form" action="" method="post">
                                         @method('DELETE')
                                         @csrf

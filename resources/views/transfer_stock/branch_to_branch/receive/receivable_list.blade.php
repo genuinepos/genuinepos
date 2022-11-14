@@ -9,14 +9,14 @@
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        
+
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
                                 <h5>Receivable Transfers </h5>
                             </div>
 
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -32,7 +32,7 @@
                                                         <select name="branch_id"
                                                             class="form-control submit_able" id="branch_id" autofocus>
                                                             <option value="">All</option>
-                                                            
+
                                                             @if (auth()->user()->role_type == 3)
                                                                 <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
                                                             @endif
@@ -212,7 +212,7 @@
                 {data: 'total_received_qty', name: 'total_received_qty', className: 'text-end'},
                 {data: 'total_pending_qty', name: 'total_pending_qty', className: 'text-end'},
                 {data: 'transfer_cost', name: 'transfer_cost', className: 'text-end'},
-                
+
             ],fnDrawCallback: function() {
 
                 var total_item = sum_table_col($('.data_tbl'), 'total_item');

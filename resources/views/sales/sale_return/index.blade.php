@@ -14,12 +14,12 @@
                                 <span class="fas fa-undo-alt"></span>
                                 <h5>Sale Returns</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
 
-               
+
                     <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
@@ -59,7 +59,7 @@
                             </form>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -135,7 +135,7 @@
     <script>
         var sales_table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -187,8 +187,8 @@
             $.get(url, function(data) {
 
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#payment-modal-body').html(data);
+                $('#paymentModal').modal('show');
             });
         });
 
@@ -227,15 +227,15 @@
             $.get(url, function(data) {
 
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#payment-modal-body').html(data);
+                $('#paymentModal').modal('show');
             });
         });
 
         $(document).on('click', '#delete',function(e) {
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);     
+            $('#deleted_form').attr('action', url);
 
             $.confirm({
                 'title': 'Delete Confirmation',
@@ -246,7 +246,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e) {
             e.preventDefault();
@@ -273,45 +273,45 @@
 
         // Make print
         $(document).on('click', '.print_btn',function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
 
             var body = $('.sale_return_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",                      
-                removeInline: false, 
-                printDelay: 1000, 
-                header: null,        
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",
+                removeInline: false,
+                printDelay: 1000,
+                header: null,
             });
         });
 
         // Print single payment details
         $('#print_payment').on('click', function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.sale_payment_print_area').html();
             var header = $('.print_header').html();
             var footer = $('.signature_area').html();
 
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                removeInline: true, 
-                printDelay: 500, 
-                header: header,  
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                removeInline: true,
+                printDelay: 500,
+                header: header,
                 footer: footer
             });
         });
 
         $(document).on('click', '#delete_payment',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
 
-            $('#payment_deleted_form').attr('action', url);    
+            $('#payment_deleted_form').attr('action', url);
 
             $.confirm({
                 'title': 'Delete Confirmation',
@@ -322,7 +322,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#payment_deleted_form',function(e){
             e.preventDefault();

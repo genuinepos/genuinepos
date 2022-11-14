@@ -29,7 +29,7 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@
                                                         <span class="error error_warehouse_id"></span>
                                                     </div>
                                                 </div>
-                                            @else 
+                                            @else
                                                 <div class="input-group mt-1">
                                                     <label class="col-4"><b>B. Location :</b> </label>
                                                     <div class="col-8">
@@ -86,7 +86,7 @@
                                                         <input type="hidden" name="purchase_status" id="purchase_status" value="3">
                                                     </div>
                                                 </div>
-                                            @else 
+                                            @else
                                                 @if (json_decode($generalSettings->purchase, true)['is_enable_status'] == '1')
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>Status :</b></label>
@@ -100,7 +100,7 @@
                                                     </div>
                                                 @else
                                                     <input type="hidden" name="purchase_status" id="purchase_status" value="1">
-                                                @endif  
+                                                @endif
                                             @endif
                                         </div>
 
@@ -122,7 +122,7 @@
                                                             <input type="text" name="pay_term_number" class="form-control"
                                                             id="pay_term_number" placeholder="Number">
                                                         </div>
-                                                        
+
                                                         <div class="col-7">
                                                             <select name="pay_term" class="form-control changeable"
                                                             id="pay_term">
@@ -158,7 +158,7 @@
                                                     </select>
                                                     <span class="error error_purchase_account_id"></span>
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -191,7 +191,7 @@
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>
                                                     </div>
-                                                </div> 
+                                                </div>
                                             </div>
                                         </div>
 
@@ -247,12 +247,12 @@
                                                             <option value="2">Percentage</option>
                                                         </select>
 
-                                                        <input name="order_discount" type="number" class="form-control w-75" id="order_discount" value="0.00"> 
+                                                        <input name="order_discount" type="number" class="form-control w-75" id="order_discount" value="0.00">
                                                     </div>
-                                                    <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00"> 
+                                                    <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00">
                                                 </div>
                                             </div>
-                                        
+
                                             <div class="input-group mt-1">
                                                 <label class="col-4"><b>Tax :</b></label>
                                                 <div class="col-8">
@@ -268,14 +268,14 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>Ship Cost :</b> </label>
                                                 <div class="col-8">
-                                                    <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00"> 
+                                                    <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00">
                                                 </div>
                                             </div>
 
                                             <div class="input-group mt-1">
                                                 <label class="col-4"><b>Ship Details :</b></label>
                                                 <div class="col-8">
-                                                    <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details"> 
+                                                    <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
                                                 </div>
                                             </div>
                                         </div>
@@ -332,7 +332,7 @@
         </div>
     </div>
 
-    <!--Add Product Modal--> 
+    <!--Add Product Modal-->
     <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
@@ -342,11 +342,11 @@
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_product_body">
-                    
+
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!--Add Product Modal End-->
 
     <!--Add Product Modal-->

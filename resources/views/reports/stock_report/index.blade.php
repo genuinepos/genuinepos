@@ -21,7 +21,7 @@
                                 <span class="fas fa-desktop"></span>
                                 <h5>Stock Report</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -33,7 +33,7 @@
                                         <li>
                                             <a id="tab_btn" data-show="branch_stock" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Business Location Stock</a>
                                         </li>
-        
+
                                         <li>
                                             <a id="tab_btn" data-show="warehouse_stock" class="tab_btn" href="#">
                                             <i class="fas fa-scroll"></i> Warehouse Stock</a>
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="tab_contant branch_stock">
                             <div class="row">
                                 <div class="card py-2">
@@ -76,7 +76,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-            
+
                                                 <div class="col-md-2">
                                                     <label><strong>Brand :</strong></label>
                                                     <select id="brand_id" name="brand_id" class="form-control">
@@ -86,7 +86,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-            
+
                                                 <div class="col-md-2">
                                                     <label><strong>Unit :</strong></label>
                                                     <select id="unit_id" name="unit_id" class="form-control">
@@ -96,7 +96,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-            
+
                                                 <div class="col-md-2">
                                                     <label><strong>Tax :</strong></label>
                                                     <select id="tax_id" name="tax_id" class="form-control">
@@ -163,7 +163,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="tab_contant warehouse_stock d-none">
                             <div class="row">
                                 <div class="card py-2">
@@ -194,7 +194,7 @@
                                                         <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
                                                             <option value="">Select Business Location First</option>
                                                         </select>
-                                                    @else 
+                                                    @else
                                                         @php
                                                             $wh = DB::table('warehouse_branches')
                                                                 ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
@@ -226,7 +226,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-            
+
                                                 <div class="col-md-2">
                                                     <label><strong>Brand :</strong></label>
                                                     <select id="w_brand_id" name="brand_id" class="form-control common_submitable">
@@ -236,7 +236,7 @@
                                                         @endforeach
                                                     </select>
                                                     </div>
-            
+
                                                 <div class="col-md-2">
                                                     <label><strong>Unit :</strong></label>
                                                     <select id="w_unit_id" name="unit_id" class="form-control common_submitable">
@@ -246,7 +246,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-            
+
                                                 <div class="col-md-2">
                                                     <label><strong>Tax :</strong></label>
                                                     <select id="w_tax_id" name="tax_id" class="form-control common_submitable">
@@ -310,7 +310,7 @@
 <script>
     var branch_stock_table = $('.b_data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'}
         ],
@@ -341,7 +341,7 @@
             { data: 'stock', name: 'stock' , className : 'text-end'},
             { data: 'stock_value', name: 'stock_value' , className : 'text-end'},
             { data: 'total_sale', name: 'total_sale', className : 'text-end' },
-  
+
         ],fnDrawCallback: function() {
             var stock = sum_table_col($('.b_data_tbl'), 'stock');
             $('#stock').text(bdFormat(stock));
@@ -361,7 +361,7 @@
 
     var warehouse_stock_table = $('.w_data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'}
         ],
@@ -393,7 +393,7 @@
             { data: 'price', name: 'products.product_price' , className : 'text-end'},
             { data: 'stock', name: 'stock' , className : 'text-end'},
             { data: 'stock_value', name: 'stock_value' , className : 'text-end'},
-  
+
         ],fnDrawCallback: function() {
             var stock = sum_table_col($('.w_data_tbl'), 'stock');
             $('#w_stock').text(bdFormat(stock));
@@ -437,7 +437,7 @@
             }
         });
     })
-    
+
     $(document).on('click', '.tab_btn', function(e) {
         e.preventDefault();
         $('.tab_btn').removeClass('tab_active');
@@ -465,15 +465,15 @@
             data: {branch_id, category_id, brand_id, unit_id, tax_id},
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 1000, 
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 1000,
                 });
             }
-        }); 
+        });
     });
 </script>
 @endpush

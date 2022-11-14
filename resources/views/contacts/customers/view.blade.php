@@ -21,7 +21,7 @@
                                 <span class="fas fa-people-arrows"></span>
                                 <h6><strong>{{ $customer->name }}</strong></h6>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
 
@@ -51,7 +51,7 @@
                                         </a>
                                     </li>
 
-                                    @if (auth()->user()->permission->sale['sale_payment'] == '1') 
+                                    @if (auth()->user()->permission->sale['sale_payment'] == '1')
                                         <li>
                                             <a id="tab_btn" data-show="payments" class="tab_btn" href="#">
                                                 <i class="far fa-money-bill-alt"></i> Payments
@@ -94,7 +94,7 @@
                                                                     </select>
                                                                 </div>
                                                             @endif
-                                                        @else   
+                                                        @else
                                                             <input type="hidden" name="branch_id" id="ledger_branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}">
                                                         @endif
 
@@ -214,17 +214,17 @@
                                     <div class="col-md-3">
                                         <ul class="list-unstyled">
                                             <li>
-                                                <strong> Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <strong> Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                                 <span class="opening_balance">{{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</span>
                                             </li>
 
                                             <li>
-                                                <strong> Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <strong> Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                                 <span class="total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</span>
                                             </li>
 
                                             <li>
-                                                <strong> Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <strong> Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                                 <span class="total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</span>
                                             </li>
 
@@ -234,17 +234,17 @@
                                             </li>
 
                                             <li>
-                                                <strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                                 <span class="total_paid">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</span>
                                             </li>
 
                                             <li>
-                                                <strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                                 <span class="total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</span>
                                             </li>
 
                                             <li>
-                                                <strong> Total Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                                                <strong> Total Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                                 <span class="total_sale_return_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</span>
                                             </li>
                                         </ul>
@@ -302,7 +302,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                 </div>
-                                                                
+
                                                                 <input type="text" name="to_date" id="to_sale_date" class="form-control" autocomplete="off">
                                                             </div>
                                                         </div>
@@ -367,19 +367,19 @@
                                 </div>
                             </div>
 
-                            @if (auth()->user()->permission->sale['sale_payment'] == '1') 
+                            @if (auth()->user()->permission->sale['sale_payment'] == '1')
                                 <div class="tab_contant payments d-none">
                                     <div class="row">
                                         <div class="col-md-3 col-sm-12 col-lg-3">
                                             @include('contacts.customers.partials.account_summery_area_by_payments')
                                         </div>
-    
+
                                         <div class="col-md-9 col-sm-12 col-lg-9">
                                             <div class="account_summary_area">
                                                 <div class="heading py-1">
                                                     <h5 class="py-1 pl-1 text-center">Filter Area</h5>
                                                 </div>
-    
+
                                                 <div class="account_summary_table">
                                                     <div class="row mt-2">
                                                         <div class="col-md-9">
@@ -405,7 +405,7 @@
                                                                                 </div>
                                                                             @endif
                                                                         @endif
-                                                        
+
                                                                         <div class="col-md-3">
                                                                             <label><strong>From Date :</strong></label>
                                                                             <div class="input-group">
@@ -415,7 +415,7 @@
                                                                                 <input type="text" name="p_from_date" id="payment_from_date" class="form-control" autocomplete="off">
                                                                             </div>
                                                                         </div>
-                
+
                                                                         <div class="col-md-3">
                                                                             <label><strong>To Date :</strong></label>
                                                                             <div class="input-group">
@@ -425,7 +425,7 @@
                                                                                 <input type="text" name="p_to_date" id="payment_to_date" class="form-control" autocomplete="off">
                                                                             </div>
                                                                         </div>
-                
+
                                                                         <div class="col-md-3">
                                                                             <div class="row">
                                                                                 <div class="col-md-12">
@@ -440,7 +440,7 @@
                                                                 </form>
                                                             </div>
                                                         </div>
-    
+
                                                         <div class="col-md-3">
                                                             <div class="col-md-12 col-sm-12 col-lg-12">
                                                                 <div class="row">
@@ -454,7 +454,7 @@
                                                                         <a class="btn btn-success return_payment_btn" id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund </a>
                                                                     </div>
                                                                 </div>
-                    
+
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <a href="{{ route('customers.all.payment.print', $customer->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
@@ -467,7 +467,7 @@
                                             </div>
                                         </div>
                                     </div>
-                
+
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="widget_content table_area">
@@ -680,8 +680,8 @@
             }
         });
 
-        @if (auth()->user()->permission->sale['sale_payment'] == '1') 
-        
+        @if (auth()->user()->permission->sale['sale_payment'] == '1')
+
             var payments_table = $('.payments_table').DataTable({
                 "processing": true,
                 "serverSide": true,
@@ -758,7 +758,7 @@
             e.preventDefault();
             $('.data_preloader').show();
             ledger_table.ajax.reload();
-            
+
             filterObj = {
                 branch_id : $('#ledger_branch_id').val(),
                 from_date : $('.from_date').val(),
@@ -802,7 +802,7 @@
 
         $(document).on('click', '#tab_btn', function(e) {
             e.preventDefault();
-            
+
             $('.tab_btn').removeClass('tab_active');
             $('.tab_contant').hide();
             var show_content = $(this).data('show');
@@ -840,29 +840,29 @@
                 success:function(data){
                     $('.data_preloader').hide();
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 700, 
-                        header: null,        
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 700,
+                        header: null,
                     });
                 }
-            }); 
+            });
         });
 
         // Show change status modal and pass actual link in the change status form
         $(document).on('click', '#edit_shipment', function (e) {
             e.preventDefault();
 
-            $('.data_preloader').show(); 
+            $('.data_preloader').show();
             var url = $(this).attr('href');
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(data){
-                    
+
                     $('.data_preloader').hide();
                     $('#edit_shipment_modal_content').html(data);
                     $('#editShipmentModal').modal('show');
@@ -885,7 +885,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();
@@ -930,19 +930,19 @@
 
         // Make print
         $(document).on('click', '.print_btn',function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
 
             var body = $('.sale_print_template').html();
             var header = $('.heading_area').html();
 
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                removeInline: false,
                 printDelay: 500,
-                header : null,        
+                header : null,
             });
         });
 
@@ -950,14 +950,14 @@
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
-            
+
             $.ajax({
                 url:url,
                 type:'get',
                 success:function(data){
 
-                    $('#paymentModal').html(data); 
-                    $('#paymentModal').modal('show'); 
+                    $('#paymentModal').html(data);
+                    $('#paymentModal').modal('show');
                     $('.data_preloader').hide();
                 }
             });
@@ -975,8 +975,8 @@
                 type:'get',
                 success:function(data){
 
-                    $('#paymentModal').html(data); 
-                    $('#paymentModal').modal('show');  
+                    $('#paymentModal').html(data);
+                    $('#paymentModal').modal('show');
                     $('.data_preloader').hide();
                 }
             });
@@ -1012,8 +1012,8 @@
                 type:'get',
                 success:function(data){
 
-                    $('#paymentModal').html(data); 
-                    $('#paymentModal').modal('show'); 
+                    $('#paymentModal').html(data);
+                    $('#paymentModal').modal('show');
                     $('.data_preloader').hide();
                 }
             });
@@ -1029,13 +1029,13 @@
                 type:'get',
                 success:function(data){
 
-                    $('#paymentModal').html(data); 
-                    $('#paymentModal').modal('show'); 
+                    $('#paymentModal').html(data);
+                    $('#paymentModal').modal('show');
                     $('.data_preloader').hide();
                 }
             });
         });
-        
+
         //Show payment view modal with data
         $(document).on('click', '#payment_details', function (e) {
             e.preventDefault();
@@ -1044,7 +1044,7 @@
                 url:url,
                 type:'get',
                 success:function(date){
-                    
+
                     $('.payment_details_area').html(date);
                     $('#paymentDetailsModal').modal('show');
                 }
@@ -1053,7 +1053,7 @@
 
         // Print single payment details
         $('#print_payment').on('click', function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
            var body = $('.sale_payment_print_area').html();
             var header = $('.header_area').html();
             var footer = $('.footer_area').html();
@@ -1087,7 +1087,7 @@
                 }
             })
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#payment_deleted_form',function(e){
             e.preventDefault();
@@ -1132,18 +1132,18 @@
         });
 
         $(document).on('click', '.print_challan_btn',function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.challan_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
-                printDelay: 800, 
-                header: null,   
-                footer: null,     
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                removeInline: false,
+                printDelay: 800,
+                header: null,
+                footer: null,
             });
         });
 
@@ -1163,18 +1163,18 @@
                 type: 'get',
                 data: { branch_id, voucher_type, from_date, to_date },
                 success:function(data){
-                    
+
                     $(data).printThis({
-                        debug : false,                   
-                        importCSS : true,                
-                        importStyle : true,          
-                        loadCSS : "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline : false, 
-                        printDelay : 700, 
-                        header : null,        
+                        debug : false,
+                        importCSS : true,
+                        importStyle : true,
+                        loadCSS : "{{asset('public/assets/css/print/sale.print.css')}}",
+                        removeInline : false,
+                        printDelay : 700,
+                        header : null,
                     });
                 }
-            }); 
+            });
         });
 
         //Print purchase Payment report
@@ -1193,19 +1193,19 @@
                 type:'get',
                 data: {branch_id, customer_id, from_date, to_date},
                 success:function(data){
-                    
+
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 500, 
-                        header: "", 
-                        pageTitle: "",   
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 500,
+                        header: "",
+                        pageTitle: "",
                     });
                 }
-            }); 
+            });
         });
 
         //Print Ledger
@@ -1223,16 +1223,16 @@
                 success: function(data) {
 
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",                      
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",
                         removeInline: false,
-                        printDelay: 700, 
-                        header: null,        
+                        printDelay: 700,
+                        header: null,
                     });
                 }
-            }); 
+            });
         });
     </script>
 
@@ -1354,7 +1354,7 @@
     </script>
 
     <script>
-        
+
        function getCustomerAmountsBranchWise(filterObj, showPrefix = 'ledger', is_show_all = true) {
 
             $.ajax({

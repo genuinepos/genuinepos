@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-    
+
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -17,7 +17,7 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -26,12 +26,12 @@
                                     <form id="payment_method_settings_form" action="{{ route('settings.payment.method.settings.update') }}" method="POST">
                                         @csrf
                                         <div class="row">
-                                            <p class="m-0 p-0"><b> Business Location :</b> 
+                                            <p class="m-0 p-0"><b> Business Location :</b>
                                                 @if (auth()->user()->branch_id)
-                                                    
-                                                    {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }} 
+
+                                                    {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
                                                 @else
-                                                
+
                                                     {{ json_decode($generalSettings->business, true)['shop_name'] }}
                                                 @endif
                                             </p>
@@ -54,7 +54,7 @@
                                                                                         <b>{{ $loop->index + 1 }}.</b>
                                                                                     </td>
                                                                                     <td class="text-start">
-                                                                                        {{ $method->name }} 
+                                                                                        {{ $method->name }}
                                                                                         <input type="hidden" name="method_ids[]" value="{{ $method->id }}">
                                                                                     </td>
                                                                                     <td class="text-start">
@@ -88,7 +88,7 @@
                                                                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button></td>
                                                                             </tr>
                                                                         </tfoot>
-                                                                        
+
                                                                     </table>
                                                                     {{-- @foreach ($methods as $method)
                                                                         <div class="input-group mt-1">

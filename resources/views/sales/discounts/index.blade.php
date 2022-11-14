@@ -15,7 +15,7 @@
                                 <span class="fas fa-people-arrows"></span>
                                 <h5>Manage Offer</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
 
@@ -123,7 +123,7 @@
                             <div class="col-md-12">
                                 <label><strong>Products :</strong> </label>
                                 <select name="product_ids[]" class="form-control select2" multiple="multiple" id="product_ids">
-                                   
+
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}">{{ $product->name.' ('.$product->product_code.')' }}</option>
                                     @endforeach
@@ -187,25 +187,25 @@
                                 <div class="input-group mt-1">
                                     <div class="col-12">
                                         <div class="row">
-                                            <p class="checkbox_input_wrap"> 
-                                            <input type="checkbox" name="apply_in_customer_group" id="apply_in_customer_group"> &nbsp; Apply in customer Group</p> 
+                                            <p class="checkbox_input_wrap">
+                                            <input type="checkbox" name="apply_in_customer_group" id="apply_in_customer_group"> &nbsp; Apply in customer Group</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <div class="input-group mt-1">
                                     <div class="col-12">
                                         <div class="row">
-                                            <p class="checkbox_input_wrap"> 
-                                            <input CHECKED type="checkbox" name="is_active" id="is_active"> &nbsp; Is Active </p> 
+                                            <p class="checkbox_input_wrap">
+                                            <input CHECKED type="checkbox" name="is_active" id="is_active"> &nbsp; Is Active </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i
@@ -259,7 +259,7 @@
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             columnDefs: [{"targets": [2, 10, 11],"orderable": false,"searchable": false}],
             columns: [
-               
+
                 {data: 'name',name: 'discounts.name'},
                 {data: 'branch',name: 'branches.name'},
                 {data: 'status',name: 'status'},
@@ -298,7 +298,7 @@
                 $('.loading_button').show();
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
-               
+
                 $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url: url,
@@ -314,14 +314,14 @@
                         $('.submit_button').prop('type', 'submit');
                         $('.brand_category_area').show();
                     },error: function(err) {
-                    
+
                         $('.submit_button').prop('type', 'sumbit');
                         $('.loading_button').hide();
                         $('.error').html('');
 
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                             return;
                         }else if (err.status == 500){
 

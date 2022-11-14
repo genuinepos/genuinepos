@@ -14,7 +14,7 @@
                                 <span class="fas fa-receipt"></span>
                                 <h5>Invoice Schemas</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
@@ -26,7 +26,7 @@
                                     <div class="col-md-6">
                                         <h6>All Invoice Schemas</h6>
                                     </div>
-                               
+
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
@@ -128,7 +128,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
      <!-- Edit Modal -->
      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -143,8 +143,8 @@
                 </div>
             </div>
         </div>
-    </div> 
-    <!-- Modal End--> 
+    </div>
+    <!-- Modal End-->
 
 @endsection
 @push('scripts')
@@ -220,7 +220,7 @@
             }
         });
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function(){
             // Add category by ajax
             $(document).on('submit', '#add_schema_form',function(e){
@@ -297,7 +297,7 @@
                         toastr.success(data);
                         $('.loading_button').hide();
                         table.ajax.reload();
-                        $('#editModal').modal('hide'); 
+                        $('#editModal').modal('hide');
                     },
                     error: function(err) {
                         $('.loading_button').hide();
@@ -310,9 +310,9 @@
             });
 
             $(document).on('click', '#delete',function(e){
-                e.preventDefault(); 
+                e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);       
+                $('#deleted_form').attr('action', url);
                 $.confirm({
                     'title': 'Delete Confirmation',
                     'content': 'Are you sure?',

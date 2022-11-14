@@ -13,11 +13,11 @@
                                 <span class="fas fa-cubes"></span>
                                 <h5>Variants</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                   
+
                     <div class="row mt-1">
                         <div class="col-md-4">
                             <div class="card" id="add_form">
@@ -36,25 +36,25 @@
                                                     data-name="Variant name" id="variant_name" placeholder="Variant Name" />
                                                 <span class="error error_variant_name"></span>
                                             </div>
-                                            
+
                                         </div>
-                
+
                                         <div class="form-group row mt-1">
                                             <label><b>Variant Childs </b>(Values) : <span class="text-danger">*</span></label>
                                             <div class="col-md-10">
                                                 <input required type="text" name="variant_child[]" class="form-control"
                                                     placeholder="Variant child" />
                                             </div>
-                
+
                                             <div class="col-md-2 text-end">
                                                 <a class="btn btn-sm btn-primary add_more_for_add" href="#">+</a>
                                             </div>
                                         </div>
-                
+
                                         <div class="form-group more_variant_child_area">
-                
+
                                         </div>
-                
+
                                         <div class="form-group row mt-3">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i
@@ -83,7 +83,7 @@
                                                 data-name="Brand name" id="e_variant_name" placeholder="Brand Name" />
                                             <span class="error error_e_variant_name"></span>
                                         </div>
-                
+
                                         <div class="form-group row mt-2">
                                             <div class="col-md-12"><b>Variant Childs (Values) :</b> <span class="text-danger">*</span></div>
                                             <div class="col-md-10">
@@ -91,16 +91,16 @@
                                                 <input required type="text" name="variant_child[]" class="form-control"
                                                     id="e_variant_child" placeholder="Variant child" />
                                             </div>
-                
+
                                             <div class="col-md-2 text-end">
                                                 <a class="btn btn-sm btn-primary add_more_for_edit" href="#">+</a>
                                             </div>
                                         </div>
-                
+
                                         <div class="form-group more_variant_child_area_edit">
-                
+
                                         </div>
-                
+
                                         <div class="form-group row mt-2">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i
@@ -114,7 +114,7 @@
                                 </div>
                             </div>
                         </div>
-                      
+
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="section-header">
@@ -122,7 +122,7 @@
                                         <h6>All Variant</h6>
                                     </div>
                                 </div>
-    
+
                                 <div class="widget_content">
                                     <div class="data_preloader">
                                         <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
@@ -137,12 +137,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-    
+
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-    
+
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -174,7 +174,7 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({ headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // call jquery method 
+    // call jquery method
     var add_more_index = 0;
     $(document).ready(function() {
         // add more variant child field
@@ -219,7 +219,7 @@
                 if (inputId !== 'parent_category' && inputId !== 'photo') {
 
                     if (idValue == '') {
-                        
+
                         countErrorField += 1;
                         var fieldName = $('#' + inputId).data('name');
                         $('.error_' + inputId).html(fieldName + ' is required.');
@@ -249,7 +249,7 @@
                     $('.submit_button').prop('type', 'submit');
                     $('.error').html('');
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }
                 }
@@ -359,15 +359,15 @@
         });
 
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.')} 
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.')}
                     }
                 }
             });

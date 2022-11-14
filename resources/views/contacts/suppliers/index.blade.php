@@ -15,7 +15,7 @@
                             <h5>Suppliers</h5>
                         </div>
 
-                        <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                     </div>
 
                     @if ($addons->branches == 1)
@@ -39,7 +39,7 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                        
+
                                                     <div class="col-md-2">
                                                         <label><strong></strong></label>
                                                         <div class="input-group">
@@ -55,7 +55,7 @@
                         @endif
                     @endif
                 </div>
-                
+
                 <div class="row margin_row mt-1">
                     <div class="card">
                         <div class="section-header">
@@ -206,7 +206,7 @@
                                         <input type="number" step="any" name="pay_term_number" class="form-control"
                                         id="pay_term_number" placeholder="Number"/>
                                     </div>
-                                    
+
                                     <div class="col-md-7">
                                         <select name="pay_term" class="form-control">
                                             <option value="">Days/Months</option>
@@ -361,12 +361,12 @@
         $('.data_preloader').show();
         table.ajax.reload();
     });
-    
+
     // Setup ajax for csrf token.
     $.ajaxSetup({ headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
     // call jquery method
-    $(document).ready(function(){ 
+    $(document).ready(function(){
         // Add Supplier by ajax
         $('#add_supplier_form').on('submit', function(e) {
             e.preventDefault();
@@ -375,9 +375,9 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0; 
-                 
+                $('.error').html('');
+                var countErrorField = 0;
+
             $.each(inputs, function(key, val){
 
                 var inputId = $(val).attr('id');
@@ -396,7 +396,7 @@
                 $('.loading_button').hide();
                 return;
             }
-            
+
             $('.submit_button').prop('type', 'button');
             $.ajax({
                 url:url,
@@ -437,8 +437,8 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.edit_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -453,7 +453,7 @@
                 $('.loading_button').hide();
                 return;
             }
-            
+
             $.ajax({
                 url:url,
                 type:'post',

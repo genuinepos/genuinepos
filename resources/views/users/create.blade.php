@@ -18,9 +18,9 @@
                                     <div class="py-2 px-2 form-header">
                                         <div class="row">
                                             <div class="col-6"><h5>Add User</h5></div>
-    
+
                                             <div class="col-6">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
                                         </div>
                                     </div>
@@ -107,7 +107,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-    
+
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label class="col-4"> <span
@@ -120,7 +120,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-    
+
                                             <div class="row mt-2">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
@@ -132,7 +132,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-    
+
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label class="col-4"><b><span
@@ -144,7 +144,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="row mt-2">
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-6 access_branch">
@@ -193,7 +193,7 @@
                                     </div>
 
                                     <div class="element-body">
-                                       
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
@@ -537,7 +537,7 @@
                                     </div>
                                 </div>
                             @endif
-                            
+
                             <div class="col-md-8">
                                 <div class="submit-area py-3 mb-4">
                                     <button type="button" class="btn loading_button d-none"><i
@@ -596,7 +596,7 @@
     });
 
     $('#allow_login').on('click', function () {
-        
+
         if ($(this).is(':CHECKED', true)) {
 
             $('.auth_field_area').show();

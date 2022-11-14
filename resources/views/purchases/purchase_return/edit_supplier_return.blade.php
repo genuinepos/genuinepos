@@ -26,7 +26,7 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -41,7 +41,7 @@
                                                     <input readonly type="text" id="supplier_name" class="form-control" value="{{ $return->supplier->name .'('.$return->supplier->phone.')' }}">
                                                 </div>
                                             </div>
-                                      
+
                                             <div class="input-group mt-1">
                                                 <label class="col-4"><b>Location :</b> </label>
                                                 <div class="col-8">
@@ -49,7 +49,7 @@
                                                     <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
 
                                         <div class="col-md-3">
@@ -61,7 +61,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class="col-4"><b>Warehouse :</b> 
+                                                <label class="col-4"><b>Warehouse :</b>
                                                     <span class="text-danger">*</span>
                                                 </label>
 
@@ -80,7 +80,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Return Date :</b> 
+                                                <label class="col-4"><b>Return Date :</b>
                                                     <span class="text-danger">*</span>
                                                 </label>
 
@@ -108,7 +108,7 @@
                                                     <span class="error error_purchase_return_account_id"></span>
                                                 </div>
                                             </div>
-                                           
+
                                         </div>
 
                                         <div class="col-md-3">
@@ -145,7 +145,7 @@
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>
                                                     </div>
-                                                </div> 
+                                                </div>
                                             </div>
                                         </div>
 
@@ -182,28 +182,28 @@
                                                                             <input type="hidden" id="qty_limit" value="{{ $qty_limits[$index] }}">
                                                                             <input  name="units[]" type="hidden" id="unit" value="{{ $return_product->product->unit->name }}">
                                                                         </td>
-                                
+
                                                                         <td class="text">
                                                                             <input type="number" step="any" name="unit_costs[]" class="form-control" id="unit_cost" value="{{ $return_product->unit_cost }}">
                                                                         </td>
-                                
+
                                                                         <td class="text">
                                                                             <span class="span_warehouse_stock">
                                                                                 {{ $qty_limits[$index] }}/Pieces
                                                                             </span>
                                                                         </td>
-                                                                
+
                                                                         <td>
                                                                             <input value="{{ $return_product->return_qty }}" required name="return_quantities[]" type="text" class="form-control" id="return_quantity">
                                                                         </td>
-                                                                    
+
                                                                         <td class="text">
                                                                             <strong>
                                                                                 <span class="span_return_subtotal">{{ $return_product->return_subtotal }}</span>
                                                                             </strong>
                                                                             <input type="hidden" name="return_subtotals[]" id="return_subtotal" value="{{ $return_product->return_subtotal }}">
                                                                         </td>
-                                                                    
+
                                                                         <td>
                                                                             <a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>
                                                                         </td>
@@ -278,7 +278,7 @@
                         <button id="save" class="btn btn-sm btn-primary float-end">Save (Shift+Enter)</button>
                     </div>
                 </div>
-                
+
             </form>
         </div>
     </div>
@@ -308,29 +308,29 @@
             var warehouse_id = $('#warehouse_id').val() ? $('#warehouse_id').val() : 'no_id';
             delay(function() { searchProduct(__product_code, warehouse_id); }, 150); //sendAjaxical is the name of remote-command
         });
-      
+
         // add purchase product by searching product code
         function searchProduct(product_code, warehouse_id){
 
             $.ajax({
 
-                url:"{{url('purchases/returns/search/product')}}" + "/" + product_code + "/" + warehouse_id,  
-                
+                url:"{{url('purchases/returns/search/product')}}" + "/" + product_code + "/" + warehouse_id,
+
                 dataType: 'json',
 
                 success:function(product){
 
                     if(!$.isEmptyObject(product.errorMsg)){
 
-                        toastr.error(product.errorMsg); 
+                        toastr.error(product.errorMsg);
                         return;
                     }
 
                     var qty_limit = product.qty_limit;
 
                     if(
-                        !$.isEmptyObject(product.product) || 
-                        !$.isEmptyObject(product.variant_product) || 
+                        !$.isEmptyObject(product.product) ||
+                        !$.isEmptyObject(product.variant_product) ||
                         !$.isEmptyObject(product.namedProducts)
                     ) {
 
@@ -367,7 +367,7 @@
 
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#return_quantity').val(parseFloat(updateQty).toFixed(2));
-                                        
+
                                         //Update Subtotal
                                         var unitCost = closestTr.find('#unit_cost').val();
                                         var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
@@ -384,7 +384,7 @@
                                     tr += '<tr>';
                                     tr += '<td class="text">';
                                     tr += '<span class="product_name">'+product.name+'</span>';
-                                    tr += '<span class="product_variant"></span>'; 
+                                    tr += '<span class="product_variant"></span>';
                                     tr += '<span class="product_code">'+' ('+product.product_code+')'+'</span>';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -398,16 +398,16 @@
                                     tr += '</td>';
 
                                     tr += '<td class="text"><span class="span_warehouse_stock">'+qty_limit+'/'+product.unit.name+'</span></td>';
-                                
+
                                     tr += '<td>';
                                     tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control" id="return_quantity" autocomplete="off">';
                                     tr += '</td>';
-                                    
+
                                     tr += '<td class="text">';
-                                    tr += '<span class="span_return_subtotal">'+product.product_cost_with_tax+'</span>'; 
+                                    tr += '<span class="span_return_subtotal">'+product.product_cost_with_tax+'</span>';
                                     tr += '<input value="'+product.product_cost_with_tax+'" name="return_subtotals[]" type="hidden" id="return_subtotal">';
                                     tr += '</td>';
-                                    
+
                                     tr += '<td>';
                                     tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                                     tr += '</td>';
@@ -467,16 +467,16 @@
                                         calculateTotalAmount();
                                         return;
                                     }
-                                }    
+                                }
                             });
-                        
+
                             if(sameVariant == 0){
 
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td colspan="2" class="text">';
                                 tr += '<span class="product_name">'+variant_product.product.name+'</span>';
-                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
+                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>';
                                 tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
@@ -499,7 +499,7 @@
                                 tr += '</td>';
 
                                 tr += '<td class="text">';
-                                tr += '<span class="span_return_subtotal">'+variant_product.variant_cost_with_tax+'</span>'; 
+                                tr += '<span class="span_return_subtotal">'+variant_product.variant_cost_with_tax+'</span>';
                                 tr += '<input value="'+variant_product.variant_cost_with_tax+'" name="return_subtotals[]" type="hidden" id="return_subtotal">';
                                 tr += '</td>';
 
@@ -509,14 +509,14 @@
                                 tr += '</tr>';
                                 $('#purchase_return_list').append(tr);
                                 calculateTotalAmount();
-                            }    
+                            }
                         }else if (!$.isEmptyObject(product.namedProducts)) {
 
                             if(product.namedProducts.length > 0){
 
                                 var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
                                 var li = "";
-                                var products = product.namedProducts; 
+                                var products = product.namedProducts;
 
                                 $.each(products, function (key, product) {
 
@@ -592,7 +592,7 @@
                                     var updateQty = parseFloat(presentQty) + 1;
 
                                     closestTr.find('#return_quantity').val(parseFloat(updateQty).toFixed(2));
-                                    
+
                                     //Update Subtotal
                                     var unitCost = closestTr.find('#unit_cost').val();
                                     var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
@@ -601,7 +601,7 @@
                                     calculateTotalAmount();
                                     return;
                                 }
-                            }    
+                            }
                         });
 
                         if(sameProduct == 0){
@@ -610,7 +610,7 @@
                             tr += '<tr>';
                             tr += '<td class="text">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant"></span>'; 
+                            tr += '<span class="product_variant"></span>';
                             tr += '<span class="product_code"></span>';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -630,7 +630,7 @@
                             tr += '</td>';
 
                             tr += '<td class="text">';
-                            tr += '<span class="span_return_subtotal">'+p_cost+'</span>'; 
+                            tr += '<span class="span_return_subtotal">'+p_cost+'</span>';
                             tr += '<input value="'+p_cost+'" name="return_subtotals[]" type="hidden" id="return_subtotal">';
                             tr += '</td>';
 
@@ -643,7 +643,7 @@
                         }
                     }else{
 
-                        toastr.error(stock.errorMsg);   
+                        toastr.error(stock.errorMsg);
                     }
                 }
             });
@@ -701,7 +701,7 @@
 
                                     var updateQty = parseFloat(presentQty) + 1;
                                     closestTr.find('#return_quantity').val(parseFloat(updateQty).toFixed(2));
-                                    
+
                                     //Update Subtotal
                                     var unitCost = closestTr.find('#unit_cost').val();
                                     var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
@@ -710,7 +710,7 @@
                                     calculateTotalAmount();
                                     return;
                                 }
-                            }    
+                            }
                         });
 
                         if(sameVariant == 0){
@@ -720,7 +720,7 @@
 
                             tr += '<td class="text">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
+                            tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>';
                             tr += '<span class="product_code">'+'('+variant_code+')'+'</span>';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
@@ -740,7 +740,7 @@
                             tr += '</td>';
 
                             tr += '<td class="text">';
-                            tr += '<span class="span_return_subtotal">' + variant_cost + '</span>'; 
+                            tr += '<span class="span_return_subtotal">' + variant_cost + '</span>';
                             tr += '<input value="'+variant_cost+'" name="return_subtotals[]" type="hidden" id="return_subtotal">';
                             tr += '</td>';
 
@@ -753,7 +753,7 @@
                         }
                     } else {
 
-                        toastr.error(stock.errorMsg);    
+                        toastr.error(stock.errorMsg);
                     }
                 }
             });
@@ -762,7 +762,7 @@
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
             var subtotals = document.querySelectorAll('#return_subtotal');
-            
+
             // Update Net total Amount
             var netTotalAmount = 0;
             subtotals.forEach(function(subtotal){
@@ -770,7 +770,7 @@
                 netTotalAmount += parseFloat(subtotal.value);
             });
 
-            var purchaseTaxAmount = $('#purchase_tax_amount').val() ? $('#purchase_tax_amount').val() : 0; 
+            var purchaseTaxAmount = $('#purchase_tax_amount').val() ? $('#purchase_tax_amount').val() : 0;
 
             var calcTotalReturnAmount = parseFloat(netTotalAmount) + parseFloat(purchaseTaxAmount);
 
@@ -783,7 +783,7 @@
         $(document).on('input', '#return_quantity', function(){
             var qty = $(this).val() ? $(this).val() : 0;
             var tr = $(this).closest('tr');
-            //Update subtotal 
+            //Update subtotal
             var qty_limit = tr.find('#qty_limit').val();
             var previous_qty = tr.find('#previous_quantity').val();
             var __qty_limit = parseFloat(qty_limit) + parseFloat(previous_qty);
@@ -799,7 +799,7 @@
                 var calcReturnSubtotal = parseFloat(unitCost) * parseFloat(qty_limit);
                 tr.find('#return_subtotal').val(parseFloat(calcReturnSubtotal).toFixed(2));
                 tr.find('.span_return_subtotal').html(parseFloat(calcReturnSubtotal).toFixed(2));
-                calculateTotalAmount();  
+                calculateTotalAmount();
                 return;
             }else{
 
@@ -808,7 +808,7 @@
                 tr.find('#return_subtotal').val(parseFloat(calcReturnSubtotal).toFixed(2));
                 tr.find('.span_return_subtotal').html(parseFloat(calcReturnSubtotal).toFixed(2));
                 calculateTotalAmount();
-            } 
+            }
         });
 
         // Edit purchase price
@@ -832,7 +832,7 @@
         $(document).on('change', '#purchase_tax', function(){
 
             var purchaseTax = $(this).val() ? $(this).val() : 0;
-            
+
             var totalReturnAmount = $('#total_return_amount').val();
 
             var calcPurchaseTaxAmount = parseFloat(totalReturnAmount) / 100 * parseFloat(purchaseTax);
@@ -843,14 +843,14 @@
             calculateTotalAmount();
         });
 
-        // Dispose Select area 
+        // Dispose Select area
         $(document).on('click', '.remove_select_area_btn', function(e){
             e.preventDefault();
 
             $('.select_area').hide();
         });
 
-        // Remove product form purchase product list (Table) 
+        // Remove product form purchase product list (Table)
         $(document).on('click', '#remove_product_btn',function(e){
             e.preventDefault();
 
@@ -863,7 +863,7 @@
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
-          
+
             $.ajax({
                 url:url,
                 type:'post',
@@ -875,12 +875,12 @@
 
                     if(!$.isEmptyObject(data.errorMsg)){
 
-                        toastr.error(data.errorMsg,'ERROR'); 
+                        toastr.error(data.errorMsg,'ERROR');
                         $('.loading_button').hide();
                     } else {
 
                         $('.loading_button').hide();
-                        toastr.success(data); 
+                        toastr.success(data);
                         window.location = "{{ route('purchases.returns.index') }}"
                     }
                 },error: function(err) {
@@ -890,15 +890,15 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     } else if(err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support team.'); 
+                        toastr.error('Server error. Please contact to the support team.');
                         return;
                     }
 
-                    toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
 
                     $.each(err.responseJSON.errors, function(key, error) {
 
@@ -908,10 +908,10 @@
             });
         });
 
-        // Automatic remove searching product is found signal 
+        // Automatic remove searching product is found signal
         setInterval(function(){
             $('#search_product').removeClass('is-invalid');
-        }, 500); 
+        }, 500);
 
         setInterval(function(){
             $('#search_product').removeClass('is-valid');
@@ -919,7 +919,7 @@
 
         $('body').keyup(function(e) {
             e.preventDefault();
-            if (e.keyCode == 13){  
+            if (e.keyCode == 13){
                 $(".selectProduct").click();
                 $('#list').empty();
             }
@@ -928,7 +928,7 @@
         $(document).keypress(".scanable",function(event){
 
             if (event.which == '10' || event.which == '13') {
-                
+
                 event.preventDefault();
             }
         });

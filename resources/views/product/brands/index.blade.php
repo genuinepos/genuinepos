@@ -12,7 +12,7 @@
                                 <span class="fas fa-band-aid"></span>
                                 <h5>Brands</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
 
@@ -29,19 +29,19 @@
                                     <div class="form-area px-3 pb-2">
                                         <form id="add_brand_form" action="{{ route('product.brands.store') }}">
                                             <div class="form-group">
-                                                <label><b>@lang('brand.name') :</b> <span class="text-danger">*</span></label> 
+                                                <label><b>@lang('brand.name') :</b> <span class="text-danger">*</span></label>
                                                 <input type="text" name="name" class="form-control  add_input" data-name="Brand name" id="name"
                                                     placeholder="Brand Name" />
                                                 <span class="error error_name"></span>
                                             </div>
-                    
+
                                             <div class="form-group mt-1">
-                                                <label><b>@lang('brand.brand_photo') :</b></label> 
+                                                <label><b>@lang('brand.brand_photo') :</b></label>
                                                 <input type="file" name="photo" class="form-control" data-max-file-size="2M" id="photo"
                                                     accept=".jpg, .jpeg, .png, .gif">
                                                 <span class="error error_photo"></span>
                                             </div>
-                    
+
                                             <div class="form-group mt-2">
                                                 <div class="col-md-12">
                                                     <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -108,7 +108,7 @@
         // Get all brands by ajax
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 //{extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -138,7 +138,7 @@
             }
         });
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function() {
             // Add brand by ajax
             $('#add_brand_form').on('submit', function(e) {
@@ -204,8 +204,8 @@
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
                 var inputs = $('.edit_input');
-                    $('.error').html('');  
-                    var countErrorField = 0;  
+                    $('.error').html('');
+                    var countErrorField = 0;
                 $.each(inputs, function(key, val){
                     var inputId = $(val).attr('id');
                     var idValue = $('#'+inputId).val()
@@ -213,7 +213,7 @@
                         countErrorField += 1;
                         var fieldName = $('#'+inputId).data('name');
                         $('.error_'+inputId).html(fieldName+' is required.');
-                    } 
+                    }
                 });
                 if(countErrorField > 0){
                     $('.loading_button').hide();
@@ -240,7 +240,7 @@
             $(document).on('click', '#delete',function(e){
                 e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);           
+                $('#deleted_form').attr('action', url);
                 $.confirm({
                     'title': '@lang("brand.delete_alert")',
                     'content': 'Are you sure?',

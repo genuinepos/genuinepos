@@ -1,5 +1,5 @@
 @extends('layout.master')
-@push('stylesheets') 
+@push('stylesheets')
     <style>
         table.display td input {height: 26px!important; padding: 3px;}
         span.input-group-text-custom {font-size: 11px;padding: 4px;}
@@ -22,7 +22,7 @@
                                     <div class="row">
                                         <div class="col-6"><h5>Edit Production</h5></div>
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -148,7 +148,7 @@
                                                                     <tr class="text-start">
                                                                         <td>
                                                                             <span class="product_name">{{ $ingredient->product->name }}</span><br>
-                                                                            <span class="product_variant">{{ $ingredient->variant_id ? $ingredient->variant->variant_name : '' }}</span>  
+                                                                            <span class="product_variant">{{ $ingredient->variant_id ? $ingredient->variant->variant_name : '' }}</span>
                                                                             <input value="{{ $ingredient->product_id }}" type="hidden" class="productId-{{ $ingredient->product_id }}" id="product_id" name="product_ids[]">
                                                                             <input value="{{ $ingredient->variant_id ? $ingredient->variant_id : 'noid' }}" type="hidden" id="variant_id" name="variant_ids[]">
                                                                             <input value="{{ $ingredient->unit->id }}" name="unit_ids[]" type="hidden" step="any" id="unit_id">
@@ -162,7 +162,7 @@
                                                                                 <input value="{{ $ingredient->parameter_quantity }}" name="parameter_input_quantities[]" type="hidden" id="parameter_input_quantity">
                                                                                 <div class="input-group-prepend">
                                                                                     <span class="input-group-text input-group-text-custom">{{ $ingredient->unit->name }}</span>
-                                                                                </div> 
+                                                                                </div>
                                                                                 &nbsp;<strong><p class="text-danger m-0 p-0" id="input_qty_error"></p></strong>
                                                                             </div>
                                                                         </td>
@@ -225,7 +225,7 @@
                                                 <div class="col-md-8">
                                                     <input type="number" step="any" name="wasted_quantity" class="form-control" id="wasted_quantity" value="{{ $production->wasted_quantity }}">
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
 
@@ -245,10 +245,10 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>Additional Cost :</b></label>
                                                 <div class="col-md-8">
-                                                    <input name="production_cost" type="number" class="form-control" id="production_cost" value="{{ $production->production_cost }}"> 
+                                                    <input name="production_cost" type="number" class="form-control" id="production_cost" value="{{ $production->production_cost }}">
                                                 </div>
-                                            </div> 
-                                        </div> 
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="row mt-1">
@@ -258,7 +258,7 @@
                                                 <div class="col-md-8">
                                                     <input readonly type="number" step="any" name="total_cost" class="form-control" id="total_cost" value="{{ $production->total_cost }}" tabindex="-1">
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -284,7 +284,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                
+
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
@@ -342,8 +342,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p class="float-end is_final"> 
-                                        <input type="checkbox" {{ $production->is_final == 1 ? 'CHECKED' : ''}} name="is_final" id="is_final"> &nbsp; <b> Finalize</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Once finalized all ingredient stock will be deducted & production item stock will be increased and production item unit cost, price will be updated as well as editing of production will not be allowed." class="fas fa-info-circle tp"></i></p> 
+                                    <p class="float-end is_final">
+                                        <input type="checkbox" {{ $production->is_final == 1 ? 'CHECKED' : ''}} name="is_final" id="is_final"> &nbsp; <b> Finalize</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Once finalized all ingredient stock will be deducted & production item stock will be increased and production item unit cost, price will be updated as well as editing of production will not be allowed." class="fas fa-info-circle tp"></i></p>
                                 </div>
                             </div>
 
@@ -389,7 +389,7 @@
             var stockWarehouseId = $('#stock_warehouse_id').val() ? $('#stock_warehouse_id').val() : null;
             @if (count($warehouses) > 0)
                 if (stockWarehouseId == null) {
-                    toastr.error('Ingredials Stock Location must not be empty.'); 
+                    toastr.error('Ingredials Stock Location must not be empty.');
                     var processId = $(this).val('');
                     return;
                 }
@@ -556,7 +556,7 @@
             var value = $(this).val();
             $('#action_type').val(value);
         });
-        
+
         //Add process request by ajax
         $('#update_production_form').on('submit', function(e) {
             e.preventDefault();
@@ -605,9 +605,9 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                     }else{
-                        
+
                         toastr.error('Server error please contact to the support.');
                     }
                 }

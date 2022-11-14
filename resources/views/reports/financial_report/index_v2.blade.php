@@ -16,7 +16,7 @@
                                 <h5>Financial Report</h5>
                             </div>
 
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         <div class="row">
@@ -114,10 +114,10 @@
                                                                     <strong>ASSET :</strong>
                                                                 </th>
                                                             </tr>
-                                                            
+
                                                             <tr>
                                                                 <td class="text-start">
-                                                                    <em>Fixed Asset :</em> 
+                                                                    <em>Fixed Asset :</em>
                                                                 </td>
                                                                 <td class="text-start"><b><em>0.00</em></b>  </td>
                                                             </tr>
@@ -130,31 +130,31 @@
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                    <em>Total Sale:</em>  
+                                                                    <em>Total Sale:</em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em></b>  
+                                                                    <b><em>0.00</em></b>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                    <em>Total Sale Due :</em>  
+                                                                    <em>Total Sale Due :</em>
                                                                 </td>
-                                    
+
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em></b>    
+                                                                    <b><em>0.00</em></b>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                    <em>Total Sale Return :</em>  
+                                                                    <em>Total Sale Return :</em>
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>   
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -166,13 +166,13 @@
 
                                                             <tr>
                                                                 <td class="text-start">
-                                                                   <em>Total Purchase :</em>   
+                                                                   <em>Total Purchase :</em>
                                                                 </td>
 
                                                                 <td class="text-start">
                                                                     <b><em>0.00</em> </b>
                                                                 </td>
-                                                            </tr> 
+                                                            </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
@@ -180,9 +180,9 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
-                                                            </tr> 
+                                                            </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
@@ -190,15 +190,15 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
-                                                            </tr> 
+                                                            </tr>
 
                                                             <tr>
                                                                 <th class="text-start bg-secondary text-white" colspan="2">
                                                                     <strong>EXPENSES :</strong>
                                                                 </th>
-                                                            </tr> 
+                                                            </tr>
 
                                                             <tr>
                                                                 <td class="text-start">
@@ -206,7 +206,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -216,7 +216,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -232,7 +232,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -242,7 +242,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -252,7 +252,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -268,7 +268,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -278,7 +278,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -288,7 +288,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -304,7 +304,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -314,7 +314,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -324,7 +324,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -340,7 +340,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -350,7 +350,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -360,7 +360,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -376,7 +376,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
 
@@ -386,7 +386,7 @@
                                                                 </td>
 
                                                                 <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
+                                                                    <b><em>0.00</em> </b>
                                                                 </td>
                                                             </tr>
                                                         </tbody>

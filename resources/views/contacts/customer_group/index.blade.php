@@ -13,7 +13,7 @@
                                 <span class="fas fa-desktop"></span>
                                 <h5>Customer Group</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
@@ -35,13 +35,13 @@
                                                 data-name="Group name" id="name" placeholder="Group name" />
                                             <span class="error error_name"></span>
                                         </div>
-                
+
                                         <div class="form-group mt-2">
                                             <label><strong>Calculation Percent (%) :</strong></label>
                                             <input type="number" step="any" name="calculation_percent" class="form-control" step="any"
                                                 id="calculation_percent" placeholder="Calculation Percent" autocomplete="off" />
                                         </div>
-                
+
                                         <div class="form-group row mt-3">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -69,13 +69,13 @@
                                                 data-name="Group name" id="e_name" placeholder="Group name" />
                                             <span class="error error_e_name"></span>
                                         </div>
-                
+
                                         <div class="form-group mt-2">
                                             <label><strong>Calculation Percent (%) :</strong></label>
                                             <input type="number" step="any" name="calculation_percent" class="form-control"
                                                 id="e_calculation_percent" placeholder="Calculation Percent" />
                                         </div>
-                
+
                                         <div class="form-group row mt-3">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i
@@ -96,7 +96,7 @@
                                         <h6>All Customer Groups</h6>
                                     </div>
                                 </div>
-    
+
                                 <div class="widget_content">
                                     <div class="data_preloader">
                                         <h6><i class="fas fa-spinner"></i> Processing...</h6>
@@ -112,12 +112,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-    
+
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-    
+
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -153,7 +153,7 @@
             }
         });
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function() {
             // Add Customer Group by ajax
             $('#add_group_form').on('submit', function(e) {
@@ -250,7 +250,7 @@
             $(document).on('click', '#delete',function(e){
                 e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);           
+                $('#deleted_form').attr('action', url);
                 $.confirm({
                     'title': 'Delete Confirmation',
                     'message': 'Are you sure?',

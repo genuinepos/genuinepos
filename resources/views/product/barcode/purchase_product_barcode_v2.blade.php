@@ -1,5 +1,5 @@
 @extends('layout.master')
-@push('stylesheets') 
+@push('stylesheets')
     <style>
          .select_area {background: #ffffff;box-sizing: border-box;position: absolute;width: 64.2%;z-index: 9999999;padding: 0;left: 17.9%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
         .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
@@ -20,7 +20,7 @@
                                 <span class="fas fa-shopping-cart"></span>
                                 <h5>Generate Barcode</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back </a>
                         </div>
                     </div>
@@ -165,19 +165,19 @@
                     var tr = '';
                     tr += '<tr>';
                     tr += '<td class="text-start">';
-                    tr += '<span class="span_product_name">'+p_product.product.name+'</span>';  
+                    tr += '<span class="span_product_name">'+p_product.product.name+'</span>';
                     if (p_product.product_variant_id != null) {
                         tr += '<span class="span_variant_name">'+' - '+p_product.variant.variant_name+'</span>';
                     }else{
                         tr += '<span class="span_product_code"></span>';
-                    } 
-                        
+                    }
+
                     if (p_product.product_variant_id != null) {
                         tr += '<span class="span_product_code">'+' ('+p_product.variant.variant_code+')'+'</span>';
                     }else{
                         tr += '<span class="span_product_code">'+' ('+p_product.product.product_code+')'+'</span>';
                     }
-                    
+
                     var variant_id = p_product.product_variant_id != null ? p_product.product_variant_id : null;
                     tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+p_product.product.id+p_product.purchase.supplier_id+variant_id+'" id="product_id" value="'+p_product.product.id+'">';
                     tr += '<input type="hidden" name="product_name[]" id="product_name" value="'+p_product.product.name+'">';
@@ -205,9 +205,9 @@
                             tax_amount = parseFloat(p_product.product.product_price) - parseFloat(calcAmount);
                             priceIncTax = parseFloat(p_product.product.product_price) + parseFloat(tax_amount);
                         }
-                        tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2)+'">'; 
+                        tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
                     }
-                    
+
                     tr += '<input type="hidden" name="product_tax[]" value="'+p_product.unit_tax_percent+'">';
                     tr += '<input type="hidden" name="tax_type[]" value="'+p_product.product.tax_type+'">';
                     tr += '</td>';
@@ -262,7 +262,7 @@
         });
     });
 
-    // Searcha product 
+    // Searcha product
     $('#search_product').on('input', function () {
        var searchKeyWord = $(this).val();
        $('.product_dropdown_list').empty();
@@ -294,7 +294,7 @@
         });
     });
 
-    //Get Seleled product requested by ajax 
+    //Get Seleled product requested by ajax
     $(document).on('click', '.select_product', function(e) {
         e.preventDefault();
         var product_id = $(this).data('p_id');
@@ -326,7 +326,7 @@
                     var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
                     var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
                     var sameProduct = rows.filter(function (row) {
-                        return row.productPrefix == createPrefix; 
+                        return row.productPrefix == createPrefix;
                     });
 
                     if (sameProduct.length > 0) {
@@ -338,13 +338,13 @@
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="text-start">';
-                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>'; 
+                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';
 
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_variant_name">'+' - '+sProduct.variant.variant_name+'</span>';
                         }else{
                             tr += '<span class="span_product_code"></span>';
-                        } 
+                        }
 
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_product_code">'+' ('+sProduct.variant.variant_code+')'+'</span>';
@@ -368,8 +368,8 @@
                             priceIncTax = parseFloat(sProduct.product.product_price) + parseFloat(tax_amount);
                         }
 
-                        tr += '<input type="hidden" name="product_price[]" value="'+ parseFloat(priceIncTax).toFixed(2)+'">'; 
-                        
+                        tr += '<input type="hidden" name="product_price[]" value="'+ parseFloat(priceIncTax).toFixed(2)+'">';
+
                         tr += '<input type="hidden" name="product_tax[]" value="'+ tax +'">';
                         tr += '<input type="hidden" name="tax_type[]" value="'+sProduct.product.tax_type+'">';
                         tr += '</td>';
@@ -400,7 +400,7 @@
         });
     });
 
-    //Get Seleled product requested by ajax 
+    //Get Seleled product requested by ajax
     $(document).on('click', '.select_variant_product', function(e) {
         e.preventDefault();
         $('.select_area').hide();
@@ -432,7 +432,7 @@
                     var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
                     var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
                     var sameProduct = rows.filter(function (row) {
-                       return row.productPrefix == createPrefix; 
+                       return row.productPrefix == createPrefix;
                     });
 
                     if (sameProduct.length > 0) {
@@ -444,19 +444,19 @@
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="text-start">';
-                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';  
+                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_variant_name">'+' - '+sProduct.variant.variant_name+'</span>';
                         }else{
                             tr += '<span class="span_product_code"></span>';
-                        } 
+                        }
 
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_product_code">'+' ('+sProduct.variant.variant_code+')'+'</span>';
                         }else{
                             tr += '<span class="span_product_code">'+' ('+sProduct.product.product_code+')'+'</span>';
                         }
-                        
+
                         var variant_id = sProduct.product_variant_id != null ? sProduct.product_variant_id : null;
                         tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+sProduct.product.id+sProduct.supplier_id+variant_id+'" id="product_id" value="'+sProduct.product.id+'">';
                         tr += '<input type="hidden" name="product_name[]" value="'+sProduct.product.name+'">';
@@ -473,7 +473,7 @@
                         }
 
                         tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
-                        
+
                         tr += '<input type="hidden" name="product_tax[]" value="'+tax+'">';
                         tr += '<input type="hidden" name="tax_type[]" value="'+sProduct.product.tax_type+'">';
                         tr += '</td>';
@@ -504,7 +504,7 @@
         });
     });
 
-    // Dispose Select area 
+    // Dispose Select area
     $(document).on('click', '.remove_select_area_btn', function(e){
         e.preventDefault();
         $('.select_area').hide();
@@ -513,12 +513,12 @@
     // Generate confirm request send by ajax
     $(document).on('click', '.remove_btn',function (e) {
         e.preventDefault();
-        var tr = $(this).closest('tr').remove(); 
+        var tr = $(this).closest('tr').remove();
     })
 
     $(document).on('click', '.multiple_completed',function(e){
         e.preventDefault();
-        $('#action').val('multipla_deactive');         
+        $('#action').val('multipla_deactive');
         $.confirm({
             'title': 'Delete Confirmation',
             'content': 'Once deleted, you will not be able to recover this file!',
@@ -533,7 +533,7 @@
                     'class': 'no btn-danger',
                     'action': function() {
                         // alert('Deleted canceled.')
-                    } 
+                    }
                 }
             }
         });
@@ -570,7 +570,7 @@
         var total_qty = 0;
         quantities.forEach(function(qty){
             total_qty += parseFloat(qty.value)
-        }); 
+        });
         console.log(total_qty);
         if (parseFloat(total_qty) == 0) {
             toastr.error('Total barcode label Quantity is 0');

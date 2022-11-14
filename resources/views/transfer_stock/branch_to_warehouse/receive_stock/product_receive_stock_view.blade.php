@@ -22,21 +22,21 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="element-body">
                                     <p class="m-0"><strong>Transfer Stock Details </strong></p>
                                     <hr class="m-1">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="m-0"><strong>Reference ID: </strong> <span class="transfer_invoice_id"></span> </p> 
-                                            <p class="m-0"><strong>Date: </strong> <span class="transfer_date"></span></p> 
+                                            <p class="m-0"><strong>Reference ID: </strong> <span class="transfer_invoice_id"></span> </p>
+                                            <p class="m-0"><strong>Date: </strong> <span class="transfer_date"></span></p>
                                          </div>
                                          <div class="col-md-6">
-                                             <p class="m-0"><strong>Warehouse (From) : </strong> <span class="warehouse"></span> </p> 
+                                             <p class="m-0"><strong>Warehouse (From) : </strong> <span class="warehouse"></span> </p>
                                              <p class="m-0"><strong>Business Location : </strong> <span class="branch"></span></p>
                                          </div>
                                     </div>
@@ -67,7 +67,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="send_stock_list">
-                                                               
+
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -145,17 +145,17 @@
                     tr += '<a href="#" id="edit_product">';
                     tr += '<span class="product_name">'+sendProduct.product.name+'</span>';
                     var variant = sendProduct.product_variant_id != null ? ' -'+sendProduct.variant.variant_name+'- ' : '';
-                    tr += '<span class="product_variant">'+variant+'</span>'; 
+                    tr += '<span class="product_variant">'+variant+'</span>';
                     var code = sendProduct.product_variant_id != null ? sendProduct.variant.variant_code : sendProduct.product.product_code;
                     tr += '<span class="product_code">'+'('+code+')'+'</span>';
                     tr += '</a>';
                     tr += '<input value="'+sendProduct.product_id+'" type="hidden" class="productId-'+sendProduct.product_id+'" id="product_id" name="product_ids[]">';
 
                     if (sendProduct.product_variant_id != null) {
-                        tr += '<input value="'+sendProduct.product_variant_id+'" type="hidden" class="variantId-'+sendProduct.product_variant_id+'" id="variant_id" name="variant_ids[]">'; 
+                        tr += '<input value="'+sendProduct.product_variant_id+'" type="hidden" class="variantId-'+sendProduct.product_variant_id+'" id="variant_id" name="variant_ids[]">';
                     }else{
-                        tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';  
-                    }   
+                        tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
+                    }
                     tr += '<input type="hidden" id="unit" value="'+sendProduct.unit+'">';
                     tr += '<input type="hidden" name="previous_received_quantities[]" id="previous_received_quantity" value="'+sendProduct.received_qty+'">';
                     tr += '<input type="hidden" id="qty_limit" value="'+sendProduct.quantity+'">';
@@ -211,19 +211,19 @@
                 alert('Only - '+qty_limit+' '+unit+' is available.');
                 $(this).val(qty_limit);
                 tr.find('#pending_qty').html(parseFloat(0).toFixed(2));
-                calculateTotalAmount(); 
+                calculateTotalAmount();
                 return;
             }
-            calculateTotalAmount();  
+            calculateTotalAmount();
         }
     });
-   
+
     //Add purchase request by ajax
     $('#receive_stock_form').on('submit', function(e){
         e.preventDefault();
         var totalItem = $('#total_item').val();
         if (parseFloat(totalItem) == 0) {
-            toastr.error('Transfer product table is empty.','Some thing went wrong.'); 
+            toastr.error('Transfer product table is empty.','Some thing went wrong.');
             return;
         }
         $('.loading_button').show();
@@ -231,8 +231,8 @@
         var request = $(this).serialize();
         var inputs = $('.add_input');
             inputs.removeClass('is-invalid');
-            $('.error').html('');  
-            var countErrorField = 0;  
+            $('.error').html('');
+            var countErrorField = 0;
         $.each(inputs, function(key, val){
             var inputId = $(val).attr('id');
             var idValue = $('#'+inputId).val();
@@ -245,7 +245,7 @@
 
         if(countErrorField > 0){
             $('.loading_button').hide();
-            toastr.error('Please check again all form fields.','Some thing went wrong.'); 
+            toastr.error('Please check again all form fields.','Some thing went wrong.');
             return;
         }
 
@@ -256,11 +256,11 @@
             success:function(data){
                 console.log(data);
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 }else{
                     $('.loading_button').hide();
-                    toastr.success(data.successMsg); 
+                    toastr.success(data.successMsg);
                     window.location = "{{route('transfer.stocks.to.warehouse.receive.stock.index')}}";
                 }
             }

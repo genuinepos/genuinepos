@@ -42,14 +42,14 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <p><b>User Name :</b> {!! $user->username ? $user->username : '<span class="badge bg-secondary">Not-Allowed-to-Login</span>' !!} </p>
-                                                <p><b>Role :</b>  
+                                                <p><b>Role :</b>
                                                     @if ($user->role_type == 1)
                                                         Super-Admin
-                                                    @elseif($user->role_type == 2)  
-                                                        Admin 
-                                                    @elseif($user->role_type == 3)  
+                                                    @elseif($user->role_type == 2)
+                                                        Admin
+                                                    @elseif($user->role_type == 3)
                                                         {{ $user->role->name }}
-                                                    @else 
+                                                    @else
                                                         <span class="badge bg-warning">No-Role</span>
                                                     @endif
                                                 </p>

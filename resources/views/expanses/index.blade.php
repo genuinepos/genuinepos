@@ -14,7 +14,7 @@
                                 <span class="fas fa-money-bill"></span>
                                 <h5>Expenses</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         <div class="row">
@@ -26,7 +26,7 @@
                                                 @if ($addons->branches == 1)
 
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    
+
                                                         <div class="col-md-2">
                                                             <label><strong>Business Location :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
@@ -231,7 +231,7 @@
     <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        
+
         @if (Session::has('errorMsg'))
             toastr.error("{{ session('errorMsg') }}");
         @endif
@@ -438,7 +438,7 @@
                 }
             })
         });
-        
+
         $(document).on('click', '#delete_payment',function(e){
             e.preventDefault();
             var url = $(this).attr('href');

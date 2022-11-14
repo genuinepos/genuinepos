@@ -12,11 +12,11 @@
                                 <span class="fas fa-cubes"></span>
                                 <h5>Cash Counters</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                 
+
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
@@ -24,14 +24,14 @@
                                     <div class="col-md-6">
                                         <h6>All Cash Counter</h6>
                                     </div>
-                               
+
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
                                                     class="fas fa-plus-square"></i> Add</a>
                                         </div>
                                     </div>
-                                  
+
                                 </div>
 
                                 <div class="widget_content">
@@ -129,7 +129,7 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -154,7 +154,7 @@
             }
         });
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function() {
             // Add category by ajax
             $(document).on('submit', '#add_cash_counter_form', function(e) {
@@ -190,7 +190,7 @@
 
                             $('.error_' + key + '').html(error[0]);
                         });
-                        
+
                         $('.submit_button').prop('type', 'submit');
                     }
                 });
@@ -237,9 +237,9 @@
             });
 
             $(document).on('click', '#delete',function(e){
-                e.preventDefault(); 
+                e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);       
+                $('#deleted_form').attr('action', url);
                 $.confirm({
                     'title': 'Delete Confirmation',
                     'content': 'Are you sure?',
@@ -254,7 +254,7 @@
                             'class': 'no btn-danger',
                             'action': function() {
                                 // alert('Deleted canceled.')
-                            } 
+                            }
                         }
                     }
                 });

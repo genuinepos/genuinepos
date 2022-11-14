@@ -23,23 +23,23 @@
                                         </div>
 
                                         <div class="col-4">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                                             </a>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="m-0"><strong>Transfer Reference ID: </strong> {{ $transfer->ref_id }}</p> 
-                                            <p class="m-0"><strong>Date: </strong> {{ $transfer->date }}</p> 
+                                            <p class="m-0"><strong>Transfer Reference ID: </strong> {{ $transfer->ref_id }}</p>
+                                            <p class="m-0"><strong>Date: </strong> {{ $transfer->date }}</p>
                                          </div>
 
                                          <div class="col-md-6">
-                                             <p class="m-0"><strong>Transfered From: </strong> 
-                                                
+                                             <p class="m-0"><strong>Transfered From: </strong>
+
                                                 @if ($transfer->sender_branch)
 
                                                     {{ $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code }}
@@ -58,11 +58,11 @@
                                             <div class="input-group">
                                                 <label class="col-4">Store In Location :</label>
                                                 <div class="col-8">
-                                                    <input 
-                                                        readonly 
-                                                        type="text" 
-                                                        name="receiver_branch_id" 
-                                                        id="receiver_branch_id" 
+                                                    <input
+                                                        readonly
+                                                        type="text"
+                                                        name="receiver_branch_id"
+                                                        id="receiver_branch_id"
                                                         class="form-control"
                                                         value="{{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}"
                                                     >
@@ -115,9 +115,9 @@
                                                                     <tr>
                                                                         <td>
                                                                             <input type="hidden" name="product_ids[]" value="{{ $transfer_product->product->id }}">
-                                                                            <input 
-                                                                                type="hidden" 
-                                                                                name="variant_ids[]" 
+                                                                            <input
+                                                                                type="hidden"
+                                                                                name="variant_ids[]"
                                                                                 value="{{ $transfer_product->variant ? $transfer_product->variant->id : 'no_id' }}"
                                                                             >
                                                                             {{ $transfer_product->product->name }}
@@ -134,22 +134,22 @@
                                                                         </td>
 
                                                                         <td>
-                                                                            <input 
-                                                                                type="hidden" 
-                                                                                name="pending_quantities[]" 
-                                                                                id="pending_qty" 
+                                                                            <input
+                                                                                type="hidden"
+                                                                                name="pending_quantities[]"
+                                                                                id="pending_qty"
                                                                                 value="{{ $transfer_product->pending_qty }}"
                                                                             >
                                                                             <span id="span_pending_qty">{{ $transfer_product->pending_qty }}</span>
                                                                         </td>
 
                                                                         <td>
-                                                                            <input type="number" 
-                                                                                step="any" 
-                                                                                name="received_quantities[]" 
-                                                                                class="form-control" 
-                                                                                id="received_qty" 
-                                                                                value="{{ $transfer_product->received_qty }}" 
+                                                                            <input type="number"
+                                                                                step="any"
+                                                                                name="received_quantities[]"
+                                                                                class="form-control"
+                                                                                id="received_qty"
+                                                                                value="{{ $transfer_product->received_qty }}"
                                                                                 autocomplete="off"
                                                                             >
                                                                         </td>
@@ -264,14 +264,14 @@
                 $(this).val(qty_limit);
                 tr.find('#pending_qty').val(parseFloat(0).toFixed(2));
                 tr.find('#span_pending_qty').html(parseFloat(0).toFixed(2));
-                calculateTotalAmount(); 
+                calculateTotalAmount();
                 alert('Only - '+qty_limit+' '+unit+' is available.');
             }
 
-            calculateTotalAmount();  
+            calculateTotalAmount();
         }
     });
-   
+
     //Add purchase request by ajax
     $('#receive_stock_form').on('submit', function(e){
         e.preventDefault();
@@ -279,7 +279,7 @@
         $('.loading_button').show();
         var url = $(this).attr('action');
         var request = $(this).serialize();
-    
+
         $.ajax({
             url:url,
             type:'post',
@@ -288,24 +288,24 @@
 
                 if(!$.isEmptyObject(data.errorMsg)){
 
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 }else{
 
                     $('.loading_button').hide();
-                    toastr.success(data.successMsg); 
+                    toastr.success(data.successMsg);
                 }
             }, error: function(err) {
 
                 $('.loading_button').hide();
-            
+
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
-                    
-                    toastr.error('Server Error. Please contact to the support team.'); 
+
+                    toastr.error('Server Error. Please contact to the support team.');
                     return;
                 }
             }

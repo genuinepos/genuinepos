@@ -1,5 +1,5 @@
 @extends('layout.master')
-@push('stylesheets') 
+@push('stylesheets')
     <style>
         table.display td input {height: 26px!important; padding: 3px;}
         span.input-group-text-custom {font-size: 11px;padding: 4px;}
@@ -26,7 +26,7 @@
                                     <div class="row">
                                         <div class="col-6"><h5>Add Production</h5></div>
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -184,7 +184,7 @@
                                                     <input type="number" step="any" name="wasted_quantity" class="form-control" id="wasted_quantity" value="0.00">
                                                     <span class="error error_wasted_quantity"></span>
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
 
@@ -205,10 +205,10 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>Additional Cost :</b></label>
                                                 <div class="col-md-8">
-                                                    <input name="production_cost" type="number" class="form-control" id="production_cost" value="0.00"> 
+                                                    <input name="production_cost" type="number" class="form-control" id="production_cost" value="0.00">
                                                 </div>
-                                            </div> 
-                                        </div> 
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="row mt-1">
@@ -219,7 +219,7 @@
                                                     <input readonly type="number" step="any" name="total_cost" class="form-control" id="total_cost" value="0.00">
                                                     <span class="error error_total_cost"></span>
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -245,7 +245,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                
+
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
@@ -303,8 +303,8 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p class="float-end is_final"> 
-                                    <input type="checkbox" name="is_final" id="is_final"> &nbsp; <b> Finalize</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Once finalized all ingredient stock will be deducted & production item stock will be increased and production item unit cost, price will be updated as well as editing of production will not be allowed." class="fas fa-info-circle tp"></i></p> 
+                                    <p class="float-end is_final">
+                                    <input type="checkbox" name="is_final" id="is_final"> &nbsp; <b> Finalize</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Once finalized all ingredient stock will be deducted & production item stock will be increased and production item unit cost, price will be updated as well as editing of production will not be allowed." class="fas fa-info-circle tp"></i></p>
                                 </div>
                             </div>
 
@@ -351,7 +351,7 @@
             var stockWarehouseId = $('#stock_warehouse_id').val() ? $('#stock_warehouse_id').val() : null;
             @if (count($warehouses) > 0)
                 if (stockWarehouseId == null) {
-                    toastr.error('Ingredials Stock Location must not be empty.'); 
+                    toastr.error('Ingredials Stock Location must not be empty.');
                     var processId = $(this).val('');
                     return;
                 }
@@ -419,7 +419,7 @@
             var unitName = tr.find('#qty_limit').data('unit');
             var regexp = /^\d+\.\d{0,2}$/;
             tr.find('#input_qty_error').html('');
-            
+
             if (regexp.test(parseFloat(inputQty)) == true) {
 
                 tr.find('#input_qty_error').html('Deciaml value is not allowed.');
@@ -428,7 +428,7 @@
 
                 tr.find('#input_qty_error').html('Only '+limitQty+' '+unitName+' is available.');
                 errorCount++;
-            } 
+            }
 
             var subtotal = parseFloat(inputQty) * parseFloat(unitCostIncTax);
             tr.find('#subtotal').val(parseFloat(subtotal).toFixed(2));
@@ -498,7 +498,7 @@
             var value = $(this).val();
             $('#action_type').val(value);
         });
-        
+
         //Add process request by ajax
         $('#add_production_form').on('submit', function(e) {
             e.preventDefault();
@@ -539,13 +539,13 @@
                         $('#ingredient_list').empty();
                         toastr.success('Successfully production is created.');
                         $(data).printThis({
-                            debug: false,                   
-                            importCSS: true,                
-                            importStyle: true,          
-                            loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                            removeInline: false, 
-                            printDelay: 1000, 
-                            header: null,        
+                            debug: false,
+                            importCSS: true,
+                            importStyle: true,
+                            loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                            removeInline: false,
+                            printDelay: 1000,
+                            header: null,
                         });
                     }
                 },error: function(err) {
@@ -553,14 +553,14 @@
                     $('.loading_button').hide();
                     $('.error').html('');
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }else if (err.status == 500) {
                         toastr.error('Server error please contact to the support.');
                         return;
                     }
-                    
-                    toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
+
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
 
                     $.each(err.responseJSON.errors, function(key, error) {
                         $('.error_' + key + '').html(error[0]);

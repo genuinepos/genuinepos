@@ -22,9 +22,9 @@
                                     <div class="form_element m-0 mt-4">
                                         <div class="py-2 px-2 form-header">
                                             <div class="row">
-                                                <div class="col-8"><h6>Add Product | <small class="text-dark">Save & Another = (Ctrl + Enter), Save = (Shift + Enter) </small></h6></div> 
+                                                <div class="col-8"><h6>Add Product | <small class="text-dark">Save & Another = (Ctrl + Enter), Save = (Shift + Enter) </small></h6></div>
                                                 <div class="col-4">
-                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -43,7 +43,7 @@
 
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>Product code 
+                                                        <label class="col-4"><b>Product code
                                                             <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique. If you leave this field empty, it will be generated automatically." class="fas fa-info-circle tp"></i> :</b> </label>
                                                         <div class="col-8">
                                                             <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" value="" placeholder="Product Code">
@@ -154,7 +154,7 @@
                                                         </div>
                                                     </div>
                                                 @endif
-                                                
+
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label class="col-4"> <b>Alert quentity  :</b> </label>
@@ -188,7 +188,7 @@
                                                         </div>
                                                     </div>
                                                 @endif
-                                                
+
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-6">
@@ -234,19 +234,19 @@
                                                             <div class="input-group mt-1">
                                                                 <div class="col-12">
                                                                     <div class="row">
-                                                                        <p class="checkbox_input_wrap"> 
-                                                                        <input checked type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>Manage Stock</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p> 
+                                                                        <p class="checkbox_input_wrap">
+                                                                        <input checked type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>Manage Stock</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <div class="col-md-6">
                                                             <div class="input-group mt-1">
                                                                 <div class="col-12">
                                                                     <div class="row">
-                                                                        <p class="checkbox_input_wrap"> 
-                                                                        <input type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> Service/Degital Product</b> </p> 
+                                                                        <p class="checkbox_input_wrap">
+                                                                        <input type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> Service/Degital Product</b> </p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -273,20 +273,20 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                        
-                                                    <div class="col-md-6">    
+
+                                                    <div class="col-md-6">
                                                         <div class="input-group">
                                                             <label class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
                                                                 <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax">
-                                                                <span class="error error_product_price"></span>    
+                                                                <span class="error error_product_price"></span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="row mt-1">
-                                                    <div class="col-md-6">                
+                                                    <div class="col-md-6">
                                                         <div class="input-group">
                                                             <label class="col-4"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
@@ -322,7 +322,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                
+
                                                         <div class="col-md-6">
                                                             <div class="input-group">
                                                                 <label class="col-4"><b>Tax Type :</b> </label>
@@ -337,7 +337,7 @@
                                                     </div>
                                                 @endif
 
-                                                <div class="row mt-1">                  
+                                                <div class="row mt-1">
                                                     <div class="col-md-6">
                                                         <div class="input-group">
                                                             <label class="col-4"><b>Thumbnail Photo :</b> </label>
@@ -352,15 +352,15 @@
                                                         <div class="input-group">
                                                             <div class="col-12">
                                                                 <div class="row">
-                                                                    <p class="checkbox_input_wrap"> 
-                                                                    <input type="checkbox" name="is_variant" id="is_variant"> &nbsp; <b>This product has varient.</b> </p> 
+                                                                    <p class="checkbox_input_wrap">
+                                                                    <input type="checkbox" name="is_variant" id="is_variant"> &nbsp; <b>This product has varient.</b> </p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="row mt-1">                  
+                                                <div class="row mt-1">
                                                     <div class="dynamic_variant_create_area d-none">
                                                         <div class="row">
                                                             <div class="col-md-12">
@@ -392,34 +392,34 @@
                                                                                         id="variant_combination" class="form-control reqireable"
                                                                                         placeholder="Variant Combination">
                                                                                 </td>
-                
+
                                                                                 <td class="text-start">
                                                                                     <input type="text" name="variant_codes[]" id="variant_code" class="form-control reqireable"
                                                                                         placeholder="Variant Code">
                                                                                 </td>
-                
+
                                                                                 <td class="text-start">
                                                                                     <input type="number" name="variant_costings[]" step="any" class="form-control requireable" placeholder="Cost" id="variant_costing">
                                                                                 </td>
-                
+
                                                                                 <td class="text-start">
                                                                                     <input type="number" step="any" name="variant_costings_with_tax[]"class="form-control requireable" placeholder="Cost inc.tax" id="variant_costing_with_tax"
 
                                                                                     >
                                                                                 </td>
-                
+
                                                                                 <td class="text-start">
                                                                                     <input type="number" step="any" name="variant_profits[]" class="form-control requireable" placeholder="Profit" value="0.00" id="variant_profit">
                                                                                 </td>
-                            
+
                                                                                 <td class="text-start">
                                                                                     <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control requireable" placeholder="Price inc.tax" id="variant_price_exc_tax">
                                                                                 </td>
-                            
+
                                                                                 <td class="text-start">
                                                                                     <input type="file" name="variant_image[]" class="form-control" id="variant_image">
                                                                                 </td>
-                
+
                                                                                 <td class="text-start">
                                                                                     <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
                                                                                 </td>
@@ -498,8 +498,8 @@
                                                     <div class="input-group">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <p class="checkbox_input_wrap"> 
-                                                                <input type="checkbox" name="is_show_in_ecom"> &nbsp; <b>Product wil be displayed in E-Commerce.</b></p> 
+                                                                <p class="checkbox_input_wrap">
+                                                                <input type="checkbox" name="is_show_in_ecom"> &nbsp; <b>Product wil be displayed in E-Commerce.</b></p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -509,8 +509,8 @@
                                                     <div class="input-group">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <p class="checkbox_input_wrap"> 
-                                                                <input type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>Enable Product IMEI or Serial Number</b> </p> 
+                                                                <p class="checkbox_input_wrap">
+                                                                <input type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>Enable Product IMEI or Serial Number</b> </p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -520,8 +520,8 @@
                                                     <div class="input-group">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <p class="checkbox_input_wrap"> 
-                                                                <input type="checkbox" name="is_not_for_sale"> &nbsp; <b>Show Not For Sale</b> </p> 
+                                                                <p class="checkbox_input_wrap">
+                                                                <input type="checkbox" name="is_not_for_sale"> &nbsp; <b>Show Not For Sale</b> </p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -558,8 +558,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
-                            
+                                </div>
+
                                 <div class="col-md-12 text-end mt-1">
                                     <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
                                     <button type="submit" name="action" value="save_and_new"
@@ -576,7 +576,7 @@
                                             <h6>All Product</h6>
                                         </div>
                                     </div>
-        
+
                                     <div class="widget_content">
                                         <div class="table-responsive" id="data_list">
                                             <table class="display table-hover data_tbl data__table">
@@ -627,7 +627,7 @@
     var myEditorObj = $('#myEditor').cleditor();
     function clearEditor() {
         $("#myEditor").cleditor({width:800, height:300, updateTextArea:function (){}})[0].clear();
-    }  
+    }
 
     // Set parent category in parent category form field
     $('.combo_price').hide();
@@ -656,7 +656,7 @@
             var calc_tax = parseFloat(product_cost) / parseFloat(__tax_percent) * 100;
             calc_product_cost_tax = parseFloat(product_cost) - parseFloat(calc_tax);
         }
-        
+
         var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
         $('#product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
         var profit = $('#profit').val() ? $('#profit').val() : 0;
@@ -667,7 +667,7 @@
             var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
             $('#product_price').val(parseFloat(product_price).toFixed(2));
         }
-        
+
         // calc package product profit
         var netTotalComboPrice = $('#total_combo_price').val() ? $('#total_combo_price').val() : 0;
         var calcTotalComboPrice = parseFloat(netTotalComboPrice) / 100 * parseFloat(profit) + parseFloat(netTotalComboPrice);
@@ -702,7 +702,7 @@
         costCalculate();
     });
 
-    // Variant all functionality 
+    // Variant all functionality
     var variantsWithChild = '';
     function getAllVariant() {
         $.ajax({
@@ -844,7 +844,7 @@
         e.preventDefault();
 
         var code = $('#code').val();
-            
+
         var auto_generated_code = $('#auto_generated_code').val();
 
         var variant_code = code ? code+'-'+(++variant_code_sequel) : auto_generated_code+'-'+(++variant_code_sequel);
@@ -932,7 +932,7 @@
         });
     }
 
-    // call jquery method 
+    // call jquery method
     var action_direction = '';
     $(document).ready(function() {
 
@@ -991,7 +991,7 @@
                     if (!$.isEmptyObject(product)) {
 
                         $('#search_product').addClass('is-valid');
-                    } 
+                    }
 
                     if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product)){
 
@@ -1014,7 +1014,7 @@
                                         var className = input.getAttribute('class');
                                         // get closest table row for increasing qty and re calculate product amount
                                         var closestTr = $('.'+className).closest('tr');
-                                        // update same product qty 
+                                        // update same product qty
                                         var presentQty = closestTr.find('#combo_quantity').val();
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#combo_quantity').val(updateQty);
@@ -1038,7 +1038,7 @@
                                     tr += '<td>';
                                     tr += '<span class="product_name">'+product.name+'</span><br>';
                                     tr += '<span class="product_code">('+product.product_code+')</span><br>';
-                                    tr += '<span class="product_variant"></span>';  
+                                    tr += '<span class="product_variant"></span>';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
                                     tr += '</td>';
@@ -1061,8 +1061,8 @@
                                     tr += '</td>';
 
                                     tr += '</tr>';
-                                    $('#combo_products').append(tr); 
-                                    calculateTotalAmount(); 
+                                    $('#combo_products').append(tr);
+                                    calculateTotalAmount();
                                 }
                             }else{
 
@@ -1096,7 +1096,7 @@
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
-                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * tax_percent : 0); 
+                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * tax_percent : 0);
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
 
@@ -1110,7 +1110,7 @@
                                         var className = input.getAttribute('class');
                                         // get closest table row for increasing qty and re calculate product amount
                                         var closestTr = $('.'+className).closest('tr');
-                                        // update same product qty 
+                                        // update same product qty
                                         var presentQty = closestTr.find('#combo_quantity').val();
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#combo_quantity').val(updateQty);
@@ -1123,9 +1123,9 @@
                                         calculateTotalAmount();
                                         return;
                                     }
-                                }    
+                                }
                             });
-                        
+
                             if(sameVariant == 0){
 
                                 var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
@@ -1135,7 +1135,7 @@
                                 tr += '<td>';
                                 tr += '<span class="product_name">'+variant_product.product.name+'</span><br>';
                                 tr += '<span class="product_code">('+variant_product.variant_code+')</span><br>';
-                                tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
+                                tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
                                 tr += '</td>';
@@ -1159,8 +1159,8 @@
 
                                 tr += '</tr>';
                                 $('#combo_products').append(tr);
-                                calculateTotalAmount(); 
-                            }    
+                                calculateTotalAmount();
+                            }
                         }
                     }else{
 
@@ -1179,7 +1179,7 @@
             var variant_id = $(this).data('v_id');
             var variant_name = $(this).data('v_name');
             var variant_code = $(this).data('v_code');
-            var variant_price_inc_tax  = $(this).data('v_price'); 
+            var variant_price_inc_tax  = $(this).data('v_price');
             var variant_ids = document.querySelectorAll('#variant_id');
             var sameVariant = 0;
 
@@ -1194,7 +1194,7 @@
                         var className = input.getAttribute('class');
                         // get closest table row for increasing qty and re calculate product amount
                         var closestTr = $('.'+className).closest('tr');
-                        // update same product qty 
+                        // update same product qty
                         var presentQty = closestTr.find('#combo_quantity').val();
                         var updateQty = parseFloat(presentQty) + 1;
                         closestTr.find('#combo_quantity').val(updateQty);
@@ -1207,7 +1207,7 @@
                         calculateTotalAmount();
                         return;
                     }
-                }    
+                }
             });
 
             if(sameVariant == 0){
@@ -1217,7 +1217,7 @@
                 tr += '<td>';
                 tr += '<span class="product_name">'+product_name+'</span><br>';
                 tr += '<span class="product_code">('+variant_code+')</span><br>';
-                tr += '<span class="product_variant">('+variant_name+')</span>';  
+                tr += '<span class="product_variant">('+variant_name+')</span>';
                 tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
                 tr += '</td>';
@@ -1229,7 +1229,7 @@
                 tr += '<td>';
                 tr += '<input readonly value="'+variant_price_inc_tax+'" required name="unit_prices_inc_tax[]" type="number" step="any" class="form-control form-control-sm" id="unit_price_inc_tax">';
                 tr += '</td>';
-              
+
                 tr += '<td>';
                 tr += '<input readonly type="number" step="any" value="'+variant_price_inc_tax+'" required name="subtotals[]" class="form-control form-control-sm" id="subtotal">';
                 tr += '</td>';
@@ -1239,7 +1239,7 @@
                 tr += '</td>';
 
                 tr += '</tr>';
-                $('#combo_products').append(tr); 
+                $('#combo_products').append(tr);
                 calculateTotalAmount();
             }
         });
@@ -1268,7 +1268,7 @@
 
             var tr = $(this).closest('tr');
 
-            //Update subtotal 
+            //Update subtotal
             var unitPriceIncTax = $(this).closest('tr').find('#unit_price_inc_tax').val();
             var calcSubtotal = parseFloat(unitPriceIncTax) * parseFloat(qty);
             var subtotal = tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
@@ -1282,7 +1282,7 @@
             calculateTotalAmount();
         });
 
-        // Dispose Select area 
+        // Dispose Select area
         $(document).on('click', '.remove_select_area_btn', function(e) {
 
             e.preventDefault();
@@ -1298,7 +1298,7 @@
 
         // Setup ajax for csrf token.
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-    
+
         // set sub category in form field
         $('#category_id').on('change', function() {
 
@@ -1347,7 +1347,7 @@
                             window.location = "{{ route('products.all.product') }}";
                         } else {
 
-                            @if ($addons->e_commerce == 1) 
+                            @if ($addons->e_commerce == 1)
 
                                 clearEditor();
                             @endif
@@ -1371,7 +1371,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }
 
@@ -1386,13 +1386,13 @@
             });
         });
 
-        // Automatic remove searching product not found signal 
+        // Automatic remove searching product not found signal
         setInterval(function() {
 
             $('#search_product').removeClass('is-invalid');
         }, 350);
 
-        // Automatic remove searching product is found signal 
+        // Automatic remove searching product is found signal
         setInterval(function() {
 
             $('#search_product').removeClass('is-valid');
@@ -1441,7 +1441,7 @@
                 $('#category_id').append('<option value="' + data.id + '">' + data.name +
                     '</option>');
                 $('#category_id').val(data.id);
-                toastr.success(data);    
+                toastr.success(data);
             }
         });
     });
@@ -1464,7 +1464,7 @@
             var idValue = $('#' + inputId).val();
 
             if (idValue == '') {
-                
+
                 countErrorField += 1;
                 var fieldName = $('#' + inputId).data('name');
                 $('.error_' + inputId).html(fieldName + ' is required.');
@@ -1487,7 +1487,7 @@
                 $('#brand_id').val(data.id);
                 $('#addBrandModal').modal('hide');
                 $('#add_brand_form')[0].reset();
-                toastr.success(data, 'Successfully brand is added.'); 
+                toastr.success(data, 'Successfully brand is added.');
             }
         });
     });

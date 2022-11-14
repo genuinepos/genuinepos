@@ -24,7 +24,7 @@
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span> <h5>Purchased Product List</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -63,7 +63,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-2">
                                                     <label><strong>Supplier :</strong></label>
                                                     <select name="supplier_id" class="form-control submit_able"
@@ -201,7 +201,7 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary'},
@@ -279,9 +279,9 @@
         });
 
         $(document).on('click', '#delete',function(e) {
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure, you went to delete?',
@@ -302,14 +302,14 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    
+
                     table.ajax.reload();
                     toastr.error(data);
                 }
             });
         });
 
-        //Submit filter form by date-range field blur 
+        //Submit filter form by date-range field blur
         $(document).on('click', '#search_product', function () {
             $(this).val('');
             $('#product_id').val('');
@@ -369,7 +369,7 @@
 
             $('#list').empty();
             var product_name = $(this).val();
-            
+
             if (product_name === '') {
 
                 $('.search_result').hide();
@@ -413,7 +413,7 @@
 
         $('body').keyup(function(e){
 
-            if (e.keyCode == 13 || e.keyCode == 9){  
+            if (e.keyCode == 13 || e.keyCode == 9){
 
                 $(".selectProduct").click();
                 $('.search_result').hide();

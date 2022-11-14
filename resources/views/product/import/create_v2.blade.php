@@ -19,7 +19,7 @@
                                         <div class="row">
                                             <div class="col-6"><h5>Import Products </h5></div>
                                             <div class="col-6">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
                                         </div>
                                     </div>
@@ -85,26 +85,26 @@
                                                         <td class="text-start"> Product Name (Required)</td>
                                                         <td class="text-start"> Name of the product</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">2</td>
                                                         <td class="text-start"> Product code(SKU) (Optional)</td>
                                                         <td class="text-start">Product code(SKU). If blank an SKU will be automatically generated</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">3</td>
                                                         <td class="text-start"> Unit (Required)</td>
                                                         <td class="text-start"> Name of the unit</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">4</td>
                                                         <td class="text-start"> Category (Required)</td>
                                                         <td class="text-start"> <b>Name of the Category</b> <br>
                                                             (<small>If not found new category with the given name will be created</small>)</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">5</td>
                                                         <td class="text-start"> Child category (Optional)</td>
@@ -112,27 +112,27 @@
                                                             (<small>If not found new sub-category with the given name under the
                                                                 parent Category will be created</small>)</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">6</td>
                                                         <td class="text-start">Brand (Optional)</td>
                                                         <td class="text-start"> <b>Name of the brand</b> <br>
                                                             (<small>If not found new brand with the given name will be created</small>)</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">7</td>
                                                         <td class="text-start">Barcode Type (Optional, Default: C128)</td>
                                                         <td class="text-start"> Barcode Type for the product. <br>
                                                             (<span><b>Currently supported: C128, C39, EAN-13, EAN-8, UPC-A, UPC-E, ITF-14</b> </span>)</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">8</td>
                                                         <td class="text-start">Alert quantity (Optional)</td>
                                                         <td class="text-start"> Alert quantity</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">9</td>
                                                         <td class="text-start">Expiry Date (Optional)</td>
@@ -140,53 +140,53 @@
                                                             (<span><b>Format: mm-dd-yyyy; Ex: 11-25-2018</b> </span>)
                                                         </td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">10</td>
                                                         <td class="text-start">Warranty</td>
                                                         <td class="text-start">Name of the Warranty </td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">11</td>
                                                         <td class="text-start">Description (Optional)</td>
                                                         <td class="text-start">Description of product </td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">12</td>
                                                         <td class="text-start">Tax (Optional)</td>
                                                         <td class="text-start">Only in numbers</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">13</td>
                                                         <td class="text-start">UNIT COST Excluding Tax (Required)</td>
                                                         <td class="text-start">Only in numbers</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">13</td>
                                                         <td class="text-start">UNIT COST Including Tax (Optional)</td>
                                                         <td class="text-start">Only in numbers</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">14</td>
                                                         <td class="text-start">Profit Margin % (Optional)</td>
                                                         <td class="text-start">
-                                                            Profit Margin (Only in numbers) 
+                                                            Profit Margin (Only in numbers)
                                                         </td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">15</td>
                                                         <td class="text-start">Opening Stock (Only in numbers)</td>
                                                         <td class="text-start">
-                                                            Selling Price (Only in numbers) 
+                                                            Selling Price (Only in numbers)
                                                         </td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">16</td>
                                                         <td class="text-start">Opening stock Branch (Optional) <br>

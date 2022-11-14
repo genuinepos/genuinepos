@@ -19,9 +19,9 @@
                                     <div class="py-2 px-2 form-header">
                                         <div class="row">
                                             <div class="col-6"><h5>Add or edit Price Group </h5></div>
-    
+
                                             <div class="col-6">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
                                         </div>
                                     </div>
@@ -32,10 +32,10 @@
                                 <div class="form_element m-0 mt-2">
                                     <div class="element-body">
                                         <div class="form_part">
-                                            <div class="row mt-2">      
+                                            <div class="row mt-2">
                                                 <div class="col-md-12">
                                                     <div class="heading_area">
-                                                        <p><strong>Product : {{ $product_name->name.' ('.$product_name->product_code.')' }}</strong> </p> 
+                                                        <p><strong>Product : {{ $product_name->name.' ('.$product_name->product_code.')' }}</strong> </p>
                                                         <small class="text-danger">Tax (If Exists) will be added to all price group.</small>
                                                     </div>
                                                     <div class="table-responsive mt-1">
@@ -46,11 +46,11 @@
                                                                         <th class="text-white text-start" scope="col">Variant</th>
                                                                     @endif
                                                                     <th class="text-white text-center" scope="col">
-                                                                        Default Selling Price Exc.Tax 
+                                                                        Default Selling Price Exc.Tax
                                                                     </th>
                                                                     @foreach ($priceGroups as $pg)
                                                                         <th class="text-white text-start" scope="col">
-                                                                            {{ $pg->name }} 
+                                                                            {{ $pg->name }}
                                                                         </th>
                                                                     @endforeach
                                                                 </tr>
@@ -65,7 +65,7 @@
                                                                                 {{ $item->variant_name }}
                                                                             </td>
                                                                             <td class="text-center">
-                                                                            
+
                                                                                 <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $item->variant_price}}</b>
                                                                             </td>
                                                                             @foreach ($priceGroups as $pg)
@@ -143,13 +143,13 @@
                 url: url,
                 type: 'post',
                 data: request,
-                success: function(data) { 
-                    $('.loading_button').hide(); 
+                success: function(data) {
+                    $('.loading_button').hide();
                     if(!$.isEmptyObject(data.saveMessage)){
-                        toastr.success(data.saveMessage); 
+                        toastr.success(data.saveMessage);
                         window.location = "{{ route('products.all.product') }}";
                     }else if(!$.isEmptyObject(data.saveAndAnotherMsg)){
-                        toastr.success(data.saveAndAnotherMsg); 
+                        toastr.success(data.saveAndAnotherMsg);
                         window.location = "{{ route('products.add.view') }}";
                     }
                 }

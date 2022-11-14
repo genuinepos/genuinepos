@@ -10,13 +10,13 @@
                 <div class="border-class">
                     <div class="main__content">
                         <div class="sec-name">
-                            
+
                             <div class="name-head">
                                 <span class="fas fa-money-bill"></span>
                                 <h5>Expense Report</h5>
                             </div>
 
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -41,7 +41,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    @else 
+                                                    @else
                                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     @endif
                                                 @endif
@@ -146,7 +146,7 @@
                                         </tfoot>
                                     </table>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
 
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'}
         ],
@@ -240,22 +240,22 @@
             data: {branch_id, admin_id, from_date, to_date},
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 500, 
-                    header: "", 
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 500,
+                    header: "",
                     pageTitle: "",
                     // footer: 'Footer Text',
-                    formValues: false,         
-                    canvas: false, 
+                    formValues: false,
+                    canvas: false,
                     beforePrint: null,
-                    afterPrint: null      
+                    afterPrint: null
                 });
             }
-        }); 
+        });
     });
 </script>
 

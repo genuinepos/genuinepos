@@ -20,7 +20,7 @@
                                 <span class="fas fa-users"></span>
                                 <h5>Supplier Report</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -76,7 +76,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                
+
                                                             </tbody>
                                                             <tfoot>
                                                                 <tr class="bg-secondary">
@@ -92,8 +92,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>  
-                                    </div>  
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
             {extend: 'print',text: 'Print',className: 'btn btn-primary'},
@@ -170,16 +170,16 @@
             data: {supplier_id},
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,        
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
                 });
             }
-        }); 
+        });
     });
 </script>
 @endpush

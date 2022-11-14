@@ -14,7 +14,7 @@
                                 <span class="fas fa-cubes"></span>
                                 <h5>Categories / SubCategories</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -28,7 +28,7 @@
                                         <a id="tab_btn" data-show="categories" class="tab_btn tab_active" href="#">
                                             <i class="fas fa-th-large"></i> Categories</a>
                                     </li>
-        
+
                                     <li>
                                         <a id="tab_btn" data-show="sub-categories" class="tab_btn" href="#">
                                             <i class="fas fa-code-branch"></i> SubCategories</a>
@@ -37,14 +37,14 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     @include('product.categories.bodyPartials.categoriesBody')
                     @include('product.categories.bodyPartials.subCategoriesBody')
                 </div>
             </div>
         </div>
     </div>
-    
+
     <form id="deleted_form" action="" method="post">
         @method('DELETE')
         @csrf

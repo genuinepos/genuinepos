@@ -14,7 +14,7 @@
                                 <span class="fas fa-money-bill"></span>
                                 <h5>Category Wise Expenses</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
                         <div class="row">
@@ -46,7 +46,7 @@
                                                         <option value="">All</option>
                                                     </select>
                                                 </div> --}}
-                                                
+
                                                 <div class="col-md-2">
                                                     <label><strong>Category :</strong></label>
                                                     <select name="category_id" class="form-control submit_able" id="category_id" >

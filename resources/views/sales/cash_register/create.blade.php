@@ -21,14 +21,14 @@
                                                 <div class="col-md-6">
                                                     <h5 class="text-primary">Open Cash Register</h5>
                                                 </div>
-    
+
                                                 <div class="col-md-6">
-                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-    
+
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -48,7 +48,7 @@
                                                         <select required name="counter_id" class="form-control">
                                                             <option value="">Select Cash Counter</option>
                                                             @foreach ($cashCounters as $cc)
-                                                                <option {{ old('counter_id') == $cc->id ? 'SELECTED' : '' }} 
+                                                                <option {{ old('counter_id') == $cc->id ? 'SELECTED' : '' }}
                                                                     value="{{ $cc->id }}">{{ $cc->counter_name.' ('.$cc->short_name.')' }}
                                                                 </option>
                                                             @endforeach
@@ -107,5 +107,5 @@
     </div>
 @endsection
 @push('scripts')
-    
+
 @endpush

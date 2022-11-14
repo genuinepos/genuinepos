@@ -22,7 +22,7 @@
                                 <span class="fas fa-tasks"></span>
                                 <h5>Manage Task</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -40,19 +40,19 @@
                                                         <li><b>Estimated Hours :</b> {{ $ws->estimated_hours }}</li>
                                                     </ul>
                                                 </div>
-    
+
                                                 <div class="col-md-4">
                                                     <ul class="list-unstyled ws_description">
                                                         <li><b>Assigned By :</b> {{ $ws->admin->prefix.' '.$ws->admin->name.' '.$ws->admin->last_name}}</li>
                                                         <li>
-                                                            <b>Assigned To :</b> 
+                                                            <b>Assigned To :</b>
                                                             @foreach ($ws->ws_users as $ws_user)
-                                                                {{ $ws_user->user->prefix.' '.$ws_user->user->name.' '.$ws_user->user->last_name }}, 
+                                                                {{ $ws_user->user->prefix.' '.$ws_user->user->name.' '.$ws_user->user->last_name }},
                                                             @endforeach
                                                         </li>
                                                     </ul>
                                                 </div>
-    
+
                                                 <div class="col-md-4">
                                                     <ul class="list-unstyled ws_description">
                                                         <li><b>Priority  :</b> {{ $ws->priority }}</li>
@@ -61,7 +61,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-2"> 
+                                            <div class="col-md-2">
                                                 <button type="submit" class="c-btn button-success me-0 float-start submit_button">Add</button>
                                             </div>
                                         </div>
@@ -112,7 +112,7 @@
                                     </thead> --}}
 
                                     <tbody id="task_list">
-                                        
+
                                     </tbody>
                                 </table>
                             </div>
@@ -164,12 +164,12 @@
                 data: request,
                 success:function(data){
                     if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR'); 
+                        toastr.error(data.errorMsg,'ERROR');
                         $('.loading_button').hide();
                     }else{
                         $('#add_task_form')[0].reset();
                         $('.loading_button').hide();
-                        toastr.success(data); 
+                        toastr.success(data);
                         task_list();
                     }
                 }
@@ -179,32 +179,32 @@
         var previous_value = "";
         $(document).on('click', '#edit_task_btn', function (e) {
            e.preventDefault();
-           $('.task_area').show(); 
-           $('.edit_task_name').hide(); 
-           $(this).closest('tr').find('.edit_task_name').show(); 
-           previous_value = $(this).closest('tr').find('#edit_task_name').val(); 
-           $(this).closest('tr').find('.task_area').hide(); 
-           $(this).closest('tr').find('.edit_task_name').focus(); 
+           $('.task_area').show();
+           $('.edit_task_name').hide();
+           $(this).closest('tr').find('.edit_task_name').show();
+           previous_value = $(this).closest('tr').find('#edit_task_name').val();
+           $(this).closest('tr').find('.task_area').hide();
+           $(this).closest('tr').find('.edit_task_name').focus();
         });
 
         $(document).on('keyup', '#edit_task_name',function(e) {
             // if (e.key == "Enter") $('.save').click();
             // if (e.key == "Escape") $('.cancel').click();
             if (e.key == "Escape"){
-                $('.task_area').show(); 
-                $('.edit_task_name').hide(); 
-                $(this).closest('tr').find('#edit_task_name').val(previous_value); 
+                $('.task_area').show();
+                $('.edit_task_name').hide();
+                $(this).closest('tr').find('#edit_task_name').val(previous_value);
             }else if (e.key == "Enter") {
                 $(this).closest('tr').find('.update_task_button').click();
             }
         });
 
         $(document).on('click', '.update_task_button',function () {
-            var value = $(this).closest('tr').find('#edit_task_name').val(); 
-            $(this).closest('tr').find('#task_name').html(value); 
-            var id = $(this).closest('tr').find('.task_area').data('id'); 
-            $('.task_area').show(); 
-            $('.edit_task_name').hide(); 
+            var value = $(this).closest('tr').find('#edit_task_name').val();
+            $(this).closest('tr').find('#task_name').html(value);
+            var id = $(this).closest('tr').find('.task_area').data('id');
+            $('.task_area').show();
+            $('.edit_task_name').hide();
             $.ajax({
                 url:"{{ url('essentials/workspaces/tasks/update') }}",
                 type:'post',
@@ -218,7 +218,7 @@
         $(document).on('click', '#delete',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);           
+        $('#deleted_form').attr('action', url);
         $.confirm({
             'title': 'Delete Confirmation',
             'message': 'Are you sure?',
@@ -233,7 +233,7 @@
                     'class': 'no bg-danger',
                     'action': function() {
                         // alert('Deleted canceled.')
-                    } 
+                    }
                 }
             }
         });

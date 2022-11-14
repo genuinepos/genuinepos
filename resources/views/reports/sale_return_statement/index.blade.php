@@ -14,7 +14,7 @@
                                 <span class="fas fa-shopping-cart"></span>
                                 <h5>Sale Return Statements</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -169,7 +169,7 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        
+
         var return_statements_table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
@@ -209,7 +209,7 @@
                 {data: 'return_tax_amount', name: 'return_tax_amount', className: 'text-end'},
                 {data: 'total_return_amount', name: 'total_return_amount', className: 'text-end'},
                 {data: 'total_return_due_pay', name: 'total_return_due_pay', className: 'text-end'},
-             
+
             ],fnDrawCallback: function() {
 
                 var total_item = sum_table_col($('.data_tbl'), 'total_item');
@@ -252,7 +252,7 @@
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
-            
+
             $('.data_preloader').show();
             return_statements_table.ajax.reload();
         });
@@ -262,7 +262,7 @@
             e.preventDefault();
 
             var url = "{{ route('reports.sale.return.statement.print') }}";
-            
+
             var branch_id = $('#branch_id').val();
             var customer_id = $('#customer_id').val();
             var payment_status = $('#payment_status').val();
@@ -274,23 +274,23 @@
                 type:'get',
                 data: {branch_id, customer_id, payment_status,from_date, to_date},
                 success:function(data){
-                    
+
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 500, 
-                        header: "", 
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 500,
+                        header: "",
                         pageTitle: "",
-                        formValues: false,         
-                        canvas: false, 
+                        formValues: false,
+                        canvas: false,
                         beforePrint: null,
-                        afterPrint: null      
+                        afterPrint: null
                     });
                 }
-            }); 
+            });
         });
 
         new Litepicker({

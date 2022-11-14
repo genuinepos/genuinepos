@@ -120,7 +120,6 @@ body {
 
 button:focus {
     outline: none;
-    font-size: 11px;
 }
 
 .bg-white {

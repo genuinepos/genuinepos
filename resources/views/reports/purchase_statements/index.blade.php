@@ -14,7 +14,7 @@
                                 <span class="fas fa-shopping-basket"></span>
                                 <h5>Purchase Statements</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -243,10 +243,10 @@
 
                 var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
                 $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
-                
+
                 var paid = sum_table_col($('.data_tbl'), 'paid');
                 $('#paid').text(bdFormat(paid));
-                
+
                 var purchase_return_amount = sum_table_col($('.data_tbl'), 'purchase_return_amount');
                 $('#purchase_return_amount').text(bdFormat(purchase_return_amount));
 
@@ -262,7 +262,7 @@
             table.find('tbody').find('tr').each(function() {
 
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
-                    
+
                     sum += parseFloat(
                         $(this).find('.' + class_name).data('value')
                     );
@@ -283,7 +283,7 @@
             e.preventDefault();
 
             var url = "{{ route('reports.purchases.statement.print') }}";
-            
+
             var branch_id = $('#branch_id').val();
             var supplier_id = $('#supplier_id').val();
             var status = $('#status').val();
@@ -295,24 +295,24 @@
                 type : 'get',
                 data : {branch_id, supplier_id, status, from_date, to_date},
                 success:function(data){
-                    
+
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{ asset('public/assets/css/print/purchase.print.css') }}",                      
-                        removeInline: false, 
-                        printDelay: 500, 
-                        header: "", 
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{ asset('public/assets/css/print/purchase.print.css') }}",
+                        removeInline: false,
+                        printDelay: 500,
+                        header: "",
                         pageTitle: "",
                         // footer: 'Footer Text',
-                        formValues: false,         
-                        canvas: false, 
+                        formValues: false,
+                        canvas: false,
                         beforePrint: null,
-                        afterPrint: null      
+                        afterPrint: null
                     });
                 }
-            }); 
+            });
         });
     </script>
 

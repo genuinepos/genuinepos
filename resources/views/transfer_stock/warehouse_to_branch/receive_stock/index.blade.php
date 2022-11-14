@@ -12,11 +12,11 @@
                                 <span class="fas fa-check-double"></span>
                                 <h5>Receive Stocks</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                    
+
                     <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
@@ -62,14 +62,14 @@
     </div>
 
     <div id="transfer_details">
-        
+
     </div>
 @endsection
 @push('scripts')
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -115,17 +115,17 @@
 
         // Make print
         $(document).on('click', '.print_btn',function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.transfer_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
-                printDelay: 1000, 
-                header: null,        
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                removeInline: false,
+                printDelay: 1000,
+                header: null,
             });
         });
     </script>

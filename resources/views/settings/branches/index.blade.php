@@ -13,11 +13,11 @@
                                 <span class="fas fa-code-branch"></span>
                                 <h5>Business Locations</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                  
+
                     <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
@@ -163,9 +163,9 @@
                 },error:function(err){
                     $('.data_preloader').hide();
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                     } else {
-                        toastr.error('Server Error. Please contact to the support team.'); 
+                        toastr.error('Server Error. Please contact to the support team.');
                     }
                 }
             });
@@ -186,9 +186,9 @@
                 },error:function(err){
                     $('.data_preloader').hide();
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                     } else {
-                        toastr.error('Server Error. Please contact to the support team.'); 
+                        toastr.error('Server Error. Please contact to the support team.');
                     }
                 }
             });

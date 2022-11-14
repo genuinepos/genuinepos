@@ -14,7 +14,7 @@
                                 <span class="fas fa-sliders-h"></span>
                                 <h5>Stock Adjustments</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
@@ -176,7 +176,7 @@
                 {data: 'type', name: 'type'},
                 {data: 'net_total_amount', name: 'net_total_amount', className: 'text-end'},
                 {data: 'recovered_amount', name: 'recovered_amount', className: 'text-end'},
-        
+
             ],fnDrawCallback: function() {
                 var net_total_amount = sum_table_col($('.data_tbl'), 'net_total_amount');
                 $('#net_total_amount').text(bdFormat(net_total_amount));

@@ -13,11 +13,11 @@
                                 <span class="fas fa-user-tag"></span>
                                 <h5>User Roles</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
-                  
+
                     <div class="container-fluid">
                         <div class="row">
                             <div class="form_element">
@@ -86,12 +86,12 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',

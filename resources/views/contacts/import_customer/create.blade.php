@@ -19,7 +19,7 @@
                                         <div class="row">
                                             <div class="col-6"><h5>Import Customers </h5></div>
                                             <div class="col-6">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
                                         </div>
                                     </div>
@@ -85,87 +85,87 @@
                                                         <td class="text-start"> Customer ID </td>
                                                         <td class="text-start"> Optional</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">2</td>
                                                         <td class="text-start"> Business Name </td>
                                                         <td class="text-start">Optional</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">3</td>
                                                         <td class="text-start"> Name</td>
                                                         <td class="text-start text-danger"> Required</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">4</td>
                                                         <td class="text-start"> Phone </td>
                                                         <td class="text-start text-danger"> <b>Required</b> <br>
                                                             (<small>Must be unique.</small>)</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">5</td>
                                                         <td class="text-start"> Alternative Number</td>
                                                         <td class="text-start">Optional</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">6</td>
                                                         <td class="text-start">Landline</td>
                                                         <td class="text-start"> Optional</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">7</td>
                                                         <td class="text-start">Email</td>
                                                         <td class="text-start">Optional</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">8</td>
                                                         <td class="text-start">Date Of Birth</td>
                                                         <td class="text-start">Optional</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">9</td>
                                                         <td class="text-start">Tax Number</td>
                                                         <td class="text-start">Optional</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">10</td>
                                                         <td class="text-start">Opening Balance </td>
                                                         <td class="text-start">Optional <br>
                                                             (<small>Opening Balance will be added in customer balance due.</small>)</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">12</td>
                                                         <td class="text-start">Address</td>
                                                         <td class="text-start">Optional</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">13</td>
                                                         <td class="text-start">City</td>
                                                         <td class="text-start">Optional</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">13</td>
                                                         <td class="text-start">State</td>
                                                         <td class="text-start">Optional</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">14</td>
                                                         <td class="text-start">Country</td>
                                                         <td class="text-start">Optional</td>
                                                     </tr>
-                    
+
                                                     <tr>
                                                         <td class="text-start">15</td>
                                                         <td class="text-start">Zip-Code</td>
@@ -178,7 +178,7 @@
                                                         <td class="text-start">Optional</td>
                                                     </tr>
 
-                                                    
+
                                                     <tr>
                                                         <td class="text-start">17</td>
                                                         <td class="text-start">Pay term Number</td>
@@ -190,7 +190,7 @@
                                                         <td class="text-start">Pay term</td>
                                                         <td class="text-start">Optional (If exists 1=Day,2=Month)</td>
                                                     </tr>
-                    
+
                                                 </tbody>
                                             </table>
                                         </div>

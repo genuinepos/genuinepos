@@ -18,9 +18,9 @@
                                     <div class="py-2 px-2 form-header">
                                         <div class="row">
                                             <div class="col-8"><h5>Add Invoice Layout</h5> </div>
-    
+
                                             <div class="col-4">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                             </div>
                                         </div>
                                     </div>
@@ -56,8 +56,8 @@
                                                 <div class="input-group">
                                                     <div class="col-12">
                                                         <div class="row">
-                                                            <p class="checkbox_input_wrap bordered"> 
-                                                            <input type="checkbox" checked name="show_shop_logo"> &nbsp; Show Business/Shop Logo</p> 
+                                                            <p class="checkbox_input_wrap bordered">
+                                                            <input type="checkbox" checked name="show_shop_logo"> &nbsp; Show Business/Shop Logo</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -67,8 +67,8 @@
                                                 <div class="input-group">
                                                     <div class="col-12">
                                                         <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" checked name="show_seller_info"> &nbsp; Show Seller Info</p> 
+                                                            <p class="checkbox_input_wrap">
+                                                            <input type="checkbox" checked name="show_seller_info"> &nbsp; Show Seller Info</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -80,8 +80,8 @@
                                                 <div class="input-group">
                                                     <div class="col-12">
                                                         <div class="row">
-                                                            <p class="checkbox_input_wrap"> 
-                                                            <input type="checkbox" checked name="show_total_in_word"> &nbsp; Show Total In Word</p> 
+                                                            <p class="checkbox_input_wrap">
+                                                            <input type="checkbox" checked name="show_total_in_word"> &nbsp; Show Total In Word</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -215,38 +215,38 @@
                                             <div class="col-md-2">
                                                 <div class="input-group">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" name="branch_landmark" > &nbsp; <b>Landmark</b> </p> 
+                                                        <p class="checkbox_input_wrap">
+                                                        <input type="checkbox" name="branch_landmark" > &nbsp; <b>Landmark</b> </p>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-2">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" checked name="branch_city"> &nbsp;<b>City</b> 
-                                                    </p> 
+                                                    <p class="checkbox_input_wrap">
+                                                        <input type="checkbox" checked name="branch_city"> &nbsp;<b>City</b>
+                                                    </p>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-2">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" checked name="branch_state"> &nbsp; <b>State</b></p> 
+                                                    <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" checked name="branch_state"> &nbsp; <b>State</b></p>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-2">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" checked name="branch_zipcode"> &nbsp; <b>Zip-Code</b></p> 
+                                                    <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" checked name="branch_zipcode"> &nbsp; <b>Zip-Code</b></p>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-2">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" checked name="branch_phone"> &nbsp; <b>Phone</b></p> 
+                                                    <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" checked name="branch_phone"> &nbsp; <b>Phone</b></p>
                                                 </div>
                                             </div>
 
@@ -255,15 +255,15 @@
                                         <div class="row mt-2">
                                             <div class="col-md-4">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" checked name="branch_alternate_number"> &nbsp; <b>Alternative Number</b></p> 
+                                                    <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" checked name="branch_alternate_number"> &nbsp; <b>Alternative Number</b></p>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" checked name="branch_email"> &nbsp; <b>Email</b></p> 
+                                                    <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" checked name="branch_email"> &nbsp; <b>Email</b></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -282,30 +282,30 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <div class="row">
-                                                        <p class="checkbox_input_wrap"> 
-                                                        <input type="checkbox" checked name="customer_name"> &nbsp;<b>Name</b></p> 
+                                                        <p class="checkbox_input_wrap">
+                                                        <input type="checkbox" checked name="customer_name"> &nbsp;<b>Name</b></p>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap "> 
-                                                    <input type="checkbox" checked name="customer_tax_no"> &nbsp; <b>Tax Number</b></p> 
+                                                    <p class="checkbox_input_wrap ">
+                                                    <input type="checkbox" checked name="customer_tax_no"> &nbsp; <b>Tax Number</b></p>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-3">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" checked name="customer_address"> &nbsp;<b>Address</b> </p> 
+                                                    <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" checked name="customer_address"> &nbsp;<b>Address</b> </p>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-2">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" checked name="customer_phone"> &nbsp;<b>Phone</b></p> 
+                                                    <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" checked name="customer_phone"> &nbsp;<b>Phone</b></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -324,22 +324,22 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap mt-1"> 
-                                                    <input type="checkbox" checked name="product_w_type"> &nbsp;<b>Product Warranty Type</b></p> 
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" checked name="product_w_type"> &nbsp;<b>Product Warranty Type</b></p>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" checked name="product_w_duration"> &nbsp; <b>Product Warranty Duration</b></p> 
+                                                    <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" checked name="product_w_duration"> &nbsp; <b>Product Warranty Duration</b></p>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="row">
-                                                   <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" checked name="product_discount"> &nbsp; <b>Product Discount</b></p> 
+                                                   <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" checked name="product_discount"> &nbsp; <b>Product Discount</b></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -347,15 +347,15 @@
                                         <div class="row mt-1">
                                             <div class="col-md-4">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap"> 
-                                                    <input type="checkbox" checked name="product_tax" > &nbsp; <b>Product Tax</b></p> 
+                                                    <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" checked name="product_tax" > &nbsp; <b>Product Tax</b></p>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="row">
-                                                    <p class="checkbox_input_wrap "> 
-                                                    <input type="checkbox" name="product_imei"><b>&nbsp; Show sale description</b></p> 
+                                                    <p class="checkbox_input_wrap ">
+                                                    <input type="checkbox" name="product_imei"><b>&nbsp; Show sale description</b></p>
                                                 </div>
                                                 <small class="text-muted">(Product IMEI or Serial Number)</small>
                                             </div>

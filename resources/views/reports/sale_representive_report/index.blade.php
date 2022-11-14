@@ -25,7 +25,7 @@
                                 <span class="fas fa-desktop"></span>
                                 <h5>Sales Representative Report</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -51,7 +51,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    @else 
+                                                    @else
                                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     @endif
                                                 @endif
@@ -86,12 +86,12 @@
                                 <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
                                 <div class="report_data">
                                     <div class="sale_and_expense_sum_area">
-                                        <div class="card-body card-custom"> 
-                                           
+                                        <div class="card-body card-custom">
+
                                             <div class="heading">
                                                 <h6 class="text-muted">Total Sale - Total Sales Return : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="sale_amount"></span></h6>
                                             </div>
-                                               
+
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="tax_sum">
@@ -101,7 +101,7 @@
                                             </div>
                                         </div>
                                     </div>
-            
+
                                     <div class="user_sale_and_expense_list">
                                         <div class="card">
                                             <div class="card-body">
@@ -111,14 +111,14 @@
                                                         <li>
                                                             <a id="tab_btn" data-show="sales" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Seles</a>
                                                         </li>
-            
+
                                                         <li>
                                                             <a id="tab_btn" data-show="expense" class="tab_btn" href="#">
                                                             <i class="fas fa-scroll"></i> Expense</a>
                                                         </li>
                                                     </ul>
                                                 </div>
-            
+
                                                 <div class="tab_contant sales">
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -138,7 +138,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        
+
                                                                     </tbody>
                                                                     <tfoot>
                                                                         <tr class="bg-secondary">
@@ -170,7 +170,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-            
+
                                                 <div class="tab_contant expense d-none">
                                                     <div class="row">
                                                         <div class="col-md-12">
@@ -217,8 +217,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>  
-                                        </div>  
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -236,7 +236,7 @@
 <script>
     var sale_table = $('#sale_table').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
             {extend: 'print',text: 'Print',className: 'btn btn-primary'},
@@ -285,7 +285,7 @@
 
     var ex_table = $('#expense_table').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
             {extend: 'print',text: 'Print',className: 'btn btn-primary'},
@@ -353,7 +353,7 @@
         ex_table.ajax.reload();
     });
 
-    //Submit filter form by date-range field blur 
+    //Submit filter form by date-range field blur
     $(document).on('blur', '.submitable_input', function () {
         setTimeout(function() {
             sale_table.ajax.reload();

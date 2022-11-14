@@ -12,7 +12,7 @@
         b{font-weight: 500; font-family: Arial, Helvetica, sans-serif;}
         .border_red { border: 1px solid red!important; }
         #display_pre_due{font-weight: 600;}
-        input[type=number]#quantity::-webkit-inner-spin-button, 
+        input[type=number]#quantity::-webkit-inner-spin-button,
         input[type=number]#quantity::-webkit-outer-spin-button {opacity: 1;margin: 0;}
 
         .select2-container--default .select2-selection--single {margin-bottom: 1px;}
@@ -21,7 +21,7 @@
         /*.select2-selection:focus {
              box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
         } */
-        
+
         .select2-selection:focus {
             box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
             color: #212529;
@@ -50,7 +50,7 @@
                                         </div>
 
                                         <div class="col-4">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>
@@ -62,7 +62,7 @@
                                                 <label class=" col-4"><b>Customer :</b> </label>
                                                 <div class="col-8">
                                                     <div class="input-group">
-                                                        <div style="display: inline-block; margin-bottom: 2px;"> 
+                                                        <div style="display: inline-block; margin-bottom: 2px;">
                                                             <select style="margin-bottom: 2px;" name="customer_id" class="form-control select2" id="customer_id">
                                                             <option value="">Walk-In-Customer</option>
                                                             @foreach ($customers as $customer)
@@ -70,13 +70,13 @@
                                                             @endforeach
                                                         </select></div>
 
-                                                        <div style="display: inline-block"> 
+                                                        <div style="display: inline-block">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text add_button" id="addCustomer">
                                                                     <i class="fas fa-plus-square text-dark"></i>
                                                                 </span>
                                                             </div>
-                                                        </div> 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -163,7 +163,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-2">
                                             <div class="input-group">
                                                 <label class="col-5"><b>Price Group :</b></label>
@@ -221,10 +221,10 @@
                                                         @if (auth()->user()->permission->product['product_add'] == '1')
                                                             <div class="input-group-prepend">
                                                                 <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
-                                                            </div> 
+                                                            </div>
                                                         @endif
                                                     </div>
-    
+
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>
                                                     </div>
@@ -285,7 +285,7 @@
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>Ship Address :</b></label>
                                                     <div class="col-8">
-                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="Shipment Address"> 
+                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="Shipment Address">
                                                     </div>
                                                 </div>
                                             </div>
@@ -312,7 +312,7 @@
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>Delivered To :</b></label>
                                                     <div class="col-8">
-                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" placeholder="Delivered To"> 
+                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" placeholder="Delivered To">
                                                     </div>
                                                 </div>
                                             </div>
@@ -343,7 +343,7 @@
                                         <div class="row no-gutters">
                                             <ul class="list-unstyled add_sale_ex_btn">
                                                 {{-- <li><button value="save_and_print" class="btn btn-sm btn-info text-white submit_button" data-status="4">Quotation</button></li>--}}
-                                                <li><button value="save_and_print" class="btn btn-sm btn-primary text-white submit_button" data-status="2">Draft</button></li> 
+                                                <li><button value="save_and_print" class="btn btn-sm btn-primary text-white submit_button" data-status="2">Draft</button></li>
                                                 <li><button type="button" class="btn btn-sm btn-secondary text-white resent-tn">Recent Transection</button></li>
                                                 <li><button type="button" class="btn btn-sm btn-success text-white show_stock">Show Stock</button></li>
                                             </ul>
@@ -378,8 +378,8 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-4">
-                                                <input name="order_discount" type="number" step="any" class="form-control" id="order_discount" value="0.00"> 
-                                                <input name="order_discount_amount" step="any" type="number" class="d-none" id="order_discount_amount" value="0.00" tabindex="-1"> 
+                                                <input name="order_discount" type="number" step="any" class="form-control" id="order_discount" value="0.00">
+                                                <input name="order_discount_amount" step="any" type="number" class="d-none" id="order_discount_amount" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
@@ -394,7 +394,7 @@
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Shipment Cost:</label>
                                             <div class="col-sm-7">
-                                                <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="0.00"> 
+                                                <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="0.00">
                                             </div>
                                         </div>
 
@@ -404,7 +404,7 @@
                                                 <input readonly class="form-control text-danger" type="number" step="any" name="previous_due" id="previous_due" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
-                                        
+
                                         <div class="row">
                                             <label class="col-sm-5 col-form-label">Total Payable:</label>
                                             <div class="col-sm-7">
@@ -412,7 +412,7 @@
                                                 <input class="d-none" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
-                                        
+
                                         <div class="payment_body">
                                             <div class="row">
                                                 <label class="col-sm-5 col-form-label">Cash Receive: >></label>
@@ -433,8 +433,8 @@
                                                 <div class="col-sm-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                         @foreach ($methods as $method)
-                                                            <option 
-                                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                                            <option
+                                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                                                 value="{{ $method->id }}">
                                                                 {{ $method->name }}
                                                             </option>
@@ -471,7 +471,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="submitBtn">
                                             <div class="row justify-content-center">
                                                 <div class="col-12 text-end">
@@ -493,7 +493,7 @@
         </div>
     </div>
 
-    <!--Add Customer Modal--> 
+    <!--Add Customer Modal-->
     <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
@@ -505,7 +505,7 @@
                 <div class="modal-body" id="add_customer_modal_body"></div>
             </div>
         </div>
-    </div> 
+    </div>
     <!--Add Customer Modal-->
 
     <!--Add Customer Opening Balance Modal-->
@@ -575,9 +575,9 @@
                         @if (auth()->user()->permission->sale['view_product_cost_is_sale_screed'] == '1')
                             <p>
                                 <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
-                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span> 
-                                    <span id="unit_cost">1,200.00</span> 
-                                </span> 
+                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span>
+                                    <span id="unit_cost">1,200.00</span>
+                                </span>
                                 <span class="btn btn-sm btn-info text-white" id="show_cost_button">Cost</span>
                             </p>
                         @endif
@@ -639,10 +639,10 @@
                 </div>
             </div>
         </div>
-    </div> 
-    <!-- Edit selling product modal End--> 
+    </div>
+    <!-- Edit selling product modal End-->
 
-    <!--Add Product Modal--> 
+    <!--Add Product Modal-->
     <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
@@ -654,7 +654,7 @@
                 <div class="modal-body" id="add_product_body"></div>
             </div>
         </div>
-    </div> 
+    </div>
     <!--Add Product Modal End-->
 
     <!-- Recent transection list modal-->

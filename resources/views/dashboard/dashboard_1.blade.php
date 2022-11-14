@@ -6,10 +6,10 @@
 @section('title', 'Dashboard - ')
 @section('content')
     @if (auth()->user()->permission->dashboard['dash_data'] == '1')
-        <div id="dashboard" class="pb-5">
-            <div class="row">
+        <div id="dashboard" class="p-3">
+            <div class="row mb-3">
                 <div class="main__content">
-                    <div class="d-flex mx-2 mt-2 switch_bar_cards">
+                    <div class="d-flex flex-wrap mx-2 mt-2 switch_bar_cards">
 
                         {{-- <div class="switch_bar">
                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="">
-                        <div class="row mt-2">
+                        <div class="row mt-3">
                             <div class="d-flex justify-content-end align-items-center gap-3">
                                 <input type="hidden" id="date_range" value="{{ $thisMonth }}">
                                 @if ($addons->branches == 1)
@@ -95,8 +95,8 @@
                         </div>
 
                         {{-- Cards --}}
-                        <div class="mt-2">
-                            <div class="row g-2">
+                        <div class="mt-3">
+                            <div class="row g-3">
                                 <div class="col-md-3">
                                     <div class="card-counter primary d-flex justify-content-around align-content-center">
                                         <div class="icon">
@@ -221,23 +221,24 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <section>
-                    <div class="form_element">
-                        <div class="section-header">
-                            <h6>
-                                <span class="fas fa-table"></span>Stock Alert Of
-                                <b>
-                                    @if (auth()->user()->branch_id)
-                                        {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
-                                    @else
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                    @endif
-                                </b>
-                            </h6>
-                        </div>
-                        <div class="widget_content">
-                            <div class="mtr-table">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <section>
+                        <div class="form_element mt-0 mb-3">
+                            <div class="section-header justify-content-between">
+                                <h6>
+                                    <span class="fas fa-table"></span>Stock Alert Of
+                                    <b>
+                                        @if (auth()->user()->branch_id)
+                                            {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
+                                        @else
+                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                        @endif
+                                    </b>
+                                </h6>
+                                <a href="#">See More</a>
+                            </div>
+                            <div class="widget_content">
                                 <div class="table-responsive">
                                     <table id="stock_alert_table" class="display data__table data_tble stock_table"
                                         width="100%">
@@ -254,14 +255,15 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
 
-                <section>
-                        <div class="form_element">
-                            <div class="section-header">
-                                <span class="fas fa-table"></span>
-                                <h6>Sales Order</h6>
+                <div class="col-md-6">
+                    <section>
+                        <div class="form_element mt-0 mb-3">
+                            <div class="section-header justify-content-between">
+                                <h6><span class="fas fa-table"></span> Sales Order</h6>
+                                <a href="#">See More</a>
                             </div>
                             <div class="widget_content">
                                 <div class="table-responsive">
@@ -282,35 +284,32 @@
                                 </div>
                             </div>
                         </div>
-                </section>
+                    </section>
+                </div>
             </div>
-            <div class="row px-2">
+            <div class="row g-3">
                 <div class="col-md-6">
                     <section>
-                        <div class="container">
-                            <div class="row">
-                                <div class="form_element">
-                                    <div class="section-header">
-                                        <span class="fas fa-table"></span>
-                                        <h6>Sales Payment Due</h6>
-                                    </div>
-                                    <div class="widget_content">
-                                        <div class="table-responsive">
+                        <div class="form_element mt-0 mb-3">
+                            <div class="section-header justify-content-between">
+                                <h6><span class="fas fa-table"></span> Sales Payment Due</h6>
+                                <a href="#">See More</a>
+                            </div>
+                            <div class="widget_content">
+                                <div class="table-responsive">
 
-                                            <table id="sales_payment_due_table"
-                                                class="display data__table data_tble due_table" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Customer</th>
-                                                        <th>Invoice ID</th>
-                                                        <th>Branch</th>
-                                                        <th>Due Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                    <table id="sales_payment_due_table"
+                                        class="display data__table data_tble due_table" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Customer</th>
+                                                <th>Invoice ID</th>
+                                                <th>Branch</th>
+                                                <th>Due Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -319,32 +318,28 @@
 
                 <div class="col-md-6">
                     <section>
-                        <div class="container">
-                            <div class="row">
-                                <div class="form_element">
-                                    <div class="section-header">
-                                        <span class="fas fa-table"></span>
-                                        <h6>Purchase Payment Due</h6>
-                                    </div>
-                                    <div class="widget_content">
-                                        <div class="table-responsive">
+                        <div class="form_element mt-0 mb-3">
+                            <div class="section-header justify-content-between">
+                                <h6><span class="fas fa-table"></span> Purchase Payment Due</h6>
+                                <a href="#">See More</a>
+                            </div>
+                            <div class="widget_content">
+                                <div class="table-responsive">
 
-                                            <table id="purchase_payment_due_table"
-                                                class="display data__table data_tble purchase_due_table" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Supplier</th>
-                                                        <th>P.Invoice ID</th>
-                                                        <th>Branch</th>
-                                                        <th>Due Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                    <table id="purchase_payment_due_table"
+                                        class="display data__table data_tble purchase_due_table" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Supplier</th>
+                                                <th>P.Invoice ID</th>
+                                                <th>Branch</th>
+                                                <th>Due Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -355,7 +350,7 @@
 
         <!--Add shortcut menu modal-->
         <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="payment_heading">Add Shortcut Menus</h6>

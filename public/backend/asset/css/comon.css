@@ -439,10 +439,6 @@ select {
     border: 1px solid #d8d8d8;
 }
 
-.widget_content .table-responsive {
-    margin-top: -15px;
-}
-
 a#print_report {
     margin-top: 1em;
 }

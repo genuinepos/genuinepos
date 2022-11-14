@@ -126,7 +126,7 @@
     }
 
     .widget_content .table-responsive {
-        min-height: 60vh !important;
+        min-height: 35vh !important;
     }
 
     #readDocument>div {

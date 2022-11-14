@@ -13,12 +13,13 @@
                                 <span class="fas fa-code-branch"></span>
                                 <h5>Business Locations</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            </a>
                         </div>
                     </div>
 
-                    <div class="row margin_row mt-1">
+                    <div class="p-3">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
@@ -26,12 +27,10 @@
                                 </div>
 
                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a id="create" href="{{ route('settings.branches.create') }}">
-                                                <i class="fas fa-plus-square"></i> Add Business Location
-                                            </a>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-end">
+                                        <a id="create" href="{{ route('settings.branches.create') }}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-plus-square"></i> Add Business Location
+                                        </a>
                                     </div>
                                 @endif
                             </div>

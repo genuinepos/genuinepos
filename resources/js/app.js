@@ -1,2 +1,2 @@
 // import('./bootstrap');
-console.log('Vite Installed properly');
+console.log('Resources JS Installed');

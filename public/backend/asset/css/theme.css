@@ -766,7 +766,6 @@ body.dark-theme {
 
 .dark-theme .sec-name {
     background: #ffffff;
-    box-shadow: 1px 3px 7px 0px #80797942;
 }
 
 .dark-theme .tab_list_area ul li a {
@@ -810,10 +809,15 @@ body.dark-theme {
 
 .dark-theme .btn-primary {
     background: var(--dark-color-2) !important;
+    border-color: var(--dark-color-1) !important;
 }
 
+
+.dark-theme .btn-primary:focus {
+    box-shadow: 0 0 0 0.25rem rgba(190, 190, 192, 0.5);
+}
 .dark-theme .btn-primary:hover {
-    background: var(--dark-color-2) !important;
+    background: var(--dark-color-1) !important;
 }
 
 .dark-theme .btn-info {

@@ -32,7 +32,6 @@ html {
     color: #fff;
 }
 .table-responsive {
-    margin-top: -13px;
     padding-left: 8px;
     padding-right: 8px;
     margin-bottom: 5px !important;
@@ -187,9 +186,6 @@ html {
     }
     .select-dropdown,
     .button-group {
-        display: block !important;
-    }
-    .d-flex {
         display: block !important;
     }
     .card-counter {

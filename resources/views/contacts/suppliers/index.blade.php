@@ -17,46 +17,44 @@
 
                         <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                     </div>
+                </div>
 
+                <div class="p-3">
                     @if ($addons->branches == 1)
                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="sec-name">
-                                        <div class="col-md-12">
-                                            <form id="filter_form" class="px-2">
-                                                <div class="form-group row">
-                                                    <div class="col-md-2">
-                                                        <label><strong>Business Location :</strong></label>
-                                                        <select name="branch_id"
-                                                            class="form-control submit_able" id="branch_id" autofocus>
-                                                            <option value="">All</option>
-                                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                            @foreach ($branches as $branch)
-                                                                <option value="{{ $branch->id }}">
-                                                                    {{ $branch->name . '/' . $branch->branch_code }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                    <div class="form_element rounded mt-0 mb-3">
+                                        <form id="filter_form" class="p-2">
+                                            <div class="form-group row">
+                                                <div class="col-md-2">
+                                                    <label><strong>Business Location :</strong></label>
+                                                    <select name="branch_id"
+                                                        class="form-control submit_able" id="branch_id" autofocus>
+                                                        <option value="">All</option>
+                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                        @foreach ($branches as $branch)
+                                                            <option value="{{ $branch->id }}">
+                                                                {{ $branch->name . '/' . $branch->branch_code }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
 
-                                                    <div class="col-md-2">
-                                                        <label><strong></strong></label>
-                                                        <div class="input-group">
-                                                            <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                        </div>
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                     </div>
                                                 </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         @endif
                     @endif
-                </div>
 
-                <div class="row margin_row mt-1">
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
@@ -65,11 +63,11 @@
 
                             <div class="col-md-6">
                                 <div class="btn_30_blue float-end">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
+                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
                                 </div>
 
                                 <div class="btn_30_blue float-end">
-                                    <a href="{{ route('contacts.suppliers.import.create') }}"><i class="fas fa-plus-square"></i> Import Suppliers</a>
+                                    <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Import Suppliers</a>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +125,7 @@
 
     <!-- Add Modal ---->
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content ">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Add Supplier</h6>
@@ -274,7 +272,7 @@
 
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Edit Supplier</h6>

@@ -25,72 +25,72 @@
                             </a>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-8">
-                                        <form id="filter_tax_report_form" action="" method="get">
-                                            @csrf
-                                            <div class="form-group row">
+                        <div class="p-3">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form_element rounded mt-0 mb-3">
+                                        <div class="element-body">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <form id="filter_tax_report_form" action="" method="get">
+                                                        @csrf
+                                                        <div class="form-group row">
+                                                            <div class="col-md-4">
+                                                                <label><strong>Supplier :</strong></label>
+                                                                <select name="supplier_id" class="form-control submit_able" id="supplier_id" autofocus>
+                                                                    <option value="">All</option>
+                                                                    @foreach ($suppliers as $supplier)
+                                                                        <option value="{{ $supplier->id }}">{{ $supplier->name.' ('.$supplier->phone.')' }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
                                                 <div class="col-md-4">
-                                                    <label><strong>Supplier :</strong></label>
-                                                    <select name="supplier_id" class="form-control submit_able" id="supplier_id" autofocus>
-                                                        <option value="">All</option>
-                                                        @foreach ($suppliers as $supplier)
-                                                            <option value="{{ $supplier->id }}">{{ $supplier->name.' ('.$supplier->phone.')' }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                    <div class="form-group">
+                                                        <label></label>
+                                                        <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label></label>
-                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row mt-1">
-                            <div class="report_data_area">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="report_data">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="table-responsive" >
-                                                        <table class="display data_tbl data__table">
-                                                            <thead>
-                                                                <tr class="text-start">
-                                                                    <th>Supplier</th>
-                                                                    <th>Opening Balance Due</th>
-                                                                    <th>Total Purchase</th>
-                                                                    <th>Total Paid</th>
-                                                                    <th>Total Due</th>
-                                                                    <th>Total Return Due</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
+                            <div class="row">
+                                <div class="report_data_area">
+                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                    <div class="report_data">
+                                        <div class="card">
+                                            <div class="table-responsive" >
+                                                <table class="display data_tbl data__table">
+                                                    <thead>
+                                                        <tr class="text-start">
+                                                            <th>Supplier</th>
+                                                            <th>Opening Balance Due</th>
+                                                            <th>Total Purchase</th>
+                                                            <th>Total Paid</th>
+                                                            <th>Total Due</th>
+                                                            <th>Total Return Due</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
 
-                                                            </tbody>
-                                                            <tfoot>
-                                                                <tr class="bg-secondary">
-                                                                    <th class="text-end text-white">Total : ({{json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                                    <th id="total_op_blc_due" class="text-white">0.00</th>
-                                                                    <th id="total_purchase" class="text-white">0.00</th>
-                                                                    <th id="total_paid" class="text-white">0.00</th>
-                                                                    <th id="total_purchase_due" class="text-white">0.00</th>
-                                                                    <th id="total_return_due" class="text-white">0.00</th>
-                                                                </tr>
-                                                            </tfoot>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr class="bg-secondary">
+                                                            <th class="text-end text-white">Total : ({{json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                            <th id="total_op_blc_due" class="text-white">0.00</th>
+                                                            <th id="total_purchase" class="text-white">0.00</th>
+                                                            <th id="total_paid" class="text-white">0.00</th>
+                                                            <th id="total_purchase_due" class="text-white">0.00</th>
+                                                            <th id="total_return_due" class="text-white">0.00</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>

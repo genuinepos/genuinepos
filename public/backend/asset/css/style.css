@@ -30,6 +30,10 @@ body::-webkit-scrollbar {
     align-items: center;
 }
 
+.name-head h5 {
+    z-index: 2;
+}
+
 .search-input {
     display: flex;
     align-items: center;
@@ -1639,6 +1643,7 @@ table.display tbody tr:hover {
 }
 .dataTables_wrapper {
     margin-top: 0;
+    border-top: 0;
 }
 .modal.show .modal-dialog {
     margin-top: 60px;

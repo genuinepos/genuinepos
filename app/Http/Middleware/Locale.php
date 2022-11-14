@@ -16,10 +16,8 @@ class Locale
      */
     public function handle(Request $request, Closure $next)
     {
-        $availableLang = ['en', 'bn'];
         $lang = session('lang');
-        $prepareLang = in_array($lang, $availableLang) ? $lang : config('app.locale');
-        app()->setlocale($prepareLang);
+        app()->setLocale($lang);
         return $next($request);
     }
 }

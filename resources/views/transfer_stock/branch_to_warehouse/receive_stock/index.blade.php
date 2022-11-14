@@ -162,7 +162,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                 removeInline: false,
                 printDelay: 1000,
                 header: null,

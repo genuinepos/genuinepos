@@ -9,7 +9,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Print Barcode</title>
-    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap.min.css') }}">
 
     <style>
         p {margin: 0px;padding: 0px;font-size: 7px;}
@@ -189,7 +189,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     {{-- <button class="btn btn-success" onclick="window.print()">Print</button> --}}
 </body>
 <!--Jquery Cdn-->
-<script src="{{ asset('public/backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
+<script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
 <!--Jquery Cdn End-->
 <script>
     function auto_print() {

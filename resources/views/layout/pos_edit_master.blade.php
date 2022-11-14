@@ -16,7 +16,7 @@
     {{-- <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css"> --}}
     <link href="{{asset('public')}}/backend/css/typography.css" rel="stylesheet" type="text/css">
     <link href="{{asset('public')}}/backend/css/body.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/calculator.css') }}">
 
     {{-- <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css"> --}}
     <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">

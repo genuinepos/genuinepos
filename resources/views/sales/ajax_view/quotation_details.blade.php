@@ -259,9 +259,9 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             @if ($quotation->branch->add_sale_invoice_layout->show_shop_logo == 1)
                                 @if ($quotation->branch)
-                                    <img style="height: 75px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $quotation->branch->logo) }}">
+                                    <img style="height: 75px; width:200px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch->logo) }}">
                                 @else 
-                                    <img style="height: 75px; width:200px;" src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                                    <img style="height: 75px; width:200px;" src="{{asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
                                 @endif
                             @endif
                         </div>
@@ -590,9 +590,9 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             @if ($defaultLayout->show_shop_logo == 1)
                                 @if ($quotation->branch)
-                                    <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $quotation->branch->logo) }}">
+                                    <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch->logo) }}">
                                 @else 
-                                    <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                                    <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
                                 @endif
                             @endif
                         </div>

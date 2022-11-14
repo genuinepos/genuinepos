@@ -30,7 +30,7 @@
                     </td>
                 @endif
 
-                <td><img loading="lazy" class="rounded" width="50" height="50" src="{{ asset('public/uploads/product/thumbnail/'.$product->thumbnail_photo) }}" alt=""></td> 
+                <td><img loading="lazy" class="rounded" width="50" height="50" src="{{ asset('uploads/product/thumbnail/'.$product->thumbnail_photo) }}" alt=""></td> 
 
                 <td> 
                     <div class="btn-group" role="group">

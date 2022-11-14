@@ -4,8 +4,8 @@
         .form_element {border: 1px solid #7e0d3d;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
-    <link href="{{ asset('public/backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('public/backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -875,8 +875,8 @@
 <!-- Add Warranty Modal End -->
 @endsection
 @push('scripts')
-<script src="{{asset('public/backend/asset/js/jquery.cleditor.js')}}"></script>
-<script src="{{asset('public/backend/asset/js/select2.min.js')}}"></script>
+<script src="{{asset('backend/asset/js/jquery.cleditor.js')}}"></script>
+<script src="{{asset('backend/asset/js/select2.min.js')}}"></script>
 <script>
 
     $('.select2').select2();

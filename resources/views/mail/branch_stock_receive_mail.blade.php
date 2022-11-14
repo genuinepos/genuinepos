@@ -5,9 +5,9 @@
       <tr>
         <th style="text-align:left;">
             @if ($transfer->branch)
-                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $transfer->branch->logo) }}">
+                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $transfer->branch->logo) }}">
             @else 
-                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
             @endif
         </th>
       </tr>

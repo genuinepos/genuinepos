@@ -363,7 +363,7 @@
                                 debug: false,
                                 importCSS: true,
                                 importStyle: true,
-                                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                                loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
                                 removeInline: false,
                                 printDelay: 500,
                                 header: null,

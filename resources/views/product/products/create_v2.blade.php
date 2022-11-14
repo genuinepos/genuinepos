@@ -6,8 +6,8 @@
         .dataTables_filter {width: 50%!important;}
         .dataTables_filter input {width: 50%;}
     </style>
-    <link href="{{ asset('public/backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('public/backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -603,8 +603,8 @@
     @include('product.products.partials.all-modals')
 @endsection
 @push('scripts')
-<script src="{{asset('public/backend/asset/js/jquery.cleditor.js')}}"></script>
-<script src="{{asset('public/backend/asset/js/select2.min.js')}}"></script>
+<script src="{{asset('backend/asset/js/jquery.cleditor.js')}}"></script>
+<script src="{{asset('backend/asset/js/select2.min.js')}}"></script>
 <script>
 
     $('.select2').select2();

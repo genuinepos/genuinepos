@@ -22,7 +22,7 @@
                         <div class="col-4">
                             @if ($sale->branch->pos_sale_invoice_layout->show_shop_logo == 1)
                                 @if ($sale->branch->logo != 'default.png')
-                                    <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                    <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
                                 @else 
                                     <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                                 @endif
@@ -399,7 +399,7 @@
                             <tr>
                                 <th class="text-center">
                                     @if ($sale->branch->logo != 'default.png')
-                                        <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                        <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
                                     @else 
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ $sale->branch->name }}</span>
                                     @endif

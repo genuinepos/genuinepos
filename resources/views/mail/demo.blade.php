@@ -8,9 +8,9 @@
       <tr>
         <th style="text-align:left;">
             @if ($sale->branch)
-                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
             @else 
-                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
             @endif
         </th>
         <th style="text-align:right;font-weight:400;">{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</th>

@@ -17,7 +17,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head">
                                     <div class="head p-1">
-                                        <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
+                                        <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
                                             alt="POS" class="logo">
                                         <span class="head-text">
                                             Genuine POS, Point of Sale software by SpeedDigit
@@ -69,7 +69,7 @@
                                         </h2> --}}
                                         <div class="px-2">
                                             <p class="logo-main-sec"><img
-                                                    src="{{ asset('public/assets/images/genuine_pos.png') }}" alt="POS"
+                                                    src="{{ asset('assets/images/genuine_pos.png') }}" alt="POS"
                                                     class="logo">
                                             </p>
                                             <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>

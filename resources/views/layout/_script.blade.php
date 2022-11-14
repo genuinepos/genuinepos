@@ -1,11 +1,11 @@
-    <script src="{{asset('public/backend/js/jquery-1.7.1.min.js')}}"></script>
-    <script src="{{asset('public/backend/js/number-bdt-formater.js')}}"></script>
+    <script src="{{asset('backend/js/jquery-1.7.1.min.js')}}"></script>
+    <script src="{{asset('backend/js/number-bdt-formater.js')}}"></script>
     <!--Jquery Cdn-->
-    <script src="{{asset('public/backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
+    <script src="{{asset('backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
     <!--Jquery Cdn End-->
 
-    <script src="{{ asset('public/backend/asset/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('public/backend/asset/js/jquery.fontstar.js') }}"></script>
+    <script src="{{ asset('backend/asset/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/asset/js/jquery.fontstar.js') }}"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <!--Toaster.js js link-->
@@ -14,15 +14,15 @@
 
 
     <!-- DataTable Cdn -->
-    <script type="text/javascript"  src="{{asset('public/backend/asset/cdn/js/jquery.dataTables.min.js')}}"></script> 
+    <script type="text/javascript"  src="{{asset('backend/asset/cdn/js/jquery.dataTables.min.js')}}"></script> 
     <!-- DataTable Cdn End-->
 
-    <script src="{{asset('public/backend/js/bootstrap-dropdown.js')}}"></script>
-    <script src="{{asset('public/backend/js/TableTools.min.js')}}"></script>
-    <script src="{{asset('public/backend/js/jeditable.jquery.js')}}"></script>
-    {{-- <script src="{{asset('public/backend/js/custom-script.js')}}"></script> --}}
-    <script src="{{asset('public/backend/asset/js/main.js')}}"></script>
-    <script src="{{asset('public/backend/asset/js/SimpleCalculadorajQuery.js')}}" defer></script>
+    <script src="{{asset('backend/js/bootstrap-dropdown.js')}}"></script>
+    <script src="{{asset('backend/js/TableTools.min.js')}}"></script>
+    <script src="{{asset('backend/js/jeditable.jquery.js')}}"></script>
+    {{-- <script src="{{asset('backend/js/custom-script.js')}}"></script> --}}
+    <script src="{{asset('backend/asset/js/main.js')}}"></script>
+    <script src="{{asset('backend/asset/js/SimpleCalculadorajQuery.js')}}" defer></script>
 
     <script>
         toastr.options = {"positionClass": "toast-top-center",}

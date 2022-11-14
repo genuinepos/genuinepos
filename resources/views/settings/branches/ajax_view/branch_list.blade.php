@@ -16,7 +16,7 @@
     <tbody>
         @foreach ($branches as $branch)
             <tr data-info="{{ $branch }}">
-                <td class="text-start"><img style="height: 25px; width:50px" src="{{ asset('public/uploads/branch_logo/'.$branch->logo) }}" alt=""></td> 
+                <td class="text-start"><img style="height: 25px; width:50px" src="{{ asset('uploads/branch_logo/'.$branch->logo) }}" alt=""></td> 
                 <td class="text-start">{{ $branch->name }}</td> 
                 <td class="text-start">{{ $branch->branch_code }}</td> 
                 <td class="text-start">{{ $branch->phone }}</td> 

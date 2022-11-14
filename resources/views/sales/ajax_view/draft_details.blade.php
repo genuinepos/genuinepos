@@ -247,9 +247,9 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             @if ($draft->branch->add_sale_invoice_layout->show_shop_logo == 1)
                                 @if ($draft->branch)
-                                    <img style="height: 75px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $draft->branch->logo) }}">
+                                    <img style="height: 75px; width:200px;" src="{{ asset('uploads/branch_logo/' . $draft->branch->logo) }}">
                                 @else 
-                                    <img style="height: 75px; width:200px;" src="{{asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                                    <img style="height: 75px; width:200px;" src="{{asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
                                 @endif
                             @endif
                         </div>
@@ -536,24 +536,24 @@
                     </div>
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Nomhost logo.png') }}">
                         </div>
                     </div>
     
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('public/uploads/layout_concern_logo/Creative Studio.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Creative Studio.png') }}">
                         </div>
                     </div>
     
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('public/uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                         </div>
                     </div>
                 </div>
@@ -599,9 +599,9 @@
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             @if ($defaultLayout->show_shop_logo == 1)
                                 @if ($draft->branch)
-                                    <img style="height: 75px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $draft->branch->logo) }}">
+                                    <img style="height: 75px; width:200px;" src="{{ asset('uploads/branch_logo/' . $draft->branch->logo) }}">
                                 @else 
-                                    <img style="height: 75px; width:200px;" src="{{ asset('public/uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                                    <img style="height: 75px; width:200px;" src="{{ asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
                                 @endif
                             @endif
                         </div>
@@ -892,24 +892,24 @@
                     </div>
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('public/uploads/layout_concern_logo/Nomhost logo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Nomhost logo.png') }}">
                         </div>
                     </div>
     
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('public/uploads/layout_concern_logo/Creative Studio.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Creative Studio.png') }}">
                         </div>
                     </div>
     
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('public/uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('public/uploads/layout_concern_logo/UltimateERPLogo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/UltimateERPLogo.png') }}">
                         </div>
                     </div>
                 </div>

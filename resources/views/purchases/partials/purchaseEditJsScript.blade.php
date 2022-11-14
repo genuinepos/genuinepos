@@ -220,7 +220,7 @@
                             }
                         }else{
                             var li = "";
-                            var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                            var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                             var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
                             $.each(product.product_variants, function(key, variant){
                                 var tax_amount = parseFloat(product.tax != null ? variant.variant_cost/100 * product.tax.tax_percent : 0.00);
@@ -238,7 +238,7 @@
                         if(product.namedProducts.length > 0) {
 
                             var li = "";
-                            var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                            var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                             var products = product.namedProducts; 
 
                             $.each(products, function (key, product) {

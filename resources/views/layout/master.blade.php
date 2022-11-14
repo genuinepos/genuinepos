@@ -40,7 +40,7 @@
         </div>
         <footer>
             <div class="logo_wrapper">
-                <img src="{{ asset('public/backend/images/static/app_logo.png') }}" class="logo">
+                <img src="{{ asset('backend/images/static/app_logo.png') }}" class="logo">
             </div>
         </footer>
     </div>
@@ -101,7 +101,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
                 removeInline: true,
                 printDelay: 500,
                 header: header,

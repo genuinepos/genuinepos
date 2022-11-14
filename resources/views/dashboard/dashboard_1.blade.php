@@ -1,7 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
-    <link href="{{ asset('public/backend/asset/css/dashboard.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/asset/css/dashboard.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('title', 'Dashboard - ')
 @section('content')

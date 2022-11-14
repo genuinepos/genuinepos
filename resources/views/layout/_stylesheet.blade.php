@@ -1,5 +1,5 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('public/backend/asset/css/fontawesome/css/all.min.css') }}">
+<link rel="stylesheet" href="{{ asset('backend/asset/css/fontawesome/css/all.min.css') }}">
 @if($rtl)
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css" integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -7,24 +7,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
 
 @else
-{{-- <link rel="stylesheet" href="{{ asset('public/backend/asset/css/bootstrap.min.css') }}"> --}}
+{{-- <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap.min.css') }}"> --}}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 @endif
 
-<link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
-<link href="{{ asset('public/backend/css/reset.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('public/backend/css/typography.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('public/backend/css/body.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('public/backend/css/data-table.min.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('public/backend/css/form.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('public/backend/css/wizard.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('public/backend/css/sprite.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('public/backend/css/gradient.css') }}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{{ asset('backend/asset/css/calculator.css') }}">
+<link href="{{ asset('backend/css/reset.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('backend/css/typography.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('backend/css/body.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('backend/css/data-table.min.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('backend/css/form.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('backend/css/wizard.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('backend/css/sprite.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('backend/css/gradient.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="{{ asset('public/backend/asset/css/comon.css') }}">
-<link rel="stylesheet" href="{{ asset('public/backend/asset/css/layout.css') }}">
-<link rel="stylesheet" href="{{ asset('public/backend/asset/css/style.css') }}">
-<link rel="stylesheet" href="{{ asset('public/backend/asset/css/theme.css') }}">
+<link rel="stylesheet" href="{{ asset('backend/asset/css/comon.css') }}">
+<link rel="stylesheet" href="{{ asset('backend/asset/css/layout.css') }}">
+<link rel="stylesheet" href="{{ asset('backend/asset/css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('backend/asset/css/theme.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 {{-- DataTable Global CSS --}}
 <style>

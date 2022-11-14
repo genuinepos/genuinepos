@@ -318,7 +318,7 @@
             debug: false,
             importCSS: true,
             importStyle: true,
-            loadCSS: "{{asset('public/assets/css/print/balance.sheet.print.css')}}",
+            loadCSS: "{{asset('assets/css/print/balance.sheet.print.css')}}",
             removeInline: false,
             printDelay: 600,
             header: header,

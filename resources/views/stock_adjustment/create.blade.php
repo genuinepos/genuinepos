@@ -435,7 +435,7 @@
                             } else {
 
                                 var li = "";
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
 
                                 $.each(product.product_variants, function(key, variant){
 
@@ -547,7 +547,7 @@
                             if(product.namedProducts.length > 0){
 
                                 var li = "";
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var products = product.namedProducts;
 
                                 $.each(products, function (key, product) {

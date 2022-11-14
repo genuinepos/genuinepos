@@ -18,17 +18,17 @@
     <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
 
     <!-- Calculator -->
-    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/calculator.css') }}">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/comon.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/pos.css">
     <link href="{{asset('public')}}/assets/plugins/custom/toastrjs/toastr.min.css" rel="stylesheet"
     type="text/css"/>
     <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/style.css">
-    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/pos-theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/pos-theme.css') }}">
     <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     @stack('css')
-    <script src="{{asset('public/backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
+    <script src="{{asset('backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
     <!--Toaster.js js link-->
     <script src="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.js"></script>
     <!--Toaster.js js link end-->
@@ -39,7 +39,7 @@
     <!--alert js link-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="{{ asset('public') }}/assets/plugins/custom/digital_clock/digital_clock.js"></script>
-    <script src="{{asset('public/backend/js/number-bdt-formater.js')}}"></script>
+    <script src="{{asset('backend/js/number-bdt-formater.js')}}"></script>
 </head>
 
 <body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'dark-theme' }}">

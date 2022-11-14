@@ -25,7 +25,7 @@
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         @if ($sale->branch->add_sale_invoice_layout->show_shop_logo == 1)
                             @if ($sale->branch->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $sale->branch->logo) }}">
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
                             @else 
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                             @endif

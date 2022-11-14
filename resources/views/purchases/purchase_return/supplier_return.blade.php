@@ -479,7 +479,7 @@
 
                             if(product.namedProducts.length > 0){
 
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var li = "";
                                 var products = product.namedProducts;
 
@@ -858,7 +858,7 @@
                             debug: false,
                             importCSS: true,
                             importStyle: true,
-                            loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                            loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
                             removeInline: false,
                             printDelay: 1000,
                             header: null,

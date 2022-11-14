@@ -30,7 +30,7 @@
                                 @if (auth()->user()->branch)
                                     @if (auth()->user()->branch->logo != 'default.png')
                                         <img
-                                        src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}">
+                                        src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}">
                                         {{-- src="{{ asset('logo.png') }}"> --}}
                                     @else
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
@@ -40,7 +40,7 @@
                                     @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                     <img
                                         {{-- src="{{ asset('logo.png')}}" --}}
-                                        src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
+                                        src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
                                         alt="logo" class="logo__img">
                                     @else
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{

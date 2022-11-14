@@ -582,7 +582,7 @@
                                 }
                             }else{
 
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var products = product.namedProducts;
                                 var li = "";
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
@@ -693,7 +693,7 @@
 
                             if(product.namedProducts.length > 0){
 
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var li = "";
                                 var products = product.namedProducts;
 

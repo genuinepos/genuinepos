@@ -1,6 +1,6 @@
 <style>
     .search_item_area{position: relative;}
-    .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 100%;z-index: 9999999;padding: 0;left: 0%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
+    .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 100%;z-index: 9999999;padding: 0;left: 0%;display: none;border: 1px solid var(--main-color);margin-top: 1px;border-radius: 0px;}
     .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
     .select_area ul li a {color:#464343;text-decoration: none;font-size: 12px;padding: 2px 3px;display: block;line-height: 15px;border: 1px solid #968e92;font-weight: 500;}
     .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
@@ -18,20 +18,20 @@
                 <div class="pos-logo">
                     @if (auth()->user()->branch)
                         @if (auth()->user()->branch->logo != 'default.png')
-                            <img style="height: 40px; width:100px;" src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
-                        @else 
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                        @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()->branch->name }}</span>
                         @endif
-                    @else  
+                    @else
                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                        @else 
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                        @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                         @endif
                     @endif
                 </div>
             </div>
-            
+
             <div class="col-lg-8 col-sm-12 col-12 address">
                 <p class="store-name">
                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (HEAD OFFICE)
@@ -42,12 +42,12 @@
                         {{ $sale->branch->city ? ','.$sale->branch->city : ''}}
                         {{ $sale->branch->state ? ','.$sale->branch->state : ''}}
                         {{ $sale->branch->country ? ','.$sale->branch->country : ''}}
-                    @else 
+                    @else
                         {{ json_decode($generalSettings->business, true)['address'] }}
                     @endif
                 </p>
                 <small class="login-user-name">
-                    <span class="text-highlight">Loggedin :</span> {{ $sale->admin ? $sale->admin->prefix.' '.$sale->admin->name.' '.$sale->admin->last_name : 'N/A' }} 
+                    <span class="text-highlight">Loggedin :</span> {{ $sale->admin ? $sale->admin->prefix.' '.$sale->admin->name.' '.$sale->admin->last_name : 'N/A' }}
                     <span>
                         <span class="text-highlight">C.Register :</span>
                         @if ($sale->admin)
@@ -55,13 +55,13 @@
                                 Super-Admin
                             @elseif($sale->admin->role_type == 2)
                                 Admin
-                            @else 
+                            @else
                                 {{ $sale->admin->role->name }}
                             @endif
                         @endif
                     </span>
                 </small>
-            </div>  
+            </div>
         </div>
         <div class="col-lg-8 col-sm-12 col-12 input-buttob-sec">
             <div class="input-section">
@@ -79,13 +79,13 @@
                                             <span class="input-group-text"><i class="fas fa-barcode"></i></span>
                                         </div>
                                         <input type="text" name="search_product" class="form-control" id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus>
-                                        @if (auth()->user()->permission->product['product_add'] == '1')
+                                        @if (auth()->user()->can('product_add'))
                                             <div class="input-group-append add_button" id="add_product">
                                                 <span class="input-group-text"><i class="fas fa-plus"></i></span>
                                             </div>
                                         @endif
                                     </div>
-    
+
                                     <div class="select_area">
                                         <ul id="list" class="variant_list_area"></ul>
                                     </div>
@@ -113,7 +113,7 @@
 
                                     <div class="input-group-prepend ms-1">
                                         <select name="price_group_id" class="form-control" id="price_group_id">
-                                            <option value="">Default Selling Price</option>
+                                            <option value="">@lang('menu.default_selling_price')</option>
                                             @foreach ($price_groups as $pg)
                                                 <option value="{{ $pg->id }}">{{ $pg->name }}</option>
                                             @endforeach
@@ -131,13 +131,13 @@
 
                         <div class="btn-sec">
                             <a href="{{ route('sales.pos.suspended.list') }}" class="pos-btn status" id="suspends" tabindex="-1"><i class="fas text-warning fa-pause"></i></a>
-                            <a href="" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal" tabindex="-1">
+                            <a href="#" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal" tabindex="-1">
                                 <span class="fas fa-calculator"></span>
                             </a>
-                            {{-- <a href="" class="pos-btn"><span class="fas fa-briefcase"></span></a>
-                            <a href="" class="pos-btn text-danger"><span class="fas fa-times"></span></a> --}}
-                            <a href="" class="pos-btn" tabindex="-1"><span class="fas fa-bell"></span></a>
-                            <a href="" class="pos-btn" id="pos_exit_button" tabindex="-1"><span class="fas fa-backward"></span></a>
+                            {{-- <a href="#" class="pos-btn"><span class="fas fa-briefcase"></span></a>
+                            <a href="#" class="pos-btn text-danger"><span class="fas fa-times"></span></a> --}}
+                            <a href="#" class="pos-btn" tabindex="-1"><span class="fas fa-bell"></span></a>
+                            <a href="#" class="pos-btn" id="pos_exit_button" tabindex="-1"><span class="fas fa-backward"></span></a>
                         </div>
                     </div>
                 </div>
@@ -226,7 +226,7 @@
             url:"{{ route('sales.pos.suspended.list') }}",
             async:true,
             success:function(data){
-                
+
                 $('#suspended_sale_list').html(data);
                 $('#suspend_preloader').hide();
             }

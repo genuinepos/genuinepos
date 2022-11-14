@@ -1,16 +1,16 @@
 <div class="col-lg-3 p-1">
     <div class="pos-right-inner">
-        <div class="check-out-woaper">
+        <div class="check-out-wraper">
             <div class="function-sec">
                 <div class="row">
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" 
+                            <a href="#"
                                 @if (json_decode($generalSettings->pos, true)['is_enabled_draft'] == '1')
-                                    data-button_type="0" 
+                                    data-button_type="0"
                                     data-action_id="2"
-                                    id="submit_btn" 
-                                @else 
+                                    id="submit_btn"
+                                @else
                                     onclick="
                                         event.preventDefault();
                                         toastr.error('Creating draft is disabled in POS.');
@@ -25,10 +25,10 @@
                         <div class="btn-bg">
                             <a href="#"
                                 @if (json_decode($generalSettings->pos, true)['is_enabled_quotation'] == '1')
-                                    data-action_id="4" 
-                                    data-button_type="0" 
-                                    id="submit_btn" 
-                                @else 
+                                    data-action_id="4"
+                                    data-button_type="0"
+                                    id="submit_btn"
+                                @else
                                     onclick="
                                         event.preventDefault();
                                         toastr.error('Creating quotaion is disabled in POS.');
@@ -38,10 +38,10 @@
                             </a>
                         </div>
                     </div>
-                    
+
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" 
+                            <a href="#"
                             onclick="
                                 event.preventDefault();
                                 toastr.error('Exchange System is not available in pos sale edit section.');
@@ -54,7 +54,7 @@
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="" class="bg-gren function-card" id="show_stock" tabindex="-1">
+                            <a href="#" class="bg-gren function-card" id="show_stock" tabindex="-1">
                                 Stock<p>Alt+C</p>
                             </a>
                         </div>
@@ -62,12 +62,12 @@
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" 
+                            <a href="#"
                                 @if (json_decode($generalSettings->pos, true)['is_enabled_hold_invoice'] == '1')
                                     data-button_type="0"
                                     data-action_id="5"
-                                    id="submit_btn" 
-                                @else 
+                                    id="submit_btn"
+                                @else
                                     onclick="
                                         event.preventDefault();
                                         toastr.error('Hold invoice is disabled in POS.');
@@ -80,10 +80,10 @@
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" 
+                            <a href="#"
                                 @if (json_decode($generalSettings->pos, true)['is_enabled_hold_invoice'] == '1')
                                     id="pick_hold_btn"
-                                @else 
+                                @else
                                     onclick="
                                         event.preventDefault();
                                         toastr.error('Hold invoice is disabled in POS.');
@@ -93,7 +93,7 @@
                             </a>
                         </div>
                     </div>
-              
+
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="{{ route('settings.general.index') }}" class="bg-swit function-card" tabindex="-1">
@@ -104,12 +104,12 @@
 
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
-                            <a href="#" 
+                            <a href="#"
                                 @if (json_decode($generalSettings->pos, true)['is_enabled_suspend'] == '1')
                                     data-button_type="0"
-                                    data-action_id="6" 
-                                    id="submit_btn" 
-                                @else 
+                                    data-action_id="6"
+                                    id="submit_btn"
+                                @else
                                     onclick="
                                         event.preventDefault();
                                         toastr.error('Suspend is disabled in POS.');
@@ -189,7 +189,7 @@
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">Cash Receive:</label>
+                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">@lang('menu.cash_receive'):</label>
                         <div class="col-sm-6 ">
                             <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
                                 class="form-control" autocomplete="off">
@@ -205,7 +205,7 @@
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-danger"><b>Due :</b></label>
+                        <label for="inputEmail3" class="col-sm-6 col-form-label text-danger"><b>@lang('menu.due') :</b></label>
                         <div class="col-sm-6 ">
                             <input type="text" readonly name="total_due" id="total_due" value="0.00"
                                 class="form-control sp-input text-danger">
@@ -217,11 +217,11 @@
                     <div class="row">
                         <div class="col-lg-4 col-12 p-1 pb-1">
                             <div class="btn-bg mb-1">
-                                <a href="#" class="bg-orange btn-pos"  
+                                <a href="#" class="bg-orange btn-pos"
                                     @if (json_decode($generalSettings->pos, true)['is_enabled_credit_full_sale'] == '1')
                                         data-button_type="0"
                                         id="full_due_button"
-                                    @else 
+                                    @else
                                         onclick="
                                             event.preventDefault();
                                             toastr.error('Full credit sale is disabled.');
@@ -229,7 +229,7 @@
                                     @endif
                                 tabindex="-1"><i class="fas fa-check"></i> Credit Sale</a>
                             </div>
-                    
+
                             <div class="btn-bg">
                                 <a href="#" class="bg-parpal btn-pos" id="reedem_point_button" tabindex="-1">Reedem Point</a>
                             </div>
@@ -322,7 +322,7 @@
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                         removeInline: false,
                         printDelay: 1000,
                         header: null,

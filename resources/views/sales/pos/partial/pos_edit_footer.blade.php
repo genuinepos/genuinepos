@@ -1,9 +1,9 @@
 <div class="row">
     <div class="pos-footer">
-        <span class="float-start text-white mt-3 badge bg-primary">Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
+        <span class="float-start text-white mt-3 badge bg-primary">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd') .</b> </span>
         @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '0')
             <div class="pos-foot-con">
-                <a href="#" class="resent-tn"><span class="fas fa-clock" tabindex="-1"></span>Recent Transection</a>
+                <a href="#" class="resent-tn"><span class="fas fa-clock" tabindex="-1"></span>@lang('menu.recent_transaction')</a>
             </div>
         @endif
     </div>
@@ -31,7 +31,7 @@
             url:"{{url('sales/pos/recent/sales')}}",
             type:'get',
             success:function(data){
-                
+
                 $('#transection_list').html(data);
                 $('#recent_trans_preloader').hide();
             }
@@ -63,15 +63,15 @@
         var url = $(this).attr('href');
         $.get(url, function(data) {
             $(data).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                removeInline: false,
                 printDelay: 500,
-                header : null,      
-                footer : null,   
+                header : null,
+                footer : null,
             });
-        }); 
+        });
     });
 </script>

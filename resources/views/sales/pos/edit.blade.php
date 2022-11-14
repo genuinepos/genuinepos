@@ -73,14 +73,14 @@
         var price_group_id = $('#price_group_id').val();
 
         $.ajax({
-           
+
             url:"{{ url('sales/search/product') }}" + "/"+ status + "/" + product_code + "/" + __price_group_id + "/" + warehouse_id,
             dataType: 'json',
             success: function(product) {
 
                 if(!$.isEmptyObject(product.errorMsg || product_code == '')){
 
-                    toastr.error(product.errorMsg); 
+                    toastr.error(product.errorMsg);
                     $('#search_product').val("");
                     $('.select_area').hide();
                     return;
@@ -90,11 +90,11 @@
                 var discount = product.discount;
 
                 if (
-                    !$.isEmptyObject(product.product) || 
-                    !$.isEmptyObject(product.variant_product) || 
+                    !$.isEmptyObject(product.product) ||
+                    !$.isEmptyObject(product.variant_product) ||
                     !$.isEmptyObject(product.namedProducts)
                 ) {
-                    
+
                     $('#search_product').addClass('is-valid');
 
                     if (!$.isEmptyObject(product.product)) {
@@ -108,7 +108,7 @@
 
                                 $('#stock_quantity').val(qty_limit);
                             }
-                           
+
                             $('.select_area').hide();
                             $('#search_product').val('');
                             product_ids = document.querySelectorAll('#product_id');
@@ -188,7 +188,7 @@
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td class="serial">1</td>';
-                        
+
                                 tr += '<td class="text-start">';
                                 tr += '<a class="product-name text-info" id="edit_product" title="'+product.product_code+'" href="#">' +
                                     product.name + '</a><br/><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info.">';
@@ -241,7 +241,7 @@
                             }
                         } else {
                             var li = "";
-                            var imgUrl = "{{ asset('public/uploads/product/thumbnail') }}";
+                            var imgUrl = "{{ asset('uploads/product/thumbnail') }}";
                             var tax_percent = product.tax_id != null ? product.tax.tax_percent :
                                 0.00;
                             $.each(product.product_variants, function(key, variant) {
@@ -287,7 +287,7 @@
 
                             $('#stock_quantity').val(qty_limit);
                         }
-                        
+
                         $('#search_product').val('');
                         $('.select_area').hide();
                         var variant_product = product.variant_product;
@@ -381,7 +381,7 @@
                             tr += '<input type="hidden" id="qty_limit" value="'+ qty_limit +'">';
                             tr += '<input class="index-'+ unique_index +'" type="hidden" id="index">';
                             tr += '</td>';
-                            
+
                             tr += '<td>';
                             tr +='<input value="1.00" required name="quantities[]" type="text" class="form-control text-center" id="quantity">';
                             tr += '</td>';
@@ -416,7 +416,7 @@
                         if (product.namedProducts.length > 0) {
 
                             var li = "";
-                            var imgUrl = "{{ asset('public/uploads/product/thumbnail') }}";
+                            var imgUrl = "{{ asset('uploads/product/thumbnail') }}";
                             var products = product.namedProducts;
 
                             $.each(products, function(key, product) {
@@ -454,7 +454,7 @@
                                     li += '<li class="mt-1">';
                                     li +='<a class="product-name s" id="'+product.id+product.variant_id+'" onclick="salectVariant(this); return false;" data-p_id="'+ product.id +'" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="'+ product.variant_id +'" data-p_name="' +product.name +'" data-p_tax_id="'+ product.tax_id +'" data-unit="' +product.unit_name +'" data-tax_percent="'+ tax_percent +'" data-tax_type="'+ product.tax_type +'" data-tax_amount="'+ tax_amount +'" data-v_code="' + product.variant_code + '" data-v_price="'+ product.variant_price +'" data-v_name="'+ product.variant_name +'" data-v_cost_inc_tax="'+ product.variant_cost_with_tax+'" href="#">'+ product.name + ' - ' + product.variant_name + ' - Price: ' + parseFloat(unitPriceIncTax).toFixed(2) +'</a>';
                                     li += '</li>';
-                                    
+
                                 } else {
 
                                     var price = 0;
@@ -504,7 +504,7 @@
     // select single product and add stock adjustment table
     var keyName = 1;
     function singleProduct(e) {
-        
+
         var warehouse_id = 'NULL';
         var price_group_id = $('#price_group_id').val();
         var __price_group_id = $('#price_group_id').val() ? $('#price_group_id').val() : 'no_id';
@@ -684,7 +684,7 @@
 
     // select variant product and add purchase table
     function salectVariant(e){
-        
+
         var warehouse_id = 'NULL';
         var price_group_id = $('#price_group_id').val();
         var __price_group_id = $('#price_group_id').val() ? $('#price_group_id').val() : 'no_id';
@@ -808,7 +808,7 @@
                             unitPriceIncTax = parseFloat(__price_with_discount) + parseFloat(__tax_amount);
                             tax_amount = __tax_amount;
                         }
-                        
+
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="serial">1</td>';
@@ -984,7 +984,7 @@
         var discountValue = $(this).val() ? $(this).val() : 0.00;
 
         if ($('#e_unit_discount_type').val() == 1) {
-            
+
             $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
         } else {
 
@@ -994,7 +994,7 @@
         }
     });
 
-    // change unit discount type var productTableRow 
+    // change unit discount type var productTableRow
     $('#e_unit_discount_type').on('change', function() {
 
         var type = $(this).val();

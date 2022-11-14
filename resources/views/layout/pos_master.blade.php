@@ -26,7 +26,7 @@
     <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/style.css">
     <link rel="stylesheet" href="{{ asset('public/backend/asset/css/pos-theme.css') }}">
-    <style> .btn-bg {padding: 2px!important;} </style>
+    <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     @stack('css')
     <script src="{{asset('public/backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
     <!--Toaster.js js link-->
@@ -42,7 +42,7 @@
     <script src="{{asset('public/backend/js/number-bdt-formater.js')}}"></script>
 </head>
 
-<body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
+<body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'dark-theme' }}">
     <form id="pos_submit_form" action="{{ route('sales.pos.store') }}" method="POST">
         @csrf
         <div class="pos-body">
@@ -57,22 +57,22 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="payment_heading">Choose Payment method</h6>
-                        <a href="" class="close-btn" id="cancel_pay_mathod" tabindex="-1"><span
+                        <a href="#" class="close-btn" id="cancel_pay_mathod" tabindex="-1"><span
                             class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
                         <!--begin::Form-->
                         <div class="form-group row single_payment">
                             <div class="col-md-4">
-                                <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.payment_method') :</strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
                                     <select name="payment_method_id" class="form-control"  id="payment_method_id">
                                         @foreach ($methods as $method)
-                                            <option 
-                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                            <option
+                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                                 value="{{ $method->id }}">
                                                 {{ $method->name }}
                                             </option>
@@ -82,7 +82,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong>Debit Account :</strong> </label>
+                                <label><strong>@lang('menu.debit_account') :</strong> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
@@ -91,7 +91,7 @@
                                         @foreach ($accounts as $account)
                                             <option value="{{ $account->id }}">
                                                 @php
-                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/c)';
                                                 @endphp
                                                 {{ $account->name.$accountType }}
                                             </option>
@@ -102,15 +102,15 @@
                         </div>
 
                         <div class="form-group mt-2">
-                            <label><strong> Payment Note :</strong></label>
-                            <textarea name="payment_note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note"></textarea>
+                            <label><strong> @lang('menu.payment_note') :</strong></label>
+                            <textarea name="payment_note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="@lang('menu.note')"></textarea>
                         </div>
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <a href="" class="c-btn button-success me-0 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Confirm (F10)</a>
-                                <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">Close</button>
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
+                                <a href="#" class="c-btn button-success me-0 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Confirm (F10)</a>
+                                <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">@lang('menu.close')</button>
                             </div>
                         </div>
                     </div>
@@ -150,9 +150,9 @@
 
                             <div class="form-group row mt-3">
                                 <div class="col-md-12">
-                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
                                     <a href="#" class="c-btn button-success ms-1 float-end" id="redeem_btn" tabindex="-1">Redeem</a>
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
                                 </div>
                             </div>
                         </div>
@@ -168,8 +168,8 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Recent Transections</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.recent_transaction')</h6>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -181,7 +181,7 @@
                             </li>
 
                             <li>
-                                <a id="tab_btn" class="tab_btn text-white" href="{{url('common/ajax/call/recent/quotations/2')}}" tabindex="-1"><i class="fas fa-scroll"></i>Quotation</a>
+                                <a id="tab_btn" class="tab_btn text-white" href="{{url('common/ajax/call/recent/quotations/2')}}" tabindex="-1"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
                             </li>
 
                             <li>
@@ -195,17 +195,17 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="data_preloader" id="recent_trans_preloader">
-                                        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
                                     </div>
                                     <div class="table-responsive">
                                         <table class="table modal-table table-sm table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-start">SL</th>
-                                                    <th class="text-start">Reference/InvoiceId</th>
-                                                    <th class="text-start">Customer</th>
-                                                    <th class="text-start">Total</th>
-                                                    <th class="text-start">Actions</th>
+                                                    <th class="text-startx">SL</th>
+                                                    <th class="text-startx">Reference/InvoiceId</th>
+                                                    <th class="text-startx">@lang('menu.customer')</th>
+                                                    <th class="text-startx">@lang('menu.total')</th>
+                                                    <th class="text-startx">@lang('menu.actions')</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="data-list" id="transection_list"></tbody>
@@ -218,7 +218,7 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
                         </div>
                     </div>
                 </div>
@@ -233,7 +233,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Hold Invoices</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -242,7 +242,7 @@
                         <div class="col-md-12">
                             <div class="table_area">
                                 <div class="data_preloader" id="hold_invoice_preloader">
-                                    <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
                                 </div>
                                 <div class="table-responsive" id="hold_invoices"></div>
                             </div>
@@ -250,7 +250,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
                         </div>
                     </div>
                 </div>
@@ -259,14 +259,14 @@
     </div>
     <!-- Hold invoice list modal End-->
 
-    @if (auth()->user()->permission->product['product_add'] == '1')
+    @if (auth()->user()->can('product_add'))
         <!--Add Product Modal-->
         <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
+                        <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
                             class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body" id="add_product_body"></div>
@@ -281,8 +281,8 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Customer</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_customer')</h6>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_customer_modal_body"></div>
@@ -296,11 +296,11 @@
         <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="data_preloader" id="suspend_preloader">
-                    <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                    <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">Suspended Sales</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="suspended_sale_list"></div>
@@ -308,54 +308,52 @@
         </div>
     </div>
     <!-- Edit selling product modal end-->
-
- 
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="product_info">Samsung A30</h6>
+                    <h6 class="modal-title" id="product_info">@lang('menu.samsung_a')</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="update_selling_product">
-                        @if (auth()->user()->permission->sale['view_product_cost_is_sale_screed'] == '1')
+                        @if (auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
-                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span> 
-                                    <span id="unit_cost">1,200.00</span> 
-                                </span>   
-                                 
-                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">Cost</span>
+                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span>
+                                    <span id="unit_cost">1,200.00</span>
+                                </span>
+
+                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">@lang('menu.cost')</span>
                             </p>
                         @endif
 
                         <div class="form-group mt-1">
-                            <label> <strong>Quantity</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" value=""/>
+                            <label> <strong>@lang('menu.quantity')</strong>  : <span class="text-danger">*</span></label>
+                            <input type="number" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="@lang('menu.quantity')" value=""/>
                             <span class="error error_e_quantity"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label> <strong>Unit Price Exc.Tax</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" {{ auth()->user()->permission->sale['edit_price_pos_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" value=""/>
+                            <label> <strong>@lang('menu.unit_price_exc_tax')</strong>  : <span class="text-danger">*</span></label>
+                            <input type="number" {{ auth()->user()->can('edit_price_pos_screen') ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="@lang('menu.unit')" value=""/>
                             <span class="error error_e_unit_price"></span>
                         </div>
 
-                        @if (auth()->user()->permission->sale['edit_discount_pos_screen'] == '1')
+                        @if (auth()->user()->can('edit_discount_pos_screen'))
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
-                                    <label><strong>Discount Type</strong>  :</label>
+                                    <label><strong>@lang('menu.discount_type')</strong>  :</label>
                                     <select class="form-control" id="e_unit_discount_type">
-                                        <option value="2">Percentage</option>
-                                        <option value="1">Fixed</option>
+                                        <option value="2">@lang('menu.percentage')</option>
+                                        <option value="1">@lang('menu.fixed')</option>
                                     </select>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label><strong>Discount</strong>  :</label>
+                                    <label><strong>@lang('menu.discount')</strong>  :</label>
                                     <input type="number" class="form-control" id="e_unit_discount" value="0.00"/>
                                     <input type="hidden" id="e_discount_amount"/>
                                 </div>
@@ -369,10 +367,10 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Tax Type</strong> :</label>
+                                <label><strong>@lang('menu.tax_type')</strong> :</label>
                                 <select class="form-control" id="e_tax_type">
-                                    <option value="1">Exclusive</option>
-                                    <option value="2">Inclusive</option>
+                                    <option value="1">@lang('menu.exclusive')</option>
+                                    <option value="2">@lang('menu.inclusive')</option>
                                 </select>
                             </div>
                         </div>
@@ -384,9 +382,9 @@
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
-                                <button type="submit" class="c-btn button-success me-0 float-end">Update</button>
+                                <button type="submit" class="c-btn button-success me-0 float-end">@lang('menu.update')</button>
                                 <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                                    class="c-btn btn_orange float-end">@lang('menu.close')</button>
                             </div>
                         </div>
                     </form>
@@ -401,7 +399,7 @@
         <div class="modal-dialog col-50-modal" role="document">
             <div class="modal-content">
                 <div class="data_preloader mt-5" id="stock_preloader">
-                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')</h6>
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">Item Stocks</h6>
@@ -459,14 +457,14 @@
                     <div class="form-group row mt-1">
                         <div class="col-md-6">
                             <div class="input-box bg-success">
-                                <label class="text-white big_label"><strong>Cash Receive :</strong> <span class="text-danger">*</span></label>
+                                <label class="text-white big_label"><strong>@lang('menu.cash_receive') :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="modal_paying_amount" class="form-control text-success big_field m-paying" id="modal_paying_amount" value="0" autofocus>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="input-box-3 bg-danger">
-                                <label class="text-white big_label"><strong>Due :</strong> </label>
+                                <label class="text-white big_label"><strong>@lang('menu.due') :</strong> </label>
                                 <input type="text" class="form-control text-danger big_field" id="modal_total_due" value="0">
                             </div>
                         </div>
@@ -474,9 +472,9 @@
 
                     <div class="form-group row mt-3">
                         <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
                             <a href="#" class="c-btn button-success ms-1 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Cash (F10)</a>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
                         </div>
                     </div>
                 </div>
@@ -491,7 +489,7 @@
             <div class="modal-content" id="exchange_body">
                 <div class="modal-header">
                     <h6 class="modal-title">Exchange</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
 
                 <div class="modal-body">
@@ -520,7 +518,7 @@
 
                         <div class="preloader_area">
                             <div class="data_preloader" id="get_inv_preloader">
-                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')</h6>
                             </div>
                         </div>
                     </div>
@@ -552,11 +550,11 @@
         @csrf
     </form>
     <!--Data delete form end-->
-    
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
-    <script src="{{ asset('public/backend/asset/js/pos.js') }}"></script>
-    <script src="{{ asset('public/backend/asset/js/pos-amount-calculation.js') }}"></script>
-    <script src="{{asset('public')}}/backend/asset/js/sale.exchange.js"></script>
+
+    <script src="{{ asset('') }}assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('backend/asset/js/pos.js') }}"></script>
+    <script src="{{ asset('backend/asset/js/pos-amount-calculation.js') }}"></script>
+    <script src="{{asset('')}}/backend/asset/js/sale.exchange.js"></script>
     <script>
         // Get all pos shortcut menus by ajax
         function allPosShortcutMenus() {
@@ -607,7 +605,7 @@
 
             $.confirm({
                 'title': 'Delete Confirmation',
-                'content': 'Are you sure, you went to exit?',
+                'content': 'Are you sure, you want to exit?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {window.location = "{{ route('dashboard.dashboard') }}";}},
                     'No': {'class': 'no btn-danger','action': function() { console.log('Deleted canceled.')}}

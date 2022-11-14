@@ -3,13 +3,13 @@
         <table class="table modal-table table-sm table-striped custom-table">
             <thead>
                 <tr class="bg-primary text-white">
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Invoice ID</th>
-                    <th class="text-start">Amount</th>
-                    <th class="text-start">Account</th>
-                    <th class="text-start">Method</th>
-                    <th class="text-start">Type</th>
-                    <th class="text-start">Action</th>
+                    <th class="text-startx">@lang('menu.date')</th>
+                    <th class="text-startx">@lang('menu.invoice_id')</th>
+                    <th class="text-startx">@lang('menu.amount')</th>
+                    <th class="text-startx">@lang('menu.account')</th>
+                    <th class="text-startx">@lang('menu.method')</th>
+                    <th class="text-startx">@lang('menu.type')</th>
+                    <th class="text-startx">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="p_details_payment_list">
@@ -64,7 +64,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>

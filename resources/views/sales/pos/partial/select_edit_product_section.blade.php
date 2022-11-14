@@ -38,11 +38,11 @@
                     </div>
                     <div class="product-area">
                         <div class="data_preloader select_product_preloader">
-                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                            <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')</h6>
                         </div>
                         <div class="product-ctn">
                             <div class="row" id="select_product_list">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
         });
     }
     selectProductList();
-    
+
     //Submit filter form by select input changing
     $(document).on('change', '.common_submitable', function() {
         selectProductList();

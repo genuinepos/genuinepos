@@ -9,7 +9,7 @@
         <div id="dashboard" class="pb-5">
             <div class="row">
                 <div class="main__content">
-                    <div class="d-flex mx-3 mt-3 switch_bar_cards">
+                    <div class="d-flex mx-2 mt-2 switch_bar_cards">
 
                         {{-- <div class="switch_bar">
                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="">
-                        <div class="row mx-2 mt-3">
+                        <div class="row mt-2">
                             <div class="d-flex justify-content-end align-items-center gap-3">
                                 <input type="hidden" id="date_range" value="{{ $thisMonth }}">
                                 @if ($addons->branches == 1)
@@ -95,8 +95,8 @@
                         </div>
 
                         {{-- Cards --}}
-                        <div class="mx-3 mt-2">
-                            <div class="row">
+                        <div class="mt-2">
+                            <div class="row g-2">
                                 <div class="col-md-3">
                                     <div class="card-counter primary d-flex justify-content-around align-content-center">
                                         <div class="icon">
@@ -156,9 +156,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
                                 <div class="col-md-3">
                                     <div class="card-counter info d-flex justify-content-around align-content-center">
                                         <div class="icon">
@@ -223,38 +221,36 @@
                     </div>
                 </div>
             </div>
-            <div class="row px-3 m-1">
+            <div class="row">
                 <section>
-                    <div class="row">
-                        <div class="form_element">
-                            <div class="section-header">
-                                <h6>
-                                    <span class="fas fa-table"></span>Stock Alert Of
-                                    <b>
-                                        @if (auth()->user()->branch_id)
-                                            {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
-                                        @else
-                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                        @endif
-                                    </b>
-                                </h6>
-                            </div>
-                            <div class="widget_content">
-                                <div class="mtr-table">
-                                    <div class="table-responsive">
-                                        <table id="stock_alert_table" class="display data__table data_tble stock_table"
-                                            width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>S/L</th>
-                                                    <th>Product</th>
-                                                    <th>Product Code(SKU)</th>
-                                                    <th>Current Stock</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
+                    <div class="form_element">
+                        <div class="section-header">
+                            <h6>
+                                <span class="fas fa-table"></span>Stock Alert Of
+                                <b>
+                                    @if (auth()->user()->branch_id)
+                                        {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
+                                    @else
+                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                    @endif
+                                </b>
+                            </h6>
+                        </div>
+                        <div class="widget_content">
+                            <div class="mtr-table">
+                                <div class="table-responsive">
+                                    <table id="stock_alert_table" class="display data__table data_tble stock_table"
+                                        width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>S/L</th>
+                                                <th>Product</th>
+                                                <th>Product Code(SKU)</th>
+                                                <th>Current Stock</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -262,7 +258,6 @@
                 </section>
 
                 <section>
-                    <div class="row">
                         <div class="form_element">
                             <div class="section-header">
                                 <span class="fas fa-table"></span>
@@ -287,7 +282,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </section>
             </div>
             <div class="row px-2">

@@ -73,7 +73,7 @@
                                                     <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
                                                         <option value="">Select Business Location First</option>
                                                     </select>
-                                                @else 
+                                                @else
                                                     @php
                                                         $wh = DB::table('warehouses')
                                                         ->where('branch_id', auth()->user()->branch_id)
@@ -100,7 +100,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-md-2">
                                                 <label><strong>From Date :</strong></label>
                                                 <div class="input-group">
@@ -155,7 +155,7 @@
                                         </div>
                                     @endif
                                 </div>
-    
+
                                 <div class="widget_content">
                                     <div class="data_preloader">
                                         <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
@@ -193,7 +193,7 @@
                                         </form>
                                     </div>
                                 </div>
-    
+
                                 @if (auth()->user()->permission->manufacturing['production_delete'] == '1')
                                     <form id="deleted_form" action="" method="post">
                                         @method('DELETE')
@@ -283,7 +283,7 @@
         @if ($addons->branches == 1)
 
             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-            
+
                 $(document).on('change', '#branch_id', function () {
                     var branch_id = $(this).val();
                     $.ajax({
@@ -343,7 +343,7 @@
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},

@@ -877,7 +877,7 @@
             $('#deleted_form').attr('action', url);
 
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
@@ -1079,7 +1079,7 @@
             var url = $(this).attr('href');
 
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#payment_deleted_form').submit();}},

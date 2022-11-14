@@ -1046,7 +1046,7 @@
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
                     'Yes': {
@@ -1243,7 +1243,7 @@
             $('#payment_deleted_form').attr('action', url);
             var url = $(this).attr('href');
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#payment_deleted_form').submit();}},

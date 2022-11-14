@@ -277,7 +277,7 @@
             $('#deleted_form').attr('action', url);
             $('#deleteId').val(id);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},

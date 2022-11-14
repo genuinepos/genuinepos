@@ -30,7 +30,7 @@
             e.preventDefault();      
             $.confirm({
                 'title': 'Logout Confirmation',
-                'content': 'Are you sure, you went to logout?',
+                'content': 'Are you sure, you want to logout?',
                 'buttons': {
                     'Yes': {'btnClass': 'yes btn-modal-primary','action': function() {$('#logout_form').submit();}},
                     'No': {'btnClass': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}

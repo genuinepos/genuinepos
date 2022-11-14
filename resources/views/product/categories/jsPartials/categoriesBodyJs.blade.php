@@ -1,7 +1,7 @@
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',autoPrint: true,exportOptions: {columns: ':visible'}}
         ],
@@ -24,7 +24,7 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function() {
         // Add category by ajax
         $(document).on('submit', '#add_category_form', function(e) {
@@ -42,7 +42,7 @@
                 cache: false,
                 processData: false,
                 success: function(data) {
-                    
+
                     $('.error').html('');
                     toastr.success(data);
                     $('#add_category_form')[0].reset();
@@ -57,7 +57,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }
 
@@ -86,18 +86,18 @@
                 },error:function(err){
                     $('.data_preloader').hide();
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                     }else{
-                        toastr.error('Server Error, Please contact to the support team.'); 
+                        toastr.error('Server Error, Please contact to the support team.');
                     }
                 }
             });
         });
 
         $(document).on('click', '#update_btn',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Edit Confirmation',
                 'content': 'Are you sure to edit?',
@@ -133,7 +133,7 @@
                     $('.error').html('');
 
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }
 
@@ -141,15 +141,15 @@
                         $('.error_e_' + key + '').html(error[0]);
                     });
                 }
-            }); 
+            });
         });
-        
+
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
@@ -182,10 +182,10 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Please check the connection.'); 
+                        toastr.error('Net Connetion Error. Please check the connection.');
                     }else if(err.status == 500){
 
-                        toastr.error('Server Error. Please contact to the support team.'); 
+                        toastr.error('Server Error. Please contact to the support team.');
                     }
                 }
             });

@@ -50,7 +50,7 @@
                                         <h6>Process</h6>
                                     </div>
 
-                                    @if (auth()->user()->permission->manufacturing['process_add'] == '1') 
+                                    @if (auth()->user()->permission->manufacturing['process_add'] == '1')
                                         <div class="col-md-6">
                                             <div class="btn_30_blue float-end">
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
@@ -59,7 +59,7 @@
                                         </div>
                                     @endif
                                 </div>
-    
+
                                 <div class="widget_content">
                                     <div class="data_preloader">
                                         <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
@@ -88,7 +88,7 @@
                                         </form>
                                     </div>
                                 </div>
-    
+
                                 @if (auth()->user()->permission->manufacturing['process_delete'] == '1')
                                     <form id="deleted_form" action="" method="post">
                                         @method('DELETE')
@@ -103,7 +103,7 @@
         </div>
     </div>
 
-    @if (auth()->user()->permission->manufacturing['process_add'] == '1') 
+    @if (auth()->user()->permission->manufacturing['process_add'] == '1')
         <div class="modal fade" id="addModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog double-col-modal" role="document">
@@ -149,7 +149,7 @@
     aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog col-50-modal" role="document">
             <div class="modal-content" id="view-modal-content">
-             
+
             </div>
         </div>
     </div>
@@ -158,10 +158,10 @@
     <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
     <script>
         $('.select2').select2();
-        
+
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
@@ -200,14 +200,14 @@
             });
         });
 
-        $(document).on('click', '#delete',function(e){ 
-            e.preventDefault(); 
+        $(document).on('click', '#delete',function(e){
+            e.preventDefault();
 
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);   
+            $('#deleted_form').attr('action', url);
 
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure to delete?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
@@ -215,7 +215,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();

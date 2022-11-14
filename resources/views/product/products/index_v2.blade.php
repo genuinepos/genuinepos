@@ -326,7 +326,7 @@
         $('#deleted_form').attr('action', url);
 
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'content': 'Are you sure, you want to delete?',
             'buttons': {
                 'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
@@ -376,7 +376,7 @@
         $('#action').val('multiple_delete');
 
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'content': 'Are you sure, you want to delete?',
             'buttons': {
                 'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#multiple_action_form').submit();}},

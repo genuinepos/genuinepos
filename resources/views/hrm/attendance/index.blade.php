@@ -106,7 +106,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-3">
                                                     <label><strong>Users :</strong></label>
                                                     <select name="user_id"
@@ -143,7 +143,7 @@
                             <div class="form_element">
                                 <div class="section-header">
                                     <div class="col-md-6">
-                                        <h6>Attendances <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6> 
+                                        <h6>Attendances <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
                                     </div>
 
                                     <div class="col-md-6">
@@ -199,7 +199,7 @@
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
-                    <form id="add_attendance_form" action="{{ route('hrm.attendance.store') }}" method="POST"> 
+                    <form id="add_attendance_form" action="{{ route('hrm.attendance.store') }}" method="POST">
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <label class="text-navy-blue"><b>Department :</b></label>
@@ -228,7 +228,7 @@
 
                             </table>
                         </div>
-                        
+
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i
@@ -256,7 +256,7 @@
                             class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="edit_modal_body">
-                    
+
                 </div>
             </div>
         </div>
@@ -269,7 +269,7 @@
 <script>
     var att_table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -316,7 +316,7 @@
         });
     });
 
-    $(document).on('change', '#employee', function () {	    
+    $(document).on('change', '#employee', function () {
         var user_id = $(this).val();
         var name = $(this).data('name');
         var count = 0;
@@ -339,9 +339,9 @@
         }
     });
 
-    $(document).on('click', '.btn_remove', function(e){  
+    $(document).on('click', '.btn_remove', function(e){
         e.preventDefault();
-        $(this).closest('tr').remove();   
+        $(this).closest('tr').remove();
     });
 
    // Setup ajax for csrf token.
@@ -351,7 +351,7 @@
         }
     });
 
-   // call jquery method 
+   // call jquery method
    $(document).ready(function(){
        // Add attendance by ajax
        $('#add_attendance_form').on('submit', function(e){
@@ -361,8 +361,8 @@
            var request = $(this).serialize();
            var inputs = $('.add_input');
                inputs.removeClass('is-invalid');
-               $('.error').html('');  
-               var countErrorField = 0;  
+               $('.error').html('');
+               var countErrorField = 0;
            if(countErrorField > 0){
                $('.loading_button').hide();
                return;
@@ -396,8 +396,8 @@
            var request = $(this).serialize();
            var inputs = $('.add_input');
                inputs.removeClass('is-invalid');
-               $('.error').html('');  
-               var countErrorField = 0;  
+               $('.error').html('');
+               var countErrorField = 0;
            if(countErrorField > 0){
                $('.loading_button').hide();
                return;
@@ -437,9 +437,9 @@
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);           
+            $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
                     'Yes': {
@@ -452,7 +452,7 @@
                         'class': 'no bg-danger',
                         'action': function() {
                             // alert('Deleted canceled.')
-                        } 
+                        }
                     }
                 }
             });
@@ -482,7 +482,7 @@
         att_table.ajax.reload();
    });
 
-   //Submit filter form by date-range field blur 
+   //Submit filter form by date-range field blur
    $(document).on('blur', '.submit_able_input', function () {
        setTimeout(function() {
             att_table.ajax.reload();

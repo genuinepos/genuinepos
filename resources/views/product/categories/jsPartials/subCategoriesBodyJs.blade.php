@@ -1,7 +1,7 @@
 <script>
     var subCatetable = $('.data_tbl2').DataTable({
        dom: "lBfrtip",
-       buttons: [ 
+       buttons: [
            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
            {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
        ],
@@ -51,10 +51,10 @@
                     $('.submit_button').prop('type', 'submit');
                     $('.loading_button').hide();
                     $('.error').html('');
-                    
+
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }
 
@@ -111,11 +111,11 @@
         });
 
         $(document).on('click', '#delete_sub_cate',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_sub_cate_form').attr('action', url);       
+            $('#deleted_sub_cate_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_sub_cate_form').submit();}},
@@ -140,9 +140,9 @@
                    $('#deleted_form')[0].reset();
                },error: function(err) {
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                     }else{
-                        toastr.error('Server Error. Please contact to the support team.'); 
+                        toastr.error('Server Error. Please contact to the support team.');
                     }
                }
            });

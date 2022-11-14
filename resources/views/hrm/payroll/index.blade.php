@@ -23,55 +23,55 @@
                                                 <a href="{{ route('hrm.dashboard.index') }}" class="text-white"><i class="fas fa-tachometer-alt"></i> <b>@lang('menu.hrm')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['leave_type'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['leave_assign'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.leave') }}" class="text-white"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['shift'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.attendance.shift') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['attendance'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.attendance') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['view_allowance_and_deduction'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.allowance') }}" class="text-white"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['payroll'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.payroll.index') }}" class="text-white "><i class="far fa-money-bill-alt text-primary"></i> <b>@lang('menu.payroll')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['holiday'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.holidays') }}" class="text-white "><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['department'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.departments') }}" class="text-white "><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['designation'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.designations') }}" class="text-white "><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
@@ -107,7 +107,7 @@
                                                         @endif
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-2">
                                                     <label><strong>Users/Employees :</strong></label>
                                                     <select name="user_id"
@@ -252,7 +252,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-none"><i
@@ -332,7 +332,7 @@
 
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -340,7 +340,7 @@
         "processing": true,
         "serverSide": true,
         "searching" : true,
-        aaSorting: [[1, 'asc']],  
+        aaSorting: [[1, 'asc']],
         "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
@@ -390,7 +390,7 @@
         });
     });
 
-    // Show add payment modal with date 
+    // Show add payment modal with date
     $(document).on('click', '#add_payment', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
@@ -439,7 +439,7 @@
         });
     });
 
-    // Show add payment modal with date 
+    // Show add payment modal with date
     $(document).on('click', '#edit_payment', function (e) {
         e.preventDefault();
         $('#payment_list_preloader').show();
@@ -459,22 +459,22 @@
     $(document).on('click', '#delete',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);           
+        $('#deleted_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'message': 'Are you sure?',
             'buttons': {
                 'Yes': {
                     'class': 'yes bg-primary',
                     'action': function() {$('#deleted_form').submit();}
                 },
-                'No': {'class': 'no bg-danger','action': function() {console.log('Deleted canceled.');} 
+                'No': {'class': 'no bg-danger','action': function() {console.log('Deleted canceled.');}
                 }
             }
         });
     });
 
-    // Show add payment modal with date 
+    // Show add payment modal with date
     $(document).on('click', '#view_payroll', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
@@ -489,7 +489,7 @@
             }
         });
     });
-        
+
     //data delete by ajax
     $(document).on('submit', '#deleted_form',function(e){
         e.preventDefault();
@@ -510,9 +510,9 @@
     $(document).on('click', '#delete_payment',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
-        $('#payment_deleted_form').attr('action', url);           
+        $('#payment_deleted_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'message': 'Are you sure?',
             'buttons': {
                 'Yes': {
@@ -525,12 +525,12 @@
                     'class': 'no bg-danger',
                     'action': function() {
                         // alert('Deleted canceled.')
-                    } 
+                    }
                 }
             }
         });
     });
-        
+
     //data delete by ajax
     $(document).on('submit', '#payment_deleted_form',function(e){
         e.preventDefault();
@@ -549,34 +549,34 @@
     });
 
     $(document).on('click', '.print_payroll',function (e) {
-       e.preventDefault(); 
+       e.preventDefault();
         var body = $('.payroll_print_area').html();
         var footer = $('.signature_area').html();
         $(body).printThis({
-            debug: false,                   
-            importCSS: true,                
-            importStyle: true,          
-            loadCSS: "{{asset('public/assets/css/print/payroll.print.css')}}",                      
-            removeInline: true, 
+            debug: false,
+            importCSS: true,
+            importStyle: true,
+            loadCSS: "{{asset('public/assets/css/print/payroll.print.css')}}",
+            removeInline: true,
             printDelay: 500,
-            header : null,   
-            footer : footer,      
+            header : null,
+            footer : footer,
         });
     });
 
     $(document).on('click', '#payment_details_print',function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
         var body = $('.payroll_payment_print_area').html();
         var footer = $('.signature_area').html();
         $(body).printThis({
-            debug: false,                   
-            importCSS: true,                
-            importStyle: true,          
-            loadCSS: "{{asset('public/assets/css/print/payroll.print.css')}}",                      
-            removeInline: true, 
+            debug: false,
+            importCSS: true,
+            importStyle: true,
+            loadCSS: "{{asset('public/assets/css/print/payroll.print.css')}}",
+            removeInline: true,
             printDelay: 500,
-            header : null,   
-            footer : footer,      
+            header : null,
+            footer : footer,
         });
     });
 </script>

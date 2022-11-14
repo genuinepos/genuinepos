@@ -26,7 +26,7 @@
                                                 <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>@lang('menu.todo')</b></a>
                                             </li>
                                         @endif
-                                        
+
                                         @if (auth()->user()->permission->essential['work_space'] == '1')
                                             <li>
                                                 <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large text-primary"></i> <b>@lang('menu.work_space')</b></a>
@@ -466,7 +466,7 @@
         var url = $(this).attr('href');
         $('#deleted_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'message': 'Are you sure?',
             'buttons': {
                 'Yes': {'class': 'yes bg-primary','action': function() {$('#deleted_form').submit();}},
@@ -497,7 +497,7 @@
         var tr = $(this).closest('tr');
         $('#deleted_doc_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'message': 'Are you sure?',
             'buttons': {
                 'Yes': {'class': 'yes bg-primary','action': function() {$('#deleted_doc_form').submit();tr.remove();}},

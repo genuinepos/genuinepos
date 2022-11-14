@@ -23,7 +23,7 @@
                                                 <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>@lang('menu.todo')</b></a>
                                             </li>
                                         @endif
-                                        
+
                                         @if (auth()->user()->permission->essential['work_space'] == '1')
                                             <li>
                                                 <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>@lang('menu.work_space')</b></a>
@@ -103,7 +103,7 @@
                                         <div class="form-group row mt-2">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                
+
                                                 <button type="submit" class="c-btn me-0 button-success float-end">Save Changes</button>
                                                 <button type="button" class="c-btn btn_orange float-end">Close</button>
                                             </div>
@@ -120,7 +120,7 @@
                                         <h6>All Memos </h6>
                                     </div>
                                 </div>
-    
+
                                 <div class="widget_content">
                                     <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
                                     <div class="table-responsive" id="data-list">
@@ -137,7 +137,7 @@
                                         </table>
                                     </div>
                                 </div>
-    
+
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -161,7 +161,7 @@
                 </div>
                 <div class="modal-body" id="add_user_modal_body">
                     <!--begin::Form-->
-          
+
                 </div>
             </div>
         </div>
@@ -173,7 +173,7 @@
         aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content" id="view_content">
-                
+
             </div>
         </div>
     </div>
@@ -184,11 +184,11 @@
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-        ],    
+        ],
         processing: true,
         serverSide: true,
         aaSorting: [[2, 'desc']],
@@ -213,13 +213,13 @@
             type:'get',
             success:function(data){
                 $('#view_content').html(data);
-                $('#showModal').modal('show'); 
+                $('#showModal').modal('show');
                 $('.data_preloader').hide();
             }
         });
     });
 
-    // Show add payment modal with date 
+    // Show add payment modal with date
     $(document).on('click', '#edit', function (e) {
         e.preventDefault();
         $('.data_preloader').show();
@@ -251,12 +251,12 @@
             data: request,
             success:function(data){
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 }else{
                     $('#add_memo_form')[0].reset();
                     $('.loading_button').hide();
-                    toastr.success(data); 
+                    toastr.success(data);
                     table.ajax.reload();
                 }
             }
@@ -278,7 +278,7 @@
                 $('#add_memo_form')[0].reset();
                 $('#add_form').show();
                 $('#edit_form').hide();
-                toastr.success(data); 
+                toastr.success(data);
                 table.ajax.reload();
             }
         });
@@ -292,7 +292,7 @@
             url:url,
             type:'get',
             success:function(data){
-                $('#addUserModal').modal('show'); 
+                $('#addUserModal').modal('show');
                 $('#add_user_modal_body').html(data)
                 $('.data_preloader').hide();
             }
@@ -309,8 +309,8 @@
             type:'post',
             data: request,
             success:function(data){
-                toastr.success(data); 
-                $('#addUserModal').modal('hide'); 
+                toastr.success(data);
+                $('#addUserModal').modal('hide');
                 $('.loading_button').hide();
             }
         });
@@ -319,9 +319,9 @@
     $(document).on('click', '#delete',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);           
+        $('#deleted_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'message': 'Are you sure?',
             'buttons': {
                 'Yes': {
@@ -334,7 +334,7 @@
                     'class': 'no bg-danger',
                     'action': function() {
                         // alert('Deleted canceled.')
-                    } 
+                    }
                 }
             }
         });

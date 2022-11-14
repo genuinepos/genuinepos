@@ -30,7 +30,7 @@
                                                 <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>@lang('menu.todo')</b></a>
                                             </li>
                                         @endif
-                                        
+
                                         @if (auth()->user()->permission->essential['work_space'] == '1')
                                             <li>
                                                 <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>@lang('menu.work_space')</b></a>
@@ -62,12 +62,12 @@
                                         <h6>Messages </h6>
                                     </div>
                                 </div>
-    
+
                                 <div class="widget_content">
                                     <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
                                     <div class="row">
                                         <div class="message_area" id="chat-box">
-                                            
+
                                         </div>
                                     </div>
 
@@ -78,10 +78,10 @@
                                                 <div class="row">
                                                     <div class="col-md-8">
                                                         {{-- <input required type="text" name="task_name" id="task_name" class="form-control" placeholder="Wright task and press enter">  --}}
-                                                        
+
                                                         <input required type="text" name="description" id="description" class="form-control form-control-sm" placeholder="Type Message" autofocus>
                                                     </div>
-                                                    <div class="col-md-2"> 
+                                                    <div class="col-md-2">
                                                         <button type="submit" class="c-btn button-success me-0 float-start submit_button">
                                                             <i class="fas fa-spinner ts_preloader d-none" id="ts_preloader"></i>
                                                        Send</button>
@@ -91,7 +91,7 @@
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -135,7 +135,7 @@
             success:function(data){
                 message_list();
                 $('#add_message_form')[0].reset();
-                toastr.success(data); 
+                toastr.success(data);
                 $('#ts_preloader').addClass('d-none');
                 scroll_down_chat_div();
             }
@@ -145,9 +145,9 @@
     $(document).on('click', '#delete',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);           
+        $('#deleted_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'message': 'Are you sure?',
             'buttons': {
                 'Yes': {
@@ -160,7 +160,7 @@
                     'class': 'no bg-danger',
                     'action': function() {
                         // alert('Deleted canceled.')
-                    } 
+                    }
                 }
             }
         });

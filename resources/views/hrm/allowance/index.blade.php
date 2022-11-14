@@ -225,7 +225,7 @@
         }
     });
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         // Add department by ajax
         $('#add_allowance_form').on('submit', function(e){
@@ -274,7 +274,7 @@
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
-          
+
             $.ajax({
                 url:url,
                 type:'post',
@@ -283,7 +283,7 @@
                     toastr.success(data);
                     $('.loading_button').hide();
                     getAllAllowance();
-                    $('#editModal').modal('hide'); 
+                    $('#editModal').modal('hide');
                 },
                 error: function(err) {
                     $('.loading_button').hide();
@@ -299,9 +299,9 @@
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);           
+            $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
                     'Yes': {
@@ -314,7 +314,7 @@
                         'class': 'no btn-modal-primary',
                         'action': function() {
                             // alert('Deleted canceled.')
-                        } 
+                        }
                     }
                 }
             });

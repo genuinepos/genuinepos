@@ -435,7 +435,7 @@
         e.preventDefault();
         $('#action').val('multipla_deactive');
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'content': 'Once deleted, you will not be able to recover this file!',
             'buttons': {
                 'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#multiple_completed_form').submit();}},'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}

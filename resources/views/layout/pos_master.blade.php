@@ -604,7 +604,7 @@
             $('#payment_deleted_form').attr('action', url);
 
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure, you want to exit?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {window.location = "{{ route('dashboard.dashboard') }}";}},

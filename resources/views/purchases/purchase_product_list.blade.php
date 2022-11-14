@@ -283,8 +283,8 @@
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
-                'content': 'Are you sure, you went to delete?',
+                'title': 'Confirmation',
+                'content': 'Are you sure, you want to delete?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
                     'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}

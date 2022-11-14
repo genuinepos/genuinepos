@@ -232,7 +232,7 @@
         </div>
     </div>
     <!-- Edit selling product modal end-->
-    
+
     @if (auth()->user()->permission->product['product_add'] == '1')
         <!--Add Product Modal-->
         <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -426,7 +426,7 @@
                 var orderDisAmount = parseFloat(netTotalAmount) /100 * parseFloat($('#order_discount').val() ? $('#order_discount').val() : 0);
                 $('#order_discount_amount').val(parseFloat(orderDisAmount).toFixed(2));
             }else{
-                
+
                 var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0;
                 $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
             }
@@ -470,11 +470,11 @@
 
             e.preventDefault();
             var parentTableRow = $(this).closest('tr');
-            tableRowIndex = parentTableRow.index();  
+            tableRowIndex = parentTableRow.index();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
                     'Yes': {
@@ -509,9 +509,9 @@
         $(document).on('click', '#pos_exit_button',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);           
+            $('#payment_deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure, you want to exit?',
                 'buttons': {
                     'Yes': {

@@ -420,7 +420,7 @@
         var url = $(this).attr('href');
         $('#deleted_asset_type_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'content': 'Are you sure?',
             'buttons': {
                 'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_asset_type_form').submit();}},
@@ -576,7 +576,7 @@
         var url = $(this).attr('href');
         $('#deleted_asset_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'content': 'Are you sure?',
             'buttons': {
                 'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_asset_form').submit();}},

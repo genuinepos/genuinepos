@@ -24,7 +24,7 @@
                                                 <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list text-primary"></i> <b>@lang('menu.todo')</b></a>
                                             </li>
                                         @endif
-                                        
+
                                         @if (auth()->user()->permission->essential['work_space'] == '1')
                                             <li>
                                                 <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>@lang('menu.work_space')</b></a>
@@ -70,7 +70,7 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-2">
                                                     <label><strong>Priority : </strong></label>
                                                     <select name="priority"
@@ -132,7 +132,7 @@
                             </div>
                         </div>
                     </div>
-                 
+
                     <div class="row mt-1">
                         <div class="col-md-3">
                             <div class="card" id="add_form">
@@ -162,7 +162,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                
+
                                         <div class="form-group row mt-1">
                                             <div class="col-md-6">
                                                 <label><b>Priority : </b></label>
@@ -193,14 +193,14 @@
                                                 <input required type="text" name="due_date" class="form-control" id="due_date" placeholder="DD-MM-YYYY" autocomplete="off">
                                             </div>
                                         </div>
-                
+
                                         <div class="form-group mt-1">
                                             <div class="col-md-12">
                                                 <label><b>Description : </b></label>
                                                 <textarea name="description" class="form-control" id="description" cols="10" rows="3" placeholder="Workspace Description."></textarea>
                                             </div>
                                         </div>
-                
+
                                         <div class="form-group row mt-2">
                                             <div class="col-md-12">
                                                 <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
@@ -230,7 +230,7 @@
                                         <h6>All Todo </h6>
                                     </div>
                                 </div>
-    
+
                                 <div class="widget_content">
                                     <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
                                     <div class="table-responsive" id="data-list">
@@ -251,7 +251,7 @@
                                         </table>
                                     </div>
                                 </div>
-    
+
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf
@@ -274,7 +274,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="change_status_modal_body">
-                   
+
                 </div>
             </div>
         </div>
@@ -291,7 +291,7 @@
                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                </div>
                <div class="modal-body" id="show_modal_body">
-                  
+
                </div>
            </div>
        </div>
@@ -306,7 +306,7 @@
         "processing": true,
         "serverSide": true,
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
@@ -358,11 +358,11 @@
             success:function(data){
                 $('.loading_button').hide();
                 if (!$.isEmptyObject(data.errorMsg)) {
-                    toastr.error(data.errorMsg); 
+                    toastr.error(data.errorMsg);
                 }else{
                     $('#add_todo_form')[0].reset();
                     $(".select2").select2().val('').trigger('change');
-                    toastr.success(data); 
+                    toastr.success(data);
                     table.ajax.reload();
                 }
             }
@@ -397,7 +397,7 @@
             data: request,
             success:function(data){
                 $('.loading_button').hide();
-                toastr.success(data); 
+                toastr.success(data);
                 table.ajax.reload();
                 $('#add_form').show();
                 $('#edit_form').hide();
@@ -447,7 +447,7 @@
             data: request,
             success:function(data){
                 $('.loading_button2').hide();
-                toastr.success(data); 
+                toastr.success(data);
                 $('#changeStatusModal').modal('hide');
                 table.ajax.reload();
             }
@@ -457,9 +457,9 @@
     $(document).on('click', '#delete',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);           
+        $('#deleted_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'message': 'Are you sure?',
             'buttons': {
                 'Yes': {'class': 'yes bg-primary','action': function() { $('#deleted_form').submit();}},

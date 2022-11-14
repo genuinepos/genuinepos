@@ -1,7 +1,7 @@
 <script>
     var loans_table = $('.data_tbl2').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
@@ -107,7 +107,7 @@
                     $('.error_e_' + key + '').html(error[0]);
                 });
             }
-        }); 
+        });
     });
 
      // Show details modal with data
@@ -123,11 +123,11 @@
     });
 
     $(document).on('click', '#delete_loan',function(e){
-        e.preventDefault(); 
+        e.preventDefault();
         var url = $(this).attr('href');
-        $('#delete_loan_form').attr('action', url);       
+        $('#delete_loan_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'content': 'Are you sure?',
             'buttons': {
                 'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#delete_loan_form').submit();}},
@@ -188,7 +188,7 @@
         loans_table.ajax.reload();
     });
 
-    //Print Profit/Loss 
+    //Print Profit/Loss
     $(document).on('click', '#print_report', function (e) {
         e.preventDefault();
         var url = "{{ route('accounting.loan.print') }}";
@@ -201,32 +201,32 @@
             data: { branch_id, company_id, date_range },
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,     
-                    footer: null,     
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
+                    footer: null,
                 });
             }
-        }); 
+        });
     });
 
     // Print single payment details
     $('#print_loan_details').on('click', function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
         var body = $('.loan_details_print_area').html();
         var footer = $('.signature_area').html();
         $(body).printThis({
-            debug: false,                   
-            importCSS: true,                
-            importStyle: true,          
-            loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-            removeInline: true, 
-            printDelay: 500, 
-            header: '',  
+            debug: false,
+            importCSS: true,
+            importStyle: true,
+            loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+            removeInline: true,
+            printDelay: 500,
+            header: '',
             footer: footer
         });
     });

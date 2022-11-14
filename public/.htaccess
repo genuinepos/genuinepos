@@ -19,10 +19,3 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
-
-# Add code for hide file
-# php -- END cPanel-generated handler, do not edit
-<Files ~ "\.(env|json|config.js|md|gitignore|gitattributes|lock)$">
-	Order allow,deny
-	Deny from all
-</Files>

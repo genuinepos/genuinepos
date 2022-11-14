@@ -172,7 +172,7 @@
     </div>
 @endsection
 @push('scripts')
-<script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
+<script src="{{ asset('assets/plugins/custom/print_this/printThis.js') }}"></script>
 <script>
     // Set accounts in payment and payment edit form
     function getBalanceAmounts(){

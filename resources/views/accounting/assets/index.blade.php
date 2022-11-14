@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-<link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
 @endpush
 @section('title', 'Assets - ')
 @section('content')

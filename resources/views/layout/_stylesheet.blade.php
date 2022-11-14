@@ -20,7 +20,7 @@
 <link href="{{ asset('backend/css/wizard.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('backend/css/sprite.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('backend/css/gradient.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.css" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="{{ asset('backend/asset/css/comon.css') }}">
 <link rel="stylesheet" href="{{ asset('backend/asset/css/layout.css') }}">
 <link rel="stylesheet" href="{{ asset('backend/asset/css/style.css') }}">

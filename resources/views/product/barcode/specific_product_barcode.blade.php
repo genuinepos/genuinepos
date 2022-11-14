@@ -146,8 +146,8 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/barcode/JsBarcode.all.min.js"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/printme/jquery-printme.min.js"></script>
+    <script src="{{ asset('assets/plugins/custom/barcode/JsBarcode.all.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/printme/jquery-printme.min.js') }}"></script>
     <script>
         // Get all supplier products
         function getSupplierProduct(){

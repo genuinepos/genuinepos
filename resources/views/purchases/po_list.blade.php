@@ -1,7 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" type="text/css"
-        href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css" />
+        href="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.min.css') }}" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @endpush
 @section('title', 'Purchase List - ')
@@ -227,7 +227,7 @@
     @endif
 @endsection
 @push('scripts')
-    <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         // Show session message by toster alert.

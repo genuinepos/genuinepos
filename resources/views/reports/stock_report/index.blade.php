@@ -7,7 +7,7 @@
         .sale_and_purchase_amount_area table tbody tr th{text-align: left;}
         .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
     </style>
-    <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
 @endpush
 @section('title', 'Stock Report - ')
 @section('content')

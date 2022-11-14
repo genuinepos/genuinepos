@@ -6,15 +6,15 @@
 
     <script src="{{ asset('backend/asset/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('backend/asset/js/jquery.fontstar.js') }}"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
+    <script src="{{ asset('assets/plugins/custom/print_this/printThis.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <!--Toaster.js js link-->
-    <script src="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.js"></script>
+    <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
     <!--Toaster.js js link end-->
 
 
     <!-- DataTable Cdn -->
-    <script type="text/javascript"  src="{{asset('backend/asset/cdn/js/jquery.dataTables.min.js')}}"></script> 
+    <script type="text/javascript"  src="{{asset('backend/asset/cdn/js/jquery.dataTables.min.js')}}"></script>
     <!-- DataTable Cdn End-->
 
     <script src="{{asset('backend/js/bootstrap-dropdown.js')}}"></script>
@@ -27,7 +27,7 @@
     <script>
         toastr.options = {"positionClass": "toast-top-center",}
         $(document).on('click', '#logout_option',function(e){
-            e.preventDefault();      
+            e.preventDefault();
             $.confirm({
                 'title': 'Logout Confirmation',
                 'content': 'Are you sure, you want to logout?',
@@ -39,10 +39,10 @@
         });
 
         $(document).on('click', '.display tbody tr', function () {
-            $('.display tbody tr').removeClass('active_tr'); 
+            $('.display tbody tr').removeClass('active_tr');
             $(this).addClass('active_tr');
         });
-        
+
         $(document).on('click', '#hard_reload', function () {
             window.location.reload(true);
         });

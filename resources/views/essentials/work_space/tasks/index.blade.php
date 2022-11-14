@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/pace-master/themes/red/pace-theme-fill-left.css"/> --}}
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/pace-master/themes/red/pace-theme-fill-left.css') }}"/> --}}
     <style>
         b{font-weight: 600;font-family: Arial, Helvetica, sans-serif;}
         th.task-name {width: 75%;}
@@ -130,7 +130,7 @@
 
 @endsection
 @push('scripts')
-    {{-- <script src="{{ asset('public') }}/assets/plugins/custom/pace-master/pace.min.js"></script> --}}
+    {{-- <script src="{{ asset('assets/plugins/custom/pace-master/pace.min.js') }}"></script> --}}
     <script>
     $.ajaxSetup({
         headers: {

@@ -1,4 +1,4 @@
-<script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+<script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $('.collapse_table').on('click', function () {

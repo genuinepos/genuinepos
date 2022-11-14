@@ -4,7 +4,7 @@
         .top-menu-area ul li {display: inline-block;margin-right: 3px;}
         .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
     </style>
-    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap-datepicker.min.css') }}">
 @endpush
 @section('title', 'HRM Leaves - ')
 @section('content')
@@ -22,55 +22,55 @@
                                                 <a href="{{ route('hrm.dashboard.index') }}" class="text-white"><i class="fas fa-tachometer-alt"></i> <b>@lang('menu.hrm')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['leave_type'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['leave_assign'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.leave') }}" class="text-white"><i class="fas fa-level-down-alt text-primary"></i> <b>@lang('menu.leave')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['shift'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.attendance.shift') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['attendance'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.attendance') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['view_allowance_and_deduction'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.allowance') }}" class="text-white"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['payroll'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.payroll.index') }}" class="text-white "><i class="far fa-money-bill-alt"></i> <b>@lang('menu.payroll')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['holiday'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.holidays') }}" class="text-white "><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['department'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.departments') }}" class="text-white "><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
                                             </li>
                                         @endif
-            
+
                                         @if (auth()->user()->permission->hrms['designation'] == '1')
                                             <li>
                                                 <a href="{{ route('hrm.designations') }}" class="text-white "><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
@@ -291,7 +291,7 @@
     </div>
 @endsection
 @push('scripts')
-<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
+<script src="{{ asset('backend/asset/js/bootstrap-date-picker.min.js') }}"></script>
 <script>
     // Get all category by ajax
     function getAllLeave(){
@@ -348,7 +348,7 @@
         }
     });
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         // Add department by ajax
         $('#add_leave_form').on('submit', function(e){
@@ -389,7 +389,7 @@
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
-          
+
             $.ajax({
                 url:url,
                 type:'post',
@@ -399,7 +399,7 @@
                     toastr.success(data);
                     $('.loading_button').hide();
                     getAllLeave();
-                    $('#editModal').modal('hide'); 
+                    $('#editModal').modal('hide');
                 }
             });
         });

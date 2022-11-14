@@ -12,7 +12,7 @@
         .delete_message {color: red;font-weight: 700;}
         .message_area:last-child{border-bottom: 0px solid black;}
     </style>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
 @section('title', 'User Messages - ')
 @section('content')
@@ -105,7 +105,7 @@
     </div>
 @endsection
 @push('scripts')
-<script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
+<script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
 <script>
     // Get all messages by ajax
     function message_list() {

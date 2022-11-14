@@ -1736,5 +1736,5 @@
             }
         }
     </script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.custom.js"></script>
+    <script src="{{ asset('assets/plugins/custom/select_li/selectli.custom.js') }}"></script>
 @endpush

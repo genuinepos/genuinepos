@@ -5,7 +5,7 @@
         .top-menu-area a { border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px; }
         .form-control { padding: 4px!important; }
     </style>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
 @section('title', 'All Memos -')
 @section('content')
@@ -180,7 +180,7 @@
     <!-- Add Modal End-->
 @endsection
 @push('scripts')
-<script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
+<script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",

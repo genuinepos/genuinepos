@@ -18,7 +18,7 @@
             <th class="text-white">Tax</th>
             <th class="text-white">Expire Date</th>
             <th class="text-white">Status</th>
-           
+
         </tr>
     </thead>
     <tbody>
@@ -30,9 +30,9 @@
                     </td>
                 @endif
 
-                <td><img loading="lazy" class="rounded" width="50" height="50" src="{{ asset('uploads/product/thumbnail/'.$product->thumbnail_photo) }}" alt=""></td> 
+                <td><img loading="lazy" class="rounded" width="50" height="50" src="{{ asset('uploads/product/thumbnail/'.$product->thumbnail_photo) }}" alt=""></td>
 
-                <td> 
+                <td>
                     <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Action
@@ -43,14 +43,14 @@
                             @if (auth()->user()->permission->product['product_edit']  == '1')
                                 <a class="dropdown-item" href="{{ route('products.edit', $product->id) }}"><i class="far fa-edit mr-1 text-primary"></i>Edit</a>
                             @endif
-                            
+
                             @if (auth()->user()->permission->product['product_delete']  == '1')
                                 <a class="dropdown-item" id="delete" href="{{ route('products.delete', $product->id) }}"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>
                             @endif
 
                             @if ($product->status == 1)
                                 <a class="dropdown-item" id="change_status" href="{{ route('products.change.status', $product->id) }}"><i class="far fa-thumbs-up mr-1 text-success"></i>Change Status</a>
-                            @else 
+                            @else
                                 <a class="dropdown-item" id="change_status" href="{{ route('products.change.status', $product->id) }}"><i class="far fa-thumbs-down mr-1 text-danger"></i>Change Status</a>
                             @endif
 
@@ -59,16 +59,16 @@
                             @endif
                         </div>
                     </div>
-                </td> 
+                </td>
 
-                <td>{{ $product->name }}</td> 
-                
+                <td>{{ $product->name }}</td>
+
                 <td>
-                   <b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $product->product_cost_with_tax }}</b>  
+                   <b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $product->product_cost_with_tax }}</b>
                 </td>
 
                 <td>
-                    <b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $product->product_price}} </b> 
+                    <b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $product->product_price}} </b>
                 </td>
 
                 <td>
@@ -78,12 +78,12 @@
                 <td>
                     @if ($product->type == 1 && $product->is_variant == 1)
                         <span class="text-primary">Variant</span>
-                    @elseif($product->type == 1 && $product->is_variant == 0)    
+                    @elseif($product->type == 1 && $product->is_variant == 0)
                         <span class="text-success">Single</span>
                     @elseif($product->type == 2)
-                        <span class="text-info">Combo</span>  
-                    @elseif($product->type == 3) 
-                        <span class="text-info">Digital</span>   
+                        <span class="text-info">Combo</span>
+                    @elseif($product->type == 3)
+                        <span class="text-info">Digital</span>
                     @endif
                 </td>
 
@@ -92,21 +92,21 @@
                 </td>
 
                 <td>
-                    {{ $product->brand ? $product->brand->name : 'N/A' }} 
+                    {{ $product->brand ? $product->brand->name : 'N/A' }}
                 </td>
 
                 <td>
-                    {{ $product->tax ? $product->tax->tax_name : 'NoTax' }} 
+                    {{ $product->tax ? $product->tax->tax_name : 'NoTax' }}
                 </td>
                 <td>{{ $product->expire_date ? date('d/m/Y', strtotime($product->expire_date)) : 'N/A' }}</td>
                 <td>
                     @if ($product->status == 1)
                         <i class="far fa-thumbs-up mr-1 text-success"></i>
-                    @else 
+                    @else
                         <i class="far fa-thumbs-down mr-1 text-danger"></i>
                     @endif
                 </td>
-                
+
             </tr>
         @endforeach
     </tbody>
@@ -116,7 +116,7 @@
                 @if (auth()->user()->permission->product['product_delete'])
                     <a href="" class="btn btn-sm btn-danger multipla_delete_btn">Delete Selected</a>
                 @endif
-                <a href="" class="btn btn-sm btn-primary">Remove Form Branch</a> 
+                <a href="" class="btn btn-sm btn-primary">Remove Form Branch</a>
                 <a href="" class="btn btn-sm btn-warning multipla_deactive_btn">Deactivate Selected</a>
             </th>
         </tr>
@@ -124,5 +124,5 @@
 </table>
 
 <!--Data table js active link-->
-<script src="{{ asset('public') }}/assets/plugins/custom/data-table/datatable.active.js"></script>
+<script src="{{ asset('assets/plugins/custom/data-table/datatable.active.js') }}"></script>
 <!--Data table js active link end-->

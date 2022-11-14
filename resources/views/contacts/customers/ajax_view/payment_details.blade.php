@@ -24,14 +24,14 @@
                     @if ($customerPayment->branch)
     
                         @if ($customerPayment->branch->logo != 'default.png')
-                            <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $customerPayment->branch->logo) }}">
+                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $customerPayment->branch->logo) }}">
                         @else 
                             <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $customerPayment->branch->name }}</span>
                         @endif
                     @else
     
                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                            <img style="height: 40px; width:200px;" src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                         @else 
                             <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                         @endif

@@ -28,7 +28,7 @@ class SubCategoryController extends Controller
             return response()->json('Access Denied');
         }
 
-        $img_url = asset('public/uploads/category/');
+        $img_url = asset('uploads/category/');
 
         if ($request->ajax()) {
 
@@ -92,7 +92,7 @@ class SubCategoryController extends Controller
 
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('public/uploads/category/' . $categoryPhotoName);
+            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
 
             $addSubCategory = Category::insert([
                 'name' => $request->name,
@@ -147,7 +147,7 @@ class SubCategoryController extends Controller
 
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('public/uploads/category/' . $categoryPhotoName);
+            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
 
             $updateCategory->update([
                 'name' => $request->name,

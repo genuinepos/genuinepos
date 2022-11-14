@@ -3,8 +3,8 @@
 </style>
 @extends('layout.master')
 @push('stylesheets')
-<link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
-<link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.min.css') }}"/>
+<link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
     <style>
         .sale_and_purchase_amount_area table tbody tr th,td {color: #32325d;}
         .report_data_area {position: relative;}
@@ -230,8 +230,8 @@
     </div>
 @endsection
 @push('scripts')
-<script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.js') }}"></script>
 
 <script>
     var sale_table = $('#sale_table').DataTable({

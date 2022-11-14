@@ -26,7 +26,7 @@ class BrandController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $img_url = asset('public/uploads/brand/');
+        $img_url = asset('uploads/brand/');
 
         if ($request->ajax()) {
 
@@ -64,7 +64,7 @@ class BrandController extends Controller
 
             $brandPhoto = $request->file('photo');
             $brandPhotoName = uniqid() . '.' . $brandPhoto->getClientOriginalExtension();
-            Image::make($brandPhoto)->resize(250, 250)->save('public/uploads/brand/' . $brandPhotoName);
+            Image::make($brandPhoto)->resize(250, 250)->save('uploads/brand/' . $brandPhotoName);
 
             $addBrand = Brand::create([
                 'name' => $request->name,
@@ -114,7 +114,7 @@ class BrandController extends Controller
 
             $brandPhoto = $request->file('photo');
             $brandPhotoName = uniqid() . '.' . $brandPhoto->getClientOriginalExtension();
-            Image::make($brandPhoto)->resize(250, 250)->save('public/uploads/brand/' . $brandPhotoName);
+            Image::make($brandPhoto)->resize(250, 250)->save('uploads/brand/' . $brandPhotoName);
 
             $updateBrand->update([
                 'name' => $request->name,

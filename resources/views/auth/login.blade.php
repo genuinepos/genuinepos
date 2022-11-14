@@ -15,7 +15,7 @@
                                     <div class="head p-1">
                                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
 
-                                            <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                            <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                                         @else 
                                         
                                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
@@ -76,7 +76,7 @@
                                         </h2> --}}
                                         <div class="px-2">
                                             <p class="logo-main-sec">
-                                                <img src="{{ asset('public/backend/images/static/app_logo.png') }}" class="logo">
+                                                <img src="{{ asset('backend/images/static/app_logo.png') }}" class="logo">
                                             </p>
                                             <p class="version">Version: 1.0</p>
                                             <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>

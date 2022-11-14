@@ -1,4 +1,4 @@
-<script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+<script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $('.collapse_table').on('click', function () {
@@ -25,7 +25,7 @@
     $('#supplier_id').on('change', function () {
 
         document.getElementById('search_product').focus();
-        var id = $(this).val(); 
+        var id = $(this).val();
         var supplier = suppliersArray.filter(function (supplier) {
 
             return supplier.id == id;
@@ -61,7 +61,7 @@
 
                 $.each(units, function(key, unit){
 
-                    unites.push(unit.name); 
+                    unites.push(unit.name);
                 });
             }
         });
@@ -100,18 +100,18 @@
         $('#total_qty').val(parseFloat(total_qty));
         $('#total_item').val(parseFloat(total_item));
 
-        //Update Net Total Amount 
+        //Update Net Total Amount
         var netTotalAmount = 0;
         line_totals.forEach(function(line_total){
             netTotalAmount += parseFloat(line_total.value);
         });
         $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
 
-        // Update total purchase amount 
+        // Update total purchase amount
         var order_discount_amount = $('#order_discount_amount').val() ? $('#order_discount_amount').val() : 0;
         var purchaseTaxAmount = $('#purchase_tax_amount').val() ? $('#purchase_tax_amount').val() : 0;
         var shipment_charge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
-        
+
         var calcTotalPurchaseAmount = parseFloat(netTotalAmount) - parseFloat(order_discount_amount) + parseFloat(purchaseTaxAmount) + parseFloat(shipment_charge);
         $('#total_purchase_amount').val(parseFloat(calcTotalPurchaseAmount).toFixed(2));
         // Update purchase due
@@ -152,14 +152,14 @@
                     toastr.error(product.errorMsg);
                     $('#search_product').val('');
                     return;
-                } 
+                }
 
                 if(
-                    !$.isEmptyObject(product.product) || 
-                    !$.isEmptyObject(product.variant_product) || 
+                    !$.isEmptyObject(product.product) ||
+                    !$.isEmptyObject(product.variant_product) ||
                     !$.isEmptyObject(product.namedProducts)
                 ){
-                    
+
                     $('#search_product').addClass('is-valid');
                     if(!$.isEmptyObject(product.product)){
 
@@ -175,12 +175,12 @@
                             product_ids.forEach(function(input){
 
                                 if(input.value == product.id){
-                                    
+
                                     sameProduct += 1;
                                     var className = input.getAttribute('class');
                                     // get closest table row for increasing qty and re calculate product amount
                                     var closestTr = $('.'+className).closest('tr');
-                                    // update same product qty 
+                                    // update same product qty
                                     var presentQty = closestTr.find('#quantity').val();
                                     var updateQty = parseFloat(presentQty) + 1;
                                     closestTr.find('#quantity').val(updateQty);
@@ -192,14 +192,14 @@
                                     var unitCostWithDiscount = closestTr.find('#unit_cost_with_discount').val(parseFloat(calcUnitCostWithDiscount).toFixed(2));
 
                                     // update subtotal
-                                    var calcSubTotal = parseFloat(calcUnitCostWithDiscount) * parseFloat(updateQty); 
+                                    var calcSubTotal = parseFloat(calcUnitCostWithDiscount) * parseFloat(updateQty);
                                     var subTatal = closestTr.find('#subtotal').val(parseFloat(calcSubTotal).toFixed(2));
 
                                     // update net unit cost
                                     var unit_tax = closestTr.find('#unit_tax').val();
                                     var calsNetUnitCost = parseFloat(calcUnitCostWithDiscount) + parseFloat(unit_tax);
                                     var netUnitCost = closestTr.find('#net_unit_cost').val(parseFloat(calsNetUnitCost).toFixed(2));
-                                    
+
                                     // update line total
                                     var calcLineTotal = parseFloat(calsNetUnitCost) * parseFloat(updateQty);
                                     var lineTotal = closestTr.find('#line_total').val(parseFloat(calcLineTotal));
@@ -216,7 +216,7 @@
                                 tr += '<tr class="text-start">';
                                 tr += '<td>';
                                 tr += '<a class="text-success product_name" id="select_product">'+product.name.substring(0, 20)+'</a>';
-                                tr += '<input type="hidden" name="descriptions[]" id="description" value="">';  
+                                tr += '<input type="hidden" name="descriptions[]" id="description" value="">';
                                 tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
                                 tr += '</td>';
@@ -229,19 +229,19 @@
 
                                     if (product.unit.name == unit) {
 
-                                        tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
+                                        tr += '<option SELECTED value="'+unit+'">'+unit+'</option>';
                                     }else{
 
-                                        tr += '<option value="'+unit+'">'+unit+'</option>';   
+                                        tr += '<option value="'+unit+'">'+unit+'</option>';
                                     }
                                 });
-                                
+
                                 tr += '</select>';
                                 tr += '</td>';
 
                                 tr += '<td>';
                                 tr += '<input value="'+product.product_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost" autocomplete="off">';
-                                
+
                                 @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
 
                                     tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
@@ -281,7 +281,7 @@
                                     tr += '<td>';
                                     tr += '<input value="'+product.profit+'" type="number" step="any" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                                     tr += '</td>';
-                                
+
                                     tr += '<td>';
                                     tr += '<input type="number" step="any" value="'+product.product_price+'" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                                     tr += '</td>';
@@ -290,15 +290,15 @@
                                 tr += '<td class="text-start">';
                                 tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>';
                                 tr += '</td>';
-                                
+
                                 tr += '</tr>';
-                                $('#purchase_list').prepend(tr); 
-                                calculateTotalAmount();  
+                                $('#purchase_list').prepend(tr);
+                                calculateTotalAmount();
                             }
                         }else{
 
                             var li = "";
-                            var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                            var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                             var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
                             $.each(product.product_variants, function(key, variant){
                                 var tax_amount = parseFloat(product.tax != null ? variant.variant_cost/100 * product.tax.tax_percent : 0.00);
@@ -316,21 +316,21 @@
                         if(product.namedProducts.length > 0) {
 
                             var li = "";
-                            var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
-                            var products = product.namedProducts; 
+                            var imgUrl = "{{asset('uploads/product/thumbnail')}}";
+                            var products = product.namedProducts;
 
                             $.each(products, function (key, product) {
 
                                 var tax_percent = product.tax_percent != null ? product.tax_percent : 0.00;
 
                                 if (product.is_variant == 1) {
-                                   
+
                                     var tax_amount = parseFloat(product.variant_cost/100 * product.tax_percent);
                                     var unitPriceIncTax = (parseFloat(product.variant_price) / 100 * tax_percent) + parseFloat(product.variant_price);
                                     li += '<li class="mt-1">';
                                     li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit_name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+product.variant_code+'" data-v_cost="'+product.variant_cost+'" data-v_profit="'+product.variant_profit+'" data-v_price="'+product.variant_price+'" data-v_cost_with_tax="'+product.variant_cost_with_tax+'"  data-v_name="'+product.variant_name+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Unit Cost: '+product.variant_cost_with_tax+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li +='</li>';
-                                    
+
                                 }else{
 
                                     var tax_amount = parseFloat(product.product_cost/100 * product.tax_percent);
@@ -351,9 +351,9 @@
                         $('.select_area').hide();
                         $('#search_product').val('');
                         var variant_product = product.variant_product;
-                        console.log(variant_product); 
+                        console.log(variant_product);
                         var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
-                        var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * tax_percent : 0); 
+                        var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_cost/100 * tax_percent : 0);
                         var variant_ids = document.querySelectorAll('#variant_id');
                         var sameVariant = 0;
 
@@ -367,7 +367,7 @@
                                     var className = input.getAttribute('class');
                                     // get closest table row for increasing qty and re calculate product amount
                                     var closestTr = $('.'+className).closest('tr');
-                                    // update same product qty 
+                                    // update same product qty
                                     var presentQty = closestTr.find('#quantity').val();
                                     var updateQty = parseFloat(presentQty) + 1;
                                     closestTr.find('#quantity').val(updateQty);
@@ -379,23 +379,23 @@
                                     var unitCostWithDiscount = closestTr.find('#unit_cost_with_discount').val(parseFloat(calcUnitCostWithDiscount).toFixed(2));
 
                                     // update subtotal
-                                    var calcSubTotal = parseFloat(calcUnitCostWithDiscount) * parseFloat(updateQty); 
+                                    var calcSubTotal = parseFloat(calcUnitCostWithDiscount) * parseFloat(updateQty);
                                     var subTatal = closestTr.find('#subtotal').val(parseFloat(calcSubTotal).toFixed(2));
 
                                     // update net unit cost
                                     var unit_tax = closestTr.find('#unit_tax').val();
                                     var calsNetUnitCost = parseFloat(calcUnitCostWithDiscount) + parseFloat(unit_tax);
                                     var netUnitCost = closestTr.find('#net_unit_cost').val(parseFloat(calsNetUnitCost).toFixed(2));
-                                    
+
                                     // update line total
                                     var calcLineTotal = parseFloat(calsNetUnitCost) * parseFloat(updateQty);
                                     var lineTotal = closestTr.find('#line_total').val(parseFloat(calcLineTotal));
                                     calculateTotalAmount();
                                     return;
                                 }
-                            }    
+                            }
                         });
-                        
+
                         if(sameVariant == 0){
 
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
@@ -417,10 +417,10 @@
 
                                 if (variant_product.product.unit.name == unit) {
 
-                                    tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
+                                    tr += '<option SELECTED value="'+unit+'">'+unit+'</option>';
                                 }else{
 
-                                    tr += '<option value="'+unit+'">'+unit+'</option>';   
+                                    tr += '<option value="'+unit+'">'+unit+'</option>';
                                 }
                             })
                             tr += '</select>';
@@ -468,7 +468,7 @@
                                 tr += '<td>';
                                 tr += '<input type="number" step="any" value="'+variant_product.variant_profit+'" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                                 tr += '</td>';
-                            
+
                                 tr += '<td>';
                                 tr += '<input type="number" step="any"  value="'+variant_product.variant_price+'" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                                 tr += '</td>';
@@ -477,11 +477,11 @@
                             tr += '<td>';
                             tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>';
                             tr += '</td>';
-                            
+
                             tr += '</tr>';
                             $('#purchase_list').prepend(tr);
-                            calculateTotalAmount(); 
-                        }    
+                            calculateTotalAmount();
+                        }
                     }
                 }else{
 
@@ -494,7 +494,7 @@
     // select single product and add purchase table
     var keyName = 1;
     function singleProduct(e){
-        
+
         if (keyName == 13 || keyName == 1) {
 
             document.getElementById('search_product').focus();
@@ -512,7 +512,7 @@
 
         var product_code = e.getAttribute('data-p_code');
         var product_cost = e.getAttribute('data-p_cost');
-        var product_cost_with_tax  = e.getAttribute('data-p_cost_with_tax'); 
+        var product_cost_with_tax  = e.getAttribute('data-p_cost_with_tax');
         var product_profit = e.getAttribute('data-p_profit');
         var product_price = e.getAttribute('data-p_price');
         product_ids = document.querySelectorAll('#product_id');
@@ -526,7 +526,7 @@
                 var className = input.getAttribute('class');
                 // get closest table row for increasing qty and re calculate product amount
                 var closestTr = $('.'+className).closest('tr');
-                // update same product qty 
+                // update same product qty
                 var presentQty = closestTr.find('#quantity').val();
                 var updateQty = parseFloat(presentQty) + 1;
                 closestTr.find('#quantity').val(updateQty);
@@ -538,14 +538,14 @@
                 var unitCostWithDiscount = closestTr.find('#unit_cost_with_discount').val(parseFloat(calcUnitCostWithDiscount).toFixed(2));
 
                 // update subtotal
-                var calcSubTotal = parseFloat(calcUnitCostWithDiscount) * parseFloat(updateQty); 
+                var calcSubTotal = parseFloat(calcUnitCostWithDiscount) * parseFloat(updateQty);
                 var subTatal = closestTr.find('#subtotal').val(parseFloat(calcSubTotal).toFixed(2));
 
                 // update net unit cost
                 var unit_tax = closestTr.find('#unit_tax').val();
                 var calsNetUnitCost = parseFloat(calcUnitCostWithDiscount) + parseFloat(unit_tax);
                 var netUnitCost = closestTr.find('#net_unit_cost').val(parseFloat(calsNetUnitCost).toFixed(2));
-                
+
                 // update line total
                 var calcLineTotal = parseFloat(calsNetUnitCost) * parseFloat(updateQty);
                 var lineTotal = closestTr.find('#line_total').val(parseFloat(calcLineTotal));
@@ -579,10 +579,10 @@
 
                 if (product_unit == unit) {
 
-                    tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
+                    tr += '<option SELECTED value="'+unit+'">'+unit+'</option>';
                 }else{
 
-                    tr += '<option value="'+unit+'">'+unit+'</option>';   
+                    tr += '<option value="'+unit+'">'+unit+'</option>';
                 }
             });
 
@@ -631,7 +631,7 @@
                 tr += '<td>';
                 tr += '<input type="number" step="any" value="'+product_profit+'" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                 tr += '</td>';
-            
+
                 tr += '<td>';
                 tr += '<input type="number" step="any" value="'+product_price+'" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                 tr += '</td>';
@@ -642,8 +642,8 @@
             tr += '</td>';
 
             tr += '</tr>';
-            $('#purchase_list').prepend(tr); 
-            calculateTotalAmount();  
+            $('#purchase_list').prepend(tr);
+            calculateTotalAmount();
 
             if (keyName == 9) {
 
@@ -660,7 +660,7 @@
 
             document.getElementById('search_product').focus();
         }
-        
+
         $('.select_area').hide();
         $('#search_product').val("");
         var product_id = e.getAttribute('data-p_id');
@@ -673,7 +673,7 @@
         var variant_name = e.getAttribute('data-v_name');
         var variant_code = e.getAttribute('data-v_code');
         var variant_cost = e.getAttribute('data-v_cost');
-        var variant_cost_with_tax  = e.getAttribute('data-v_cost_with_tax'); 
+        var variant_cost_with_tax  = e.getAttribute('data-v_cost_with_tax');
         var variant_profit = e.getAttribute('data-v_profit');
         var variant_price = e.getAttribute('data-v_price');
         var variant_ids = document.querySelectorAll('#variant_id');
@@ -689,7 +689,7 @@
                     var className = input.getAttribute('class');
                     // get closest table row for increasing qty and re calculate product amount
                     var closestTr = $('.'+className).closest('tr');
-                    // update same product qty 
+                    // update same product qty
                     var presentQty = closestTr.find('#quantity').val();
                     var updateQty = parseFloat(presentQty) + 1;
                     closestTr.find('#quantity').val(updateQty);
@@ -701,14 +701,14 @@
                     var unitCostWithDiscount = closestTr.find('#unit_cost_with_discount').val(parseFloat(calcUnitCostWithDiscount).toFixed(2));
 
                     // update subtotal
-                    var calcSubTotal = parseFloat(calcUnitCostWithDiscount) * parseFloat(updateQty); 
+                    var calcSubTotal = parseFloat(calcUnitCostWithDiscount) * parseFloat(updateQty);
                     var subTatal = closestTr.find('#subtotal').val(parseFloat(calcSubTotal).toFixed(2));
 
                     // update net unit cost
                     var unit_tax = closestTr.find('#unit_tax').val();
                     var calsNetUnitCost = parseFloat(calcUnitCostWithDiscount) + parseFloat(unit_tax);
                     var netUnitCost = closestTr.find('#net_unit_cost').val(parseFloat(calsNetUnitCost).toFixed(2));
-                    
+
                     // update line total
                     var calcLineTotal = parseFloat(calsNetUnitCost) * parseFloat(updateQty);
                     var lineTotal = closestTr.find('#line_total').val(parseFloat(calcLineTotal));
@@ -722,7 +722,7 @@
                     }
                     return;
                 }
-            }    
+            }
         });
 
         if(sameVariant == 0){
@@ -744,13 +744,13 @@
 
                 if (product_unit == unit) {
 
-                    tr += '<option SELECTED value="'+unit+'">'+unit+'</option>'; 
+                    tr += '<option SELECTED value="'+unit+'">'+unit+'</option>';
                 }else{
 
-                    tr += '<option value="'+unit+'">'+unit+'</option>';   
+                    tr += '<option value="'+unit+'">'+unit+'</option>';
                 }
             })
-            
+
             tr += '</select>';
             tr += '</td>';
 
@@ -795,7 +795,7 @@
                 tr += '<td>';
                 tr += '<input type="number" step="any" value="'+variant_profit+'" name="profits[]" class="form-control" type="number" id="profit" autocomplete="off">';
                 tr += '</td>';
-        
+
                 tr += '<td class="text-right">';
                 tr += '<input type="number" step="any" value="'+variant_price+'" name="selling_prices[]" class="form-control" id="selling_price" autocomplete="off">';
                 tr += '</td>';
@@ -804,9 +804,9 @@
             tr += '<td class="text-start">';
             tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>';
             tr += '</td>';
-            
+
             tr += '</tr>';
-            $('#purchase_list').prepend(tr); 
+            $('#purchase_list').prepend(tr);
             calculateTotalAmount();
 
             if (keyName == 9) {
@@ -822,11 +822,11 @@
 
         var qty = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
-        //Update subtotal 
+        //Update subtotal
         var unitCostWithDiscount = tr.find('#unit_cost_with_discount').val();
         var calcSubtotal = parseFloat(unitCostWithDiscount) * parseFloat(qty);
         var subtotal = tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-        
+
         //Update line total
         var netUnitCost = tr.find('#net_unit_cost').val();
         var calcLineTotal = parseFloat(netUnitCost) * parseFloat(qty);
@@ -839,7 +839,7 @@
 
         var unitCost = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
-        
+
         // update unit cost with discount
         var discount = tr.find('#unit_discount').val();
         var calcUnitCostWithDiscount = parseFloat(unitCost) - parseFloat(discount);
@@ -858,7 +858,7 @@
         var calcNetUnitCost = parseFloat(calcUnitCostWithDiscount) + parseFloat(calcTaxAmount);
         tr.find('#net_unit_cost').val(parseFloat(calcNetUnitCost).toFixed(2));
 
-        // Calc unit inc 
+        // Calc unit inc
         var unitCostIncTax = parseFloat(unitCost) + parseFloat(calcTaxAmount);
         tr.find('#unit_cost_inc_tax').val(parseFloat(unitCostIncTax).toFixed(2));
         // Update line total
@@ -893,7 +893,7 @@
 
         var unit_discount = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
-        //Update unit cost with discount 
+        //Update unit cost with discount
         var unitCost = tr.find('#unit_cost').val();
         var calcUnitCostWithDiscount = parseFloat(unitCost) - parseFloat(unit_discount);
         var unitCostWithDiscount = tr.find('#unit_cost_with_discount').val(parseFloat(calcUnitCostWithDiscount).toFixed(2));
@@ -946,7 +946,7 @@
 
         var profit = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
-        
+
         // Update selling price
         var unit_cost = tr.find('#unit_cost').val();
         var unitCostWithDiscount = tr.find('#unit_cost_with_discount').val();
@@ -972,12 +972,12 @@
 
         if (orderDiscountType == 1) {
 
-            $('.label_order_discount_amount').html(parseFloat(orderDiscount).toFixed(2)); 
-            $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2)); 
+            $('.label_order_discount_amount').html(parseFloat(orderDiscount).toFixed(2));
+            $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
         }else{
 
             var calsOrderDiscount = parseFloat(netTotalAmount) / 100 * parseFloat(orderDiscount);
-            $('.label_order_discount_amount').html(parseFloat(calsOrderDiscount).toFixed(2)); 
+            $('.label_order_discount_amount').html(parseFloat(calsOrderDiscount).toFixed(2));
             $('#order_discount_amount').val(parseFloat(calsOrderDiscount).toFixed(2));
         }
         calculateTotalAmount();
@@ -992,12 +992,12 @@
 
         if (orderDiscountType == 1) {
 
-            $('.label_order_discount_amount').html(parseFloat(orderDiscount).toFixed(2)); 
-            $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2)); 
+            $('.label_order_discount_amount').html(parseFloat(orderDiscount).toFixed(2));
+            $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
         }else{
 
             var calsOrderDiscount = parseFloat(netTotalAmount) / 100 * parseFloat(orderDiscount);
-            $('.label_order_discount_amount').html(parseFloat(calsOrderDiscount).toFixed(2)); 
+            $('.label_order_discount_amount').html(parseFloat(calsOrderDiscount).toFixed(2));
             $('#order_discount_amount').val(parseFloat(calsOrderDiscount).toFixed(2));
         }
 
@@ -1029,7 +1029,7 @@
         $('#purchase_due').val(parseFloat(calcDueAmount).toFixed(2));
     });
 
-    // Remove product form purchase product list (Table) 
+    // Remove product form purchase product list (Table)
     $(document).on('click', '#remove_product_btn',function(e){
 
         e.preventDefault();
@@ -1041,7 +1041,7 @@
     $('.submit_button').on('click', function () {
 
         var value = $(this).val();
-        $('#action').val(value); 
+        $('#action').val(value);
     });
 
     //Add purchase request by ajax
@@ -1049,7 +1049,7 @@
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
-       
+
         $('.submit_button').prop('type', 'button');
         $.ajax({
             url:url,
@@ -1059,7 +1059,7 @@
             cache: false,
             processData: false,
             success:function(data){
-                
+
                 $('.error').html('');
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
@@ -1068,7 +1068,7 @@
                     toastr.error(data.errorMsg,'ERROR');
                 }else if (data.successMsg) {
 
-                    toastr.success(data.successMsg); 
+                    toastr.success(data.successMsg);
                     $('#add_purchase_form')[0].reset();
                     $('#purchase_list').empty();
                 }else{
@@ -1076,15 +1076,15 @@
                     toastr.success('Successfully Purchase Created.');
                     $('#add_purchase_form')[0].reset();
                     $('#purchase_list').empty();
-                    
+
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 1000, 
-                        header: null,        
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
+                        removeInline: false,
+                        printDelay: 1000,
+                        header: null,
                     });
                 }
             },error: function(err) {
@@ -1092,18 +1092,18 @@
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
                 $('.error').html('');
-                
+
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 } else if(err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.'); 
+                    toastr.error('Server error. Please contact to the support team.');
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
+                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
 
                 $.each(err.responseJSON.errors, function(key, error) {
 
@@ -1115,7 +1115,7 @@
 
     setInterval(function() {
         $('#search_product').removeClass('is-invalid');
-    }, 500); 
+    }, 500);
 
     setInterval(function(){
         $('#search_product').removeClass('is-valid');
@@ -1123,7 +1123,7 @@
 
     // Show add product modal with data
     $('#add_product').on('click', function () {
-        
+
         $.ajax({
             url:"{{route('purchases.add.product.modal.view')}}",
             type:'get',
@@ -1171,7 +1171,7 @@
 
     $('body').keyup(function(e) {
 
-        if (e.keyCode == 13 || e.keyCode == 9){  
+        if (e.keyCode == 13 || e.keyCode == 9){
 
             $(".selectProduct").click();
             $('#list').empty();
@@ -1228,7 +1228,7 @@
         format: _expectedDateFormat,
     });
 
-    
+
     $('#payment_method_id').on('change', function () {
 
         var account_id = $(this).find('option:selected').data('account_id');

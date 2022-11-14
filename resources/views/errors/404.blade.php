@@ -23,7 +23,7 @@
 <body>
     <div class="error-wrapper">
         <div class="content">
-            <img src="{{asset('public/backend/asset/img/errors/')}}/404-pos.png" alt="" class="error-img">
+            <img src="{{asset('backend/asset/img/errors/')}}/404-pos.png" alt="" class="error-img">
 
             <div class="content-text">
                 <h1 class="error-hedding">Page Not Found</h1>

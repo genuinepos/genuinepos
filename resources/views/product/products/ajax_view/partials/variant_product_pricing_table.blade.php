@@ -63,7 +63,7 @@
 
                 <td class="text-start">
                     @if ($variant->variant_image)
-                        <img style="width: 40px;height:40px;" src="{{ asset('public/uploads/product/variant_image/'. $variant->variant_image) }}">
+                        <img style="width: 40px;height:40px;" src="{{ asset('uploads/product/variant_image/'. $variant->variant_image) }}">
                     @endif
                 </td>
             </tr>

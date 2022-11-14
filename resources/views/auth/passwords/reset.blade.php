@@ -7,7 +7,7 @@
                 <div class="col-lg-4 col-md-5 col-12">
                     <div class="form-head">
                         <div class="head">
-                            <img src="{{ asset('public/assets/images/genuine_pos.png') }}" alt="" class="logo">
+                            <img src="{{ asset('assets/images/genuine_pos.png') }}" alt="" class="logo">
                             <span class="head-text">
                                 Genuine POS, Point of Sale Software By SpeedDigit
                             </span>

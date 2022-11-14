@@ -1,7 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
     <style>
         .sale_and_purchase_amount_area table tbody tr th,td {color: #32325d;}
         .sale_purchase_and_profit_area {position: relative;}
@@ -245,7 +245,7 @@
                     debug: false,
                     importCSS: true,
                     importStyle: true,
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                     removeInline: false,
                     printDelay: 700,
                     header: null,

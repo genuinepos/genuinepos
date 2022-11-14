@@ -7,14 +7,14 @@
                         @if (auth()->user()->branch)
                             @if (auth()->user()->branch->logo != 'default.png')
                                 <img style="height: 40px; width:110px;"
-                                src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                                src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{ auth()->user()->branch->name }}</span>
                             @endif
                         @else
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                 <img style="height: 40px; width:110px;"
-                                src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
+                                src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
                                 alt="logo" class="logo__img">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{

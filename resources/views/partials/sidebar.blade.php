@@ -4,14 +4,14 @@
             <ul id="" class="float-right">
                 <li data-menu="dashboardmenu" class="">
                     <a href="{{ route('dashboard.dashboard') }}" class="">
-                        <img src="{{ asset('public/backend/asset/img/icon/pie-chart.svg') }}" alt="">
+                        <img src="{{ asset('backend/asset/img/icon/pie-chart.svg') }}" alt="">
                         <p class="title">Dashboard</p>
                     </a>
                 </li>
 
                 @if ($addons->branches == 1)
                     <li data-menu="superadmin" class="">
-                        <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/superadmin.svg') }}">
+                        <a href="#" class=""><img src="{{ asset('backend/asset/img/icon/superadmin.svg') }}">
                             <p class="title">@lang('menu.superadmin')</p>
                         </a>
                     </li>
@@ -37,7 +37,7 @@
 
                     )
                         <li data-menu="contact" class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
-                            <a href="#" class=""><img src="{{ asset('public/backend/asset/img/icon/agenda.svg') }}">
+                            <a href="#" class=""><img src="{{ asset('backend/asset/img/icon/agenda.svg') }}">
                                 <p class="title">@lang('menu.contacts')</p>
                             </a>
                         </li>
@@ -69,7 +69,7 @@
                 )
                     <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
                         <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/package.svg') }}" alt="">
+                            <img src="{{ asset('backend/asset/img/icon/package.svg') }}" alt="">
                             <p class="title">@lang('menu.product')</p>
                         </a>
                     </li>
@@ -80,7 +80,7 @@
                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                         <li data-menu="purchases" class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
                             <a href="#" class="">
-                                <img src="{{ asset('public/backend/asset/img/icon/bill.svg') }}">
+                                <img src="{{ asset('backend/asset/img/icon/bill.svg') }}">
                                 <p class="title">@lang('menu.purchases')</p>
                             </a>
                         </li>
@@ -91,7 +91,7 @@
 
                                 <li data-menu="purchases" class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
                                     <a href="#" class="">
-                                        <img src="{{ asset('public/backend/asset/img/icon/bill.svg') }}">
+                                        <img src="{{ asset('backend/asset/img/icon/bill.svg') }}">
                                         <p class="title">@lang('menu.purchases')</p>
                                     </a>
                                 </li>
@@ -148,7 +148,7 @@
                 )
                     <li data-menu="sales" class="{{ request()->is('sales*') ? 'menu_active' : '' }}">
                         <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/shopping-bag.svg') }}">
+                            <img src="{{ asset('backend/asset/img/icon/shopping-bag.svg') }}">
                             <p class="title">@lang('menu.sales')</p>
                         </a>
                     </li>
@@ -158,7 +158,7 @@
 
                     <li data-menu="transfer" class="{{ request()->is('transfer/stocks*') ? 'menu_active' : '' }}">
                         <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/transfer.svg') }}">
+                            <img src="{{ asset('backend/asset/img/icon/transfer.svg') }}">
                             <p class="title">@lang('menu.transfer')</p>
                         </a>
                     </li>
@@ -178,7 +178,7 @@
                         <li data-menu="adjustment"
                             class="{{ request()->is('stock/adjustments*') ? 'menu_active' : '' }}">
                             <a href="#">
-                                <img src="{{ asset('public/backend/asset/img/icon/slider-tool.svg') }}">
+                                <img src="{{ asset('backend/asset/img/icon/slider-tool.svg') }}">
                                 <p class="title">@lang('menu.adjustment')</p>
                             </a>
                         </li>
@@ -199,7 +199,7 @@
                     )
                         <li data-menu="expenses" class="{{ request()->is('expenses*') ? 'menu_active' : '' }}">
                             <a href="#">
-                                <img src="{{ asset('public/backend/asset/img/icon/budget.svg') }}">
+                                <img src="{{ asset('backend/asset/img/icon/budget.svg') }}">
                                 <p class="title">@lang('menu.expenses')</p>
                             </a>
                         </li>
@@ -211,7 +211,7 @@
                     @if (auth()->user()->permission->accounting['ac_access'] == '1')
                         <li data-menu="accounting" class="{{ request()->is('accounting*') ? 'menu_active' : '' }}">
                             <a href="#">
-                                <img src="{{ asset('public/backend/asset/img/icon/accounting.svg') }}">
+                                <img src="{{ asset('backend/asset/img/icon/accounting.svg') }}">
                                 <p class="title">@lang('menu.accounting')</p>
                             </a>
                         </li>
@@ -226,7 +226,7 @@
                 )
                     <li data-menu="users" class="{{ request()->is('users*') ? 'menu_active' : '' }}">
                         <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/team.svg') }}">
+                            <img src="{{ asset('backend/asset/img/icon/team.svg') }}">
                             <p class="title">@lang('menu.users')</p>
                         </a>
                     </li>
@@ -261,7 +261,7 @@
                     )
                         <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
                             <a href="#">
-                                <img src="{{ asset('public/backend/asset/img/icon/human-resources.svg') }}">
+                                <img src="{{ asset('backend/asset/img/icon/human-resources.svg') }}">
                                 <p class="title">@lang('menu.hrm')</p>
                             </a>
                         </li>
@@ -278,7 +278,7 @@
                     )
                         <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
                             <a href="#">
-                                <img src="{{ asset('public/backend/asset/img/icon/conveyor.svg') }}">
+                                <img src="{{ asset('backend/asset/img/icon/conveyor.svg') }}">
                                 <p class="title">@lang('menu.manufacturing')</p>
                             </a>
                         </li>
@@ -297,7 +297,7 @@
                         )
                             <li data-menu="essentials" class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
                                 <a href="#">
-                                    <img src="{{ asset('public/backend/asset/img/icon/to-do-list.svg') }}">
+                                    <img src="{{ asset('backend/asset/img/icon/to-do-list.svg') }}">
                                     <p class="title">@lang('menu.essentials')</p>
                                 </a>
                             </li>
@@ -308,7 +308,7 @@
                 {{-- @if ($addons->service == 1)
                     <li class="">
                         <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/service.svg') }}">
+                            <img src="{{ asset('backend/asset/img/icon/service.svg') }}">
                             <p class="title">@lang('menu.service')</p>
                         </a>
                     </li>
@@ -317,7 +317,7 @@
                 @if ($addons->e_commerce == 1)
                     <li class="">
                         <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/ecommerce2.svg') }}">
+                            <img src="{{ asset('backend/asset/img/icon/ecommerce2.svg') }}">
                             <p class="title">@lang('menu.e_commerce')</p>
                         </a>
                     </li>
@@ -325,7 +325,7 @@
 
                 <li data-menu="communication" class="{{ request()->is('communication*') ? 'menu_active' : '' }}">
                     <a href="#">
-                        <img src="{{ asset('public/backend/asset/img/icon/communication.svg') }}">
+                        <img src="{{ asset('backend/asset/img/icon/communication.svg') }}">
                         <p class="title">@lang('menu.communication')</p>
                     </a>
                 </li>
@@ -343,7 +343,7 @@
                 )
                     <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
                         <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/settings.svg') }}">
+                            <img src="{{ asset('backend/asset/img/icon/settings.svg') }}">
                             <p class="title">@lang('menu.setup')</p>
                         </a>
                     </li>
@@ -354,7 +354,7 @@
                 )
                     <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
                         <a href="#">
-                            <img src="{{ asset('public/backend/asset/img/icon/business-report.svg') }}">
+                            <img src="{{ asset('backend/asset/img/icon/business-report.svg') }}">
                             <p class="title">Reports</p>
                         </a>
                     </li>

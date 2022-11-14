@@ -873,7 +873,7 @@
                             }else{
 
                                 var li = "";
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
                                 $.each(product.product_variants, function(key, variant){
 
@@ -1029,7 +1029,7 @@
 
                             if(product.namedProducts.length > 0){
 
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var li = "";
                                 var products = product.namedProducts;
 
@@ -1653,7 +1653,7 @@
                             debug: false,
                             importCSS: true,
                             importStyle: true,
-                            loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                            loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                             removeInline: false,
                             printDelay: 1000,
                             header: null,
@@ -1736,5 +1736,5 @@
             }
         }
     </script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.custom.js"></script>
+    <script src="{{ asset('assets/plugins/custom/select_li/selectli.custom.js') }}"></script>
 @endpush

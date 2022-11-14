@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
         .data_preloader{top:2.3%}
@@ -97,7 +97,7 @@
                                                     <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
                                                         <option value="">Select Business Location First</option>
                                                     </select>
-                                                @else 
+                                                @else
                                                     @php
                                                         $wh = DB::table('warehouses')
                                                         ->where('branch_id', auth()->user()->branch_id)
@@ -142,7 +142,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-md-2">
                                                 <label><strong>From Date :</strong></label>
                                                 <div class="input-group">
@@ -187,7 +187,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6"><h6>Productions</h6></div>
-                                @if (auth()->user()->permission->manufacturing['production_add'] == '1') 
+                                @if (auth()->user()->permission->manufacturing['production_add'] == '1')
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
                                             <a href="{{ route('manufacturing.productions.create') }}"><i class="fas fa-plus-square"></i> Add</a>
@@ -247,7 +247,7 @@
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
     <script>
         var production_table = $('.data_tbl').DataTable({
             "processing": true,
@@ -375,14 +375,14 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{ asset('public/assets/css/print/purchase.print.css') }}",
+                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
                 removeInline: false,
                 printDelay: 500,
                 header: null,
             });
         });
 
-        //Submit filter form by date-range field blur 
+        //Submit filter form by date-range field blur
         $(document).on('click', '#search_product', function () {
             $(this).val('');
             $('#product_id').val('');
@@ -435,7 +435,7 @@
 
         $('body').keyup(function(e) {
 
-            if (e.keyCode == 13 || e.keyCode == 9){  
+            if (e.keyCode == 13 || e.keyCode == 9){
 
                 $(".selectProduct").click();
                 $('.search_result').hide();
@@ -465,7 +465,7 @@
                 other: 'nights'
             },
             tooltipNumber: (totalDays) => {
-                
+
                 return totalDays - 1;
             },
             format: 'DD-MM-YYYY'

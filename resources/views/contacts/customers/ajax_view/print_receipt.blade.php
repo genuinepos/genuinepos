@@ -8,13 +8,13 @@
                     <div class="col-6">
                         @if ($receipt->logo)
                             @if ($receipt->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $receipt->logo) }}">
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->logo) }}">
                             @else 
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $receipt->branch_name }}</span>
                             @endif
                         @else 
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                                <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                             @else 
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             @endif
@@ -171,13 +171,13 @@
                     <div class="col-6">
                         @if ($receipt->logo)
                             @if ($receipt->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $receipt->logo) }}">
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->logo) }}">
                             @else 
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $receipt->branch_name }}</span>
                             @endif
                         @else 
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                                <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                             @else 
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             @endif

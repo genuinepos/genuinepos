@@ -5,7 +5,7 @@
         .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
         .form-control {padding: 4px!important;}
     </style>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.min.css') }}"/>
 @endpush
 @section('title', 'HRM Attendances - ')
 @section('content')
@@ -264,8 +264,8 @@
     <!-- Add Modal End-->
 @endsection
 @push('scripts')
-<script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.js') }}"></script>
 <script>
     var att_table = $('.data_tbl').DataTable({
         dom: "lBfrtip",

@@ -27,7 +27,7 @@ class CategoryController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $img_url = asset('public/uploads/category/');
+        $img_url = asset('uploads/category/');
 
         if ($request->ajax()) {
 
@@ -80,7 +80,7 @@ class CategoryController extends Controller
 
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('public/uploads/category/' . $categoryPhotoName);
+            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
 
             $addCategory = Category::create([
                 'name' => $request->name,
@@ -141,7 +141,7 @@ class CategoryController extends Controller
 
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('public/uploads/category/' . $categoryPhotoName);
+            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
 
             $updateCategory->update([
                 'name' => $request->name,

@@ -160,13 +160,13 @@
                 <div class="col-4">
                     @if ($return->branch)
                         @if ($return->branch->logo != 'default.png')
-                            <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $return->branch->logo) }}">
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $return->branch->logo) }}">
                         @else 
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch->name }}</span>
                         @endif
                     @else 
                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                            <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                            <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                         @else 
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                         @endif

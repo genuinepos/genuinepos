@@ -1,7 +1,6 @@
 /node_modules
 /public/hot
 /public/storage
-/public/uploads
 /storage/*.key
 .env
 .env.backup
@@ -11,6 +10,11 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 pos.zip
-/pos.zip
+meta-pos.zip
+genuinepos.zip
+genuine-pos.zip
+pos-master.zip
+pos-dev.zip
 /vendor
 composer.lock
+/public/uploads

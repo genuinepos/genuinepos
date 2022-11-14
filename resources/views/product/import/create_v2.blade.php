@@ -52,7 +52,7 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Download Simple :</b> </label>
                                                     <div class="col-8">
-                                                        <a href="{{ asset('public/import_template/product_import_template.csv') }}" class="btn btn-sm btn-success" download>Download Template File, Click Here</a>
+                                                        <a href="{{ asset('import_template/product_import_template.csv') }}" class="btn btn-sm btn-success" download>Download Template File, Click Here</a>
                                                     </div>
                                                 </div>
                                             </div>

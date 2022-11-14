@@ -11,7 +11,7 @@
         .border_red {border: 1px solid red!important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
     </style>
-    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap-datepicker.min.css') }}">
 @endpush
 @section('content')
     <div class="body-woaper">

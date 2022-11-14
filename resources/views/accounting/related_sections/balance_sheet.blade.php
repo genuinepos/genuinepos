@@ -285,7 +285,7 @@
     </div>
 @endsection
 @push('scripts')
-<script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
+<script src="{{ asset('assets/plugins/custom/print_this/printThis.js') }}"></script>
 <script>
 
     function getBalanceAmounts(){
@@ -318,7 +318,7 @@
             debug: false,
             importCSS: true,
             importStyle: true,
-            loadCSS: "{{asset('public/assets/css/print/balance.sheet.print.css')}}",
+            loadCSS: "{{asset('assets/css/print/balance.sheet.print.css')}}",
             removeInline: false,
             printDelay: 600,
             header: header,

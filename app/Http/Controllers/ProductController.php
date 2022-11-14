@@ -173,7 +173,7 @@ class ProductController extends Controller
 
                     $productImage = $image;
                     $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
-                    Image::make($productImage)->resize(600, 600)->save('public/uploads/product/' . $productImageName);
+                    Image::make($productImage)->resize(600, 600)->save('uploads/product/' . $productImageName);
                     $addProductImage = new ProductImage();
                     $addProductImage->product_id = $addProduct->id;
                     $addProductImage->image = $productImageName;
@@ -203,7 +203,7 @@ class ProductController extends Controller
 
                 $productThumbnailPhoto = $request->file('photo');
                 $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-                Image::make($productThumbnailPhoto)->resize(600, 600)->save('public/uploads/product/thumbnail/' . $productThumbnailName);
+                Image::make($productThumbnailPhoto)->resize(600, 600)->save('uploads/product/thumbnail/' . $productThumbnailName);
                 $addProduct->thumbnail_photo = $productThumbnailName;
             }
 
@@ -236,7 +236,7 @@ class ProductController extends Controller
 
                         $variantImage = $request->variant_image[$index];
                         $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-                        Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
+                        Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
                         $addVariant->variant_image = $variantImageName;
                     }
 
@@ -660,7 +660,7 @@ class ProductController extends Controller
 
                     $productImage = $image;
                     $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
-                    Image::make($productImage)->resize(250, 250)->save('public/uploads/product/' . $productImageName);
+                    Image::make($productImage)->resize(250, 250)->save('uploads/product/' . $productImageName);
                     $addProductImage = new ProductImage();
                     $addProductImage->product_id = $updateProduct->id;
                     $addProductImage->image = $productImageName;
@@ -699,7 +699,7 @@ class ProductController extends Controller
 
                 $productThumbnailPhoto = $request->file('photo');
                 $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-                Image::make($productThumbnailPhoto)->resize(250, 250)->save('public/uploads/product/thumbnail/' . $productThumbnailName);
+                Image::make($productThumbnailPhoto)->resize(250, 250)->save('uploads/product/thumbnail/' . $productThumbnailName);
                 $updateProduct->thumbnail_photo = $productThumbnailName;
             }
 
@@ -752,7 +752,7 @@ class ProductController extends Controller
 
                             $variantImage = $request->variant_images[$index];
                             $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-                            Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
+                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
                             $updateVariant->variant_image = $variantImageName;
                         }
 
@@ -772,7 +772,7 @@ class ProductController extends Controller
 
                             $variantImage = $request->variant_images[$index];
                             $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-                            Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
+                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
                             $addVariant->variant_image = $variantImageName;
                         }
 

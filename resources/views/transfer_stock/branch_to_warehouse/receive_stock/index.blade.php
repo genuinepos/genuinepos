@@ -105,7 +105,7 @@
 
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
+    <script src="{{ asset('assets/plugins/custom/print_this/printThis.js') }}"></script>
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
@@ -162,7 +162,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                 removeInline: false,
                 printDelay: 1000,
                 header: null,

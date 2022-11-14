@@ -37,7 +37,7 @@ class ProductUtil
         $productStock = $this->productStockUtil;
         $generalSettings = DB::table('general_settings')->select('business')->first();
         $countPriceGroup = DB::table('price_groups')->where('status', 'Active')->count();
-        $img_url = asset('public/uploads/product/thumbnail');
+        $img_url = asset('uploads/product/thumbnail');
         $products = '';
 
         $query = DB::table('product_branches')

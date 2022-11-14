@@ -9,7 +9,7 @@
     <title>Genuine POS</title>
     <!-- Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
 
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.css">
     <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/bootstrap.min.css">

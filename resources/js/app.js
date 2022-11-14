@@ -1,2 +1,2 @@
-import('./bootstrap');
-console.log('Vite Installed');
+// import('./bootstrap');
+console.log('Vite Installed properly');

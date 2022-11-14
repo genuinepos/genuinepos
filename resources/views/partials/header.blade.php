@@ -105,18 +105,17 @@
 
                                 <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton1">
                                     <li>
-                                        <img style="height: 40px; width:40px; border-radius:3px;"
-                                            src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/us.svg" /><a
-                                            style="display:inline;" class="dropdown-item"
-                                            href="{{ route('change.lang', 'en') }}">English</a>
+                                        <a style="display:inline;" class="dropdown-item {{ app()->isLocale('en') ? 'text-success' : '' }}" href="{{ route('change.lang', 'en') }}">English</a>
                                     </li>
-
+                                    
                                     <li>
-                                        <img style="height: 40px; width:40px; border-radius:3px;"
-                                            src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/bd.svg" /><a
-                                            style="display:inline;" class="dropdown-item"
-                                            href="{{ route('change.lang', 'bn') }}">Bangla</a>
+                                        <a style="display:inline;" class="dropdown-item {{ app()->isLocale('bn') ? 'text-success' : '' }}" href="{{ route('change.lang', 'bn') }}">Bangla</a>
                                     </li>
+                                    
+                                    <li>
+                                        <a style="display:inline;" class="dropdown-item {{ app()->isLocale('ar') ? 'text-success' : '' }}" href="{{ route('change.lang', 'ar') }}">Arabic</a>
+                                    </li>
+                                    
                                 </ul>
                             </li>
                             <li class="top-icon d-none d-md-block"><a href="https://help.genuinepos.com/"

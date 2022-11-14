@@ -65,7 +65,6 @@ class LoginController extends Controller
             if (Auth::guard('admin_and_user')->attempt(['username' => $request->username, 'password' => $request->password])) {
 
                 if (!Session::has($admin->language)) {
-
                     session(['lang' => $admin->language]);
                 }
 

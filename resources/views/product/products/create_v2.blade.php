@@ -941,7 +941,7 @@
             action_direction = $(this).val();
         });
 
-        // Select product and show spacific product creation fields or area
+        // Select product and show specific product creation fields or area
         $('#type').on('change', function() {
 
             var value = $(this).val();

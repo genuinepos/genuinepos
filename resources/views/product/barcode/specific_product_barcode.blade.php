@@ -153,7 +153,7 @@
         function getSupplierProduct(){
             $('.data_preloader').show();
             $.ajax({
-                url:"{{route('barcode.get.spacific.supplier.product', $productId)}}",
+                url:"{{route('barcode.get.specific.supplier.product', $productId)}}",
                 async:true,
                 type:'get',
                 dataType: 'json',

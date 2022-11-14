@@ -245,7 +245,7 @@
         "serverSide": true,
         aaSorting: [[3, 'desc']],
         "ajax": {
-            "url": "{{ route('reports.sale.representive.index') }}",
+            "url": "{{ route('reports.sale.representative.index') }}",
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.user_id = $('#user_id').val();
@@ -294,7 +294,7 @@
         "serverSide": true,
         aaSorting: [[0, 'desc']],
         "ajax": {
-            "url": "{{ route('reports.sale.representive.expenses') }}",
+            "url": "{{ route('reports.sale.representative.expenses') }}",
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.user_id = $('#user_id').val();

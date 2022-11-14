@@ -265,7 +265,7 @@
         function searchProduct(product_code, warehouse_id){
 
             $.ajax({
-                url:"{{ url('transfer/stocks/sarach/product') }}"+"/"+product_code+"/"+warehouse_id,
+                url:"{{ url('transfer/stocks/search/product') }}"+"/"+product_code+"/"+warehouse_id,
                 dataType: 'json',
                 success:function(product){
 

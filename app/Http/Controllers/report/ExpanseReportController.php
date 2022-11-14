@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\report;
+namespace App\Http\Controllers\Report;
 
 use Carbon\Carbon;
 use App\Models\Expanse;

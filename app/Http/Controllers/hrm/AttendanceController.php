@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\hrm;
+namespace App\Http\Controllers\HRM;
 
 use Carbon\Carbon;
 use App\Models\Hrm\Shift;

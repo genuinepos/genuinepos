@@ -129,7 +129,7 @@ class BarcodeController extends Controller
     }
 
     // Generate specific product barcode view
-    public function genrateProductBarcode($productId)
+    public function generateProductBarcode($productId)
     {
         $productId = $productId;
         $bc_settings = DB::table('barcode_settings')->orderBy('is_continuous', 'desc')->get(['id', 'name', 'is_default']);
@@ -137,7 +137,7 @@ class BarcodeController extends Controller
     }
 
     // Get specific product's supplier product
-    public function getSpacificSupplierProduct($productId)
+    public function getSpecificSupplierProduct($productId)
     {
         $supplierProducts = SupplierProduct::with('supplier', 'product', 'product.tax', 'variant')->where('product_id', $productId)->get();
         return response()->json($supplierProducts);

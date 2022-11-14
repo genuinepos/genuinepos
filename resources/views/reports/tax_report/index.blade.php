@@ -229,7 +229,7 @@
 <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
 <script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
 <script>
-    // Get sale representive report **requested by ajax**
+    // Get sale representative report **requested by ajax**
     function getTaxReport() {
         $('.data_preloader').show();
         var branch_id = $('#branch_id').val();

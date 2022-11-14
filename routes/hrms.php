@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\report\PayrollReportController;
-use App\Http\Controllers\report\AttendanceReportController;
-use App\Http\Controllers\report\PayrollPaymentReportController;
+use App\Http\Controllers\Report\PayrollReportController;
+use App\Http\Controllers\Report\AttendanceReportController;
+use App\Http\Controllers\Report\PayrollPaymentReportController;
 
-Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\hrm'], function () {
+Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\HRM'], function () {
     // Designations route group
     Route::group(['prefix' => 'designations'], function () {
 

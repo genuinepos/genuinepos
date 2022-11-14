@@ -257,7 +257,7 @@
         // add Transfer product by searching product code
         function searchProduct(product_code, branch_id){
             $.ajax({
-                url:"{{ url('transfer/stocks/to/warehouse/sarach/product') }}"+"/"+product_code+"/"+branch_id,
+                url:"{{ url('transfer/stocks/to/warehouse/search/product') }}"+"/"+product_code+"/"+branch_id,
                 dataType: 'json',
                 success:function(product){
                     if(!$.isEmptyObject(product.errorMsg)){

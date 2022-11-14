@@ -190,7 +190,7 @@ class GeneralSettingController extends Controller
         return response()->json('Send Email & SMS settings updated successfully');
     }
 
-    public function rewardPoingSettings(Request $request)
+    public function rewardPointSettings(Request $request)
     {
         $updateRewardPointgSettings = General_setting::first();
         $RewardPointgSettings = [

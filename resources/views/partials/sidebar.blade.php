@@ -1534,7 +1534,7 @@
                                     auth()->user()->permission->sale['sale_representative_report'] == '1'
                                 )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                        <a href="{{ route('reports.sale.representive.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('reports.sale.representative.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-user-tie"></i></span>

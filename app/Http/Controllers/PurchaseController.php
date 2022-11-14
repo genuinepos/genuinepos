@@ -984,7 +984,7 @@ class PurchaseController extends Controller
     }
 
     // Add product modal view with data
-    public function addProductModalVeiw()
+    public function addProductModalView()
     {
         $units =  DB::table('units')->select('id', 'name', 'code_name')->get();
 

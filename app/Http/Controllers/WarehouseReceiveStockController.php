@@ -96,7 +96,7 @@ class WarehouseReceiveStockController extends Controller
     }
 
 
-    public function receiveProducessView($sendStockId)
+    public function receiveProcessView($sendStockId)
     {
         $sendStockId = $sendStockId;
         return view('transfer_stock.warehouse_to_branch.receive_stock.product_receive_stock_view', compact('sendStockId'));

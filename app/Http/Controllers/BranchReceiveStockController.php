@@ -100,7 +100,7 @@ class BranchReceiveStockController extends Controller
         return view('transfer_stock.branch_to_warehouse.receive_stock.ajax_view.show', compact('sendStock'));
     }
 
-    public function receiveProducessView($sendStockId)
+    public function receiveProcessView($sendStockId)
     {
         $sendStockId = $sendStockId;
         return view('transfer_stock.branch_to_warehouse.receive_stock.product_receive_stock_view', compact('sendStockId'));

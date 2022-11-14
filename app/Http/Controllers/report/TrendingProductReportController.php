@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\report;
+namespace App\Http\Controllers\Report;
 
 use App\Charts\CommonChart;
 use Illuminate\Http\Request;

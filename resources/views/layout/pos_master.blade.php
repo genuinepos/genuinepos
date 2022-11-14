@@ -494,7 +494,7 @@
 
                 <div class="modal-body">
                     <div class="form-area">
-                        <form id="search_inv_form" action="{{ route('sales.pos.serc.ex.inv') }}" method="GET">
+                        <form id="search_inv_form" action="{{ route('sales.pos.search.exchange.invoice') }}" method="GET">
                             <div class="form-group row">
                                 <div class="col-md-3">
                                     <input required type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Search invoice">

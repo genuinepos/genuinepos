@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\report;
+namespace App\Http\Controllers\Report;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
-class SaleRepresentiveReportController extends Controller
+class SaleRepresentativeReportController extends Controller
 {
     public function __construct()
     {
@@ -118,10 +118,10 @@ class SaleRepresentiveReportController extends Controller
                 ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        return view('reports.sale_representive_report.index', compact('branches'));
+        return view('reports.sale_representative_report.index', compact('branches'));
     }
 
-    public function SaleRepresentiveExpenseReport(Request $request)
+    public function SaleRepresentativeExpenseReport(Request $request)
     {
         if ($request->ajax()) {
             $generalSettings = DB::table('general_settings')->first();
@@ -219,6 +219,6 @@ class SaleRepresentiveReportController extends Controller
                 ->rawColumns(['date', 'branch', 'user' ,'payment_status', 'total_amount', 'paid', 'due'])
                 ->make(true);
         }
-        return view('reports.sale_representive_report.ajax_view.representive_reports', compact('sales', 'expenses'));
+        return view('reports.sale_representative_report.ajax_view.representative_reports', compact('sales', 'expenses'));
     }
 }

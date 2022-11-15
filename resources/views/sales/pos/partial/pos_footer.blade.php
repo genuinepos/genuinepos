@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="pos-footer">
             <div class="logo_wrapper d-block w-100 text-center">
-                <img src="{{asset('logo.png')}}"
+                <img src="{{asset(config('speeddigit.app_logo'))}}"
                     style="max-width: 100%; height: 20px; width: auto;margin-top: 12px;">
             </div>
             @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '1')

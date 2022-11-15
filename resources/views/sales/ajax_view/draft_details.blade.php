@@ -536,24 +536,24 @@
                     </div>
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Nomhost logo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Nomhost logo.png') }}">
                         </div>
                     </div>
     
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Creative Studio.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Creative Studio.png') }}">
                         </div>
                     </div>
     
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Speeddigitposprologo.png') }}">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/UltimateERPLogo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/UltimateERPLogo.png') }}">
                         </div>
                     </div>
                 </div>
@@ -892,24 +892,24 @@
                     </div>
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Nomhost logo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Nomhost logo.png') }}">
                         </div>
                     </div>
     
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Creative Studio.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Creative Studio.png') }}">
                         </div>
                     </div>
     
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/Speeddigitposprologo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Speeddigitposprologo.png') }}">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="image_area text-center">
-                            <img style="width: 130px; height:50px;" src="{{ asset('uploads/layout_concern_logo/UltimateERPLogo.png') }}">
+                            <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/UltimateERPLogo.png') }}">
                         </div>
                     </div>
                 </div>

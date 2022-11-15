@@ -29,7 +29,7 @@
         </div>
         <footer>
             <div class="logo_wrapper">
-                <img src="{{ asset('backend/images/static/app_logo.png') }}" class="logo">
+                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
             </div>
         </footer>
     </div>

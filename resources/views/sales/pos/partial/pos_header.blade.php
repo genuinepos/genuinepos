@@ -31,7 +31,7 @@
                                     @if (auth()->user()->branch->logo != 'default.png')
                                         <img
                                         src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}">
-                                        {{-- src="{{ asset('logo.png') }}"> --}}
+                                        {{-- src="{{ asset(config('speeddigit.app_logo')) }}"> --}}
                                     @else
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
                                         auth()->user()->branch->name }}</span>
@@ -39,7 +39,7 @@
                                 @else
                                     @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                     <img
-                                        {{-- src="{{ asset('logo.png')}}" --}}
+                                        {{-- src="{{ asset(config('speeddigit.app_logo'))}}" --}}
                                         src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
                                         alt="logo" class="logo__img">
                                     @else

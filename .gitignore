@@ -18,3 +18,4 @@ pos-dev.zip
 /vendor
 composer.lock
 /public/uploads
+/public/build

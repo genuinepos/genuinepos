@@ -76,7 +76,7 @@
                                         </h2> --}}
                                         <div class="px-2">
                                             <p class="logo-main-sec">
-                                                <img src="{{ asset('backend/images/static/app_logo.png') }}" class="logo">
+                                                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{  c }}onfig('speeddigit.app_logo_alt') }}">
                                             </p>
                                             <p class="version">Version: 1.0</p>
                                             <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>

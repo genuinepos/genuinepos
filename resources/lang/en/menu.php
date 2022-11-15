@@ -1346,4 +1346,16 @@ return [
   'genuine_pos_software_by_speedDigit' => 'Genuine POS, Point of Sale software by SpeedDigit',
   'you_feedback_dotbook_application_better' => 'You are feedback helps us make the Dotbook application better',
 
+  'sales' => 'Sales',
+  'product_list' => 'Product List',
+  'branches' => 'Business Locations',
+  'add_sale' => 'Add Sale',
+  'add_sale_list' => 'Manage Add Sale',
+  'add_sale_settings' => 'Add Sale Settings',
+  'pos_sale_list' => 'Manage POS Sale',
+  'pos_sale_settings' => 'POS Settings',
+  'sold_product_list' => 'Sold Product List',
+  'profit_loss' => 'Daily Profit/Loss Report',
+  
+
 ];

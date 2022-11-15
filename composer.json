@@ -21,7 +21,8 @@
         "maatwebsite/excel": "^3.1.44",
         "milon/barcode": "^9.0.1",
         "picqer/php-barcode-generator": "^2.2.4",
-        "yajra/laravel-datatables": "1.5.0"
+        "yajra/laravel-datatables": "1.5.0",
+        "speeddigit/localization": "dev-main"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^1.0",
@@ -65,5 +66,11 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "repositories": [
+        {
+            "type":"path",
+            "url": "C:\\laragon\\www\\speeddigit-localization"
+        }
+    ]
 }

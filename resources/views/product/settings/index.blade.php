@@ -95,10 +95,11 @@
                     </div>
 
                     <div class="row mt-2">
-                        <div class="col-md-12 text-end">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                            </div>
                         </div>
                     </div>
                 </form>

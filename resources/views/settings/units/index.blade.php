@@ -40,11 +40,12 @@
                                             <span class="error error_code"></span>
                                         </div>
 
-                                        <div class="form-group text-end mt-3">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
-                                            <button type="reset" class="c-btn btn_orange float-end">Reset</button>
+                                        <div class="form-group d-flex justify-content-end mt-3">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="reset" class="btn btn-sm btn-danger">Reset</button>
+                                                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
@@ -70,11 +71,12 @@
                                             <span class="error error_e_code"></span>
                                         </div>
 
-                                        <div class="form-group text-end mt-3">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
-                                            <button type="button" id="close_form" class="c-btn btn_orange float-end">Close</button>
+                                        <div class="form-group d-flex justify-content-end mt-3">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="button" id="close_form" class="btn btn-sm btn-danger">Close</button>
+                                                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>

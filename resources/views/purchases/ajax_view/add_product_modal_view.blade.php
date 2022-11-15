@@ -171,12 +171,13 @@
     </div>
 
     <div class="form-group row mt-1">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i
-                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-            <button type="reset" data-bs-dismiss="modal"
-                class="c-btn btn_orange float-end">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            .btn
+                <button type="button" class="btn loading_button d-none"><i
+                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
+                <button type="reset" data-bs-dismiss="modal"
+                    class="c-btn btn_orange float-end">Close</button>
         </div>
     </div>
 </form>
@@ -241,7 +242,7 @@
                         $('#addProductModal').modal('hide');
                         $('.loading_button').hide();
                         $('.submit_button').prop('type', 'submit');
-                        $('#purchase_list').prepend(data); 
+                        $('#purchase_list').prepend(data);
                         calculateTotalAmount();
                         document.getElementById('search_product').focus();
                     }
@@ -255,14 +256,14 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                 }else if (err.status == 500) {
 
                     toastr.error('Server error please contact to the support.');
                 }
 
                 toastr.error('Please check again all form fields.', 'Some thing went wrong.');
-                
+
                 $.each(err.responseJSON.errors, function(key, error) {
 
                     $('.error_add_' + key + '').html(error[0]);

@@ -26,7 +26,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="tab_list_area">
-                                            <div class="btn-froup">
+                                            <div class="btn-group">
                                                 <a id="tab_btn" data-show="categories" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
                                                     <i class="fas fa-th-large"></i> Categories</a>
 

@@ -74,11 +74,12 @@
                                             </div>
 
                                             <div class="form-group row mt-3">
-                                                <div class="col-md-12">
-                                                    <button type="button" class="btn loading_button d-none"><i
-                                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                    <button type="submit" class="c-btn button-success float-end me-0 submit_button">Save</button>
-                                                    <button type="reset" class="c-btn btn_orange float-end">Reset</button>
+                                                <div class="col-md-12 d-flex justify-content-end">
+                                                    <div class="btn-loading">
+                                                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                        <button type="reset" class="btn btn-sm btn-danger">Reset</button>
+                                                        <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </form>
@@ -138,11 +139,12 @@
                                             </div>
 
                                             <div class="form-group row mt-2">
-                                                <div class="col-md-12">
-                                                    <button type="button" class="btn loading_button d-none"><i
-                                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                    <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save Changes</button>
-                                                    <button type="button" class="c-btn btn_orange float-end" id="close_form">Close</button>
+                                                <div class="col-md-12 d-flex justify-content-end">
+                                                    <div class="btn-loading">
+                                                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                        <button type="button" class="btn btn-sm btn-danger" id="close_form">Close</button>
+                                                        <button type="submit" class="btn btn-sm btn-success submit_button">Save Changes</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </form>

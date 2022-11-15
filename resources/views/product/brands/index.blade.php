@@ -44,16 +44,18 @@
                                                 </div>
 
                                                 <div class="form-group mt-2">
-                                                    <div class="col-md-12">
-                                                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                        <button type="submit" class="c-btn button-success float-end submit_button me-0">Save</button>
+                                                    <div class="col-md-12 d-flex justify-content-end">
+                                                        <div class="btn-loading">
+                                                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i></button>
+                                                            <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
 
-                                    <div class="card d-none" id="edit_form">
+                                    <div class="card" id="edit_form">
                                         <div class="section-header">
                                             <div class="col-md-12">
                                                 <h6>Edit Brand </h6>

@@ -11,18 +11,20 @@
         <label><b>Description :</b> </label>
         <textarea name="description" class="form-control" cols="30" rows="3" placeholder="Description">{{ $category->description }}</textarea>
     </div>
-   
+
     <div class="form-group mt-1">
-        <label><b>Photo :</b> <small class="text-danger"><b>Photo size 400px * 400px.</b> </small></label> 
+        <label><b>Photo :</b> <small class="text-danger"><b>Photo size 400px * 400px.</b> </small></label>
         <input type="file" name="photo" class="form-control " accept=".jpg, .jpeg, .png, .gif">
         <span class="error error_e_photo"></span>
     </div>
-  
+
     <div class="form-group row mt-2">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success me-0 float-end" id="update_btn">Save Changes</button>
-            <button type="button" class="c-btn btn_orange float-end" id="close_cate_form">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                <button type="button" class="btn btn-sm btn-danger" id="close_cate_form">Close</button>
+                <button type="submit" class="btn btn-sm btn-success" id="update_btn">Save Changes</button>
+            </div>
         </div>
     </div>
 </form>

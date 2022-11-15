@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-<link rel="stylesheet" type="text/css" href="{{asset('public')}}/backend/asset/css/select2.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
 @section('content')
     <div class="body-woaper">
@@ -164,7 +164,7 @@
     </div>
 @endsection
 @push('scripts')
-<script src="{{asset('public')}}/backend/asset/js/select2.min.js"></script>
+<script src="{{asset('backend/asset/js/select2.min.js') }}"></script>
 <script>
      $('.select2').select2({
         placeholder: "Select under business location",

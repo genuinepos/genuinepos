@@ -1,34 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @php
     $rtl  = app()->isLocale('ar');
 @endphp
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Title -->
-    <title>@yield('title') Genuine POS</title>
-
-    <!-- Icon -->
-    <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
+    <title>@yield('title') {{ config('app.name') }}</title>
+
     @include('layout._stylesheet')
     @stack('stylesheets')
 
+    <!-- Vite and Laravel-Vite used as Asset Build Tools (For SASS/VueJS/ReactJS or any other build process ) -->
+    @vite
 </head>
-<body id="dashboard-8" class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
 
-    {{-- color changing option  --}}
-    {{-- <div class="color_change_wrapper">
-        <ul>
-            <li class="red"></li>
-            <li class="blue"></li>
-            <li class="dark"></li>
-            <li class="light"></li>
-        </ul>
-    </div> --}}
-
+<body id="dashboard-8" class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-theme' }}">
     <div class="all__content">
         @include('partials.sidebar')
 

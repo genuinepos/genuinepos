@@ -9,7 +9,7 @@
     <!-- Title -->
     <title>@yield('title') Genuine POS</title>
     <!-- Icon -->
-    <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
 
     <link rel="stylesheet" href="{{ asset('backend/asset/css/fontawesome/css/all.css')}}">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap.min.css')}}">

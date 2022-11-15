@@ -9,34 +9,34 @@
     <title>Genuine POS</title>
     <!-- Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
 
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.css">
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/bootstrap.min.css">
-    {{-- <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css"> --}}
-    <link href="{{asset('public')}}/backend/css/typography.css" rel="stylesheet" type="text/css">
-    <link href="{{asset('public')}}/backend/css/body.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{asset('backend/asset/css/fontawesome/css/all.css') }}">
+    <link rel="stylesheet" href="{{asset('backend/asset/css/bootstrap.min.css') }}">
+    {{-- <link href="{{asset('backend/css/reset.css') }}" rel="stylesheet" type="text/css"> --}}
+    <link href="{{asset('backend/css/typography.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{asset('backend/css/body.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/calculator.css') }}">
 
-    {{-- <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css"> --}}
-    <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
+    {{-- <link href="{{asset('backend/css/form.css') }}" rel="stylesheet" type="text/css"> --}}
+    <link href="{{asset('backend/css/gradient.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/comon.css">
-    {{-- <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css"> --}}
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/pos.css">
-    <link href="{{asset('public')}}/assets/plugins/custom/toastrjs/toastr.min.css" rel="stylesheet"
+    <link rel="stylesheet" href="{{asset('backend/asset/css/comon.css') }}">
+    {{-- <link rel="stylesheet" href="{{asset('backend/asset/css/layout.css') }}"> --}}
+    <link rel="stylesheet" href="{{asset('backend/asset/css/pos.css') }}">
+    <link href="{{asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet"
     type="text/css"/>
     <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/style.css">
+    <link rel="stylesheet" href="{{asset('backend/asset/css/style.css') }}">
     @stack('css')
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <!--Toaster.js js link-->
     <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
     <!--Toaster.js js link end-->
-    {{-- <script src="{{asset('public')}}/backend/js/jquery-1.7.1.min.js "></script> --}}
-    <script src="{{asset('public')}}/backend/asset/js/bootstrap.bundle.min.js "></script>
+    {{-- <script src="{{asset('backend/js/jquery-1.7.1.min.js') }} "></script> --}}
+    <script src="{{asset('backend/asset/js/bootstrap.bundle.min.js') }} "></script>
     <script src="{{ asset('assets/plugins/custom/print_this/printThis.min.js') }}"></script>
-    <script src="{{asset('public')}}/assets/plugins/custom/Shortcuts-master/shortcuts.js"></script>
+    <script src="{{asset('assets/plugins/custom/Shortcuts-master/shortcuts.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/digital_clock/digital_clock.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 </head>

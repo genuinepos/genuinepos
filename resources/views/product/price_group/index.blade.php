@@ -78,45 +78,43 @@
                         </div> --}}
                     </div>
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>All Selling Price Group</h6>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
+                    <div class="container-fluid p-3">
+                        <div class="form_element rounded m-0">
+                            <div class="section-header">
+                                <div class="col-md-10">
+                                    <h6>All Selling Price Group</h6>
                                 </div>
 
-                                <div class="widget_content">
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>S/L</th>
-                                                    <th>Name</th>
-                                                    <th>Description</th>
-                                                    <th>Status</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
+                                <div class="col-md-2">
+                                    <div class="btn_30_blue float-end">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>
                                 </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>S/L</th>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>

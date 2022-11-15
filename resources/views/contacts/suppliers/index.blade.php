@@ -61,14 +61,10 @@
                                 <h6>All Supplier</h6>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="btn_30_blue float-end">
-                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
-                                </div>
+                            <div class="col-md-6 d-flex justify-content-end gap-2">
+                                <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
 
-                                <div class="btn_30_blue float-end">
-                                    <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Import Suppliers</a>
-                                </div>
+                                <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Import Suppliers</a>
                             </div>
                         </div>
 

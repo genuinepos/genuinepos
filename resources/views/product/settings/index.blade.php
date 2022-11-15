@@ -8,100 +8,100 @@
 @section('title', 'Product Settings - ')
 @section('content')
     <div class="body-woaper">
-        <div class="row mt-5 px-4">
-            <div class="border-class">
-                <div class="row mt-3">
-                    <div class="card">
-                        <div class="section-header">
-                            <div class="col-md-6">
-                                <h6>Product Settings</h6>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-sliders-h"></span>
+                    <h6>Product Settings</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+        <div class="p-3">
+            <div class="card p-3">
+
+                <form id="product_settings_form" class="setting_form" action="{{ route('products.settings.store') }}" method="post">
+                    @csrf
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label><strong>Product Code Prefix (SKU) :</strong></label>
+                            <input type="text" name="product_code_prefix" class="form-control"
+                                autocomplete="off" value="{{ json_decode($generalSettings->product, true)['product_code_prefix'] }}">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label><strong>Default Unit :</strong></label>
+                            <select name="default_unit_id" class="form-control" id="default_unit_id">
+                                <option value="null">None</option>
+                                @foreach ($units as $unit)
+                                    <option {{ json_decode($generalSettings->product, true)['default_unit_id'] == $unit->id ? 'SELECTED' : '' }}
+                                        value="{{ $unit->id }}">{{ $unit->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <div class="row">
+                                <p class="checkbox_input_wrap mt-3">
+                                    <input type="checkbox"
+                                        {{ json_decode($generalSettings->product, true)['is_enable_brands'] == '1' ? 'CHECKED' : '' }}
+                                        name="is_enable_brands"> &nbsp; <b>Enable Brands</b>
+                                </p>
                             </div>
                         </div>
 
-                        <form id="product_settings_form" class="setting_form py-3" action="{{ route('products.settings.store') }}" method="post">
-                            @csrf
-                            <div class="form-group row">
-                                <div class="col-md-3">
-                                    <label><strong>Product Code Prefix (SKU) :</strong></label>
-                                    <input type="text" name="product_code_prefix" class="form-control"
-                                        autocomplete="off" value="{{ json_decode($generalSettings->product, true)['product_code_prefix'] }}">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label><strong>Default Unit :</strong></label>
-                                    <select name="default_unit_id" class="form-control" id="default_unit_id">
-                                        <option value="null">None</option>
-                                        @foreach ($units as $unit)
-                                            <option {{ json_decode($generalSettings->product, true)['default_unit_id'] == $unit->id ? 'SELECTED' : '' }}
-                                                value="{{ $unit->id }}">{{ $unit->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        <div class="col-md-3">
+                            <div class="row">
+                                <p class="checkbox_input_wrap mt-3">
+                                    <input type="checkbox"
+                                        {{ json_decode($generalSettings->product, true)['is_enable_categories'] == '1' ? 'CHECKED' : '' }} name="is_enable_categories"> &nbsp; <b>Enable Categories</b>
+                                </p>
                             </div>
+                        </div>
 
-                            <div class="form-group row">
-                                <div class="col-md-3">
-                                    <div class="row">
-                                        <p class="checkbox_input_wrap mt-3">
-                                            <input type="checkbox"
-                                                {{ json_decode($generalSettings->product, true)['is_enable_brands'] == '1' ? 'CHECKED' : '' }}
-                                                name="is_enable_brands"> &nbsp; <b>Enable Brands</b> 
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="row">
-                                        <p class="checkbox_input_wrap mt-3">
-                                            <input type="checkbox"
-                                                {{ json_decode($generalSettings->product, true)['is_enable_categories'] == '1' ? 'CHECKED' : '' }} name="is_enable_categories"> &nbsp; <b>Enable Categories</b> 
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="row">
-                                        <p class="checkbox_input_wrap mt-3">
-                                            <input type="checkbox"
-                                                {{ json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1' ? 'CHECKED' : '' }} name="is_enable_sub_categories"> &nbsp; <b>Enable Sub-Categories</b> 
-                                        </p>
-                                    </div>
-                                </div>
+                        <div class="col-md-3">
+                            <div class="row">
+                                <p class="checkbox_input_wrap mt-3">
+                                    <input type="checkbox"
+                                        {{ json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1' ? 'CHECKED' : '' }} name="is_enable_sub_categories"> &nbsp; <b>Enable Sub-Categories</b>
+                                </p>
                             </div>
-
-                            <div class="form-group row">
-                                <div class="col-md-3">
-                                    <div class="row">
-                                        <p class="checkbox_input_wrap mt-3">
-                                            <input type="checkbox"
-                                                {{ json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1' ? 'CHECKED' : '' }}
-                                                name="is_enable_price_tax"> &nbsp; <b>Enable Price & Tax info</b> 
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="row">
-                                        <p class="checkbox_input_wrap mt-3">
-                                            <input type="checkbox"
-                                                {{ json_decode($generalSettings->product, true)['is_enable_warranty'] == '1' ? 'CHECKED' : '' }}
-                                                name="is_enable_warranty"> &nbsp; <b>Enable Warranty</b> 
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mt-2">
-                                <div class="col-md-12 text-end">
-                                    <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                    <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <div class="row">
+                                <p class="checkbox_input_wrap mt-3">
+                                    <input type="checkbox"
+                                        {{ json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1' ? 'CHECKED' : '' }}
+                                        name="is_enable_price_tax"> &nbsp; <b>Enable Price & Tax info</b>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="row">
+                                <p class="checkbox_input_wrap mt-3">
+                                    <input type="checkbox"
+                                        {{ json_decode($generalSettings->product, true)['is_enable_warranty'] == '1' ? 'CHECKED' : '' }}
+                                        name="is_enable_warranty"> &nbsp; <b>Enable Warranty</b>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-12 text-end">
+                            <button type="button" class="btn loading_button d-none"><i
+                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

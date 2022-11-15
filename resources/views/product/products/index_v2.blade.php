@@ -15,109 +15,104 @@
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form action="" method="get" class="px-2">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><b>Business Location :</b> </label>
-                                                            <select class="form-control submit_able" name="branch_id" id="branch_id">
-                                                                <option value="">All</option>
-                                                                <option value="NULL">
-                                                                    {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
-                                                                </option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name.'/'.$branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                                <div class="col-md-2">
-                                                    <label><b>Type :</b></label>
-                                                    <select name="product_type" id="product_type"
-                                                        class="form-control submit_able" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="1">Single</option>
-                                                        <option value="2">Variant</option>
-                                                        <option value="3">Combo</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><b>Category :</b></label>
-                                                    <select id="category_id" name="category_id"
-                                                        class="form-control submit_able">
-                                                        <option value="">All</option>
-                                                        @foreach ($categories as $cate)
-                                                            <option value="{{ $cate->id }}">{{ $cate->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><b>Unit :</b></label>
-                                                    <select id="unit_id" name="unit_id"
-                                                        class="form-control submit_able">
-                                                        <option value="">All</option>
-                                                        @foreach ($units as $unit)
-                                                            <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><b>Tax :</b></label>
-                                                    <select id="tax_id" name="tax_id" class="form-control submit_able">
-                                                        <option value="">All</option>
-                                                        @foreach ($taxes as $tax)
-                                                            <option value="{{ $tax->id }}">{{ $tax->tax_name.' ('.$unit->code_name.')' }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><b>Status : </b></label>
-                                                    <select name="status" id="status" class="form-control submit_able">
-                                                        <option value="">All</option>
-                                                        <option value="1">Active</option>
-                                                        <option value="0">In-Active</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><b>Brand :</b></label>
-                                                    <select id="brand_id" name="brand_id"
-                                                        class="form-control submit_able">
-                                                        <option value="">All</option>
-                                                        @foreach ($brands as $brand)
-                                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                               {{-- <div class="col-md-3">
-                                                   <p class="mt-4"> <input type="checkbox" name="is_for_sale" class="submit_able me-1" id="is_for_sale" value="1"><b>Not For Selling.</b></p>
-                                                </div>  --}}
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="row margin_row mt-1">
+                    <div class="p-3">
+                        <div class="form_element rounded mt-0 mb-3">
+                            <div class="element-body">
+                                <form action="" method="get" class="p-2">
+                                    <div class="form-group row">
+                                        @if ($addons->branches == 1)
+                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                <div class="col-md-2">
+                                                    <label><b>Business Location :</b> </label>
+                                                    <select class="form-control submit_able" name="branch_id" id="branch_id">
+                                                        <option value="">All</option>
+                                                        <option value="NULL">
+                                                            {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
+                                                        </option>
+                                                        @foreach ($branches as $branch)
+                                                            <option value="{{ $branch->id }}">
+                                                                {{ $branch->name.'/'.$branch->branch_code }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            @endif
+                                        @endif
+
+                                        <div class="col-md-2">
+                                            <label><b>Type :</b></label>
+                                            <select name="product_type" id="product_type"
+                                                class="form-control submit_able" autofocus>
+                                                <option value="">All</option>
+                                                <option value="1">Single</option>
+                                                <option value="2">Variant</option>
+                                                <option value="3">Combo</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label><b>Category :</b></label>
+                                            <select id="category_id" name="category_id"
+                                                class="form-control submit_able">
+                                                <option value="">All</option>
+                                                @foreach ($categories as $cate)
+                                                    <option value="{{ $cate->id }}">{{ $cate->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label><b>Unit :</b></label>
+                                            <select id="unit_id" name="unit_id"
+                                                class="form-control submit_able">
+                                                <option value="">All</option>
+                                                @foreach ($units as $unit)
+                                                    <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label><b>Tax :</b></label>
+                                            <select id="tax_id" name="tax_id" class="form-control submit_able">
+                                                <option value="">All</option>
+                                                @foreach ($taxes as $tax)
+                                                    <option value="{{ $tax->id }}">{{ $tax->tax_name.' ('.$unit->code_name.')' }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label><b>Status : </b></label>
+                                            <select name="status" id="status" class="form-control submit_able">
+                                                <option value="">All</option>
+                                                <option value="1">Active</option>
+                                                <option value="0">In-Active</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label><b>Brand :</b></label>
+                                            <select id="brand_id" name="brand_id"
+                                                class="form-control submit_able">
+                                                <option value="">All</option>
+                                                @foreach ($brands as $brand)
+                                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                    {{-- <div class="col-md-3">
+                                        <p class="mt-4"> <input type="checkbox" name="is_for_sale" class="submit_able me-1" id="is_for_sale" value="1"><b>Not For Selling.</b></p>
+                                        </div>  --}}
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-4">
@@ -126,16 +121,14 @@
 
                                 @if (auth()->user()->permission->product['product_add'] == '1')
 
-                                    <div class="col-md-8">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('products.add.view') }}" id="add_btn"><i class="fas fa-plus-square"></i> Add Product (Ctrl+Enter)</a>
-                                        </div>
+                                    <div class="col-md-8 d-flex justify-content-end gap-2">
+                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> Add Product (Ctrl+Enter)</a>
 
-                                        <a href="" class="btn btn-sm btn-warning multipla_deactive_btn text-white float-end mt-2 ms-1">Deactivate Selected</a>
+                                        <a href="" class="btn btn-sm btn-warning multipla_deactive_btn">Deactivate Selected</a>
 
                                         @if (auth()->user()->permission->product['product_delete'])
 
-                                            <a href="" class="btn btn-sm btn-danger multipla_delete_btn float-end mt-2">Delete Selected</a>
+                                            <a href="" class="btn btn-sm btn-danger multipla_delete_btn">Delete Selected</a>
                                         @endif
                                     </div>
                                 @endif

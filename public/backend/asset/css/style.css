@@ -66,9 +66,9 @@ ul#search_box {
     line-height: 30px;
     font-size: 16px;
     background: var(--dark-color-2);
-    border-radius: 50%;
+    border-radius: 5px;
     color: var(--white-color);
-    margin-right: 6px;
+    margin-right: 10px;
     position: relative;
     z-index: 2;
 }
@@ -76,12 +76,12 @@ ul#search_box {
 .name-head span::after {
     content: "";
     position: absolute;
-    top: 0;
-    left: 50%;
+    top: 15%;
+    left: 15%;
     width: 100%;
     height: 100%;
     background: var(--dark-color-2);
-    border-radius: 50%;
+    border-radius: 5px;
     opacity: 0.2;
     z-index: -1;
 }
@@ -212,6 +212,7 @@ a.bar-link {
     align-items: center;
     padding: 0px 8px;
     height: 40px;
+    border-radius: 3px 3px 0 0;
 }
 
 .form_element {
@@ -1647,4 +1648,7 @@ table.display tbody tr:hover {
 }
 .modal.show .modal-dialog {
     margin-top: 60px;
+}
+.modal.show .modal-dialog.modal-fullscreen {
+    margin-top: 0;
 }

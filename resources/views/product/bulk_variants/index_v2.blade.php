@@ -18,135 +18,137 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-4">
-                            <div class="card" id="add_form">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <h6>Add Variant </h6>
+                    <div class="p-3">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="card" id="add_form">
+                                    <div class="section-header">
+                                        <div class="col-md-12">
+                                            <h6>Add Variant </h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-area px-3 pb-2">
+                                        <form id="add_variant_form" action="{{ route('product.variants.store') }}">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <label><b>Name :</b> <span class="text-danger">*</span></label>
+                                                    <input type="text" name="variant_name" class="form-control add_input"
+                                                        data-name="Variant name" id="variant_name" placeholder="Variant Name" />
+                                                    <span class="error error_variant_name"></span>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group row mt-1">
+                                                <label><b>Variant Childs </b>(Values) : <span class="text-danger">*</span></label>
+                                                <div class="col-md-10">
+                                                    <input required type="text" name="variant_child[]" class="form-control"
+                                                        placeholder="Variant child" />
+                                                </div>
+
+                                                <div class="col-md-2 text-end">
+                                                    <a class="btn btn-sm btn-primary add_more_for_add" href="#">+</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group more_variant_child_area">
+
+                                            </div>
+
+                                            <div class="form-group row mt-3">
+                                                <div class="col-md-12">
+                                                    <button type="button" class="btn loading_button d-none"><i
+                                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                                    <button type="submit" class="c-btn button-success float-end me-0 submit_button">Save</button>
+                                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
 
-                                <div class="form-area px-3 pb-2">
-                                    <form id="add_variant_form" action="{{ route('product.variants.store') }}">
-                                        <div class="form-group row">
-                                            <div class="col-md-12">
-                                                <label><b>Name :</b> <span class="text-danger">*</span></label>
-                                                <input type="text" name="variant_name" class="form-control add_input"
-                                                    data-name="Variant name" id="variant_name" placeholder="Variant Name" />
-                                                <span class="error error_variant_name"></span>
+                                <div class="card d-none" id="edit_form">
+                                    <div class="section-header">
+                                        <div class="col-md-12">
+                                            <h6>Edit Variant </h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-area px-3 pb-2">
+                                        <form id="edit_variant_form" action="{{ route('product.variants.update') }}">
+                                            <input type="hidden" name="id" id="id">
+                                            <div class="form-group">
+                                                <b>Name :</b> <span class="text-danger">*</span>
+                                                <input type="text" name="variant_name" class="form-control edit_input"
+                                                    data-name="Brand name" id="e_variant_name" placeholder="Brand Name" />
+                                                <span class="error error_e_variant_name"></span>
                                             </div>
 
-                                        </div>
+                                            <div class="form-group row mt-2">
+                                                <div class="col-md-12"><b>Variant Childs (Values) :</b> <span class="text-danger">*</span></div>
+                                                <div class="col-md-10">
+                                                    <input type="hidden" name="variant_child_ids[]" id="e_variant_child_id" value="">
+                                                    <input required type="text" name="variant_child[]" class="form-control"
+                                                        id="e_variant_child" placeholder="Variant child" />
+                                                </div>
 
-                                        <div class="form-group row mt-1">
-                                            <label><b>Variant Childs </b>(Values) : <span class="text-danger">*</span></label>
-                                            <div class="col-md-10">
-                                                <input required type="text" name="variant_child[]" class="form-control"
-                                                    placeholder="Variant child" />
+                                                <div class="col-md-2 text-end">
+                                                    <a class="btn btn-sm btn-primary add_more_for_edit" href="#">+</a>
+                                                </div>
                                             </div>
 
-                                            <div class="col-md-2 text-end">
-                                                <a class="btn btn-sm btn-primary add_more_for_add" href="#">+</a>
+                                            <div class="form-group more_variant_child_area_edit">
+
                                             </div>
-                                        </div>
 
-                                        <div class="form-group more_variant_child_area">
-
-                                        </div>
-
-                                        <div class="form-group row mt-3">
-                                            <div class="col-md-12">
-                                                <button type="button" class="btn loading_button d-none"><i
-                                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                <button type="submit" class="c-btn button-success float-end me-0 submit_button">Save</button>
-                                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                                            <div class="form-group row mt-2">
+                                                <div class="col-md-12">
+                                                    <button type="button" class="btn loading_button d-none"><i
+                                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                                    <button type="submit" class="c-btn me-0 button-success float-end">Save Changes</button>
+                                                    <button type="button" data-bs-dismiss="modal"
+                                                        class="c-btn btn_orange float-end" id="close_form">Close</button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="card d-none" id="edit_form">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <h6>Edit Variant </h6>
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="section-header">
+                                        <div class="col-md-6">
+                                            <h6>All Variant</h6>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-area px-3 pb-2">
-                                    <form id="edit_variant_form" action="{{ route('product.variants.update') }}">
-                                        <input type="hidden" name="id" id="id">
-                                        <div class="form-group">
-                                            <b>Name :</b> <span class="text-danger">*</span>
-                                            <input type="text" name="variant_name" class="form-control edit_input"
-                                                data-name="Brand name" id="e_variant_name" placeholder="Brand Name" />
-                                            <span class="error error_e_variant_name"></span>
+                                    <div class="widget_content">
+                                        <div class="data_preloader">
+                                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                                         </div>
+                                        <div class="table-responsive" id="data-list">
+                                            <table class="display data_tbl data__table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-start">Name</th>
+                                                        <th class="text-start">Childs</th>
+                                                        <th class="text-start">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
-                                        <div class="form-group row mt-2">
-                                            <div class="col-md-12"><b>Variant Childs (Values) :</b> <span class="text-danger">*</span></div>
-                                            <div class="col-md-10">
-                                                <input type="hidden" name="variant_child_ids[]" id="e_variant_child_id" value="">
-                                                <input required type="text" name="variant_child[]" class="form-control"
-                                                    id="e_variant_child" placeholder="Variant child" />
-                                            </div>
-
-                                            <div class="col-md-2 text-end">
-                                                <a class="btn btn-sm btn-primary add_more_for_edit" href="#">+</a>
-                                            </div>
+                                                </tbody>
+                                            </table>
                                         </div>
+                                    </div>
 
-                                        <div class="form-group more_variant_child_area_edit">
-
-                                        </div>
-
-                                        <div class="form-group row mt-2">
-                                            <div class="col-md-12">
-                                                <button type="button" class="btn loading_button d-none"><i
-                                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                <button type="submit" class="c-btn me-0 button-success float-end">Save Changes</button>
-                                                <button type="button" data-bs-dismiss="modal"
-                                                    class="c-btn btn_orange float-end" id="close_form">Close</button>
-                                            </div>
-                                        </div>
+                                    <form id="deleted_form" action="" method="post">
+                                        @method('DELETE')
+                                        @csrf
                                     </form>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Variant</h6>
-                                    </div>
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">Name</th>
-                                                    <th class="text-start">Childs</th>
-                                                    <th class="text-start">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
                         </div>
                     </div>

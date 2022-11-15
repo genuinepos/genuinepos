@@ -62,20 +62,12 @@
                                     <h6>All Customer</h6>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="btn_30_blue float-end">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-plus-square"></i> Add (Ctrl+Enter)
-                                        </a>
-                                    </div>
-
-                                    <div class="btn_30_blue float-end">
-                                        <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Import Customers</a>
-                                    </div>
-
-                                    <div class="btn_30_blue float-end">
-                                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> Print All</a>
-                                    </div>
+                                <div class="col-md-6 d-flex justify-content-end gap-2">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-plus-square"></i> Add (Ctrl+Enter)
+                                    </a>
+                                    <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Import Customers</a>
+                                    <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> Print All</a>
 
                                 </div>
                             </div>

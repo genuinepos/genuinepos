@@ -16,85 +16,87 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
-                        @if (auth()->user()->permission->product['brand'] == '1')
-                            <div class="col-md-4">
-                                <div class="card" id="add_form">
-                                    <div class="section-header">
-                                        <div class="col-md-12">
-                                            <h6>Add Brand </h6>
+                    <div class="p-3">
+                        <div class="row g-3">
+                            @if (auth()->user()->permission->product['brand'] == '1')
+                                <div class="col-md-4">
+                                    <div class="card" id="add_form">
+                                        <div class="section-header">
+                                            <div class="col-md-12">
+                                                <h6>Add Brand </h6>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-area px-3 pb-2">
-                                        <form id="add_brand_form" action="{{ route('product.brands.store') }}">
-                                            <div class="form-group">
-                                                <label><b>@lang('brand.name') :</b> <span class="text-danger">*</span></label>
-                                                <input type="text" name="name" class="form-control  add_input" data-name="Brand name" id="name"
-                                                    placeholder="Brand Name" />
-                                                <span class="error error_name"></span>
-                                            </div>
-
-                                            <div class="form-group mt-1">
-                                                <label><b>@lang('brand.brand_photo') :</b></label>
-                                                <input type="file" name="photo" class="form-control" data-max-file-size="2M" id="photo"
-                                                    accept=".jpg, .jpeg, .png, .gif">
-                                                <span class="error error_photo"></span>
-                                            </div>
-
-                                            <div class="form-group mt-2">
-                                                <div class="col-md-12">
-                                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                    <button type="submit" class="c-btn button-success float-end submit_button me-0">Save</button>
+                                        <div class="form-area px-3 pb-2">
+                                            <form id="add_brand_form" action="{{ route('product.brands.store') }}">
+                                                <div class="form-group">
+                                                    <label><b>@lang('brand.name') :</b> <span class="text-danger">*</span></label>
+                                                    <input type="text" name="name" class="form-control  add_input" data-name="Brand name" id="name"
+                                                        placeholder="Brand Name" />
+                                                    <span class="error error_name"></span>
                                                 </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
 
-                                <div class="card d-none" id="edit_form">
-                                    <div class="section-header">
-                                        <div class="col-md-12">
-                                            <h6>Edit Brand </h6>
+                                                <div class="form-group mt-1">
+                                                    <label><b>@lang('brand.brand_photo') :</b></label>
+                                                    <input type="file" name="photo" class="form-control" data-max-file-size="2M" id="photo"
+                                                        accept=".jpg, .jpeg, .png, .gif">
+                                                    <span class="error error_photo"></span>
+                                                </div>
+
+                                                <div class="form-group mt-2">
+                                                    <div class="col-md-12">
+                                                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                                        <button type="submit" class="c-btn button-success float-end submit_button me-0">Save</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
 
-                                    <div class="form-area px-3 pb-2" id="edit_form_body"></div>
-                                </div>
-                            </div>
-                        @endif
+                                    <div class="card d-none" id="edit_form">
+                                        <div class="section-header">
+                                            <div class="col-md-12">
+                                                <h6>Edit Brand </h6>
+                                            </div>
+                                        </div>
 
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Brand</h6>
+                                        <div class="form-area px-3 pb-2" id="edit_form_body"></div>
                                     </div>
                                 </div>
+                            @endif
 
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="section-header">
+                                        <div class="col-md-6">
+                                            <h6>All Brand</h6>
+                                        </div>
                                     </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Serial</th>
-                                                    <th>Photo</th>
-                                                    <th>Name</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
+
+                                    <div class="widget_content">
+                                        <div class="data_preloader">
+                                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                        </div>
+                                        <div class="table-responsive" id="data-list">
+                                            <table class="display data_tbl data__table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Serial</th>
+                                                        <th>Photo</th>
+                                                        <th>Name</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
                                     </div>
+
+                                    <form id="deleted_form" action="" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                    </form>
                                 </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
                         </div>
                     </div>

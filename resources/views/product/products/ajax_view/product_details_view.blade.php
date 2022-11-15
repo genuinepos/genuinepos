@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-full-display">
+<div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title product_name" id="exampleModalLabel">
@@ -45,7 +45,7 @@
                         </li>
                     </ul>
                 </div>
-                
+
                 <div class="col-md-3">
                     <ul class="list-unstyled">
                         <li><strong>Expire Date : </strong> {{$product->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($product->expire_date)) : 'N/A' }}
@@ -58,7 +58,7 @@
                         <li>
                             <strong>Product Type : </strong>
                             @php
-                                $product_type = ''; 
+                                $product_type = '';
                             @endphp
                             @if ($product->type == 1 && $product->is_variant == 1)
                                 @php $product_type = 'Variant'; @endphp
@@ -113,13 +113,13 @@
                             <!--variant_product_pricing_table End-->
                         </div>
                     </div>
-                @endif 
+                @endif
             @endif
 
             @if ($product->is_manage_stock == 1)
                 @if (count($own_warehouse_stocks) > 0)
                     <hr class="m-0">
-                    
+
                     <div class="row">
                         <div class="heading">
                             <label class="p-0 m-0">OWN <strong>WAREHOUSE</strong> STOCK DETAILS :</label>
@@ -134,7 +134,7 @@
 
                 @if (count($global_warehouse_stocks) > 0)
                     <hr class="m-0">
-                    
+
                     <div class="row">
                         <div class="heading">
                             <label class="p-0 m-0">GLOBAL <strong>WAREHOUSE</strong> STOCK DETAILS : </label>
@@ -169,7 +169,7 @@
                         </div>
                     </div>
                 @endif
-    
+
             @endif
 
         <div class="modal-footer text-end">

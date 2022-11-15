@@ -20,26 +20,29 @@
                         </div>
                     </div>
 
-                    <div class="sec-name">
-                        <div class="name-head">
-                            <div class="tab_list_area">
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a id="tab_btn" data-show="categories" class="tab_btn tab_active" href="#">
-                                            <i class="fas fa-th-large"></i> Categories</a>
-                                    </li>
+                    <div class="p-3">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="tab_list_area">
+                                            <div class="btn-froup">
+                                                <a id="tab_btn" data-show="categories" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
+                                                    <i class="fas fa-th-large"></i> Categories</a>
 
-                                    <li>
-                                        <a id="tab_btn" data-show="sub-categories" class="tab_btn" href="#">
-                                            <i class="fas fa-code-branch"></i> SubCategories</a>
-                                    </li>
-                                </ul>
+                                                <a id="tab_btn" data-show="sub-categories" class="btn btn-sm btn-primary tab_btn" href="#">
+                                                    <i class="fas fa-code-branch"></i> SubCategories</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                @include('product.categories.bodyPartials.categoriesBody')
+                                @include('product.categories.bodyPartials.subCategoriesBody')
                             </div>
                         </div>
                     </div>
-
-                    @include('product.categories.bodyPartials.categoriesBody')
-                    @include('product.categories.bodyPartials.subCategoriesBody')
                 </div>
             </div>
         </div>

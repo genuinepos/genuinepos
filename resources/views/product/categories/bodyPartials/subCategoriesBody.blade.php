@@ -1,4 +1,4 @@
-<div class="row mt-1 sub-categories tab_contant">
+<div class="row g-3 sub-categories tab_contant">
     <div class="col-md-4">
         <div class="card" id="add_sub_cate_form">
             <div class="section-header">
@@ -10,14 +10,14 @@
                 <form id="add_sub_category_form" action="{{ route('product.subcategories.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group mt-1">
-                        <label><b>Name :</b> <span class="text-danger">*</span></label> 
+                        <label><b>Name :</b> <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control " id="name"
                             placeholder="Sub category name" />
                         <span class="error error_sub_name"></span>
                     </div>
 
                     <div class="form-group">
-                        <label><b>Parent category : <span class="text-danger">*</span></b></label> 
+                        <label><b>Parent category : <span class="text-danger">*</span></b></label>
                         <select name="parent_category_id" class="form-control " id="parent_category"
                             required>
                             <option selected="" disabled="">Select Parent Category</option>
@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="form-group mt-2">
-                        <label><b>Sub-Category photo :</b></label> 
+                        <label><b>Sub-Category photo :</b></label>
                         <input type="file" name="photo" class="form-control " id="photo"
                             accept=".jpg, .jpeg, .png, .gif">
                         <span class="error error_sub_photo"></span>

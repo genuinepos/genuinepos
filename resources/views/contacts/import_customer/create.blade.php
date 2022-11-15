@@ -46,14 +46,12 @@
                                     </div>
                                 </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Download Sample :</b> </label>
-                                                    <div class="col-8">
-                                                        <a href="{{ asset('import_template/customer_import_template.xlsx') }}" class="btn btn-sm btn-success" download>Download Template File, Click Here</a>
-                                                    </div>
-                                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-4"><b>Download Sample :</b> </label>
+                                            <div class="col-8">
+                                                <a href="{{ asset('import_template/customer_import_template.xlsx') }}" class="btn btn-sm btn-success" download>Download Template File, Click Here</a>
                                             </div>
                                         </div>
                                     </div>

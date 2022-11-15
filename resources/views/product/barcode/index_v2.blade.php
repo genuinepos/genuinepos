@@ -25,153 +25,157 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-7">
-                            <div class="card ">
-                                <form id="multiple_completed_form" class="d-none"
-                                    action="{{ route('barcode.multiple.generate.completed') }}" method="post">
-                                    @csrf
-                                    <table>
-                                        <tbody id="deleteable_supplier_products"></tbody>
-                                    </table>
-                                </form>
+                    <div class="p-3">
+                        <div class="row g-3">
+                            <div class="col-md-7">
+                                <div class="card ">
+                                    <form id="multiple_completed_form" class="d-none"
+                                        action="{{ route('barcode.multiple.generate.completed') }}" method="post">
+                                        @csrf
+                                        <table>
+                                            <tbody id="deleteable_supplier_products"></tbody>
+                                        </table>
+                                    </form>
 
-                                <form action="{{ route('barcode.preview') }}" method="POST" target="_blank">
-                                    @csrf
-                                    <div class="card-body">
-                                        <input type="hidden" id="business_name"
-                                            value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
-                                        <div class="form-group row">
-                                            <div class="col-md-8">
-                                                <label><b>Barcode Setting :</b></label>
-                                                <select name="br_setting_id" class="form-control">
-                                                    @foreach ($bc_settings as $bc_setting)
-                                                        <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
-                                                            {{ $bc_setting->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="extra_label mt-1">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <ul class="list-unstyled">
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; Price inc.Tax &nbsp;</p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; Product Name. &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; Variant Name. &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; Tax &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; Business Name. &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; Supplier Prefix. &nbsp; </p>
-                                                        </li>
-                                                    </ul>
+                                    <form action="{{ route('barcode.preview') }}" method="POST" target="_blank">
+                                        @csrf
+                                        <div class="card-body">
+                                            <input type="hidden" id="business_name"
+                                                value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
+                                            <div class="form-group row">
+                                                <div class="col-md-8">
+                                                    <label><b>Barcode Setting :</b></label>
+                                                    <select name="br_setting_id" class="form-control">
+                                                        @foreach ($bc_settings as $bc_setting)
+                                                            <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
+                                                                {{ $bc_setting->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="form-group mt-3 row">
-                                            <div class="col-md-12">
-                                                <div class="input-group ">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-barcode"></i></span>
+                                            <div class="extra_label mt-1">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <ul class="list-unstyled">
+                                                            <li>
+                                                                <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; Price inc.Tax &nbsp;</p>
+                                                            </li>
+
+                                                            <li>
+                                                                <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; Product Name. &nbsp; </p>
+                                                            </li>
+
+                                                            <li>
+                                                                <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; Variant Name. &nbsp; </p>
+                                                            </li>
+
+                                                            <li>
+                                                                <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; Tax &nbsp; </p>
+                                                            </li>
+
+                                                            <li>
+                                                                <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; Business Name. &nbsp; </p>
+                                                            </li>
+
+                                                            <li>
+                                                                <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; Supplier Prefix. &nbsp; </p>
+                                                            </li>
+                                                        </ul>
                                                     </div>
-                                                    <input type="text" name="search_product" class="form-control "
-                                                        autocomplete="off" id="search_product"
-                                                        placeholder="Search Product by Product name / Product code(SKU)">
-                                                </div>
-                                                <div class="select_area">
-                                                    <ul class="product_dropdown_list"></ul>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="barcode_product_table_area mt-2">
-                                                    <div class="table_heading">
-                                                        <p class="p-0 m-0"><strong>Product List</strong></p>
-                                                    </div>
-                                                    <div class="table_area">
-                                                        <div class="data_preloader d-none">
-                                                            <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                            <div class="form-group mt-3 row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group ">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-barcode"></i></span>
                                                         </div>
-                                                        <div class="table-responsive">
-                                                            <table class="table modal-table table-sm">
-                                                                <thead>
-                                                                    <tr class="bg-primary text-white text-start">
-                                                                        <th class="text-start">Product</th>
-                                                                        <th class="text-start">Supplier</th>
-                                                                        <th class="text-start">Quantity</th>
-                                                                        <th class="text-start">Action</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="barcode_product_list"></tbody>
-                                                                <tfoot>
-                                                                    <tr>
-                                                                        <th colspan="2" class="text-end">Total Prepired Qty</th>
-                                                                        <th class="text-start">(<span id="prepired_qty">0</span>)</th>
-                                                                        <th ></th>
-                                                                    </tr>
-                                                                </tfoot>
-                                                            </table>
+                                                        <input type="text" name="search_product" class="form-control "
+                                                            autocomplete="off" id="search_product"
+                                                            placeholder="Search Product by Product name / Product code(SKU)">
+                                                    </div>
+                                                    <div class="select_area">
+                                                        <ul class="product_dropdown_list"></ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="barcode_product_table_area mt-2">
+                                                        <div class="table_heading">
+                                                            <p class="p-0 m-0"><strong>Product List</strong></p>
+                                                        </div>
+                                                        <div class="table_area">
+                                                            <div class="data_preloader d-none">
+                                                                <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                                            </div>
+                                                            <div class="table-responsive">
+                                                                <table class="table modal-table table-sm">
+                                                                    <thead>
+                                                                        <tr class="bg-primary text-white text-start">
+                                                                            <th class="text-start">Product</th>
+                                                                            <th class="text-start">Supplier</th>
+                                                                            <th class="text-start">Quantity</th>
+                                                                            <th class="text-start">Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="barcode_product_list"></tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <th colspan="2" class="text-end">Total Prepired Qty</th>
+                                                                            <th class="text-start">(<span id="prepired_qty">0</span>)</th>
+                                                                            <th ></th>
+                                                                        </tr>
+                                                                    </tfoot>
+                                                                </table>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-md-6 multiple_cmp_btn_area">
-                                                <a href="" class="btn btn-sm btn-danger multiple_completed" style=""> DELETE SELECTED ALL </a> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Note : Delete all items from puchased products which is selected for generation the barcodes" class="fas fa-info-circle tp"></i>
+                                            <div class="row mt-3">
+                                                <div class="col-md-6">
+                                                    <div class="multiple_cmp_btn_area">
+                                                        <a href="" class="btn btn-sm btn-danger multiple_completed" style=""> DELETE SELECTED ALL </a> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Note : Delete all items from puchased products which is selected for generation the barcodes" class="fas fa-info-circle tp"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button type="submit" class="btn btn-sm btn-primary float-end">Preview & Print</button>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <button type="submit" class="btn btn-sm btn-primary float-end">Preview & Print</button>
-                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-5">
-                            <div class="table_product_list">
-                                <div class="card p-1">
-                                    <div class="heading">
-                                        <p><strong>Purchased Product List</strong></p>
+                            <div class="col-md-5">
+                                <div class="table_product_list">
+                                    <div class="card p-1">
+                                        <div class="heading">
+                                            <p><strong>Purchased Product List</strong></p>
+                                        </div>
+                                        <table class="display data_tbl data__table table-hover" id="data">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-start"><input type="checkbox" id="chack_all">All</th>
+                                                    <th class="text-start">Product</th>
+                                                    <th class="text-start">Supplier</th>
+                                                    <th class="text-start">Quantity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="purchased_product_list"></tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="3" class="text-end">Total Pending Qty :</th>
+                                                    <th colspan="3" class="text-end">0</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
                                     </div>
-                                    <table class="display data_tbl data__table table-hover" id="data">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-start"><input type="checkbox" id="chack_all">All</th>
-                                                <th class="text-start">Product</th>
-                                                <th class="text-start">Supplier</th>
-                                                <th class="text-start">Quantity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="purchased_product_list"></tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th colspan="3" class="text-end">Total Pending Qty :</th>
-                                                <th colspan="3" class="text-end">0</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
                                 </div>
                             </div>
                         </div>

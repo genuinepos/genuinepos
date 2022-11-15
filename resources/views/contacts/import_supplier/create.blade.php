@@ -46,14 +46,12 @@
                                     </div>
                                 </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Download Sample :</b> </label>
-                                                    <div class="col-8">
-                                                        <a href="{{ asset('import_template/supplier_import_template.xlsx') }}" class="btn btn-sm btn-success" download>Download Template File, Click Here</a>
-                                                    </div>
-                                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-4"><b>Download Sample :</b> </label>
+                                            <div class="col-8">
+                                                <a href="{{ asset('import_template/supplier_import_template.xlsx') }}" class="btn btn-sm btn-success" download>Download Template File, Click Here</a>
                                             </div>
                                         </div>
                                     </div>
@@ -63,7 +61,7 @@
                     </div>
 
                     <div class="col-12">
-                        <div class="form_element rounded mt-0 mb-3">
+                        <div class="form_element rounded m-0">
                             <div class="element-body">
                                 <div class="heading"><h4>Instructions</h4></div>
                                 <div class="top_note">

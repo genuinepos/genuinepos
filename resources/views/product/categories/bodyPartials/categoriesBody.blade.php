@@ -1,4 +1,4 @@
-<div class="row px-2 mt-1 categories tab_contant">
+<div class="row g-3 categories tab_contant">
     <div class="col-md-4">
         <div class="card" id="add_cate_form">
             <div class="section-header">

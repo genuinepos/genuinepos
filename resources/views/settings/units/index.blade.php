@@ -17,99 +17,101 @@
                         </div>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-4">
-                            <div class="card" id="add_form">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Add Unit</h6>
+                    <div class="p-3">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="card" id="add_form">
+                                    <div class="section-header">
+                                        <div class="col-md-6">
+                                            <h6>Add Unit</h6>
+                                        </div>
                                     </div>
+
+                                    <form id="add_unit_form" class="p-2" action="{{ route('settings.units.store') }}">
+                                        <div class="form-group">
+                                            <label><b>Unit Name :</b> <span class="text-danger">*</span></label>
+                                            <input type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="Unit Name"/>
+                                            <span class="error error_name"></span>
+                                        </div>
+
+                                        <div class="form-group mt-1">
+                                            <label><b>Short Name :</b> <span class="text-danger">*</span></label>
+                                            <input type="text" name="code" class="form-control" data-name="Code name" id="code" placeholder="Short name"/>
+                                            <span class="error error_code"></span>
+                                        </div>
+
+                                        <div class="form-group text-end mt-3">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
+                                            <button type="reset" class="c-btn btn_orange float-end">Reset</button>
+                                        </div>
+                                    </form>
                                 </div>
 
-                                <form id="add_unit_form" class="p-2" action="{{ route('settings.units.store') }}">
-                                    <div class="form-group">
-                                        <label><b>Unit Name :</b> <span class="text-danger">*</span></label>
-                                        <input type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="Unit Name"/>
-                                        <span class="error error_name"></span>
+                                <div class="card d-none" id="edit_form">
+                                    <div class="section-header">
+                                        <div class="col-md-6">
+                                            <h6>Edit Unit</h6>
+                                        </div>
                                     </div>
 
-                                    <div class="form-group mt-1">
-                                        <label><b>Short Name :</b> <span class="text-danger">*</span></label>
-                                        <input type="text" name="code" class="form-control" data-name="Code name" id="code" placeholder="Short name"/>
-                                        <span class="error error_code"></span>
-                                    </div>
+                                    <form id="edit_unit_form" class="p-2" action="{{ route('settings.units.update') }}">
+                                        <input type="hidden" name="id" id="id">
+                                        <div class="form-group">
+                                            <label><b>Unit Name :</b> <span class="text-danger">*</span></label>
+                                            <input type="text" name="name" class="form-control" data-name="Name" id="e_name" placeholder="Unit Name"/>
+                                            <span class="error error_e_name"></span>
+                                        </div>
 
-                                    <div class="form-group text-end mt-3">
-                                        <button type="button" class="btn loading_button d-none"><i
-                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                        <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
-                                        <button type="reset" class="c-btn btn_orange float-end">Reset</button>
-                                    </div>
-                                </form>
+                                        <div class="form-group mt-1">
+                                            <label><b>Short Name :</b> <span class="text-danger">*</span></label>
+                                            <input type="text" name="code" class="form-control" data-name="Code name" id="e_code" placeholder="Short Name"/>
+                                            <span class="error error_e_code"></span>
+                                        </div>
+
+                                        <div class="form-group text-end mt-3">
+                                            <button type="button" class="btn loading_button d-none"><i
+                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
+                                            <button type="button" id="close_form" class="c-btn btn_orange float-end">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
 
-                            <div class="card d-none" id="edit_form">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Edit Unit</h6>
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="section-header">
+                                        <div class="col-md-6">
+                                            <h6>All Units</h6>
+                                        </div>
                                     </div>
+
+                                    <div class="widget_content">
+                                        <div class="data_preloader">
+                                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                        </div>
+                                        <div class="table-responsive" id="data-list">
+                                            <table class="display data_tbl data__table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Serial</th>
+                                                        <th>Short Name</th>
+                                                        <th>Code Name</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <form id="deleted_form" action="" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                    </form>
                                 </div>
-
-                                <form id="edit_unit_form" class="p-2" action="{{ route('settings.units.update') }}">
-                                    <input type="hidden" name="id" id="id">
-                                    <div class="form-group">
-                                        <label><b>Unit Name :</b> <span class="text-danger">*</span></label>
-                                        <input type="text" name="name" class="form-control" data-name="Name" id="e_name" placeholder="Unit Name"/>
-                                        <span class="error error_e_name"></span>
-                                    </div>
-
-                                    <div class="form-group mt-1">
-                                        <label><b>Short Name :</b> <span class="text-danger">*</span></label>
-                                        <input type="text" name="code" class="form-control" data-name="Code name" id="e_code" placeholder="Short Name"/>
-                                        <span class="error error_e_code"></span>
-                                    </div>
-
-                                    <div class="form-group text-end mt-3">
-                                        <button type="button" class="btn loading_button d-none"><i
-                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                        <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
-                                        <button type="button" id="close_form" class="c-btn btn_orange float-end">Close</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Units</h6>
-                                    </div>
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Serial</th>
-                                                    <th>Short Name</th>
-                                                    <th>Code Name</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
                         </div>
                     </div>

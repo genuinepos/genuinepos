@@ -25,7 +25,7 @@ class UserProfileController extends Controller
     {
         $this->validate($request, [
             'first_name' => 'required',
-            'email' => 'required|unique:admin_and_users,email,'.auth()->user()->id,
+            'email' => 'required|unique:users,email,'.auth()->user()->id,
         ]);
 
         //return $request->all();

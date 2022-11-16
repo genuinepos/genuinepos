@@ -59,7 +59,7 @@ class StockAdjustmentReportController extends Controller
             $adjustments = '';
             $query = DB::table('stock_adjustments')->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
                 ->leftJoin('warehouses', 'stock_adjustments.warehouse_id', 'warehouses.id')
-                ->leftJoin('admin_and_users', 'stock_adjustments.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'stock_adjustments.admin_id', 'users.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
@@ -88,9 +88,9 @@ class StockAdjustmentReportController extends Controller
                     'branches.branch_code',
                     'warehouses.warehouse_name',
                     'warehouses.warehouse_code',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name',
-                    'admin_and_users.last_name',
+                    'users.prefix',
+                    'users.name',
+                    'users.last_name',
                 )->orderBy('stock_adjustments.report_date_ts', 'desc');
             } else {
                 $adjustments = $query->select(
@@ -99,9 +99,9 @@ class StockAdjustmentReportController extends Controller
                     'branches.branch_code',
                     'warehouses.warehouse_name',
                     'warehouses.warehouse_code',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name as cr_name',
-                    'admin_and_users.last_name',
+                    'users.prefix',
+                    'users.name as cr_name',
+                    'users.last_name',
                 )->orderBy('stock_adjustments.report_date_ts', 'desc')
                 ->where('stock_adjustments.branch_id', auth()->user()->branch_id);
             }
@@ -139,7 +139,7 @@ class StockAdjustmentReportController extends Controller
         $query = DB::table('stock_adjustments')
             ->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
             ->leftJoin('warehouses', 'stock_adjustments.warehouse_id', 'warehouses.id')
-            ->leftJoin('admin_and_users', 'stock_adjustments.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'stock_adjustments.admin_id', 'users.id');
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
@@ -169,9 +169,9 @@ class StockAdjustmentReportController extends Controller
                 'branches.branch_code',
                 'warehouses.warehouse_name',
                 'warehouses.warehouse_code',
-                'admin_and_users.prefix',
-                'admin_and_users.name',
-                'admin_and_users.last_name',
+                'users.prefix',
+                'users.name',
+                'users.last_name',
             )->orderBy('id', 'desc')->get();
         } else {
             $adjustments = $query->select(
@@ -181,9 +181,9 @@ class StockAdjustmentReportController extends Controller
                 'branches.branch_code',
                 'warehouses.warehouse_name',
                 'warehouses.warehouse_code',
-                'admin_and_users.prefix',
-                'admin_and_users.name as cr_name',
-                'admin_and_users.last_name',
+                'users.prefix',
+                'users.name as cr_name',
+                'users.last_name',
             )->where('stock_adjustments.branch_id', auth()->user()->branch_id)->get();
         }
 

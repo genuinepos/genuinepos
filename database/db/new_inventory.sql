@@ -574,10 +574,10 @@ INSERT INTO `addons` (`id`, `branches`, `hrm`, `todo`, `service`, `manufacturing
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin_and_users`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `admin_and_users` (
+CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `prefix` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -629,10 +629,10 @@ CREATE TABLE `admin_and_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `admin_and_users`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `admin_and_users` (`id`, `prefix`, `name`, `last_name`, `emp_id`, `username`, `email`, `shift_id`, `role_type`, `role_id`, `role_permission_id`, `allow_login`, `branch_id`, `status`, `password`, `sales_commission_percent`, `max_sales_discount_percent`, `phone`, `date_of_birth`, `gender`, `marital_status`, `blood_group`, `photo`, `facebook_link`, `twitter_link`, `instagram_link`, `social_media_1`, `social_media_2`, `custom_field_1`, `custom_field_2`, `guardian_name`, `id_proof_name`, `id_proof_number`, `permanent_address`, `current_address`, `bank_ac_holder_name`, `bank_ac_no`, `bank_name`, `bank_identifier_code`, `bank_branch`, `tax_payer_id`, `language`, `department_id`, `designation_id`, `salary`, `salary_type`, `created_at`, `updated_at`) VALUES
+INSERT INTO `users` (`id`, `prefix`, `name`, `last_name`, `emp_id`, `username`, `email`, `shift_id`, `role_type`, `role_id`, `role_permission_id`, `allow_login`, `branch_id`, `status`, `password`, `sales_commission_percent`, `max_sales_discount_percent`, `phone`, `date_of_birth`, `gender`, `marital_status`, `blood_group`, `photo`, `facebook_link`, `twitter_link`, `instagram_link`, `social_media_1`, `social_media_2`, `custom_field_1`, `custom_field_2`, `guardian_name`, `id_proof_name`, `id_proof_number`, `permanent_address`, `current_address`, `bank_ac_holder_name`, `bank_ac_no`, `bank_name`, `bank_identifier_code`, `bank_branch`, `tax_payer_id`, `language`, `department_id`, `designation_id`, `salary`, `salary_type`, `created_at`, `updated_at`) VALUES
 (2, 'Mr', 'Super', 'Admin', NULL, 'superadmin', 'gollachuttelecare@gmail.com', NULL, 1, NULL, 8, 1, NULL, 1, '$2y$10$rd3uLXbr7OXtcZAh5VAj1u.nHtBpy0.gZx5HYXJ1uSR/TpT/nVBai', '0.00', '0.00', NULL, NULL, 'Male', NULL, NULL, 'default.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'en', NULL, NULL, '0.00', NULL, '2021-04-07 07:04:03', '2022-09-12 06:08:41'),
 (3, NULL, 'business', NULL, NULL, 'business2', NULL, NULL, 3, 41, 32, 1, 1, 1, '$2y$10$8vcoJw1CLxCmFmCiG47KHOR7Iwed4S1bDBiam3RrbsW9ypqv7rkd6', '0.00', '0.00', '0122544555', NULL, NULL, NULL, NULL, 'default.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, '2022-09-13 12:40:46', '2022-09-13 12:40:46');
 
@@ -2294,7 +2294,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (128, '2021_03_25_114719_create_money_receipts_table', 54),
 (129, '2020_11_28_095207_create_sales_table', 55),
 (130, '2021_01_16_114746_create_product_opening_stocks_table', 56),
-(131, '2020_11_01_074933_create_admin_and_users_table', 57),
+(131, '2020_11_01_074933_create_users_table', 57),
 (132, '2020_12_29_085907_create_stock_adjustments_table', 58),
 (134, '2020_12_17_083221_create_cash_flows_table', 60),
 (135, '2020_12_17_072250_create_sale_payments_table', 61),
@@ -2313,7 +2313,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (148, '2021_01_20_094227_create_cash_register_transactions_table', 70),
 (151, '2020_12_17_055604_create_expanses_table', 71),
 (152, '2021_05_23_140809_create_expense_descriptions_table', 71),
-(153, '2021_06_03_114200_add_shift_id_to_admin_and_users_table', 72),
+(153, '2021_06_03_114200_add_shift_id_to_users_table', 72),
 (154, '2021_02_02_134638_create_hrm_holidays_table', 73),
 (155, '2021_06_03_114704_remove_column_shift_id_from_hrm_attendances_table', 74),
 (156, '2021_06_07_141127_create_xyz_table', 75),
@@ -2485,7 +2485,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (355, '2022_02_03_130619_add_col_to_cash_registers_table', 185),
 (356, '2022_02_07_135315_create_contras_table', 185),
 (357, '2022_02_07_140004_add_cols_to_account_ledgers_table', 185),
-(358, '2022_02_08_173932_edit_col_from_admin_and_users_table', 185),
+(358, '2022_02_08_173932_edit_col_from_users_table', 185),
 (359, '2022_02_09_115634_modify_to_cash_registers_table', 185),
 (360, '2022_02_09_120105_drop_col_to_cash_register_transactions_table', 185),
 (361, '2022_02_12_123713_add_col_account_type_to_accounts_table', 185),
@@ -4878,17 +4878,17 @@ ALTER TABLE `addons`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `admin_and_users`
+-- Indexes for table `users`
 --
-ALTER TABLE `admin_and_users`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `admin_and_users_email_unique` (`email`),
-  ADD KEY `admin_and_users_role_id_foreign` (`role_id`),
-  ADD KEY `admin_and_users_role_permission_id_foreign` (`role_permission_id`),
-  ADD KEY `admin_and_users_branch_id_foreign` (`branch_id`),
-  ADD KEY `admin_and_users_department_id_foreign` (`department_id`),
-  ADD KEY `admin_and_users_designation_id_foreign` (`designation_id`),
-  ADD KEY `admin_and_users_shift_id_foreign` (`shift_id`);
+  ADD UNIQUE KEY `users_email_unique` (`email`),
+  ADD KEY `users_role_id_foreign` (`role_id`),
+  ADD KEY `users_role_permission_id_foreign` (`role_permission_id`),
+  ADD KEY `users_branch_id_foreign` (`branch_id`),
+  ADD KEY `users_department_id_foreign` (`department_id`),
+  ADD KEY `users_designation_id_foreign` (`designation_id`),
+  ADD KEY `users_shift_id_foreign` (`shift_id`);
 
 --
 -- Indexes for table `admin_and_user_logs`
@@ -6006,9 +6006,9 @@ ALTER TABLE `addons`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `admin_and_users`
+-- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `admin_and_users`
+ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
@@ -6836,28 +6836,28 @@ ALTER TABLE `account_ledgers`
   ADD CONSTRAINT `account_ledgers_supplier_payment_id_foreign` FOREIGN KEY (`supplier_payment_id`) REFERENCES `supplier_payments` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `admin_and_users`
+-- Constraints for table `users`
 --
-ALTER TABLE `admin_and_users`
-  ADD CONSTRAINT `admin_and_users_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `admin_and_users_department_id_foreign` FOREIGN KEY (`department_id`) REFERENCES `hrm_department` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `admin_and_users_designation_id_foreign` FOREIGN KEY (`designation_id`) REFERENCES `hrm_designations` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `admin_and_users_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `admin_and_users_role_permission_id_foreign` FOREIGN KEY (`role_permission_id`) REFERENCES `role_permissions` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `admin_and_users_shift_id_foreign` FOREIGN KEY (`shift_id`) REFERENCES `hrm_shifts` (`id`) ON DELETE SET NULL;
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `users_department_id_foreign` FOREIGN KEY (`department_id`) REFERENCES `hrm_department` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `users_designation_id_foreign` FOREIGN KEY (`designation_id`) REFERENCES `hrm_designations` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `users_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `users_role_permission_id_foreign` FOREIGN KEY (`role_permission_id`) REFERENCES `role_permissions` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `users_shift_id_foreign` FOREIGN KEY (`shift_id`) REFERENCES `hrm_shifts` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `admin_and_user_logs`
 --
 ALTER TABLE `admin_and_user_logs`
-  ADD CONSTRAINT `admin_and_user_logs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `admin_and_user_logs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `allowance_employees`
 --
 ALTER TABLE `allowance_employees`
   ADD CONSTRAINT `allowance_employees_allowance_id_foreign` FOREIGN KEY (`allowance_id`) REFERENCES `hrm_allowance` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `allowance_employees_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `allowance_employees_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `assets`
@@ -6907,7 +6907,7 @@ ALTER TABLE `cash_flows`
 -- Constraints for table `cash_registers`
 --
 ALTER TABLE `cash_registers`
-  ADD CONSTRAINT `cash_registers_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cash_registers_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `cash_registers_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `cash_registers_cash_counter_id_foreign` FOREIGN KEY (`cash_counter_id`) REFERENCES `cash_counters` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `cash_registers_sale_account_id_foreign` FOREIGN KEY (`sale_account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE;
@@ -6940,7 +6940,7 @@ ALTER TABLE `contras`
   ADD CONSTRAINT `contras_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `contras_receiver_account_id_foreign` FOREIGN KEY (`receiver_account_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `contras_sender_account_id_foreign` FOREIGN KEY (`sender_account_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `contras_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `contras_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `customers`
@@ -6953,7 +6953,7 @@ ALTER TABLE `customers`
 --
 ALTER TABLE `customer_credit_limits`
   ADD CONSTRAINT `customer_credit_limits_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `customer_credit_limits_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `customer_credit_limits_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `customer_credit_limits_customer_id_foreign` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE;
 
 --
@@ -6973,7 +6973,7 @@ ALTER TABLE `customer_ledgers`
 --
 ALTER TABLE `customer_opening_balances`
   ADD CONSTRAINT `customer_opening_balances_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `customer_opening_balances_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `customer_opening_balances_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `customer_opening_balances_customer_id_foreign` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE;
 
 --
@@ -6981,7 +6981,7 @@ ALTER TABLE `customer_opening_balances`
 --
 ALTER TABLE `customer_payments`
   ADD CONSTRAINT `customer_payments_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `customer_payments_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `customer_payments_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `customer_payments_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `customer_payments_customer_id_foreign` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `customer_payments_payment_method_id_foreign` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods` (`id`) ON DELETE SET NULL;
@@ -7037,13 +7037,13 @@ ALTER TABLE `expense_descriptions`
 -- Constraints for table `hrm_allowance`
 --
 ALTER TABLE `hrm_allowance`
-  ADD CONSTRAINT `hrm_allowance_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `hrm_allowance_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `hrm_attendances`
 --
 ALTER TABLE `hrm_attendances`
-  ADD CONSTRAINT `hrm_attendances_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `hrm_attendances_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `hrm_holidays`
@@ -7055,15 +7055,15 @@ ALTER TABLE `hrm_holidays`
 -- Constraints for table `hrm_leaves`
 --
 ALTER TABLE `hrm_leaves`
-  ADD CONSTRAINT `hrm_leaves_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `hrm_leaves_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `hrm_leaves_leave_id_foreign` FOREIGN KEY (`leave_id`) REFERENCES `hrm_leavetypes` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `hrm_payrolls`
 --
 ALTER TABLE `hrm_payrolls`
-  ADD CONSTRAINT `hrm_payrolls_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `hrm_payrolls_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `hrm_payrolls_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `hrm_payrolls_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `hrm_payroll_allowances`
@@ -7082,7 +7082,7 @@ ALTER TABLE `hrm_payroll_deductions`
 --
 ALTER TABLE `hrm_payroll_payments`
   ADD CONSTRAINT `hrm_payroll_payments_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `hrm_payroll_payments_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `hrm_payroll_payments_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `hrm_payroll_payments_payment_method_id_foreign` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `hrm_payroll_payments_payroll_id_foreign` FOREIGN KEY (`payroll_id`) REFERENCES `hrm_payrolls` (`id`) ON DELETE CASCADE;
 
@@ -7092,7 +7092,7 @@ ALTER TABLE `hrm_payroll_payments`
 ALTER TABLE `loans`
   ADD CONSTRAINT `loans_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `loans_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `loans_created_user_id_foreign` FOREIGN KEY (`created_user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `loans_created_user_id_foreign` FOREIGN KEY (`created_user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `loans_expense_id_foreign` FOREIGN KEY (`expense_id`) REFERENCES `expanses` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `loans_loan_account_id_foreign` FOREIGN KEY (`loan_account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `loans_loan_company_id_foreign` FOREIGN KEY (`loan_company_id`) REFERENCES `loan_companies` (`id`) ON DELETE CASCADE,
@@ -7112,7 +7112,7 @@ ALTER TABLE `loan_payments`
   ADD CONSTRAINT `loan_payments_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `loan_payments_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `loan_companies` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `loan_payments_payment_method_id_foreign` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `loan_payments_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `loan_payments_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `loan_payment_distributions`
@@ -7125,21 +7125,21 @@ ALTER TABLE `loan_payment_distributions`
 -- Constraints for table `memos`
 --
 ALTER TABLE `memos`
-  ADD CONSTRAINT `memos_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `memos_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `memo_users`
 --
 ALTER TABLE `memo_users`
   ADD CONSTRAINT `memo_users_memo_id_foreign` FOREIGN KEY (`memo_id`) REFERENCES `memos` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `memo_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `memo_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `messages`
 --
 ALTER TABLE `messages`
   ADD CONSTRAINT `messages_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `messages_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `messages_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `money_receipts`
@@ -7161,7 +7161,7 @@ ALTER TABLE `payment_method_settings`
 --
 ALTER TABLE `pos_short_menu_users`
   ADD CONSTRAINT `pos_short_menu_users_short_menu_id_foreign` FOREIGN KEY (`short_menu_id`) REFERENCES `short_menus` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `pos_short_menu_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `pos_short_menu_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `price_group_products`
@@ -7409,13 +7409,13 @@ ALTER TABLE `sale_return_products`
 --
 ALTER TABLE `short_menu_users`
   ADD CONSTRAINT `short_menu_users_short_menu_id_foreign` FOREIGN KEY (`short_menu_id`) REFERENCES `short_menus` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `short_menu_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `short_menu_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `stock_adjustments`
 --
 ALTER TABLE `stock_adjustments`
-  ADD CONSTRAINT `stock_adjustments_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `stock_adjustments_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `stock_adjustments_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `stock_adjustments_stock_adjustment_account_id_foreign` FOREIGN KEY (`stock_adjustment_account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `stock_adjustments_warehouse_id_foreign` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`) ON DELETE CASCADE;
@@ -7452,7 +7452,7 @@ ALTER TABLE `supplier_ledgers`
 --
 ALTER TABLE `supplier_opening_balances`
   ADD CONSTRAINT `supplier_opening_balances_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `supplier_opening_balances_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `supplier_opening_balances_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `supplier_opening_balances_supplier_id_foreign` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE;
 
 --
@@ -7460,7 +7460,7 @@ ALTER TABLE `supplier_opening_balances`
 --
 ALTER TABLE `supplier_payments`
   ADD CONSTRAINT `supplier_payments_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `supplier_payments_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `supplier_payments_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `supplier_payments_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `supplier_payments_payment_method_id_foreign` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `supplier_payments_supplier_id_foreign` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE;
@@ -7498,7 +7498,7 @@ ALTER TABLE `sv_job_sheets`
   ADD CONSTRAINT `sv_job_sheets_device_id_foreign` FOREIGN KEY (`device_id`) REFERENCES `sv_devices` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `sv_job_sheets_model_id_foreign` FOREIGN KEY (`model_id`) REFERENCES `sv_device_models` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `sv_job_sheets_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `sv_status` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `sv_job_sheets_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `sv_job_sheets_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `sv_job_sheets_parts`
@@ -7512,7 +7512,7 @@ ALTER TABLE `sv_job_sheets_parts`
 -- Constraints for table `todos`
 --
 ALTER TABLE `todos`
-  ADD CONSTRAINT `todos_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `todos_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `todos_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
 
 --
@@ -7520,7 +7520,7 @@ ALTER TABLE `todos`
 --
 ALTER TABLE `todo_users`
   ADD CONSTRAINT `todo_users_todo_id_foreign` FOREIGN KEY (`todo_id`) REFERENCES `todos` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `todo_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `todo_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `transfer_stock_branch_to_branches`
@@ -7577,7 +7577,7 @@ ALTER TABLE `transfer_stock_to_warehouse_products`
 --
 ALTER TABLE `user_activity_logs`
   ADD CONSTRAINT `user_activity_logs_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_activity_logs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `user_activity_logs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `warehouses`
@@ -7596,7 +7596,7 @@ ALTER TABLE `warehouse_branches`
 -- Constraints for table `workspaces`
 --
 ALTER TABLE `workspaces`
-  ADD CONSTRAINT `workspaces_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `workspaces_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `workspaces_branch_id_foreign` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
 
 --
@@ -7609,14 +7609,14 @@ ALTER TABLE `workspace_attachments`
 -- Constraints for table `workspace_tasks`
 --
 ALTER TABLE `workspace_tasks`
-  ADD CONSTRAINT `workspace_tasks_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `workspace_tasks_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `workspace_tasks_workspace_id_foreign` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `workspace_users`
 --
 ALTER TABLE `workspace_users`
-  ADD CONSTRAINT `workspace_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `admin_and_users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `workspace_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `workspace_users_workspace_id_foreign` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces` (`id`) ON DELETE CASCADE;
 COMMIT;
 

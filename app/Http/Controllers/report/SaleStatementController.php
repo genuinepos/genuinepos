@@ -33,7 +33,7 @@ class SaleStatementController extends Controller
                 ->whereIn('sales.status', [1, 3])
                 ->leftJoin('branches', 'sales.branch_id', 'branches.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-                ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'sales.admin_id', 'users.id');
 
             $query->select(
                 'sales.id',
@@ -53,9 +53,9 @@ class SaleStatementController extends Controller
                 'branches.name as branch_name',
                 'branches.branch_code',
                 'customers.name as customer_name',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_name',
-                'admin_and_users.last_name as u_last_name',
+                'users.prefix as u_prefix',
+                'users.name as u_name',
+                'users.last_name as u_last_name',
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -138,7 +138,7 @@ class SaleStatementController extends Controller
         $query = DB::table('sales')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-            ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'sales.admin_id', 'users.id');
 
         $query->select(
             'sales.id',
@@ -158,9 +158,9 @@ class SaleStatementController extends Controller
             'branches.name as branch_name',
             'branches.branch_code',
             'customers.name as customer_name',
-            'admin_and_users.prefix as u_prefix',
-            'admin_and_users.name as u_name',
-            'admin_and_users.last_name as u_last_name',
+            'users.prefix as u_prefix',
+            'users.name as u_name',
+            'users.last_name as u_last_name',
         );
         
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

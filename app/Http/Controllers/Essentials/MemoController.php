@@ -25,7 +25,7 @@ class MemoController extends Controller
         if ($request->ajax()) {
             $memos = DB::table('memo_users')
                 ->join('memos', 'memo_users.memo_id', 'memos.id')
-                ->join('admin_and_users as shared_by', 'memos.admin_id', 'shared_by.id')
+                ->join('users as shared_by', 'memos.admin_id', 'shared_by.id')
                 ->where('memo_users.user_id', auth()->user()->id)
                 ->select(
                     'memo_users.is_author',
@@ -145,7 +145,7 @@ class MemoController extends Controller
     public function addUserView($id)
     {
         $memo = Memo::with(['memo_users'])->where('id', $id)->first('id', 'admin_id');
-        $users = DB::table('admin_and_users')->where('branch_id', auth()->user()->branch_id)->get();
+        $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get();
         return view('essentials.memos.ajax_view.add_user_form', compact('memo', 'users'));
     }
 

@@ -165,7 +165,7 @@
                 {data: 'adjustment_location', name: 'adjustment_location'},
                 {data: 'business_location', name: 'branches.name'},
                 {data: 'reason', name: 'reason'},
-                {data: 'created_by', name: 'admin_and_users.name'},
+                {data: 'created_by', name: 'users.name'},
                 {data: 'type', name: 'type'},
                 {data: 'net_total_amount', name: 'net_total_amount', className: 'text-end'},
                 {data: 'recovered_amount', name: 'recovered_amount', className: 'text-end'},

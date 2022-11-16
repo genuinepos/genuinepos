@@ -87,7 +87,7 @@ class BranchReceiveStockController extends Controller
                 ->make(true);
         }
 
-        $users = DB::table('admin_and_users')
+        $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name', 'email']);
 

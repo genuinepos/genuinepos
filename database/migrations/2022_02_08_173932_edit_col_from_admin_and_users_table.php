@@ -13,7 +13,7 @@ class EditColFromUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('admin_and_users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->string('email')->change()->nullable()->default(NULL);
         });
     }
@@ -25,7 +25,7 @@ class EditColFromUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('admin_and_users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
         });
     }

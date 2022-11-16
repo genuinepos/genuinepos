@@ -200,7 +200,7 @@
                 {data: 'parent_sale', name: 'sales.invoice_id'},
                 {data: 'from', name: 'branches.name'},
                 {data: 'customer', name: 'customers.name'},
-                {data: 'created_by', name: 'admin_and_users.name'},
+                {data: 'created_by', name: 'users.name'},
                 {data: 'total_item', name: 'total_item', className: 'text-end'},
                 {data: 'total_qty', name: 'total_qty', className: 'text-end'},
                 {data: 'net_total_amount', name: 'net_total_amount', className: 'text-end'},

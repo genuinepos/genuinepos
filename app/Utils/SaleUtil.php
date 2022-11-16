@@ -1176,16 +1176,16 @@ class SaleUtil
 
         $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-            ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'sales.admin_id', 'users.id');
 
         $query->select(
             'sales.*',
             'branches.name as branch_name',
             'branches.branch_code',
             'customers.name as customer',
-            'admin_and_users.prefix as u_prefix',
-            'admin_and_users.name as u_name',
-            'admin_and_users.last_name as u_last_name',
+            'users.prefix as u_prefix',
+            'users.name as u_name',
+            'users.last_name as u_last_name',
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -1269,16 +1269,16 @@ class SaleUtil
 
         $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-            ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'sales.admin_id', 'users.id');
 
         $query->select(
             'sales.*',
             'branches.name as branch_name',
             'branches.branch_code',
             'customers.name as customer',
-            'admin_and_users.prefix as u_prefix',
-            'admin_and_users.name as u_name',
-            'admin_and_users.last_name as u_last_name',
+            'users.prefix as u_prefix',
+            'users.name as u_name',
+            'users.last_name as u_last_name',
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -1349,16 +1349,16 @@ class SaleUtil
         $sales = '';
         $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-            ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'sales.admin_id', 'users.id');
 
         $query->select(
             'sales.*',
             'branches.name as branch_name',
             'branches.branch_code',
             'customers.name as customer',
-            'admin_and_users.prefix as cr_prefix',
-            'admin_and_users.name as cr_name',
-            'admin_and_users.last_name as cr_last_name',
+            'users.prefix as cr_prefix',
+            'users.name as cr_name',
+            'users.last_name as cr_last_name',
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

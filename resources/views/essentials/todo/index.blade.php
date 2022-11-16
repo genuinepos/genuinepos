@@ -331,7 +331,7 @@
             {data: 'priority', name: 'priority'},
             {data: 'status', name: 'status'},
             {data: 'due_date', name: 'due_date'},
-            {data: 'assigned_by', name: 'admin_and_users.name'},
+            {data: 'assigned_by', name: 'users.name'},
             {data: 'action'},
         ],fnDrawCallback: function() {
             $('.data_preloader').hide();

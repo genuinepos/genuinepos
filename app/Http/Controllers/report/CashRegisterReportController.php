@@ -32,7 +32,7 @@ class CashRegisterReportController extends Controller
 
             $query = DB::table('cash_registers')
                 ->leftJoin('branches', 'cash_registers.branch_id', 'branches.id')
-                ->leftJoin('admin_and_users', 'cash_registers.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'cash_registers.admin_id', 'users.id');
 
             if ($request->branch_id) {
 
@@ -73,9 +73,9 @@ class CashRegisterReportController extends Controller
                 'cash_registers.*',
                 'branches.name as b_name',
                 'branches.branch_code as b_code',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_first_name',
-                'admin_and_users.last_name as u_last_name',
+                'users.prefix as u_prefix',
+                'users.name as u_first_name',
+                'users.last_name as u_last_name',
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -131,7 +131,7 @@ class CashRegisterReportController extends Controller
 
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
 
-        $branchUsers = DB::table('admin_and_users')
+        $branchUsers = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->where('allow_login', 1)->get();
 
@@ -148,7 +148,7 @@ class CashRegisterReportController extends Controller
 
         $query = DB::table('cash_registers')
             ->leftJoin('branches', 'cash_registers.branch_id', 'branches.id')
-            ->leftJoin('admin_and_users', 'cash_registers.admin_id', 'admin_and_users.id')
+            ->leftJoin('users', 'cash_registers.admin_id', 'users.id')
             ->leftJoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id')
             ->leftJoin('sales', 'cash_register_transactions.sale_id', 'sales.id');
 
@@ -206,9 +206,9 @@ class CashRegisterReportController extends Controller
             DB::raw("SUM(sales.due) as total_due"),
             'branches.name as b_name',
             'branches.branch_code as b_code',
-            'admin_and_users.prefix as u_prefix',
-            'admin_and_users.name as u_first_name',
-            'admin_and_users.last_name as u_last_name',
+            'users.prefix as u_prefix',
+            'users.name as u_first_name',
+            'users.last_name as u_last_name',
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

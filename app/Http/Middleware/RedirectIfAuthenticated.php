@@ -27,7 +27,7 @@ class RedirectIfAuthenticated
             //     }
                 switch ($guard) {
 
-                    case 'admin_and_user':
+                    case 'users':
 
                         if (Auth::guard()->check()) {
                             

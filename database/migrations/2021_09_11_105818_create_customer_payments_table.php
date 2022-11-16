@@ -44,7 +44,7 @@ class CreateCustomerPaymentsTable extends Migration
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('CASCADE');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('CASCADE');
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('CASCADE');
-            $table->foreign('admin_id')->references('id')->on('admin_and_users')->onDelete('set null');
+            $table->foreign('admin_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

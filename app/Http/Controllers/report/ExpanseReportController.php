@@ -29,7 +29,7 @@ class ExpanseReportController extends Controller
             $expenses = '';
             $query = DB::table('expanses')
                 ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
-                ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'expanses.admin_id', 'users.id');
 
             if ($request->branch_id) {
 
@@ -58,18 +58,18 @@ class ExpanseReportController extends Controller
                     'expanses.*',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'admin_and_users.prefix as cr_prefix',
-                    'admin_and_users.name as cr_name',
-                    'admin_and_users.last_name as cr_last_name',
+                    'users.prefix as cr_prefix',
+                    'users.name as cr_name',
+                    'users.last_name as cr_last_name',
                 )->orderBy('expanses.report_date', 'desc');
             } else {
                 $expenses = $query->select(
                     'expanses.*',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'admin_and_users.prefix as cr_prefix',
-                    'admin_and_users.name as cr_name',
-                    'admin_and_users.last_name as cr_last_name',
+                    'users.prefix as cr_prefix',
+                    'users.name as cr_name',
+                    'users.last_name as cr_last_name',
                 )->where('expanses.branch_id', auth()->user()->branch_id)
                     ->orderBy('expanses.report_date', 'desc');
             }
@@ -122,7 +122,7 @@ class ExpanseReportController extends Controller
         $toDate = '';
         $query = DB::table('expanses')
             ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
-            ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'expanses.admin_id', 'users.id');
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
@@ -150,9 +150,9 @@ class ExpanseReportController extends Controller
                 'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
-                'admin_and_users.prefix as cr_prefix',
-                'admin_and_users.name as cr_name',
-                'admin_and_users.last_name as cr_last_name',
+                'users.prefix as cr_prefix',
+                'users.name as cr_name',
+                'users.last_name as cr_last_name',
             )->orderBy('expanses.report_date', 'desc')->get();
         } else {
             $expenses = $query->select(
@@ -160,9 +160,9 @@ class ExpanseReportController extends Controller
                 'branches.id as branch_id',
                 'branches.name as branch_name',
                 'branches.branch_code',
-                'admin_and_users.prefix as cr_prefix',
-                'admin_and_users.name as cr_name',
-                'admin_and_users.last_name as cr_last_name',
+                'users.prefix as cr_prefix',
+                'users.name as cr_name',
+                'users.last_name as cr_last_name',
             )->where('expanses.branch_id', auth()->user()->branch_id)
                 ->orderBy('expanses.report_date', 'desc')->get();
         }

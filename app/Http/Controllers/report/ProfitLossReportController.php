@@ -94,7 +94,7 @@ class ProfitLossReportController extends Controller
 
         $payrollQuery = DB::table('hrm_payroll_payments')
             ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
-            ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+            ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id')
             ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         $expenseQuery = DB::table('expanses')->select(DB::raw('sum(net_total_amount) as total_expense'));
@@ -127,9 +127,9 @@ class ProfitLossReportController extends Controller
 
             $expense = $expenseQuery->where('branch_id', auth()->user()->branch_id)->get();
 
-            $payrolls = $payrollQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $payrolls = $payrollQuery->where('users.branch_id', auth()->user()->branch_id)->get();
 
-            // $saleProducts = $saleProductQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)
+            // $saleProducts = $saleProductQuery->where('users.branch_id', auth()->user()->branch_id)
             //     ->where('sales.status', 1)
             //     ->get();
 
@@ -220,7 +220,7 @@ class ProfitLossReportController extends Controller
 
         $payrollQuery = DB::table('hrm_payroll_payments')
             ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
-            ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+            ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id')
             ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         if ($request->branch_id) {
@@ -231,7 +231,7 @@ class ProfitLossReportController extends Controller
                 $saleQuery->where('sales.branch_id', NULL);
                 $saleReturnQuery->where('branch_id', NULL)->get();
                 $expenseQuery->where('expanses.branch_id', NULL);
-                $payrollQuery->where('admin_and_users.branch_id', NULL);
+                $payrollQuery->where('users.branch_id', NULL);
                 $saleProductQuery->where('sales.branch_id', NULL);
                 $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', NULL);
                 $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', NULL);
@@ -241,7 +241,7 @@ class ProfitLossReportController extends Controller
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id);
                 $saleReturnQuery->where('branch_id', $request->branch_id)->get();
-                $payrollQuery->where('admin_and_users.branch_id', $request->branch_id);
+                $payrollQuery->where('users.branch_id', $request->branch_id);
                 $saleProductQuery->where('sales.branch_id', $request->branch_id);
                 $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', $request->branch_id);
                 $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', $request->branch_id);
@@ -280,10 +280,10 @@ class ProfitLossReportController extends Controller
             $sales = $saleQuery->whereIn('sales.status', [1, 3])->where('branch_id', auth()->user()->branch_id)->get();
             $saleReturns = $saleReturnQuery->where('branch_id', auth()->user()->branch_id)->get();
             $expense = $expenseQuery->where('branch_id', auth()->user()->branch_id)->get();
-            $payrolls = $payrollQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
-            $saleProducts = $saleProductQuery->whereIn('sales.status', [1, 3])->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
-            $transferStBranch = $transferStBranchQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
-            $transferStWarehouse = $transferStWarehouseQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $payrolls = $payrollQuery->where('users.branch_id', auth()->user()->branch_id)->get();
+            $saleProducts = $saleProductQuery->whereIn('sales.status', [1, 3])->where('users.branch_id', auth()->user()->branch_id)->get();
+            $transferStBranch = $transferStBranchQuery->where('users.branch_id', auth()->user()->branch_id)->get();
+            $transferStWarehouse = $transferStWarehouseQuery->where('users.branch_id', auth()->user()->branch_id)->get();
         }
 
         $totalStockAdjustmentAmount =  $stock_adjustments->sum('total_adjustment');
@@ -361,7 +361,7 @@ class ProfitLossReportController extends Controller
 
         $payrollQuery = DB::table('hrm_payroll_payments')
             ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
-            ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+            ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id')
             ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         if ($request->branch_id) {
@@ -371,7 +371,7 @@ class ProfitLossReportController extends Controller
                 $adjustmentQuery->where('branch_id', NULL);
                 $saleQuery->where('sales.branch_id', NULL);
                 $expenseQuery->where('expanses.branch_id', NULL);
-                $payrollQuery->where('admin_and_users.branch_id', NULL);
+                $payrollQuery->where('users.branch_id', NULL);
                 $saleProductQuery->where('sales.branch_id', NULL);
                 $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', NULL);
                 $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', NULL);
@@ -380,7 +380,7 @@ class ProfitLossReportController extends Controller
                 $adjustmentQuery->where('branch_id', $request->branch_id);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id);
-                $payrollQuery->where('admin_and_users.branch_id', $request->branch_id);
+                $payrollQuery->where('users.branch_id', $request->branch_id);
                 $saleProductQuery->where('sales.branch_id', $request->branch_id);
                 $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', $request->branch_id);
                 $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', $request->branch_id);
@@ -417,11 +417,11 @@ class ProfitLossReportController extends Controller
             $sales = $saleQuery->where('sales.status', 1)
                 ->where('branch_id', auth()->user()->branch_id)->get();
             $expense = $expenseQuery->where('branch_id', auth()->user()->branch_id)->get();
-            $payrolls = $payrollQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+            $payrolls = $payrollQuery->where('users.branch_id', auth()->user()->branch_id)->get();
             $saleProducts = $saleProductQuery->where('sales.status', 1)
-                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
-            $transferStBranch = $transferStBranchQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
-            $transferStWarehouse = $transferStWarehouseQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+                ->where('users.branch_id', auth()->user()->branch_id)->get();
+            $transferStBranch = $transferStBranchQuery->where('users.branch_id', auth()->user()->branch_id)->get();
+            $transferStWarehouse = $transferStWarehouseQuery->where('users.branch_id', auth()->user()->branch_id)->get();
         }
 
         $totalStockAdjustmentAmount =  $stock_adjustments->sum('total_adjustment');

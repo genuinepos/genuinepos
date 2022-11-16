@@ -24,7 +24,7 @@ class WorkSpaceController extends Controller
 
             $workspaces = '';
             $query = DB::table('workspaces')->leftJoin('branches', 'workspaces.branch_id', 'branches.id')
-                ->leftJoin('admin_and_users', 'workspaces.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'workspaces.admin_id', 'users.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
@@ -54,18 +54,18 @@ class WorkSpaceController extends Controller
                     'workspaces.*',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name as a_name',
-                    'admin_and_users.last_name',
+                    'users.prefix',
+                    'users.name as a_name',
+                    'users.last_name',
                 )->orderBy('id', 'desc');
             } else {
                 $workspaces = $query->select(
                     'workspaces.*',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name as a_name',
-                    'admin_and_users.last_name',
+                    'users.prefix',
+                    'users.name as a_name',
+                    'users.last_name',
                 )->where('workspaces.branch_id', auth()->user()->branch_id)
                     ->orderBy('id', 'desc');
             }
@@ -112,7 +112,7 @@ class WorkSpaceController extends Controller
                 ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        $users = DB::table('admin_and_users')
+        $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
         return view('essentials.work_space.index', compact('branches', 'users'));
@@ -188,7 +188,7 @@ class WorkSpaceController extends Controller
         }
 
         $ws = Workspace::with(['ws_users'])->where('id', $id)->first();
-        $users = DB::table('admin_and_users')
+        $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
         return view('essentials.work_space.ajax_view.edit', compact('ws', 'users'));

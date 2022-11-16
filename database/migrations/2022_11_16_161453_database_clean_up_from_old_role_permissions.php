@@ -15,15 +15,16 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('users'); // laravel provided users table
-        Schema::table('admin_and_users', function(Blueprint $table) {
-            $table->dropForeign('admin_and_users_role_id_foreign');
-            $table->dropForeign('admin_and_users_role_permission_id_foreign');
+        Schema::table('users', function(Blueprint $table) {
+            $table->dropForeign('users_role_id_foreign');
+            $table->dropForeign('users_role_permission_id_foreign');
             $table->dropColumn('role_id');
             $table->dropColumn('role_permission_id');
         });
         Schema::rename('admin_and_users', 'users');
 
         Schema::dropIfExists('roles');
+        Schema::dropIfExists('role_permissions');
         Schema::dropIfExists('permissions');
         Schema::dropIfExists('role_has_permissions');
         Schema::dropIfExists('model_has_roles');

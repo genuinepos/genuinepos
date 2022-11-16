@@ -957,7 +957,7 @@ class SupplierController extends Controller
                 ->leftJoin('accounts as pp_account', 'purchase_payments.account_id', 'pp_account.id')
                 ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
                 ->leftJoin('purchase_returns', 'purchase_payments.supplier_return_id', 'purchase_returns.id')
-                // ->leftJoin('admin_and_users', 'supplier_ledgers.user_id', 'admin_and_users.id')
+                // ->leftJoin('users', 'supplier_ledgers.user_id', 'users.id')
             ;
 
             if ($request->branch_id) {
@@ -1113,7 +1113,7 @@ class SupplierController extends Controller
             ->leftJoin('accounts as pp_account', 'purchase_payments.account_id', 'pp_account.id')
             ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
             ->leftJoin('purchase_returns', 'purchase_payments.supplier_return_id', 'purchase_returns.id')
-            // ->leftJoin('admin_and_users', 'supplier_ledgers.user_id', 'admin_and_users.id')
+            // ->leftJoin('users', 'supplier_ledgers.user_id', 'users.id')
         ;
 
         if ($request->type) {

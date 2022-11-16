@@ -30,7 +30,7 @@ class PurchaseStatementController extends Controller
                 ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
                 ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
                 ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
-                ->leftJoin('admin_and_users', 'purchases.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'purchases.admin_id', 'users.id');
 
             if (!empty($request->branch_id)) {
 
@@ -87,9 +87,9 @@ class PurchaseStatementController extends Controller
                 'warehouses.warehouse_name',
                 'warehouses.warehouse_code',
                 'suppliers.name as supplier_name',
-                'admin_and_users.prefix as created_prefix',
-                'admin_and_users.name as created_name',
-                'admin_and_users.last_name as created_last_name',
+                'users.prefix as created_prefix',
+                'users.name as created_name',
+                'users.last_name as created_last_name',
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -179,7 +179,7 @@ class PurchaseStatementController extends Controller
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
             ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
-            ->leftJoin('admin_and_users', 'purchases.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'purchases.admin_id', 'users.id');
 
         if (!empty($request->branch_id)) {
 
@@ -236,9 +236,9 @@ class PurchaseStatementController extends Controller
             'warehouses.warehouse_name',
             'warehouses.warehouse_code',
             'suppliers.name as supplier_name',
-            'admin_and_users.prefix as created_prefix',
-            'admin_and_users.name as created_name',
-            'admin_and_users.last_name as created_last_name',
+            'users.prefix as created_prefix',
+            'users.name as created_name',
+            'users.last_name as created_last_name',
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

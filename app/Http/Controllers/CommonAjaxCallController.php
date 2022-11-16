@@ -16,7 +16,7 @@ class CommonAjaxCallController extends Controller
     public function branchAuthenticatedUsers($branchId)
     {
         $branch_id = $branchId != 'NULL' ? $branchId : NULL;
-        return DB::table('admin_and_users')
+        return DB::table('users')
             ->where('branch_id', $branch_id)
             ->where('allow_login', 1)->get();
     }
@@ -211,7 +211,7 @@ class CommonAjaxCallController extends Controller
     {
         $branch_id = $branchId == 'NULL' ? NULL : $branchId;
 
-        return DB::table('admin_and_users')
+        return DB::table('users')
             ->where('branch_id', $branch_id)
             ->where('allow_login', 1)
             ->select('id', 'prefix', 'name', 'last_name')
@@ -222,7 +222,7 @@ class CommonAjaxCallController extends Controller
     {
         $branch_id = $branchId == 'NULL' ? NULL : $branchId;
 
-        return DB::table('admin_and_users')
+        return DB::table('users')
             ->where('branch_id', $branch_id)
             ->select('id', 'prefix', 'name', 'last_name')
             ->get();

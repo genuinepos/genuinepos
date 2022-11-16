@@ -68,16 +68,16 @@ class MessageController extends Controller
         }
         
         $messages = DB::table('messages')
-        ->leftJoin('admin_and_users', 'messages.user_id', 'admin_and_users.id')
+        ->leftJoin('users', 'messages.user_id', 'users.id')
         ->where('messages.branch_id', auth()->user()->branch_id)
         ->select(
             'messages.id',
             'messages.user_id',
             'messages.description',
             'messages.created_at',
-            'admin_and_users.prefix as u_prefix',
-            'admin_and_users.name as u_name',
-            'admin_and_users.last_name as u_last_name',
+            'users.prefix as u_prefix',
+            'users.name as u_name',
+            'users.last_name as u_last_name',
         )
         ->get();
         return view('essentials.messages.ajax_view.message_list', compact('messages'));

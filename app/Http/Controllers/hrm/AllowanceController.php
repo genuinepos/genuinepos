@@ -52,7 +52,7 @@ class AllowanceController extends Controller
     //Edit allowance
     public function edit($alowanceId)
     {
-        $employees = DB::table('admin_and_users')->where('status', 1)->get();
+        $employees = DB::table('users')->where('status', 1)->get();
         $allowance = Allowance::with('allowance_employees')->where('id', $alowanceId)->first();
         return view('hrm.allowance.ajax.edit_modal_form', compact('allowance', 'employees'));
     }
@@ -60,7 +60,7 @@ class AllowanceController extends Controller
     //get all employee for edit form
     public function GetEmployee()
     {
-        $admins = DB::table('admin_and_users')->where('status', 1)->get();
+        $admins = DB::table('users')->where('status', 1)->get();
         return response()->json($admins);
     }
 

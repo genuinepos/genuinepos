@@ -118,7 +118,7 @@ class SupplierUtil
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
             ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
-            ->leftJoin('admin_and_users as created_by', 'purchases.admin_id', 'created_by.id');
+            ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id');
 
         if ($request->branch_id) {
 
@@ -409,7 +409,7 @@ class SupplierUtil
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
             ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
-            ->leftJoin('admin_and_users as created_by', 'purchases.admin_id', 'created_by.id');
+            ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id');
 
         $query->select(
             'purchases.id',

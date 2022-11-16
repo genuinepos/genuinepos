@@ -23,7 +23,7 @@ class CreateCustomerOpeningBalancesTable extends Migration
             $table->timestamps();
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('CASCADE');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('CASCADE');
-            $table->foreign('created_by_id')->references('id')->on('admin_and_users')->onDelete('CASCADE');
+            $table->foreign('created_by_id')->references('id')->on('users')->onDelete('CASCADE');
         });
     }
 

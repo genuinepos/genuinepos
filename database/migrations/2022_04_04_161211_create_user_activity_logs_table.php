@@ -24,7 +24,7 @@ class CreateUserActivityLogsTable extends Migration
             $table->text('descriptions')->nullable();
             $table->timestamps();
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('admin_and_users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

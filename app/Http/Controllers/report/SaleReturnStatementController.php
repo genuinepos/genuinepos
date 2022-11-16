@@ -31,7 +31,7 @@ class SaleReturnStatementController extends Controller
                 ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
                 ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')
                 ->leftJoin('customers', 'sale_returns.customer_id', 'customers.id')
-                ->leftJoin('admin_and_users', 'sale_returns.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'sale_returns.admin_id', 'users.id');
 
             $query->select(
                 'sale_returns.id',
@@ -49,9 +49,9 @@ class SaleReturnStatementController extends Controller
                 'branches.branch_code',
                 'sales.invoice_id as parent_sale',
                 'customers.name as customer_name',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_name',
-                'admin_and_users.last_name as u_last_name',
+                'users.prefix as u_prefix',
+                'users.name as u_name',
+                'users.last_name as u_last_name',
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -121,7 +121,7 @@ class SaleReturnStatementController extends Controller
             ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
             ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')
             ->leftJoin('customers', 'sale_returns.customer_id', 'customers.id')
-            ->leftJoin('admin_and_users', 'sale_returns.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'sale_returns.admin_id', 'users.id');
 
         $query->select(
             'sale_returns.id',
@@ -139,9 +139,9 @@ class SaleReturnStatementController extends Controller
             'branches.branch_code',
             'sales.invoice_id as parent_sale',
             'customers.name as customer_name',
-            'admin_and_users.prefix as u_prefix',
-            'admin_and_users.name as u_name',
-            'admin_and_users.last_name as u_last_name',
+            'users.prefix as u_prefix',
+            'users.name as u_name',
+            'users.last_name as u_last_name',
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

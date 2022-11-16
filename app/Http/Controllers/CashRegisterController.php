@@ -176,18 +176,18 @@ class CashRegisterController extends Controller
         $activeCashRegister = '';
         $activeCashRegisterQuery = DB::table('cash_registers')
             ->leftJoin('branches', 'cash_registers.branch_id', 'branches.id')
-            ->leftJoin('admin_and_users', 'cash_registers.admin_id', 'admin_and_users.id')
+            ->leftJoin('users', 'cash_registers.admin_id', 'users.id')
             ->leftJoin('cash_counters', 'cash_registers.cash_counter_id', 'cash_counters.id')
             ->select(
                 'cash_registers.id',
                 'cash_registers.created_at',
                 'cash_registers.closed_at',
                 'cash_registers.cash_in_hand',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_first_name',
-                'admin_and_users.last_name as u_last_name',
-                'admin_and_users.username',
-                'admin_and_users.email as u_email',
+                'users.prefix as u_prefix',
+                'users.name as u_first_name',
+                'users.last_name as u_last_name',
+                'users.username',
+                'users.email as u_email',
                 'cash_counters.counter_name',
                 'cash_counters.short_name as cc_s_name',
                 'branches.name as b_name',
@@ -197,7 +197,7 @@ class CashRegisterController extends Controller
         if (!$crId) {
 
             $activeCashRegister = $activeCashRegisterQuery
-                ->where('admin_and_users.id', auth()->user()->id)
+                ->where('users.id', auth()->user()->id)
                 ->where('cash_registers.status', 1)->first();
         } else {
 

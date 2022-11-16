@@ -23,7 +23,7 @@ class TodoController extends Controller
 
             $todos = '';
             $query = DB::table('todos')->leftJoin('branches', 'todos.branch_id', 'branches.id')
-                ->leftJoin('admin_and_users', 'todos.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'todos.admin_id', 'users.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
@@ -52,9 +52,9 @@ class TodoController extends Controller
                 'todos.*',
                 'branches.name as branch_name',
                 'branches.branch_code',
-                'admin_and_users.prefix',
-                'admin_and_users.name as a_name',
-                'admin_and_users.last_name',
+                'users.prefix',
+                'users.name as a_name',
+                'users.last_name',
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -122,7 +122,7 @@ class TodoController extends Controller
         }
 
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        $users = DB::table('admin_and_users')
+        $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
         return view('essentials.todo.index', compact('branches', 'users'));
@@ -187,7 +187,7 @@ class TodoController extends Controller
         }
 
         $todo = Todo::with(['todo_users'])->where('id', $id)->first();
-        $users = DB::table('admin_and_users')
+        $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
         return view('essentials.todo.ajax_view.edit', compact('todo', 'users'));

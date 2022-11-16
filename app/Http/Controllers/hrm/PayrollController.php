@@ -44,16 +44,16 @@ class PayrollController extends Controller
         if ($request->ajax()) {
             $payrolls = '';
             $query = DB::table('hrm_payrolls')
-                ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
-                ->leftJoin('hrm_department', 'admin_and_users.department_id', 'hrm_department.id')
-                ->leftJoin('hrm_designations', 'admin_and_users.designation_id', 'hrm_designations.id')
-                ->leftJoin('admin_and_users as created_by', 'hrm_payrolls.admin_id', 'created_by.id');
+                ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id')
+                ->leftJoin('hrm_department', 'users.department_id', 'hrm_department.id')
+                ->leftJoin('hrm_designations', 'users.designation_id', 'hrm_designations.id')
+                ->leftJoin('users as created_by', 'hrm_payrolls.admin_id', 'created_by.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('admin_and_users.branch_id', NULL);
+                    $query->where('users.branch_id', NULL);
                 } else {
-                    $query->where('admin_and_users.branch_id', $request->branch_id);
+                    $query->where('users.branch_id', $request->branch_id);
                 }
             }
 
@@ -70,10 +70,10 @@ class PayrollController extends Controller
 
             $query->select(
                 'hrm_payrolls.*',
-                'admin_and_users.prefix as emp_prefix',
-                'admin_and_users.name as emp_name',
-                'admin_and_users.last_name as emp_last_name',
-                'admin_and_users.branch_id',
+                'users.prefix as emp_prefix',
+                'users.name as emp_name',
+                'users.last_name as emp_last_name',
+                'users.branch_id',
                 'hrm_department.department_name',
                 'hrm_designations.designation_name',
                 'created_by.prefix as user_prefix',
@@ -84,7 +84,7 @@ class PayrollController extends Controller
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $payrolls = $query;
             } else {
-                $payrolls = $query->where('admin_and_users.branch_id', auth()->user()->branch_id);
+                $payrolls = $query->where('users.branch_id', auth()->user()->branch_id);
             }
 
             return DataTables::of($payrolls)
@@ -140,7 +140,7 @@ class PayrollController extends Controller
         }
 
         $departments = DB::table('hrm_department')->get(['id', 'department_name']);
-        $employee = DB::table('admin_and_users')->where('branch_id', auth()->user()->branch_id)
+        $employee = DB::table('users')->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('hrm.payroll.index', compact('employee', 'departments', 'branches'));
@@ -163,7 +163,7 @@ class PayrollController extends Controller
             return redirect()->route('hrm.payrolls.edit', $payroll->id);
         }
 
-        $employee = DB::table('admin_and_users')->where('id', $request->user_id)->first();
+        $employee = DB::table('users')->where('id', $request->user_id)->first();
         $attendances = DB::table('hrm_attendances')->where('user_id', $request->employee_id)
             ->where('month', $month)->where('is_completed', 1)->get();
 
@@ -611,7 +611,7 @@ class PayrollController extends Controller
 
     public function getAllEmployee()
     {
-        $employee = DB::table('admin_and_users')->get();
+        $employee = DB::table('users')->get();
         return response()->json($employee);
     }
 

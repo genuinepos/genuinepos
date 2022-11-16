@@ -170,7 +170,7 @@
         },
         columns: [
             {data: 'date', name: 'date'},
-            {data: 'employee', name: 'admin_and_users.name'},
+            {data: 'employee', name: 'users.name'},
             {data: 'voucher_no', name: 'hrm_payrolls.reference_no'},
             {data: 'paid', name: 'paid'},
             {data: 'reference_no', name: 'reference_no'},

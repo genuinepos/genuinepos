@@ -192,7 +192,7 @@
             columns: [
                 {data: 'date', name: 'date'},
                 {data: 'branch', name: 'branches.name'},
-                {data: 'action_by', name: 'admin_and_users.name'},
+                {data: 'action_by', name: 'users.name'},
                 {data: 'action', name: 'action'},
                 {data: 'subject_type', name: 'subject_type'},
                 {data: 'descriptions', name: 'descriptions'},

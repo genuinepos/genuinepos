@@ -28,7 +28,7 @@ class CreateLoanPaymentsTable extends Migration
             $table->timestamps();
             $table->foreign('company_id')->references('id')->on('loan_companies')->onDelete('cascade');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('admin_and_users')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
     }

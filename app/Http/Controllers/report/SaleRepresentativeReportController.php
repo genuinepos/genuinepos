@@ -128,7 +128,7 @@ class SaleRepresentativeReportController extends Controller
             $expenses = '';
             $expense_query = DB::table('expanses')
                 ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
-                ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'expanses.admin_id', 'users.id');
 
             if ($request->user_id) {
                 $expense_query->where('expanses.admin_id', $request->user_id);
@@ -160,9 +160,9 @@ class SaleRepresentativeReportController extends Controller
                     'expanses.due',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name as user_name',
-                    'admin_and_users.last_name as user_last_name',
+                    'users.prefix',
+                    'users.name as user_name',
+                    'users.last_name as user_last_name',
                 )->get();
             } else {
                 $expenses = $expense_query->select(
@@ -175,9 +175,9 @@ class SaleRepresentativeReportController extends Controller
                     'expanses.due',
                     'branches.name as branch_name',
                     'branches.branch_code',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name as user_name',
-                    'admin_and_users.last_name as user_last_name',
+                    'users.prefix',
+                    'users.name as user_name',
+                    'users.last_name as user_last_name',
                 )->where('expanses.branch_id', auth()->user()->branch_id)->get();
             }
 

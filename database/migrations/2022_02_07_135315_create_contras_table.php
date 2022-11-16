@@ -29,7 +29,7 @@ class CreateContrasTable extends Migration
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('receiver_account_id')->references('id')->on('accounts')->onDelete('set null');
             $table->foreign('sender_account_id')->references('id')->on('accounts')->onDelete('set null');
-            $table->foreign('user_id')->references('id')->on('admin_and_users')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

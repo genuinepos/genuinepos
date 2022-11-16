@@ -30,14 +30,14 @@ class AttendanceController extends Controller
             $generalSettings = DB::table('general_settings')->select('business')->first();
 			$attendances = '';
 			$query = DB::table('hrm_attendances')
-				->leftJoin('admin_and_users', 'hrm_attendances.user_id', 'admin_and_users.id')
-				->leftJoin('hrm_shifts', 'admin_and_users.shift_id', 'hrm_shifts.id');
+				->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
+				->leftJoin('hrm_shifts', 'users.shift_id', 'hrm_shifts.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('admin_and_users.branch_id', NULL);
+                    $query->where('users.branch_id', NULL);
                 } else {
-                    $query->where('admin_and_users.branch_id', $request->branch_id);
+                    $query->where('users.branch_id', $request->branch_id);
                 }
             }
 
@@ -59,17 +59,17 @@ class AttendanceController extends Controller
                 $attendances = $query->select(
                     'hrm_attendances.*',
                     'hrm_shifts.shift_name',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name',
-                    'admin_and_users.last_name',
+                    'users.prefix',
+                    'users.name',
+                    'users.last_name',
                 );
             }else {
                 $attendances = $query->select(
                     'hrm_attendances.*',
                     'hrm_shifts.shift_name',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name',
-                    'admin_and_users.last_name',
+                    'users.prefix',
+                    'users.name',
+                    'users.last_name',
                 )->where('branch_id', auth()->user()->branch_id);
             }
 			
@@ -114,7 +114,7 @@ class AttendanceController extends Controller
 		}
         
         $departments = DB::table('hrm_department')->get(['id', 'department_name']);
-        $employee = DB::table('admin_and_users')
+        $employee = DB::table('users')
         ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('hrm.attendance.index', compact('employee', 'departments', 'branches'));
@@ -176,14 +176,14 @@ class AttendanceController extends Controller
     public function edit($attendanceId)
     {
         $attendance = DB::table('hrm_attendances')
-            ->leftJoin('admin_and_users', 'hrm_attendances.user_id', 'admin_and_users.id')
+            ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
             ->where('hrm_attendances.id', $attendanceId)
             ->select(
                 'hrm_attendances.*',
-                'admin_and_users.id as user_id',
-                'admin_and_users.prefix',
-                'admin_and_users.name',
-                'admin_and_users.last_name'
+                'users.id as user_id',
+                'users.prefix',
+                'users.name',
+                'users.last_name'
             )
             ->first();
         return view('hrm.attendance.ajax_view.edit_attendance_modal', compact('attendance'));
@@ -245,20 +245,20 @@ class AttendanceController extends Controller
 
         $shifts = DB::table('hrm_shifts')->get();
         $attendance = DB::table('hrm_attendances')
-            ->leftJoin('admin_and_users', 'hrm_attendances.user_id', 'admin_and_users.id')
+            ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
             ->whereDate('hrm_attendances.at_date_ts', date('Y-m-d'))
             ->where('hrm_attendances.user_id', $userId)
             ->where('is_completed', 0)
             ->select(
                 'hrm_attendances.*',
-                'admin_and_users.id as user_id',
-                'admin_and_users.prefix',
-                'admin_and_users.name',
-                'admin_and_users.last_name',
+                'users.id as user_id',
+                'users.prefix',
+                'users.name',
+                'users.last_name',
             )
             ->orderBy('hrm_attendances.id', 'desc')
             ->first();
-        $employee = DB::table('admin_and_users')->where('id', $userId)->first();
+        $employee = DB::table('users')->where('id', $userId)->first();
         return view('hrm.attendance.ajax_view.attendance_row', compact('attendance', 'shifts', 'employee'));
     }
 }

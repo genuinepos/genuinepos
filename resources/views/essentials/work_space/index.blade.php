@@ -336,7 +336,7 @@
             {data: 'start_date', name: 'start_date'},
             {data: 'end_date', name: 'end_date'},
             {data: 'estimated_hours', name: 'estimated_hours'},
-            {data: 'assigned_by', name: 'admin_and_users.name'},
+            {data: 'assigned_by', name: 'users.name'},
             {data: 'action'},
         ],
     });

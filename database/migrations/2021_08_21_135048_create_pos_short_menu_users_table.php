@@ -20,7 +20,7 @@ class CreatePosShortMenuUsersTable extends Migration
             $table->boolean('is_delete_in_update')->default(0);
             $table->timestamps();
             $table->foreign('short_menu_id')->references('id')->on('short_menus')->onDelete('CASCADE');
-            $table->foreign('user_id')->references('id')->on('admin_and_users')->onDelete('CASCADE');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
         });
     }
 

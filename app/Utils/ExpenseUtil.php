@@ -30,7 +30,7 @@ class ExpenseUtil
 
         $query = DB::table('expanses')
             ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
-            ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'expanses.admin_id', 'users.id');
 
         if ($request->branch_id) {
 
@@ -66,9 +66,9 @@ class ExpenseUtil
             'expanses.*',
             'branches.name as branch_name',
             'branches.branch_code',
-            'admin_and_users.prefix as cr_prefix',
-            'admin_and_users.name as cr_name',
-            'admin_and_users.last_name as cr_last_name',
+            'users.prefix as cr_prefix',
+            'users.name as cr_name',
+            'users.last_name as cr_last_name',
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -182,7 +182,7 @@ class ExpenseUtil
             ->leftJoin('expanses', 'expense_descriptions.expense_id', 'expanses.id')
             ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
             ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
-            ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'expanses.admin_id', 'users.id');
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
@@ -215,9 +215,9 @@ class ExpenseUtil
             'expanse_categories.code',
             'branches.name as branch_name',
             'branches.branch_code',
-            'admin_and_users.prefix as cr_prefix',
-            'admin_and_users.name as cr_name',
-            'admin_and_users.last_name as cr_last_name',
+            'users.prefix as cr_prefix',
+            'users.name as cr_name',
+            'users.last_name as cr_last_name',
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

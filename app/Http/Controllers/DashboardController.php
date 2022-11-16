@@ -54,7 +54,7 @@ class DashboardController extends Controller
         $users = '';
         $adjustments = '';
 
-        $userQuery = DB::table('admin_and_users');
+        $userQuery = DB::table('users');
         $purchaseQuery = DB::table('purchases')->select(
             DB::raw('sum(total_purchase_amount) as total_purchase'),
             //DB::raw('sum(case when due > 0 then due end) as total_due'),
@@ -83,14 +83,14 @@ class DashboardController extends Controller
                 $purchaseQuery->where('purchases.branch_id', NULL);
                 $saleQuery->where('sales.branch_id', NULL)->where('sales.status', 1);
                 $expenseQuery->where('expanses.branch_id', NULL);
-                $userQuery->where('admin_and_users.branch_id', NULL);
+                $userQuery->where('users.branch_id', NULL);
                 $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
             } else {
 
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id)->where('sales.status', 1);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
-                $userQuery->where('admin_and_users.branch_id', $request->branch_id);
+                $userQuery->where('users.branch_id', $request->branch_id);
                 $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
             }
         }
@@ -124,7 +124,7 @@ class DashboardController extends Controller
                 ->where('sales.status', 1)->get();
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)->get();
             $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)->get();
-            $users = $userQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->count();
+            $users = $userQuery->where('users.branch_id', auth()->user()->branch_id)->count();
             $adjustments = $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id)->get();
         }
 
@@ -220,7 +220,7 @@ class DashboardController extends Controller
             $sales = '';
             $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-                ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'sales.admin_id', 'users.id');
 
             if ($request->branch_id) {
 
@@ -253,9 +253,9 @@ class DashboardController extends Controller
                 'branches.name as branch_name',
                 'branches.branch_code',
                 'customers.name as customer_name',
-                'admin_and_users.prefix as c_prefix',
-                'admin_and_users.name as c_name',
-                'admin_and_users.last_name as c_last_name',
+                'users.prefix as c_prefix',
+                'users.name as c_name',
+                'users.last_name as c_last_name',
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -549,7 +549,7 @@ class DashboardController extends Controller
 
         $payrollQuery = DB::table('hrm_payroll_payments')
             ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
-            ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+            ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id')
             ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         if ($request->branch_id) {
@@ -568,7 +568,7 @@ class DashboardController extends Controller
                 $saleReturnQuery->where('sale_returns.branch_id', NULL);
                 $branchTransferQuery->where('transfer_stock_to_branches.branch_id', NULL);
                 $warehouseTransferQuery->where('transfer_stock_to_warehouses.branch_id', NULL);
-                $payrollQuery->where('admin_and_users.branch_id', NULL);
+                $payrollQuery->where('users.branch_id', NULL);
             } else {
 
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
@@ -583,7 +583,7 @@ class DashboardController extends Controller
                 $saleReturnQuery->where('sale_returns.branch_id', $request->branch_id);
                 $branchTransferQuery->where('transfer_stock_to_branches.branch_id', $request->branch_id);
                 $warehouseTransferQuery->where('transfer_stock_to_warehouses.branch_id', $request->branch_id);
-                $payrollQuery->where('admin_and_users.branch_id', $request->branch_id);
+                $payrollQuery->where('users.branch_id', $request->branch_id);
                 $branch = DB::table('branches')->where('id', $request->branch_id)
                     ->select('name', 'branch_code')
                     ->first();
@@ -638,7 +638,7 @@ class DashboardController extends Controller
                 ->whereDate('report_date', TODAY_DATE)->get();
 
             $payrolls = $payrollQuery->whereDate('hrm_payroll_payments.report_date', TODAY_DATE)
-                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+                ->where('users.branch_id', auth()->user()->branch_id)->get();
         }
 
         $totalSales = $sales->sum('total_sale');

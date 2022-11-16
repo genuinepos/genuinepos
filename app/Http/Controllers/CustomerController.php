@@ -1301,7 +1301,7 @@ class CustomerController extends Controller
             ->leftJoin('accounts as sp_account', 'sale_payments.account_id', 'sp_account.id')
             ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
             ->leftJoin('sale_returns', 'sale_payments.sale_return_id', 'sale_returns.id')
-            // ->leftJoin('admin_and_users', 'customer_ledgers.user_id', 'admin_and_users.id')
+            // ->leftJoin('users', 'customer_ledgers.user_id', 'users.id')
         ;
 
         if ($request->type) {

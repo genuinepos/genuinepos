@@ -17,14 +17,14 @@ class PayrollPaymentReportController extends Controller
             $payrollPayments = '';
             $payrollPaymentQ = DB::table('hrm_payroll_payments')
                 ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
-                ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
-                ->leftJoin('admin_and_users as paid_by', 'hrm_payroll_payments.admin_id', 'paid_by.id');
+                ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id')
+                ->leftJoin('users as paid_by', 'hrm_payroll_payments.admin_id', 'paid_by.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $payrollPaymentQ->where('admin_and_users.branch_id', NULL);
+                    $payrollPaymentQ->where('users.branch_id', NULL);
                 } else {
-                    $payrollPaymentQ->where('admin_and_users.branch_id', $request->branch_id);
+                    $payrollPaymentQ->where('users.branch_id', $request->branch_id);
                 }
             }
 
@@ -43,9 +43,9 @@ class PayrollPaymentReportController extends Controller
                     'hrm_payroll_payments.paid',
                     'hrm_payroll_payments.pay_mode',
                     'hrm_payrolls.reference_no',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name',
-                    'admin_and_users.last_name',
+                    'users.prefix',
+                    'users.name',
+                    'users.last_name',
                     'paid_by.prefix as pb_prefix',
                     'paid_by.name as pb_name',
                     'paid_by.last_name as pb_last_name',
@@ -57,13 +57,13 @@ class PayrollPaymentReportController extends Controller
                     'hrm_payroll_payments.paid',
                     'hrm_payroll_payments.pay_mode',
                     'hrm_payrolls.reference_no',
-                    'admin_and_users.prefix',
-                    'admin_and_users.name',
-                    'admin_and_users.last_name',
+                    'users.prefix',
+                    'users.name',
+                    'users.last_name',
                     'paid_by.prefix as pb_prefix',
                     'paid_by.name as pb_name',
                     'paid_by.last_name as pb_last_name',
-                )->where('admin_and_users.branch_id', auth()->user()->branch_id)
+                )->where('users.branch_id', auth()->user()->branch_id)
                     ->orderBy('hrm_payroll_payments.report_date', 'desc');
             }
 
@@ -94,15 +94,15 @@ class PayrollPaymentReportController extends Controller
         $e_date = '';
         $payrollPaymentQ = DB::table('hrm_payroll_payments')
             ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
-            ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
-            ->leftJoin('admin_and_users as paid_by', 'hrm_payroll_payments.admin_id', 'paid_by.id');
+            ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id')
+            ->leftJoin('users as paid_by', 'hrm_payroll_payments.admin_id', 'paid_by.id');
 
         if ($request->branch_id) {
             $branch_id = $request->branch_id;
             if ($request->branch_id == 'NULL') {
-                $payrollPaymentQ->where('admin_and_users.branch_id', NULL);
+                $payrollPaymentQ->where('users.branch_id', NULL);
             } else {
-                $payrollPaymentQ->where('admin_and_users.branch_id', $request->branch_id);
+                $payrollPaymentQ->where('users.branch_id', $request->branch_id);
             }
         }
 
@@ -121,10 +121,10 @@ class PayrollPaymentReportController extends Controller
                 'hrm_payroll_payments.paid',
                 'hrm_payroll_payments.pay_mode',
                 'hrm_payrolls.reference_no',
-                'admin_and_users.prefix',
-                'admin_and_users.name',
-                'admin_and_users.last_name',
-                'admin_and_users.emp_id',
+                'users.prefix',
+                'users.name',
+                'users.last_name',
+                'users.emp_id',
                 'paid_by.prefix as pb_prefix',
                 'paid_by.name as pb_name',
                 'paid_by.last_name as pb_last_name',
@@ -136,14 +136,14 @@ class PayrollPaymentReportController extends Controller
                 'hrm_payroll_payments.paid',
                 'hrm_payroll_payments.pay_mode',
                 'hrm_payrolls.reference_no',
-                'admin_and_users.prefix',
-                'admin_and_users.name',
-                'admin_and_users.last_name',
-                'admin_and_users.emp_id',
+                'users.prefix',
+                'users.name',
+                'users.last_name',
+                'users.emp_id',
                 'paid_by.prefix as pb_prefix',
                 'paid_by.name as pb_name',
                 'paid_by.last_name as pb_last_name',
-            )->where('admin_and_users.branch_id', auth()->user()->branch_id)
+            )->where('users.branch_id', auth()->user()->branch_id)
                 ->orderBy('hrm_payroll_payments.report_date', 'desc')->get();
         }
 

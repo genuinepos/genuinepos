@@ -221,7 +221,7 @@
             {data: 'net_total', name: 'net_total_amount', className : 'text-end'},
             {data: 'recovered_amount', name: 'recovered_amount', className : 'text-end'},
             {data: 'reason', name: 'reason'},
-            {data: 'created_by', name: 'admin_and_users.name'},
+            {data: 'created_by', name: 'users.name'},
         ],
     });
 

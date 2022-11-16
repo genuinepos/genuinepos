@@ -263,7 +263,7 @@
                 { data: 'invoice_id', name: 'invoice_id'},
                 { data: 'from', name: 'branches.name' },
                 { data: 'descriptions', name: 'descriptions' },
-                { data: 'user_name', name: 'admin_and_users.name' },
+                { data: 'user_name', name: 'users.name' },
                 { data: 'payment_status', name: 'payment_status', className: 'text-end'},
                 { data: 'tax_percent', name: 'tax_percent'},
                 { data: 'net_total_amount', name: 'net_total_amount', className: 'text-end'},

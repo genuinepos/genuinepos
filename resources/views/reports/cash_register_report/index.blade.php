@@ -210,7 +210,7 @@
             {data: 'created_at', name: 'created_at'},
             {data: 'closed_time', name: 'closed_time'},
             {data: 'branch', name: 'branches.name'},
-            {data: 'user', name: 'admin_and_users.name'},
+            {data: 'user', name: 'users.name'},
             {data: 'closing_note', name: 'closing_note'},
             {data: 'status', name: 'status', className: 'text-end'},
             {data: 'closed_amount', name: 'closed_amount', className: 'text-end'},

@@ -215,7 +215,7 @@
                 {data: 'invoice_id',name: 'invoice_id'},
                 {data: 'from',name: 'branches.name'},
                 {data: 'supplier_name', name: 'suppliers.name'},
-                {data: 'created_by',name: 'admin_and_users.name'},
+                {data: 'created_by',name: 'users.name'},
                 {data: 'status',name: 'status'},
                 {data: 'total_item',name: 'total_item', className: 'text-end'},
                 {data: 'net_total_amount',name: 'net_total_amount', className: 'text-end'},

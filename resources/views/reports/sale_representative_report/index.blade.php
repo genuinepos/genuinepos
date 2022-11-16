@@ -310,7 +310,7 @@
             {data: 'date', name: 'date'},
             {data: 'invoice_id', name: 'invoice_id'},
             {data: 'branch', name: 'branches.name'},
-            {data: 'user', name: 'admin_and_users.name'},
+            {data: 'user', name: 'users.name'},
             {data: 'payment_status', name: 'payment_status'},
             {data: 'total_amount', name: 'net_total_amount'},
             {data: 'paid', name: 'paid'},

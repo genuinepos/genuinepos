@@ -181,7 +181,7 @@
         },
         columnDefs: [{"targets": [2, 7],"orderable": false,"searchable": false}],
         columns: [
-            {data: 'employee', name: 'admin_and_users.name'},
+            {data: 'employee', name: 'users.name'},
             {data: 'department_name', name: 'hrm_department.department_name'},
             {data: 'month_year', name: 'month_year'},
             {data: 'reference_no', name: 'reference_no'},

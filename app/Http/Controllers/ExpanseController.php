@@ -82,7 +82,7 @@ class ExpanseController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $users = DB::table('admin_and_users')->where('branch_id', auth()->user()->branch_id)
+        $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)
             ->select('id', 'prefix', 'name', 'last_name')->get();
 
         $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
@@ -264,7 +264,7 @@ class ExpanseController extends Controller
 
         $taxes = DB::table('taxes')->get();
 
-        $users = DB::table('admin_and_users')
+        $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
 

@@ -23,7 +23,7 @@ class CreateSupplierOpeningBalancesTable extends Migration
             $table->boolean('is_show_again')->default(1);
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('CASCADE');
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('CASCADE');
-            $table->foreign('created_by_id')->references('id')->on('admin_and_users')->onDelete('CASCADE');
+            $table->foreign('created_by_id')->references('id')->on('users')->onDelete('CASCADE');
             $table->timestamps();
         });
     }

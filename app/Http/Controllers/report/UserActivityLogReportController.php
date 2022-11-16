@@ -29,7 +29,7 @@ class UserActivityLogReportController extends Controller
 
             $query = DB::table('user_activity_logs')
                 ->leftJoin('branches', 'user_activity_logs.branch_id', 'branches.id')
-                ->leftJoin('admin_and_users', 'user_activity_logs.user_id', 'admin_and_users.id');
+                ->leftJoin('users', 'user_activity_logs.user_id', 'users.id');
 
             $query->select(
                 'user_activity_logs.id',
@@ -40,9 +40,9 @@ class UserActivityLogReportController extends Controller
                 'user_activity_logs.descriptions',
                 'branches.name as branch_name',
                 'branches.branch_code',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_name',
-                'admin_and_users.last_name as u_last_name',
+                'users.prefix as u_prefix',
+                'users.name as u_name',
+                'users.last_name as u_last_name',
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {

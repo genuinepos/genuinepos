@@ -45,26 +45,26 @@ class WorkSpaceTaskController extends Controller
         }
 
         $ws_tasks = DB::table('workspace_tasks')->where('workspace_id', $workspaceId)
-            ->leftJoin('admin_and_users', 'workspace_tasks.user_id', 'admin_and_users.id')
+            ->leftJoin('users', 'workspace_tasks.user_id', 'users.id')
             ->select(
                 'workspace_tasks.id',
                 'workspace_tasks.task_name',
                 'workspace_tasks.status',
                 'workspace_tasks.deadline',
                 'workspace_tasks.priority',
-                'admin_and_users.id as u_id',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_name',
-                'admin_and_users.last_name as u_last_name',
+                'users.id as u_id',
+                'users.prefix as u_prefix',
+                'users.name as u_name',
+                'users.last_name as u_last_name',
             )->orderBy('workspace_tasks.id', 'desc')->get();
 
         $ws_users = DB::table('workspace_users')->where('workspace_id', $workspaceId)
-            ->leftJoin('admin_and_users', 'workspace_users.user_id', 'admin_and_users.id')
+            ->leftJoin('users', 'workspace_users.user_id', 'users.id')
             ->select(
-                'admin_and_users.id',
-                'admin_and_users.prefix',
-                'admin_and_users.name',
-                'admin_and_users.last_name',
+                'users.id',
+                'users.prefix',
+                'users.name',
+                'users.last_name',
             )
             ->get();
 

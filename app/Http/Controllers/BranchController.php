@@ -105,7 +105,7 @@ class BranchController extends Controller
                 'first_name' => 'required',
                 'user_phone' => 'required',
                 'role_id' => 'required',
-                'username' => 'required|unique:admin_and_users,username',
+                'username' => 'required|unique:users,username',
                 'password' => 'required|confirmed',
             ]);
         }

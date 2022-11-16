@@ -176,7 +176,7 @@
                 {data: 'category_name', name: 'expanse_categories.name'},
                 {data: 'invoice_id', name: 'expanses.invoice_id'},
                 {data: 'from', name: 'branches.name'},
-                {data: 'user_name', name: 'admin_and_users.name'},
+                {data: 'user_name', name: 'users.name'},
                 {data: 'amount', name: 'expense_descriptions.amount', className: 'text-end' },
             ],fnDrawCallback: function() {
                 var amount = sum_table_col($('.data_tbl'), 'amount');

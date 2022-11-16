@@ -29,7 +29,7 @@ class CreateLoansTable extends Migration
             $table->timestamps();
             $table->foreign('loan_company_id')->references('id')->on('loan_companies')->onDelete('cascade');
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-            $table->foreign('created_user_id')->references('id')->on('admin_and_users')->onDelete('set null');
+            $table->foreign('created_user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

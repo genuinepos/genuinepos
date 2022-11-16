@@ -19,20 +19,20 @@
 
                 @if (json_decode($generalSettings->modules, true)['contacts'] == '1')
                     @if (
-                        !auth()->user()->can('supplier_all') ||
-                        !auth()->user()->can('supplier_add') ||
-                        !auth()->user()->can('supplier_import') ||
-                        !auth()->user()->can('customer_all') ||
-                        !auth()->user()->can('customer_add') ||
-                        !auth()->user()->can('customer_import') ||
-                        !auth()->user()->can('customer_group') ||
+                        auth()->user()->can('supplier_all') ||
+                        auth()->user()->can('supplier_add') ||
+                        auth()->user()->can('supplier_import') ||
+                        auth()->user()->can('customer_all') ||
+                        auth()->user()->can('customer_add') ||
+                        auth()->user()->can('customer_import') ||
+                        auth()->user()->can('customer_group') ||
                         (
                             auth()->user()->can('supplier_report') &&
-                            !auth()->user()->can('supplier_report')
+                            auth()->user()->can('supplier_report')
                         ) ||
                         (
                             auth()->user()->can('customer_report') &&
-                            !auth()->user()->can('customer_report')
+                            auth()->user()->can('customer_report')
                         )
 
                     )
@@ -45,26 +45,26 @@
                 @endif
 
                 @if (
-                    !auth()->user()->can('product_all') ||
-                    !auth()->user()->can('product_add') ||
-                    !auth()->user()->can('categories') ||
-                    !auth()->user()->can('brand') ||
-                    !auth()->user()->can('units') ||
-                    !auth()->user()->can('variant') ||
-                    !auth()->user()->can('warranties') ||
-                    !auth()->user()->can('selling_price_group') ||
-                    !auth()->user()->can('generate_barcode') ||
+                    auth()->user()->can('product_all') ||
+                    auth()->user()->can('product_add') ||
+                    auth()->user()->can('categories') ||
+                    auth()->user()->can('brand') ||
+                    auth()->user()->can('units') ||
+                    auth()->user()->can('variant') ||
+                    auth()->user()->can('warranties') ||
+                    auth()->user()->can('selling_price_group') ||
+                    auth()->user()->can('generate_barcode') ||
                     (
                         auth()->user()->can('product_settings') &&
-                        !auth()->user()->can('product_settings')
+                        auth()->user()->can('product_settings')
                     ) ||
                     (
                         auth()->user()->can('stock_report') &&
-                        !auth()->user()->can('stock_report')
+                        auth()->user()->can('stock_report')
                     ) ||
                     (
                         auth()->user()->can('stock_in_out_report') &&
-                        !auth()->user()->can('stock_in_out_report')
+                        auth()->user()->can('stock_in_out_report')
                     )
                 )
                     <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
@@ -87,7 +87,7 @@
                     @else
                         @if (auth()->user()->branch_id && auth()->user()->branch->purchase_permission == 1)
 
-                            @if (!auth()->user()->can('purchase_all'))
+                            @if (auth()->user()->can('purchase_all'))
 
                                 <li data-menu="purchases" class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
                                     <a href="#" class="">
@@ -101,49 +101,49 @@
                 @endif
 
                 @if (
-                    !auth()->user()->can('pos_all') ||
-                    !auth()->user()->can('pos_add') ||
-                    !auth()->user()->can('create_add_sale') ||
-                    !auth()->user()->can('view_add_sale') ||
-                    !auth()->user()->can('sale_draft') ||
-                    !auth()->user()->can('sale_quotation') ||
-                    !auth()->user()->can('shipment_access') ||
-                    !auth()->user()->can('return_access') ||
+                    auth()->user()->can('pos_all') ||
+                    auth()->user()->can('pos_add') ||
+                    auth()->user()->can('create_add_sale') ||
+                    auth()->user()->can('view_add_sale') ||
+                    auth()->user()->can('sale_draft') ||
+                    auth()->user()->can('sale_quotation') ||
+                    auth()->user()->can('shipment_access') ||
+                    auth()->user()->can('return_access') ||
                     (
                         auth()->user()->can('pos_sale_settings') &&
-                        !auth()->user()->can('pos_sale_settings')
+                        auth()->user()->can('pos_sale_settings')
                     ) ||
                     (
                         auth()->user()->can('add_sale_settings') &&
-                        !auth()->user()->can('add_sale_settings')
+                        auth()->user()->can('add_sale_settings')
                     ) ||
                     (
                         auth()->user()->can('discounts') &&
-                        !auth()->user()->can('discounts')
+                        auth()->user()->can('discounts')
                     ) ||
                     (
                         auth()->user()->can('sale_statements') &&
-                        !auth()->user()->can('sale_statements')
+                        auth()->user()->can('sale_statements')
                     ) ||
                     (
                         auth()->user()->can('sale_return_statements') &&
-                        !auth()->user()->can('sale_return_statements')
+                        auth()->user()->can('sale_return_statements')
                     ) ||
                     (
                         auth()->user()->can('pro_sale_report') &&
-                        !auth()->user()->can('pro_sale_report')
+                        auth()->user()->can('pro_sale_report')
                     ) ||
                     (
                         auth()->user()->can('sale_payment_report') &&
-                        !auth()->user()->can('sale_payment_report')
+                        auth()->user()->can('sale_payment_report')
                     ) ||
                     (
                         auth()->user()->can('c_register_report') &&
-                        !auth()->user()->can('c_register_report')
+                        auth()->user()->can('c_register_report')
                     ) ||
                     (
                         auth()->user()->can('sale_representative_report') &&
-                        !auth()->user()->can('sale_representative_report')
+                        auth()->user()->can('sale_representative_report')
                     )
                 )
                     <li data-menu="sales" class="{{ request()->is('sales*') ? 'menu_active' : '' }}">
@@ -188,13 +188,13 @@
                 @if (json_decode($generalSettings->modules, true)['expenses'] == '1')
 
                     @if (
-                        !auth()->user()->can('view_expense') ||
-                        !auth()->user()->can('add_expense') ||
-                        !auth()->user()->can('expense_category') ||
-                        !auth()->user()->can('category_wise_expense') ||
+                        auth()->user()->can('view_expense') ||
+                        auth()->user()->can('add_expense') ||
+                        auth()->user()->can('expense_category') ||
+                        auth()->user()->can('category_wise_expense') ||
                         (
                             auth()->user()->can('expanse_report') &&
-                            !auth()->user()->can('expanse_report')
+                            auth()->user()->can('expanse_report')
                         )
                     )
                         <li data-menu="expenses" class="{{ request()->is('expenses*') ? 'menu_active' : '' }}">
@@ -208,7 +208,7 @@
 
                 @if (json_decode($generalSettings->modules, true)['accounting'] == '1')
 
-                    @if (!auth()->user()->can('ac_access'))
+                    @if (auth()->user()->can('ac_access'))
                         <li data-menu="accounting" class="{{ request()->is('accounting*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/accounting.svg') }}">
@@ -219,10 +219,10 @@
                 @endif
 
                 @if (
-                    !auth()->user()->can('user_view') ||
-                    !auth()->user()->can('user_add') ||
-                    !auth()->user()->can('role_view') ||
-                    !auth()->user()->can('role_add')
+                    auth()->user()->can('user_view') ||
+                    auth()->user()->can('user_add') ||
+                    auth()->user()->can('role_view') ||
+                    auth()->user()->can('role_add')
                 )
                     <li data-menu="users" class="{{ request()->is('users*') ? 'menu_active' : '' }}">
                         <a href="#">
@@ -235,28 +235,28 @@
                 @if ($addons->hrm)
 
                     @if (
-                        !auth()->user()->can('hrm_dashboard') ||
-                        !auth()->user()->can('leave_type') ||
-                        !auth()->user()->can('leave_assign') ||
-                        !auth()->user()->can('shift') ||
-                        !auth()->user()->can('attendance') ||
-                        !auth()->user()->can('view_allowance_and_deduction') ||
-                        !auth()->user()->can('payroll') ||
-                        !auth()->user()->can('department') ||
-                        !auth()->user()->can('designation') ||
+                        auth()->user()->can('hrm_dashboard') ||
+                        auth()->user()->can('leave_type') ||
+                        auth()->user()->can('leave_assign') ||
+                        auth()->user()->can('shift') ||
+                        auth()->user()->can('attendance') ||
+                        auth()->user()->can('view_allowance_and_deduction') ||
+                        auth()->user()->can('payroll') ||
+                        auth()->user()->can('department') ||
+                        auth()->user()->can('designation') ||
                         (
                             auth()->user()->can('payroll_report') &&
-                            !auth()->user()->can('payroll_report')
+                            auth()->user()->can('payroll_report')
                         )
                             ||
                         (
                             auth()->user()->can('payroll_payment_report') &&
-                            !auth()->user()->can('payroll_payment_report')
+                            auth()->user()->can('payroll_payment_report')
                         )
                             ||
                         (
                             auth()->user()->can('attendance_report') &&
-                            !auth()->user()->can('attendance_report')
+                            auth()->user()->can('attendance_report')
                         )
                     )
                         <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
@@ -271,10 +271,10 @@
                 @if ($addons->manufacturing == 1)
 
                     @if (
-                        !auth()->user()->can('process_view') ||
-                        !auth()->user()->can('production_view') ||
-                        !auth()->user()->can('manuf_settings') ||
-                        !auth()->user()->can('manuf_report')
+                        auth()->user()->can('process_view') ||
+                        auth()->user()->can('production_view') ||
+                        auth()->user()->can('manuf_settings') ||
+                        auth()->user()->can('manuf_report')
                     )
                         <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
                             <a href="#">
@@ -290,10 +290,10 @@
                     @if (json_decode($generalSettings->modules, true)['requisite'] == '1')
 
                         @if (
-                            !auth()->user()->can('assign_todo') ||
-                            !auth()->user()->can('work_space') ||
-                            !auth()->user()->can('memo') ||
-                            !auth()->user()->can('msg')
+                            auth()->user()->can('assign_todo') ||
+                            auth()->user()->can('work_space') ||
+                            auth()->user()->can('memo') ||
+                            auth()->user()->can('msg')
                         )
                             <li data-menu="essentials" class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
                                 <a href="#">
@@ -331,15 +331,15 @@
                 </li>
 
                 @if (
-                    !auth()->user()->can('branch') ||
-                    !auth()->user()->can('warehouse') ||
-                    !auth()->user()->can('tax') ||
-                    !auth()->user()->can('g_settings') ||
-                    !auth()->user()->can('p_settings') ||
-                    !auth()->user()->can('inv_sc') ||
-                    !auth()->user()->can('inv_lay') ||
-                    !auth()->user()->can('barcode_settings') ||
-                    !auth()->user()->can('cash_counters')
+                    auth()->user()->can('branch') ||
+                    auth()->user()->can('warehouse') ||
+                    auth()->user()->can('tax') ||
+                    auth()->user()->can('g_settings') ||
+                    auth()->user()->can('p_settings') ||
+                    auth()->user()->can('inv_sc') ||
+                    auth()->user()->can('inv_lay') ||
+                    auth()->user()->can('barcode_settings') ||
+                    auth()->user()->can('cash_counters')
                 )
                     <li data-menu="settings" class="{{ request()->is('settings*') ? 'menu_active' : '' }}">
                         <a href="#">
@@ -350,7 +350,7 @@
                 @endif
 
                 @if (
-                    !auth()->user()->can('tax_report')
+                    auth()->user()->can('tax_report')
                 )
                     <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
                         <a href="#">
@@ -379,7 +379,7 @@
                     </div>
                     <div class="container-fluid">
                         <div class="row g-4 mb-4">
-                            @if (!auth()->user()->can('product_add'))
+                            @if (auth()->user()->can('product_add'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('products.add.view') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -394,7 +394,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('product_all'))
+                            @if (auth()->user()->can('product_all'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('products.all.product') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -409,7 +409,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('product_add'))
+                            @if (auth()->user()->can('product_add'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('product.import.create') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -426,7 +426,7 @@
                         </div>
 
                         <div class="row g-4 mb-4">
-                            @if (!auth()->user()->can('categories'))
+                            @if (auth()->user()->can('categories'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('product.categories.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -441,7 +441,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('brand'))
+                            @if (auth()->user()->can('brand'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('product.brands.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -456,7 +456,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('units'))
+                            @if (auth()->user()->can('units'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('settings.units.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -469,7 +469,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('variant'))
+                            @if (auth()->user()->can('variant'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('product.variants.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -484,7 +484,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('warranties'))
+                            @if (auth()->user()->can('warranties'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('product.warranties.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -501,7 +501,7 @@
                         </div>
 
                         <div class="row g-4 mb-4">
-                            @if (!auth()->user()->can('selling_price_group'))
+                            @if (auth()->user()->can('selling_price_group'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('product.selling.price.groups.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -516,7 +516,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('generate_barcode'))
+                            @if (auth()->user()->can('generate_barcode'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('barcode.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -533,7 +533,7 @@
 
                             @if(
                                 auth()->user()->can('product_settings') &&
-                                !auth()->user()->can('product_settings')
+                                auth()->user()->can('product_settings')
                             )
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('products.settings') }}" class="switch-bar-wrap">
@@ -553,12 +553,12 @@
                         @if (
                             (
                                 auth()->user()->can('stock_report') &&
-                                !auth()->user()->can('stock_report')
+                                auth()->user()->can('stock_report')
                             )
                                 ||
                             (
                                 auth()->user()->can('stock_in_out_report') &&
-                                !auth()->user()->can('stock_in_out_report')
+                                auth()->user()->can('stock_in_out_report')
                             )
                         )
                             <div class="row">
@@ -571,7 +571,7 @@
                             <div class="row g-4">
                                 @if (
                                     auth()->user()->can('stock_report') &&
-                                    !auth()->user()->can('stock_report')
+                                    auth()->user()->can('stock_report')
                                 )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('reports.stock.index') }}" class="switch-bar-wrap">
@@ -587,7 +587,7 @@
 
                                 @if (
                                     auth()->user()->can('stock_in_out_report') &&
-                                    !auth()->user()->can('stock_in_out_report')
+                                    auth()->user()->can('stock_in_out_report')
                                 )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('reports.stock.in.out.index') }}" class="switch-bar-wrap">
@@ -623,7 +623,7 @@
 
                         <div class="container-fluid">
                             <div class="row g-4">
-                                @if (!auth()->user()->can('branch'))
+                                @if (auth()->user()->can('branch'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('settings.branches.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -658,7 +658,7 @@
 
                         <div class="container-fluid">
                             <div class="row g-4 mb-4">
-                                @if (!auth()->user()->can('supplier_all'))
+                                @if (auth()->user()->can('supplier_all'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('contacts.supplier.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -671,7 +671,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('supplier_import'))
+                                @if (auth()->user()->can('supplier_import'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('contacts.suppliers.import.create') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -686,7 +686,7 @@
                             </div>
 
                             <div class="row g-4 mb-4">
-                                @if (!auth()->user()->can('customer_all'))
+                                @if (auth()->user()->can('customer_all'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('contacts.customer.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -699,7 +699,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('customer_import'))
+                                @if (auth()->user()->can('customer_import'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('contacts.customers.import.create') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -712,7 +712,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('customer_group'))
+                                @if (auth()->user()->can('customer_group'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('contacts.customers.groups.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -729,12 +729,12 @@
                             @if (
                                 (
                                     auth()->user()->can('supplier_report') &&
-                                    !auth()->user()->can('supplier_report')
+                                    auth()->user()->can('supplier_report')
                                 )
                                     ||
                                 (
                                     auth()->user()->can('customer_report') &&
-                                    !auth()->user()->can('customer_report')
+                                    auth()->user()->can('customer_report')
                                 )
                             )
                                 <div class="row">
@@ -785,7 +785,7 @@
 
             @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
 
-                @if (!auth()->user()->branch_id)
+                @if (auth()->user()->branch_id)
 
                     <div class="sub-menu_t" id="purchases">
                         <div class="sub-menu-width">
@@ -802,7 +802,7 @@
 
                             <div class="container-fluid">
                                 <div class="row g-4 mb-4">
-                                    @if (!auth()->user()->can('purchase_add'))
+                                    @if (auth()->user()->can('purchase_add'))
                                         <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                             <a href="{{ route('purchases.create') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -815,7 +815,7 @@
                                         </div>
                                     @endif
 
-                                    @if (!auth()->user()->can('purchase_all'))
+                                    @if (auth()->user()->can('purchase_all'))
                                         <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                             <a href="{{ route('purchases.index_v2') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -852,7 +852,7 @@
 
                                     @if (
                                         auth()->user()->can('purchase_settings') &&
-                                        !auth()->user()->can('purchase_settings')
+                                        auth()->user()->can('purchase_settings')
                                     )
                                         <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                             <a href="{{ route('purchase.settings') }}" class="switch-bar-wrap">
@@ -867,7 +867,7 @@
                                     @endif
                                 </div>
 
-                                @if (!auth()->user()->can('purchase_return'))
+                                @if (auth()->user()->can('purchase_return'))
                                     <div class="row g-4 mb-4">
                                         <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                             <a href="{{ route('purchases.returns.supplier.return') }}" class="switch-bar-wrap">
@@ -896,19 +896,19 @@
                                 @if (
                                     (
                                         auth()->user()->can('purchase_statements') &&
-                                        !auth()->user()->can('purchase_statements')
+                                        auth()->user()->can('purchase_statements')
                                     ) ||
                                     (
                                         auth()->user()->can('purchase_sale_report') &&
-                                        !auth()->user()->can('purchase_sale_report')
+                                        auth()->user()->can('purchase_sale_report')
                                     ) ||
                                     (
                                         auth()->user()->can('pro_purchase_report') &&
-                                        !auth()->user()->can('pro_purchase_report')
+                                        auth()->user()->can('pro_purchase_report')
                                     ) ||
                                     (
                                         auth()->user()->can('purchase_payment_report') &&
-                                        !auth()->user()->can('purchase_payment_report')
+                                        auth()->user()->can('purchase_payment_report')
                                     )
                                 )
 
@@ -922,7 +922,7 @@
                                     <div class="row g-4">
                                         @if (
                                             auth()->user()->can('purchase_statements') &&
-                                            !auth()->user()->can('purchase_statements')
+                                            auth()->user()->can('purchase_statements')
                                         )
                                             <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                 <a href="{{ route('reports.purchases.statement.index') }}" class="switch-bar-wrap">
@@ -938,7 +938,7 @@
 
                                         @if (
                                             auth()->user()->can('purchase_sale_report') &&
-                                            !auth()->user()->can('purchase_sale_report')
+                                            auth()->user()->can('purchase_sale_report')
                                         )
                                             <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                 <a href="{{ route('reports.sales.purchases.index') }}" class="switch-bar-wrap">
@@ -954,7 +954,7 @@
 
                                         @if (
                                             auth()->user()->can('pro_purchase_report') &&
-                                            !auth()->user()->can('pro_purchase_report')
+                                            auth()->user()->can('pro_purchase_report')
                                         )
                                             <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                 <a href="{{ route('reports.product.purchases.index') }}" class="switch-bar-wrap">
@@ -970,7 +970,7 @@
 
                                         @if (
                                             auth()->user()->can('purchase_payment_report') &&
-                                            !auth()->user()->can('purchase_payment_report')
+                                            auth()->user()->can('purchase_payment_report')
                                         )
                                             <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                 <a href="{{ route('reports.purchase.payments.index') }}" class="switch-bar-wrap">
@@ -990,7 +990,7 @@
                     </div>
                 @elseif(auth()->user()->branch_id && auth()->user()->branch->purchase_permission == 1)
 
-                    @if (!auth()->user()->can('purchase_all'))
+                    @if (auth()->user()->can('purchase_all'))
 
                         <div class="sub-menu_t" id="purchases">
                             <div class="sub-menu-width">
@@ -1006,7 +1006,7 @@
                                 </div>
                                 <div class="container-fluid">
                                     <div class="row g-4 mb-4">
-                                        @if (!auth()->user()->can('purchase_add'))
+                                        @if (auth()->user()->can('purchase_add'))
 
                                             <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                 <a href="{{ route('purchases.create') }}" class="switch-bar-wrap">
@@ -1020,7 +1020,7 @@
                                             </div>
                                         @endif
 
-                                        @if (!auth()->user()->can('purchase_all'))
+                                        @if (auth()->user()->can('purchase_all'))
 
                                             <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                 <a href="{{ route('purchases.index_v2') }}" class="switch-bar-wrap">
@@ -1058,7 +1058,7 @@
 
                                         @if (
                                             auth()->user()->can('purchase_settings') &&
-                                            !auth()->user()->can('purchase_settings')
+                                            auth()->user()->can('purchase_settings')
                                         )
                                             <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                 <a href="{{ route('purchase.settings') }}" class="switch-bar-wrap">
@@ -1074,7 +1074,7 @@
                                     </div>
 
                                     <div class="row g-4 mb-4">
-                                        @if (!auth()->user()->can('purchase_return'))
+                                        @if (auth()->user()->can('purchase_return'))
                                             <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                 <a href="{{ route('purchases.returns.supplier.return') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -1103,19 +1103,19 @@
                                     @if (
                                         (
                                             auth()->user()->can('purchase_statements') &&
-                                            !auth()->user()->can('purchase_statements')
+                                            auth()->user()->can('purchase_statements')
                                         ) ||
                                         (
                                             auth()->user()->can('purchase_sale_report') &&
-                                            !auth()->user()->can('purchase_sale_report')
+                                            auth()->user()->can('purchase_sale_report')
                                         ) ||
                                         (
                                             auth()->user()->can('pro_purchase_report') &&
-                                            !auth()->user()->can('pro_purchase_report')
+                                            auth()->user()->can('pro_purchase_report')
                                         ) ||
                                         (
                                             auth()->user()->can('purchase_payment_report') &&
-                                            !auth()->user()->can('purchase_payment_report')
+                                            auth()->user()->can('purchase_payment_report')
                                         )
                                     )
 
@@ -1129,7 +1129,7 @@
                                         <div class="row g-4">
                                             @if (
                                                 auth()->user()->can('purchase_statements') &&
-                                                !auth()->user()->can('purchase_statements')
+                                                auth()->user()->can('purchase_statements')
                                             )
                                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                     <a href="{{ route('reports.purchases.statement.index') }}" class="switch-bar-wrap">
@@ -1145,7 +1145,7 @@
 
                                             @if (
                                                 auth()->user()->can('purchase_sale_report') &&
-                                                !auth()->user()->can('purchase_sale_report')
+                                                auth()->user()->can('purchase_sale_report')
                                             )
                                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                     <a href="{{ route('reports.sales.purchases.index') }}" class="switch-bar-wrap">
@@ -1161,7 +1161,7 @@
 
                                             @if (
                                                 auth()->user()->can('pro_purchase_report') &&
-                                                !auth()->user()->can('pro_purchase_report')
+                                                auth()->user()->can('pro_purchase_report')
                                             )
                                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                     <a href="{{ route('reports.product.purchases.index') }}" class="switch-bar-wrap">
@@ -1177,7 +1177,7 @@
 
                                             @if (
                                                 auth()->user()->can('purchase_payment_report') &&
-                                                !auth()->user()->can('purchase_payment_report')
+                                                auth()->user()->can('purchase_payment_report')
                                             )
                                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                                     <a href="{{ route('reports.purchase.payments.index') }}" class="switch-bar-wrap">
@@ -1247,7 +1247,7 @@
 
                                 @if (
                                     auth()->user()->can('add_sale_settings') &&
-                                    !auth()->user()->can('add_sale_settings')
+                                    auth()->user()->can('add_sale_settings')
                                 )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('sales.add.sale.settings') }}" class="switch-bar-wrap">
@@ -1266,7 +1266,7 @@
                         <div class="row g-4 mb-4">
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
 
-                                @if (!auth()->user()->can('pos_add'))
+                                @if (auth()->user()->can('pos_add'))
 
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('sales.pos.create') }}" class="switch-bar-wrap">
@@ -1280,7 +1280,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('pos_all'))
+                                @if (auth()->user()->can('pos_all'))
 
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('sales.pos.list') }}" class="switch-bar-wrap">
@@ -1296,7 +1296,7 @@
 
                                 @if (
                                     auth()->user()->can('pos_sale_settings') &&
-                                    !auth()->user()->can('pos_sale_settings')
+                                    auth()->user()->can('pos_sale_settings')
                                 )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('sales.pos.settings') }}" class="switch-bar-wrap">
@@ -1324,7 +1324,7 @@
                                 </a>
                             </div>
 
-                            @if (!auth()->user()->can('sale_draft'))
+                            @if (auth()->user()->can('sale_draft'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('sales.drafts') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -1337,7 +1337,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('sale_quotation'))
+                            @if (auth()->user()->can('sale_quotation'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('sales.quotations') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -1366,7 +1366,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('shipment_access'))
+                            @if (auth()->user()->can('shipment_access'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('sales.shipments') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -1381,7 +1381,7 @@
                         </div>
 
                         <div class="row g-4 mb-4">
-                            @if (!auth()->user()->can('return_access'))
+                            @if (auth()->user()->can('return_access'))
 
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('sale.return.random.create') }}" class="switch-bar-wrap">
@@ -1408,7 +1408,7 @@
 
                             @if (
                                 auth()->user()->can('discounts') &&
-                                !auth()->user()->can('discounts')
+                                auth()->user()->can('discounts')
                             )
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('sales.discounts.index') }}" class="switch-bar-wrap">
@@ -1426,19 +1426,19 @@
                         @if (
                             (
                                 auth()->user()->can('pro_sale_report') &&
-                                !auth()->user()->can('pro_sale_report')
+                                auth()->user()->can('pro_sale_report')
                             ) ||
                             (
                                 auth()->user()->can('sale_payment_report') &&
-                                !auth()->user()->can('sale_payment_report')
+                                auth()->user()->can('sale_payment_report')
                             ) ||
                             (
                                 auth()->user()->can('c_register_report') &&
-                                !auth()->user()->can('c_register_report')
+                                auth()->user()->can('c_register_report')
                             ) ||
                             (
                                 auth()->user()->can('sale_representative_report') &&
-                                !auth()->user()->can('sale_representative_report')
+                                auth()->user()->can('sale_representative_report')
                             )
                         )
                             <div class="row">
@@ -1451,7 +1451,7 @@
                             <div class="row g-4">
                                 @if (
                                     auth()->user()->can('sale_statements') &&
-                                    !auth()->user()->can('sale_statements')
+                                    auth()->user()->can('sale_statements')
                                 )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('reports.sale.statement.index') }}" class="switch-bar-wrap">
@@ -1467,7 +1467,7 @@
 
                                 @if (
                                     auth()->user()->can('sale_return_statements') &&
-                                    !auth()->user()->can('sale_return_statements')
+                                    auth()->user()->can('sale_return_statements')
                                 )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('reports.sale.return.statement.index') }}" class="switch-bar-wrap">
@@ -1483,7 +1483,7 @@
 
                                 @if (
                                     auth()->user()->can('pro_sale_report') &&
-                                    !auth()->user()->can('pro_sale_report')
+                                    auth()->user()->can('pro_sale_report')
                                 )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('reports.product.sales.index') }}" class="switch-bar-wrap">
@@ -1499,7 +1499,7 @@
 
                                 @if (
                                     auth()->user()->can('sale_payment_report') &&
-                                    !auth()->user()->can('sale_payment_report')
+                                    auth()->user()->can('sale_payment_report')
                                 )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('reports.sale.payments.index') }}" class="switch-bar-wrap">
@@ -1515,7 +1515,7 @@
 
                                 @if (
                                     auth()->user()->can('c_register_report') &&
-                                    !auth()->user()->can('c_register_report')
+                                    auth()->user()->can('c_register_report')
                                 )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('reports.cash.registers.index') }}" class="switch-bar-wrap">
@@ -1531,7 +1531,7 @@
 
                                 @if (
                                     auth()->user()->can('sale_representative_report') &&
-                                    !auth()->user()->can('sale_representative_report')
+                                    auth()->user()->can('sale_representative_report')
                                 )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('reports.sale.representative.index') }}" class="switch-bar-wrap">
@@ -1798,7 +1798,7 @@
 
                         <div class="container-fluid">
                             <div class="row g-4 mb-4">
-                                @if (!auth()->user()->can('add_expense') )
+                                @if (auth()->user()->can('add_expense') )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('expanses.create') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -1811,7 +1811,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('expense_category') )
+                                @if (auth()->user()->can('expense_category') )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('expanses.categories.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -1826,7 +1826,7 @@
                             </div>
 
                             <div class="row g-4 mb-4">
-                                @if (!auth()->user()->can('view_expense') )
+                                @if (auth()->user()->can('view_expense') )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('expanses.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -1839,7 +1839,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('category_wise_expense') )
+                                @if (auth()->user()->can('category_wise_expense') )
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('expanses.category.wise.expense') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -1855,7 +1855,7 @@
                             @if (
                                 (
                                     auth()->user()->can('expanse_report') &&
-                                    !auth()->user()->can('expanse_report')
+                                    auth()->user()->can('expanse_report')
                                 )
                             )
                                 <div class="row">
@@ -2056,7 +2056,7 @@
                     </div>
                     <div class="container-fluid">
                         <div class="row g-4 mb-4">
-                            @if (!auth()->user()->can('user_add'))
+                            @if (auth()->user()->can('user_add'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('users.create') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2069,7 +2069,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('user_view'))
+                            @if (auth()->user()->can('user_view'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('users.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2084,7 +2084,7 @@
                         </div>
 
                         <div class="row g-4">
-                            @if (!auth()->user()->can('role_add'))
+                            @if (auth()->user()->can('role_add'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('users.role.create') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2097,7 +2097,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('role_view'))
+                            @if (auth()->user()->can('role_view'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('users.role.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2132,7 +2132,7 @@
 
                         <div class="container-fluid">
                             <div class="row g-4 mb-4">
-                                @if ( !auth()->user()->can('hrm_dashboard'))
+                                @if ( auth()->user()->can('hrm_dashboard'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('hrm.dashboard.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2145,7 +2145,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('leave_type'))
+                                @if (auth()->user()->can('leave_type'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('hrm.leave.type') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2158,7 +2158,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('leave_assign'))
+                                @if (auth()->user()->can('leave_assign'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('hrm.leave') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2171,7 +2171,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('shift'))
+                                @if (auth()->user()->can('shift'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('hrm.attendance.shift') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2186,7 +2186,7 @@
                             </div>
 
                             <div class="row g-4 mb-4">
-                                @if (!auth()->user()->can('attendance'))
+                                @if (auth()->user()->can('attendance'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('hrm.attendance') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2199,7 +2199,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('view_allowance_and_deduction'))
+                                @if (auth()->user()->can('view_allowance_and_deduction'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('hrm.allowance') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2212,7 +2212,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('payroll'))
+                                @if (auth()->user()->can('payroll'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('hrm.payroll.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2225,7 +2225,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('holiday'))
+                                @if (auth()->user()->can('holiday'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('hrm.holidays') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2238,7 +2238,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('department'))
+                                @if (auth()->user()->can('department'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('hrm.departments') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2251,7 +2251,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('designation'))
+                                @if (auth()->user()->can('designation'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('hrm.designations') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2268,17 +2268,17 @@
                             @if (
                                 (
                                     auth()->user()->can('payroll_report') &&
-                                    !auth()->user()->can('payroll_report')
+                                    auth()->user()->can('payroll_report')
                                 )
                                     ||
                                 (
                                     auth()->user()->can('payroll_payment_report') &&
-                                    !auth()->user()->can('payroll_payment_report')
+                                    auth()->user()->can('payroll_payment_report')
                                 )
                                     ||
                                 (
                                     auth()->user()->can('attendance_report') &&
-                                    !auth()->user()->can('attendance_report')
+                                    auth()->user()->can('attendance_report')
                                 )
                             )
                                 <div class="row">
@@ -2292,7 +2292,7 @@
 
                                     @if (
                                         auth()->user()->can('payroll_report') &&
-                                        !auth()->user()->can('payroll_report')
+                                        auth()->user()->can('payroll_report')
                                     )
                                         <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                             <a href="{{ route('reports.payroll') }}" class="switch-bar-wrap">
@@ -2308,7 +2308,7 @@
 
                                     @if (
                                         auth()->user()->can('payroll_payment_report') &&
-                                        !auth()->user()->can('payroll_payment_report')
+                                        auth()->user()->can('payroll_payment_report')
                                     )
                                         <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                             <a href="{{ route('reports.payroll.payment') }}" class="switch-bar-wrap">
@@ -2324,7 +2324,7 @@
 
                                     @if (
                                         auth()->user()->can('attendance_report') &&
-                                        !auth()->user()->can('attendance_report')
+                                        auth()->user()->can('attendance_report')
                                     )
                                         <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                             <a href="{{ route('reports.attendance') }}" class="switch-bar-wrap">
@@ -2358,7 +2358,7 @@
                     </div>
                     <div class="container-fluid">
                         <div class="row g-4">
-                            @if (!auth()->user()->can('g_settings'))
+                            @if (auth()->user()->can('g_settings'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('settings.general.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2372,7 +2372,7 @@
                             @endif
 
                             @if ($addons->branches == 1)
-                                @if (!auth()->user()->can('branch'))
+                                @if (auth()->user()->can('branch'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('settings.branches.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2386,7 +2386,7 @@
                                 @endif
                             @endif
 
-                            @if (!auth()->user()->can('warehouse'))
+                            @if (auth()->user()->can('warehouse'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('settings.warehouses.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2399,7 +2399,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('tax'))
+                            @if (auth()->user()->can('tax'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('settings.taxes.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2412,7 +2412,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('p_settings'))
+                            @if (auth()->user()->can('p_settings'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('settings.payment.method.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2436,7 +2436,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('inv_sc'))
+                            @if (auth()->user()->can('inv_sc'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('invoices.schemas.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2449,7 +2449,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('inv_lay'))
+                            @if (auth()->user()->can('inv_lay'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('invoices.layouts.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2462,7 +2462,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('barcode_settings'))
+                            @if (auth()->user()->can('barcode_settings'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('settings.barcode.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2475,7 +2475,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('cash_counters'))
+                            @if (auth()->user()->can('cash_counters'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('settings.cash.counter.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2519,7 +2519,7 @@
 
                         <div class="container-fluid">
                             <div class="row g-4">
-                                @if (!auth()->user()->can('process_view'))
+                                @if (auth()->user()->can('process_view'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('manufacturing.process.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2532,7 +2532,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('production_view'))
+                                @if (auth()->user()->can('production_view'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('manufacturing.productions.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2545,7 +2545,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('manuf_settings'))
+                                @if (auth()->user()->can('manuf_settings'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('manufacturing.settings.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2558,7 +2558,7 @@
                                     </div>
                                 @endif
 
-                                @if (!auth()->user()->can('manuf_report'))
+                                @if (auth()->user()->can('manuf_report'))
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                         <a href="{{ route('manufacturing.report.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2590,7 +2590,7 @@
                     </div>
                     <div class="container-fluid">
                         <div class="row g-4">
-                            @if (!auth()->user()->can('assign_todo'))
+                            @if (auth()->user()->can('assign_todo'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('todo.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2603,7 +2603,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('work_space'))
+                            @if (auth()->user()->can('work_space'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('workspace.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2616,7 +2616,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('memo'))
+                            @if (auth()->user()->can('memo'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('memos.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2629,7 +2629,7 @@
                                 </div>
                             @endif
 
-                            @if (!auth()->user()->can('msg'))
+                            @if (auth()->user()->can('msg'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('messages.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2737,7 +2737,7 @@
                     </div>
                     <div class="container-fluid">
                         <div class="row g-4">
-                            @if (!auth()->user()->can('tax_report'))
+                            @if (auth()->user()->can('tax_report'))
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                                     <a href="{{ route('reports.taxes.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">

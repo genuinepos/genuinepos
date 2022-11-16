@@ -5,7 +5,7 @@
 @endpush
 @section('title', 'Dashboard - ')
 @section('content')
-    @if (auth()->user()->permission->dashboard['dash_data'] == '1')
+    @if (!auth()->user()->can('dash_data'))
         <div id="dashboard" class="p-3">
             <div class="row mb-3">
                 <div class="main__content">
@@ -381,7 +381,7 @@
     @endif
 @endsection
 @push('scripts')
-    @if (auth()->user()->permission->dashboard['dash_data'] == '1')
+    @if (!auth()->user()->can('dash_data'))
         <script>
             $(document).on('click', '#date', function() {
                 var date_range = $(this).data('value');

@@ -43,7 +43,7 @@ class ProductionController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->permission->manufacturing['production_view'] == '0') {
+        if (!auth()->user()->can('production_view')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -59,7 +59,7 @@ class ProductionController extends Controller
 
     public function create()
     {
-        if (auth()->user()->permission->manufacturing['production_add'] == '0') {
+        if (!auth()->user()->can('production_add')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -101,7 +101,7 @@ class ProductionController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->permission->manufacturing['production_add'] == '0') {
+        if (!auth()->user()->can('production_add')) {
             return response()->json('Access Denied');
         }
 
@@ -286,7 +286,7 @@ class ProductionController extends Controller
 
     public function show($productionId)
     {
-        if (auth()->user()->permission->manufacturing['production_view'] == '0') {
+        if (!auth()->user()->can('production_view')) {
             return response()->json('Access Denied');
         }
 
@@ -309,7 +309,7 @@ class ProductionController extends Controller
 
     public function edit($productionId)
     {
-        if (auth()->user()->permission->manufacturing['production_edit'] == '0') {
+        if (!auth()->user()->can('production_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -351,7 +351,7 @@ class ProductionController extends Controller
 
     public function update(Request $request, $productionId)
     {
-        if (auth()->user()->permission->manufacturing['production_edit'] == '0') {
+        if (!auth()->user()->can('production_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -504,7 +504,7 @@ class ProductionController extends Controller
 
     public function delete(Request $request, $productionId)
     {
-        if (auth()->user()->permission->manufacturing['production_delete'] == '0') {
+        if (!auth()->user()->can('production_delete')) {
 
             return response()->json('Access Denied');
         }

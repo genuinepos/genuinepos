@@ -62,7 +62,7 @@ class POSController extends Controller
     // Create pos view
     public function create()
     {
-        if (auth()->user()->permission->sale['pos_add'] == '0') {
+        if (!auth()->user()->can('pos_add')) {
             abort(403, 'Access Forbidden.');
         }
 

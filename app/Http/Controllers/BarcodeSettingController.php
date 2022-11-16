@@ -11,7 +11,7 @@ class BarcodeSettingController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->user()->permission->setup['barcode_settings'] == '0') {
+        if (!auth()->user()->can('barcode_settings')) {
             abort(403, 'Access Forbidden.');
         }
 

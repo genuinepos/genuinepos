@@ -56,7 +56,7 @@ class SaleReturnController extends Controller
     // Sale return index view
     public function index(Request $request)
     {
-        if (auth()->user()->permission->sale['return_access'] == '0') {
+        if (!auth()->user()->can('return_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -104,7 +104,7 @@ class SaleReturnController extends Controller
 
                         if ($row->total_return_due > 0 && $row->sale_id) {
 
-                            if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                            if (!auth()->user()->can('sale_payment')) {
 
                                 $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->sale_id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amt.</a>';
                             }

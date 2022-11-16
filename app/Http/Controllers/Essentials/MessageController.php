@@ -17,7 +17,7 @@ class MessageController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        if (auth()->user()->permission->essential['msg'] == '0') {
+        if (!auth()->user()->can('msg')) {
             abort(403, 'Access Forbidden.');
         }
 

@@ -64,7 +64,7 @@ class SaleStatementController extends Controller
                     ->orderBy('sales.report_date', 'desc');
             } else {
 
-                if ($userPermission->sale['view_own_sale'] == '1') {
+                if (auth()->user()->can('view_own_sale')) {
 
                     $query->where('sales.admin_id', auth()->user()->id);
                 }
@@ -170,7 +170,7 @@ class SaleStatementController extends Controller
                 ->orderBy('sales.report_date', 'desc')->get();
         } else {
 
-            if ($userPermission->sale['view_own_sale'] == '1') {
+            if (auth()->user()->can('view_own_sale')) {
 
                 $query->where('sales.admin_id', auth()->user()->id);
             }

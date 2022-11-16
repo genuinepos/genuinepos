@@ -31,7 +31,7 @@
                                 <li class="top-icon d-none d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif
 
-                            @if (auth()->user()->permission->others['communication'] == '1')
+                            @if (!auth()->user()->can('communication'))
                                 <li class="top-icon d-none d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
                                                 class="fas fa-th-large"></i></b></a>
                                     <ul class="lists">
@@ -47,13 +47,13 @@
                                 </li>
                             @endif
 
-                            @if (auth()->user()->permission->others['today_summery'] == '1')
+                            @if (!auth()->user()->can('today_summery'))
                                 <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
                             @endif
 
                             <li class="top-icon"><a href=""><i class="far fa-bell"></i></a></li>
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
-                                @if (auth()->user()->permission->sale['pos_add'] == '1')
+                                @if (!auth()->user()->can('pos_add'))
                                     <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
                                 @endif
                             @endif

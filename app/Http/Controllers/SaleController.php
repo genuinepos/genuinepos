@@ -68,7 +68,7 @@ class SaleController extends Controller
 
     public function index2(Request $request)
     {
-        if (auth()->user()->permission->sale['view_add_sale'] == '0') {
+        if (!auth()->user()->can('view_add_sale')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -85,7 +85,7 @@ class SaleController extends Controller
 
     public function posList(Request $request)
     {
-        if (auth()->user()->permission->sale['pos_all'] == '0') {
+        if (!auth()->user()->can('pos_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -204,7 +204,7 @@ class SaleController extends Controller
     // Create sale view
     public function create()
     {
-        if (auth()->user()->permission->sale['create_add_sale'] == '0') {
+        if (!auth()->user()->can('create_add_sale')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -628,7 +628,7 @@ class SaleController extends Controller
     // Sale edit view
     public function edit($saleId)
     {
-        if (auth()->user()->permission->sale['edit_add_sale'] == '0') {
+        if (!auth()->user()->can('edit_add_sale')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -690,7 +690,7 @@ class SaleController extends Controller
     // Update Sale
     public function update(Request $request, $saleId)
     {
-        if (auth()->user()->permission->sale['edit_add_sale'] == '0') {
+        if (!auth()->user()->can('edit_add_sale')) {
 
             return response()->json('Access Denied');
         }
@@ -1008,7 +1008,7 @@ class SaleController extends Controller
     // Delete Sale
     public function delete(Request $request, $saleId)
     {
-        if (auth()->user()->permission->sale['delete_add_sale'] == '0') {
+        if (!auth()->user()->can('delete_add_sale')) {
 
             return response()->json('Access Denied');
         }
@@ -1031,7 +1031,7 @@ class SaleController extends Controller
     // Shipments View
     public function shipments(Request $request)
     {
-        if (auth()->user()->permission->sale['shipment_access'] == '0') {
+        if (!auth()->user()->can('shipment_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -1048,7 +1048,7 @@ class SaleController extends Controller
     // Update shipment
     public function updateShipment(Request $request, $saleId)
     {
-        if (auth()->user()->permission->sale['shipment_access'] == '0') {
+        if (!auth()->user()->can('shipment_access')) {
 
             return response()->json('Access Denied');
         }
@@ -1212,7 +1212,7 @@ class SaleController extends Controller
 
     public function paymentAdd(Request $request, $saleId)
     {
-        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+        if (!auth()->user()->can('sale_payment')) {
 
             return response()->json('Access Denied');
         }
@@ -1289,7 +1289,7 @@ class SaleController extends Controller
     // Show payment modal
     public function paymentEdit($paymentId)
     {
-        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+        if (!auth()->user()->can('sale_payment')) {
 
             return response()->json('Access Denied');
         }
@@ -1317,7 +1317,7 @@ class SaleController extends Controller
     // Payment update
     public function paymentUpdate(Request $request, $paymentId)
     {
-        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+        if (!auth()->user()->can('sale_payment')) {
 
             return response()->json('Access Denied');
         }
@@ -1367,7 +1367,7 @@ class SaleController extends Controller
     // Show payment modal
     public function returnPaymentModal($saleId)
     {
-        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+        if (!auth()->user()->can('sale_payment')) {
 
             return response()->json('Access Denied');
         }
@@ -1396,7 +1396,7 @@ class SaleController extends Controller
 
     public function returnPaymentAdd(Request $request, $saleId)
     {
-        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+        if (!auth()->user()->can('sale_payment')) {
 
             return response()->json('Access Denied');
         }
@@ -1540,7 +1540,7 @@ class SaleController extends Controller
     // payment details
     public function paymentDetails($paymentId)
     {
-        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+        if (!auth()->user()->can('sale_payment')) {
 
             return response()->json('Access Denied');
         }
@@ -1552,7 +1552,7 @@ class SaleController extends Controller
     // Delete sale payment
     public function paymentDelete(Request $request, $paymentId)
     {
-        if (auth()->user()->permission->sale['sale_payment'] == '0') {
+        if (!auth()->user()->can('sale_payment')) {
 
             return response()->json('Access Denied');
         }
@@ -1764,8 +1764,8 @@ class SaleController extends Controller
     public function settings()
     {
         if (
-            !isset(auth()->user()->permission->sale['add_sale_settings']) ||
-            auth()->user()->permission->sale['add_sale_settings'] == '0'
+            !auth()->user()->can('add_sale_settings') ||
+            !auth()->user()->can('add_sale_settings')
         ) {
 
             abort(403, 'Access Forbidden.');
@@ -1781,8 +1781,8 @@ class SaleController extends Controller
     public function settingsStore(Request $request)
     {
         if (
-            !isset(auth()->user()->permission->sale['add_sale_settings']) ||
-            auth()->user()->permission->sale['add_sale_settings'] == '0'
+            !auth()->user()->can('add_sale_settings') ||
+            !auth()->user()->can('add_sale_settings')
         ) {
 
             return response()->json('Asses Forbidden.');

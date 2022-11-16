@@ -149,12 +149,12 @@ class ProductUtil
                 $html .= '<a class="dropdown-item details_button" href="' . route('products.view', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
                 $html .= '<a class="dropdown-item" id="check_pur_and_gan_bar_button" href="' . route('products.check.purchase.and.generate.barcode', [$row->id]) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
-                if (auth()->user()->permission->product['product_edit']  == '1') {
+                if (auth()->user()->can('product_edit')) {
 
                     $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                 }
 
-                if (auth()->user()->permission->product['product_delete']  == '1') {
+                if (auth()->user()->can('product_delete')) {
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
@@ -167,7 +167,7 @@ class ProductUtil
                     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
                 }
 
-                if (auth()->user()->permission->product['openingStock_add']  == '1') {
+                if (auth()->user()->can('openingStock_add')) {
 
                     $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '"><i class="fas fa-database text-primary"></i> Add or edit opening stock</a>';
                 }

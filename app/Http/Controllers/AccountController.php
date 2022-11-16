@@ -40,7 +40,7 @@ class AccountController extends Controller
     // Bank main page/index page
     public function index(Request $request)
     {
-        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+        if (!auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -133,7 +133,7 @@ class AccountController extends Controller
     //Get account book
     public function accountBook(Request $request, $accountId)
     {
-        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+        if (!auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }

@@ -111,7 +111,7 @@
                                 <div class="col-md-10">
                                     <h6>All Expense</h6>
                                 </div>
-                                @if (auth()->user()->permission->expense['add_expense'] == '1')
+                                @if (!auth()->user()->can('add_expense'))
                                     <div class="col-md-2">
                                         <div class="btn_30_blue float-end">
                                             <a href="{{ route('expanses.create') }}"><i class="fas fa-plus-square"></i> Add</a>

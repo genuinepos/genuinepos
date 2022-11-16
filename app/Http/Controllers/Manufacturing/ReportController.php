@@ -21,7 +21,7 @@ class ReportController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->permission->manufacturing['manuf_report'] == '0') {
+        if (!auth()->user()->can('manuf_report')) {
             abort(403, 'Access Forbidden.');
         }
 

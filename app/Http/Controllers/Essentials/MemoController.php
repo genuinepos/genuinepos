@@ -18,7 +18,7 @@ class MemoController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        if (auth()->user()->permission->essential['memo'] == '0') {
+        if (!auth()->user()->can('memo')) {
             abort(403, 'Access Forbidden.');
         }
 

@@ -58,7 +58,7 @@ class SupplierController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->permission->contact['supplier_all'] == '0') {
+        if (!auth()->user()->can('supplier_all')) {
 
             abort(403, 'Access Forbidden.');
         }

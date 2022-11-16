@@ -14,7 +14,7 @@
     <!--begin::Form-->
     <form action="{{ route('sales.cash.register.close') }}" method="POST">
         @csrf
-        @if (auth()->user()->permission->register['register_view'] == '1')
+        @if (!auth()->user()->can('register_view'))
             <table class="cash_register_table modal-table table table-sm">
                 <tbody>
                     <tr>

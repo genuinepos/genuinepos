@@ -18,7 +18,7 @@ class BulkVariantController extends Controller
 
     public function index()
     {
-        if (auth()->user()->permission->product['variant'] == '0') {
+        if (!auth()->user()->can('variant')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -34,7 +34,7 @@ class BulkVariantController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->permission->product['variant'] == '0') {
+        if (!auth()->user()->can('variant')) {
             return response()->json('Access Denied');
         }
 
@@ -63,7 +63,7 @@ class BulkVariantController extends Controller
     
     public function update(Request $request)
     {
-        if (auth()->user()->permission->product['variant'] == '0') {
+        if (!auth()->user()->can('variant')) {
             return response()->json('Access Denied');
         }
 
@@ -119,7 +119,7 @@ class BulkVariantController extends Controller
 
     public function delete(Request $request, $variantId)
     {
-        if (auth()->user()->permission->product['variant'] == '0') {
+        if (!auth()->user()->can('variant')) {
 
             return response()->json('Access Denied');
         }

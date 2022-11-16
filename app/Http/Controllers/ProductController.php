@@ -42,7 +42,7 @@ class ProductController extends Controller
     // index view
     public function allProduct(Request $request)
     {
-        if (auth()->user()->permission->product['product_all'] == '0') {
+        if (!auth()->user()->can('product_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -64,7 +64,7 @@ class ProductController extends Controller
     // Add product view
     public function create(Request $request)
     {
-        if (auth()->user()->permission->product['product_add'] == '0') {
+        if (!auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }

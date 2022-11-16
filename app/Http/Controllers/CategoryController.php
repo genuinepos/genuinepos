@@ -22,7 +22,7 @@ class CategoryController extends Controller
     // Category main page/index page
     public function index(Request $request)
     {
-        if (auth()->user()->permission->product['categories'] == '0') {
+        if (!auth()->user()->can('categories')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -62,7 +62,7 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->permission->product['categories'] == '0') {
+        if (!auth()->user()->can('categories')) {
 
             return response()->json('Access Denied');
         }
@@ -104,7 +104,7 @@ class CategoryController extends Controller
 
     public function edit($categoryId)
     {
-        if (auth()->user()->permission->product['categories'] == '0') {
+        if (!auth()->user()->can('categories')) {
 
             return response()->json('Access Denied');
         }
@@ -115,7 +115,7 @@ class CategoryController extends Controller
 
     public function update(Request $request)
     {
-        if (auth()->user()->permission->product['categories'] == '0') {
+        if (!auth()->user()->can('categories')) {
 
             return response()->json('Access Denied');
         }
@@ -163,7 +163,7 @@ class CategoryController extends Controller
 
     public function delete(Request $request, $categoryId)
     {
-        if (auth()->user()->permission->product['categories'] == '0') {
+        if (!auth()->user()->can('categories')) {
 
             return response()->json('Access Denied');
         }

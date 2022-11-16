@@ -119,14 +119,14 @@
                                     <h6>All Product</h6>
                                 </div>
 
-                                @if (auth()->user()->permission->product['product_add'] == '1')
+                                @if (!auth()->user()->can('product_add'))
 
                                     <div class="col-md-8 d-flex justify-content-end gap-2">
                                         <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> Add Product (Ctrl+Enter)</a>
 
                                         <a href="" class="btn btn-sm btn-warning multipla_deactive_btn">Deactivate Selected</a>
 
-                                        @if (auth()->user()->permission->product['product_delete'])
+                                        @if (auth()->user()->can('product_delete'))
 
                                             <a href="" class="btn btn-sm btn-danger multipla_delete_btn">Delete Selected</a>
                                         @endif

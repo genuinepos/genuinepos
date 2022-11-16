@@ -61,7 +61,7 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->permission->contact['customer_all'] == '0') {
+        if (!auth()->user()->can('customer_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -78,7 +78,7 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->permission->contact['customer_add'] == '0') {
+        if (!auth()->user()->can('customer_add')) {
 
             return response()->json('Access Denied');
         }
@@ -151,7 +151,7 @@ class CustomerController extends Controller
 
     public function edit($customerId)
     {
-        if (auth()->user()->permission->contact['customer_edit'] == '0') {
+        if (!auth()->user()->can('customer_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -173,7 +173,7 @@ class CustomerController extends Controller
 
     public function update(Request $request)
     {
-        if (auth()->user()->permission->contact['customer_edit'] == '0') {
+        if (!auth()->user()->can('customer_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -278,7 +278,7 @@ class CustomerController extends Controller
 
     public function delete(Request $request, $customerId)
     {
-        if (auth()->user()->permission->contact['customer_delete'] == '0') {
+        if (!auth()->user()->can('customer_delete')) {
 
             return response()->json('Access Denied');
         }
@@ -379,7 +379,7 @@ class CustomerController extends Controller
 
                     $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Packing Slip</a>';
 
-                    if (auth()->user()->permission->sale['shipment_access'] == '1') {
+                    if (!auth()->user()->can('shipment_access')) {
 
                         $html .= '<a class="dropdown-item" id="edit_shipment"
                             href="' . route('sales.shipment.edit', [$row->id]) . '"><i
@@ -390,13 +390,13 @@ class CustomerController extends Controller
 
                         if ($row->due > 0) {
 
-                            if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                            if (!auth()->user()->can('sale_payment')) {
 
                                 $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                             }
                         }
 
-                        if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                        if (!auth()->user()->can('sale_payment')) {
 
                             $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
                             data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
@@ -417,7 +417,7 @@ class CustomerController extends Controller
 
                     if ($row->sale_return_due > 0) {
 
-                        if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                        if (!auth()->user()->can('sale_payment')) {
 
                             $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '" ><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                         }

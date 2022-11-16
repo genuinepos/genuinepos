@@ -62,7 +62,7 @@ class PurchaseController extends Controller
 
     public function index_v2(Request $request)
     {
-        if (auth()->user()->permission->purchase['purchase_all'] == '0') {
+        if (!auth()->user()->can('purchase_all')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -78,7 +78,7 @@ class PurchaseController extends Controller
 
     public function purchaseProductList(Request $request)
     {
-        if (auth()->user()->permission->purchase['purchase_all'] == '0') {
+        if (!auth()->user()->can('purchase_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -96,7 +96,7 @@ class PurchaseController extends Controller
 
     public function poList(Request $request)
     {
-        if (auth()->user()->permission->purchase['purchase_all'] == '0') {
+        if (!auth()->user()->can('purchase_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -160,7 +160,7 @@ class PurchaseController extends Controller
 
     public function create()
     {
-        if (auth()->user()->permission->purchase['purchase_add'] == '0') {
+        if (!auth()->user()->can('purchase_add')) {
 
             abort(403, 'Access Forbidden.');
         }

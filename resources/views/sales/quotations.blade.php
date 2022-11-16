@@ -88,7 +88,7 @@
                                 <div class="col-md-10">
                                     <h6>All Quotation</h6>
                                 </div>
-                                @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+                                @if (!auth()->user()->can('purchase_add'))
                                     <div class="col-md-2 d-flex justify-content-end">
                                         <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>

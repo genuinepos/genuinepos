@@ -42,7 +42,7 @@ class ExpanseController extends Controller
     // Expanse index view
     public function index(Request $request)
     {
-        if (auth()->user()->permission->expense['view_expense'] == '0') {
+        if (!auth()->user()->can('view_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -60,7 +60,7 @@ class ExpanseController extends Controller
 
     public function categoryWiseExpense(Request $request)
     {
-        if (auth()->user()->permission->expense['category_wise_expense'] == '0') {
+        if (!auth()->user()->can('category_wise_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -77,7 +77,7 @@ class ExpanseController extends Controller
     // Create expanse view
     public function create()
     {
-        if (auth()->user()->permission->expense['add_expense'] == '0') {
+        if (!auth()->user()->can('add_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -117,7 +117,7 @@ class ExpanseController extends Controller
     // Store Expanse
     public function store(Request $request)
     {
-        if (auth()->user()->permission->expense['add_expense'] == '0') {
+        if (!auth()->user()->can('add_expense')) {
 
             return response()->json('Access Denied');
         }
@@ -223,7 +223,7 @@ class ExpanseController extends Controller
     //Delete Expanse
     public function delete(Request $request, $expanseId)
     {
-        if (auth()->user()->permission->expense['delete_expense'] == '0') {
+        if (!auth()->user()->can('delete_expense')) {
 
             return response()->json('Access Denied');
         }
@@ -247,7 +247,7 @@ class ExpanseController extends Controller
     // Edit view
     public function edit($expenseId)
     {
-        if (auth()->user()->permission->expense['edit_expense'] == '0') {
+        if (!auth()->user()->can('edit_expense')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -280,7 +280,7 @@ class ExpanseController extends Controller
     // Update expanse
     public function update(Request $request, $expenseId)
     {
-        if (auth()->user()->permission->expense['edit_expense'] == '0') {
+        if (!auth()->user()->can('edit_expense')) {
 
             return response()->json('Access Denied');
         }

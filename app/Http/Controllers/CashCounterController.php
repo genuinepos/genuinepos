@@ -13,7 +13,7 @@ class CashCounterController extends Controller
     // Cash Counter main page/index page
     public function index(Request $request)
     {
-        if (auth()->user()->permission->setup['cash_counters'] == '0') {
+        if (!auth()->user()->can('cash_counters')) {
             abort(403, 'Access Forbidden.');
         }
 

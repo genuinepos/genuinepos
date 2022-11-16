@@ -161,7 +161,7 @@
 
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
 
-                                                        @if (auth()->user()->permission->product['product_add'] == '1')
+                                                        @if (!auth()->user()->can('product_add'))
                                                             <div class="input-group-prepend">
                                                                 <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                             </div>
@@ -539,7 +539,7 @@
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="update_selling_product" action="">
-                        @if (auth()->user()->permission->sale['view_product_cost_is_sale_screed'] == '1')
+                        @if (!auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
                                     <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span>
@@ -558,11 +558,11 @@
 
                         <div class="form-group mt-1">
                             <label> <strong>Unit Price Exc.Tax</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" step="any" {{ auth()->user()->permission->sale['edit_price_sale_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price"/>
+                            <input type="number" step="any" {{ !auth()->user()->can('edit_price_sale_screen') ? '' : 'readonly' }} step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price"/>
                             <span class="error error_e_unit_price"></span>
                         </div>
 
-                        @if (auth()->user()->permission->sale['edit_discount_sale_screen'] == '1')
+                        @if (!auth()->user()->can('edit_discount_sale_screen'))
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
                                     <label><strong>Discount Type</strong>  :</label>
@@ -615,7 +615,7 @@
     </div>
     <!-- Edit selling product modal End-->
 
-    @if (auth()->user()->permission->product['product_add'] == '1')
+    @if (!auth()->user()->can('product_add'))
         <!--Add Product Modal-->
         <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">

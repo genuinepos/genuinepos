@@ -17,7 +17,7 @@ class UnitController extends Controller
 
     public function index()
     {
-        if (auth()->user()->permission->product['units'] == '0') {
+        if (!auth()->user()->can('units')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -33,7 +33,7 @@ class UnitController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->permission->product['units'] == '0') {
+        if (!auth()->user()->can('units')) {
 
             return response()->json('Access Denied');
         }
@@ -58,7 +58,7 @@ class UnitController extends Controller
     
     public function update(Request $request)
     {
-        if (auth()->user()->permission->product['units'] == '0') {
+        if (!auth()->user()->can('units')) {
 
             return response()->json('Access Denied');
         }
@@ -83,7 +83,7 @@ class UnitController extends Controller
 
     public function delete(Request $request, $unitId)
     {
-        if (auth()->user()->permission->product['units'] == '0') {
+        if (!auth()->user()->can('units')) {
 
             return response()->json('Access Denied');
         }

@@ -113,7 +113,7 @@
                                 <div class="col-md-10">
                                     <h6>All Purchases</h6>
                                 </div>
-                                @if (auth()->user()->permission->purchase['purchase_add'] == '1')
+                                @if (!auth()->user()->can('purchase_add'))
                                     <div class="col-md-2 d-flex justify-content-end">
                                         <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>
@@ -185,7 +185,7 @@
         </div>
     </div>
 
-    @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
+    @if (!auth()->user()->can('purchase_payment'))
         <!--Payment list modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
             aria-hidden="true">

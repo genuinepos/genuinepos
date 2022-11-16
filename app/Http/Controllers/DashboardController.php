@@ -19,7 +19,7 @@ class DashboardController extends Controller
     {
         // define('TODAY_DATE', date('Y-m-d'));
         $this->converter = $converter;
-        
+        $this->middleware('auth');
     }
 
     public function tester()

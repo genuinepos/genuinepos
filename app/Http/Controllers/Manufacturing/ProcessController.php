@@ -21,7 +21,7 @@ class ProcessController extends Controller
     // Process index view method
     public function index(Request $request)
     {
-        if (auth()->user()->permission->manufacturing['process_view'] == '0' ) {
+        if (!auth()->user()->can('process_view') ) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -50,7 +50,7 @@ class ProcessController extends Controller
 
     public function show($processId)
     {
-        if (auth()->user()->permission->manufacturing['process_view'] == '0' ) {
+        if (!auth()->user()->can('process_view') ) {
             return response()->json('Access Denied');
         }
 
@@ -70,7 +70,7 @@ class ProcessController extends Controller
     // Process index view method
     public function create(Request $request)
     {
-        if (auth()->user()->permission->manufacturing['process_add'] == '0' ) {
+        if (!auth()->user()->can('process_add') ) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -91,7 +91,7 @@ class ProcessController extends Controller
     // Store process
     public function store(Request $request)
     {
-        if (auth()->user()->permission->manufacturing['process_add'] == '0' ) {
+        if (!auth()->user()->can('process_add') ) {
             return response()->json('Access Denied.');
         }
 
@@ -139,7 +139,7 @@ class ProcessController extends Controller
     // Edit process view with data
     public function edit($processId)
     {
-        if (auth()->user()->permission->manufacturing['process_edit'] == '0' ) {
+        if (!auth()->user()->can('process_edit') ) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -175,7 +175,7 @@ class ProcessController extends Controller
 
     public function update(Request $request, $processId)
     {
-        if (auth()->user()->permission->manufacturing['process_edit'] == '0' ) {
+        if (!auth()->user()->can('process_edit') ) {
             return response()->json('Access Denied');
         }
 
@@ -246,7 +246,7 @@ class ProcessController extends Controller
 
     public function delete($processId)
     {
-        if (auth()->user()->permission->manufacturing['process_delete'] == '0' ) {
+        if (!auth()->user()->can('process_delete') ) {
             return response()->json('Access Denied');
         }
 

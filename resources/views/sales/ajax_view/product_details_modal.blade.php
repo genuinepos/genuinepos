@@ -209,7 +209,7 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        @if (auth()->user()->permission->sale['sale_payment'] == '1') 
+                        @if (!auth()->user()->can('sale_payment')) 
                             @include('sales.ajax_view.partials.add_sale_details_payment_list')
                         @endif
                     </div>
@@ -316,20 +316,20 @@
                 
                     @if ($sale->created_by == 1)
 
-                        @if (auth()->user()->permission->sale['edit_add_sale'] == '1') 
+                        @if (!auth()->user()->can('edit_add_sale')) 
 
                             <a class="btn btn-sm btn-secondary" href="{{ route('sales.edit', $sale->id) }}"> Edit</a>
                         @endif
                     @else 
 
-                        @if (auth()->user()->permission->sale['pos_edit'] == '1') 
+                        @if (!auth()->user()->can('pos_edit')) 
 
                             <a class="footer_btn btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}"> Edit</a>
                         @endif
                     @endif
                 @endif
 
-                @if (auth()->user()->permission->sale['shipment_access'] == '1') 
+                @if (!auth()->user()->can('shipment_access')) 
                     <button type="button" id="print_packing_slip" href="{{ route('sales.packing.slip', $sale->id) }}"
                     class="footer_btn btn btn-sm btn-success action_hideable">Print Packing Slip</button>
                 @endif

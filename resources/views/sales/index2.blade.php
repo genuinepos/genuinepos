@@ -107,7 +107,7 @@
                                     <h6>All Sale</h6>
                                 </div>
 
-                                @if (auth()->user()->permission->sale['create_add_sale'] == '1')
+                                @if (!auth()->user()->can('create_add_sale'))
                                     <div class="col-md-2 d-flex justify-content-end">
                                         <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
                                     </div>
@@ -187,7 +187,7 @@
         </div>
     </div>
 
-    @if (auth()->user()->permission->sale['sale_payment'] == '1')
+    @if (!auth()->user()->can('sale_payment'))
         <!--Payment View modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">

@@ -35,12 +35,12 @@ class CustomerUtil
 
                 $html .= '<a class="dropdown-item" id="money_receipt_list" href="' . route('money.receipt.voucher.list', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Payment Receipt Voucher</a>';
 
-                if (auth()->user()->permission->contact['customer_edit'] == '1') {
+                if (!auth()->user()->can('customer_edit')) {
 
                     $html .= '<a class="dropdown-item" href="' . route('contacts.customer.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
                 }
 
-                if (auth()->user()->permission->contact['customer_delete'] == '1') {
+                if (!auth()->user()->can('customer_delete')) {
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.customer.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }

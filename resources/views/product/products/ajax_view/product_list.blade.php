@@ -1,7 +1,7 @@
 <table id="kt_datatable" class="table table-bordered table-striped">
     <thead>
         <tr class="text-left bg-navey-blue">
-            @if (auth()->user()->permission->product['product_delete']  == '1')
+            @if (auth()->user()->can('product_delete'))
                 <th data-bSortable="false">
                     <input class="all" type="checkbox" name="all_checked"/>
                 </th>
@@ -24,7 +24,7 @@
     <tbody>
         @foreach ($products as $product)
             <tr data-info="{{ $product }}" class="clickable_row text-left">
-                @if (auth()->user()->permission->product['product_delete']  == '1')
+                @if (auth()->user()->can('product_delete'))
                     <td>
                         <input id="{{ $loop->index }}" class="data_id" type="checkbox" name="data_ids[]" value="{{ $product->id }}"/>
                     </td>
@@ -40,11 +40,11 @@
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                             <a class="dropdown-item" id="check_pur_and_gan_bar_button" href="{{ route('products.check.purchase.and.generate.barcode', $product->id) }}"><i class="fas fa-barcode mr-1 text-primary"></i>Barcode</a>
                             <a class="dropdown-item details_button" href="#"><i class="far fa-eye mr-1 text-primary"></i>View</a>
-                            @if (auth()->user()->permission->product['product_edit']  == '1')
+                            @if (auth()->user()->can('product_edit'))
                                 <a class="dropdown-item" href="{{ route('products.edit', $product->id) }}"><i class="far fa-edit mr-1 text-primary"></i>Edit</a>
                             @endif
 
-                            @if (auth()->user()->permission->product['product_delete']  == '1')
+                            @if (auth()->user()->can('product_delete'))
                                 <a class="dropdown-item" id="delete" href="{{ route('products.delete', $product->id) }}"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>
                             @endif
 
@@ -54,7 +54,7 @@
                                 <a class="dropdown-item" id="change_status" href="{{ route('products.change.status', $product->id) }}"><i class="far fa-thumbs-down mr-1 text-danger"></i>Change Status</a>
                             @endif
 
-                            @if (auth()->user()->permission->product['openingStock_add']  == '1')
+                            @if (auth()->user()->can('openingStock_add'))
                                 <a class="dropdown-item" id="opening_stock" href="{{ route('products.opening.stock', $product->id) }}"><i class="fas fa-database mr-1 text-primary"></i>Add or edit opening stock</a>
                             @endif
                         </div>
@@ -113,7 +113,7 @@
     <tfoot>
         <tr>
             <th colspan="12">
-                @if (auth()->user()->permission->product['product_delete'])
+                @if (auth()->user()->can('product_delete'))
                     <a href="" class="btn btn-sm btn-danger multipla_delete_btn">Delete Selected</a>
                 @endif
                 <a href="" class="btn btn-sm btn-primary">Remove Form Branch</a>

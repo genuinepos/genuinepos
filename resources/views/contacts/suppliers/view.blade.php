@@ -54,7 +54,7 @@
                                     </a>
                                 </li>
 
-                                @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
+                                @if (!auth()->user()->can('purchase_payment'))
                                     <li>
                                         <a id="tab_btn" data-show="payments" class="tab_btn" href="#">
                                             <i class="far fa-money-bill-alt"></i> Payments
@@ -497,7 +497,7 @@
                             </div>
                         </div>
 
-                        @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
+                        @if (!auth()->user()->can('purchase_payment'))
                             <div class="tab_contant payments d-none">
 
                                 <div class="row">
@@ -652,7 +652,7 @@
         @csrf
     </form>
 
-    @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
+    @if (!auth()->user()->can('purchase_payment'))
         <!--Payment list modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
@@ -880,7 +880,7 @@
             }
         });
 
-        @if (auth()->user()->permission->purchase['purchase_payment'] == '1')
+        @if (!auth()->user()->can('purchase_payment'))
 
             var payments_table = $('.payments_table').DataTable({
                 "processing": true,

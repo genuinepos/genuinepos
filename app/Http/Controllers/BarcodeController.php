@@ -19,7 +19,7 @@ class BarcodeController extends Controller
     // Generate barcode index view 
     public function index()
     {
-        if (auth()->user()->permission->product['generate_barcode'] == '0') {
+        if (!auth()->user()->can('generate_barcode')) {
             abort(403, 'Access Forbidden.');
         }
 

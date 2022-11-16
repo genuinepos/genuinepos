@@ -79,7 +79,7 @@ class CashRegisterController extends Controller
     // cash register Details
     public function cashRegisterDetails()
     {
-        if (auth()->user()->permission->register['register_view'] == '0') {
+        if (!auth()->user()->can('register_view')) {
 
             return 'Access Forbidden';
         }
@@ -107,7 +107,7 @@ class CashRegisterController extends Controller
     // Cash Register Details For Report
     public function cashRegisterDetailsForReport($crId)
     {
-        if (auth()->user()->permission->register['register_view'] == '0') {
+        if (!auth()->user()->can('register_view')) {
 
             return 'Access Forbidden';
         }

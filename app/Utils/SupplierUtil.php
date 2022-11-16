@@ -25,12 +25,12 @@ class SupplierUtil
 
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.supplier.view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
 
-                if (auth()->user()->permission->contact['supplier_edit'] == '1') :
+                if (!auth()->user()->can('supplier_edit')) :
 
                     $html .= '<a class="dropdown-item" href="' . route('contacts.supplier.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
                 endif;
 
-                if (auth()->user()->permission->contact['supplier_delete'] == '1') :
+                if (!auth()->user()->can('supplier_delete')) :
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.supplier.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 endif;
@@ -167,12 +167,12 @@ class SupplierUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                             <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
-                if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
+                if (!auth()->user()->can('purchase_edit')) {
 
                     $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'purchased']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
                 }
 
-                if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
+                if (!auth()->user()->can('purchase_delete')) {
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
@@ -181,7 +181,7 @@ class SupplierUtil
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
+                    if (!auth()->user()->can('purchase_payment')) {
 
                         if ($row->due > 0) {
 
@@ -197,7 +197,7 @@ class SupplierUtil
 
                 $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
 
-                if (auth()->user()->permission->purchase['purchase_return'] == '1') {
+                if (!auth()->user()->can('purchase_return')) {
 
                     $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
                 }
@@ -480,7 +480,7 @@ class SupplierUtil
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->permission->purchase['purchase_payment'] == '1') {
+                    if (!auth()->user()->can('purchase_payment')) {
 
                         if ($row->due > 0) {
 
@@ -488,13 +488,13 @@ class SupplierUtil
                         } 
                     }
 
-                    if (auth()->user()->permission->purchase['purchase_edit'] == '1') {
+                    if (!auth()->user()->can('purchase_edit')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
                 }
 
-                if (auth()->user()->permission->purchase['purchase_delete'] == '1') {
+                if (!auth()->user()->can('purchase_delete')) {
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }

@@ -29,7 +29,7 @@ class BranchController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        if (auth()->user()->permission->setup['branch'] == '0') {
+        if (!auth()->user()->can('branch')) {
 
             abort(403, 'Access Forbidden.');
         }

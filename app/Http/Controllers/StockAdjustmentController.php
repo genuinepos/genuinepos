@@ -49,7 +49,7 @@ class StockAdjustmentController extends Controller
     // Index view of stock adjustment
     public function index(Request $request)
     {
-        if (auth()->user()->permission->s_adjust['adjustment_all'] == '0') {
+        if (!auth()->user()->can('adjustment_all')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -114,7 +114,7 @@ class StockAdjustmentController extends Controller
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="' . route('stock.adjustments.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
-                    if (auth()->user()->permission->s_adjust['adjustment_delete'] == '1') {
+                    if (auth()->user()->can('adjustment_delete')) {
 
                         if (auth()->user()->branch_id == $row->branch_id) {
 
@@ -192,7 +192,7 @@ class StockAdjustmentController extends Controller
     // Stock adjustment create view
     public function create()
     {
-        if (auth()->user()->permission->s_adjust['adjustment_add_from_location'] == '0') {
+        if (!auth()->user()->can('adjustment_add_from_location')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -216,7 +216,7 @@ class StockAdjustmentController extends Controller
 
     public function createFromWarehouse()
     {
-        if (auth()->user()->permission->s_adjust['adjustment_add_from_warehouse'] == '0') {
+        if (!auth()->user()->can('adjustment_add_from_warehouse')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -252,13 +252,13 @@ class StockAdjustmentController extends Controller
     {
         if (isset($request->warehouse_count)) {
 
-            if (auth()->user()->permission->s_adjust['adjustment_add_from_warehouse'] == '0') {
+            if (!auth()->user()->can('adjustment_add_from_warehouse')) {
 
                 return response()->json('Access Denied.');
             }
         } else {
 
-            if (auth()->user()->permission->s_adjust['adjustment_add_from_location'] == '0') {
+            if (!auth()->user()->can('adjustment_add_from_location')) {
 
                 return response()->json('Access Denied.');
             }

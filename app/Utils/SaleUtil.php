@@ -647,7 +647,7 @@ class SaleUtil
                 ->orderBy('sales.report_date', 'desc');
         } else {
 
-            if ($userPermission->sale['view_own_sale'] == '1') {
+            if (auth()->user()->can('view_own_sale')) {
 
                 $query->where('sales.admin_id', auth()->user()->id);
             }
@@ -667,17 +667,17 @@ class SaleUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
-                if ($userPermission->sale['shipment_access'] == '1') {
+                if (auth()->user()->can('shipment_access')) {
 
                     $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="fas fa-file-alt text-primary"></i> Packing Slip</a>';
                 }
 
-                if ($userPermission->sale['shipment_access'] == '1') {
+                if (auth()->user()->can('shipment_access')) {
 
                     $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
 
-                // if ($userPermission->sale['sale_payment'] == '1') {
+                // if (auth()->user()->can('sale_payment')) {
 
                 //     if ($row->due > 0) {
 
@@ -685,7 +685,7 @@ class SaleUtil
                 //     }
                 // }
 
-                // if ($userPermission->sale['sale_payment'] == '1') {
+                // if (auth()->user()->can('sale_payment')) {
 
                 //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
                 //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
@@ -694,7 +694,7 @@ class SaleUtil
 
                 // if ($row->sale_return_due > 0) {
 
-                //     if ($userPermission->sale['sale_payment'] == '1') {
+                //     if (auth()->user()->can('sale_payment')) {
 
                 //         $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                 //     }
@@ -702,13 +702,13 @@ class SaleUtil
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if ($userPermission->sale['edit_add_sale'] == '1') {
+                    if (auth()->user()->can('edit_add_sale')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
                 }
 
-                if ($userPermission->sale['delete_add_sale'] == '1') {
+                if (auth()->user()->can('delete_add_sale')) {
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
@@ -793,7 +793,7 @@ class SaleUtil
                 ->orderBy('sales.report_date', 'desc');
         } else {
 
-            if (auth()->user()->permission->sale['view_own_sale'] == '1') {
+            if (!auth()->user()->can('view_own_sale')) {
 
                 $query->where('sales.admin_id', auth()->user()->id);
             }
@@ -817,12 +817,12 @@ class SaleUtil
 
                 $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="fas fa-file-alt text-primary"></i> Packing Slip</a>';
 
-                if (auth()->user()->permission->sale['shipment_access'] == '1') {
+                if (!auth()->user()->can('shipment_access')) {
 
                     $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
 
-                // if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                // if (!auth()->user()->can('sale_payment')) {
 
                 //     if ($row->due > 0) {
 
@@ -830,14 +830,14 @@ class SaleUtil
                 //     }
                 // }
 
-                // if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                // if (!auth()->user()->can('sale_payment')) {
 
                 //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal" data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
                 // }
 
                 // if ($row->sale_return_due > 0) {
 
-                //     if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                //     if (!auth()->user()->can('sale_payment')) {
 
                 //         $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                 //     }
@@ -845,13 +845,13 @@ class SaleUtil
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->permission->sale['pos_edit'] == '1') {
+                    if (!auth()->user()->can('pos_edit')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
                 }
 
-                if (auth()->user()->permission->sale['pos_delete'] == '1') {
+                if (!auth()->user()->can('pos_delete')) {
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
@@ -940,7 +940,7 @@ class SaleUtil
                 ->orderBy('sales.report_date', 'desc');
         } else {
 
-            if ($userPermission->sale['view_own_sale'] == '1') {
+            if (auth()->user()->can('view_own_sale')) {
 
                 $query->where('sales.admin_id', auth()->user()->id);
             }
@@ -960,7 +960,7 @@ class SaleUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
-                // if ($userPermission->sale['sale_payment'] == '1') {
+                // if (auth()->user()->can('sale_payment')) {
 
                 //     if ($row->due > 0) {
 
@@ -968,7 +968,7 @@ class SaleUtil
                 //     }
                 // }
 
-                // if ($userPermission->sale['sale_payment'] == '1') {
+                // if (auth()->user()->can('sale_payment')) {
 
                 //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
                 //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
@@ -977,13 +977,13 @@ class SaleUtil
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if ($userPermission->sale['edit_add_sale'] == '1') {
+                    if (auth()->user()->can('edit_add_sale')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
                 }
 
-                if ($userPermission->sale['delete_add_sale'] == '1') {
+                if (auth()->user()->can('delete_add_sale')) {
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
@@ -1130,7 +1130,7 @@ class SaleUtil
             $saleProducts = $query->orderBy('sales.report_date', 'desc');
         } else {
 
-            if (auth()->user()->permission->sale['view_own_sale'] == '1') {
+            if (!auth()->user()->can('view_own_sale')) {
 
                 $query->where('sales.admin_id', auth()->user()->id);
             }

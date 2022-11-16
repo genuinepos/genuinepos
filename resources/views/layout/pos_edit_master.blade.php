@@ -233,7 +233,7 @@
     </div>
     <!-- Edit selling product modal end-->
 
-    @if (auth()->user()->permission->product['product_add'] == '1')
+    @if (!auth()->user()->can('product_add'))
         <!--Add Product Modal-->
         <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
@@ -304,11 +304,11 @@
 
                         <div class="form-group">
                             <label> <strong>Unit Price Exc.Tax</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" {{ auth()->user()->permission->sale['edit_price_pos_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" value=""/>
+                            <input type="number" {{ !auth()->user()->can('edit_price_pos_screen') ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" value=""/>
                             <span class="error error_e_unit_price"></span>
                         </div>
 
-                        @if (auth()->user()->permission->sale['edit_discount_pos_screen'] == '1')
+                        @if (!auth()->user()->can('edit_discount_pos_screen'))
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label><strong>Discount Type</strong>  :</label>

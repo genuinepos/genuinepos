@@ -21,7 +21,7 @@ class BrandController extends Controller
     // Brand main page/index page
     public function index(Request $request)
     {
-        if (auth()->user()->permission->product['brand'] == '0') {
+        if (!auth()->user()->can('brand')) {
 
             abort(403, 'Access Forbidden.');
         }

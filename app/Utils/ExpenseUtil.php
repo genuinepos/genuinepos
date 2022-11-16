@@ -89,12 +89,12 @@ class ExpenseUtil
 
                 if (auth()->user()->branch_id == $row->branch_id) :
                     
-                    if (auth()->user()->permission->expense['edit_expense'] == '1') :
+                    if (!auth()->user()->can('edit_expense')) :
 
                         $html .= '<a class="dropdown-item" href="' . route('expanses.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     endif;
 
-                    if (auth()->user()->permission->expense['delete_expense'] == '1') :
+                    if (!auth()->user()->can('delete_expense')) :
 
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('expanses.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     endif;

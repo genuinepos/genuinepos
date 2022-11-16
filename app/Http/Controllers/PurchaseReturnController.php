@@ -61,7 +61,7 @@ class PurchaseReturnController extends Controller
     // Sale return index view
     public function index(Request $request)
     {
-        if (auth()->user()->permission->purchase['purchase_return'] == '0') {
+        if (!auth()->user()->can('purchase_return')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -237,7 +237,7 @@ class PurchaseReturnController extends Controller
     // create purchase return view
     public function create($purchaseId)
     {
-        if (auth()->user()->permission->purchase['purchase_return'] == '0') {
+        if (!auth()->user()->can('purchase_return')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -423,7 +423,7 @@ class PurchaseReturnController extends Controller
 
     public function supplierReturn()
     {
-        if (auth()->user()->permission->purchase['purchase_return'] == '0') {
+        if (!auth()->user()->can('purchase_return')) {
 
             abort(403, 'Access Forbidden.');
         }

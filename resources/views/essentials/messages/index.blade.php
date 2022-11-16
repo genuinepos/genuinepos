@@ -25,25 +25,25 @@
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul class="list-unstyled">
-                                        @if (auth()->user()->permission->essential['assign_todo'] == '1')
+                                        @if (!auth()->user()->can('assign_todo'))
                                             <li>
                                                 <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>@lang('menu.todo')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->permission->essential['work_space'] == '1')
+                                        @if (!auth()->user()->can('work_space'))
                                             <li>
                                                 <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>@lang('menu.work_space')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->permission->essential['memo'] == '1')
+                                        @if (!auth()->user()->can('memo'))
                                             <li>
                                                 <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.memo')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->permission->essential['msg'] == '1')
+                                        @if (!auth()->user()->can('msg'))
                                             <li>
                                                 <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope text-primary"></i> <b>@lang('menu.message')</b></a>
                                             </li>

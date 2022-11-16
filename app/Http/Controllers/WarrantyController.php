@@ -18,7 +18,7 @@ class WarrantyController extends Controller
     // Warranty main page/index page
     public function index()
     {
-        if (auth()->user()->permission->product['warranties'] == '0') {
+        if (!auth()->user()->can('warranties')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -36,7 +36,7 @@ class WarrantyController extends Controller
     // Store warranty
     public function store(Request $request)
     {
-        if (auth()->user()->permission->product['warranties'] == '0') {
+        if (!auth()->user()->can('warranties')) {
 
             return response()->json('Access Denied');
         }
@@ -65,7 +65,7 @@ class WarrantyController extends Controller
     // Update warranty
     public function update(Request $request)
     {
-        if (auth()->user()->permission->product['warranties'] == '0') {
+        if (!auth()->user()->can('warranties')) {
 
             return response()->json('Access Denied');
         }
@@ -96,7 +96,7 @@ class WarrantyController extends Controller
     // Delete warranty
     public function delete(Request $request, $warrantyId)
     {
-        if (auth()->user()->permission->product['warranties'] == '0') {
+        if (!auth()->user()->can('warranties')) {
 
             return response()->json('Access Denied');
         }

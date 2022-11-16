@@ -135,7 +135,7 @@ class TodoController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        if (auth()->user()->permission->essential['assign_todo'] == '0') {
+        if (!auth()->user()->can('assign_todo')) {
             
             return response()->json(['errorMsg' => 'You do\'t have any permission to assign the todo.']);
         }

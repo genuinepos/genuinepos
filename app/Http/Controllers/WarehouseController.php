@@ -17,7 +17,7 @@ class WarehouseController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->permission->setup['warehouse'] == '0') : abort(403, 'Access Forbidden.');
+        if (!auth()->user()->can('warehouse')) : abort(403, 'Access Forbidden.');
         endif;
 
         if ($request->ajax()) {

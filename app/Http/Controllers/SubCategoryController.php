@@ -23,7 +23,7 @@ class SubCategoryController extends Controller
     // Get all sub-categories by index page
     public function index(Request $request)
     {
-        if (auth()->user()->permission->product['categories'] == '0') {
+        if (!auth()->user()->can('categories')) {
 
             return response()->json('Access Denied');
         }
@@ -60,7 +60,7 @@ class SubCategoryController extends Controller
     //edit
     public function edit($id)
     {
-        if (auth()->user()->permission->product['categories'] == '0') {
+        if (!auth()->user()->can('categories')) {
 
             return response()->json('Access Denied');
         }
@@ -72,7 +72,7 @@ class SubCategoryController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->permission->product['categories'] == '0') {
+        if (!auth()->user()->can('categories')) {
 
             return response()->json('Access Denied');
         }
@@ -119,7 +119,7 @@ class SubCategoryController extends Controller
 
     public function update(Request $request)
     {
-        if (auth()->user()->permission->product['categories'] == '0') {
+        if (!auth()->user()->can('categories')) {
 
             return response()->json('Access Denied');
         }
@@ -173,7 +173,7 @@ class SubCategoryController extends Controller
     {
         return response()->json('Feature is disabled in this demo');
 
-        if (auth()->user()->permission->product['categories'] == '0') {
+        if (!auth()->user()->can('categories')) {
 
             return response()->json('Access Denied');
         }

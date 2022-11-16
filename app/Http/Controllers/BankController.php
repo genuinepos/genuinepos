@@ -18,7 +18,7 @@ class BankController extends Controller
     // Bank main page/index page
     public function index()
     {
-        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+        if (!auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }

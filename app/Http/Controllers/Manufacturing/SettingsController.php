@@ -15,7 +15,7 @@ class SettingsController extends Controller
 
     public function index()
     {
-        if (auth()->user()->permission->manufacturing['manuf_settings'] == '0') {
+        if (!auth()->user()->can('manuf_settings')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -25,7 +25,7 @@ class SettingsController extends Controller
     // Add tax settings
     public function store(Request $request)
     {
-        if (auth()->user()->permission->manufacturing['manuf_settings'] == '0') {
+        if (!auth()->user()->can('manuf_settings')) {
             return response()->json('Access Denied');
         }
 

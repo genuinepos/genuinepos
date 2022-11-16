@@ -18,7 +18,7 @@
 
                     <div class="p-3">
                         <div class="row g-3">
-                            @if (auth()->user()->permission->product['brand'] == '1')
+                            @if (!auth()->user()->can('brand'))
                                 <div class="col-md-4">
                                     <div class="card" id="add_form">
                                         <div class="section-header">

@@ -26,25 +26,25 @@
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul>
-                                        @if (auth()->user()->permission->manufacturing['process_view'] == '1')
+                                        @if (!auth()->user()->can('process_view'))
                                             <li>
                                                 <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>@lang('menu.process')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->permission->manufacturing['production_view'] == '1')
+                                        @if (!auth()->user()->can('production_view'))
                                             <li>
                                                 <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>@lang('menu.productions')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->permission->manufacturing['manuf_settings'] == '1')
+                                        @if (!auth()->user()->can('manuf_settings'))
                                             <li>
                                                 <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h"></i> <b>@lang('menu.manufacturing_setting')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->permission->manufacturing['manuf_report'] == '1')
+                                        @if (!auth()->user()->can('manuf_report'))
                                             <li>
                                                 <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt text-primary"></i> <b>@lang('menu.manufacturing_report')</b></a>
                                             </li>
@@ -187,7 +187,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6"><h6>Productions</h6></div>
-                                @if (auth()->user()->permission->manufacturing['production_add'] == '1')
+                                @if (!auth()->user()->can('production_add'))
                                     <div class="col-md-6">
                                         <div class="btn_30_blue float-end">
                                             <a href="{{ route('manufacturing.productions.create') }}"><i class="fas fa-plus-square"></i> Add</a>

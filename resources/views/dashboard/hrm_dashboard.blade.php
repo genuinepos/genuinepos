@@ -19,13 +19,13 @@
                                 <a href="" class="text-primary"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>
                             </li>
 
-                            @if (auth()->user()->permission->hrms['leave_type'] == '1')
+                            @if (!auth()->user()->can('leave_type'))
                                 <li>
                                     <a href="{{ route('hrm.leave.type') }}" class="text-dark text-muted"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
                                 </li>
                             @endif
 
-                            @if (auth()->user()->permission->hrms['leave_approve'] == '1')
+                            @if (!auth()->user()->can('leave_approve'))
                                 <li>
                                     <a href="{{ route('hrm.leave') }}" class="text-dark text-muted"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
                                 </li>

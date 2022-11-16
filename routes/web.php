@@ -93,8 +93,7 @@ use App\Http\Controllers\Report\StockAdjustmentReportController;
 use App\Http\Controllers\Report\UserActivityLogReportController;
 use App\Http\Controllers\ReceiveTransferBranchToBranchController;
 use App\Http\Controllers\Report\SaleRepresentativeReportController;
-
-
+use App\Mail\WelcomeUserMail;
 
 if (env('APP_DEBUG') === true) {
     include_once __DIR__ . '/dev_routes.php';
@@ -1119,7 +1118,7 @@ Route::get('pin_login', function () {
 });
 
 Route::get('/test', function () {
-
+    
     //return str_pad(10, 10, "0", STR_PAD_LEFT);
     // $purchases = Purchase::all();
     // foreach ($purchases as $p) {

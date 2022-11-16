@@ -1,6 +1,22 @@
 <?php
 
+use App\Models\Purchase;
+use App\Models\AdminAndUser;
+use App\Mail\WelcomeUserMail;
+use Doctrine\DBAL\Types\Type;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('test-mail', function() {
+    $data = [
+        'name' => 'Mr. Random',
+        'message' => 'Your random message goes here',
+    ];
+    \Mail::to('random@gmai.com')->send(new WelcomeUserMail($data));
+    return 'Sent at: ' . now();
+});
 
 Route::get('route-list', function () {
     if (env('APP_DEBUG') === true) {

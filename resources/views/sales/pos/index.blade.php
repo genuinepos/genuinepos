@@ -11,28 +11,16 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
+                                <span class="fas fa-tasks"></span>
                                 <h6>@lang('menu.pos_sales')</h6>
                             </div>
-                            <div class="d-flex">
-                                <div id="exportButtonsContainer">
-                                    @if (auth()->user()->can('purchase_add'))
-                                        <a href="{{ route('sales.create') }}"  class="btn text-white btn-sm">
-                                            <i class="fa-thin fa-circle-plus fa-2x"></i><br>@lang('menu.new_order')</a>
-                                    @endif
-                                </div>
-                                <a href="#" class="btn text-white btn-sm d-lg-block d-none"><span class="fas fa-thin fa-circle-question fa-2x"></span><br>@lang('menu.help')</a>
-                            </div>
-                            <div>
-                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm  float-end back-button"><i
-                                    class="fa-thin fa-left-to-line fa-2x"></i>
-                                <br>@lang('menu.back')
-                                </a>
-                            </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
+                                class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
-                        <div class="p-15">
+                        <div class="p-3">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="form_element m-0 rounded">
+                                    <div class="form_element mt-0 mb-3 rounded">
                                         <div class="element-body">
                                             <form id="filter_button">
                                                 <div class="form-group row">
@@ -99,7 +87,7 @@
                                                     <div class="col-xl-2 col-md-4">
                                                         <label><strong></strong></label>
                                                         <div class="input-group">
-                                                            <button type="submit" id="filter_button" class="btn text-white btn-sm btn-filter float-start py-1 px-2"><i class="fa-solid fa-filter-list"></i> @lang('menu.filter')</button>
+                                                            <button type="submit" id="filter_button" class="btn btn-sm btn-secondary float-start py-1 px-2"><i class="fa-solid fa-filter-list"></i><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -110,7 +98,7 @@
                             </div>
 
                             <div class="row g-0">
-                                <div class="card mt-1">
+                                <div class="card">
                                     <div class="widget_content">
                                         <div class="data_preloader">
                                             <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')</h6>
@@ -246,9 +234,9 @@
             "serverSide": true,
             dom: "lBfrtip",
             buttons: [
-                {extend: 'pdf',text: '<i class="fa-thin fa-file-pdf fa-2x"></i><br>@lang('menu.pdf')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
-                {extend: 'excel',text: '<i class="fa-thin fa-file-excel fa-2x"></i><br>@lang('menu.excel')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
-                {extend: 'print',text: '<i class="fa-thin fa-print fa-2x"></i><br>@lang('menu.print')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> @lang('menu.pdf')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> @lang('menu.excel')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+                {extend: 'print',text: '<i class="fas fa-print"></i> @lang('menu.print')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
             "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
@@ -294,8 +282,6 @@
                 $('.data_preloader').hide();
             }
         });
-
-        sales_table.buttons().container().appendTo('#exportButtonsContainer');
 
         function sum_table_col(table, class_name) {
             var sum = 0;

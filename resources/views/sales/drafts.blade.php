@@ -17,11 +17,13 @@
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
+                    </div>
 
+                    <div class="p-3">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
                                         <form id="filter_form">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
@@ -85,19 +87,14 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
                                     <h6>All Drafts </h6>
                                 </div>
                                 @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                    <div class="col-md-2">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('sales.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
+                                    <div class="col-md-2 d-flex justify-content-end">
+                                        <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>
                                 @endif
                             </div>

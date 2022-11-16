@@ -14,108 +14,103 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-plus-square"></span>
+                    <h5>Add Stock Adjustment <small>(From Warehouse)</small></h5>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back') </a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="add_adjustment_form" action="{{ route('stock.adjustments.store') }}" method="POST">
                 @csrf
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h5>Add Stock Adjustment <small>(From Warehouse)</small></h5>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back') </a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>Warehouse :</b>
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <div class="col-8">
+                                            <input type="hidden" name="warehouse_count" value="YES">
+                                            <select class="form-control changeable add_input"
+                                                name="warehouse_id" data-name="Warehouse" id="warehouse_id" autofocus>
+                                                <option value="">Select Warehouse</option>
+                                                @foreach ($warehouses as $w)
+                                                    <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_warehouse_id"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>Adjust. A/C :
+                                            <span class="text-danger">*</span></b>
+                                        </label>
+                                        <div class="col-8">
+                                            <select name="adjustment_account_id" class="form-control add_input"
+                                                id="adjustment_account_id" data-name="Stock Adjustiment A/C">
+
+                                                @foreach ($stockAdjustmentAccounts as $stockAdjustmentAccount)
+
+                                                    <option value="{{ $stockAdjustmentAccount->id }}">
+                                                        {{ $stockAdjustmentAccount->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_adjustiment_account_id"></span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Warehouse :</b>
-                                                    <span class="text-danger">*</span>
-                                                </label>
-                                                <div class="col-8">
-                                                    <input type="hidden" name="warehouse_count" value="YES">
-                                                    <select class="form-control changeable add_input"
-                                                        name="warehouse_id" data-name="Warehouse" id="warehouse_id" autofocus>
-                                                        <option value="">Select Warehouse</option>
-                                                        @foreach ($warehouses as $w)
-                                                            <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_warehouse_id"></span>
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
 
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"><b>Adjust. A/C :
-                                                    <span class="text-danger">*</span></b>
-                                                </label>
-                                                <div class="col-8">
-                                                    <select name="adjustment_account_id" class="form-control add_input"
-                                                        id="adjustment_account_id" data-name="Stock Adjustiment A/C">
+                                        <label class=" col-4"><b>Voucher No :</b>
+                                            <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i>
+                                        </label>
 
-                                                        @foreach ($stockAdjustmentAccounts as $stockAdjustmentAccount)
-
-                                                            <option value="{{ $stockAdjustmentAccount->id }}">
-                                                                {{ $stockAdjustmentAccount->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_adjustiment_account_id"></span>
-                                                </div>
-                                            </div>
+                                        <div class="col-8">
+                                            <input type="text" name="invoice_id" id="invoice_id"
+                                                class="form-control" placeholder="Voucher No">
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>Adjust. Date :</b>
+                                            <span class="text-danger">*</span>
+                                        </label>
 
-                                                <label class=" col-4"><b>Voucher No :</b>
-                                                    <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i>
-                                                </label>
-
-                                                <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id"
-                                                        class="form-control" placeholder="Voucher No">
-                                                </div>
-                                            </div>
+                                        <div class="col-8">
+                                            <input type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                            <span class="error error_date"></span>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class=" col-4"><b>Adjust. Date :</b>
-                                                    <span class="text-danger">*</span>
-                                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class=" col-4"> <b>Type :</b> <span class="text-danger">*</span>
+                                            <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i>
+                                        </label>
 
-                                                <div class="col-8">
-                                                    <input type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
-                                                    <span class="error error_date"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class=" col-4"> <b>Type :</b> <span class="text-danger">*</span>
-                                                    <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i>
-                                                </label>
-
-                                                <div class="col-8">
-                                                    <select name="type" data-name="Adjustment type"
-                                                        class="form-control add_input" title="Select branch" id="type">
-                                                        <option value="">Select Type</option>
-                                                        <option value="1">Normal</option>
-                                                        <option value="2">Abnormal</option>
-                                                    </select>
-                                                    <span class="error error_type"></span>
-                                                </div>
-                                            </div>
+                                        <div class="col-8">
+                                            <select name="type" data-name="Adjustment type"
+                                                class="form-control add_input" title="Select branch" id="type">
+                                                <option value="">Select Type</option>
+                                                <option value="1">Normal</option>
+                                                <option value="2">Abnormal</option>
+                                            </select>
+                                            <span class="error error_type"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +120,7 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
+                    <div class="sale-content mb-3">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
@@ -184,10 +179,10 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="row">
+                <section>
+                    <div class="row g-3">
                         <div class="col-md-6">
-                            <div class="form_element">
+                            <div class="form_element rounded m-0">
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -227,7 +222,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="form_element">
+                            <div class="form_element rounded m-0">
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -287,11 +282,13 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area">
+                <div class="submit_button_area mt-3">
                     <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button name="save" value="save" class="btn btn-sm btn-success submit_button float-end">Save</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button name="save" value="save" class="btn btn-sm btn-success submit_button float-end">Save</button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
   <!-- Details Modal -->
   <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-    <div class="modal-dialog modal-full-display">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content" >
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">
@@ -36,17 +36,17 @@
                             <li>
                                 <strong>Business Location : </strong> {{ $quotation->branch->name.'/'.$quotation->branch->branch_code }}
                             </li>
-                            <li><strong>Phone : </strong> {{ $quotation->branch->phone }}</li> 
-                            <li><strong>Address : </strong> 
+                            <li><strong>Phone : </strong> {{ $quotation->branch->phone }}</li>
+                            <li><strong>Address : </strong>
                                 {{ $quotation->branch->name }}/{{ $quotation->branch->branch_code }},
                                 {{ $quotation->branch->city }}, {{ $quotation->branch->state }},
                                 {{ $quotation->branch->zip_code }}, {{ $quotation->branch->country }}
                             </li>
-                        @else 
-                            <li><strong>Business Location : </strong> 
+                        @else
+                            <li><strong>Business Location : </strong>
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
                             </li>
-                            <li><strong>Phone : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li> 
+                            <li><strong>Phone : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li>
                             <li><strong>Address : </strong> <span>{{ json_decode($generalSettings->business, true)['address'] }}</span></li>
                         @endif
                     </ul>
@@ -95,7 +95,7 @@
                                 } elseif ($quotation->admin->role_type == 3) {
                                     $admin_role = '(' . $quotation->admin->role->name . ')';
                                 }
-                            
+
                                 $prefix = $quotation->admin ? $quotation->admin->prefix : '';
                                 $name = $quotation->admin ? $quotation->admin->name : '';
                                 $lastName = $quotation->admin ? $quotation->admin->last_name : '';
@@ -131,11 +131,11 @@
                                     <td class="text-start">
                                         @if ($saleProduct->stock_warehouse_id)
                                             {{ $saleProduct->warehouse->warehouse_name.'/'.$saleProduct->warehouse->warehouse_code }}
-                                        @else 
+                                        @else
                                             @if ($saleProduct->stock_branch_id)
 
                                                 {{ $saleProduct->branch->name.'/'.$saleProduct->branch->branch_code }}
-                                            @else 
+                                            @else
 
                                                 {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                             @endif
@@ -176,7 +176,7 @@
                                     {{ $quotation->net_total_amount }}
                             </td>
                         </tr>
-    
+
                         <tr>
                             <th class="text-start">Order Discount</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
@@ -186,21 +186,21 @@
                                 {{ App\Utils\Converter::format_in_bdt($quotation->order_discount_amount) . $discount_type }}
                             </td>
                         </tr>
-    
+
                         <tr>
                             <th class="text-start">Order Tax</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                     {{ App\Utils\Converter::format_in_bdt($quotation->order_tax_amount) . ' (' . $quotation->order_tax_percent . '%)' }}
                             </td>
                         </tr>
-    
+
                         <tr>
                             <th class="text-start">Shipment Charge</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                               {{ App\Utils\Converter::format_in_bdt($quotation->shipment_charge) }}
                             </td>
                         </tr>
-    
+
                         <tr>
                             <th class="text-start">Grand Total</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
@@ -212,7 +212,7 @@
                       </table>
                   </div>
               </div>
-          </div> 
+          </div>
           <hr class="p-0 m-0">
           <div class="row">
             <div class="col-md-6">
@@ -231,8 +231,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-          <button type="submit" id="print_payment" class="c-btn button-success print_btn">Print</button>
+          <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+          <button type="submit" id="print_payment" class="btn btn-sm btn-success print_btn">Print</button>
         </div>
       </div>
     </div>
@@ -260,7 +260,7 @@
                             @if ($quotation->branch->add_sale_invoice_layout->show_shop_logo == 1)
                                 @if ($quotation->branch)
                                     <img style="height: 75px; width:200px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch->logo) }}">
-                                @else 
+                                @else
                                     <img style="height: 75px; width:200px;" src="{{asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
                                 @endif
                             @endif
@@ -290,7 +290,7 @@
                                     @if ($quotation->branch->add_sale_invoice_layout->branch_email)
                                         <p><b>Email</b> : {{ $quotation->branch->email }}</p>
                                     @endif
-                                @else 
+                                @else
                                     <h5 class="company_name">
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }}
                                     </h5>
@@ -315,7 +315,7 @@
                     </div>
                 </div>
             @endif
-            
+
             @if ($quotation->branch->add_sale_invoice_layout->is_header_less == 1)
                 @for ($i = 0; $i < $quotation->branch->add_sale_invoice_layout->gap_from_top; $i++)
                     <br/>
@@ -351,7 +351,7 @@
                         <ul class="list-unstyled">
                             <li><strong> Invoice No : </strong> {{ $quotation->invoice_id }}</li>
                             <li><strong> Date : </strong> <{{ $quotation->date . ' ' . $quotation->time }}</li>
-                            <li><strong> Entered By : </strong> {{ $quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }} 
+                            <li><strong> Entered By : </strong> {{ $quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}
                             </li>
                         </ul>
                     </div>
@@ -404,13 +404,13 @@
                                 <td class="text-start">{{ $sale_product->quantity }} ({{ $sale_product->unit }}) </td>
 
                                 <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                    {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $sale_product->unit_price_inc_tax }}
                                 </td>
 
                                 @if ($quotation->branch->add_sale_invoice_layout->product_discount)
 
-                                    <td class="text-start"> 
+                                    <td class="text-start">
                                         {{ App\Utils\Converter::format_in_bdt($sale_product->unit_discount_amount) }}
                                     </td>
                                 @endif
@@ -487,7 +487,7 @@
                                 <td class="text-start"><strong> Shipment charge : </strong></td>
                                 <td class="text-end">
                                     <b>
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                        {{ json_decode($generalSettings->business, true)['currency'] }}
                                         {{ number_format($quotation->shipment_charge, 2) }}
                                     </b>
                                 </td>
@@ -551,7 +551,7 @@
                     <div class="col-4 text-center">
                         <small>Print Date : {{ date('d/m/Y') }}</small>
                     </div>
-                    
+
                     @if (env('PRINT_SD_SALE') == true)
                         <div class="col-4 text-center">
                             <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($quotation->invoice_id, $generator::TYPE_CODE_128)) }}">
@@ -591,7 +591,7 @@
                             @if ($defaultLayout->show_shop_logo == 1)
                                 @if ($quotation->branch)
                                     <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch->logo) }}">
-                                @else 
+                                @else
                                     <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
                                 @endif
                             @endif
@@ -638,13 +638,13 @@
                                         <p><b>Email</b> : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                                     @endif
                                 @endif
-                                
+
                             </div>
                         </div>
                     </div>
                 </div>
             @endif
-            
+
             @if ($defaultLayout->is_header_less == 1)
                 @for ($i = 0; $i < $defaultLayout->gap_from_top; $i++)
                     <br/>
@@ -677,7 +677,7 @@
                             @endif
                         </ul>
                     </div>
-                    
+
                     <div class="col-lg-4">
                         @if ($defaultLayout->is_header_less == 1)
                             <div class="middle_header_text text-center">
@@ -742,7 +742,7 @@
 
                                 <td class="text-start">
                                     {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
-                                    {{ App\Utils\Converter::format_in_bdt($sale_product->unit_price_inc_tax) }} 
+                                    {{ App\Utils\Converter::format_in_bdt($sale_product->unit_price_inc_tax) }}
                                 </td>
 
                                 @if ($defaultLayout->product_discount)
@@ -776,7 +776,7 @@
                     </div>
                 </div>
             @endif
-            
+
             <div class="row">
                 <div class="col-md-6">
                     @if ($defaultLayout->show_total_in_word)
@@ -884,13 +884,13 @@
                     </div>
                 </div>
             </div>
-        
+
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-center">
                         <small>Print Date : {{ date('d/m/Y') }}</small>
                     </div>
-                    
+
                     @if (env('PRINT_SD_SALE') == true)
                         <div class="col-4 text-center">
                             <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($quotation->invoice_id, $generator::TYPE_CODE_128)) }}">

@@ -18,11 +18,14 @@
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
 
+                    </div>
+
+                    <div class="p-3">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form action="" method="get" class="px-2">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
+                                        <form action="" method="get">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -83,20 +86,15 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
                                     <h6>All Purchase Returns</h6>
                                 </div>
                                 @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                    <div class="col-md-2">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('purchases.returns.supplier.return') }}"><i
-                                                    class="fas fa-plus-square"></i> Add Return</a>
-                                        </div>
+                                    <div class="col-md-2 d-flex justify-content-end">
+                                        <a href="{{ route('purchases.returns.supplier.return') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add Return</a>
                                     </div>
                                 @endif
                             </div>
@@ -133,7 +131,6 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

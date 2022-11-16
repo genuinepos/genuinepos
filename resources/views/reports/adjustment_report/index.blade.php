@@ -12,160 +12,157 @@
 @section('title', 'Stock Adjustment Reports - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-sliders-h"></span>
-                                <h5>Stock Adjustment Report</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
-                        </div>
+        <div class="border-class">
+            <div class="main__content">
+                <div class="sec-name">
+                    <div class="name-head">
+                        <span class="fas fa-sliders-h"></span>
+                        <h5>Stock Adjustment Report</h5>
+                    </div>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                        <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                    </a>
+                </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-8">
-                                        <form id="filter_form">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @else
-                                                        <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                <div class="p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form_element rounded mt-0 mb-3">
+                                <div class="element-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <form id="filter_form">
+                                                <div class="form-group row">
+                                                    @if ($addons->branches == 1)
+                                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                            <div class="col-md-3">
+                                                                <label><strong>Business Location :</strong></label>
+                                                                <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
+                                                                    <option value="">All</option>
+                                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                    @foreach ($branches as $branch)
+                                                                        <option value="{{ $branch->id }}">
+                                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        @else
+                                                            <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                                        @endif
                                                     @endif
-                                                @endif
-                                                <div class="col-md-3">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1">
-                                                                <i class="fas fa-calendar-week input_i"></i>
-                                                            </span>
+                                                    <div class="col-md-3">
+                                                        <label><strong>From Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1">
+                                                                    <i class="fas fa-calendar-week input_i"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input type="text" name="from_date" id="datepicker"
+                                                                class="form-control from_date date"
+                                                                autocomplete="off">
                                                         </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date date"
-                                                            autocomplete="off">
                                                     </div>
-                                                </div>
 
-                                                <div class="col-md-3">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                    <div class="col-md-3">
+                                                        <label><strong>To Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"><i
+                                                                        class="fas fa-calendar-week input_i"></i></span>
+                                                            </div>
+                                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                                         </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        <label><strong></strong></label>
+                                                        <div class="input-group">
+                                                            <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong></strong></label>
-                                                    <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label></label>
-                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                            </form>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="row mt-1">
-                            <div class="sale_purchase_and_profit_area">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div id="data_list">
-                                    <div class="sale_and_purchase_amount_area">
-                                        <div class="row">
-                                            <div class="col-md-12 col-sm-12 col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-body mt-1">
-                                                        <table class="table modal-table table-sm">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th class="text-start">Total Normal : </th>
-                                                                    <td class="text-start"> <span class="total_normal"></span></td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <th class="text-start">Total Abnormal : </th>
-                                                                    <td class="text-start"><span class="total_abnormal"></span></td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <th class="text-start"> Total Stock Adjustment : </th>
-                                                                    <td class="text-start"> <span class="total_adjustment"></span></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12 col-sm-12 col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-body ">
-                                                        <table class="table modal-table table-sm">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th class="text-start">Total Amount Recovered</th>
-                                                                    <td class="text-start"><span class="total_recovered"></span></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group mt-4">
+                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row margin_row mt-1">
-                            <div class="card">
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-start">Date</th>
-                                                <th class="text-start">Reference No</th>
-                                                <th class="text-start">Adjustment From</th>
-                                                <th class="text-start">Type</th>
-                                                <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                <th class="text-start">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                <th class="text-start">Reason</th>
-                                                <th class="text-start">Created By</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
+                    <div class="sale_purchase_and_profit_area mb-3">
+                        <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                        <div id="data_list">
+                            <div class="sale_and_purchase_amount_area">
+                                <div class="row g-3">
+                                    <div class="col-md-12 col-sm-12 col-lg-6">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table class="table modal-table table-sm">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="text-start">Total Normal : </th>
+                                                            <td class="text-start"> <span class="total_normal"></span></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th class="text-start">Total Abnormal : </th>
+                                                            <td class="text-start"><span class="total_abnormal"></span></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th class="text-start"> Total Stock Adjustment : </th>
+                                                            <td class="text-start"> <span class="total_adjustment"></span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 col-lg-6">
+                                        <div class="card">
+                                            <div class="card-body ">
+                                                <table class="table modal-table table-sm">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="text-start">Total Amount Recovered</th>
+                                                            <td class="text-start"><span class="total_recovered"></span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-responsive" id="data-list">
+                            <table class="display data_tbl data__table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-start">Date</th>
+                                        <th class="text-start">Reference No</th>
+                                        <th class="text-start">Adjustment From</th>
+                                        <th class="text-start">Type</th>
+                                        <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                        <th class="text-start">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                        <th class="text-start">Reason</th>
+                                        <th class="text-start">Created By</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

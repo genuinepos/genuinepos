@@ -14,9 +14,6 @@
         #display_pre_due{font-weight: 600;}
         input[type=number]#quantity::-webkit-inner-spin-button,
         input[type=number]#quantity::-webkit-outer-spin-button {opacity: 1;margin: 0;}
-
-        .select2-container--default .select2-selection--single {margin-bottom: 1px;}
-        .select2-container .select2-selection--single {overflow: hidden;}
         .select2-container .select2-selection--single .select2-selection__rendered {display: inline-block;width: 143px;}
         /*.select2-selection:focus {
              box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
@@ -35,164 +32,158 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-cart-plus"></span>
+                    <h6>Add Sale</h6>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="add_sale_form" action="{{ route('sales.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h6>Add Sale | <small class="shortcut-key-info">Save & Print = (Ctrl + Enter), Save = (Shift + Enter), Quotation = (Ctrl + Q), Order = (Alt + R), Go To Cash Receive = (Alt + C)</small></h6>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-4">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>Customer :</b> </label>
+                                        <div class="col-8">
+                                            <div class="input-group flex-nowrap">
+                                                <select name="customer_id" class="form-control select2" id="customer_id">
+                                                    <option value="">Walk-In-Customer</option>
+                                                    @foreach ($customers as $customer)
+                                                        <option data-customer_name="{{ $customer->name }}" data-customer_phone="{{ $customer->phone }}" value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
+                                                    @endforeach
+                                                </select>
+
+                                                <div>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text add_button" id="addCustomer">
+                                                            <i class="fas fa-plus-square text-dark"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"> <b>Warehouse :</b> </label>
+                                        <div class="col-8">
+                                            <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" id="branch_name">
+                                            <input type="hidden" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}" id="branch_id">
+                                            <select name="warehouse_id" class="form-control" id="warehouse_id">
+                                                <option value="">Select Warehouse</option>
+                                                @foreach ($warehouses as $warehouse)
+                                                    <option data-w_name="{{ $warehouse->name.'/'.$warehouse->code }}" value="{{ $warehouse->id }}">
+                                                        {{ $warehouse->name.'/'.$warehouse->code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class=" col-4"><b>Customer :</b> </label>
-                                                <div class="col-8">
-                                                    <div class="input-group">
-                                                        <div style="display: inline-block; margin-bottom: 2px;">
-                                                            <select style="margin-bottom: 2px;" name="customer_id" class="form-control select2" id="customer_id">
-                                                            <option value="">Walk-In-Customer</option>
-                                                            @foreach ($customers as $customer)
-                                                                <option data-customer_name="{{ $customer->name }}" data-customer_phone="{{ $customer->phone }}" value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
-                                                            @endforeach
-                                                        </select></div>
-
-                                                        <div style="display: inline-block">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text add_button" id="addCustomer">
-                                                                    <i class="fas fa-plus-square text-dark"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"> <b>Warehouse :</b> </label>
-                                                <div class="col-8">
-                                                    <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" id="branch_name">
-                                                    <input type="hidden" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}" id="branch_id">
-                                                    <select name="warehouse_id" class="form-control" id="warehouse_id">
-                                                        <option value="">Select Warehouse</option>
-                                                        @foreach ($warehouses as $warehouse)
-                                                            <option data-w_name="{{ $warehouse->name.'/'.$warehouse->code }}" value="{{ $warehouse->id }}">
-                                                                {{ $warehouse->name.'/'.$warehouse->code }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                        <div class="col-8">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID" autocomplete="off">
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
-                                                <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID" autocomplete="off">
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"><b>Attachment : <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc. Max Attachment Size 2MB." class="fas fa-info-circle tp"></i></b></label>
-                                                <div class="col-8">
-                                                    <input type="file" name="attachment" class="form-control">
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>Attachment : <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc. Max Attachment Size 2MB." class="fas fa-info-circle tp"></i></b></label>
+                                        <div class="col-8">
+                                            <input type="file" name="attachment" class="form-control">
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-2">
-                                            <div class="input-group">
-                                                <label class="col-4"> <b>Status : <span
-                                                    class="text-danger">*</span></b></label>
-                                                <div class="col-8">
-                                                    <select name="status" class="form-control add_input" data-name="Status"
-                                                        id="status">
-                                                        <option value="">Select status</option>
-                                                        @foreach (App\Utils\SaleUtil::saleStatus() as $key => $status)
-                                                            <option value="{{ $key }}">{{ $status }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_status"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class=" col-4"><b>Date : <span
-                                                    class="text-danger">*</span></b></label>
-                                                <div class="col-8">
-                                                    <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="date">
-                                                    <span class="error error_date"></span>
-                                                </div>
-                                            </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <label class="col-4"> <b>Status : <span
+                                            class="text-danger">*</span></b></label>
+                                        <div class="col-8">
+                                            <select name="status" class="form-control add_input" data-name="Status"
+                                                id="status">
+                                                <option value="">Select status</option>
+                                                @foreach (App\Utils\SaleUtil::saleStatus() as $key => $status)
+                                                    <option value="{{ $key }}">{{ $status }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_status"></span>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-2">
-                                            <div class="input-group">
-                                                <label class="col-6"><b>Inv. Schema :</b></label>
-                                                <div class="col-6">
-                                                    <select name="invoice_schema" class="form-control"
-                                                        id="invoice_schema">
-                                                        <option value="">None</option>
-                                                        @foreach ($invoice_schemas as $inv_schema)
-                                                            <option value="{{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}">
-                                                                {{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-6"><b>Previous Due :</b></label>
-                                                <div class="col-6">
-                                                    <input readonly type="number" step="any" class="form-control text-danger" id="display_pre_due" value="0.00" tabindex="-1">
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class=" col-4"><b>Date : <span
+                                            class="text-danger">*</span></b></label>
+                                        <div class="col-8">
+                                            <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="date">
+                                            <span class="error error_date"></span>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-2">
-                                            <div class="input-group">
-                                                <label class="col-5"><b>Price Group :</b></label>
-                                                <div class="col-7">
-                                                    <select name="price_group_id" class="form-control"
-                                                        id="price_group_id">
-                                                        <option value="">Default Selling Price</option>
-                                                        @foreach ($price_groups as $pg)
-                                                            <option {{ json_decode($generalSettings->sale, true)['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <label class="col-6"><b>Inv. Schema :</b></label>
+                                        <div class="col-6">
+                                            <select name="invoice_schema" class="form-control"
+                                                id="invoice_schema">
+                                                <option value="">None</option>
+                                                @foreach ($invoice_schemas as $inv_schema)
+                                                    <option value="{{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}">
+                                                        {{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                            <div class="input-group mt-1">
-                                                <label class="col-5"><b>Sales A/C : <span
-                                                    class="text-danger">*</span></b></label>
-                                                <div class="col-7">
-                                                    <select name="sale_account_id" class="form-control add_input"
-                                                        id="sale_account_id" data-name="Sale A/C">
-                                                        @foreach ($saleAccounts as $saleAccount)
-                                                            <option value="{{ $saleAccount->id }}">
-                                                                {{ $saleAccount->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_sale_account_id"></span>
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-6"><b>Previous Due :</b></label>
+                                        <div class="col-6">
+                                            <input readonly type="number" step="any" class="form-control text-danger" id="display_pre_due" value="0.00" tabindex="-1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <label class="col-5"><b>Price Group :</b></label>
+                                        <div class="col-7">
+                                            <select name="price_group_id" class="form-control"
+                                                id="price_group_id">
+                                                <option value="">Default Selling Price</option>
+                                                @foreach ($price_groups as $pg)
+                                                    <option {{ json_decode($generalSettings->sale, true)['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group mt-1">
+                                        <label class="col-5"><b>Sales A/C : <span
+                                            class="text-danger">*</span></b></label>
+                                        <div class="col-7">
+                                            <select name="sale_account_id" class="form-control add_input"
+                                                id="sale_account_id" data-name="Sale A/C">
+                                                @foreach ($saleAccounts as $saleAccount)
+                                                    <option value="{{ $saleAccount->id }}">
+                                                        {{ $saleAccount->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_sale_account_id"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -203,10 +194,10 @@
 
                 <section>
                     <div class="sale-content">
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-9">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-9">
                                                 <div class="searching_area" style="position: relative;">
@@ -269,8 +260,8 @@
                                     </div>
                                 </div>
 
-                                <div class="item-details-sec mt-2">
-                                    <div class="content-inner">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="input-group">
@@ -338,38 +329,35 @@
                                     </div>
                                 </div>
 
-                                <div class="item-details-sec mt-3">
-                                    <div class="content-inner">
-                                        <div class="row no-gutters">
-                                            <ul class="list-unstyled add_sale_ex_btn">
-                                                {{-- <li><button value="save_and_print" class="btn btn-sm btn-info text-white submit_button" data-status="4">Quotation</button></li>--}}
-                                                <li><button value="save_and_print" class="btn btn-sm btn-primary text-white submit_button" data-status="2">Draft</button></li>
-                                                <li><button type="button" class="btn btn-sm btn-secondary text-white resent-tn">Recent Transection</button></li>
-                                                <li><button type="button" class="btn btn-sm btn-success text-white show_stock">Show Stock</button></li>
-                                            </ul>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <button type="button" class="btn btn-sm btn-success text-white show_stock">Show Stock</button>
+                                            <button type="button" class="btn btn-sm btn-secondary text-white resent-tn">Recent Transection</button>
+                                            <button value="save_and_print" class="btn btn-sm btn-primary text-white submit_button" data-status="2">Draft</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-md-3">
-                                <div class="item-details-sec mb-3 number-fields">
-                                    <div class="content-inner">
-                                        <div class="row">
+                                <div class="form_element rounded m-0">
+                                    <div class="element-body">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Total Item :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Net Total :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Discount:</label>
                                             <div class="col-sm-3">
                                                 <select name="order_discount_type" class="form-control" id="order_discount_type">
@@ -383,7 +371,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Order Tax :</label>
                                             <div class="col-sm-7">
                                                 <select name="order_tax" class="form-control" id="order_tax"></select>
@@ -391,21 +379,21 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Shipment Cost:</label>
                                             <div class="col-sm-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="0.00">
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Previous Due :</label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control text-danger" type="number" step="any" name="previous_due" id="previous_due" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Total Payable:</label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
@@ -414,21 +402,21 @@
                                         </div>
 
                                         <div class="payment_body">
-                                            <div class="row">
+                                            <div class="row mb-2">
                                                 <label class="col-sm-5 col-form-label">Cash Receive: >></label>
                                                 <div class="col-sm-7">
                                                     <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                 </div>
                                             </div>
 
-                                            <div class="row">
+                                            <div class="row mb-2">
                                                 <label class="col-sm-5 col-form-label">Change :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
 
-                                            <div class="row">
+                                            <div class="row mb-2">
                                                 <label class="col-sm-5 col-form-label">Paid By :</label>
                                                 <div class="col-sm-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id">
@@ -443,7 +431,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row">
+                                            <div class="row mb-2">
                                                 <label class="col-sm-5 col-form-label">Debit A/C : <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-sm-7">
@@ -464,7 +452,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row">
+                                            <div class="row mb-2">
                                                 <label class="col-sm-5 col-form-label">Due :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">
@@ -472,10 +460,10 @@
                                             </div>
                                         </div>
 
-                                        <div class="submitBtn">
-                                            <div class="row justify-content-center">
-                                                <div class="col-12 text-end">
-                                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-danger"></i> </button>
+                                        <div class="row justify-content-center">
+                                            <div class="col-12 d-flex justify-content-end">
+                                                <div class="btn-loading">
+                                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i> <span>Loading . . .</span></button>
                                                     <button type="submit" id="quotation" class="btn btn-sm btn-info text-white submit_button" data-status="4" value="save_and_print">Quotation</button>
                                                     <button type="submit" id="order" class="btn btn-sm btn-secondary text-white submit_button" data-status="3" value="save_and_print">Order</button>
                                                     <button type="submit" id="save_and_print" class="btn btn-sm btn-success submit_button" data-status="1" value="save_and_print">Final & Print</button>
@@ -495,7 +483,7 @@
 
     <!--Add Customer Modal-->
     <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Add Customer</h6>
@@ -644,7 +632,7 @@
 
     <!--Add Product Modal-->
     <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>

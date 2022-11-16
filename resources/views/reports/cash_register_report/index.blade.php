@@ -21,143 +21,145 @@
                             </a>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form" action="" method="get">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">
-                                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)
-                                                                </option>
-
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @else
-                                                        <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
-                                                    @endif
-                                                @endif
-
-                                                <div class="col-md-2">
-                                                    <label><strong>User :</strong></label>
-                                                    <select name="user_id" class="form-control submit_able" id="user_id" autofocus>
+                        <div class="p-3">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form_element rounded mt-0 mb-3">
+                                        <div class="element-body">
+                                            <form id="filter_form" action="" method="get">
+                                                <div class="form-group row">
+                                                    @if ($addons->branches == 1)
                                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                            <option value="">All</option>
+                                                            <div class="col-md-2">
+                                                                <label><strong>Business Location :</strong></label>
+                                                                <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
+                                                                    <option value="">All</option>
+                                                                    <option value="NULL">
+                                                                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)
+                                                                    </option>
+
+                                                                    @foreach ($branches as $branch)
+                                                                        <option value="{{ $branch->id }}">
+                                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
                                                         @else
-                                                            <option value="">All</option>
-                                                            @foreach ($branchUsers as $user)
-                                                                <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
-                                                            @endforeach
+                                                            <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                         @endif
-                                                    </select>
-                                                </div>
+                                                    @endif
 
-                                                <div class="col-md-2">
-                                                    <label><strong>Status :</strong></label>
-                                                    <select name="status" class="form-control submit_able" id="status">
-                                                        <option value="">All</option>
-                                                        <option value="1">Open</option>
-                                                        <option value="2">Closed</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1">
-                                                                <i class="fas fa-calendar-week input_f"></i>
-                                                            </span>
-                                                        </div>
-
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date date"
-                                                            autocomplete="off">
+                                                    <div class="col-md-2">
+                                                        <label><strong>User :</strong></label>
+                                                        <select name="user_id" class="form-control submit_able" id="user_id" autofocus>
+                                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                                <option value="">All</option>
+                                                            @else
+                                                                <option value="">All</option>
+                                                                @foreach ($branchUsers as $user)
+                                                                    <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
                                                     </div>
-                                                </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1">
-                                                                <i class="fas fa-calendar-week input_f"></i>
-                                                            </span>
-                                                        </div>
-
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                    <div class="col-md-2">
+                                                        <label><strong>Status :</strong></label>
+                                                        <select name="status" class="form-control submit_able" id="status">
+                                                            <option value="">All</option>
+                                                            <option value="1">Open</option>
+                                                            <option value="2">Closed</option>
+                                                        </select>
                                                     </div>
-                                                </div>
 
-                                                <div class="col-md-2">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label><strong></strong></label>
-                                                            <div class="input-group">
-                                                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start">
-                                                                    <i class="fas fa-funnel-dollar"></i> Filter
-                                                                </button>
+                                                    <div class="col-md-2">
+                                                        <label><strong>From Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1">
+                                                                    <i class="fas fa-calendar-week input_f"></i>
+                                                                </span>
+                                                            </div>
+
+                                                            <input type="text" name="from_date" id="datepicker"
+                                                                class="form-control from_date date"
+                                                                autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        <label><strong>To Date :</strong></label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1">
+                                                                    <i class="fas fa-calendar-week input_f"></i>
+                                                                </span>
+                                                            </div>
+
+                                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label><strong></strong></label>
+                                                                <div class="input-group">
+                                                                    <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start">
+                                                                        <i class="fas fa-funnel-dollar"></i> Filter
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6 mt-3">
+                                                                <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
                                                             </div>
                                                         </div>
-
-                                                        <div class="col-md-6 mt-3">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
-                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row mt-1">
-                            <div class="col-md-12">
-                                <div class="report_data_area">
-                                    <div class="data_preloader">
-                                        <h6>
-                                            <i class="fas fa-spinner text-primary"></i> Processing...
-                                        </h6>
-                                    </div>
+                            <div class="row mt-1">
+                                <div class="col-md-12">
+                                    <div class="report_data_area">
+                                        <div class="data_preloader">
+                                            <h6>
+                                                <i class="fas fa-spinner text-primary"></i> Processing...
+                                            </h6>
+                                        </div>
 
-                                    <div class="card">
-                                        <div class="table-responsive" id="data-list">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-start">Open Time</th>
-                                                        <th class="text-start">Closed Time</th>
-                                                        <th class="text-start">Business Location</th>
-                                                        <th class="text-start">User</th>
-                                                        <th class="text-start">Closing Note</th>
-                                                        <th class="text-start">Status</th>
-                                                        <th class="text-start">Closing Amount</th>
-                                                        <th class="text-start">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                                <tfoot>
-                                                    <tr class="bg-secondary">
-                                                        <th colspan="6" class="text-end text-white">Total :
-                                                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                        </th>
-                                                        <th id="closed_amount" class="text-end text-white"></th>
-                                                        <th></th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
+                                        <div class="card">
+                                            <div class="table-responsive" id="data-list">
+                                                <table class="display data_tbl data__table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-start">Open Time</th>
+                                                            <th class="text-start">Closed Time</th>
+                                                            <th class="text-start">Business Location</th>
+                                                            <th class="text-start">User</th>
+                                                            <th class="text-start">Closing Note</th>
+                                                            <th class="text-start">Status</th>
+                                                            <th class="text-start">Closing Amount</th>
+                                                            <th class="text-start">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                    <tfoot>
+                                                        <tr class="bg-secondary">
+                                                            <th colspan="6" class="text-end text-white">Total :
+                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                            </th>
+                                                            <th id="closed_amount" class="text-end text-white"></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +172,7 @@
     </div>
 
     <div class="modal fade" id="cashRegisterDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content" id="cash_register_details_content"></div>
         </div>
     </div>

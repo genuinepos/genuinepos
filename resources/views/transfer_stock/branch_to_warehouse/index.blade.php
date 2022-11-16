@@ -17,7 +17,7 @@
                         </div>
                     </div>
 
-                    <div class="row margin_row mt-1">
+                    <div class="p-3">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">

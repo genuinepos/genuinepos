@@ -16,8 +16,8 @@
                                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
 
                                             <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                                        @else 
-                                        
+                                        @else
+
                                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                                         @endif
                                         <span class="head-text">
@@ -76,7 +76,7 @@
                                         </h2> --}}
                                         <div class="px-2">
                                             <p class="logo-main-sec">
-                                                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{  c }}onfig('speeddigit.app_logo_alt') }}">
+                                                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
                                             </p>
                                             <p class="version">Version: 1.0</p>
                                             <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>

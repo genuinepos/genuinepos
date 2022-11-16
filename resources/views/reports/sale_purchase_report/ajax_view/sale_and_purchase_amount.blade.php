@@ -27,118 +27,122 @@
     $saleDueMinusPurchaseDue = $total_sale_due - $total_purchase_due;
 @endphp
 <div class="sale_and_purchase_amount_area">
-    <div class="row">
+    <div class="row g-3">
         <div class="col-md-12 col-sm-12 col-lg-6">
-            <div class="card-body card-custom">  
-                <div class="heading">
-                    <h6 class="text-primary"><b>Purchases</b> </h6>
+            <div class="card">
+                <div class="card-body card-custom">
+                    <div class="heading">
+                        <h6 class="text-primary"><b>Purchases</b> </h6>
+                    </div>
+
+                    <table class="table modal-table table-sm">
+                        <tbody>
+                            <tr>
+                                <th>Total Purchase :</th>
+                                <td>
+                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    {{ App\Utils\Converter::format_in_bdt($total_purchase) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Purchase Including Tax : </th>
+                                <td>
+                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    {{ App\Utils\Converter::format_in_bdt($total_purchase_inc_tax) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Purchase Return Including Tax : </th>
+                                <td>
+                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    {{ App\Utils\Converter::format_in_bdt($total_purchase_return) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th> Purchase Due: </th>
+                                <td>
+                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    {{ App\Utils\Converter::format_in_bdt($total_purchase_due) }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <table class="table modal-table table-sm">
-                    <tbody>
-                        <tr>
-                            <th>Total Purchase :</th>
-                            <td>
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ App\Utils\Converter::format_in_bdt($total_purchase) }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>Purchase Including Tax : </th>
-                            <td>
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ App\Utils\Converter::format_in_bdt($total_purchase_inc_tax) }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>Purchase Return Including Tax : </th>
-                            <td>
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ App\Utils\Converter::format_in_bdt($total_purchase_return) }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th> Purchase Due: </th>
-                            <td>
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
-                                {{ App\Utils\Converter::format_in_bdt($total_purchase_due) }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
 
         <div class="col-md-12 col-sm-12 col-lg-6">
             <div class="card">
-                <div class="card-body"> 
+                <div class="card-body">
                     <div class="heading">
                         <h6 class="text-primary"><b>Sales</b></h6>
                     </div>
-    
+
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
                                 <th>Total Sale :</th>
                                 <td>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                    {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale) }}
                                 </td>
                             </tr>
-    
+
                             <tr>
                                 <th>Sale Including Tax :</th>
                                 <td>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                    {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale_inc_tax) }}
                                 </td>
                             </tr>
-    
+
                             <tr>
                                 <th>Sale Return Including Tax :</th>
                                 <td>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                    {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale_return) }}
                                 </td>
                             </tr>
-    
+
                             <tr>
                                 <th> Sale Due :</th>
-                                <td>{{ json_decode($generalSettings->business, true)['currency'] }} 
+                                <td>{{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale_due) }}</td>
                             </tr>
                         </tbody>
                     </table>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
-</div>  
+</div>
 
-<div class="row mt-1">
+<div class="row mt-3">
     <div class="sale_purchase_due_compare_area">
         <div class="col-md-12">
-            <div class="card-body card-custom"> 
-                <div class="heading">
-                    <h6 class="text-navy-blue">Overall (Sale - Sale Return - Purchase - Purchase Return)</h6>
-                </div>
+            <div class="card">
+                <div class="card-body card-custom">
+                    <div class="heading">
+                        <h6 class="text-navy-blue">Overall (Sale - Sale Return - Purchase - Purchase Return)</h6>
+                    </div>
 
-                <div class="compare_area mt-3">
-                    <h5 class="text-muted">Sale - Purchase : 
-                        <span class="{{ $saleMinusPurchase < 0 ? 'text-danger' : '' }}">
-                            {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            {{ App\Utils\Converter::format_in_bdt($saleMinusPurchase) }}
-                        </span>
-                    </h5>
-                    <h5 class="text-muted">Due amount (Sale Due - Purchase Due) : 
-                        <span class="{{ $saleDueMinusPurchaseDue < 0 ? 'text-danger' : '' }}">
-                            {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            {{ App\Utils\Converter::format_in_bdt($saleDueMinusPurchaseDue) }}
-                        </span>
-                    </h5>
+                    <div class="compare_area mt-3">
+                        <h5 class="text-muted">Sale - Purchase :
+                            <span class="{{ $saleMinusPurchase < 0 ? 'text-danger' : '' }}">
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                {{ App\Utils\Converter::format_in_bdt($saleMinusPurchase) }}
+                            </span>
+                        </h5>
+                        <h5 class="text-muted">Due amount (Sale Due - Purchase Due) :
+                            <span class="{{ $saleDueMinusPurchaseDue < 0 ? 'text-danger' : '' }}">
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                {{ App\Utils\Converter::format_in_bdt($saleDueMinusPurchaseDue) }}
+                            </span>
+                        </h5>
+                    </div>
                 </div>
             </div>
         </div>

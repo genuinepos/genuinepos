@@ -14,99 +14,94 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-exchange-alt"></span>
+                    <h6>Add Transfer Stock (Business Location To Business Location)</h6>
+                </div>
+
+                <div class="col-2">
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                </div>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="add_transfer_form" action="{{ route('transfer.stock.branch.to.branch.store') }}" method="POST">
                 @csrf
                 <input class="hidden_sp" type="hidden" name="action" id="action">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <h6>Add Transfer Stock (Business Location To Business Location)
-                                                || <small class="text-muted">(Save & Print = Ctrl + Enter), (Save = Shift + Enter)</small>
-                                            </h6>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-2">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>B.Location :</b></label>
+                                        <div class="col-8">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
+                                            <input type="hidden" name="sender_branch_id" value="{{ auth()->user()->branch_id }}" id="sender_branch_id">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>B.Location :</b></label>
-                                                <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
-                                                    <input type="hidden" name="sender_branch_id" value="{{ auth()->user()->branch_id }}" id="sender_branch_id">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Warehouse :</b></label>
-                                                <div class="col-8">
-                                                    <select class="form-control changeable add_input"
-                                                        name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
-                                                        <option value="">Select Warehouse</option>
-                                                        @foreach ($warehouses as $w)
-                                                            <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Transfer Date :</b>
-                                                    <span class="text-danger">*</span>
-                                                </label>
-
-                                                <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control changeable" autocomplete="off"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
-                                                    <span class="error error_date"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Reference :</b>
-                                                    <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i>
-                                                </label>
-
-                                                <div class="col-8">
-                                                    <input type="text" name="ref_id" id="ref_id" class="form-control" placeholder="Reference ID">
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>Warehouse :</b></label>
+                                        <div class="col-8">
+                                            <select class="form-control changeable add_input"
+                                                name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
+                                                <option value="">Select Warehouse</option>
+                                                @foreach ($warehouses as $w)
+                                                    <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="row mt-1">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Receive From :<span class="text-danger">*</span></b></label>
-                                                <div class="col-8">
-                                                    <select class="form-control changeable add_input"
-                                                        name="receiver_branch_id" data-name="Receive By" id="receiver_branch_id">
-                                                        <option value="">Select Receiver B.Location</option>
-                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</option>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>Transfer Date :</b>
+                                            <span class="text-danger">*</span>
+                                        </label>
 
-                                                        @foreach ($branches as $b)
-                                                            <option value="{{ $b->id }}">{{ $b->name.'/'.$b->branch_code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_receiver_branch_id"></span>
-                                                </div>
-                                            </div>
+                                        <div class="col-8">
+                                            <input required type="text" name="date" class="form-control changeable" autocomplete="off"
+                                                value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                            <span class="error error_date"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>Reference :</b>
+                                            <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i>
+                                        </label>
+
+                                        <div class="col-8">
+                                            <input type="text" name="ref_id" id="ref_id" class="form-control" placeholder="Reference ID">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-1">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>Receive From :<span class="text-danger">*</span></b></label>
+                                        <div class="col-8">
+                                            <select class="form-control changeable add_input"
+                                                name="receiver_branch_id" data-name="Receive By" id="receiver_branch_id">
+                                                <option value="">Select Receiver B.Location</option>
+                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</option>
+
+                                                @foreach ($branches as $b)
+                                                    <option value="{{ $b->id }}">{{ $b->name.'/'.$b->branch_code }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_receiver_branch_id"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -116,10 +111,10 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
+                    <div class="sale-content mb-3">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="item-details-sec">
+                                <div class="card">
                                     <div class="content-inner">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -171,10 +166,10 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="row">
+                <section>
+                    <div class="row g-3">
                         <div class="col-md-6">
-                            <div class="form_element">
+                            <div class="form_element rounded mt-0 mb-3">
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -223,7 +218,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="form_element">
+                            <div class="form_element rounded mt-0 mb-3">
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -327,11 +322,12 @@
 
                     <div class="row">
 
-                        <div class="col-md-12 text-end">
-
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print (Ctrl + Enter) </button>
-                            <button type="submit" id="save" value="save" class="btn btn-sm btn-success submit_button">Save (Shift + Enter)</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
+                                <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print (Ctrl + Enter) </button>
+                                <button type="submit" id="save" value="save" class="btn btn-sm btn-success submit_button">Save (Shift + Enter)</button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -110,6 +110,6 @@
     </div>
     
     <div class="form-group text-end mt-3">
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
     </div>
 </div>

@@ -182,7 +182,7 @@
                                 <input type="hidden" name="branch_id" id="os_branch_id" value="{{ auth()->user()->branch_id }}">
                                 <p>
                                     {!! auth()->user()->branch_id ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code :  json_decode($generalSettings->business, true)['shop_name'] .'<b>(HO)</b>' !!}
-                                </p> 
+                                </p>
                             </td>
 
                             <td>
@@ -197,18 +197,20 @@
                                 <b><span class="os_span_subtotal">0.00</span></b>
                                 <input type="hidden" name="subtotal" id="os_subtotal" value="0.00">
                             </td>
-                        </tr> 
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    
+
     <div class="form-group row mt-2">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="submit" class="btn btn-sm btn-success">Save</button>
+            </div>
         </div>
     </div>
 </form>

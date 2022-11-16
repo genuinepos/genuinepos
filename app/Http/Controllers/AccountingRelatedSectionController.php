@@ -20,7 +20,7 @@ class AccountingRelatedSectionController extends Controller
     {
         $this->accountUtil = $accountUtil;
         $this->netProfitLossAccount = $netProfitLossAccount;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // balance sheet view

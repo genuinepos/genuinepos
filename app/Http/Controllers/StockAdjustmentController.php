@@ -43,7 +43,7 @@ class StockAdjustmentController extends Controller
         $this->accountUtil = $accountUtil;
         $this->nameSearchUtil = $nameSearchUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Index view of stock adjustment

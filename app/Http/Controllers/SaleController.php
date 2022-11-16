@@ -63,7 +63,7 @@ class SaleController extends Controller
         $this->purchaseUtil = $purchaseUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->branchWiseCustomerAmountUtil = $branchWiseCustomerAmountUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index2(Request $request)

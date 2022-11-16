@@ -13,7 +13,7 @@ class AllowanceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     //index methods allwoance get page

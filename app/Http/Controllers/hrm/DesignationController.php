@@ -11,7 +11,7 @@ class DesignationController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     //show designation page only

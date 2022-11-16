@@ -17,7 +17,7 @@ class BranchController extends Controller
     {
         $this->branchUtil = $branchUtil;
 
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index()

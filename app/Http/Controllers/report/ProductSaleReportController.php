@@ -16,7 +16,7 @@ class ProductSaleReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index(Request $request)

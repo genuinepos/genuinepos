@@ -29,7 +29,7 @@ class LoanController extends Controller
         $this->loanUtil = $loanUtil;
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index(Request $request)

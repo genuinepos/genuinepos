@@ -10,7 +10,7 @@ class TaxReportController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Index view of cash register report

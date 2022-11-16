@@ -35,7 +35,7 @@ class PayrollController extends Controller
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->accountUtil = $accountUtil;
         $this->payrollUtil = $payrollUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     //Index view of payroll

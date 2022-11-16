@@ -25,7 +25,7 @@ class ReceiveTransferBranchToBranchController extends Controller
         $this->converter = $converter;
         $this->productStockUtil = $productStockUtil;
         $this->purchaseSaleChainUtil = $purchaseSaleChainUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function receivableList(Request $request)

@@ -55,7 +55,7 @@ class PurchaseReturnController extends Controller
         $this->converter = $converter;
         $this->accountUtil = $accountUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Sale return index view

@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Role;
 use App\Models\Branch;
 use App\Models\Hrm\AllowanceEmployee;
 use App\Models\Hrm\Attendance;
 use App\Models\Hrm\Department;
 use App\Models\Hrm\Designation;
-use App\Models\RolePermission;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

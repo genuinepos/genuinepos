@@ -15,7 +15,7 @@ class PaymentMethodController extends Controller
     public function __construct(Util $util)
     {
         $this->util = $util;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index(Request $request)

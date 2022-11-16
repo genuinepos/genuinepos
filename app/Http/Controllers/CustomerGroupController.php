@@ -9,7 +9,7 @@ class CustomerGroupController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+        
     }
     
     // Customer main page/index page

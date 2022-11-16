@@ -13,7 +13,7 @@ class BarcodeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Generate barcode index view 

@@ -19,7 +19,7 @@ class MoneyReceiptController extends Controller
     public function __construct(InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function moneyReceiptList($customerId)

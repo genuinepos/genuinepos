@@ -56,7 +56,7 @@ class POSController extends Controller
         $this->productStockUtil = $productStockUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Create pos view

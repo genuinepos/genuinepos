@@ -51,7 +51,7 @@ class RandomSaleReturnController extends Controller
         $this->purchaseUtil = $purchaseUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->purchaseSaleChainUtil = $purchaseSaleChainUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function create()

@@ -34,7 +34,7 @@ class AccountController extends Controller
         $this->util = $util;
         $this->converter = $converter;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Bank main page/index page

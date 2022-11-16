@@ -57,7 +57,7 @@ class PurchaseController extends Controller
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->purchaseReturnUtil = $purchaseReturnUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index_v2(Request $request)

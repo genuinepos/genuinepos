@@ -15,7 +15,7 @@ class SalePaymentReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Index view of purchase payment report

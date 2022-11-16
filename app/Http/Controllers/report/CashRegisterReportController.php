@@ -18,7 +18,7 @@ class CashRegisterReportController extends Controller
     {
         $this->converter = $converter;
 
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Index view of cash register report

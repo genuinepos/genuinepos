@@ -18,7 +18,7 @@ class ProfitLossReportController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Index view of profit loss report

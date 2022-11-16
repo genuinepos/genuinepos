@@ -13,7 +13,7 @@ class BulkVariantController extends Controller
     public function __construct(UserActivityLogUtil $userActivityLogUtil)
     {
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index()

@@ -11,7 +11,7 @@ class InvoiceLayoutController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index(Request $request)

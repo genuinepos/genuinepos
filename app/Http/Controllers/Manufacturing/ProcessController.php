@@ -15,7 +15,7 @@ class ProcessController extends Controller
     public function __construct(ProcessUtil $processUtil)
     {
         $this->processUtil = $processUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Process index view method

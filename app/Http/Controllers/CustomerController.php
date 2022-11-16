@@ -56,7 +56,7 @@ class CustomerController extends Controller
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->customerPaymentUtil = $customerPaymentUtil;
         $this->branchWiseCustomerAmountUtil = $branchWiseCustomerAmountUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index(Request $request)

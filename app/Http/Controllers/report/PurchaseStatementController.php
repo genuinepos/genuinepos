@@ -15,7 +15,7 @@ class PurchaseStatementController extends Controller
     public function __construct(
         Converter $converter
     ) {
-        $this->middleware('auth:admin_and_user');
+        
         $this->converter = $converter;
     }
     

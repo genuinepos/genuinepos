@@ -25,7 +25,7 @@ class LoanPaymentController extends Controller
         $this->accountUtil = $accountUtil;
         $this->loanUtil = $loanUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function loanAdvanceReceiveModal($company_id)

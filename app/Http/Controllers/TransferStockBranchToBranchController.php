@@ -37,7 +37,7 @@ class TransferStockBranchToBranchController extends Controller
         $this->transferStockUtil = $transferStockUtil;
         $this->converter = $converter;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function transferList(Request $request)

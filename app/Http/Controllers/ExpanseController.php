@@ -36,7 +36,7 @@ class ExpanseController extends Controller
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->util = $util;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Expanse index view

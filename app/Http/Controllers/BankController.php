@@ -12,7 +12,7 @@ class BankController extends Controller
     public function __construct(UserActivityLogUtil $userActivityLogUtil)
     {
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
     
     // Bank main page/index page

@@ -15,7 +15,7 @@ class LoanCompanyController extends Controller
     public function __construct(AccountUtil $accountUtil)
     {
         $this->accountUtil = $accountUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index(Request $request)

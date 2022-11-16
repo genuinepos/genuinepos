@@ -53,7 +53,7 @@ class SupplierController extends Controller
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->supplierPaymentUtil = $supplierPaymentUtil;
         $this->branchWiseSupplierAmountsUtil = $branchWiseSupplierAmountsUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index(Request $request)

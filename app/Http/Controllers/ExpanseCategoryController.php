@@ -12,7 +12,7 @@ class ExpanseCategoryController extends Controller
     
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Category main page/index page

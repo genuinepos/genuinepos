@@ -36,7 +36,7 @@ class ProductController extends Controller
         $this->productUtil = $productUtil;
         $this->productStockUtil = $productStockUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // index view

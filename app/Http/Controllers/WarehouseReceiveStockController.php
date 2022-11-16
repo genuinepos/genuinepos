@@ -15,7 +15,7 @@ class WarehouseReceiveStockController extends Controller
     public function __construct(ProductStockUtil $productStockUtil,)
     {
         $this->productStockUtil = $productStockUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     //Branch receiving stock index view

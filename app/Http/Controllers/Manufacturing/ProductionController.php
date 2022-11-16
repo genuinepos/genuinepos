@@ -38,7 +38,7 @@ class ProductionController extends Controller
         $this->accountUtil = $accountUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->purchaseSaleChainUtil = $purchaseSaleChainUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     public function index(Request $request)

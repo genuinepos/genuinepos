@@ -34,7 +34,7 @@ class TransferToBranchController extends Controller
         $this->productStockUtil = $productStockUtil;
         $this->converter = $converter;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Index view of Transfer stock to branch 

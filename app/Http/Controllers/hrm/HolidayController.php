@@ -13,7 +13,7 @@ class HolidayController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     //holiday page show methods

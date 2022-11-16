@@ -47,8 +47,7 @@ class LoginController extends Controller
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('guest')->except('logout');
     }
-
-
+    
     public function login(Request $request)
     {
         $this->validate($request, [
@@ -56,18 +55,13 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $admin = User::with('permission')
-            ->where('username', $request->username)
-            ->where('allow_login', 1)->first();
+        $admin = User::where('username', $request->username)->where('allow_login', 1)->first();
 
-        if ($admin && $admin->allow_login == 1 && $admin->permission) {
-
-            if (Auth::guard('admin_and_user')->attempt(['username' => $request->username, 'password' => $request->password])) {
-
+        if ($admin && $admin->allow_login == 1) {
+            if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
                 if (!Session::has($admin->language)) {
                     session(['lang' => $admin->language]);
                 }
-
                 $this->userActivityLogUtil->addLog(
                     action: 4,
                     subject_type: 18,
@@ -75,15 +69,12 @@ class LoginController extends Controller
                     branch_id: $admin->branch_id,
                     user_id: $admin->id,
                 );
-
                 return redirect()->intended(route('dashboard.dashboard'));
             } else {
-
                 session()->flash('errorMsg', 'Sorry! Username or Password not matched!');
                 return redirect()->back();
             }
         } else {
-
             session()->flash('errorMsg', 'Login failed. Please try with correct username and password');
             return redirect()->back();
         }

@@ -12,7 +12,7 @@ class CashRegisterController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     // Create cash register

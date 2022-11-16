@@ -15,7 +15,7 @@ class AttendanceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+        
     }
 
     //attendance index page

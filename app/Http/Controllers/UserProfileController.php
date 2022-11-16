@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Intervention\Image\Facades\Image;
@@ -29,7 +29,7 @@ class UserProfileController extends Controller
         ]);
 
         //return $request->all();
-        $updateProfile =  AdminAndUser::where('id', auth()->user()->id)->first();
+        $updateProfile =  User::where('id', auth()->user()->id)->first();
         $updateProfile->prefix = $request->prefix;
         $updateProfile->name = $request->first_name;
         $updateProfile->last_name = $request->last_name;
@@ -61,7 +61,7 @@ class UserProfileController extends Controller
     // View logged in user profile
     public function view($id)
     {
-        $user = AdminAndUser::with(['role', 'department', 'designation'])->where('id', $id)->firstOrFail();
+        $user = User::with(['role', 'department', 'designation'])->where('id', $id)->firstOrFail();
         // $firstName = str_split($user->name)[0];
         // $lastName = $user->last_name ? str_split($user->last_name)[0] : '';
         // $namePrefix = $firstName.' '.$lastName; 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\Branch;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\RolePermission;
 use Illuminate\Support\Facades\DB;
@@ -151,7 +151,7 @@ class UserController extends Controller
         }
 
         //return $request->all();
-        $addUser = new AdminAndUser();
+        $addUser = new User();
         $addUser->prefix = $request->prefix;
         $addUser->name = $request->first_name;
         $addUser->last_name = $request->last_name;
@@ -222,7 +222,7 @@ class UserController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $user = AdminAndUser::with(['role'])->where('id', $userId)->first();
+        $user = User::with(['role'])->where('id', $userId)->first();
 
         if ($user->role_type == 1 && auth()->user()->role_type != 1) {
 
@@ -250,7 +250,7 @@ class UserController extends Controller
             'email' => 'required|unique:admin_and_users,email,' . $userId,
         ]);
 
-        $updateUser = AdminAndUser::where('id', $userId)->first();
+        $updateUser = User::where('id', $userId)->first();
 
         if (isset($request->allow_login)) {
 
@@ -352,7 +352,7 @@ class UserController extends Controller
             return response()->json('Access Denied');
         }
 
-        $deleteUser = AdminAndUser::find($userId);
+        $deleteUser = User::find($userId);
 
         if ($deleteUser->role_type == 1) {
 
@@ -368,7 +368,7 @@ class UserController extends Controller
 
     public function show($userId)
     {
-        $user = AdminAndUser::with(['role', 'department', 'designation'])->where('id', $userId)->firstOrFail();
+        $user = User::with(['role', 'department', 'designation'])->where('id', $userId)->firstOrFail();
         // $firstName = str_split($user->name)[0];
         // $lastName = $user->last_name ? str_split($user->last_name)[0] : '';
         // $namePrefix = $firstName.' '.$lastName; 

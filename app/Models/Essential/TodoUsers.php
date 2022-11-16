@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models\Essential;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class TodoUsers extends Model
@@ -11,6 +11,6 @@ class TodoUsers extends Model
 
     public function user()
     {
-        return $this->belongsTo(AdminAndUser::class);
+        return $this->belongsTo(User::class);
     }
 }

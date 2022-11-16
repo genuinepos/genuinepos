@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Hrm\Allowance;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +19,7 @@ class AllowanceController extends Controller
     //index methods allwoance get page
     public function index()
     {
-        $employee = AdminAndUser::where('status', 1)->get();
+        $employee = User::where('status', 1)->get();
         return view('hrm.allowance.index', compact('employee'));
     }
 

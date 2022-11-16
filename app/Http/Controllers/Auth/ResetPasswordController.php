@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +44,7 @@ class ResetPasswordController extends Controller
         $checkHashtedPasswordWithOldPassword = Hash::check($request->current_password, $adminUserHashtedPassword);
         if ($checkHashtedPasswordWithOldPassword) {
             if (!Hash::check($request->password, $adminUserHashtedPassword)) {
-                $user = AdminAndUser::find(Auth::user()->id);
+                $user = User::find(Auth::user()->id);
                 $user->password = Hash::make($request->password);
                 $user->save();
                 Auth::logout();

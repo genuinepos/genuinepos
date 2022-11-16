@@ -2,7 +2,7 @@
 
 namespace App\Models\Essential;
 
-use App\Models\AdminAndUser;
+use App\Models\User;
 use App\Models\Essential\Workspace;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +18,6 @@ class WorkspaceUsers extends Model
 
     public function user()
     {
-        return $this->belongsTo(AdminAndUser::class, 'user_id')->select('id', 'prefix', 'name', 'last_name');
+        return $this->belongsTo(User::class, 'user_id')->select('id', 'prefix', 'name', 'last_name');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models\Hrm;
 
-use App\Models\AdminAndUser;
+use App\Models\User;
 use App\Models\Hrm\Allowance;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +12,7 @@ class AllowanceEmployee extends Model
     protected $hidden = ['updated_at'];
     public function employee()
     {
-        return $this->belongsTo(AdminAndUser::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function allowance()

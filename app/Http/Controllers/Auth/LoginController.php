@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
@@ -56,7 +56,7 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $admin = AdminAndUser::with('permission')
+        $admin = User::with('permission')
             ->where('username', $request->username)
             ->where('allow_login', 1)->first();
 

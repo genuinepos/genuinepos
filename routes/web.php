@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Purchase;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\CustomerCreditLimit;
 use Illuminate\Support\Facades\Auth;
@@ -1097,7 +1097,7 @@ Route::get('maintenance/mode', function () {
 
 Route::get('add-user', function () {
 
-    $addAdmin = new AdminAndUser();
+    $addAdmin = new User();
     $addAdmin->prefix = 'Mr.';
     $addAdmin->name = 'Super';
     $addAdmin->last_name = 'Admin';

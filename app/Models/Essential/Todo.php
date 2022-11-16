@@ -2,7 +2,7 @@
 
 namespace App\Models\Essential;
 
-use App\Models\AdminAndUser;
+use App\Models\User;
 use App\Models\Essential\TodoUsers;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,7 +13,7 @@ class Todo extends Model
 
     public function admin()
     {
-        return $this->belongsTo(AdminAndUser::class);
+        return $this->belongsTo(User::class);
     }
     
     public function todo_users()

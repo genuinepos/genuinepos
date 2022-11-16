@@ -7,7 +7,7 @@ use App\Models\Expanse;
 use App\Models\CashFlow;
 use App\Utils\AccountUtil;
 use App\Utils\ExpenseUtil;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 use App\Models\ExpansePayment;

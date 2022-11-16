@@ -7,7 +7,7 @@ use App\Models\Account;
 use App\Utils\Converter;
 use App\Utils\AccountUtil;
 use App\Models\CashCounter;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use App\Models\AccountBranch;
 use App\Models\AccountLedger;
 use App\Models\RolePermission;
@@ -63,7 +63,7 @@ class BranchUtil
 
     public function addBranchOpeningUser($request, $branch_id)
     {
-        $addUser = new AdminAndUser();
+        $addUser = new User();
         $addUser->name = $request->first_name;
         $addUser->last_name = $request->last_name;
         $addUser->phone = $request->user_phone;

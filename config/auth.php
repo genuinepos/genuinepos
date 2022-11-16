@@ -89,7 +89,7 @@ return [
         
         'admin_and_users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\AdminAndUser::class,
+            'model' => App\Models\User::class,
         ],
 
         // 'users' => [

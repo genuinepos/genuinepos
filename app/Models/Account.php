@@ -2,7 +2,7 @@
 
 namespace App\Models;
 use App\Models\Bank;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use App\Models\AccountBranch;
 use App\Models\AccountLedger;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +29,6 @@ class Account extends Model
 
     public function admin()
     {
-        return $this->belongsTo(AdminAndUser::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

@@ -4,7 +4,7 @@ namespace App\Models\Hrm;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use App\Models\Hrm\Leavetype;
 class Leave extends Model
 {
@@ -14,7 +14,7 @@ class Leave extends Model
 
      public function admin_and_user()
     {
-        return $this->belongsTo(AdminAndUser::class,'employee_id');
+        return $this->belongsTo(User::class,'employee_id');
     }
 
     public function leave_type()

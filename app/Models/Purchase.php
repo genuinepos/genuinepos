@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Branch;
 use App\Models\Supplier;
 use App\Models\Warehouse;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use App\Models\PurchaseReturn;
 use App\Models\SupplierLedger;
 use App\Models\PurchaseProduct;
@@ -45,7 +45,7 @@ class Purchase extends Model
     
     public function admin()
     {
-        return $this->belongsTo(AdminAndUser::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id');
     }
 
     public function purchase_return()

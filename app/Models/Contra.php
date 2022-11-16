@@ -28,6 +28,6 @@ class Contra extends Model
 
     public function user()
     {
-        return $this->belongsTo(AdminAndUser::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

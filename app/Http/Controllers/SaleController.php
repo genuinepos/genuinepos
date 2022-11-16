@@ -14,7 +14,7 @@ use App\Models\SalePayment;
 use App\Models\SaleProduct;
 use App\Utils\CustomerUtil;
 use App\Utils\PurchaseUtil;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 use App\Models\ProductBranch;
@@ -1085,13 +1085,13 @@ class SaleController extends Controller
     {
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $users = AdminAndUser::with(['role'])
+            $users = User::with(['role'])
                 ->select(['id', 'prefix',  'name', 'last_name', 'role_type', 'role_id', 'email'])->where('allow_login', 1)->get();
 
             return response()->json($users);
         } else {
 
-            $users = AdminAndUser::with(['role'])->where('branch_id', auth()->user()->branch_id)
+            $users = User::with(['role'])->where('branch_id', auth()->user()->branch_id)
                 ->select(['id', 'prefix',  'name', 'last_name', 'role_type', 'role_id', 'email'])
                 ->where('allow_login', 1)
                 ->get();

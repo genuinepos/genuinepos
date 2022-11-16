@@ -2,7 +2,7 @@
 
 namespace App\Models\Hrm;
 
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Payroll extends Model
@@ -28,11 +28,11 @@ class Payroll extends Model
 
     public function employee()
     {
-        return $this->belongsTo(AdminAndUser::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function admin()
     {
-        return $this->belongsTo(AdminAndUser::class, 'admin_id', 'id');
+        return $this->belongsTo(User::class, 'admin_id', 'id');
     }
 }

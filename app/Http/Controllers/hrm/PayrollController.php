@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use App\Models\Account;
 use App\Models\CashFlow;
 use App\Models\Hrm\Payroll;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Type\Decimal;
 use App\Models\Hrm\PayrollPayment;
@@ -157,7 +157,7 @@ class PayrollController extends Controller
         $dateTime = DateTime::createFromFormat('m', $month_year[1]);
         $month = $dateTime->format("F");
 
-        // return $employee = AdminAndUser::where('id', $request->employee_id)->first();
+        // return $employee = User::where('id', $request->employee_id)->first();
         $payroll = DB::table('hrm_payrolls')->where('user_id', $request->user_id)->where('month', $month)->where('year', $year)->first();
         if ($payroll) {
             return redirect()->route('hrm.payrolls.edit', $payroll->id);

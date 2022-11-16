@@ -4,7 +4,7 @@ namespace App\Http\Controllers\HRM;
 
 use Carbon\Carbon;
 use App\Models\Hrm\Shift;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Hrm\Attendance;
 use Illuminate\Support\Facades\DB;

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Branch;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use App\Models\ExpenseDescription;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,6 +29,6 @@ class Expanse extends Model
 
     public function admin()
     {
-        return $this->belongsTo(AdminAndUser::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

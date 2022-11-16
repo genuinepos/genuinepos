@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Account;
 use App\Models\Hrm\Payroll;
 use App\Models\SalePayment;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use App\Models\MoneyReceipt;
 use App\Models\ExpansePayment;
 use App\Models\PurchasePayment;
@@ -84,6 +84,6 @@ class CashFlow extends Model
 
     public function admin()
     {
-        return $this->belongsTo(AdminAndUser::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

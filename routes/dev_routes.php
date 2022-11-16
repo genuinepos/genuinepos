@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Purchase;
-use App\Models\AdminAndUser;
+use App\Models\User;
 use App\Mail\WelcomeUserMail;
 use Doctrine\DBAL\Types\Type;
 use App\Models\RolePermission;
@@ -45,7 +45,7 @@ Route::get('route-list', function () {
 });
 
 Route::get('add-user', function () {
-    $addAdmin = new AdminAndUser();
+    $addAdmin = new User();
     $addAdmin->prefix = 'Mr.';
     $addAdmin->name = 'Super';
     $addAdmin->last_name = 'Admin';

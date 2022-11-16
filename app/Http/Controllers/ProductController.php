@@ -11,7 +11,7 @@ use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\ProductVariant;
-use App\Models\General_setting;
+use App\Models\GeneralSetting;
 use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
 use App\Utils\ProductStockUtil;
@@ -583,7 +583,7 @@ class ProductController extends Controller
         return view('product.products.edit_v2', compact('product', 'categories', 'units', 'brands', 'taxes', 'warranties', 'productBranches', 'branches'));
     }
 
-    // Get product variants 
+    // Get product variants
     public function getProductVariants($productId)
     {
         $variants = DB::table('product_variants')->where('product_id', $productId)->get();
@@ -942,7 +942,7 @@ class ProductController extends Controller
             //             if ($deleteProduct->thumbnail_photo !== 'default.png') {
             //                 if (file_exists(public_path('uploads/product/thumbnail/'.$deleteProduct->thumbnail_photo))) {
             //                     unlink(public_path('uploads/product/thumbnail/'.$deleteProduct->thumbnail_photo));
-            //                 } 
+            //                 }
             //             }
 
             //             if($deleteProduct->product_images->count() > 0){
@@ -962,7 +962,7 @@ class ProductController extends Controller
             //                     }
             //                 }
             //             }
-            //             $deleteProduct->delete(); 
+            //             $deleteProduct->delete();
             //         }
             //     }
 
@@ -1069,7 +1069,7 @@ class ProductController extends Controller
 
     public function settingsStore(Request $request)
     {
-        $updateProductSettings = General_setting::first();
+        $updateProductSettings = GeneralSetting::first();
 
         $productSettings = [
             'product_code_prefix' => $request->product_code_prefix,

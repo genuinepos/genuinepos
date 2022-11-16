@@ -18,10 +18,12 @@
                                             <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
                                         @else
 
-                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">
+                                                {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                            </span>
                                         @endif
                                         <span class="head-text">
-                                            Genuine POS, Point of Sale software by SpeedDigit
+                                            {{ config('speeddigit.name') }}, {{ config('speeddigit.slogan')}}
                                         </span>
                                     </div>
                                 </div>
@@ -76,17 +78,17 @@
                                         </h2> --}}
                                         <div class="px-2">
                                             <p class="logo-main-sec">
-                                                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
+                                                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{  config('speeddigit.app_logo_alt') }}">
                                             </p>
-                                            <p class="version">Version: 1.0</p>
-                                            <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>
-                                            <p class="details"><span>Support:</span> support@speeddigit.com</p>
-                                            <p class="details"><span>Website:</span> www.speeddigit.com</p>
+                                            <p class="version"><span>Version:</span> {{ config('speeddigit.version')  }}</p>
+                                            <p class="details"><span>Address:</span> {{ config('speeddigit.address')  }}</p>
+                                            <p class="details"><span>Support:</span> {{ config('speeddigit.support_email')  }}</p>
+                                            <p class="details"><span>Website:</span> {{ config('speeddigit.website')  }}</p>
 
                                             <div class="function-btn">
-                                                <a href="https://www.facebook.com/mygenuinepos" target="_blank"><span class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
-                                                <a href="https://twitter.com/GenuinePos" target="_blank"><span class="btn-fn twitter"><i class="fab fa-twitter"></i></span></a>
-                                                <a href="https://www.youtube.com/channel/UCaAEw77OeMvjwu5vOjueWmQ" target="_blank"><span class="btn-fn youtube"><i class="fab fa-youtube"></i></span></a>
+                                                <a href="{{ config('speeddigit.facebook')  }}" target="_blank"><span class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
+                                                <a href="{{ config('speeddigit.twitter')  }}" target="_blank"><span class="btn-fn twitter"><i class="fab fa-twitter"></i></span></a>
+                                                <a href="{{ config('speeddigit.youtube')  }}" target="_blank"><span class="btn-fn youtube"><i class="fab fa-youtube"></i></span></a>
                                             </div>
                                         </div>
                                     </div>
@@ -99,11 +101,11 @@
         </div>
     </div>
 
-    <div class="back_btn_wrapper">
+    {{-- <div class="back_btn_wrapper">
         <div class="back_btn">
             <a href="#" class="btn">Back</a>
         </div>
-    </div>
+    </div> --}}
 @endsection
 
 <style>

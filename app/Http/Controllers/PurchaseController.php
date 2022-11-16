@@ -16,7 +16,7 @@ use App\Models\PaymentMethod;
 use App\Utils\NameSearchUtil;
 use App\Models\ProductVariant;
 use App\Models\PurchaseReturn;
-use App\Models\General_setting;
+use App\Models\GeneralSetting;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
@@ -1412,7 +1412,7 @@ class PurchaseController extends Controller
                 }
             }
 
-            //Update Supplier due 
+            //Update Supplier due
             if ($deletePurchasePayment->payment_type == 1) {
 
                 $storedSupplierId = $deletePurchasePayment->purchase->supplier_id;
@@ -1488,7 +1488,7 @@ class PurchaseController extends Controller
     //Show Change status modal
     public function settingsStore(Request $request)
     {
-        $updatePurchaseSettings = General_setting::first();
+        $updatePurchaseSettings = GeneralSetting::first();
         $purchaseSettings = [
             'is_edit_pro_price' => isset($request->is_edit_pro_price) ? 1 : 0,
             'is_enable_status' => isset($request->is_enable_status) ? 1 : 0,

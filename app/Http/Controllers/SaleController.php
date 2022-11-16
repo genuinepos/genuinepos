@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 use App\Models\ProductBranch;
 use App\Utils\NameSearchUtil;
-use App\Models\General_setting;
+use App\Models\GeneralSetting;
 use App\Utils\ProductStockUtil;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
@@ -165,7 +165,7 @@ class SaleController extends Controller
         return view('sales.pos.ajax_view.show', compact('sale'));
     }
 
-    // Draft list view 
+    // Draft list view
     public function drafts(Request $request)
     {
         if ($request->ajax()) {
@@ -177,7 +177,7 @@ class SaleController extends Controller
         return view('sales.drafts', compact('branches'));
     }
 
-    // Quotations list view 
+    // Quotations list view
     public function quotations(Request $request)
     {
         if ($request->ajax()) {
@@ -687,7 +687,7 @@ class SaleController extends Controller
         return view('sales.edit', compact('sale', 'price_groups', 'saleAccounts', 'taxes', 'qty_limits', 'methods', 'accounts', 'warehouses'));
     }
 
-    // Update Sale 
+    // Update Sale
     public function update(Request $request, $saleId)
     {
         if (auth()->user()->permission->sale['edit_add_sale'] == '0') {
@@ -1159,7 +1159,7 @@ class SaleController extends Controller
         }
     }
 
-    // Check Branch variant product Stock 
+    // Check Branch variant product Stock
     public function checkVariantProductStock($status, $product_id, $variant_id, $price_group_id, $warehouse_id)
     {
         $__warehouse_id = $warehouse_id == 'NULL' ? NULL : $warehouse_id;
@@ -1562,9 +1562,9 @@ class SaleController extends Controller
 
         if (!is_null($deleteSalePayment)) {
 
-            //Update customer due 
+            //Update customer due
             if ($deleteSalePayment->payment_type == 1) {
-                // Update sale 
+                // Update sale
                 $storedCustomerId = $deleteSalePayment->sale->customer_id;
 
                 $storedSale = $deleteSalePayment->sale;
@@ -1788,7 +1788,7 @@ class SaleController extends Controller
             return response()->json('Asses Forbidden.');
         }
 
-        $updateSaleSettings = General_setting::first();
+        $updateSaleSettings = GeneralSetting::first();
         $saleSettings = [
             'default_sale_discount' => $request->default_sale_discount,
             'default_tax_id' => $request->default_tax_id,

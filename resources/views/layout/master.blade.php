@@ -17,7 +17,10 @@
     @vite
 </head>
 
-<body id="dashboard-8" class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-theme' }}">
+<body id="dashboard-8"
+class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-theme' }} 
+@if($rtl) rtl @endif" @if($rtl) dir="rtl" @endif>
+
     <div class="all__content">
         @include('partials.sidebar')
 

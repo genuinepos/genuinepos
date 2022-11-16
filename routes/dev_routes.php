@@ -4,10 +4,26 @@ use App\Models\Purchase;
 use App\Models\AdminAndUser;
 use App\Mail\WelcomeUserMail;
 use Doctrine\DBAL\Types\Type;
+use App\Models\RolePermission;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+
+Route::get('rp', function() {
+    $rp = RolePermission::find(32)->toArray();
+    $values = array_values($rp);
+    unset($values[0]);
+    unset($values[1]);
+    unset($values[22]);
+    $values = array_values($values);
+    $arr = \Arr::collapse($values);
+    $arr = array_keys($arr);
+    dd($arr);
+    foreach($rp as $k => $v) {
+        echo $k . '<br>' . $v;
+    }
+});
 
 Route::get('test-mail', function() {
     $data = [

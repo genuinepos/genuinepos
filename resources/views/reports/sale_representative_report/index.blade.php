@@ -329,7 +329,8 @@
 </script>
 
 <script type="text/javascript">
-    // Set accounts in payment and payment edit form
+    {{-- 
+    //Set accounts in payment and payment edit form
     function setAdmin(){
         $.ajax({
             url:"{{route('expanses.all.admins')}}",
@@ -346,7 +347,7 @@
         });
     }
     setAdmin();
-
+     --}}
     //Submit filter form by select input changing
     $(document).on('change', '.submit_able', function () {
         sale_table.ajax.reload();

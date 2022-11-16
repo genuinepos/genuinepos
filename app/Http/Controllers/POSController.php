@@ -20,7 +20,7 @@ use App\Models\PaymentMethod;
 use App\Models\ProductBranch;
 use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
-use App\Models\General_setting;
+use App\Models\GeneralSetting;
 use App\Utils\ProductStockUtil;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +59,7 @@ class POSController extends Controller
         $this->middleware('auth:admin_and_user');
     }
 
-    // Create pos view 
+    // Create pos view
     public function create()
     {
         if (auth()->user()->permission->sale['pos_add'] == '0') {
@@ -673,7 +673,7 @@ class POSController extends Controller
             $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $saleProduct->product_variant_id, auth()->user()->branch_id);
         }
 
-        // Add new payment 
+        // Add new payment
         if ($request->paying_amount > 0) {
 
             $__paymentInvoicePrefix = $paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPV';
@@ -1120,7 +1120,7 @@ class POSController extends Controller
         $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
         $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
 
-        // Add new payment 
+        // Add new payment
         if ($request->paying_amount > 0) {
 
             $__paymentInvoicePrefix = $paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPV';
@@ -1233,7 +1233,7 @@ class POSController extends Controller
 
     public function settingsStore(Request $request)
     {
-        $updatePosSettings = General_setting::first();
+        $updatePosSettings = GeneralSetting::first();
         $posSettings = [
             'is_enabled_multiple_pay' => isset($request->is_enabled_multiple_pay) ? 1 : 0,
             'is_enabled_draft' => isset($request->is_enabled_draft) ? 1 : 0,

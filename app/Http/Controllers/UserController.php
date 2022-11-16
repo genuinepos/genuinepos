@@ -78,7 +78,6 @@ class UserController extends Controller
                     }
                 })
                 ->editColumn('role_name',  function ($row) {
-
                     $user = User::find($row->id);
                     return $user?->roles->first()?->name ?? 'N/A';
                 })
@@ -143,7 +142,6 @@ class UserController extends Controller
         }
 
         $addUser = new User();
-        $addUser->user_id = 1000 + $this->invoiceVoucherRefIdUtil->getLastId('users');
         $addUser->prefix = $request->prefix;
         $addUser->name = $request->first_name;
         $addUser->last_name = $request->last_name;

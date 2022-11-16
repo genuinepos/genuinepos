@@ -68,7 +68,6 @@
                                                 <th>Allow Login</th>
                                                 <th>@lang('menu.name')</th>
                                                 <th>@lang('menu.phone')</th>
-                                                <th>User ID</th>
                                                 @if($addons->branches == 1)
                                                     <th>@lang('menu.business_location')</th>
                                                 @endif
@@ -99,16 +98,15 @@
 <script>
     // Show session message by toster alert.
     @if(Session::has('successMsg'))
-
         toastr.success('{{ session('successMsg') }}');
     @endif
 
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [
-            {extend: 'pdf',text: '<i class="fa-thin fa-file-pdf fa-2x"></i><br>@lang('menu.pdf')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'excel',text: '<i class="fa-thin fa-file-excel fa-2x"></i><br>@lang('menu.excel')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'print',text: '<i class="fa-thin fa-print fa-2x"></i><br>@lang('menu.print')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf',className: '',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'excel',className: '',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',className: '',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         "processing": true
         , "serverSide": true,
@@ -129,16 +127,15 @@
             ,{data: 'allow_login', name: 'username'}
             , { data: 'name', name: 'name'}
             , { data: 'phone', name: 'phone'}
-            , { data: 'user_id', name: 'user_id'}
             @if($addons->branches == 1)
                 , {data: 'branch', name: 'branches.name'}
             @endif
-            , { data: 'role_name', name: 'name'}
+            , { data: 'role_name', name: 'role_name'}
             , {data: 'email', name: 'email'}
             , {data: 'action'}
         , ]
     , });
-    table.buttons().container().appendTo('#exportButtonsContainer');
+    // table.buttons().container().appendTo('#exportButtonsContainer');
     //Submit filter form by select input changing
     $(document).on('change', '.submit_able', function() {
         table.ajax.reload();

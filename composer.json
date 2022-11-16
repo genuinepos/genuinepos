@@ -21,15 +21,15 @@
         "maatwebsite/excel": "^3.1.44",
         "milon/barcode": "^9.0.1",
         "picqer/php-barcode-generator": "^2.2.4",
-        "yajra/laravel-datatables": "1.5.0",
-        "speeddigit/localization": "dev-main"
+        "yajra/laravel-datatables": "1.5.0"
     },
     "require-dev": {
-        "spatie/laravel-ignition": "^1.0",
+        "barryvdh/laravel-debugbar": "^3.7",
         "fakerphp/faker": "^1.20.0",
         "mockery/mockery": "^1.5.1",
         "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.26"
+        "phpunit/phpunit": "^9.5.26",
+        "spatie/laravel-ignition": "^1.0"
     },
     "config": {
         "optimize-autoloader": true,

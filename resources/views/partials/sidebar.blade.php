@@ -784,9 +784,19 @@
             @endif
 
             @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
-
-                @if (isset(auth()->user()->branch_id))
-
+                @canany([
+                    "pro_purchase_report",
+                    "purchase_add",
+                    "purchase_all",
+                    "purchase_delete",
+                    "purchase_edit",
+                    "purchase_payment",
+                    "purchase_payment_report",
+                    "purchase_return",
+                    "purchase_sale_report",
+                    "purchase_settings",
+                    "purchase_statements",
+                ])
                     <div class="sub-menu_t" id="purchases">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2 mb-3">
@@ -988,216 +998,7 @@
                             </div>
                         </div>
                     </div>
-                @elseif(isset(auth()->user()->branch_id) && auth()->user()->branch->purchase_permission == 1)
-
-                    @if (auth()->user()->can('purchase_all'))
-
-                        <div class="sub-menu_t" id="purchases">
-                            <div class="sub-menu-width">
-                                <div class="model__close bg-secondary-2 mb-3">
-                                    <div class="row align-items-center">
-                                        <div class="col-md-8">
-                                            <p class="text-muted float-start mt-1"><strong>Purchase Management</strong></p>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="container-fluid">
-                                    <div class="row g-4 mb-4">
-                                        @if (auth()->user()->can('purchase_add'))
-
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                                <a href="{{ route('purchases.create') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-shopping-cart"></i></span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="switch_text">@lang('menu.add_purchase')</p>
-                                                </a>
-                                            </div>
-                                        @endif
-
-                                        @if (auth()->user()->can('purchase_all'))
-
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                                <a href="{{ route('purchases.index_v2') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="switch_text">@lang('menu.purchase_list')</p>
-                                                </a>
-                                            </div>
-
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                                <a href="{{ route('purchases.product.list') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="switch_text">@lang('menu.purchase_product_list')</p>
-                                                </a>
-                                            </div>
-
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                                <a href="{{ route('purchases.po.list') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="switch_text">@lang('menu.po_list')</p>
-                                                </a>
-                                            </div>
-                                        @endif
-
-                                        @if (
-                                            auth()->user()->can('purchase_settings') &&
-                                            auth()->user()->can('purchase_settings')
-                                        )
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                                <a href="{{ route('purchase.settings') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-sliders-h"></i></span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="switch_text">@lang('menu.purchase_settings')</p>
-                                                </a>
-                                            </div>
-                                        @endif
-                                    </div>
-
-                                    <div class="row g-4 mb-4">
-                                        @if (auth()->user()->can('purchase_return'))
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                                <a href="{{ route('purchases.returns.supplier.return') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-plus-circle"></i></span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="switch_text"> @lang('menu.add_return')</p>
-                                                </a>
-                                            </div>
-
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                                <a href="{{ route('purchases.returns.index') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        {{-- <span class="notify-grin">30</span> --}}
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-undo"></i></span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="switch_text"> @lang('menu.purchase_return_list')</p>
-                                                </a>
-                                            </div>
-                                        @endif
-                                    </div>
-
-                                    @if (
-                                        (
-                                            auth()->user()->can('purchase_statements') &&
-                                            auth()->user()->can('purchase_statements')
-                                        ) ||
-                                        (
-                                            auth()->user()->can('purchase_sale_report') &&
-                                            auth()->user()->can('purchase_sale_report')
-                                        ) ||
-                                        (
-                                            auth()->user()->can('pro_purchase_report') &&
-                                            auth()->user()->can('pro_purchase_report')
-                                        ) ||
-                                        (
-                                            auth()->user()->can('purchase_payment_report') &&
-                                            auth()->user()->can('purchase_payment_report')
-                                        )
-                                    )
-
-                                        <div class="row">
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <p class="text-muted ms-3"><strong>Purchase Reports</strong></p>
-                                                <hr class="p-0 m-0 mb-3">
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-4">
-                                            @if (
-                                                auth()->user()->can('purchase_statements') &&
-                                                auth()->user()->can('purchase_statements')
-                                            )
-                                                <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                                    <a href="{{ route('reports.purchases.statement.index') }}" class="switch-bar-wrap">
-                                                        <div class="switch_bar">
-                                                            <div class="bar-link">
-                                                                <span><i class="fas fa-tasks"></i></span>
-                                                            </div>
-                                                        </div>
-                                                        <p class="switch_text">@lang('menu.purchase_statements')</p>
-                                                    </a>
-                                                </div>
-                                            @endif
-
-                                            @if (
-                                                auth()->user()->can('purchase_sale_report') &&
-                                                auth()->user()->can('purchase_sale_report')
-                                            )
-                                                <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                                    <a href="{{ route('reports.sales.purchases.index') }}" class="switch-bar-wrap">
-                                                        <div class="switch_bar">
-                                                            <div class="bar-link">
-                                                                <span><i class="far fa-chart-bar"></i></span>
-                                                            </div>
-                                                        </div>
-                                                        <p class="switch_text">@lang('menu.purchase_sale')</p>
-                                                    </a>
-                                                </div>
-                                            @endif
-
-                                            @if (
-                                                auth()->user()->can('pro_purchase_report') &&
-                                                auth()->user()->can('pro_purchase_report')
-                                            )
-                                                <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                                    <a href="{{ route('reports.product.purchases.index') }}" class="switch-bar-wrap">
-                                                        <div class="switch_bar">
-                                                            <div class="bar-link">
-                                                                <span><i class="fas fa-shopping-cart"></i></span>
-                                                            </div>
-                                                        </div>
-                                                        <p class="switch_text">@lang('menu.product_purchase_report')</p>
-                                                    </a>
-                                                </div>
-                                            @endif
-
-                                            @if (
-                                                auth()->user()->can('purchase_payment_report') &&
-                                                auth()->user()->can('purchase_payment_report')
-                                            )
-                                                <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                                                    <a href="{{ route('reports.purchase.payments.index') }}" class="switch-bar-wrap">
-                                                        <div class="switch_bar">
-                                                            <div class="bar-link">
-                                                                <span><i class="fas fa-money-check-alt"></i></span>
-                                                            </div>
-                                                        </div>
-                                                        <p class="switch_text">@lang('menu.purchase_payment_report')</p>
-                                                    </a>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
-                @endif
+                @endcanany
             @endif
 
             <div class="sub-menu_t" id="sales">

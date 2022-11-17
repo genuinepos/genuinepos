@@ -47,7 +47,7 @@ class LoginController extends Controller
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->middleware('guest')->except('logout');
     }
-    
+
     public function login(Request $request)
     {
         $this->validate($request, [
@@ -57,9 +57,9 @@ class LoginController extends Controller
 
         $admin = User::where('username', $request->username)->where('allow_login', 1)->first();
 
-        if ($admin && $admin->allow_login == 1) {
+        if (isset($admin) && $admin->allow_login == 1) {
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-                if (!Session::has($admin->language)) {
+                if (! Session::has($admin->language)) {
                     session(['lang' => $admin->language]);
                 }
                 $this->userActivityLogUtil->addLog(

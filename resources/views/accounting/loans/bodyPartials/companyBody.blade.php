@@ -1,4 +1,4 @@
-<div class="row tab_contant companies mt-1">
+<div class="row g-3 tab_contant companies">
     <div class="col-md-4">
         <div class="card" id="add_com_form">
             <div class="section-header">
@@ -32,10 +32,12 @@
                     </div>
 
                     <div class="form-group row mt-2">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Reset</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Reset</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -64,7 +66,7 @@
                 <div class="data_preloader">
                     <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                 </div>
-                
+
                 <div class="table-responsive" >
                     <table class="display data_tbl data__table asset_type_table">
                         <thead>
@@ -86,7 +88,7 @@
                     </form>
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
 </div>
 
@@ -97,7 +99,7 @@
 </div>
 <!-- Customer payment Modal End-->
 
-  <!-- Customer payment view Modal--> 
+  <!-- Customer payment view Modal-->
   <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
     <div class="modal-dialog col-60-modal" role="document">
         <div class="modal-content">

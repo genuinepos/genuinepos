@@ -3,46 +3,51 @@
 @endpush
 @section('title', 'Role List - ')
 @section('content')
-    <div class="body-wraper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <h6>Roles</h6>
-                            </div>
-                            <div class="d-flex">
-                                @if (auth()->user()->can('role_add'))
-                                    <div>
-                                        <a href="{{ route('users.role.create') }}" class="btn text-white btn-sm"><i class="fa-thin fa-circle-plus fa-2x"></i><br>New Role</a>
-                                    </div>
-                                @endif
-                                <a href="#" class="btn text-white btn-sm d-lg-block d-none"><span class="fas fa-thin fa-circle-question fa-2x"></span><br>@lang('menu.help')</a>
-                            </div>
-                            <div>
-                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm  float-end back-button"><i    class="fa-thin fa-left-to-line fa-2x"></i><br>@lang('menu.back')
-                                </a>
-                            </div>
-                        </div>
+    <div class="body-woaper">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-user-tag"></span>
+                    <h5>User Roles</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
+                        class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-md-6">
+                        <h6>All User Roles</h6>
                     </div>
 
-                    <div class="p-15">
-                        <div class="form_element rounded m-0">
-                            <div class="element-body">
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
-                        </div>
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <a href="{{ route('users.role.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
                     </div>
                 </div>
+
+                <div class="widget_content">
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th class="text-start">SL</th>
+                                    <th class="text-start">Bank Name</th>
+                                    <th class="text-start">Branch Name</th>
+                                    <th class="text-start">Address</th>
+                                    <th class="text-start">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>

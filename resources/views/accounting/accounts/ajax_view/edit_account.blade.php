@@ -78,11 +78,13 @@
         <input type="text" name="remark" class="form-control" data-name="Remark" id="e_remarks" value="{{ $account->remark }}"/>
     </div>
 
-    <div class="form-group text-right py-2">
-        <button type="button" class="btn loading_button d-none"><i
-                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-        <button type="submit" class="c-btn me-0 button-success submit_button float-end">Save</button>
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+    <div class="form-group d-flex justify-content-end text-right py-2">
+        <div class="btn-loading">
+            <button type="button" class="btn loading_button d-none"><i
+                    class="fas fa-spinner"></i><span> Loading...</span></button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+        </div>              
     </div>
 </form>
 

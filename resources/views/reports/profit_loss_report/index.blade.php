@@ -12,23 +12,23 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-money-bill-wave"></span>
-                                <h5>Profit / Loss Report</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-money-bill-wave"></span>
+                    <h5>Profit / Loss Report</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                </a>
+            </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form_element rounded mt-0 mb-3">
+                            <div class="element-body">
+                                <div class="row">
                                     <div class="col-md-8">
                                         <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                             <div class="form-group row">
@@ -88,7 +88,7 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <div class="form-group">
+                                        <div class="form-group mt-4">
                                             <label></label>
                                             <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
                                         </div>
@@ -96,95 +96,93 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="row mt-1">
-                            <div class="sale_purchase_and_profit_area">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div id="data_list">
-                                    <div class="sale_and_purchase_amount_area">
-                                        <div class="row">
-                                            <div class="col-md-12 col-sm-12 col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-body mt-1">
-                                                        <table class="table modal-table table-sm">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th class="text-start"> Total Stock Adjustment : </th>
-                                                                    <td class="text-start"> 0.00</td>
-                                                                </tr>
+                <div class="sale_purchase_and_profit_area">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                    <div id="data_list">
+                        <div class="sale_and_purchase_amount_area">
+                            <div class="row g-3">
+                                <div class="col-md-12 col-sm-12 col-lg-6">
+                                    <div class="card">
+                                        <div class="card-body mt-1">
+                                            <table class="table modal-table table-sm">
+                                                <tbody>
+                                                    <tr>
+                                                        <th class="text-start"> Total Stock Adjustment : </th>
+                                                        <td class="text-start"> 0.00</td>
+                                                    </tr>
 
-                                                                <tr>
-                                                                    <th class="text-start"> Total Expense : </th>
-                                                                    <td class="text-start"> 0.00</td>
-                                                                </tr>
+                                                    <tr>
+                                                        <th class="text-start"> Total Expense : </th>
+                                                        <td class="text-start"> 0.00</td>
+                                                    </tr>
 
-                                                                <tr>
-                                                                    <th class="text-start">Total transfer shipping charge : </th>
-                                                                    <td class="text-start"> 0.00</td>
-                                                                </tr>
+                                                    <tr>
+                                                        <th class="text-start">Total transfer shipping charge : </th>
+                                                        <td class="text-start"> 0.00</td>
+                                                    </tr>
 
-                                                                <tr>
-                                                                    <th class="text-start">Total Sell discount : </th>
-                                                                    <td class="text-start"> 0.00</td>
-                                                                </tr>
+                                                    <tr>
+                                                        <th class="text-start">Total Sell discount : </th>
+                                                        <td class="text-start"> 0.00</td>
+                                                    </tr>
 
-                                                                <tr>
-                                                                    <th class="text-start"> Total customer reward : </th>
-                                                                    <td class="text-start"> 0.00</td>
-                                                                </tr>
+                                                    <tr>
+                                                        <th class="text-start"> Total customer reward : </th>
+                                                        <td class="text-start"> 0.00</td>
+                                                    </tr>
 
-                                                                <tr>
-                                                                    <th class="text-start">Total Sell Return : </th>
-                                                                    <td class="text-start"> 0.00</td>
-                                                                </tr>
+                                                    <tr>
+                                                        <th class="text-start">Total Sell Return : </th>
+                                                        <td class="text-start"> 0.00</td>
+                                                    </tr>
 
-                                                                <tr>
-                                                                    <th class="text-start">Total Payroll :</th>
-                                                                    <td class="text-start"> 0.00</td>
-                                                                </tr>
+                                                    <tr>
+                                                        <th class="text-start">Total Payroll :</th>
+                                                        <td class="text-start"> 0.00</td>
+                                                    </tr>
 
-                                                                <tr>
-                                                                    <th class="text-start">Total Production Cost :</th>
-                                                                    <td class="text-start">0.00</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                    <tr>
+                                                        <th class="text-start">Total Production Cost :</th>
+                                                        <td class="text-start">0.00</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                            <div class="col-md-12 col-sm-12 col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-body ">
-                                                        <table class="table modal-table table-sm">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th class="text-start">
-                                                                        Total Sales : <br>
-                                                                        <small>((Exc. tax, Discount))</small>
-                                                                    </th>
-                                                                    <td class="text-start"> 0.0</td>
-                                                                </tr>
+                                <div class="col-md-12 col-sm-12 col-lg-6">
+                                    <div class="card">
+                                        <div class="card-body ">
+                                            <table class="table modal-table table-sm">
+                                                <tbody>
+                                                    <tr>
+                                                        <th class="text-start">
+                                                            Total Sales : <br>
+                                                            <small>((Exc. tax, Discount))</small>
+                                                        </th>
+                                                        <td class="text-start"> 0.0</td>
+                                                    </tr>
 
-                                                                <tr>
-                                                                    <th class="text-start">Total sell shipping charge : </th>
-                                                                    <td class="text-start"> 0.0</td>
-                                                                </tr>
+                                                    <tr>
+                                                        <th class="text-start">Total sell shipping charge : </th>
+                                                        <td class="text-start"> 0.0</td>
+                                                    </tr>
 
-                                                                <tr>
-                                                                    <th class="text-start">Total Stock Recovered : </th>
-                                                                    <td class="text-start"> 0.0</td>
-                                                                </tr>
+                                                    <tr>
+                                                        <th class="text-start">Total Stock Recovered : </th>
+                                                        <td class="text-start"> 0.0</td>
+                                                    </tr>
 
-                                                                <tr>
-                                                                    <th class="text-start">Total sell round off : </th>
-                                                                    <td class="text-start"> 0.0</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                    <tr>
+                                                        <th class="text-start">Total sell round off : </th>
+                                                        <td class="text-start"> 0.0</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

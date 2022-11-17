@@ -30,6 +30,7 @@
 
                     <div class="p-15">
 
+                    <div class="p-3">
                         @if ($addons->branches == 1)
                         <div class="row">
                             <div class="col-md-12">

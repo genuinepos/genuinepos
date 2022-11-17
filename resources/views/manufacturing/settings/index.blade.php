@@ -43,14 +43,17 @@
                                 </div>
                             </div>
                         </div> --}}
-                        <div class="row">
+                        <div class="sec-name">
+                            <div class="name-head">
+                                <span class="fas fa-sliders-h"></span>
+                                <h6>Settings</h6>
+                            </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            </a>
+                        </div>
+                        <div class="p-3">
                             <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Settings</h6>
-                                    </div>
-                                </div>
-
                                 <form id="update_settings_form" action="{{ route('manufacturing.settings.store') }}" method="post" class="p-3">
                                     @csrf
                                     <div class="form-group row">
@@ -74,7 +77,7 @@
                                                         @if(isset(json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty']))
                                                             {{ json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty'] == '1' ? 'CHECKED' : '' }}
                                                         @endif
-                                                        name="enable_editing_ingredient_qty"> &nbsp; <b>Enable editing ingredients quantity in production</b> 
+                                                        name="enable_editing_ingredient_qty"> &nbsp; <b>Enable editing ingredients quantity in production</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -93,10 +96,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-primary submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -114,7 +118,7 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         // Update settings by ajax
         $('#update_settings_form').on('submit', function(e){

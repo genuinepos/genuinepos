@@ -10,92 +10,65 @@
                 <div class="border-class">
                     <div class="main__content">
                         <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul>
-                                        @if (!auth()->user()->can('process_view'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire text-primary"></i> <b>@lang('menu.process')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (!auth()->user()->can('production_view'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>@lang('menu.productions')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (!auth()->user()->can('manuf_settings'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h"></i> <b>@lang('menu.manufacturing_setting')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (!auth()->user()->can('manuf_report'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.manufacturing_report')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
+                            <div class="name-head">
+                                <span class="fas fa-dumpster-fire"></span>
+                                <h6>Process</h6>
                             </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            </a>
                         </div>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Process</h6>
-                                    </div>
-
-                                    @if (!auth()->user()->can('process_add'))
-                                        <div class="col-md-6">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                        class="fas fa-plus-square"></i> Add</a>
-                                            </div>
-                                        </div>
-                                    @endif
+                    <div class="p-3">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-6">
+                                    <h6>Process</h6>
                                 </div>
 
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                @if (auth()->user()->permission->manufacturing['process_add'] == '1')
+                                    <div class="col-md-6 d-flex justify-content-end">
+                                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <form id="update_product_cost_form" action="">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr class="bg-navey-blue">
-                                                        <th data-bSortable="false">
-                                                            <input class="all" type="checkbox" name="all_checked"/>
-                                                        </th>
-                                                        <th class="text-black">Actions</th>
-                                                        <th class="text-black">Product Name</th>
-                                                        <th class="text-black">Category</th>
-                                                        <th class="text-black">SubCategory</th>
-                                                        <th class="text-black">Wastage</th>
-                                                        <th class="text-black">Output Quantity</th>
-                                                        <th class="text-black">Total Ingrediant Cost</th>
-                                                        <th class="text-black">Production Cost</th>
-                                                        <th class="text-black">Total Cost</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </form>
-                                    </div>
-                                </div>
-
-                                @if (!auth()->user()->can('process_delete'))
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
                                 @endif
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <form id="update_product_cost_form" action="">
+                                        <table class="display data_tbl data__table">
+                                            <thead>
+                                                <tr class="bg-navey-blue">
+                                                    <th data-bSortable="false">
+                                                        <input class="all" type="checkbox" name="all_checked"/>
+                                                    </th>
+                                                    <th class="text-black">Actions</th>
+                                                    <th class="text-black">Product Name</th>
+                                                    <th class="text-black">Category</th>
+                                                    <th class="text-black">SubCategory</th>
+                                                    <th class="text-black">Wastage</th>
+                                                    <th class="text-black">Output Quantity</th>
+                                                    <th class="text-black">Total Ingrediant Cost</th>
+                                                    <th class="text-black">Production Cost</th>
+                                                    <th class="text-black">Total Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+
+                            @if (auth()->user()->permission->manufacturing['process_delete'] == '1')
+                                <form id="deleted_form" action="" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -130,12 +103,14 @@
                             </div>
 
                             <div class="form-group row mt-3">
-                                <div class="col-md-12">
-                                    <button type="button" class="btn loading_button d-none">
-                                        <i class="fas fa-spinner text-primary"></i><b> Loading...</b>
-                                    </button>
-                                    <button type="submit" class="c-btn me-0 button-success float-end submit_button">Save</button>
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <div class="btn-loading">
+                                        <button type="button" class="btn loading_button d-none">
+                                            <i class="fas fa-spinner"></i><span> Loading...</span>
+                                        </button>
+                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                        <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>

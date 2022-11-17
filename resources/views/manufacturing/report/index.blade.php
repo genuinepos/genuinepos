@@ -23,175 +23,151 @@
                 <div class="border-class">
                     <div class="main__content">
                         <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul>
-                                        @if (!auth()->user()->can('process_view'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>@lang('menu.process')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (!auth()->user()->can('production_view'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>@lang('menu.productions')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (!auth()->user()->can('manuf_settings'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h"></i> <b>@lang('menu.manufacturing_setting')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (!auth()->user()->can('manuf_report'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt text-primary"></i> <b>@lang('menu.manufacturing_report')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
+                            <div class="name-head">
+                                <span class="fas fa-file-alt"></span>
+                                <h6>Manufacturing Report</h6>
                             </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            </a>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="sec-name">
-                                <div class="col-md-12">
-                                    <form id="filter_form" class="px-2">
-                                        <div class="form-group row">
-                                            <div class="col-md-2 search_area">
-                                                <label><strong>Search Product :</strong></label>
-                                                <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
-                                                <input type="hidden" name="product_id" id="product_id" value="">
-                                                <input type="hidden" name="variant_id" id="variant_id" value="">
-                                                <div class="search_result d-none">
-                                                    <ul id="list" class="list-unstyled">
-                                                        <li><a id="select_product" class="" data-p_id="" data-v_id="" href="">Samsung A30</a></li>
-                                                    </ul>
+                    <div class="p-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
+                                        <form id="filter_form">
+                                            <div class="form-group row">
+                                                <div class="col-md-2 search_area">
+                                                    <label><strong>Search Product :</strong></label>
+                                                    <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
+                                                    <input type="hidden" name="product_id" id="product_id" value="">
+                                                    <input type="hidden" name="variant_id" id="variant_id" value="">
+                                                    <div class="search_result d-none">
+                                                        <ul id="list" class="list-unstyled">
+                                                            <li><a id="select_product" class="" data-p_id="" data-v_id="" href="">Samsung A30</a></li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            @if ($addons->branches == 1)
-                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <div class="col-md-2">
-                                                        <label><strong>Business Location :</strong></label>
-                                                        <select name="branch_id"
-                                                            class="form-control submit_able" id="branch_id" autofocus>
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-2">
+                                                            <label><strong>Business Location :</strong></label>
+                                                            <select name="branch_id"
+                                                                class="form-control submit_able" id="branch_id" autofocus>
+                                                                <option value="">All</option>
+                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
+                                                @endif
+
+                                                <div class="col-md-2">
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <label><strong>Warehouse :</strong></label>
+                                                        <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
+                                                            <option value="">Select Business Location First</option>
+                                                        </select>
+                                                    @else
+                                                        @php
+                                                            $wh = DB::table('warehouses')
+                                                            ->where('branch_id', auth()->user()->branch_id)
+                                                            ->get(['id', 'warehouse_name', 'warehouse_code']);
+                                                        @endphp
+
+                                                        <label><strong>Warehouse :</strong></label>
+                                                        <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
                                                             <option value="">All</option>
-                                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                            @foreach ($branches as $branch)
-                                                                <option value="{{ $branch->id }}">
-                                                                    {{ $branch->name . '/' . $branch->branch_code }}
-                                                                </option>
+                                                            @foreach ($wh as $row)
+                                                                <option value="{{ $row->id }}">{{ $row->warehouse_name.'/'.$row->warehouse_code }}</option>
                                                             @endforeach
                                                         </select>
-                                                    </div>
-                                                @endif
-                                            @endif
+                                                    @endif
+                                                </div>
 
-                                            <div class="col-md-2">
-                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <label><strong>Warehouse :</strong></label>
-                                                    <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
-                                                        <option value="">Select Business Location First</option>
-                                                    </select>
-                                                @else
-                                                    @php
-                                                        $wh = DB::table('warehouses')
-                                                        ->where('branch_id', auth()->user()->branch_id)
-                                                        ->get(['id', 'warehouse_name', 'warehouse_code']);
-                                                    @endphp
-
-                                                    <label><strong>Warehouse :</strong></label>
-                                                    <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
+                                                <div class="col-md-2">
+                                                    <label><strong>Category :</strong></label>
+                                                    <select name="category_id" class="form-control submit_able"
+                                                        id="category_id">
                                                         <option value="">All</option>
-                                                        @foreach ($wh as $row)
-                                                            <option value="{{ $row->id }}">{{ $row->warehouse_name.'/'.$row->warehouse_code }}</option>
+                                                        @foreach ($categories as $category)
+                                                            <option value="{{ $category->id }}">{{$category->name}}</option>
                                                         @endforeach
                                                     </select>
-                                                @endif
-                                            </div>
+                                                </div>
 
-                                            <div class="col-md-2">
-                                                <label><strong>Category :</strong></label>
-                                                <select name="category_id" class="form-control submit_able"
-                                                    id="category_id">
-                                                    <option value="">All</option>
-                                                    @foreach ($categories as $category)
-                                                        <option value="{{ $category->id }}">{{$category->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <label><strong>Sub-Category :</strong></label>
-                                                <select name="sub_category_id" class="form-control submit_able" id="sub_category_id">
-                                                    <option value="">All</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <label><strong>Status :</strong></label>
-                                                <div class="input-group">
-                                                    <select name="status" class="form-control" id="status" autofocus>
+                                                <div class="col-md-2">
+                                                    <label><strong>Sub-Category :</strong></label>
+                                                    <select name="sub_category_id" class="form-control submit_able" id="sub_category_id">
                                                         <option value="">All</option>
-                                                        <option value="1">Final</option>
-                                                        <option value="0">Hold</option>
                                                     </select>
                                                 </div>
-                                            </div>
 
-                                            <div class="col-md-2">
-                                                <label><strong>From Date :</strong></label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="basic-addon1">
-                                                            <i class="fas fa-calendar-week input_i"></i>
-                                                        </span>
+                                                <div class="col-md-2">
+                                                    <label><strong>Status :</strong></label>
+                                                    <div class="input-group">
+                                                        <select name="status" class="form-control" id="status" autofocus>
+                                                            <option value="">All</option>
+                                                            <option value="1">Final</option>
+                                                            <option value="0">Hold</option>
+                                                        </select>
                                                     </div>
-                                                    <input type="text" name="from_date" id="datepicker"
-                                                        class="form-control from_date" autocomplete="off">
                                                 </div>
-                                            </div>
 
-                                            <div class="col-md-2">
-                                                <label><strong>To Date :</strong></label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="basic-addon1">
-                                                            <i class="fas fa-calendar-week input_i"></i>
-                                                        </span>
+                                                <div class="col-md-2">
+                                                    <label><strong>From Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <i class="fas fa-calendar-week input_i"></i>
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" name="from_date" id="datepicker"
+                                                            class="form-control from_date" autocomplete="off">
                                                     </div>
-                                                    <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
                                                 </div>
-                                            </div>
 
-                                            <div class="col-md-2">
-                                                <label><strong></strong></label>
-                                                <div class="input-group">
-                                                    <button type="button" id="filter_button" class="btn text-white btn-sm btn-secondary float-start">
-                                                        <i class="fas fa-funnel-dollar"></i> Filter
-                                                    </button>
+                                                <div class="col-md-2">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <i class="fas fa-calendar-week input_i"></i>
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="button" id="filter_button" class="btn text-white btn-sm btn-secondary float-start">
+                                                            <i class="fas fa-funnel-dollar"></i> Filter
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6"><h6>Productions</h6></div>
-                                @if (!auth()->user()->can('production_add'))
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('manufacturing.productions.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
+                                @if (auth()->user()->permission->manufacturing['production_add'] == '1')
+                                    <div class="col-md-6 d-flex justify-content-end">
+                                        <a href="{{ route('manufacturing.productions.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>
                                 @endif
                             </div>

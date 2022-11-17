@@ -8,72 +8,64 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-plus-square"></span>
+                    <h6>Add Expense</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="add_expanse_form" action="{{ route('expanses.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form_element">
-                                    <div class="py-2 px-2 form-header">
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <h6>Add Expense | <small class="text-dark"><strong>Save & Print = (Ctrl + Enter), Save = (Shift + Enter)</strong> </small></h6>
-                                            </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                            <div class="col-4">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                            </div>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>Voucher No:</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                        <div class="col-8">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" autofocus>
                                         </div>
                                     </div>
 
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class=" col-4"><b>Voucher No:</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher will be generated automatically." class="fas fa-info-circle tp"></i></label>
-                                                    <div class="col-8">
-                                                        <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" autofocus>
-                                                    </div>
-                                                </div>
+                                    <div class="input-group mt-1">
+                                        <label class=" col-4"><b>Expense A/C :</b> <span class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <select required name="ex_account_id" class="form-control" id="ex_account_id">
+                                                @foreach ($expenseAccounts as $exAc)
+                                                    <option value="{{ $exAc->id }}">
+                                                        {{ $exAc->name.' ('.App\Utils\Util::accountType($exAc->account_type).')' }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                <div class="input-group mt-1">
-                                                    <label class=" col-4"><b>Expense A/C :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <select required name="ex_account_id" class="form-control" id="ex_account_id">
-                                                            @foreach ($expenseAccounts as $exAc)
-                                                                <option value="{{ $exAc->id }}">
-                                                                    {{ $exAc->name.' ('.App\Utils\Util::accountType($exAc->account_type).')' }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>Expense Date :</b> <span
+                                            class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <input required type="text" name="date" class="form-control changeable"
+                                                value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                        </div>
+                                    </div>
 
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class=" col-4"><b>Expense Date :</b> <span
-                                                        class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control changeable"
-                                                            value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
-                                                    </div>
-                                                </div>
-
-                                                <div class="input-group mt-1">
-                                                    <label class=" col-4"><b>Expanse For :</b></label>
-                                                    <div class="col-8">
-                                                        <select name="admin_id" class="form-control" id="admin_id">
-                                                            <option value="">None</option>
-                                                            @foreach ($users as $user)
-                                                                <option value="{{$user->id}}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class=" col-4"><b>Expanse For :</b></label>
+                                        <div class="col-8">
+                                            <select name="admin_id" class="form-control" id="admin_id">
+                                                <option value="">None</option>
+                                                @foreach ($users as $user)
+                                                    <option value="{{$user->id}}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -82,57 +74,49 @@
                     </div>
                 </section>
 
-                <section class="mb-3">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form_element m-0">
-                                    <div class="heading_area">
-                                        <div class="row">
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="heading_area">
+                            <div class="row">
 
-                                            <div class="col-md-6">
-                                                <p class="text-muted m-0 p-0 ps-1 float-start mt-1"><b>Descriptions</b></p>
-                                            </div>
+                                <div class="col-md-6">
+                                    <p class="text-muted m-0 p-0 ps-1 float-start mt-1"><b>Descriptions</b></p>
+                                </div>
 
-                                            <div class="col-md-6">
-                                                <a href="#" class="text-primary m-0 p-0 ps-1 float-end me-1" data-bs-toggle="modal" data-bs-target="#addModal"><b>Add New Category</b></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="expense_description_table">
-                                                    <div class="table-responsive">
-                                                        <table class="table modal-table table-sm">
-                                                            <tbody id="description_body">
-                                                                <tr>
-                                                                    <td id="index">
-                                                                        <b><span class="serial">1</span></b>
-                                                                        <input class="index-1" type="hidden" id="index">
-                                                                    </td>
+                                <div class="col-md-6">
+                                    <a href="#" class="text-primary m-0 p-0 ps-1 float-end me-1" data-bs-toggle="modal" data-bs-target="#addModal"><b>Add New Category</b></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="expense_description_table">
+                                        <div class="table-responsive">
+                                            <table class="table modal-table table-sm">
+                                                <tbody id="description_body">
+                                                    <tr>
+                                                        <td id="index">
+                                                            <b><span class="serial">1</span></b>
+                                                            <input class="index-1" type="hidden" id="index">
+                                                        </td>
 
-                                                                    <td>
-                                                                        <select required name="category_ids[]" class="form-control category_id" id="category_id">
-                                                                            <option value="">Select Expense Category</option>
-                                                                        </select>
-                                                                    </td>
+                                                        <td>
+                                                            <select required name="category_ids[]" class="form-control category_id" id="category_id">
+                                                                <option value="">Select Expense Category</option>
+                                                            </select>
+                                                        </td>
 
-                                                                    <td>
-                                                                        <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="Amount">
-                                                                    </td>
+                                                        <td>
+                                                            <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="Amount">
+                                                        </td>
 
-                                                                    <td>
-                                                                        <div class="btn_30_blue" >
-                                                                            <a id="addMore" href=""><i class="fas fa-plus-square"></i></a>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                        <td>
+                                                            <a id="addMore" href="" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -141,45 +125,39 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form_element m-0">
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class=" col-4"><b>Total : </b> </label>
-                                                    <div class="col-8">
-                                                        <input readonly class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="0.00" step="any" placeholder="Total amount">
-                                                        <span class="error error_total_amount"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>Total : </b> </label>
+                                        <div class="col-8">
+                                            <input readonly class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="0.00" step="any" placeholder="Total amount">
+                                            <span class="error error_total_amount"></span>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>Tax :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="tax" class="form-control" id="tax">
-                                                            <option value="0.00">NoTax</option>
-                                                            @foreach ($taxes as $tax)
-                                                                <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>Tax :</b> </label>
+                                        <div class="col-8">
+                                            <select name="tax" class="form-control" id="tax">
+                                                <option value="0.00">NoTax</option>
+                                                @foreach ($taxes as $tax)
+                                                    <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class=" col-4"><b>Net Total : </b>  </label>
-                                                    <div class="col-8">
-                                                        <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00">
-                                                    </div>
-                                                </div>
-                                            </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>Net Total : </b>  </label>
+                                        <div class="col-8">
+                                            <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00">
                                         </div>
                                     </div>
                                 </div>
@@ -217,12 +195,12 @@
                         </div>
 
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn me-0 button-success float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -467,7 +445,7 @@
             html += '</td>';
 
             html += '<td>';
-            html += '<a href="#" class="action-btn c-delete" id="remove_btn"><span class="fas fa-trash "></span></a>';
+            html += '<a href="#" class="btn btn-sm btn-danger" id="remove_btn"><span class="fas fa-trash "></span></a>';
             html += '</td>';
             html += '</tr>';
             $('#description_body').append(html);

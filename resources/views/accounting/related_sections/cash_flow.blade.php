@@ -5,256 +5,249 @@
 @section('title', 'Cash Flow Statements - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="far fa-money-bill-alt"></span>
+                    <h5>Cash Flow Statements</h5>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+
+        <div class="p-3">
             <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <form id="filter_cash_flow">
+                                <div class="form-group row">
+                                    @if ($addons->branches == 1)
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-2">
+                                                <label><strong>Business Location :</strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control" id="branch_id" autofocus>
+                                                    <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
+                                    @endif
 
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="far fa-money-bill-alt"></span>
-                                <h5>Cash Flow Statements</h5>
-                            </div>
+                                    <div class="col-md-2">
+                                        <label><strong>From Date :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_f"></i></span>
+                                            </div>
+                                            <input type="text" name="from_date" id="datepicker"
+                                                class="form-control from_date date"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
 
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+                                    <div class="col-md-2">
+                                        <label><strong>To Date :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                            </div>
+                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                        </div>
+                                    </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_cash_flow" class="px-2">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control" id="branch_id" autofocus>
-                                                                <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                                <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date date"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label><strong></strong></label>
-                                                            <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6 mt-3">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
-                                                        </div>
-                                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label><strong></strong></label>
+                                                <div class="input-group">
+                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                 </div>
                                             </div>
-                                        </form>
+
+                                            <div class="col-md-6 d-flex justify-content-end mt-4">
+                                                <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="row margin_row mt-1">
-                        <div class="card col-md-7">
+            <div class="card">
+                <div class="section-header">
+                    <div class="col-md-10">
+                        <h6>All Cash Flow Statements</h6>
+                    </div>
+                </div>
 
-                            <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>All Cash Flow Statements</h6>
-                                </div>
-                            </div>
+                <div class="widget_content mt-2">
+                    <div class="data_preloader">
+                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                    </div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="table modal-table table-sm table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="aiability_area">
+                                        <table class="table table-sm">
+                                            <tbody>
+                                                {{-- Cash Flow from operations --}}
+                                                <tr>
+                                                    <th class="text-start" colspan="2">
+                                                        <strong>CASH FLOW FROM OPERATIONS :</strong>
+                                                    </th>
+                                                </tr>
 
-                            <div class="widget_content mt-2">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="table modal-table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td class="aiability_area">
-                                                    <table class="table table-sm">
-                                                        <tbody>
-                                                            {{-- Cash Flow from operations --}}
-                                                            <tr>
-                                                                <th class="text-start" colspan="2">
-                                                                    <strong>CASH FLOW FROM OPERATIONS :</strong>
-                                                                </th>
-                                                            </tr>
+                                                <tr>
+                                                    <td class="text-start">
+                                                    <em>Net Profit Before Tax :</em>
+                                                    </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                <em>Net Profit Before Tax :</em>
-                                                                </td>
+                                                    <td class="text-start">
+                                                    <em>0.00</em>
+                                                    </td>
+                                                </tr>
 
-                                                                <td class="text-start">
-                                                                <em>0.00</em>
-                                                                </td>
-                                                            </tr>
+                                                <tr>
+                                                    <td class="text-start">
+                                                    <em>Customer Balance : </em>
+                                                    </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                <em>Customer Balance : </em>
-                                                                </td>
+                                                    <td class="text-start">
+                                                        <em>- 0.00</em>
+                                                    </td>
+                                                </tr>
 
-                                                                <td class="text-start">
-                                                                    <em>- 0.00</em>
-                                                                </td>
-                                                            </tr>
+                                                <tr>
+                                                    <td class="text-start">
+                                                    <em>Current Stock Value : </em>
+                                                    </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                <em>Current Stock Value : </em>
-                                                                </td>
+                                                    <td class="text-start">
+                                                        <em>0.00</em>
+                                                    </td>
+                                                </tr>
 
-                                                                <td class="text-start">
-                                                                    <em>0.00</em>
-                                                                </td>
-                                                            </tr>
+                                                <tr>
+                                                    <td class="text-start">
+                                                        <em>Current Asset :</em>
+                                                    </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Current Asset :</em>
-                                                                </td>
+                                                    <td class="text-start">
+                                                        <em>0.00</em>
+                                                    </td>
+                                                </tr>
 
-                                                                <td class="text-start">
-                                                                    <em>0.00</em>
-                                                                </td>
-                                                            </tr>
+                                                <tr>
+                                                    <td class="text-start">
+                                                    <em>Current Liability :</em>
+                                                    </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                <em>Current Liability :</em>
-                                                                </td>
+                                                    <td class="text-start">
+                                                        <em>0.00</em>
+                                                    </td>
+                                                </tr>
 
-                                                                <td class="text-start">
-                                                                    <em>0.00</em>
-                                                                </td>
-                                                            </tr>
+                                                <tr>
+                                                    <td class="text-start">
+                                                    <em>Tax Payable :</em>
+                                                    </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                <em>Tax Payable :</em>
-                                                                </td>
+                                                    <td class="text-start">
+                                                        <em>0.00</em>
+                                                    </td>
+                                                </tr>
 
-                                                                <td class="text-start">
-                                                                    <em>0.00</em>
-                                                                </td>
-                                                            </tr>
+                                                <tr class="bg-info">
+                                                    <td class="text-start text-white">
+                                                        <b>Total Operations : </b>
+                                                    </td>
 
-                                                            <tr class="bg-info">
-                                                                <td class="text-start text-white">
-                                                                    <b>Total Operations : </b>
-                                                                </td>
+                                                    <td class="text-start text-white">
+                                                        <b>0.00</b>
+                                                    </td>
+                                                </tr>
 
-                                                                <td class="text-start text-white">
-                                                                    <b>0.00</b>
-                                                                </td>
-                                                            </tr>
+                                                {{-- Cash Flow from investing --}}
+                                                <tr>
+                                                    <th class="text-start" colspan="2">
+                                                        <strong>CASH FLOW FROM INVESTING :</strong>
+                                                    </th>
+                                                </tr>
 
-                                                            {{-- Cash Flow from investing --}}
-                                                            <tr>
-                                                                <th class="text-start" colspan="2">
-                                                                    <strong>CASH FLOW FROM INVESTING :</strong>
-                                                                </th>
-                                                            </tr>
+                                                <tr>
+                                                    <td class="text-start">
+                                                        <em>FIXED ASSET :</em>
+                                                    </td>
+                                                    <td class="text-start">0.00</td>
+                                                </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>FIXED ASSET :</em>
-                                                                </td>
-                                                                <td class="text-start">0.00</td>
-                                                            </tr>
+                                                <tr class="bg-info">
+                                                    <td class="text-start text-white">
+                                                        <b><em>Total Investing :</em>  </b>
+                                                    </td>
 
-                                                            <tr class="bg-info">
-                                                                <td class="text-start text-white">
-                                                                    <b><em>Total Investing :</em>  </b>
-                                                                </td>
+                                                    <td class="text-start text-white">
+                                                        <b><em>0.00</em> </b>
+                                                    </td>
+                                                </tr>
 
-                                                                <td class="text-start text-white">
-                                                                    <b><em>0.00</em> </b>
-                                                                </td>
-                                                            </tr>
+                                                {{-- Cash Flow from financing --}}
+                                                <tr>
+                                                    <th class="text-start" colspan="2">
+                                                        <strong>CASH FLOW FROM FINANCING :</strong>
+                                                    </th>
+                                                </tr>
 
-                                                            {{-- Cash Flow from financing --}}
-                                                            <tr>
-                                                                <th class="text-start" colspan="2">
-                                                                    <strong>CASH FLOW FROM FINANCING :</strong>
-                                                                </th>
-                                                            </tr>
+                                                <tr>
+                                                    <td class="text-start">
+                                                        <em>Capital A/C :</em>
+                                                    </td>
+                                                    <td class="text-start">0.00</td>
+                                                </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Capital A/C :</em>
-                                                                </td>
-                                                                <td class="text-start">0.00</td>
-                                                            </tr>
+                                                <tr>
+                                                    <td class="text-start">
+                                                        <em>Loan And Advance :</em>
+                                                    </td>
+                                                    <td class="text-start">0.00</td>
+                                                </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Loan And Advance :</em>
-                                                                </td>
-                                                                <td class="text-start">0.00</td>
-                                                            </tr>
+                                                <tr class="bg-info">
+                                                    <td class="text-start text-white">
+                                                        <b><em>Total financing :</em>  </b>
+                                                    </td>
 
-                                                            <tr class="bg-info">
-                                                                <td class="text-start text-white">
-                                                                    <b><em>Total financing :</em>  </b>
-                                                                </td>
-
-                                                                <td class="text-start text-white">
-                                                                    <b><em>0.00</em> </b>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <tfoot>
-                                                            <tr class="bg-secondary">
-                                                                <th class="text-start text-white"><strong>Total Cash Flow : ({{ json_decode($generalSettings->business, true)['currency'] }} )</strong> </th>
-                                                                <th class="text-start text-white">
-                                                                    <span class="total_cash_flow">0.00</span>
-                                                                </th>
-                                                            </tr>
-                                                        </tfoot>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                                                    <td class="text-start text-white">
+                                                        <b><em>0.00</em> </b>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-secondary">
+                                                    <th class="text-start text-white"><strong>Total Cash Flow : ({{ json_decode($generalSettings->business, true)['currency'] }} )</strong> </th>
+                                                    <th class="text-start text-white">
+                                                        <span class="total_cash_flow">0.00</span>
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

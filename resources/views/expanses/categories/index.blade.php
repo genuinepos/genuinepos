@@ -3,120 +3,122 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-desktop"></span>
-                                <h5>Expense Category</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="border-class">
+            <div class="main__content">
+                <div class="sec-name">
+                    <div class="name-head">
+                        <span class="fas fa-desktop"></span>
+                        <h5>Expense Category</h5>
                     </div>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                </div>
+            </div>
 
-                    <div class="row px-3 mt-1">
-                        <div class="col-md-4">
-                            <div class="card" id="add_form">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Add Expanse Category</h6>
-                                    </div>
-                                </div>
-
-                                <div class="form-area px-3 pb-2">
-                                    <form id="add_category_form" action="{{ route('expanses.categories.store') }}">
-                                        <div class="form-group row">
-                                            <div class="col-md-12">
-                                                <label><b>Name :</b> <span class="text-danger">*</span></label>
-                                                <input type="text" name="name" class="form-control add_input" data-name="Category name" id="name" placeholder="Expense Category Name"/>
-                                                <span class="error error_name"></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mt-1">
-                                            <div class="col-md-12">
-                                                <label><b>Code :</b></label>
-                                                <input type="text" name="code" class="form-control" data-name="Expanse category Code" placeholder="Code"/>
-                                                <span class="error error_code"></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row mt-2">
-                                            <div class="col-md-12">
-                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                <button type="submit" class="c-btn button-success float-end me-0">Save</button>
-                                                <button type="reset" class="c-btn btn_orange float-end">Reset</button>
-                                            </div>
-                                        </div>
-                                    </form>
+            <div class="p-3">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="card" id="add_form">
+                            <div class="section-header">
+                                <div class="col-md-6">
+                                    <h6>Add Expanse Category</h6>
                                 </div>
                             </div>
 
-                            <div class="card d-none" id="edit_form">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Edit Expanse Category</h6>
+                            <div class="form-area px-3 pb-2">
+                                <form id="add_category_form" action="{{ route('expanses.categories.store') }}">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <label><b>Name :</b> <span class="text-danger">*</span></label>
+                                            <input type="text" name="name" class="form-control add_input" data-name="Category name" id="name" placeholder="Expense Category Name"/>
+                                            <span class="error error_name"></span>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-area px-3 pb-2">
-                                    <form id="edit_category_form" action="{{ route('expanses.categories.update') }}">
-                                        <input type="hidden" name="id" id="id">
-                                        <div class="form-group row">
-                                            <div class="col-md-12">
-                                                <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
-                                                <input type="text" name="name" class="form-control edit_input" data-name="Category name" id="e_name" placeholder="Expense Category Name"/>
-                                                <span class="error error_e_name"></span>
+                                    <div class="form-group row mt-1">
+                                        <div class="col-md-12">
+                                            <label><b>Code :</b></label>
+                                            <input type="text" name="code" class="form-control" data-name="Expanse category Code" placeholder="Code"/>
+                                            <span class="error error_code"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-2">
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="reset" class="btn btn-sm btn-danger">Reset</button>
+                                                <button type="submit" class="btn btn-sm btn-success">Save</button>
                                             </div>
                                         </div>
-
-                                        <div class="form-group row text-right mt-2">
-                                            <div class="col-md-12">
-                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                <button type="submit" class="c-btn button-success float-end me-0">Save Changes</button>
-                                                <button type="button" id="close_form" class="c-btn btn_orange float-end">Close</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Expense Categories</h6>
                                     </div>
-                                </div>
-                                <!--begin: Datatable-->
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="widget_content">
-                                        <div class="table-responsive" id="data-list">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-start">Serial</th>
-                                                        <th class="text-start">Name</th>
-                                                        <th class="text-start">Code</th>
-                                                        <th class="text-start">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
                                 </form>
                             </div>
+                        </div>
+
+                        <div class="card d-none" id="edit_form">
+                            <div class="section-header">
+                                <div class="col-md-6">
+                                    <h6>Edit Expanse Category</h6>
+                                </div>
+                            </div>
+
+                            <div class="form-area px-3 pb-2">
+                                <form id="edit_category_form" action="{{ route('expanses.categories.update') }}">
+                                    <input type="hidden" name="id" id="id">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
+                                            <input type="text" name="name" class="form-control edit_input" data-name="Category name" id="e_name" placeholder="Expense Category Name"/>
+                                            <span class="error error_e_name"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row text-right mt-2">
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</b></button>
+                                                <button type="button" id="close_form" class="btn btn-sm btn-danger">Close</button>
+                                                <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-6">
+                                    <h6>All Expense Categories</h6>
+                                </div>
+                            </div>
+                            <!--begin: Datatable-->
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="widget_content">
+                                    <div class="table-responsive" id="data-list">
+                                        <table class="display data_tbl data__table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-start">Serial</th>
+                                                    <th class="text-start">Name</th>
+                                                    <th class="text-start">Code</th>
+                                                    <th class="text-start">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -117,12 +117,21 @@ class UserController extends Controller
     public function create()
     {
         if (!auth()->user()->can('user_add')) {
-
             abort(403, 'Access Forbidden.');
         }
 
-        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        return view('users.create', compact('branches'));
+        $departments = DB::table('hrm_department')->orderBy('id', 'desc')->get();
+        $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
+        $shifts = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
+        if (auth()->user()->role_type == 1) {
+            $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        } else if (auth()->user()->role_type == 2) {
+            $branchIds = AdminUserBranch::select("branch_id")->where('admin_user_id', auth()->user()->id)->get()->toArray();
+            $branches = DB::table('branches')->whereIn('id', $branchIds)->get(['id', 'name', 'branch_code']);
+        } else {
+            $branches = Branch::where('id', auth()->user()->branch_id)->get(['id', 'name', 'branch_code']);
+        }
+        return view('users.create', compact('departments', 'designations', 'shifts', 'branches'));
     }
 
     // Add/Store user

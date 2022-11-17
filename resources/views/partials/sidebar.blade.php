@@ -785,7 +785,7 @@
 
             @if (json_decode($generalSettings->modules, true)['purchases'] == '1')
 
-                @if (auth()->user()->branch_id)
+                @if (isset(auth()->user()->branch_id))
 
                     <div class="sub-menu_t" id="purchases">
                         <div class="sub-menu-width">
@@ -988,7 +988,7 @@
                             </div>
                         </div>
                     </div>
-                @elseif(auth()->user()->branch_id && auth()->user()->branch->purchase_permission == 1)
+                @elseif(isset(auth()->user()->branch_id) && auth()->user()->branch->purchase_permission == 1)
 
                     @if (auth()->user()->can('purchase_all'))
 

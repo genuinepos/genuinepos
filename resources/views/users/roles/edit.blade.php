@@ -24,7 +24,7 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back') </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -191,9 +191,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->contact['supplier_report']))
                                                                 {{ $role->hasPermissionTo('supplier_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                             name="supplier_report" class="report"> &nbsp; Supplier Report</p>
                                                     </div>
                                                 </div>
@@ -248,9 +246,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                             <input type="checkbox"
-                                                                @if (isset($role->permission->contact['customer_report']))
                                                                     {{ $role->hasPermissionTo('customer_report') ? 'CHECKED' : '' }}
-                                                                @endif
                                                             name="customer_report" class="report"> &nbsp; Customer Report</p>
                                                     </div>
                                                 </div>
@@ -319,9 +315,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->product['product_settings']))
                                                                 {{ $role->hasPermissionTo('product_settings') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="product_settings" class="product"> &nbsp; Product Settings</p>
                                                     </div>
                                                 </div>
@@ -330,9 +324,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->product['stock_report']))
                                                                 {{ $role->hasPermissionTo('stock_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                          name="stock_report" class="report"> &nbsp; stock Report</p>
                                                     </div>
                                                 </div>
@@ -341,9 +333,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->product['stock_in_out_report']))
                                                                 {{ $role->hasPermissionTo('stock_in_out_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="stock_in_out_report" class="product"> &nbsp; Stock In-Out Report</p>
                                                     </div>
                                                 </div>
@@ -468,9 +458,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->purchase['purchase_settings']))
                                                                 {{ $role->hasPermissionTo('purchase_settings') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="purchase_settings" class="purchase"> &nbsp; Purchase Settings </p>
                                                     </div>
                                                 </div>
@@ -479,9 +467,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->purchase['purchase_statements']))
                                                                 {{ $role->hasPermissionTo('purchase_statements') ? 'CHECKED' : '' }}
-                                                            @endif
                                                          name="purchase_statements" class="purchase"> &nbsp; Purchase Statements</p>
                                                     </div>
                                                 </div>
@@ -490,9 +476,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->purchase['purchase_sale_report']))
                                                                 {{ $role->hasPermissionTo('purchase_sale_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="purchase_sale_report" class="purchase"> &nbsp; Purchase & Sale Report</p>
                                                     </div>
                                                 </div>
@@ -501,9 +485,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->purchase['pro_purchase_report']))
                                                                 {{ $role->hasPermissionTo('pro_purchase_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                          name="pro_purchase_report" class="purchase"> &nbsp; Product Purchase Report</p>
                                                     </div>
                                                 </div>
@@ -532,9 +514,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->purchase['purchase_payment_report']))
                                                                 {{ $role->hasPermissionTo('purchase_payment_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="purchase_payment_report" class="purchase"> &nbsp; Purchase Payment Report</p>
                                                     </div>
                                                 </div>
@@ -597,9 +577,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->s_adjust['stock_adjustment_report']))
                                                                 {{ $role->hasPermissionTo('stock_adjustment_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="stock_adjustment_report" class="adjustment"> &nbsp; Stock Adjustment Report</p>
                                                     </div>
                                                 </div>
@@ -675,9 +653,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->expense['expanse_report']))
                                                                 {{ $role->hasPermissionTo('expanse_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                             name="expanse_report" class="expense"> &nbsp; Expanse Report</p>
                                                     </div>
                                                 </div>
@@ -739,9 +715,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->sale['add_sale_settings']))
                                                                 {{ $role->hasPermissionTo('add_sale_settings') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="add_sale_settings" class="sale"> &nbsp; Add Sale Settings </p>
                                                     </div>
                                                 </div>
@@ -813,9 +787,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input
-                                                        @if (isset($role->permission->sale['discounts']))
                                                             {{ $role->hasPermissionTo('discounts') ? 'CHECKED' : '' }}
-                                                        @endif
                                                     type="checkbox" name="discounts" class="sale"> &nbsp; Manage Offers </p>
                                                     </div>
                                                 </div>
@@ -824,9 +796,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->sale['sale_statements']))
                                                                 {{ $role->hasPermissionTo('sale_statements') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="sale_statements" class="sale"> &nbsp; Sale Statements</p>
                                                     </div>
                                                 </div>
@@ -835,9 +805,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->sale['sale_return_statements']))
                                                                 {{ $role->hasPermissionTo('sale_return_statements') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="sale_return_statements" class="sale"> &nbsp; Sale Return Statements</p>
                                                     </div>
                                                 </div>
@@ -846,9 +814,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->sale['pro_sale_report']))
                                                                 {{ $role->hasPermissionTo('pro_sale_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="pro_sale_report" class="sale"> &nbsp;  Sale Product Report</p>
                                                     </div>
                                                 </div>
@@ -857,9 +823,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->sale['sale_payment_report']))
                                                                 {{ $role->hasPermissionTo('sale_payment_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="sale_payment_report" class="sale"> &nbsp; Receive Payment Report</p>
                                                     </div>
                                                 </div>
@@ -868,9 +832,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->sale['c_register_report']))
                                                                 {{ $role->hasPermissionTo('c_register_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="c_register_report" class="sale"> &nbsp; Cash Register report</p>
                                                     </div>
                                                 </div>
@@ -879,9 +841,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->sale['sale_representative_report']))
                                                                 {{ $role->hasPermissionTo('sale_representative_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="sale_representative_report" class="sale"> &nbsp; Sales Representative Report</p>
                                                     </div>
                                                 </div>
@@ -924,9 +884,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->sale['pos_sale_settings']))
                                                                 {{ $role->hasPermissionTo('pos_sale_settings') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="pos_sale_settings" class="sale"> &nbsp; POS Sale Settings </p>
                                                     </div>
                                                 </div>
@@ -989,9 +947,7 @@
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                            @if (isset($role->permission->register['another_register_close']))
                                                                 {{ $role->hasPermissionTo('another_register_close') ? 'CHECKED' : '' }}
-                                                            @endif
                                                         name="another_register_close" class="another_register_close"> &nbsp; Close Another Cash Register </p>
                                                     </div>
                                                 </div>
@@ -1231,9 +1187,7 @@
                                                             <p class="checkbox_input_wrap">
                                                             <input type="checkbox"
                                                             name="payroll_report"
-                                                                @if (isset($role->permission->hrms['payroll_report']))
                                                                     {{ $role->hasPermissionTo('payroll_report') ? 'CHECKED' : '' }}
-                                                                @endif
                                                              class="HRMS"> &nbsp; Payroll Report</p>
                                                         </div>
                                                     </div>
@@ -1242,9 +1196,7 @@
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap">
                                                             <input type="checkbox"
-                                                            @if (isset($role->permission->hrms['payroll_payment_report']))
                                                                 {{ $role->hasPermissionTo('payroll_payment_report') ? 'CHECKED' : '' }}
-                                                            @endif
                                                             name="payroll_payment_report" class="HRMS"> &nbsp; Payroll Payment Report</p>
                                                         </div>
                                                     </div>
@@ -1253,9 +1205,7 @@
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap">
                                                             <input type="checkbox"
-                                                                @if (isset($role->permission->hrms['attendance_report']))
                                                                     {{ $role->hasPermissionTo('attendance_report') ? 'CHECKED' : '' }}
-                                                                @endif
                                                             name="attendance_report" class="HRMS"> &nbsp; Attendance Report</p>
                                                         </div>
                                                     </div>
@@ -1354,9 +1304,7 @@
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap">
                                                             <input
-                                                                @if (isset($role->permission->essential['work_space']))
                                                                     {{ $role->hasPermissionTo('work_space') ? 'CHECKED' : '' }}
-                                                                @endif
                                                             type="checkbox" name="work_space" class="Essentials">
                                                             &nbsp; Work Space</p>
                                                         </div>
@@ -1366,9 +1314,7 @@
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap">
                                                                 <input
-                                                                    @if (isset($role->permission->essential['work_space']))
                                                                         {{ $role->hasPermissionTo('memo') ? 'CHECKED' : '' }}
-                                                                    @endif
                                                                 type="checkbox" name="memo" class="Essentials">
                                                                 &nbsp; Memo
                                                             </p>

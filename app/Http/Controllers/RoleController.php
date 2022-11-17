@@ -29,7 +29,7 @@ class RoleController extends Controller
         if (!auth()->user()->can('role_add')) {
             abort(403, 'Access Forbidden.');
         }
-        return view('users.roles.create_v2');
+        return view('users.roles.create');
     }
 
     public function store(Request $request)
@@ -85,7 +85,7 @@ class RoleController extends Controller
             abort(403, 'Access Forbidden.');
         }
         $role = Role::where('id', $roleId)->firstOrFail();
-        return view('users.roles.edit_v2', compact('role'));
+        return view('users.roles.edit', compact('role'));
     }
 
     public function delete(Request $request, $roleId)

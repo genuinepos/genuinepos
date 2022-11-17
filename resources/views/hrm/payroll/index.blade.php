@@ -15,78 +15,21 @@
                 <div class="border-class">
                     <div class="main__content">
                         <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul>
-                                        @if (auth()->user()->permission->hrms['hrm_dashboard'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.dashboard.index') }}" class="text-white"><i class="fas fa-tachometer-alt"></i> <b>@lang('menu.hrm')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['leave_type'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['leave_assign'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.leave') }}" class="text-white"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['shift'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.attendance.shift') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['attendance'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.attendance') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['view_allowance_and_deduction'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.allowance') }}" class="text-white"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['payroll'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.payroll.index') }}" class="text-white "><i class="far fa-money-bill-alt text-primary"></i> <b>@lang('menu.payroll')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['holiday'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.holidays') }}" class="text-white "><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['department'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.departments') }}" class="text-white "><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['designation'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.designations') }}" class="text-white "><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
+                            <div class="name-head">
+                                <span class="far fa-money-bill-alt"></span>
+                                <h6>All Payrolls</h6>
                             </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
+                                class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
+                    </div>
 
+                    <div class="p-3">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form" class="px-2">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
+                                        <form id="filter_form">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if ($addons->branches == 1)
@@ -155,51 +98,43 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Payrolls <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
+                        <div class="form_element rounded m-0">
+                            <div class="section-header">
+                                <div class="col-md-6">
+                                    <h6>All Payrolls <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
                                 </div>
 
-                                <div class="widget_content">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Employee</th>
-                                                    <th>Department</th>
-                                                    <th>Designation</th>
-                                                    <th>Month/Year</th>
-                                                    <th>Referance No</th>
-                                                    <th>Total Amount</th>
-                                                    <th>Payment Status</th>
-                                                    <th>Created By</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
+                                <div class="col-md-6 d-flex justify-content-end">
+                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                 </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th>Employee</th>
+                                                <th>Department</th>
+                                                <th>Designation</th>
+                                                <th>Month/Year</th>
+                                                <th>Referance No</th>
+                                                <th>Total Amount</th>
+                                                <th>Payment Status</th>
+                                                <th>Created By</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -254,12 +189,12 @@
                         </div>
 
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn me-0 button-success float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                </div>
                             </div>
                         </div>
                     </form>

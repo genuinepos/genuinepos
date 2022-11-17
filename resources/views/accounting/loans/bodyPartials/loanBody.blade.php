@@ -1,4 +1,4 @@
-<div class="row tab_contant loans mt-1">
+<div class="row g-3 tab_contant loans">
     <div class="col-md-4">
         <div class="card" id="add_loan_form">
             <div class="section-header">
@@ -85,10 +85,12 @@
                     </div>
 
                     <div class="form-group row mt-2">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Reset</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Reset</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -114,14 +116,14 @@
                 <div class="col-md-6">
                     <h6>Loans</h6>
                 </div>
-                
+
                 <div class="col-md-6">
                     <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
                 </div>
             </div>
 
             <div class="widget_content">
-                <form id="filter_form" class="px-1">
+                <form id="filter_form" class="px-2 mb-2">
                     @csrf
                     <div class="form-group row">
                         <div class="col-md-3">
@@ -165,7 +167,7 @@
                                 <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                             </div>
                         </div>
-            
+
                         <div class="col-md-2">
                             <label><strong></strong></label>
                             <div class="input-group">
@@ -178,7 +180,7 @@
                 <div class="data_preloader">
                     <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                 </div>
-                
+
                 <div class="table-responsive" >
                     <table class="display data_tbl2 data__table asset_table w-100">
                         <thead>
@@ -203,7 +205,7 @@
                     </form>
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
 </div>
 

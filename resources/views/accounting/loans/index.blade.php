@@ -20,24 +20,20 @@
                             </a>
                         </div>
 
-                        <div class="sec-name mt-1">
-                            <div class="name-head">
-                                <div class="tab_list_area">
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <a id="tab_btn" data-show="companies" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Companies/Peoples</a>
-                                        </li>
-
-                                        <li>
-                                            <a id="tab_btn" data-show="loans" class="tab_btn" href="#">
-                                            <i class="fas fa-scroll"></i> Loans</a>
-                                        </li>
-                                    </ul>
+                        <div class="p-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="tab_list_area">
+                                        <div class="btn-group">
+                                            <a id="tab_btn" data-show="companies" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Companies/Peoples</a>
+                                            <a id="tab_btn" data-show="loans" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i> Loans</a>
+                                        </div>
+                                    </div>
+                                    @include('accounting.loans.bodyPartials.companyBody')
+                                    @include('accounting.loans.bodyPartials.loanBody')
                                 </div>
                             </div>
                         </div>
-                        @include('accounting.loans.bodyPartials.companyBody')
-                        @include('accounting.loans.bodyPartials.loanBody')
                     </div>
                 </div>
             </div>

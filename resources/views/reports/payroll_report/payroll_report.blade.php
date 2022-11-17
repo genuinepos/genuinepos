@@ -10,146 +10,139 @@
 @section('title', 'Payroll Report - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-money-check"></span>
+                    <h5>Payroll Report</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                </a>
+            </div>
+        </div>
+
+        <div class="p-3">
             <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-money-check"></span>
-                                <h5>Payroll Report</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
-                        </div>
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <form id="filter_form">
+                                <div class="form-group row">
+                                    @if ($addons->branches == 1)
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-2">
+                                                <label><strong>Business Location :</strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control submit_able" id="branch_id" autofocus>
+                                                    <option value="">All</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
+                                    @endif
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form" class="px-2">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
+                                    <div class="col-md-2">
+                                        <label><strong>Department :</strong></label>
+                                        <select name="department_id"
+                                            class="form-control submit_able" id="department_id" autofocus>
+                                            <option value="">All</option>
+                                            @foreach ($departments as $department)
+                                                <option value="{{ $department->id }}">
+                                                    {{ $department->department_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>Department :</strong></label>
-                                                    <select name="department_id"
-                                                        class="form-control submit_able" id="department_id" autofocus>
-                                                        <option value="">All</option>
-                                                        @foreach ($departments as $department)
-                                                            <option value="{{ $department->id }}">
-                                                                {{ $department->department_name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                    <div class="col-md-2">
+                                        <label><strong>From Date :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_i"></i></span>
+                                            </div>
+                                            <input type="text" name="from_date" id="datepicker"
+                                                class="form-control from_date date"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
-                                                        </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date date"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
+                                    <div class="col-md-2">
+                                        <label><strong>To Date :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_i"></i></span>
+                                            </div>
+                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                        </div>
+                                    </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
-                                                        </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label><strong></strong></label>
-                                                            <div class="input-group">
-                                                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6 mt-3">
-                                                            <a href="{{ route('reports.payroll.print') }}" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
-                                                        </div>
-                                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label><strong></strong></label>
+                                                <div class="input-group">
+                                                    <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                 </div>
                                             </div>
-                                        </form>
+
+                                            <div class="col-md-6 mt-4">
+                                                <a href="{{ route('reports.payroll.print') }}" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row px-3 mt-1">
-                        <div class="card">
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th>Employee</th>
-                                                <th>Department</th>
-                                                <th>Month/Year</th>
-                                                <th>Referance No</th>
-                                                <th>Total Amount</th>
-                                                <th>Paid</th>
-                                                <th>Due</th>
-                                                <th>Payment Status</th>
-                                                <th>Created By</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                        <tfoot>
-                                            <tr class="bg-secondary">
-                                                <th colspan="4" class="text-end text-white">Total :</th>
-                                                <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="gross_amount"></span></th>
-                                                <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="paid"></span></th>
-                                                <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="due"></span></th>
-                                                <th class="text-white">--</th>
-                                                <th class="text-white">--</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card">
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Month/Year</th>
+                                    <th>Referance No</th>
+                                    <th>Total Amount</th>
+                                    <th>Paid</th>
+                                    <th>Due</th>
+                                    <th>Payment Status</th>
+                                    <th>Created By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-secondary">
+                                    <th colspan="4" class="text-end text-white">Total :</th>
+                                    <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="gross_amount"></span></th>
+                                    <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="paid"></span></th>
+                                    <th class="text-white">{{ json_decode($generalSettings->business, true)['currency'] }} <span id="due"></span></th>
+                                    <th class="text-white">--</th>
+                                    <th class="text-white">--</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>

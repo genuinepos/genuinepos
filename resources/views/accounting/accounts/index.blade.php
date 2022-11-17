@@ -5,109 +5,100 @@
 @section('title', 'Account List - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-money-check-alt"></span>
+                    <h5>Accounts</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+
+        <div class="p-3">
             <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-money-check-alt"></span>
-                                <h5>Accounts</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form" class="px-2">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="f_branch_id" autofocus>
-                                                                <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                                <div class="col-md-2">
-                                                    <label><strong>Account Type :</strong></label>
-                                                    <select name="account_type" id="f_account_type" class="form-control">
-                                                        <option value="">All</option>
-                                                        @foreach (App\Utils\Util::allAccountTypes(1) as $key => $accountType)
-                                                            <option value="{{ $key }}">{{ $accountType }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong></strong></label>
-                                                    <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                    </div>
-                                                </div>
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <form id="filter_form">
+                                <div class="form-group row">
+                                    @if ($addons->branches == 1)
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-2">
+                                                <label><strong>Business Location :</strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control submit_able" id="f_branch_id" autofocus>
+                                                    <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        </form>
+                                        @endif
+                                    @endif
+
+                                    <div class="col-md-2">
+                                        <label><strong>Account Type :</strong></label>
+                                        <select name="account_type" id="f_account_type" class="form-control">
+                                            <option value="">All</option>
+                                            @foreach (App\Utils\Util::allAccountTypes(1) as $key => $accountType)
+                                                <option value="{{ $key }}">{{ $accountType }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label><strong></strong></label>
+                                        <div class="input-group">
+                                            <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row margin_row mt-1">
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>All Accounts</h6>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="btn_30_blue float-end">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" id="add"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-start">A/C Type</th>
-                                                <th class="text-start">A/C Name</th>
-                                                <th class="text-start">A/C Number</th>
-                                                <th class="text-start">Bank </th>
-                                                <th class="text-start">Business Location </th>
-                                                <th class="text-start">Opening Balance</th>
-                                                <th class="text-start">Balance</th>
-                                                <th class="text-start">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card">
+                <div class="section-header">
+                    <div class="col-md-10">
+                        <h6>All Accounts</h6>
+                    </div>
+
+                    <div class="col-md-2 d-flex justify-content-end">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" id="add" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
+                    </div>
+                </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader">
+                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                    </div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th class="text-start">A/C Type</th>
+                                    <th class="text-start">A/C Name</th>
+                                    <th class="text-start">A/C Number</th>
+                                    <th class="text-start">Bank </th>
+                                    <th class="text-start">Business Location </th>
+                                    <th class="text-start">Opening Balance</th>
+                                    <th class="text-start">Balance</th>
+                                    <th class="text-start">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -188,11 +179,12 @@
                             <input type="text" name="remark" class="form-control" id="remarks" placeholder="Remarks"/>
                         </div>
 
-                        <div class="form-group text-right py-2">
-                            <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn me-0 button-success submit_button float-end">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <div class="form-group d-flex justify-content-end py-2">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                            </div>
                         </div>
                     </form>
                 </div>

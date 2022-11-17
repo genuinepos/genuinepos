@@ -3,114 +3,108 @@
     <style>
         table.display td input {height: 26px!important; padding: 3px;}
         span.input-group-text-custom {font-size: 11px;padding: 4px;}
-        .sale-content {margin-top: -14px;}
-        .last_section {margin-top: -14px;}
-        p.is_final {margin-top: -11px;}
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-plus-circle"></span>
+                    <h5>Add Production</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="add_production_form" action="{{ route('manufacturing.productions.store') }}" method="POST">
                 <input name="action_type" type="text" id="action_type" class="d-none" value="">
                 <input name="product_id" type="text" id="product_id" class="d-none" value="">
                 <input name="variant_id" type="text" id="variant_id" class="d-none" value="">
                 <input name="unit_id" type="text" id="unit_id" class="d-none" value="">
                 @csrf
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6"><h5>Add Production</h5></div>
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                        </div>
-                                    </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label><b>Production A/C : <span class="text-danger">*</span></b></label>
+                                    <select name="production_account_id" class="form-control add_input"
+                                        id="production_account_id" data-name="Production A/C">
+                                        @foreach ($productionAccounts as $productionAccount)
+                                            <option value="{{ $productionAccount->id }}">
+                                                {{ $productionAccount->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error error_production_account_id"></span>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label><b>Production A/C : <span class="text-danger">*</span></b></label>
-                                            <select name="production_account_id" class="form-control add_input"
-                                                id="production_account_id" data-name="Production A/C">
-                                                @foreach ($productionAccounts as $productionAccount)
-                                                    <option value="{{ $productionAccount->id }}">
-                                                        {{ $productionAccount->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <span class="error error_production_account_id"></span>
-                                        </div>
+                                <div class="col-md-2">
+                                    @if (count($warehouses) > 0)
+                                    <input type="hidden" value="YES" name="store_warehouse_count">
+                                        <label > <b>Store Location : </b> <span
+                                            class="text-danger">*</span></label>
+                                        <select class="form-control changeable add_input"
+                                            name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id">
+                                            <option value="">Select Warehouse</option>
+                                            @foreach ($warehouses as $w)
+                                                <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="error error_store_warehouse_id"></span>
+                                    @else
+                                        <label><b>Store Location :</b> </label>
+                                        <input readonly type="text" name="store_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}"/>
+                                    @endif
+                                </div>
 
-                                        <div class="col-md-2">
-                                            @if (count($warehouses) > 0)
-                                            <input type="hidden" value="YES" name="store_warehouse_count">
-                                                <label > <b>Store Location : </b> <span
-                                                    class="text-danger">*</span></label>
-                                                <select class="form-control changeable add_input"
-                                                    name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id">
-                                                    <option value="">Select Warehouse</option>
-                                                    @foreach ($warehouses as $w)
-                                                        <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <span class="error error_store_warehouse_id"></span>
-                                            @else
-                                                <label><b>Store Location :</b> </label>
-                                                <input readonly type="text" name="store_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}"/>
-                                            @endif
-                                        </div>
+                                <div class="col-md-2">
+                                    <label > <b>Voucher No :</b></label>
+                                    <input type="text" name="reference_no" class="form-control changeable" placeholder="Voucher No"/>
+                                </div>
 
-                                        <div class="col-md-2">
-                                            <label > <b>Voucher No :</b></label>
-                                            <input type="text" name="reference_no" class="form-control changeable" placeholder="Voucher No"/>
-                                        </div>
+                                <div class="col-md-2">
+                                    <label><b>Date :</b></label>
+                                    <input type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                    <span class="error error_date"></span>
+                                </div>
 
-                                        <div class="col-md-2">
-                                            <label><b>Date :</b></label>
-                                            <input type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
-                                            <span class="error error_date"></span>
-                                        </div>
+                                <div class="col-md-2">
+                                    @if (count($warehouses) > 0)
+                                        <input type="hidden" value="YES" name="stock_warehouse_count">
+                                        <label> <b>Ingredials Stock Location : </b> <span
+                                            class="text-danger">*</span></label>
+                                        <select class="form-control changeable add_input"
+                                            name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id">
+                                            <option value="">Select Warehouse</option>
+                                            @foreach ($warehouses as $w)
+                                                <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="error error_warehouse_id"></span>
+                                    @else
+                                        <label><b>Ingredials Stock Location :</b> </label>
+                                        <input readonly type="text" name="stock_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}"/>
+                                    @endif
+                                </div>
 
-                                        <div class="col-md-2">
-                                            @if (count($warehouses) > 0)
-                                                <input type="hidden" value="YES" name="stock_warehouse_count">
-                                                <label> <b>Ingredials Stock Location : </b> <span
-                                                    class="text-danger">*</span></label>
-                                                <select class="form-control changeable add_input"
-                                                    name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id">
-                                                    <option value="">Select Warehouse</option>
-                                                    @foreach ($warehouses as $w)
-                                                        <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <span class="error error_warehouse_id"></span>
-                                            @else
-                                                <label><b>Ingredials Stock Location :</b> </label>
-                                                <input readonly type="text" name="stock_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}"/>
-                                            @endif
-                                        </div>
-
-                                        <div class="col-md-2">
-                                            <label><b>Product :</b> <span class="text-danger">*</span></label>
-                                            <select name="process_id" data-name="Product" class="form-control add_input"
-                                                id="product_id">
-                                                <option value="">Select Process</option>
-                                                @foreach ($products as $product)
-                                                    @php
-                                                        $variant_name = $product->v_name ? $product->v_name : '';
-                                                        $product_code = $product->v_code ? $product->v_code : $product->p_code;
-                                                    @endphp
-                                                    <option value="{{ $product->id }}">{{ $product->p_name.' '.$variant_name.' ('.$product_code.')' }}</option>
-                                                @endforeach
-                                            </select>
-                                            <span class="error error_process_id"></span>
-                                        </div>
-                                    </div>
+                                <div class="col-md-2">
+                                    <label><b>Product :</b> <span class="text-danger">*</span></label>
+                                    <select name="process_id" data-name="Product" class="form-control add_input"
+                                        id="product_id">
+                                        <option value="">Select Process</option>
+                                        @foreach ($products as $product)
+                                            @php
+                                                $variant_name = $product->v_name ? $product->v_name : '';
+                                                $product_code = $product->v_code ? $product->v_code : $product->p_code;
+                                            @endphp
+                                            <option value="{{ $product->id }}">{{ $product->p_name.' '.$variant_name.' ('.$product_code.')' }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error error_process_id"></span>
                                 </div>
                             </div>
                         </div>
@@ -119,28 +113,22 @@
 
                 <section>
                     <div class="sale-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table-striped">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th>Ingredient</th>
-                                                                    <th>Input Quantity</th>
-                                                                    <th>Unit Cost</th>
-                                                                    <th>SubTotal</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="ingredient_list"></tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                        <div class="card p-1">
+                            <div class="row">
+                                <div class="sale-item-sec">
+                                    <div class="sale-item-inner">
+                                        <div class="table-responsive">
+                                            <table class="display data__table table-striped">
+                                                <thead class="staky">
+                                                    <tr>
+                                                        <th>Ingredient</th>
+                                                        <th>Input Quantity</th>
+                                                        <th>Unit Cost</th>
+                                                        <th>SubTotal</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="ingredient_list"></tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -152,14 +140,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <input type="text" class="d-none" name="total_ingredient_cost" id="total_ingredient_cost">
-                        <p class="mt-1 float-end clearfix"><strong>Total Ingrediant Cost : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
+                        <p class="my-3 float-end clearfix"><strong>Total Ingrediant Cost : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
                     </div>
                 </div>
 
-                <section class="last_section">
-                    <div class="row">
+                <section class="last_section mb-3">
+                    <div class="row g-3">
                         <div class="col-md-5">
-                            <div class="form_element">
+                            <div class="form_element rounded m-0">
                                 <div class="element-body">
                                     <p><strong>Total Production Costing </strong></p>
                                     <hr class="p-0 m-0 mb-1">
@@ -227,7 +215,7 @@
                         </div>
 
                         <div class="col-md-7">
-                            <div class="form_element">
+                            <div class="form_element rounded m-0">
                                 <div class="element-body">
                                     <p><strong>Pricing</strong></p>
                                     <hr class="p-0 m-0 mb-1">
@@ -303,18 +291,19 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p class="float-end is_final">
+                                    <p class="float-end is_final mt-3 mb-2">
                                     <input type="checkbox" name="is_final" id="is_final"> &nbsp; <b> Finalize</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Once finalized all ingredient stock will be deducted & production item stock will be increased and production item unit cost, price will be updated as well as editing of production will not be allowed." class="fas fa-info-circle tp"></i></p>
                                 </div>
                             </div>
 
                             <div class="submit_button_area">
                                 <div class="row mt-1">
-                                    <div class="col-md-12">
-                                        <button type="button" class="btn loading_button d-none"><i
-                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                        <button value="save" class="btn btn-sm btn-success submit_button float-end">Save</button>
-                                        <button value="save_and_print" class="btn btn-sm btn-success submit_button float-end me-1">Save & Print</button>
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <div class="btn-loading">
+                                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                            <button value="save" class="btn btn-sm btn-success submit_button">Save</button>
+                                            <button value="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -11,196 +11,170 @@
                 <div class="border-class">
                     <div class="main__content">
                         <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul>
-                                        @if (auth()->user()->permission->manufacturing['process_view'] == '1')
-                                            <li>
-                                                <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>@lang('menu.process')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->manufacturing['production_view'] == '1')
-                                            <li>
-                                                <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes text-primary"></i> <b>@lang('menu.productions')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->manufacturing['manuf_settings'] == '1')
-                                            <li>
-                                                <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h"></i> <b>@lang('menu.manufacturing_setting')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->manufacturing['manuf_report'] == '1')
-                                            <li>
-                                                <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.manufacturing_report')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
+                            <div class="name-head">
+                                <span class="fas fa-shapes"></span>
+                                <h6>Productions</h6>
                             </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            </a>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="sec-name">
-                                <div class="col-md-12">
-                                    <form id="filter_form" class="px-2">
-                                        <div class="form-group row">
-                                            @if ($addons->branches == 1)
-                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <div class="col-md-2">
-                                                        <label><strong>Business Location :</strong></label>
-                                                        <select name="branch_id"
-                                                            class="form-control submit_able" id="branch_id" autofocus>
+                    <div class="p-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
+                                        <form id="filter_form">
+                                            <div class="form-group row">
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-2">
+                                                            <label><strong>Business Location :</strong></label>
+                                                            <select name="branch_id"
+                                                                class="form-control submit_able" id="branch_id" autofocus>
+                                                                <option value="">All</option>
+                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
+                                                @endif
+
+                                                <div class="col-md-2">
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <label><strong>Warehouse :</strong></label>
+                                                        <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
+                                                            <option value="">Select Business Location First</option>
+                                                        </select>
+                                                    @else
+                                                        @php
+                                                            $wh = DB::table('warehouses')
+                                                            ->where('branch_id', auth()->user()->branch_id)
+                                                            ->get(['id', 'warehouse_name', 'warehouse_code']);
+                                                        @endphp
+
+                                                        <label><strong>Warehouse :</strong></label>
+                                                        <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
                                                             <option value="">All</option>
-                                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                            @foreach ($branches as $branch)
-                                                                <option value="{{ $branch->id }}">
-                                                                    {{ $branch->name . '/' . $branch->branch_code }}
-                                                                </option>
+                                                            @foreach ($wh as $row)
+                                                                <option value="{{ $row->id }}">{{ $row->warehouse_name.'/'.$row->warehouse_code }}</option>
                                                             @endforeach
                                                         </select>
+                                                    @endif
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>Status :</strong></label>
+                                                    <div class="input-group">
+                                                        <select name="status" class="form-control" id="status" autofocus>
+                                                            <option value="">All</option>
+                                                            <option value="1">Final</option>
+                                                            <option value="0">Hold</option>
+                                                        </select>
                                                     </div>
-                                                @endif
-                                            @endif
-
-                                            <div class="col-md-2">
-                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <label><strong>Warehouse :</strong></label>
-                                                    <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
-                                                        <option value="">Select Business Location First</option>
-                                                    </select>
-                                                @else
-                                                    @php
-                                                        $wh = DB::table('warehouses')
-                                                        ->where('branch_id', auth()->user()->branch_id)
-                                                        ->get(['id', 'warehouse_name', 'warehouse_code']);
-                                                    @endphp
-
-                                                    <label><strong>Warehouse :</strong></label>
-                                                    <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
-                                                        <option value="">All</option>
-                                                        @foreach ($wh as $row)
-                                                            <option value="{{ $row->id }}">{{ $row->warehouse_name.'/'.$row->warehouse_code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                @endif
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <label><strong>Status :</strong></label>
-                                                <div class="input-group">
-                                                    <select name="status" class="form-control" id="status" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="1">Final</option>
-                                                        <option value="0">Hold</option>
-                                                    </select>
                                                 </div>
-                                            </div>
 
-                                            <div class="col-md-2">
-                                                <label><strong>From Date :</strong></label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="basic-addon1">
-                                                            <i class="fas fa-calendar-week input_i"></i>
-                                                        </span>
+                                                <div class="col-md-2">
+                                                    <label><strong>From Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <i class="fas fa-calendar-week input_i"></i>
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" name="from_date" id="datepicker"
+                                                            class="form-control from_date"
+                                                            autocomplete="off">
                                                     </div>
-                                                    <input type="text" name="from_date" id="datepicker"
-                                                        class="form-control from_date"
-                                                        autocomplete="off">
                                                 </div>
-                                            </div>
 
-                                            <div class="col-md-2">
-                                                <label><strong>To Date :</strong></label>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="basic-addon1">
-                                                            <i class="fas fa-calendar-week input_i"></i>
-                                                        </span>
+                                                <div class="col-md-2">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <i class="fas fa-calendar-week input_i"></i>
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
                                                     </div>
-                                                    <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start">
+                                                            <i class="fas fa-funnel-dollar"></i> Filter
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <div class="col-md-2">
-                                                <label><strong></strong></label>
-                                                <div class="input-group">
-                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start">
-                                                        <i class="fas fa-funnel-dollar"></i> Filter
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-1">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6"><h6>Productions</h6></div>
-                                    @if (auth()->user()->permission->manufacturing['production_add'] == '1')
-                                        <div class="col-md-6">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="{{ route('manufacturing.productions.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <form id="update_product_cost_form" action="">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-black">Actions</th>
-                                                        <th class="text-black">Date</th>
-                                                        <th class="text-black">Voucher No</th>
-                                                        <th class="text-black">Business Location</th>
-                                                        <th class="text-black">Product</th>
-                                                        <th class="text-black">Status</th>
-                                                        <th class="text-black">Per Unit Cost(Inc.Tax)</th>
-                                                        <th class="text-black">Selling Price(Exc.Tax)</th>
-                                                        <th class="text-black">Final Qty</th>
-                                                        <th class="text-black">Total Ingredient Cost</th>
-                                                        <th class="text-black">Production Cost</th>
-                                                        <th class="text-black">Total Cost</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                                <tfoot>
-                                                    <tr class="bg-secondary">
-                                                        <th colspan="8" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                        <th id="total_final_quantity" class="text-white text-end"></th>
-                                                        <th id="total_ingredient_cost" class="text-white text-end"></th>
-                                                        <th id="production_cost" class="text-white text-end"></th>
-                                                        <th id="total_cost" class="text-white text-end"></th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
                                         </form>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                @if (auth()->user()->permission->manufacturing['production_delete'] == '1')
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-6"><h6>Productions</h6></div>
+                                @if (auth()->user()->permission->manufacturing['production_add'] == '1')
+                                    <div class="col-md-6 d-flex justify-content-end">
+                                        <a class="btn btn-sm btn-primary" href="{{ route('manufacturing.productions.create') }}"><i class="fas fa-plus-square"></i> Add</a>
+                                    </div>
                                 @endif
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive">
+                                    <form id="update_product_cost_form" action="">
+                                        <table class="display data_tbl data__table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-black">Actions</th>
+                                                    <th class="text-black">Date</th>
+                                                    <th class="text-black">Voucher No</th>
+                                                    <th class="text-black">Business Location</th>
+                                                    <th class="text-black">Product</th>
+                                                    <th class="text-black">Status</th>
+                                                    <th class="text-black">Per Unit Cost(Inc.Tax)</th>
+                                                    <th class="text-black">Selling Price(Exc.Tax)</th>
+                                                    <th class="text-black">Final Qty</th>
+                                                    <th class="text-black">Total Ingredient Cost</th>
+                                                    <th class="text-black">Production Cost</th>
+                                                    <th class="text-black">Total Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                            <tfoot>
+                                                <tr class="bg-secondary">
+                                                    <th colspan="8" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th id="total_final_quantity" class="text-white text-end"></th>
+                                                    <th id="total_ingredient_cost" class="text-white text-end"></th>
+                                                    <th id="production_cost" class="text-white text-end"></th>
+                                                    <th id="total_cost" class="text-white text-end"></th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+
+                            @if (auth()->user()->permission->manufacturing['production_delete'] == '1')
+                                <form id="deleted_form" action="" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>

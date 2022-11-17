@@ -14,116 +14,52 @@
                 <div class="border-class">
                     <div class="main__content">
                         <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul>
-                                        @if (auth()->user()->permission->hrms['hrm_dashboard'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.dashboard.index') }}" class="text-white"><i class="fas fa-tachometer-alt"></i> <b>@lang('menu.hrm')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['leave_type'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['leave_assign'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.leave') }}" class="text-white"><i class="fas fa-level-down-alt text-primary"></i> <b>@lang('menu.leave')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['shift'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.attendance.shift') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['attendance'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.attendance') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['view_allowance_and_deduction'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.allowance') }}" class="text-white"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['payroll'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.payroll.index') }}" class="text-white "><i class="far fa-money-bill-alt"></i> <b>@lang('menu.payroll')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['holiday'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.holidays') }}" class="text-white "><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['department'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.departments') }}" class="text-white "><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['designation'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.designations') }}" class="text-white "><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
+                            <div class="name-head">
+                                <span class="fas fa-level-down-alt"></span>
+                                <h6>Leaves</h6>
                             </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
+                                class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Leaves</h6>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
+                    <div class="p-3">
+                        <div class="form_element rounded m-0">
+                            <div class="section-header">
+                                <div class="col-md-6">
+                                    <h6>Leaves</h6>
                                 </div>
 
-                                <div class="widget_content">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Serial</th>
-                                                    <th>Type</th>
-                                                    <th>Max leave</th>
-                                                    <th>Leave Count Interval</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div class="col-md-6 d-flex justify-content-end">
+                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                 </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th>Serial</th>
+                                                <th>Type</th>
+                                                <th>Max leave</th>
+                                                <th>Leave Count Interval</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>

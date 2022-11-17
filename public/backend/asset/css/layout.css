@@ -153,6 +153,7 @@ img.logo__img {
     left: 0px;
     margin-left: 142px;
     padding-right: 142px;
+    z-index: 1061;
 }
 
 .panel__nav {

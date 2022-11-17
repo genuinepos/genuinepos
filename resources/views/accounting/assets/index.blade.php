@@ -5,137 +5,121 @@
 @section('title', 'Assets - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-glass-whiskey"></span>
-                                <h5>Assets</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-glass-whiskey"></span>
+                    <h5>Assets</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                </a>
+            </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_tax_report_form" action="" method="get">
-                                            @csrf
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id" class="form-control submit_able" id="filter_branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $br)
-                                                                    <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @else
-                                                        <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
-                                                    @endif
-                                                @endif
-
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form_element rounded mt-0 mb-3">
+                            <div class="element-body">
+                                <form id="filter_tax_report_form" action="" method="get">
+                                    @csrf
+                                    <div class="form-group row">
+                                        @if ($addons->branches == 1)
+                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-3">
-                                                    <label><strong>Asset Type :</strong></label>
-                                                    <select name="type_id" class="form-control submit_able" id="filter_type_id" autofocus>
-
+                                                    <label><strong>Business Location :</strong></label>
+                                                    <select name="branch_id" class="form-control submit_able" id="filter_branch_id" autofocus>
+                                                        <option value="">All</option>
+                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                        @foreach ($branches as $br)
+                                                            <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </form>
+                                            @else
+                                                <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                            @endif
+                                        @endif
+
+                                        <div class="col-md-3">
+                                            <label><strong>Asset Type :</strong></label>
+                                            <select name="type_id" class="form-control submit_able" id="filter_type_id" autofocus>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                <div class="card">
+                    <div class="card-body">
+                        <!--begin: Datatable-->
+                        <div class="tab_list_area">
+                            <div class="btn-group">
+                                <a id="tab_btn" data-show="asset_type" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Asset Types</a>
+                                <a id="tab_btn" data-show="assets" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i> Assets</a>
+                            </div>
+                        </div>
+
+                        <div class="card p-2">
+                            <div class="tab_contant asset_type">
+                                <div class="row">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAssetTypeModal"><i class="fas fa-plus-square"></i> Add Type</a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="table-responsive" >
+                                            <table class="display data_tbl data__table asset_type_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/L</th>
+                                                        <th>Type</th>
+                                                        <th>Type Code</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                            <form id="deleted_asset_type_form" action="" method="post">
+                                                @method('DELETE')
+                                                @csrf
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row px-3 mt-1">
-                            <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <!--begin: Datatable-->
-                                    <div class="tab_list_area">
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <a id="tab_btn" data-show="asset_type" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Asset Types</a>
-                                            </li>
-
-                                            <li>
-                                                <a id="tab_btn" data-show="assets" class="tab_btn" href="#">
-                                                <i class="fas fa-scroll"></i> Assets</a>
-                                            </li>
-                                        </ul>
+                            <div class="tab_contant assets" style="display: none;">
+                                <div class="row">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAssetModal"><i class="fas fa-plus-square"></i> Add Asset</a>
                                     </div>
-
-                                    <div class="tab_contant asset_type">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="btn_30_blue float-end">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#addAssetTypeModal"><i
-                                                            class="fas fa-plus-square"></i> Add Type</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="table-responsive" >
-                                                    <table class="display data_tbl data__table asset_type_table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>S/L</th>
-                                                                <th>Type</th>
-                                                                <th>Type Code</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
-                                                    <form id="deleted_asset_type_form" action="" method="post">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="tab_contant assets d-none">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="btn_30_blue float-end">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#addAssetModal"><i
-                                                            class="fas fa-plus-square"></i> Add Asset</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="table-responsive">
-                                                    <table class="display data_tbl data__table asset_table w-100">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>S/L</th>
-                                                                <th>Asset</th>
-                                                                <th>Type</th>
-                                                                <th>Available Loaction</th>
-                                                                <th>Quantity</th>
-                                                                <th>Per Unit Value</th>
-                                                                <th>Total Value</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody></tbody>
-                                                    </table>
-                                                    <form id="deleted_asset_form" action="" method="post">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                    </form>
-                                                </div>
-                                            </div>
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="display data_tbl data__table asset_table w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/L</th>
+                                                        <th>Asset</th>
+                                                        <th>Type</th>
+                                                        <th>Available Loaction</th>
+                                                        <th>Quantity</th>
+                                                        <th>Per Unit Value</th>
+                                                        <th>Total Value</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                            <form id="deleted_asset_form" action="" method="post">
+                                                @method('DELETE')
+                                                @csrf
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -178,12 +162,12 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -290,11 +274,12 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                </div>
                             </div>
                         </div>
                     </form>

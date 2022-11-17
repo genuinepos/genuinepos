@@ -613,8 +613,6 @@ class SaleUtil
         $generalSettings = DB::table('general_settings')->first();
         $sales = '';
 
-        $userPermission = auth()->user()->permission;
-
         $query = DB::table('sales')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id');
@@ -659,7 +657,7 @@ class SaleUtil
         }
 
         return DataTables::of($sales)
-            ->addColumn('action', function ($row) use ($userPermission) {
+            ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
@@ -914,8 +912,6 @@ class SaleUtil
         $generalSettings = DB::table('general_settings')->first();
         $sales = '';
 
-        $userPermission = auth()->user()->permission;
-
         $query = DB::table('sales')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id');
@@ -933,7 +929,7 @@ class SaleUtil
             'customers.name as customer_name',
         );
 
-        if ($userPermission->role_type == 1 || auth()->user()->role_type == 2) {
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             $sales = $this->filteredQuery($request, $query)->where('sales.status', 3)
                 ->where('sales.created_by', 1)
@@ -952,7 +948,7 @@ class SaleUtil
         }
 
         return DataTables::of($sales)
-            ->addColumn('action', function ($row) use ($userPermission) {
+            ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"

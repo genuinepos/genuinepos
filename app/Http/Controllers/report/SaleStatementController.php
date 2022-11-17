@@ -27,8 +27,6 @@ class SaleStatementController extends Controller
 
             $sales = '';
 
-            $userPermission = auth()->user()->permission;
-
             $query = DB::table('sales')
                 ->whereIn('sales.status', [1, 3])
                 ->leftJoin('branches', 'sales.branch_id', 'branches.id')
@@ -132,8 +130,6 @@ class SaleStatementController extends Controller
         $toDate = $request->to_date ? $request->to_date : $request->from_date;
 
         $sales = '';
-
-        $userPermission = auth()->user()->permission;
 
         $query = DB::table('sales')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')

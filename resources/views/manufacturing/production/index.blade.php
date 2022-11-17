@@ -124,7 +124,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6"><h6>Productions</h6></div>
-                                @if (auth()->user()->permission->manufacturing['production_add'] == '1')
+                                @if (auth()->user()->can('production_add'))
                                     <div class="col-md-6 d-flex justify-content-end">
                                         <a class="btn btn-sm btn-primary" href="{{ route('manufacturing.productions.create') }}"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>
@@ -169,7 +169,7 @@
                                 </div>
                             </div>
 
-                            @if (auth()->user()->permission->manufacturing['production_delete'] == '1')
+                            @if (auth()->user()->can('production_delete'))
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf

@@ -27,7 +27,7 @@
                                     <h6>Process</h6>
                                 </div>
 
-                                @if (auth()->user()->permission->manufacturing['process_add'] == '1')
+                                @if (auth()->user()->can('process_add'))
                                     <div class="col-md-6 d-flex justify-content-end">
                                         <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                     </div>
@@ -63,7 +63,7 @@
                                 </div>
                             </div>
 
-                            @if (auth()->user()->permission->manufacturing['process_delete'] == '1')
+                            @if (auth()->user()->can('process_delete'))
                                 <form id="deleted_form" action="" method="post">
                                     @method('DELETE')
                                     @csrf

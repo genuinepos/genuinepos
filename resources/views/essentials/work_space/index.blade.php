@@ -3,7 +3,6 @@
     <style>
         .top-menu-area ul li { display: inline-block;margin-right: 3px; }
         .top-menu-area a { border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px; }
-        .form-control { padding: 4px!important; }
     </style>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.min.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
@@ -18,43 +17,23 @@
                 <div class="border-class">
                     <div class="main__content">
                         <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul class="list-unstyled">
-                                        @if (auth()->user()->permission->essential['assign_todo'] == '1')
-                                            <li>
-                                                <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>@lang('menu.todo')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->essential['work_space'] == '1')
-                                            <li>
-                                                <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large text-primary"></i> <b>@lang('menu.work_space')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->essential['memo'] == '1')
-                                            <li>
-                                                <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.memo')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->essential['msg'] == '1')
-                                            <li>
-                                                <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope"></i> <b>@lang('menu.message')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
+                            <div class="name-head">
+                                <span class="fas fa-th-large"></span>
+                                <h6>Work Spaces</h6>
                             </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            </a>
                         </div>
+                    </div>
 
+                    <div class="p-3">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
                                         <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
-                                        <form action="" method="get" class="px-2">
+                                        <form action="" method="get">
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -116,20 +95,15 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row px-3 mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
                                     <h6>All Work Space </h6>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="btn_30_blue float-end">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                class="fas fa-plus-square"></i> Add</a>
-                                    </div>
+                                <div class="col-md-6 d-flex justify-content-end">
+                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                 </div>
                             </div>
 
@@ -253,11 +227,12 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn me-0 button-success float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -285,7 +260,7 @@
     <!-- Add Modal -->
     <div class="modal fade" id="docsModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
       aria-labelledby="staticBackdrop" aria-hidden="true">
-      <div class="modal-dialog col-40-modal" role="document">
+      <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                   <h6 class="modal-title" id="exampleModalLabel">Uploaded Documents</h6>

@@ -19,48 +19,43 @@
                     </div>
                     <!-- =========================================top section button=================== -->
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Tax</h6>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
+                    <div class="p-3">
+                        <div class="form_element rounded m-0">
+                            <div class="section-header">
+                                <div class="col-md-6">
+                                    <h6>All Tax</h6>
                                 </div>
 
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">Serial</th>
-                                                    <th class="text-start">Tax Name</th>
-                                                    <th class="text-start">Tax Percent</th>
-                                                    <th class="text-start">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div class="col-md-6 d-flex justify-content-end">
+                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                                 </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
+
+                            <div class="widget_content">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                </div>
+                                <div class="table-responsive" id="data-list">
+                                    <table class="display data_tbl data__table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start">Serial</th>
+                                                <th class="text-start">Tax Name</th>
+                                                <th class="text-start">Tax Percent</th>
+                                                <th class="text-start">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -92,11 +87,13 @@
                             <span class="error error_tax_percent"></span>
                         </div>
 
-                        <div class="form-group text-right mt-3">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <div class="form-group d-flex justify-content-end mt-3">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i
+                                    class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -129,11 +126,13 @@
                             <span class="error error_e_tax_percent"></span>
                         </div>
 
-                        <div class="form-group text-end mt-3">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <div class="form-group d-flex justify-content-end mt-3">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i
+                                    class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                            </div>
                         </div>
                     </form>
                 </div>

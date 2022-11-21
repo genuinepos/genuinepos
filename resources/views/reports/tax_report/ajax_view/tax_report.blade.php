@@ -1,5 +1,5 @@
 <div class="sale_and_expense_sum_area">
-    <div class="card-body card-custom">
+    <div class="card-body card-custom px-0">
 
         <div class="heading mb-1">
             <h6 class="text-navy-blue">Overall (Output - Input - Expense) </h6>
@@ -9,7 +9,7 @@
             <div class="col-md-12">
                 <div class="tax_sum">
                     <h6 class="text-muted">Output Tax - Input Tax - Expense Tax :
-                        {{ json_decode($generalSettings->business, true)['currency'] }} <span id="tax_sum"></span> 
+                        {{ json_decode($generalSettings->business, true)['currency'] }} <span id="tax_sum"></span>
                     </h6>
                 </div>
             </div>
@@ -22,22 +22,11 @@
         <div class="card-body">
             <!--begin: Datatable-->
             <div class="tab_list_area">
-                <ul class="list-unstyled">
-                    <li>
-                        <a id="tab_btn" data-show="purchase" class="tab_btn tab_active" href="#"><i
-                                class="fas fa-info-circle"></i> Input Tax</a>
-                    </li>
-
-                    <li>
-                        <a id="tab_btn" data-show="sale" class="tab_btn" href="#">
-                            <i class="fas fa-scroll"></i>Output Tax</a>
-                    </li>
-
-                    <li>
-                        <a id="tab_btn" data-show="expense" class="tab_btn" href="#">
-                            <i class="fas fa-scroll"></i>Expense Tax</a>
-                    </li>
-                </ul>
+                <div class="btn-group">
+                    <a id="tab_btn" data-show="purchase" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Input Tax</a>
+                    <a id="tab_btn" data-show="sale" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i>Output Tax</a>
+                    <a id="tab_btn" data-show="expense" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i>Expense Tax</a>
+                </div>
             </div>
 
             <div class="tab_contant purchase mt-1">
@@ -85,13 +74,13 @@
                                 <tfoot>
                                     <tr class="bg-primary">
                                         <th colspan="4" class="text-white"><b>Total :</b></th>
-                                        <th  class="text-white"> 
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalPurchaseAmount, 2, '.', '') }}</b>
                                         </th>
                                         <th  class="text-white"> </th>
                                         <th  class="text-white"> </th>
-                                        <th  class="text-white"> 
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalPurchaseTax, 2, '.', '') }}</b>
                                         </th>
@@ -128,9 +117,9 @@
                                     @foreach ($sales as $sale)
                                         <tr>
                                             <td class="text-navy-blue">{{ date('d/m/Y', strtotime($sale->date)) }}</td>
-                                          
+
                                             <td class="text-navy-blue">{{ $sale->invoice_id }}</td>
-                                           
+
                                             <td class="text-navy-blue">{{ $sale->customer_name ? $sale->customer_name : 'Walk-In-Customer' }}</td>
                                             <td class="text-navy-blue">{{ $sale->tax_number }}</td>
                                             <td class="text-navy-blue">
@@ -155,13 +144,13 @@
                                 <tfoot>
                                     <tr class="bg-primary">
                                         <th colspan="4" class="text-center text-white"><b>Total :</b></th>
-                                        <th  class="text-white"> 
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalSaleAmount, 2, '.', '') }}</b>
                                         </th>
                                         <th  class="text-white"> </th>
                                         <th  class="text-white"> </th>
-                                        <th  class="text-white"> 
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $TotalsaleTax, 2, '.', '') }}</b>
                                         </th>
@@ -204,10 +193,10 @@
                                                 $taxAmount = $expense->total_amount / 100 * $expense->tax_percent;
                                             @endphp
                                             <td class="text-navy-blue">
-                                                {{ json_decode($generalSettings->business, true)['currency'].' '.$taxAmount}} 
+                                                {{ json_decode($generalSettings->business, true)['currency'].' '.$taxAmount}}
                                                 @php
                                                     $totalExpense += $expense->total_amount;
-                                                    $totalExpenseTax += $taxAmount;  
+                                                    $totalExpenseTax += $taxAmount;
                                                 @endphp
                                             </td>
                                         </tr>
@@ -216,12 +205,12 @@
                                 <tfoot>
                                     <tr class="bg-primary">
                                         <th colspan="2" class="text-center text-white"><b>Total :</b></th>
-                                        <th  class="text-white"> 
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalExpense, 2, '.', '') }}</b>
                                         </th>
                                         <th  class="text-white"> </th>
-                                        <th  class="text-white"> 
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalExpenseTax, 2, '.', '') }}</b>
                                         </th>

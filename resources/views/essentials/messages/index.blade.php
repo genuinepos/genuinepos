@@ -22,81 +22,59 @@
                 <div class="border-class">
                     <div class="main__content">
                         <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul class="list-unstyled">
-                                        @if (!auth()->user()->can('assign_todo'))
-                                            <li>
-                                                <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>@lang('menu.todo')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (!auth()->user()->can('work_space'))
-                                            <li>
-                                                <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>@lang('menu.work_space')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (!auth()->user()->can('memo'))
-                                            <li>
-                                                <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.memo')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (!auth()->user()->can('msg'))
-                                            <li>
-                                                <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope text-primary"></i> <b>@lang('menu.message')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
+                            <div class="name-head">
+                                <span class="fas fa-envelope"></span>
+                                <h6>Message Manage</h6>
                             </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            </a>
                         </div>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <h6>Messages </h6>
+                    <div class="p-3">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-12">
+                                    <h6>Messages </h6>
+                                </div>
+                            </div>
+
+                            <div class="py-2 px-3">
+                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                <div class="row">
+                                    <div class="message_area" id="chat-box">
+
                                     </div>
                                 </div>
 
-                                <div class="widget_content">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                    <div class="row">
-                                        <div class="message_area" id="chat-box">
-
-                                        </div>
-                                    </div>
-
-                                    <div class="px-2 py-1 form-header">
-                                        <div class="col-md-12">
-                                            <form id="add_message_form" action="{{ route('messages.store') }}">
-                                                @csrf
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        {{-- <input required type="text" name="task_name" id="task_name" class="form-control" placeholder="Wright task and press enter">  --}}
-
-                                                        <input required type="text" name="description" id="description" class="form-control form-control-sm" placeholder="Type Message" autofocus>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <button type="submit" class="c-btn button-success me-0 float-start submit_button">
-                                                            <i class="fas fa-spinner ts_preloader d-none" id="ts_preloader"></i>
-                                                       Send</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
+                                <form id="add_message_form" action="{{ route('messages.store') }}">
                                     @csrf
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex">
+                                                {{-- <input required type="text" name="task_name" id="task_name" class="form-control" placeholder="Wright task and press enter">  --}}
+                                                <div class="attach-document-group">
+                                                    <label for="attachedFile"><i class="fas fa-plus"></i></label>
+                                                    <input type="file" name="attachment" id="attachedFile">
+                                                </div>
+
+                                                <input required type="text" name="description" id="description" class="form-control form-control-sm" placeholder="Type Message" autofocus>
+
+                                                <button type="submit" class="c-btn me-0 float-start submit_button">
+                                                    <i class="fas fa-spinner ts_preloader d-none" id="ts_preloader"></i>
+                                                    <i class="fas fa-paper-plane"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -32,7 +32,7 @@
             </option>
 
             @foreach ($branches as $branch)
-                <option 
+                <option
                     @foreach ($w->warehouseBranches as $warehouseBranch)
                         @if ($warehouseBranch->is_global == 0)
                             {{ $branch->id == $warehouseBranch->branch_id ? 'SELECTED' : '' }}
@@ -47,10 +47,12 @@
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success me-0 float-end">Save Changes</button>
-            <button type="button" class="c-btn btn_orange float-end" id="close_form">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                <button type="button" class="btn btn-sm btn-danger" id="close_form">Close</button>
+                <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
+            </div>
         </div>
     </div>
 </form>
@@ -64,13 +66,13 @@
     //Edit warehouse by ajax
     $('#edit_warehouse_form').on('submit', function(e){
         e.preventDefault();
-        
+
         $('.loading_button').show();
         var url = $(this).attr('action');
         var request = $(this).serialize();
         var inputs = $('.edit_input');
-            $('.error').html('');  
-            var countErrorField = 0;  
+            $('.error').html('');
+            var countErrorField = 0;
 
         $.each(inputs, function(key, val){
 
@@ -82,7 +84,7 @@
                 countErrorField += 1;
                 var fieldName = $('#'+inputId).data('name');
                 $('.error_'+inputId).html(fieldName+' is required.');
-            } 
+            }
         });
 
         if(countErrorField > 0){

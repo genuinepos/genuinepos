@@ -4,6 +4,28 @@ body {
     scrollbar-width: none;  /* Firefox */
 
 }
+
+/*=====================================
+ title attribute customization
+ =====================================*/
+
+/* [title] {
+    position: relative;
+  }
+
+  [title]:after {
+    content: attr(title);
+    position: absolute;
+    background-color: yellow;
+    width: max-content;
+    opacity: 0;
+    -webkit-transition: opacity 0.75s ease-in-out; 👈 Change the time to meet your requirements.
+  }
+
+  [title]:hover:after {
+    opacity: 1;
+  } */
+
 body::-webkit-scrollbar {
   display: none;
 }
@@ -287,6 +309,7 @@ textarea {
 .form-control[type=file]::file-selector-button {
     background-color: var(--dark-color-1);
     color: var(--white-color);
+    font-size: 12px;
     transition: .3s;
 }
 .form-control[type=file]:hover::file-selector-button {
@@ -1695,4 +1718,95 @@ table.display tbody tr:hover {
 }
 .modal.show .modal-dialog.modal-fullscreen {
     margin-top: 0;
+}
+
+.message_area {
+    padding-right: 7px !important;
+    margin-bottom: 10px;
+    scrollbar-color: #555 #f1f1f1;
+    scrollbar-width: thin !important;
+}
+
+.message_area::-webkit-scrollbar {
+    width: 5px;
+}
+
+.message_area::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.message_area::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.message_area::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.message_area .message-box {
+    background: #ffffff;
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0, .1);
+    border: 1px solid #f1f1f1;
+    border-radius: 5px;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+.message_area .message-box:last-child {
+    margin-bottom: 5px;
+}
+.message_area .message-box .user-block {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+.message_area .message-box .user-block .left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.message_area .message-box .user-block .message-time {
+    color: #a7a7a7;
+}
+.message_area .message-box .message-text {
+    padding: 0 20px;
+}
+.message_area .message-box .message-text p {
+    line-height: 24px;
+    color: #3f3f3f;
+}
+#add_message_form .attach-document-group label {
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: #ffffff;
+    color: #666666;
+    border: 1px solid #D6D6D6;
+    border-right: 0;
+    border-radius: 3px 0 0 3px;
+    cursor: pointer;
+    transition: .3s;
+}
+#add_message_form .attach-document-group input {
+    display: none;
+}
+#add_message_form .form-control {
+    width: calc(100% - 80px);
+    height: 40px;
+}
+#add_message_form .submit_button {
+    width: 40px;
+    height: 40px;
+    background: #ffffff;
+    border: 1px solid #D6D6D6;
+    border-left: 0;
+    border-radius: 0 3px 3px 0;
+    transition: .3s;
+    color: #666666;
+}
+#add_message_form .submit_button:hover {
+    background: #D6D6D6;
+}
+#add_message_form .attach-document-group label:hover {
+    background: #D6D6D6;
 }

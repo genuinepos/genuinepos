@@ -11,7 +11,7 @@
             <select required name="user_ids[]" class="form-control select2" id="user_ids" multiple="multiple">
                 <option disabled value=""> Select Please </option>
                 @foreach ($users as $user)
-                    <option 
+                    <option
                         @foreach ($ws->ws_users as $ws_user)
                             {{ $ws_user->user_id == $user->id ? "SELECTED" : '' }}
                         @endforeach
@@ -78,11 +78,12 @@
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn me-0 button-success float-end">Save Changes</button>
-            <button type="reset" data-bs-dismiss="modal"
-                class="c-btn btn_orange float-end">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
+            </div>
         </div>
     </div>
 </form>

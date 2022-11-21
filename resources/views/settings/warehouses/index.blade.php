@@ -16,12 +16,14 @@
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
+                    </div>
 
+                    <div class="p-3">
                         @if ($addons->branches == 1)
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="sec-name">
-                                        <div class="col-md-12">
+                                    <div class="form_element rounded mt-0 mb-3">
+                                        <div class="element-body">
                                             <form action="" method="get" class="px-2">
                                                 <div class="form-group row">
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -47,114 +49,116 @@
                                 </div>
                             </div>
                         @endif
-                    </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-4">
-                            <div class="card" id="add_form">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <h6>Add Warehouse </h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="card" id="add_form">
+                                    <div class="section-header">
+                                        <div class="col-md-12">
+                                            <h6>Add Warehouse </h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-area px-3 pb-2">
+                                        <form id="add_warehouse_form" action="{{ route('settings.warehouses.store') }}" method="POST">
+                                            @csrf
+                                            <div class="form-group">
+                                                <label><b>Warehouse Name :</b>  <span class="text-danger">*</span></label>
+                                                <input type="text" name="name" class="form-control add_input" data-name="Warehouse name" id="name" placeholder="Warehouse name"/>
+                                                <span class="error error_name"></span>
+                                            </div>
+
+                                            <div class="form-group mt-1">
+                                                <label><b>Warehouse Code :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
+                                                <input type="text" name="code" class="form-control add_input" data-name="Warehouse code" id="code" placeholder="Warehouse code"/>
+                                                <span class="error error_code"></span>
+                                            </div>
+
+                                            <div class="form-group mt-1">
+                                                <label><b>Phone :</b>  <span class="text-danger">*</span></label>
+                                                <input type="text" name="phone" class="form-control add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
+                                                <span class="error error_phone"></span>
+                                            </div>
+
+                                            <div class="form-group mt-1">
+                                                <label><b>Address :</b>  </label>
+                                                <textarea name="address" class="form-control" placeholder="Warehouse address" rows="3"></textarea>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <label><strong>Under Business Location :</strong></label>
+                                                <select name="branch_ids[]" id="branch_id" class="form-control select2" multiple="multiple">
+                                                    <option value="NULL">
+                                                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (HO)
+                                                    </option>
+
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <span class="error error_business_location"></span>
+                                            </div>
+
+                                            <div class="form-group d-flex justify-content-end mt-3">
+                                                <div class="btn-loading">
+                                                    <button type="button" class="btn loading_button d-none"><i
+                                                        class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                    <button type="reset" class="btn btn-sm btn-danger">Reset</button>
+                                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
 
-                                <div class="form-area px-3 pb-2">
-                                    <form id="add_warehouse_form" action="{{ route('settings.warehouses.store') }}" method="POST">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label><b>Warehouse Name :</b>  <span class="text-danger">*</span></label>
-                                            <input type="text" name="name" class="form-control add_input" data-name="Warehouse name" id="name" placeholder="Warehouse name"/>
-                                            <span class="error error_name"></span>
-                                        </div>
-
-                                        <div class="form-group mt-1">
-                                            <label><b>Warehouse Code :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
-                                            <input type="text" name="code" class="form-control add_input" data-name="Warehouse code" id="code" placeholder="Warehouse code"/>
-                                            <span class="error error_code"></span>
-                                        </div>
-
-                                        <div class="form-group mt-1">
-                                            <label><b>Phone :</b>  <span class="text-danger">*</span></label>
-                                            <input type="text" name="phone" class="form-control add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
-                                            <span class="error error_phone"></span>
-                                        </div>
-
-                                        <div class="form-group mt-1">
-                                            <label><b>Address :</b>  </label>
-                                            <textarea name="address" class="form-control" placeholder="Warehouse address" rows="3"></textarea>
-                                        </div>
-
+                                <div class="card" id="edit_form" style="display: none;">
+                                    <div class="section-header">
                                         <div class="col-md-12">
-                                            <label><strong>Under Business Location :</strong></label>
-                                            <select name="branch_ids[]" id="branch_id" class="form-control select2" multiple="multiple">
-                                                <option value="NULL">
-                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (HO)
-                                                </option>
-
-                                                @foreach ($branches as $branch)
-                                                    <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
-                                                @endforeach
-                                            </select>
-                                            <span class="error error_business_location"></span>
+                                            <h6>Edit Warehouse </h6>
                                         </div>
+                                    </div>
 
-                                        <div class="form-group text-end mt-3">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
-                                            <button type="reset" class="c-btn btn_orange float-end">Reset</button>
+                                    <div class="form-area px-3 pb-2" id="edit_form_body">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="section-header">
+                                        <div class="col-md-6">
+                                            <h6>All Warehouse</h6>
                                         </div>
+                                    </div>
+
+                                    <div class="widget_content">
+                                        <div class="data_preloader">
+                                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="display data_tbl data__table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-start">SL</th>
+                                                        <th class="text-start">Name</th>
+                                                        <th class="text-start">Business Location</th>
+                                                        <th class="text-start">Warehouse Code</th>
+                                                        <th class="text-start">Phone</th>
+                                                        <th class="text-start">Address</th>
+                                                        <th class="text-start">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <form id="deleted_form" action="" method="post">
+                                        @method('DELETE')
+                                        @csrf
                                     </form>
                                 </div>
-                            </div>
-
-                            <div class="card d-none" id="edit_form">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <h6>Edit Warehouse </h6>
-                                    </div>
-                                </div>
-
-                                <div class="form-area px-3 pb-2" id="edit_form_body">
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Warehouse</h6>
-                                    </div>
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">SL</th>
-                                                    <th class="text-start">Name</th>
-                                                    <th class="text-start">Business Location</th>
-                                                    <th class="text-start">Warehouse Code</th>
-                                                    <th class="text-start">Phone</th>
-                                                    <th class="text-start">Address</th>
-                                                    <th class="text-start">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
                             </div>
                         </div>
                     </div>

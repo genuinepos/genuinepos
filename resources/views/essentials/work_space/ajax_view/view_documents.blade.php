@@ -26,17 +26,17 @@
                                         <img style="height: 35px;width:40px;" src="{{ asset('uploads/workspace_docs/'.$doc->attachment) }}">
                                     </a>
                                     @else
-                                    <i class="far fa-file"></i> <span class="text-muted">{{ $doc->attachment }}</span> 
+                                    <i class="far fa-file"></i> <span class="text-muted">{{ $doc->attachment }}</span>
                                     @endif
                                 </td>
                                 <td class="text-start">
-                                    <a data-magnify="gallery" data-caption="ddd" data-group="" href="{{ asset('uploads/workspace_docs/'.$doc->attachment) }}" class="btn btn-sm btn-info text-white">View</a> 
+                                    <a data-magnify="gallery" data-caption="ddd" data-group="" href="{{ asset('uploads/workspace_docs/'.$doc->attachment) }}" class="btn btn-sm btn-info text-white">View</a>
                                     <a href="{{ asset('uploads/workspace_docs/'.$doc->attachment) }}" class="btn btn-sm btn-secondary" download>Download</a>
                                     <a href="{{ route('workspace.delete.doc', $doc->id) }}" id="delete_doc" class="btn btn-sm btn-danger">Delete</a>
                                 </td>
                             </tr>
                         @endforeach
-                    @else 
+                    @else
                         <tr>
                             <th class="text-center" colspan="3">No Data Found.</th>
                         </tr>
@@ -50,7 +50,9 @@
         </div>
     </div>
 </div>
-<button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+<div class="d-flex justify-content-end">
+    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+</div>
 <script>
     $('[data-magnify=gallery]').magnify();
 </script>

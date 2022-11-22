@@ -290,12 +290,12 @@
                         </div>
 
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -321,7 +321,7 @@
     <!-- Money Receipt list Modal-->
     <div class="modal fade" id="moneyReceiptListModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Payment Receipt Voucher List</h6>

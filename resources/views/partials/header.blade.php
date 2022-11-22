@@ -31,7 +31,7 @@
                                 <li class="top-icon d-none d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif
 
-                            @if (!auth()->user()->can('communication'))
+                            @if(auth()->user()->can('communication'))
                                 <li class="top-icon d-none d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
                                                 class="fas fa-th-large"></i></b></a>
                                     <ul class="lists">
@@ -47,13 +47,13 @@
                                 </li>
                             @endif
 
-                            @if (!auth()->user()->can('today_summery'))
+                            @if(auth()->user()->can('today_summery'))
                                 <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
                             @endif
 
                             <li class="top-icon"><a href=""><i class="far fa-bell"></i></a></li>
                             @if (json_decode($generalSettings->modules, true)['pos'] == '1')
-                                @if (!auth()->user()->can('pos_add'))
+                                @if(auth()->user()->can('pos_add'))
                                     <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
                                 @endif
                             @endif
@@ -107,15 +107,15 @@
                                     <li>
                                         <a style="display:inline;" class="dropdown-item {{ app()->isLocale('en') ? 'text-success' : '' }}" href="{{ route('change.lang', 'en') }}">English</a>
                                     </li>
-                                    
+
                                     <li>
                                         <a style="display:inline;" class="dropdown-item {{ app()->isLocale('bn') ? 'text-success' : '' }}" href="{{ route('change.lang', 'bn') }}">Bangla</a>
                                     </li>
-                                    
+
                                     <li>
                                         <a style="display:inline;" class="dropdown-item {{ app()->isLocale('ar') ? 'text-success' : '' }}" href="{{ route('change.lang', 'ar') }}">Arabic</a>
                                     </li>
-                                    
+
                                 </ul>
                             </li>
                             <li class="top-icon d-none d-md-block"><a href="https://help.genuinepos.com/"
@@ -145,7 +145,7 @@
                                             href="{{ route('users.profile.view', auth()->user()->id) }}">View
                                             Profile</a>
                                     </li>
-                                    
+
                                     <li>
                                         <i class="fas fa-edit text-primary"></i></span><a class="dropdown-item d-block"
                                             href="{{ route('users.profile.index') }}">Edit Profile</a>

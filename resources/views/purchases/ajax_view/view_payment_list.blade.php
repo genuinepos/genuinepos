@@ -18,10 +18,10 @@
                     <li><strong>Supplier : </strong><span>{{ $purchase->supplier->name }}</span>
                     </li>
                     <li><strong>Business : </strong>
-                        <span>{{ $purchase->supplier->business_name }}</span> 
+                        <span>{{ $purchase->supplier->business_name }}</span>
                     </li>
                     <li><strong>phone : </strong>
-                        <span>{{ $purchase->supplier->phone }}</span> 
+                        <span>{{ $purchase->supplier->phone }}</span>
                     </li>
                 </ul>
             </div>
@@ -74,7 +74,7 @@
                         @endphp
                         @if ($purchase->due <= 0)
                             <span class="text-success"><b>Paid</b></span>
-                        @elseif($purchase->due > 0 && $purchase->due < $payable) 
+                        @elseif($purchase->due > 0 && $purchase->due < $payable)
                             <span class="text-primary"><b>Partial</b></span>
                         @elseif($payable == $purchase->due)
                             <span class="text-danger"><b>Due</b></span>
@@ -122,7 +122,7 @@
                             <td>
                                 @if ($payment->is_advanced == 1)
                                     <b>PO Advance Payment</b>
-                                @else 
+                                @else
                                     {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Received Return Amt.' }}
                                 @endif
                             </td>
@@ -134,9 +134,9 @@
                             </td>
 
                             <td>
-                                @if (auth()->user()->branch_id == $purchase->branch_id) 
+                                @if (auth()->user()->branch_id == $purchase->branch_id)
 
-                                    @if (!auth()->user()->can('purchase_payment'))
+                                    @if(auth()->user()->can('purchase_payment'))
                                         @if ($payment->payment_type == 1)
                                             <a href="{{ route('purchases.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
                                         @else

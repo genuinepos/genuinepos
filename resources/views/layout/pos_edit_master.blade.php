@@ -233,7 +233,7 @@
     </div>
     <!-- Edit selling product modal end-->
 
-    @if (!auth()->user()->can('product_add'))
+    @if(auth()->user()->can('product_add'))
         <!--Add Product Modal-->
         <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
@@ -308,7 +308,7 @@
                             <span class="error error_e_unit_price"></span>
                         </div>
 
-                        @if (!auth()->user()->can('edit_discount_pos_screen'))
+                        @if(auth()->user()->can('edit_discount_pos_screen'))
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label><strong>Discount Type</strong>  :</label>

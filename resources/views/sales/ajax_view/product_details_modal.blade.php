@@ -1,7 +1,7 @@
-@php 
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); 
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';                          
-@endphp 
+@php
+    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+@endphp
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-full-display">
         <div class="modal-content">
@@ -54,13 +54,13 @@
                                     {{ $sale->branch->city }}, {{ $sale->branch->state }},
                                         {{ $sale->branch->zip_code }}, {{ $sale->branch->country }}
                                 </li>
-                                <li><strong>Phone : </strong> {{ $sale->branch->phone }}</li> 
-                            @else 
-                                <li><strong>Stock Location : </strong> 
+                                <li><strong>Phone : </strong> {{ $sale->branch->phone }}</li>
+                            @else
+                                <li><strong>Stock Location : </strong>
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
                                 </li>
                                 <li><strong>Address : </strong>{{ json_decode($generalSettings->business, true)['address'] }}</li>
-                                <li><strong>Phone : </strong>{{ json_decode($generalSettings->business, true)['phone'] }}</li> 
+                                <li><strong>Phone : </strong>{{ json_decode($generalSettings->business, true)['phone'] }}</li>
                             @endif
                         </ul>
                     </div>
@@ -82,9 +82,9 @@
                                 @php
                                     $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                                 @endphp
-                                @if ($sale->due <= 0) 
+                                @if ($sale->due <= 0)
                                     <span class="badge bg-success"> Paid </span>
-                                @elseif ($sale->due > 0 && $sale->due < $payable) 
+                                @elseif ($sale->due > 0 && $sale->due < $payable)
                                     <span class="badge bg-primary text-white">Partial</span>
                                 @elseif ($payable == $sale->due)
                                     <span class="badge bg-danger text-white">Due</span>
@@ -112,7 +112,7 @@
                                     $name = $lastName = '';
                                     if ($sale->admin) {
                                         if ($sale->admin->role_type == 1) {
-                                            
+
                                             $admin_role = ' (Super-Admin)';
                                         } elseif ($sale->admin->role_type == 2) {
 
@@ -121,7 +121,7 @@
 
                                             $admin_role = '(' . $sale->admin->role->name . ')';
                                         }
-                                    
+
                                         $prefix = $sale->admin ? $sale->admin->prefix : '';
                                         $name = $sale->admin ? $sale->admin->name : '';
                                         $lastName = $sale->admin ? $sale->admin->last_name : '';
@@ -164,11 +164,11 @@
                                         <td class="text-start">
                                             @if ($saleProduct->stock_warehouse_id)
                                                 {{ $saleProduct->warehouse->warehouse_name.'/'.$saleProduct->warehouse->warehouse_code }}
-                                            @else 
+                                            @else
                                                 @if ($saleProduct->stock_branch_id)
 
                                                     {{ $saleProduct->branch->name.'/'.$saleProduct->branch->branch_code }}
-                                                @else 
+                                                @else
 
                                                     {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                                 @endif
@@ -179,7 +179,7 @@
                                                 {{ $saleProduct->product->warranty->duration . ' ' . $saleProduct->product->warranty->duration_type }}
                                                 {{ $saleProduct->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
                                                 {!! $saleProduct->product->warranty->discription ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
-                                            @else 
+                                            @else
                                                 NO
                                             @endif
                                         </td>
@@ -209,7 +209,7 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        @if (!auth()->user()->can('sale_payment')) 
+                        @if(auth()->user()->can('sale_payment'))
                             @include('sales.ajax_view.partials.add_sale_details_payment_list')
                         @endif
                     </div>
@@ -224,7 +224,7 @@
                                         </span>
                                     </td>
                                 </tr>
-    
+
                                 {{-- <tr>
                                     <th class="text-start">Order Discount :</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
@@ -247,42 +247,42 @@
                                         @endif
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->order_tax_amount) . ' (' . $sale->order_tax_percent . '%)' }}
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Grand Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Sale Return : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->sale_return_amount) }}
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
@@ -292,7 +292,7 @@
                             </table>
                         </div>
                     </div>
-                </div> 
+                </div>
                 <hr>
                 <div class="row">
                     <div class="col-md-6">
@@ -310,33 +310,33 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="modal-footer">
                 @if ($sale->branch_id == auth()->user()->branch_id)
-                
+
                     @if ($sale->created_by == 1)
 
-                        @if (!auth()->user()->can('edit_add_sale')) 
+                        @if(auth()->user()->can('edit_add_sale'))
 
                             <a class="btn btn-sm btn-secondary" href="{{ route('sales.edit', $sale->id) }}"> Edit</a>
                         @endif
-                    @else 
+                    @else
 
-                        @if (!auth()->user()->can('pos_edit')) 
+                        @if(auth()->user()->can('pos_edit'))
 
                             <a class="footer_btn btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}"> Edit</a>
                         @endif
                     @endif
                 @endif
 
-                @if (!auth()->user()->can('shipment_access')) 
+                @if(auth()->user()->can('shipment_access'))
                     <button type="button" id="print_packing_slip" href="{{ route('sales.packing.slip', $sale->id) }}"
                     class="footer_btn btn btn-sm btn-success action_hideable">Print Packing Slip</button>
                 @endif
 
                 <button type="button" class="footer_btn btn btn-sm btn-info print_challan_btn text-white action_hideable">Print Challan</button>
                 <button type="button" class="footer_btn btn btn-sm btn-primary print_btn">Print {{ $sale->status == 1 ? 'Invoice' : 'Order' }} </button>
-                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button> 
+                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

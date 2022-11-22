@@ -14,61 +14,61 @@
                 <div class="breadCrumbHolder module w-100">
                     <div id="breadCrumb3" class="breadCrumb module">
                         <ul>
-                            @if (!auth()->user()->can('hrm_dashboard'))
+                            @if(auth()->user()->can('hrm_dashboard'))
                                 <li>
                                     <a href="{{ route('hrm.dashboard.index') }}" class="text-white"><i class="fas fa-tachometer-alt text-primary"></i> <b>@lang('menu.hrm')</b></a>
                                 </li>
                             @endif
 
-                            @if (!auth()->user()->can('leave_type'))
+                            @if(auth()->user()->can('leave_type'))
                                 <li>
                                     <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
                                 </li>
                             @endif
 
-                            @if (!auth()->user()->can('leave_assign'))
+                            @if(auth()->user()->can('leave_assign'))
                                 <li>
                                     <a href="{{ route('hrm.leave') }}" class="text-white"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
                                 </li>
                             @endif
 
-                            @if (!auth()->user()->can('shift'))
+                            @if(auth()->user()->can('shift'))
                                 <li>
                                     <a href="{{ route('hrm.attendance.shift') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
                                 </li>
                             @endif
 
-                            @if (!auth()->user()->can('attendance'))
+                            @if(auth()->user()->can('attendance'))
                                 <li>
                                     <a href="{{ route('hrm.attendance') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
                                 </li>
                             @endif
 
-                            @if (!auth()->user()->can('view_allowance_and_deduction'))
+                            @if(auth()->user()->can('view_allowance_and_deduction'))
                                 <li>
                                     <a href="{{ route('hrm.allowance') }}" class="text-white"><i class="fas fa-plus"></i> <b>@lang('menu.allowance_deduction')</b></a>
                                 </li>
                             @endif
 
-                            @if (!auth()->user()->can('payroll'))
+                            @if(auth()->user()->can('payroll'))
                                 <li>
                                     <a href="{{ route('hrm.payroll.index') }}" class="text-white "><i class="far fa-money-bill-alt"></i> <b>@lang('menu.payroll')</b></a>
                                 </li>
                             @endif
 
-                            @if (!auth()->user()->can('holiday'))
+                            @if(auth()->user()->can('holiday'))
                                 <li>
                                     <a href="{{ route('hrm.holidays') }}" class="text-white "><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
                                 </li>
                             @endif
 
-                            @if (!auth()->user()->can('department'))
+                            @if(auth()->user()->can('department'))
                                 <li>
                                     <a href="{{ route('hrm.departments') }}" class="text-white "><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
                                 </li>
                             @endif
 
-                            @if (!auth()->user()->can('designation'))
+                            @if(auth()->user()->can('designation'))
                                 <li>
                                     <a href="{{ route('hrm.designations') }}" class="text-white "><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
                                 </li>

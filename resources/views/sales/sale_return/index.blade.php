@@ -67,7 +67,7 @@
 
     <div id="sale_return_details"></div>
 
-    @if (!auth()->user()->can('sale_payment'))
+    @if(auth()->user()->can('sale_payment'))
         <!--Payment View modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">

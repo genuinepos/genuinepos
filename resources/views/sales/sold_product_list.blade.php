@@ -149,7 +149,7 @@
                                     <div class="col-md-10">
                                         <h6>Sold Product List</h6>
                                     </div>
-                                    @if (!auth()->user()->can('purchase_add'))
+                                    @if(auth()->user()->can('purchase_add'))
                                         <div class="col-md-2 d-flex justify-content-end">
                                             <a href="#" class="btn btn-sm btn-primary" id="print_report"><i class="fas fa-print"></i> Print</a>
                                         </div>

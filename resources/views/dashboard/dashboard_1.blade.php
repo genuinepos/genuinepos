@@ -224,7 +224,7 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <section>
-                        <div class="form_element mt-0 mb-3">
+                        <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6>
                                     <span class="fas fa-table"></span>Stock Alert Of
@@ -260,7 +260,7 @@
 
                 <div class="col-md-6">
                     <section>
-                        <div class="form_element mt-0 mb-3">
+                        <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6><span class="fas fa-table"></span> Sales Order</h6>
                                 <a href="#">See More</a>
@@ -286,11 +286,10 @@
                         </div>
                     </section>
                 </div>
-            </div>
-            <div class="row g-3">
+
                 <div class="col-md-6">
                     <section>
-                        <div class="form_element mt-0 mb-3">
+                        <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6><span class="fas fa-table"></span> Sales Payment Due</h6>
                                 <a href="#">See More</a>
@@ -318,7 +317,7 @@
 
                 <div class="col-md-6">
                     <section>
-                        <div class="form_element mt-0 mb-3">
+                        <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6><span class="fas fa-table"></span> Purchase Payment Due</h6>
                                 <a href="#">See More</a>

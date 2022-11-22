@@ -111,14 +111,14 @@
                     <li>
                         <a href="" class="text-primary"><i class="fas fa-tachometer-alt"></i> <b>@lang('menu.hrm')</b></a>
                     </li>
-                    
-                    @if (!auth()->user()->can('leave_type'))
+
+                    @if(auth()->user()->can('leave_type'))
                         <li>
                             <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
                         </li>
                     @endif
 
-                    @if (!auth()->user()->can('leave_approve'))
+                    @if(auth()->user()->can('leave_approve'))
                         <li>
                             <a href="{{ route('hrm.leave') }}" class="text-white "><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
                         </li>
@@ -182,7 +182,7 @@
                             <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                         </div>
                     </div>
-                    
+
                     <div class="form_element users_data">
                         <div class="section-header d-flex justify-content-between align-items-center px-3">
                             <h6><span class="fas fa-users"></span>Users</h6>
@@ -275,7 +275,7 @@
                                     <table id="leave_application_table"
                                         class="display data__table data_tble stock_table compact mt-2" width="100%">
                                         <tbody class="mx-2 mt-5" id="leaves">
-                                            
+
                                         </tbody>
                                     </table>
                                 </div>

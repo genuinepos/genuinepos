@@ -35,12 +35,12 @@ class CustomerUtil
 
                 $html .= '<a class="dropdown-item" id="money_receipt_list" href="' . route('money.receipt.voucher.list', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Payment Receipt Voucher</a>';
 
-                if (!auth()->user()->can('customer_edit')) {
+                if (auth()->user()->can('customer_edit')) {
 
                     $html .= '<a class="dropdown-item" href="' . route('contacts.customer.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
                 }
 
-                if (!auth()->user()->can('customer_delete')) {
+                if (auth()->user()->can('customer_delete')) {
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.customer.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
@@ -77,7 +77,7 @@ class CustomerUtil
             })
 
             ->editColumn('opening_balance', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
- 
+
                 $openingBalance = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['opening_balance'];
                 return '<span class="opening_balance" data-value="' . $openingBalance . '">' . \App\Utils\Converter::format_in_bdt($openingBalance) . '</span>';
             })

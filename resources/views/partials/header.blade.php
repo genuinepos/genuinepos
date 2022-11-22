@@ -135,7 +135,7 @@
                                             @elseif(auth()->user()->role_type == 2)
                                                 (Admin)
                                             @else
-                                                {{ auth()->user()->role->name }}
+                                                {{ auth()->user()->roles->first()->name }}
                                             @endif
                                         </span>
                                     </li>

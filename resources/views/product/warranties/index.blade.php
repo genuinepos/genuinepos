@@ -277,6 +277,7 @@
                 $('#e_description').val(warranty.description);
                 $('#add_form').hide();
                 $('#edit_form').show();
+                $('#edit_form').removeClass('d-none');
                 document.getElementById('e_name').focus();
             });
 

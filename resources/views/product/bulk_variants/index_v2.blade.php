@@ -268,7 +268,6 @@
             $('.form-control').removeClass('is-invalid');
             $('.error').html('');
             var variantInfo = $(this).closest('tr').data('info');
-            console.log(variantInfo);
             $('#id').val(variantInfo.id);
             $('#e_variant_name').val(variantInfo.bulk_variant_name);
             $('#e_variant_child_id').val(variantInfo.bulk_variant_child[0].id);
@@ -295,6 +294,7 @@
             });
             $('#add_form').hide();
             $('#edit_form').show();
+            $('#edit_form').removeClass('d-none');
             document.getElementById('e_variant_name').focus();
         });
 

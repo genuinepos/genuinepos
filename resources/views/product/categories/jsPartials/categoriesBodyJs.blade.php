@@ -80,7 +80,7 @@
                 success: function(data) {
                     $('#edit_cate_form_body').html(data);
                     $('#add_cate_form').hide();
-                    $('#edit_cate_form').removeClass('d-none');
+                    $('#edit_cate_form').removeClass('d-hide');
                     $('#edit_cate_form').show();
                     $('.data_preloader').hide();
                     document.getElementById('e_name').focus();

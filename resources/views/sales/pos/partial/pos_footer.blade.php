@@ -1,4 +1,4 @@
-<div class="row mt-1 d-lg-flex d-none">
+<div class="row mt-1 d-lg-flex d-hide">
     <div class="col-12">
         <div class="pos-footer">
             <div class="logo_wrapper d-block w-100 text-center">

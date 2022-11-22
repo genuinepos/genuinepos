@@ -19,10 +19,10 @@
         </div>
         <div class="p-3">
             <form id="add_production_form" action="{{ route('manufacturing.productions.store') }}" method="POST">
-                <input name="action_type" type="text" id="action_type" class="d-none" value="">
-                <input name="product_id" type="text" id="product_id" class="d-none" value="">
-                <input name="variant_id" type="text" id="variant_id" class="d-none" value="">
-                <input name="unit_id" type="text" id="unit_id" class="d-none" value="">
+                <input name="action_type" type="text" id="action_type" class="d-hide" value="">
+                <input name="product_id" type="text" id="product_id" class="d-hide" value="">
+                <input name="variant_id" type="text" id="variant_id" class="d-hide" value="">
+                <input name="unit_id" type="text" id="unit_id" class="d-hide" value="">
                 @csrf
                 <section>
                     <div class="form_element rounded mt-0 mb-3">
@@ -139,7 +139,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="text" class="d-none" name="total_ingredient_cost" id="total_ingredient_cost">
+                        <input type="text" class="d-hide" name="total_ingredient_cost" id="total_ingredient_cost">
                         <p class="my-3 float-end clearfix"><strong>Total Ingrediant Cost : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                                                 <label class="col-4"><b>Output Qty :</b></label>
                                                 <div class="col-md-8">
                                                     <input type="number" step="any" data-name="Quantity" class="form-control add_input" name="output_quantity" id="output_quantity" value="1.00">
-                                                    <input type="text" name="parameter_quantity" class="d-none" id="parameter_quantity" value="0.00">
+                                                    <input type="text" name="parameter_quantity" class="d-hide" id="parameter_quantity" value="0.00">
                                                     <span class="error error_output_quantity"></span>
                                                 </div>
                                             </div>
@@ -300,7 +300,7 @@
                                 <div class="row mt-1">
                                     <div class="col-md-12 d-flex justify-content-end">
                                         <div class="btn-loading">
-                                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                                             <button value="save" class="btn btn-sm btn-success submit_button">Save</button>
                                             <button value="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print</button>
                                         </div>

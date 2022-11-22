@@ -1,5 +1,5 @@
 @if ($sale->branch->pos_sale_invoice_layout->layout_design == 1)
-    <div class="sale_print_template d-none">
+    <div class="sale_print_template d-hide">
         <style>
             @page {size:a4;margin-top: 0.8cm; /*margin-bottom: 35px;*/ margin-left: 4%;margin-right: 4%;}
         </style>
@@ -373,7 +373,7 @@
     </div>
 @else
     <style>@page{margin: 8px;}</style>
-    <div class="sale_print_template d-none">
+    <div class="sale_print_template d-hide">
         <div class="pos_print_template">
             <div class="row">
                 <div class="company_info">

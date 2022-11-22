@@ -146,7 +146,7 @@
                                 <select name="order_tax" class="form-control" id="order_tax">
 
                                 </select>
-                                <input type="number" class="d-none" name="order_tax_amount" id="order_tax_amount"
+                                <input type="number" class="d-hide" name="order_tax_amount" id="order_tax_amount"
                                     value="0.00">
                             </div>
                         </div>
@@ -161,16 +161,16 @@
                             <div class="col-sm-9 ">
                                 <input name="order_discount" type="number" step="any" class="form-control"
                                     id="order_discount" value="0.00">
-                                <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
+                                <input name="order_discount_amount" type="number" class="d-hide" id="order_discount_amount"
                                     value="0.00">
-                                <input name="order_discount_type" class="d-none" id="order_discount_type" value="1">
+                                <input name="order_discount_type" class="d-hide" id="order_discount_type" value="1">
                             </div>
                         </div>
                     @else
                         <input name="order_discount" type="hidden" id="order_discount" value="0.00">
-                        <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
+                        <input name="order_discount_amount" type="number" class="d-hide" id="order_discount_amount"
                             value="0.00">
-                        <input name="order_discount_type" class="d-none" id="order_discount_type" value="1">
+                        <input name="order_discount_type" class="d-hide" id="order_discount_type" value="1">
                     @endif
 
                     <div class="row">
@@ -183,7 +183,7 @@
                         <div class="col-sm-9 ">
                             <input readonly class="form-control sp-input" type="number" step="any"
                                 name="total_payable_amount" id="total_payable_amount" value="0.00">
-                            <input class="d-none" type="number" step="any" name="total_invoice_payable"
+                            <input class="d-hide" type="number" step="any" name="total_invoice_payable"
                                 id="total_invoice_payable" value="0.00">
                         </div>
                     </div>

@@ -84,7 +84,7 @@
 
     <div class="submit-area d-flex justify-content-end mt-3">
         <div class="btn-loading">
-            <button type="button" class="btn loading_button d-none">
+            <button type="button" class="btn loading_button d-hide">
                 <i class="fas fa-spinner"></i><span> Loading...</span>
             </button>
 

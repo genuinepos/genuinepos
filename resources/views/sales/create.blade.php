@@ -367,7 +367,7 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <input name="order_discount" type="number" step="any" class="form-control" id="order_discount" value="0.00">
-                                                <input name="order_discount_amount" step="any" type="number" class="d-none" id="order_discount_amount" value="0.00" tabindex="-1">
+                                                <input name="order_discount_amount" step="any" type="number" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
@@ -375,7 +375,7 @@
                                             <label class="col-sm-5 col-form-label">Order Tax :</label>
                                             <div class="col-sm-7">
                                                 <select name="order_tax" class="form-control" id="order_tax"></select>
-                                                <input type="number" step="any" class="d-none" name="order_tax_amount" id="order_tax_amount" value="0.00">
+                                                <input type="number" step="any" class="d-hide" name="order_tax_amount" id="order_tax_amount" value="0.00">
                                             </div>
                                         </div>
 
@@ -397,7 +397,7 @@
                                             <label class="col-sm-5 col-form-label">Total Payable:</label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
-                                                <input class="d-none" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00" tabindex="-1">
+                                                <input class="d-hide" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
@@ -463,7 +463,7 @@
                                         <div class="row justify-content-center">
                                             <div class="col-12 d-flex justify-content-end">
                                                 <div class="btn-loading d-flex flex-wrap gap-2">
-                                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i> <span>Loading . . .</span></button>
+                                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading . . .</span></button>
                                                     <button type="submit" id="quotation" class="btn btn-info text-white submit_button" data-status="4" value="save_and_print">Quotation</button>
                                                     <button type="submit" id="order" class="btn btn-secondary text-white submit_button" data-status="3" value="save_and_print">Order</button>
                                                     <button type="submit" id="save_and_print" class="btn btn-success submit_button" data-status="1" value="save_and_print">Final & Print</button>
@@ -536,7 +536,7 @@
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
-                                <button type="button" class="btn op_loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                <button type="button" class="btn op_loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                 <button name="action" value="save" type="submit" class="c-btn button-success float-end">Save</button>
                                 <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
                             </div>
@@ -562,7 +562,7 @@
                     <form id="update_selling_product" action="">
                         @if(auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
-                                <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
+                                <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
                                     <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span>
                                     <span id="unit_cost">1,200.00</span>
                                 </span>

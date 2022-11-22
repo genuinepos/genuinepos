@@ -162,7 +162,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab_contant warehouse_stock d-none">
+                            <div class="tab_contant warehouse_stock d-hide">
                                 <div class="row g-3">
                                     <div class="col-12">
                                         <div class="card py-2">

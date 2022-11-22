@@ -111,7 +111,7 @@
                 <p> <input type="checkbox" name="is_header_less" id="is_header_less" value="1"> &nbsp; <b>Is Header Less For Pad Print?</b> </p>
             </div>
 
-            <div class="col-md-4 gap-from-top-add d-none">
+            <div class="col-md-4 gap-from-top-add d-hide">
                 <label><b>Gap From Top :</b> </label>
                 <input type="text" name="gap_from_top" class="form-control" placeholder="Gap From Top"/>
             </div>
@@ -119,10 +119,12 @@
     </div>
 
     <div class="form-group row mt-3">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success float-end">Save</button>
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="submit" class="btn btn-sm btn-success">Save</button>
+            </div>
         </div>
     </div>
 </form>

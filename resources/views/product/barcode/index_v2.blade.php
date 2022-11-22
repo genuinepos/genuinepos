@@ -29,7 +29,7 @@
                         <div class="row g-3">
                             <div class="col-md-7">
                                 <div class="card ">
-                                    <form id="multiple_completed_form" class="d-none"
+                                    <form id="multiple_completed_form" class="d-hide"
                                         action="{{ route('barcode.multiple.generate.completed') }}" method="post">
                                         @csrf
                                         <table>
@@ -110,7 +110,7 @@
                                                             <p class="p-0 m-0"><strong>Product List</strong></p>
                                                         </div>
                                                         <div class="table_area">
-                                                            <div class="data_preloader d-none">
+                                                            <div class="data_preloader d-hide">
                                                                 <h6><i class="fas fa-spinner"></i> Processing...</h6>
                                                             </div>
                                                             <div class="table-responsive">

@@ -119,7 +119,7 @@
                             </div>
 
                             <div class="col-md-12 text-end">
-                                <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner"></i><strong>Loading</strong> </button>
+                                <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner"></i><strong>Loading</strong> </button>
                                 <button type="submit" name="action" value="save_and_new" class="btn btn-primary submit_button btn-sm">Save And Add Another</button>
                                 <button type="submit" name="action" value="save" class="btn btn-primary submit_button btn-sm">Save</button>
                             </div>

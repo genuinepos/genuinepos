@@ -20,7 +20,7 @@
                                 <div class="card-body">
                                     <div class="data_preloader mt-5 pt-5"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
                                     <div class="trial_balance_area">
-                                        <div class="print_header d-none">
+                                        <div class="print_header d-hide">
                                             <div class="text-center pb-3">
                                                 <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
                                                 <h6><strong>TRIAL BALANCE</h6>
@@ -150,7 +150,7 @@
                                             </table>
                                         </div>
 
-                                        <div class="print_footer d-none">
+                                        <div class="print_footer d-hide">
                                             <div class="text-center">
                                                 <small>Software by <b>SpeedDigit Pvt. Ltd.</b></small>
                                             </div>

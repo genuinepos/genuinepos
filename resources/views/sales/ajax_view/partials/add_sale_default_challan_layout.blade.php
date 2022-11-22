@@ -1,7 +1,7 @@
 @php
     $defaultLayout = DB::table('invoice_layouts')->where('is_default', 1)->first();
 @endphp
-<div class="challan_print_template d-none">
+<div class="challan_print_template d-hide">
     <style>
         @page {size:a4;margin-top: 0.8cm; /*margin-bottom: 35px;*/ margin-left: 4%;margin-right: 4%;}
         div#footer {position:fixed;bottom:20px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}

@@ -68,7 +68,7 @@
     </div>
 
     <div class="form-group text-right py-2">
-        <button type="button" class="btn loading_button d-none">
+        <button type="button" class="btn loading_button d-hide">
             <i class="fas fa-spinner text-primary"></i><b> Loading...</b>
         </button>
         <button type="submit" class="c-btn me-0 button-success submit_button float-end">Save</button>

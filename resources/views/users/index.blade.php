@@ -17,7 +17,7 @@
                                         <a href="{{ route('users.create') }}" class="btn text-white btn-sm"><i class="fa-thin fa-circle-plus fa-2x"></i><br>New User</a>
                                     @endif
                                 </div>
-                                <a href="#" class="btn text-white btn-sm d-lg-block d-none"><span class="fas fa-thin fa-circle-question fa-2x"></span><br>@lang('menu.help')</a>
+                                <a href="#" class="btn text-white btn-sm d-lg-block d-hide"><span class="fas fa-thin fa-circle-question fa-2x"></span><br>@lang('menu.help')</a>
                             </div>
 
                             <div>

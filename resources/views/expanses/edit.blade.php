@@ -203,7 +203,7 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="submit-area py-3 mb-4">
-                                <button type="button" class="btn loading_button d-none"><i
+                                <button type="button" class="btn loading_button d-hide"><i
                                     class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                 <button class="btn btn-sm btn-success submit_button float-end">Save Changes</button>
                             </div>
@@ -240,7 +240,7 @@
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
+                                <button type="button" class="btn loading_button d-hide"><i
                                         class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                 <button type="submit" class="c-btn me-0 button-success float-end submit_button">Save</button>
                                 <button type="reset" data-bs-dismiss="modal"

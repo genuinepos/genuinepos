@@ -102,7 +102,7 @@ class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-t
         });
     </script>
     <!-- Logout form for global -->
-    <form id="logout_form" class="d-none" action="{{ route('logout') }}" method="POST">@csrf</form>
+    <form id="logout_form" class="d-hide" action="{{ route('logout') }}" method="POST">@csrf</form>
     <!-- Logout form for global end -->
 </body>
 

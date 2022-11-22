@@ -47,7 +47,7 @@
                                                     <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                                 @endforeach
                                             </select>
-                                            <input type="text" name="warehouse_id" id="req_warehouse_id" class="d-none" value="">
+                                            <input type="text" name="warehouse_id" id="req_warehouse_id" class="d-hide" value="">
                                             <span class="error error_warehouse_id"></span>
                                         </div>
                                     </div>
@@ -150,7 +150,7 @@
                                         <label for="inputEmail3" class=" col-4"><b>Total Item :</b></label>
                                         <div class="col-8">
                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
-                                            <input type="number" step="any" class="d-none" name="total_send_quantity" id="total_send_quantity">
+                                            <input type="number" step="any" class="d-hide" name="total_send_quantity" id="total_send_quantity">
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
                                 <button type="submit" value="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print </button>
                                 <button type="submit" value="save" class="btn btn-sm btn-success submit_button">Save </button>
                             </div>

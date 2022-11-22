@@ -184,7 +184,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab_contant contract_info_area d-none">
+                            <div class="tab_contant contract_info_area d-hide">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <ul class="list-unstyled">
@@ -252,7 +252,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab_contant sale d-none">
+                            <div class="tab_contant sale d-hide">
                                 <div class="row">
                                     <div class="col-md-4 col-sm-12 col-lg-4">
                                         @include('contacts.customers.partials.account_summery_area_by_sales')
@@ -368,7 +368,7 @@
                             </div>
 
                             @if(auth()->user()->can('sale_payment'))
-                                <div class="tab_contant payments d-none">
+                                <div class="tab_contant payments d-hide">
                                     <div class="row">
                                         <div class="col-md-3 col-sm-12 col-lg-3">
                                             @include('contacts.customers.partials.account_summery_area_by_payments')

@@ -114,7 +114,7 @@
     <!-- Details Modal End-->
 
     <!-- Transfer print templete-->
-    <div class="transfer_print_template d-none">
+    <div class="transfer_print_template d-hide">
         <div class="details_area">
             <div class="heading_area">
                 <div class="row">

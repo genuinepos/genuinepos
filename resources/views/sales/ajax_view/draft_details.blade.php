@@ -229,7 +229,7 @@
 
 <!-- draft print templete-->
 @if ($draft->branch && $draft->branch->add_sale_invoice_layout)
-    <div class="draft_print_template d-none">
+    <div class="draft_print_template d-hide">
         <div class="details_area">
             @if ($draft->branch->add_sale_invoice_layout->is_header_less == 0)
                 <div class="heading_area">
@@ -581,7 +581,7 @@
             ->where('is_default', 1)
             ->first();
     @endphp
-    <div class="draft_print_template d-none">
+    <div class="draft_print_template d-hide">
         <div class="details_area">
             @if ($defaultLayout->is_header_less == 0)
                 <div id="header">

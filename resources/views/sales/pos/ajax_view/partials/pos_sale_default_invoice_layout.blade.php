@@ -4,7 +4,7 @@
         ->first();
 @endphp
 @if ($defaultLayout->layout_design == 1)
-    <div class="sale_print_template d-none">
+    <div class="sale_print_template d-hide">
         <style>
             @page {size:a4;margin-top: 0.8cm; /*margin-bottom: 35px;*/ margin-left: 4%;margin-right: 4%;}
         </style>
@@ -394,7 +394,7 @@
     </div>
 @else
     <!-- Packing slip print templete-->
-    <div class="sale_print_template d-none">
+    <div class="sale_print_template d-hide">
         <style>@page{margin: 8px;}</style>
         <div class="pos_print_template">
             <div class="row">

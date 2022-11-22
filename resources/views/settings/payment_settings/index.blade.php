@@ -81,7 +81,7 @@
                                                                 <td colspan="2"></td>
                                                                 <td class="d-flex justify-content-end">
                                                                     <div class="btn-loading">
-                                                                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
+                                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
                                                                         <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                                                     </div>
                                                                 </td>
@@ -123,7 +123,7 @@
 
                                     {{-- <div class="row mt-2">
                                         <div class="col-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
                                             <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                         </div>
                                     </div> --}}

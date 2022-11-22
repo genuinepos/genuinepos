@@ -97,7 +97,7 @@
     </div>
 
     <div class="row mt-1">                  
-        <div class="dynamic_variant_create_area d-none">
+        <div class="dynamic_variant_create_area d-hide">
             <div class="row">
                 <div class="col-md-12">
                     <div class="add_more_btn">

@@ -2046,7 +2046,7 @@
                     <div class="row1">
                         <div class="col-md-12 d-flex justify-content-end mt-2">
                             <div class="btn-box">
-                                <button type="button" class="btn loading_button p-1 d-none"><i class="fas fa-spinner text-white"></i></button>
+                                <button type="button" class="btn loading_button p-1 d-hide"><i class="fas fa-spinner text-white"></i></button>
                                 <button class="btn w-auto btn-success submit_button float-end ">@lang('menu.save')</button>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 @php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
 <div class="contra_print_area">
-    <div class="header_area d-none">
+    <div class="header_area d-hide">
         <div class="company_name text-center">
             <h6>
                 <b>
@@ -96,7 +96,7 @@
         </div>
     </div>
 
-    <div class="signature_area pt-5 mt-5 d-none">
+    <div class="signature_area pt-5 mt-5 d-hide">
         <br>
         <table class="w-100 pt-5">
             <tbody>

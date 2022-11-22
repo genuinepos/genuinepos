@@ -18,7 +18,7 @@
     @endif
 
     <div class="col-md-6">
-        <div class="loader d-none">
+        <div class="loader d-hide">
             <i class="fas fa-sync fa-spin ts_preloader text-primary"></i> <b>Processing...</b>  
         </div>
     </div>
@@ -43,7 +43,7 @@
 
 <div class="print_body">
     <div class="today_summery_area mt-2">
-        <div class="print_today_summery_header d-none">
+        <div class="print_today_summery_header d-hide">
             <div class="row text-center">
                 @if ($addons->branches == 1)
                     <h4>
@@ -186,7 +186,7 @@
             </div>
         </div>
 
-        <div class="print_today_summery_footer d-none">
+        <div class="print_today_summery_footer d-hide">
             <br><br>
             <div class="row">
                 <div class="col-6">

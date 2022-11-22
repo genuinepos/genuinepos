@@ -135,7 +135,7 @@
     <div class="form-group row mt-3">
         <div class="col-md-12 d-flex justify-content-end">
             <div class="btn-loading">
-                <button type="button" class="btn loading_button d-none">
+                <button type="button" class="btn loading_button d-hide">
                     <i class="fas fa-spinner"></i><span> Loading...</span>
                 </button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>

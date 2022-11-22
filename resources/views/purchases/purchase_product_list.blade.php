@@ -41,7 +41,7 @@
                                                     <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
                                                     <input type="hidden" name="product_id" id="product_id" value="">
                                                     <input type="hidden" name="variant_id" id="variant_id" value="">
-                                                    <div class="search_result d-none">
+                                                    <div class="search_result d-hide">
                                                         <ul id="list" class="list-unstyled">
                                                             <li><a id="select_product" class="" data-p_id="" data-v_id="" href="">Samsung A30</a></li>
                                                         </ul>

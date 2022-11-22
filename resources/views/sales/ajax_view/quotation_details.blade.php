@@ -241,7 +241,7 @@
 
 <!-- Quotation print templete-->
 @if ($quotation->branch && $quotation->branch->add_sale_invoice_layout)
-    <div class="quotation_print_template d-none">
+    <div class="quotation_print_template d-hide">
         <div class="details_area">
             @if ($quotation->branch->add_sale_invoice_layout->is_header_less == 0)
                 <div class="heading_area">
@@ -572,7 +572,7 @@
             ->where('is_default', 1)
             ->first();
     @endphp
-    <div class="quotation_print_template d-none">
+    <div class="quotation_print_template d-hide">
         <div class="details_area">
             @if ($defaultLayout->is_header_less == 0)
                 <div id="header">

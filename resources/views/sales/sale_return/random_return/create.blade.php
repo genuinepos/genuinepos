@@ -51,7 +51,7 @@
                                                 <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control scanable" placeholder="Sale Invoice ID" autocomplete="off">
                                                 <input type="hidden" name="sale_id" id="sale_id" class="resetable" value="">
 
-                                                <div class="invoice_search_result d-none">
+                                                <div class="invoice_search_result d-hide">
                                                     <ul id="invoice_list" class="list-unstyled">
 
                                                     </ul>
@@ -246,7 +246,7 @@
                                                                     <input name="return_discount" type="number" class="form-control" id="return_discount" value="0.00">
                                                                 </div>
                                                             </div>
-                                                            <input name="return_discount_amount" type="number" step="any" class="d-none" id="return_discount_amount" value="0.00">
+                                                            <input name="return_discount_amount" type="number" step="any" class="d-hide" id="return_discount_amount" value="0.00">
                                                         </div>
                                                     </div>
 
@@ -261,7 +261,7 @@
                                                                     <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                                 @endforeach
                                                             </select>
-                                                            <input name="return_tax_amount" type="number" step="any" class="d-none" id="return_tax_amount" value="0.00">
+                                                            <input name="return_tax_amount" type="number" step="any" class="d-hide" id="return_tax_amount" value="0.00">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -295,7 +295,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="input-group invoice_due_field d-none">
+                                                    <div class="input-group invoice_due_field d-hide">
                                                         <label class="col-4"><b>Invoice Due :</b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="invoice_due" id="invoice_due" class="form-control text-danger" value="0" tabindex="-1">
@@ -369,7 +369,7 @@
                 <div class="row">
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i> </button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> </button>
                             <button type="submit" id="save_and_print" class="btn btn-sm btn-success submit_button" value="save_and_print">Save & Print</button>
                             <button type="submit" id="save" class="btn btn-sm btn-success submit_button" data-action="save">Save</button>
                         </div>
@@ -531,7 +531,7 @@
             $('#sale_id').val('');
             $('#sale_products').prop('disabled', true);
             $('#search_product').prop('disabled', false);
-            $('.invoice_due_field').addClass('d-none');
+            $('.invoice_due_field').addClass('d-hide');
             $('.customer_pre_due_field').show();
             $('#return_item_list').empty();
             $('#sale_products').empty();
@@ -609,7 +609,7 @@
                     $('#sale_id').val(sale_id);
                     $('#customer_id').val(customer_id);
                     $('#invoice_due').val(invoice_due);
-                    $('.invoice_due_field').removeClass('d-none');
+                    $('.invoice_due_field').removeClass('d-hide');
                     $('.customer_pre_due_field').hide();
                     $('.invoice_search_result').hide();
                     $('#return_item_list').empty();
@@ -1685,7 +1685,7 @@
             $('#add_sale_return_form')[0].reset();
             $('#return_item_list').empty();
 
-            $('.invoice_due_field').addClass('d-none');
+            $('.invoice_due_field').addClass('d-hide');
             $('.customer_pre_due_field').show();
 
             $('#sale_products').prop('disabled', true);

@@ -406,7 +406,7 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <input name="order_discount" type="number" step="any" class="form-control" id="order_discount" value="{{ $sale->order_discount }}">
-                                                <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="{{ $sale->order_discount_amount }}">
+                                                <input name="order_discount_amount" type="number" step="any" class="d-hide" id="order_discount_amount" value="{{ $sale->order_discount_amount }}">
                                             </div>
                                         </div>
 
@@ -419,7 +419,7 @@
                                                         <option {{ $tax->tax_percent == $sale->order_tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                     @endforeach
                                                 </select>
-                                                <input type="number" step="any" class="d-none" name="order_tax_amount" id="order_tax_amount" value="0.00">
+                                                <input type="number" step="any" class="d-hide" name="order_tax_amount" id="order_tax_amount" value="0.00">
                                             </div>
                                         </div>
 
@@ -437,7 +437,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="payment_body {{ $sale->status == 1 || $sale->status == 3 ? '' : 'd-none' }}">
+                                        <div class="payment_body {{ $sale->status == 1 || $sale->status == 3 ? '' : 'd-hide' }}">
 
                                             <div class="row">
                                                 <label class="col-sm-5 col-form-label">Paid :</label>
@@ -513,7 +513,7 @@
 
                                         <div class="row justify-content-center">
                                             <div class="col-12 text-end">
-                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
                                                 <button type="submit" id="save" class="btn btn-sm btn-success submit_button">Save Change </button>
                                             </div>
                                         </div>
@@ -541,7 +541,7 @@
                     <form id="update_selling_product" action="">
                         @if(auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
-                                <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
+                                <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
                                     <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span>
                                     <span id="unit_cost">1,200.00</span>
                                 </span>

@@ -360,7 +360,7 @@
                                         </div>
 
                                         <div class="row mt-1">
-                                            <div class="dynamic_variant_create_area d-none">
+                                            <div class="dynamic_variant_create_area d-hide">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="add_more_btn">
@@ -561,7 +561,7 @@
 
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i> <span>Loading</span> </button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading</span> </button>
                                 <button type="submit" name="action" value="save_and_new" class="btn btn-success submit_button btn-sm" id="save_and_new">Save And Add Another</button>
                                 <button type="submit" name="action" value="save" class="btn btn-success submit_button btn-sm" id="save">Save</button>
                             </div>
@@ -1317,7 +1317,7 @@
         $('#add_product_form').on('submit', function(e) {
 
             e.preventDefault();
-            $('.loading_button').removeClass('d-none');
+            $('.loading_button').removeClass('d-hide');
             $('.submit_button').prop('type', 'button');
             var url = $(this).attr('action');
 
@@ -1330,7 +1330,7 @@
                 processData: false,
                 success: function(data) {
 
-                    $('.loading_button').addClass('d-none');
+                    $('.loading_button').addClass('d-hide');
                     $('.submit_button').prop('type', 'submit');
                     $('.error').html('');
 
@@ -1362,7 +1362,7 @@
                     }
                 },error: function(err) {
 
-                    $('.loading_button').addClass('d-none');
+                    $('.loading_button').addClass('d-hide');
                     $('.submit_button').prop('type', 'submit');
                     $('.error').html('');
 
@@ -1400,7 +1400,7 @@
     $(document).on('submit', '#add_category_form', function(e) {
 
         e.preventDefault();
-        $('.loading_button').removeClass('d-none');
+        $('.loading_button').removeClass('d-hide');
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
@@ -1423,7 +1423,7 @@
 
         if (countErrorField > 0) {
 
-            $('.loading_button').addClass('d-none');
+            $('.loading_button').addClass('d-hide');
             return;
         }
 
@@ -1432,7 +1432,7 @@
             type: 'post',
             data: request,
             success: function(data) {
-                $('.loading_button').addClass('d-none');
+                $('.loading_button').addClass('d-hide');
                 $('#addCategoryModal').modal('hide');
                 $('#add_category_form')[0].reset();
                 $('#category_id').append('<option value="' + data.id + '">' + data.name +
@@ -1447,7 +1447,7 @@
     $(document).on('submit', '#add_brand_form', function(e) {
 
         e.preventDefault();
-        $('.loading_button').removeClass('d-none');
+        $('.loading_button').removeClass('d-hide');
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
@@ -1479,7 +1479,7 @@
             type: 'post',
             data: request,
             success: function(data) {
-                $('.loading_button').addClass('d-none');
+                $('.loading_button').addClass('d-hide');
                 $('#brand_id').append('<option value="' + data.id + '">' + data.name + '</option>');
                 $('#brand_id').val(data.id);
                 $('#addBrandModal').modal('hide');
@@ -1493,7 +1493,7 @@
     $(document).on('submit', '#add_unit_form', function(e) {
 
         e.preventDefault();
-         $('.loading_button').removeClass('d-none');
+         $('.loading_button').removeClass('d-hide');
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
@@ -1516,7 +1516,7 @@
 
         if (countErrorField > 0) {
 
-             $('.loading_button').addClass('d-none');
+             $('.loading_button').addClass('d-hide');
             return;
         }
 
@@ -1525,7 +1525,7 @@
             type: 'post',
             data: request,
             success: function(data) {
-                $('.loading_button').addClass('d-none');
+                $('.loading_button').addClass('d-hide');
                 toastr.success('Successfully brand is added.');
                 $('#unit_id').append('<option value="' + data.id + '">' + data.name + ' (' + data
                     .code_name + ')' + '</option>');
@@ -1539,7 +1539,7 @@
     // Add warranty from create product by ajax
     $(document).on('submit', '#add_warranty_form', function(e) {
         e.preventDefault();
-        $('.loading_button').removeClass('d-none');
+        $('.loading_button').removeClass('d-hide');
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
@@ -1561,7 +1561,7 @@
 
         if (countErrorField > 0) {
 
-             $('.loading_button').addClass('d-none');
+             $('.loading_button').addClass('d-hide');
             return;
         }
 
@@ -1571,7 +1571,7 @@
             data: request,
             success: function(data) {
 
-                $('.loading_button').addClass('d-none');
+                $('.loading_button').addClass('d-hide');
                 toastr.success('Successfully warranty is added.');
                 $('#warranty_id').append('<option value="' + data.id + '">' + data.name + '</option>');
                 $('#warranty_id').val(data.id);

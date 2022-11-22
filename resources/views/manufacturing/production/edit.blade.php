@@ -193,7 +193,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="text" class="d-none" name="total_ingredient_cost" id="total_ingredient_cost" value="{{ $production->total_ingredient_cost }}">
+                        <input type="text" class="d-hide" name="total_ingredient_cost" id="total_ingredient_cost" value="{{ $production->total_ingredient_cost }}">
                         <p class="mt-1 float-end clearfix"><strong>Total Ingrediant Cost : </strong> <span id="span_total_ingredient_cost">{{ $production->total_ingredient_cost }}</span></p>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
                                                 <label class="col-4"><b>Output Qty :</b></label>
                                                 <div class="col-md-8">
                                                     <input required type="number" step="any" data-name="Quantity" class="form-control add_input" name="output_quantity" id="output_quantity" value="{{ $production->quantity }}">
-                                                    <input type="text" name="parameter_quantity" class="d-none" id="parameter_quantity" value="{{ $production->parameter_quantity }}">
+                                                    <input type="text" name="parameter_quantity" class="d-hide" id="parameter_quantity" value="{{ $production->parameter_quantity }}">
                                                     <span class="error error_quantity"></span>
                                                 </div>
                                             </div>
@@ -350,7 +350,7 @@
                             <div class="submit_button_area">
                                 <div class="row mt-1">
                                     <div class="col-md-12">
-                                        <button type="button" class="btn loading_button d-none"><i
+                                        <button type="button" class="btn loading_button d-hide"><i
                                             class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                         <button class="btn btn-sm btn-success submit_button float-end">Save Changes</button>
                                     </div>

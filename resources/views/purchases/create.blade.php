@@ -272,7 +272,7 @@
                                                                     <input name="order_discount" type="number" class="form-control" id="order_discount" value="0.00">
                                                                 </div>
                                                             </div>
-                                                            <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00" tabindex="-1">
+                                                            <input name="order_discount_amount" type="number" step="any" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
 
@@ -282,7 +282,7 @@
                                                             <select name="purchase_tax" class="form-control" id="purchase_tax">
                                                                 <option value="0.00">NoTax</option>
                                                             </select>
-                                                            <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00" tabindex="-1">
+                                                            <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -416,7 +416,7 @@
                 <div class="row justify-content-center">
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
                             <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">Save & Print</button>
                             <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">Save</button>
                         </div>

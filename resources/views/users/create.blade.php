@@ -157,7 +157,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 belonging_branch d-none">
+                                    <div class="col-md-6 belonging_branch d-hide">
                                         <div class="input-group">
                                             <label class="col-4"><span
                                                     class="text-danger">*</span> <b>Belonging Location :</b> </label>
@@ -524,7 +524,7 @@
 
                     <div class="submit-area d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i></button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
                             <button class="btn btn-sm btn-success submit_button">Save</button>
                         </div>
                     </div>

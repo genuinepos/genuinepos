@@ -162,15 +162,15 @@
                                     </div>
                                 </div>
 
-                                <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
+                                <input name="order_discount_amount" type="number" class="d-hide" id="order_discount_amount"
                                     value="0.00" tabindex="-1">
                             </div>
                         </div>
                     @else
                         <input name="order_discount" type="hidden" id="order_discount" value="0.00" tabindex="-1">
-                        <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
+                        <input name="order_discount_amount" type="number" class="d-hide" id="order_discount_amount"
                             value="0.00" tabindex="-1">
-                        <input name="order_discount_type" class="d-none" id="order_discount_type" value="1">
+                        <input name="order_discount_type" class="d-hide" id="order_discount_type" value="1">
                     @endif
 
                     @if (json_decode($generalSettings->pos, true)['is_enabled_order_tax'] == '1')
@@ -207,7 +207,7 @@
                             <input readonly class="form-control pos-amounts" type="number" step="any"
                                 name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
 
-                            <input class="d-none" type="number" step="any" name="total_invoice_payable"
+                            <input class="d-hide" type="number" step="any" name="total_invoice_payable"
                                 id="total_invoice_payable" value="0.00" tabindex="-1">
                         </div>
                     </div>

@@ -14,10 +14,10 @@
 
 <div class="head-pos">
     <input type="hidden" name="action" id="action" value="">
-    <input type="text" class="d-none" name="ex_sale_id" id="ex_sale_id" value="">
+    <input type="text" class="d-hide" name="ex_sale_id" id="ex_sale_id" value="">
     <input type="hidden" name="cash_register_id" value="{{ $openedCashRegister->id }}">
     <input type="hidden" name="sale_account_id" value="{{ $openedCashRegister->sale_account_id }}">
-    <input type="text" class="d-none" name="button_type" id="button_type" value="0">
+    <input type="text" class="d-hide" name="button_type" id="button_type" value="0">
     <input type="hidden" id="store_url" value="{{ route('sales.pos.store') }}">
     <input type="hidden" id="exchange_url" value="{{ route('sales.pos.exchange.confirm') }}">
     <nav class="pos-navigation">
@@ -229,7 +229,7 @@
                             <span class="fas fa-redo-alt"></span>
                         </a>
 
-                        {{-- <a href="#" class="pos-btn d-none d-md-block" id="hard_reload" title="Hard Reload">
+                        {{-- <a href="#" class="pos-btn d-hide d-md-block" id="hard_reload" title="Hard Reload">
                             <span class="fas fa-redo-alt"></span>
                         </a> --}}
 

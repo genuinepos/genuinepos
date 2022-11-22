@@ -1379,7 +1379,7 @@
 
                     <div class="d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i></button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
                             <button class="btn btn-sm btn-success submit_button">Save</button>
                         </div>
                     </div>

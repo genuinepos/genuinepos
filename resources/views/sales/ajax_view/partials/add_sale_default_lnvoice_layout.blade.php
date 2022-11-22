@@ -1,6 +1,6 @@
 @php $defaultLayout = DB::table('invoice_layouts')->where('is_default', 1)->first(); @endphp
   @if ($defaultLayout->layout_design == 1)
-      <div class="sale_print_template d-none">
+      <div class="sale_print_template d-hide">
         <style>
             @page {size:a4;margin-top: 0.8cm; /*margin-bottom: 35px;*/ margin-left: 4%;margin-right: 4%;}
             div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
@@ -407,7 +407,7 @@
   @else 
       <style>@page{margin: 8px;}</style>
       <!-- Tharmal print templete-->
-      <div class="sale_print_template d-none">
+      <div class="sale_print_template d-hide">
           <div class="pos_print_template">
               <div class="row">
                   <div class="company_info">

@@ -47,7 +47,7 @@
                                                             <option {{ $transfer->warehouse_id == $warehouse->id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }}</option>
                                                         @endforeach
                                                     </select>
-                                                    <input type="text" name="warehouse_id" id="req_warehouse_id" class="d-none" value="{{ $transfer->warehouse_id }}">
+                                                    <input type="text" name="warehouse_id" id="req_warehouse_id" class="d-hide" value="{{ $transfer->warehouse_id }}">
                                                     <span class="error error_warehouse_id"></span>
                                                 </div>
                                             </div>
@@ -154,7 +154,7 @@
                                                 <label for="inputEmail3" class=" col-4">Total Item:</label>
                                                 <div class="col-8">
                                                     <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
-                                                    <input type="number" step="any" class="d-none" name="total_send_quantity" id="total_send_quantity">
+                                                    <input type="number" step="any" class="d-hide" name="total_send_quantity" id="total_send_quantity">
                                                 </div>
                                             </div>
                                         </div>
@@ -195,7 +195,7 @@
                 <div class="submit_button_area py-3">
                     <div class="row">
                         <div class="col-md-12 text-end">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
                             <button type="submit" class="btn btn-sm btn-success submit_button">Update </button>
                         </div>
                     </div>

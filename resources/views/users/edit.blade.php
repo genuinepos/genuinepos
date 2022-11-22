@@ -164,7 +164,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6 belonging_branch d-none">
+                                        <div class="col-md-6 belonging_branch d-hide">
                                             <div class="input-group">
                                                 <label class="col-4"><b>Belonging Location :</b> <span class="text-danger">*</span> </label>
                                                 <div class="col-8">
@@ -434,7 +434,7 @@
 
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-box">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i></button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
                             <button class="btn w-auto btn-success submit_button float-end">@lang('menu.save')</button>
                         </div>
                     </div>

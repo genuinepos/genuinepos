@@ -153,7 +153,7 @@
     @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 20px;margin-right: 20px;}
 </style>
 <!-- purchase print templete-->
-<div class="purchase_return_print_template d-none">
+<div class="purchase_return_print_template d-hide">
     <div class="details_area">
         <div class="heading_area">
             <div class="row">

@@ -1478,7 +1478,7 @@
         });
     });
 
-    @if (!auth()->user()->can('product_add'))
+    @if(auth()->user()->can('product_add'))
 
         $('#add_product').on('click', function () {
 

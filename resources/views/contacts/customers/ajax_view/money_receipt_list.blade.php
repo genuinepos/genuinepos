@@ -80,11 +80,11 @@
                     @foreach ($customer->receipts as $receipt)
                         <tr>
                             <td>{{ date('d/m/Y', strtotime($receipt->date)) }}</td>
-                            
+
                             <td>
                                 @if ($receipt->branch)
                                     {{ $receipt->branch->name }}/{{ $receipt->branch->branch_code }}
-                                @else 
+                                @else
                                     Head Office
                                 @endif
                             </td>
@@ -94,13 +94,13 @@
                             <td>
                                 {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $receipt->amount }}
                             </td>
-                       
+
                             <td>
                                 <div class="btn-group" role="group">
                                     <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Action
                                     </button>
-            
+
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         @if ($receipt->status != 'Completed')
                                             <a class="dropdown-item" id="print_receipt" href="{{ route('money.receipt.voucher.print', $receipt->id) }}"><i class="fas fa-print text-primary"></i> Print</a>
@@ -128,9 +128,9 @@
 </div>
 
 <div class="form-group row mt-3">
-    <div class="col-md-12">
-        <a href="{{ route('money.receipt.voucher.create', [$customer->id]) }}" id="generate_receipt" class="c-btn button-success float-end">Generate New</a>
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+    <div class="col-md-12 d-flex justify-content-end gap-2">
+        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+        <a href="{{ route('money.receipt.voucher.create', [$customer->id]) }}" id="generate_receipt" class="btn btn-sm btn-success">Generate New</a>
     </div>
 </div>
 

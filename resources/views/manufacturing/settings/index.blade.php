@@ -16,25 +16,25 @@
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul>
-                                        @if (!auth()->user()->can('process_view'))
+                                        @if(auth()->user()->can('process_view'))
                                             <li>
                                                 <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>@lang('menu.process')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (!auth()->user()->can('production_view'))
+                                        @if(auth()->user()->can('production_view'))
                                             <li>
                                                 <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>@lang('menu.productions')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (!auth()->user()->can('manuf_settings'))
+                                        @if(auth()->user()->can('manuf_settings'))
                                             <li>
                                                 <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h text-primary"></i> <b>@lang('menu.manufacturing_setting')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (!auth()->user()->can('manuf_report'))
+                                        @if(auth()->user()->can('manuf_report'))
                                             <li>
                                                 <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.manufacturing_report')</b></a>
                                             </li>

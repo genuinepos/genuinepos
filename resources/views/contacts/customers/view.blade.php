@@ -51,7 +51,7 @@
                                         </a>
                                     </li>
 
-                                    @if (!auth()->user()->can('sale_payment'))
+                                    @if (auth()->user()->can('sale_payment'))
                                         <li>
                                             <a id="tab_btn" data-show="payments" class="tab_btn" href="#">
                                                 <i class="far fa-money-bill-alt"></i> Payments
@@ -367,7 +367,7 @@
                                 </div>
                             </div>
 
-                            @if (!auth()->user()->can('sale_payment'))
+                            @if(auth()->user()->can('sale_payment'))
                                 <div class="tab_contant payments d-none">
                                     <div class="row">
                                         <div class="col-md-3 col-sm-12 col-lg-3">
@@ -528,7 +528,7 @@
         </div>
     </div>
 
-    @if (!auth()->user()->can('sale_payment'))
+    @if(auth()->user()->can('sale_payment'))
         <!--Payment View modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
@@ -680,7 +680,7 @@
             }
         });
 
-        @if (!auth()->user()->can('sale_payment'))
+        @if(auth()->user()->can('sale_payment'))
 
             var payments_table = $('.payments_table').DataTable({
                 "processing": true,

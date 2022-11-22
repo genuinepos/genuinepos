@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    @if (!auth()->user()->can('process_add'))
+    @if(auth()->user()->can('process_add'))
         <div class="modal fade" id="addModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog double-col-modal" role="document">

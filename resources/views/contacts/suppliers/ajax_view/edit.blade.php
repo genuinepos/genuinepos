@@ -41,7 +41,7 @@
         </div>
 
         <div class="col-md-3">
-            <b>Date Of Birth :</b> 
+            <b>Date Of Birth :</b>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
@@ -69,7 +69,7 @@
                     <input type="number" step="any" name="pay_term_number" class="form-control"
                     id="e_pay_term_number" value="{{ $supplier->pay_term_number }}" placeholder="Number"/>
                 </div>
-                
+
                 <div class="col-md-7">
                     <select name="pay_term" class="form-control">
                         <option value="">Days/Months</option>
@@ -88,14 +88,14 @@
         </div>
 
         <div class="col-md-3">
-           <b>Prefix :</b> 
+           <b>Prefix :</b>
             <input readonly type="text" name="prefix" id="e_prefix" class="form-control " placeholder="prefix" value="{{ $supplier->prefix }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-3">
-           <b>City :</b>  
+           <b>City :</b>
             <input type="text" name="city" class="form-control " placeholder="City" id="e_city" value="{{ $supplier->city }}"/>
         </div>
 
@@ -105,28 +105,30 @@
         </div>
 
         <div class="col-md-3">
-            <b>Country :</b> 
+            <b>Country :</b>
             <input type="text" name="country" class="form-control " placeholder="Country" id="e_country" value="{{ $supplier->country }}"/>
         </div>
 
         <div class="col-md-3">
-            <b>Zip-Code :</b> 
+            <b>Zip-Code :</b>
             <input type="text" name="zip_code" class="form-control " placeholder="Zip-Code" id="e_zip_code" value="{{ $supplier->zip_code }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-5">
-            <b>Shipping Address :</b> 
+            <b>Shipping Address :</b>
             <input type="text" name="shipping_address" class="form-control " placeholder="Shipping address" id="e_shipping_address" value="{{ $supplier->shipping_address }}"/>
         </div>
     </div>
 
     <div class="form-group row">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success me-0 float-end">Save Change</button>
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="submit" class="btn btn-sm btn-success">Save Change</button>
+            </div>
         </div>
     </div>
 </form>

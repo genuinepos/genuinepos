@@ -63,7 +63,7 @@ class SaleController extends Controller
         $this->purchaseUtil = $purchaseUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->branchWiseCustomerAmountUtil = $branchWiseCustomerAmountUtil;
-        
+
     }
 
     public function index2(Request $request)
@@ -132,7 +132,7 @@ class SaleController extends Controller
             'branch',
             'branch.add_sale_invoice_layout',
             'customer:id,name,phone,alternative_phone,city,state,country,landline,email,address,tax_number,point',
-            'admin:id,prefix,name,last_name,role_id',
+            'admin:id,prefix,name,last_name',
             'admin.role',
             'sale_products',
             'sale_products.product:id,name,product_code,warranty_id,unit_id,tax_id',
@@ -193,7 +193,7 @@ class SaleController extends Controller
     public function quotationDetails($quotationId)
     {
         $quotation = Sale::with([
-            'branch', 'branch.add_sale_invoice_layout', 'customer', 'admin:id,prefix,name,last_name,role_id', 'admin.role', 'sale_products', 'sale_products.branch', 'sale_products.warehouse', 'sale_products.product:id,name,product_code', 'sale_products.variant:id,variant_name,variant_code', 'sale_payments',
+            'branch', 'branch.add_sale_invoice_layout', 'customer', 'admin:id,prefix,name,last_name', 'admin.role', 'sale_products', 'sale_products.branch', 'sale_products.warehouse', 'sale_products.product:id,name,product_code', 'sale_products.variant:id,variant_name,variant_code', 'sale_payments',
         ])->where('id', $quotationId)->first();
 
         $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($quotation->id);
@@ -1084,15 +1084,14 @@ class SaleController extends Controller
     public function getAllUser()
     {
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-            $users = User::with(['role'])
-                ->select(['id', 'prefix',  'name', 'last_name', 'role_type', 'role_id', 'email'])->where('allow_login', 1)->get();
+            $users = User::with(['roles'])
+                ->select(['id', 'prefix',  'name', 'last_name', 'role_type', 'email'])->where('allow_login', 1)->get();
 
             return response()->json($users);
         } else {
 
-            $users = User::with(['role'])->where('branch_id', auth()->user()->branch_id)
-                ->select(['id', 'prefix',  'name', 'last_name', 'role_type', 'role_id', 'email'])
+            $users = User::with(['roles'])->where('branch_id', auth()->user()->branch_id)
+                ->select(['id', 'prefix',  'name', 'last_name', 'role_type', 'email'])
                 ->where('allow_login', 1)
                 ->get();
 

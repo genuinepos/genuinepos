@@ -1,30 +1,61 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element {border: 1px solid #7e0d3d;}
-        label {font-size: 12px !important;}
-        ul.menus_unorder_list {list-style: none;float: left;width: 100%;}
-        ul.menus_unorder_list .menu_list {border: 1px solid lightgray;display: block;text-align: center;background: linear-gradient(#8c0437ee, #1e000d);}
-        ul.menus_unorder_list .menu_list .menu_btn {color: white;padding: 6px 1px;display: block; font-size: 11px;}
-        .menu_active {background: white;color: #504d4d!important;font-weight: 700;}
+        .form_element {
+            border: 1px solid #7e0d3d;
+        }
+        label {
+            font-size: 12px !important;
+        }
+        ul.menus_unorder_list {
+            list-style: none;
+            float: left;
+            width: 100%;
+        }
+        ul.menus_unorder_list .menu_list {
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        ul.menus_unorder_list .menu_list:last-child {
+            margin-bottom: 0;
+        }
+        ul.menus_unorder_list .menu_list .menu_btn {
+            color: black;
+            padding: 6px 1px;
+            display: block;
+            font-size: 11px;
+            box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid transparent;
+            border-radius: 5px;
+            background: white;
+            transition: .2s;
+        }
+        ul.menus_unorder_list .menu_list .menu_btn.menu_active {
+            border-color: var(--dark-color-1);
+            color: #504d4d!important;
+            font-weight: 600;
+        }
         .hide-all {
             display: none;
         }
     </style>
 @endpush
 @section('content')
-    <div class="body-woaper mt-5">
-        <div class="container-fluid pt-1">
-            <div class="form_element">
-                <div class="py-2 px-2 form-header">
-                    <div class="row align-items-center">
-                        <div class="col-6"><h5>General Settings</h5></div>
-
-                        <div class="col-6">
-                            <a href="{{ url()->previous() }}" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
-                        </div>
-                    </div>
+    <div class="body-woaper">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-cogs"></span>
+                    <h5>General Settings</h5>
                 </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                </a>
+            </div>
+        </div>
+        <div class="p-3">
+            <div class="form_element rounded m-0">
 
                 <div class="element-body">
                     <div class="settings_form_area">
@@ -229,10 +260,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -284,10 +316,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -319,10 +352,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -421,16 +455,16 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="system_settings_form" class="setting_form hide-all"
-                                action="{{ route('settings.system.settings') }}" method="post">
+                                <form id="system_settings_form" class="setting_form hide-all" action="{{ route('settings.system.settings') }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
                                             <h6 class="text-primary">System Settings</h6>
@@ -463,10 +497,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -544,10 +579,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -701,10 +737,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -755,10 +792,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>

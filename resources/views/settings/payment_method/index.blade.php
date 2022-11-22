@@ -18,78 +18,80 @@
                             </a>
                         </div>
 
-                        <div class="row mt-1">
-                            <div class="col-md-4">
-                                <div class="card" id="add_form">
-                                    <div class="section-header">
-                                        <div class="col-md-6">
-                                            <h6>Add Payment Method</h6>
-                                        </div>
-                                    </div>
-
-                                    <form id="add_payment_method_form" class="p-2" action="{{ route('settings.payment.method.store') }}" method="POST">
-                                        @csrf
-                                        <div class="form-group row">
-                                            <div class="col-md-12">
-                                                <label><b>Method Name :</b> <span class="text-danger">*</span></label>
-                                                <input type="text" name="name" class="form-control" id="name" placeholder="Payment Method Name" />
-                                                <span class="error error_name"></span>
+                        <div class="p-3">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="card" id="add_form">
+                                        <div class="section-header">
+                                            <div class="col-md-6">
+                                                <h6>Add Payment Method</h6>
                                             </div>
                                         </div>
 
-                                        <div class="form-group row mt-2">
-                                            <div class="col-md-12">
-                                                <button type="button" class="btn loading_button d-none"><i
-                                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                                                <button type="reset" data-bs-dismiss="modal"
-                                                    class="c-btn btn_orange float-end">Close</button>
+                                        <form id="add_payment_method_form" class="p-2" action="{{ route('settings.payment.method.store') }}" method="POST">
+                                            @csrf
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <label><b>Method Name :</b> <span class="text-danger">*</span></label>
+                                                    <input type="text" name="name" class="form-control" id="name" placeholder="Payment Method Name" />
+                                                    <span class="error error_name"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row mt-2">
+                                                <div class="col-md-12 d-flex justify-content-end">
+                                                    <div class="btn-loading">
+                                                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                                        <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div class="card" id="edit_form" style="display: none;">
+                                        <div class="section-header">
+                                            <div class="col-md-6">
+                                                <h6>Edit Payment Method</h6>
                                             </div>
                                         </div>
-                                    </form>
+
+                                        <div class="form-area px-3 pb-2" id="edit_form_body"></div>
+                                    </div>
                                 </div>
 
-                                <div class="card d-none" id="edit_form">
-                                    <div class="section-header">
-                                        <div class="col-md-6">
-                                            <h6>Edit Payment Method</h6>
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="section-header">
+                                            <div class="col-md-6">
+                                                <h6>All Payment Methods</h6>
+                                            </div>
                                         </div>
+
+                                        <div class="widget_content">
+                                            <div class="data_preloader">
+                                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                            </div>
+                                            <div class="table-responsive" id="data-list">
+                                                <table class="display data_tbl data__table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Serial</th>
+                                                            <th>Payment Method Name</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <form id="deleted_form" action="" method="post">
+                                            @method('DELETE')
+                                            @csrf
+                                        </form>
                                     </div>
-
-                                    <div class="form-area px-3 pb-2" id="edit_form_body"></div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <div class="card">
-                                    <div class="section-header">
-                                        <div class="col-md-6">
-                                            <h6>All Payment Methods</h6>
-                                        </div>
-                                    </div>
-
-                                    <div class="widget_content">
-                                        <div class="data_preloader">
-                                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                        </div>
-                                        <div class="table-responsive" id="data-list">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Serial</th>
-                                                        <th>Payment Method Name</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
                                 </div>
                             </div>
                         </div>

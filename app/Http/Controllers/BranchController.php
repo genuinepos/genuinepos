@@ -17,13 +17,13 @@ class BranchController extends Controller
     {
         $this->branchUtil = $branchUtil;
 
-        
+
     }
 
     public function index()
     {
         $addons = DB::table('addons')->select('branches')->first();
-        
+
         if ($addons->branches == 0) {
 
             abort(403, 'Access Forbidden.');
@@ -42,7 +42,7 @@ class BranchController extends Controller
         $addons = DB::table('addons')->select('branches')->first();
 
         if ($addons->branches == 0) {
-            
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -104,7 +104,6 @@ class BranchController extends Controller
             $this->validate($request, [
                 'first_name' => 'required',
                 'user_phone' => 'required',
-                'role_id' => 'required',
                 'username' => 'required|unique:users,username',
                 'password' => 'required|confirmed',
             ]);
@@ -221,7 +220,7 @@ class BranchController extends Controller
         $deleteBranch = Branch::with(['sales', 'purchases'])->where('id', $id)->first();
 
         if (count($deleteBranch->sales) > 0) {
-            
+
             return response()->json('Can not delete this business location. This location has one or more sales.');
         }
 

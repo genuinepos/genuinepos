@@ -4,62 +4,52 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-barcode"></span>
-                                <h5>Barcode Sticker Settings</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+        <div class="main__content">
+            <!-- =====================================================================BODY CONTENT================== -->
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-barcode"></span>
+                    <h5>Barcode Sticker Settings</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+        <!-- =========================================top section button=================== -->
+
+        <div class="p-3">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-md-6">
+                        <h6>All Barcode Sticker Setting</h6>
+                    </div>
+
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <a href="{{ route('settings.barcode.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
+                    </div>
+                </div>
+
+                    <div class="widget_content">
+                        <div class="table-responsive" id="data-list">
+                            <table class="display data_tbl data__table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-start">S/L</th>
+                                        <th class="text-start">Sticker Settings Name</th>
+                                        <th class="text-start">Sticker Settings Description</th>
+                                        <th class="text-start">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Barcode Sticker Setting</h6>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('settings.barcode.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                    <div class="widget_content">
-                                        <div class="table-responsive" id="data-list">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-start">S/L</th>
-                                                        <th class="text-start">Sticker Settings Name</th>
-                                                        <th class="text-start">Sticker Settings Description</th>
-                                                        <th class="text-start">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <form id="deleted_form" action="" method="post">
+                        @method('DELETE')
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>

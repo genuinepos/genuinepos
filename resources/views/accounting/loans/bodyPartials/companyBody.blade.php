@@ -34,7 +34,7 @@
                     <div class="form-group row mt-2">
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Reset</button>
                                 <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                             </div>
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <div class="card d-none" id="edit_com_form">
+        <div class="card d-hide" id="edit_com_form">
             <div class="section-header">
                 <div class="col-md-12">
                     <h6>Edit Company </h6>

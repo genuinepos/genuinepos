@@ -108,7 +108,7 @@
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
                                 <a href="#" class="c-btn button-success me-0 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Confirm (F10)</a>
                                 <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">@lang('menu.close')</button>
                             </div>
@@ -138,8 +138,8 @@
                                 <div class="col-md-6">
                                     <label><b>Redeemed :</b> </label>
                                     <input type="number" step="any" name="total_redeem_point" id="total_redeem_point" class="form-control">
-                                    <input type="number" step="any" name="pre_redeemed" id="pre_redeemed" class="d-none" value="0">
-                                    <input type="number" step="any" name="pre_redeemed_amount" id="pre_redeemed_amount" class="d-none" value="0">
+                                    <input type="number" step="any" name="pre_redeemed" id="pre_redeemed" class="d-hide" value="0">
+                                    <input type="number" step="any" name="pre_redeemed_amount" id="pre_redeemed_amount" class="d-hide" value="0">
                                 </div>
 
                                 <div class="col-md-6">
@@ -150,7 +150,7 @@
 
                             <div class="form-group row mt-3">
                                 <div class="col-md-12">
-                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
                                     <a href="#" class="c-btn button-success ms-1 float-end" id="redeem_btn" tabindex="-1">Redeem</a>
                                     <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
                                 </div>
@@ -321,7 +321,7 @@
                     <form id="update_selling_product">
                         @if (auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
-                                <span class="btn btn-sm btn-primary d-none" id="show_cost_section">
+                                <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
                                     <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span>
                                     <span id="unit_cost">1,200.00</span>
                                 </span>
@@ -472,7 +472,7 @@
 
                     <div class="form-group row mt-3">
                         <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
                             <a href="#" class="c-btn button-success ms-1 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Cash (F10)</a>
                             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
                         </div>

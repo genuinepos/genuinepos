@@ -133,7 +133,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="data_preloader d-none">
+                        <div class="data_preloader d-hide">
                             <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                         </div>
 
@@ -168,7 +168,7 @@
                     </div>
                 </div>
 
-                <div class="tab_contant contract_info_area d-none">
+                <div class="tab_contant contract_info_area d-hide">
                     <div class="row">
                         <div class="col-md-3">
                             <ul class="list-unstyled"><br>
@@ -237,7 +237,7 @@
                     </div>
                 </div>
 
-                <div class="tab_contant purchases d-none">
+                <div class="tab_contant purchases d-hide">
 
                     <div class="row">
                         <div class="col-md-4 col-sm-12 col-lg-4">
@@ -360,7 +360,7 @@
                     </div>
                 </div>
 
-                <div class="tab_contant uncompleted_orders d-none">
+                <div class="tab_contant uncompleted_orders d-hide">
                     <div class="row">
                         <div class="col-md-4 col-sm-12 col-lg-4">
                             @include('contacts.suppliers.partials.account_summery_area_by_purchase_order')
@@ -485,7 +485,7 @@
                 </div>
 
                 @if(auth()->user()->can('purchase_payment'))
-                    <div class="tab_contant payments d-none">
+                    <div class="tab_contant payments d-hide">
 
                         <div class="row">
                             <div class="col-md-4 col-sm-12 col-lg-4">

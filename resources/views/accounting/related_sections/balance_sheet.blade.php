@@ -62,7 +62,7 @@
                                         <div class="card-body">
                                             <div class="data_preloader mt-5 pt-5"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
                                             <div class="balance_sheet_area">
-                                                <div class="print_header d-none">
+                                                <div class="print_header d-hide">
                                                     <div class="text-center pb-3">
                                                         <h5>
                                                             @if (auth()->user()->branch_id)

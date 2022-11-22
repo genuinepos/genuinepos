@@ -89,7 +89,7 @@
 
                         <div class="form-group d-flex justify-content-end mt-3">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-none"><i
+                                <button type="button" class="btn loading_button d-hide"><i
                                     class="fas fa-spinner"></i><span> Loading...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
                                 <button type="submit" class="btn btn-sm btn-success">Save</button>
@@ -128,7 +128,7 @@
 
                         <div class="form-group d-flex justify-content-end mt-3">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-none"><i
+                                <button type="button" class="btn loading_button d-hide"><i
                                     class="fas fa-spinner"></i><span> Loading...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
                                 <button type="submit" class="btn btn-sm btn-success">Save</button>

@@ -249,7 +249,7 @@
 
                                                         <input name="order_discount" type="number" class="form-control w-75" id="order_discount" value="0.00">
                                                     </div>
-                                                    <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00">
+                                                    <input name="order_discount_amount" type="number" step="any" class="d-hide" id="order_discount_amount" value="0.00">
                                                 </div>
                                             </div>
 
@@ -259,7 +259,7 @@
                                                     <select name="purchase_tax" class="form-control" id="purchase_tax">
                                                         <option value="0.00">NoTax</option>
                                                     </select>
-                                                    <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00">
+                                                    <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -281,7 +281,7 @@
                                         </div>
 
                                         <div class="col-md-3">
-                                            <input readonly name="total_qty" type="number" step="any" class="d-none" id="total_qty" value="0.00">
+                                            <input readonly name="total_qty" type="number" step="any" class="d-hide" id="total_qty" value="0.00">
                                             <div class="input-group">
                                                 <label class="col-4">Total Item:</label>
                                                 <div class="col-8">
@@ -322,7 +322,7 @@
                 <div class="submit_button_area">
                     <div class="row">
                         <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
+                            <button type="button" class="btn loading_button d-hide"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                             <button id="save" class="btn btn-sm btn-success submit_button float-end">Save Changes</button>
                         </div>

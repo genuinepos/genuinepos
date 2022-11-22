@@ -120,7 +120,7 @@
                                                                                 <option {{ $allowance->amount_type == 2 ? 'SELECTED' : '' }} value="2">Percentage</option>
                                                                             </select>
 
-                                                                            <div class="input-group allowance_percent_field {{ $allowance->amount_type == 1 ? 'd-none' : '' }} ">
+                                                                            <div class="input-group allowance_percent_field {{ $allowance->amount_type == 1 ? 'd-hide' : '' }} ">
 
                                                                                 <input type="number" step="any" name="allowance_percents[{{ $index }}]" class="form-control" autocomplete="off" value="{{ $allowance->amount_type == 2 ? $allowance->allowance_percent : 0.00 }}" id="allowance_percent">
 
@@ -156,7 +156,7 @@
                                                                             <option value="2">Percentage</option>
                                                                         </select>
 
-                                                                        <div class="input-group allowance_percent_field d-none">
+                                                                        <div class="input-group allowance_percent_field d-hide">
                                                                             <input type="number" step="any" name="allowance_percents[{{ $index }}]" class="form-control" autocomplete="off" value="0.00" id="allowance_percent">
                                                                             <div class="input-group-prepend">
                                                                                 <span class="input-group-text" id="basic-addon1">
@@ -241,7 +241,7 @@
                                                                                 <option {{ $deduction->amount_type == 2 ? 'SELECTED' : '' }} value="2">Percentage</option>
                                                                             </select>
 
-                                                                            <div class="input-group deduction_percent_field {{ $deduction->amount_type == 1 ? 'd-none' : '' }} ">
+                                                                            <div class="input-group deduction_percent_field {{ $deduction->amount_type == 1 ? 'd-hide' : '' }} ">
 
                                                                                 <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="{{ $deduction->amount_type == 2 ? $deduction->deduction_percent : 0.00 }}" id="deduction_percent">
 
@@ -277,7 +277,7 @@
                                                                             <option value="2">Percentage</option>
                                                                         </select>
 
-                                                                        <div class="input-group deduction_percent_field d-none">
+                                                                        <div class="input-group deduction_percent_field d-hide">
                                                                             <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="" id="deduction_percent">
 
                                                                             <div class="input-group-prepend">
@@ -334,7 +334,7 @@
 
                             <div class="col-md-8">
                                 <div class="submit-area py-3 mb-4">
-                                    <button type="button" class="btn loading_button d-none"><i
+                                    <button type="button" class="btn loading_button d-hide"><i
                                             class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                     <button class="btn btn-sm btn-success submit_button float-end">Generate</button>
                                 </div>
@@ -444,7 +444,7 @@
         html += '<option value="2">Percentage</option>';
         html += '</select>';
 
-        html += '<div class="input-group allowance_percent_field d-none">';
+        html += '<div class="input-group allowance_percent_field d-hide">';
         html += '<input type="number" step="any" name="allowance_percents['+(index+1)+']" class="form-control" autocomplete="off" value="0.00" id="allowance_percent">';
         html += '<div class="input-group-prepend">';
         html += ' <span class="input-group-text" id="basic-addon1">';
@@ -484,7 +484,7 @@
         html += '<option value="2">Percentage</option>';
         html += '</select>';
 
-        html += '<div class="input-group deduction_percent_field d-none">';
+        html += '<div class="input-group deduction_percent_field d-hide">';
 
         html += '<input type="number" step="any" name="deduction_percents['+(index2+1)+']" class="form-control" autocomplete="off" value="0.00" id="deduction_percent">';
 
@@ -525,10 +525,10 @@
     $(document).on('click', '#al_amount_type', function () {
         //calculateAmount();
         if ($(this).val() == 2) {
-            $(this).closest('tr').find('.allowance_percent_field').removeClass('d-none');
+            $(this).closest('tr').find('.allowance_percent_field').removeClass('d-hide');
             $(this).closest('tr').find('#allowance_amount').prop('readonly', true);
         }else {
-            $(this).closest('tr').find('.allowance_percent_field').addClass('d-none');
+            $(this).closest('tr').find('.allowance_percent_field').addClass('d-hide');
             $(this).closest('tr').find('#allowance_amount').prop('readonly', false);
         }
     });
@@ -536,10 +536,10 @@
     $(document).on('click', '#de_amount_type', function () {
         //calculateAmount();
         if ($(this).val() == 2) {
-            $(this).closest('tr').find('.deduction_percent_field').removeClass('d-none');
+            $(this).closest('tr').find('.deduction_percent_field').removeClass('d-hide');
             $(this).closest('tr').find('#deduction_amount').prop('readonly', true);
         }else {
-            $(this).closest('tr').find('.deduction_percent_field').addClass('d-none');
+            $(this).closest('tr').find('.deduction_percent_field').addClass('d-hide');
             $(this).closest('tr').find('#deduction_amount').prop('readonly', false);
         }
     });

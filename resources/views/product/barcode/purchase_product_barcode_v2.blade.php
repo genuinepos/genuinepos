@@ -62,7 +62,7 @@
                                                 <p class="p-0 m-0"><strong>Recent Purchased Product List</strong></p>
                                             </div>
                                             <div class="table_area">
-                                                <div class="data_preloader d-none">
+                                                <div class="data_preloader d-hide">
                                                     <h6><i class="fas fa-spinner"></i> Processing...</h6>
                                                 </div>
                                                 <table class="table modal-table table-sm">

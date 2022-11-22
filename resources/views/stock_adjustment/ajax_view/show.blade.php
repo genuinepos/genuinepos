@@ -171,7 +171,7 @@
 <!-- Details Modal End-->
 
 <!-- Adjustment print templete-->
-<div class="adjustment_print_template d-none">
+<div class="adjustment_print_template d-hide">
     <div class="details_area">
         <div class="heading_area">
             <div class="row">

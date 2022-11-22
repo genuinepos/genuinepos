@@ -105,7 +105,7 @@
                                                 </p>
                                             </div>
 
-                                            <div class="col-md-9 hideable_field d-none">
+                                            <div class="col-md-9 hideable_field d-hide">
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><span class="text-danger">*</span>  <b>Gap From Top (inc) : </b> </label>
                                                     <div class="col-8">
@@ -447,7 +447,7 @@
 
                             <div class="col-md-8">
                                 <div class="submit-area py-3 mb-4">
-                                    <button type="button" class="btn loading_button d-none"><i
+                                    <button type="button" class="btn loading_button d-hide"><i
                                         class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                     <button class="btn btn-sm btn-success submit_button float-end">Save</button>
                                 </div>

@@ -26,13 +26,13 @@
                 <div class="notify-menu">
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            <li class="top-icon d-none d-md-block" id="hard_reload"><a href="#" title="Reload"><b><span class="fas fa-redo-alt"></span></b></a></li>
+                            <li class="top-icon d-hide d-md-block" id="hard_reload"><a href="#" title="Reload"><b><span class="fas fa-redo-alt"></span></b></a></li>
                             @if ($addons->e_commerce == 1)
-                                <li class="top-icon d-none d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
+                                <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif
 
                             @if(auth()->user()->can('communication'))
-                                <li class="top-icon d-none d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
+                                <li class="top-icon d-hide d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
                                                 class="fas fa-th-large"></i></b></a>
                                     <ul class="lists">
                                         <li><a href="#"><i class="fas fa-bell"></i>
@@ -118,7 +118,7 @@
 
                                 </ul>
                             </li>
-                            <li class="top-icon d-none d-md-block"><a href="https://help.genuinepos.com/"
+                            <li class="top-icon d-hide d-md-block"><a href="https://help.genuinepos.com/"
                                     target="_blank"><b><span class="far fa-question-circle"></span></b></a></li>
                             <li class="dropdown dp__top top-icon">
                                 <a href="" class="" id="dropdownMenuButton1" data-bs-toggle="dropdown" title="User">

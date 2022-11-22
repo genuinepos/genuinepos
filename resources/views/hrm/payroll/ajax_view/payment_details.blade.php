@@ -80,7 +80,7 @@
         </div>
     </div>
 
-    <div class="signature_area pt-5 mt-5 d-none">
+    <div class="signature_area pt-5 mt-5 d-hide">
         <table class="w-100 pt-5">
             <tbody>
                 <tr>

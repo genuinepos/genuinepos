@@ -134,7 +134,7 @@
 
                 <div class="form-group row mt-4">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                         <button type="submit" name="action" value="save" class="c-btn button-success float-end">Save</button>
                         <button type="submit" name="action" value="save_and_print" class="c-btn button-success float-end">Save & Print</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>

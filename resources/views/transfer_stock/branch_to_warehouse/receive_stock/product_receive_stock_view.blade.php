@@ -112,7 +112,7 @@
                 <div class="submit_button_area py-2">
                     <div class="row">
                         <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
+                            <button type="button" class="btn loading_button d-hide"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                             <button class="btn btn-sm btn-primary float-end">Save</button>
                         </div>

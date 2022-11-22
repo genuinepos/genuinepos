@@ -20,7 +20,7 @@
 
     <div class="form-group row mt-2">
         <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
             <button type="submit" class="c-btn me-0 button-success float-end">Update</button>
             <button type="reset" data-bs-dismiss="modal"
                 class="c-btn btn_orange float-end">Close</button>

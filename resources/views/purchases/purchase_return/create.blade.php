@@ -157,7 +157,7 @@
                 <div class="submit_button_area pt-1">
                     <div class="row">
                         <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
+                            <button type="button" class="btn loading_button d-hide"><i
                                 class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                             <button type="submit" data-action="save" class="btn btn-sm btn-primary submit_button float-end">Save</button>
                             <button type="submit" data-action="save_and_print" class="btn btn-sm btn-primary submit_button float-end me-1">Save & Print</button>

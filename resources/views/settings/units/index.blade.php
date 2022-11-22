@@ -42,7 +42,7 @@
 
                                         <div class="form-group d-flex justify-content-end mt-3">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                                                 <button type="reset" class="btn btn-sm btn-danger">Reset</button>
                                                 <button type="submit" class="btn btn-sm btn-success">Save</button>
                                             </div>
@@ -50,7 +50,7 @@
                                     </form>
                                 </div>
 
-                                <div class="card d-none" id="edit_form">
+                                <div class="card d-hide" id="edit_form">
                                     <div class="section-header">
                                         <div class="col-md-6">
                                             <h6>Edit Unit</h6>
@@ -73,7 +73,7 @@
 
                                         <div class="form-group d-flex justify-content-end mt-3">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                                                 <button type="button" id="close_form" class="btn btn-sm btn-danger">Close</button>
                                                 <button type="submit" class="btn btn-sm btn-success">Save</button>
                                             </div>
@@ -182,7 +182,7 @@
             $('#e_code').val(unitInfo.code_name);
             $('#add_form').hide();
             $('#edit_form').show();
-            $('#edit_form').removeClass('d-none');
+            $('#edit_form').removeClass('d-hide');
             document.getElementById('e_name').focus();
         });
 

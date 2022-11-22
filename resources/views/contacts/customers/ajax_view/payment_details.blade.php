@@ -17,7 +17,7 @@
 @endphp
 @php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
 <div class="sale_payment_print_area">
-    <div class="header_area d-none">
+    <div class="header_area d-hide">
         <div class="company_name text-center">
             <div class="company_name text-center">
                 <h4>
@@ -194,7 +194,7 @@
         </div>
     @endif
     
-    <div class="footer_area d-none">
+    <div class="footer_area d-hide">
         <br><br>
         <div class="row">
             <div class="col-4 text-start">

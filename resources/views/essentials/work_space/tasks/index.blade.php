@@ -103,7 +103,7 @@
                                 </div>
 
                                 <table class="table modal-table table-sm">
-                                    {{-- <thead class="d-none">
+                                    {{-- <thead class="d-hide">
                                         <tr class="bg-secondary">
                                             <th class="task-name text-white text-start">Task</th>
                                             <th class="task-assign-to text-white text-start">Assigned To</th>

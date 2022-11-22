@@ -92,7 +92,7 @@
                 </div>
             </div>
 
-            <div class="tab_contant sale d-none mt-1">
+            <div class="tab_contant sale d-hide mt-1">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
@@ -162,7 +162,7 @@
                 </div>
             </div>
 
-            <div class="tab_contant expense d-none mt-1">
+            <div class="tab_contant expense d-hide mt-1">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">

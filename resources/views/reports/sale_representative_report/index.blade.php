@@ -171,7 +171,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="tab_contant expense d-none">
+                                                <div class="tab_contant expense d-hide">
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="table-responsive">

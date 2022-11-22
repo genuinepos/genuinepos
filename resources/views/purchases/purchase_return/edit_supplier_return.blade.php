@@ -245,7 +245,7 @@
                                                         @endforeach
                                                     </select>
 
-                                                    <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00">
+                                                    <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -273,7 +273,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-none"><i
+                        <button type="button" class="btn loading_button d-hide"><i
                             class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                         <button id="save" class="btn btn-sm btn-primary float-end">Save (Shift+Enter)</button>
                     </div>

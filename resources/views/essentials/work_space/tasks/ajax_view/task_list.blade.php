@@ -11,10 +11,10 @@
                 </div>
 
                 <div class="input-group">
-                    {{-- <input type="text" name="edit_task_name" class="form-control form-control-sm d-none edit_task_name" id="edit_task_name" value="{{ $task->task_name }}"> --}}
-                    <textarea  name="edit_task_name" class="form-control form-control-sm d-none edit_task_name" id="edit_task_name" cols="10" rows="2">{{ $task->task_name }}</textarea>
+                    {{-- <input type="text" name="edit_task_name" class="form-control form-control-sm d-hide edit_task_name" id="edit_task_name" value="{{ $task->task_name }}"> --}}
+                    <textarea  name="edit_task_name" class="form-control form-control-sm d-hide edit_task_name" id="edit_task_name" cols="10" rows="2">{{ $task->task_name }}</textarea>
                     <div class="input-group-prepend add_button update_task_button">
-                        <span class="input-group-text edit_task_name custom-modify d-none"><i class="far fa-check-circle text-success"></i></span>
+                        <span class="input-group-text edit_task_name custom-modify d-hide"><i class="far fa-check-circle text-success"></i></span>
                     </div>
                 </div>
             </td>

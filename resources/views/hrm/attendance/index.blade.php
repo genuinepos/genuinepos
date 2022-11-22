@@ -156,7 +156,7 @@
                         </div>
 
                         <div class="attendance_table">
-                            <div class="data_preloader d-none" id="attendance_row_loader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                            <div class="data_preloader d-hide" id="attendance_row_loader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
                             <table class="table modal-table table-sm" id="table_data">
 
                             </table>
@@ -165,7 +165,7 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
                                     <button type="submit" class="btn btn-sm btn-success">Save</button>
                                 </div>

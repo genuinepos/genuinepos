@@ -135,7 +135,7 @@
                         </div>
 
                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                            <div class="form-group row mt-1 bank_account_field d-none">
+                            <div class="form-group row mt-1 bank_account_field d-hide">
                                 <div class="col-md-12">
                                     <label><strong>Bank Name :</strong> <span class="text-danger">*</span> </label>
                                     <select name="bank_id" class="form-control add_input" data-name="Bank name" id="bank_id">
@@ -181,7 +181,7 @@
 
                         <div class="form-group d-flex justify-content-end py-2">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
                                 <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                             </div>

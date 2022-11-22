@@ -53,7 +53,7 @@
                                                         <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control scanable" placeholder="Search And Select Sale Invoice ID" autocomplete="off" value="{{ $return->sale ? $return->sale->invoice_id : '' }}">
                                                         <input type="hidden" name="sale_id" id="sale_id" class="resetable" value="{{ $return->sale_id }}">
 
-                                                        <div class="invoice_search_result d-none">
+                                                        <div class="invoice_search_result d-hide">
                                                             <ul id="invoice_list" class="list-unstyled">
 
                                                             </ul>
@@ -306,7 +306,7 @@
                                                                     <input name="return_discount" type="number" class="form-control" id="return_discount" value="{{ $return->return_discount }}">
                                                                 </div>
                                                             </div>
-                                                            <input name="return_discount_amount" type="number" step="any" class="d-none" id="return_discount_amount" value="{{ $return->return_discount_amount }}">
+                                                            <input name="return_discount_amount" type="number" step="any" class="d-hide" id="return_discount_amount" value="{{ $return->return_discount_amount }}">
                                                         </div>
                                                     </div>
 
@@ -322,7 +322,7 @@
                                                                     <option {{ $return->return_tax == $tax->tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                                 @endforeach
                                                             </select>
-                                                            <input name="return_tax_amount" type="number" step="any" class="d-none" id="return_tax_amount" value="{{ $return->return_tax_amount }}">
+                                                            <input name="return_tax_amount" type="number" step="any" class="d-hide" id="return_tax_amount" value="{{ $return->return_tax_amount }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -358,14 +358,14 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <div class="input-group customer_pre_due_field {{ $return->sale_id ? 'd-none' : '' }}">
+                                                    <div class="input-group customer_pre_due_field {{ $return->sale_id ? 'd-hide' : '' }}">
                                                         <label class="col-4"><b>Customer Previous Due :</b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="customer_previous_due" id="customer_previous_due" class="form-control text-danger" value="{{ $customerBalance > 0 ? $customerBalance : 0.00 }}" tabindex="-1">
                                                         </div>
                                                     </div>
 
-                                                    <div class="input-group invoice_due_field {{ $return->sale_id ? '' : 'd-none' }}">
+                                                    <div class="input-group invoice_due_field {{ $return->sale_id ? '' : 'd-hide' }}">
                                                         <label class="col-4"><b>Invoice Due :</b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="invoice_due" id="invoice_due" class="form-control text-danger" value="{{ $return->sale ? $return->sale->due : 0.00 }}" tabindex="-1">
@@ -446,7 +446,7 @@
                 <div class="submitBtn">
                     <div class="row justify-content-center">
                         <div class="col-12 text-end">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-danger"></i> </button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-danger"></i> </button>
                             <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button">Save Changes</button>
                         </div>
                     </div>
@@ -612,8 +612,8 @@
             $('#sale_id').val('');
             $('#sale_products').prop('disabled', true);
             $('#search_product').prop('disabled', false);
-            $('.invoice_due_field').addClass('d-none');
-            $('.customer_pre_due_field').removeClass('d-none');
+            $('.invoice_due_field').addClass('d-hide');
+            $('.customer_pre_due_field').removeClass('d-hide');
             $('#return_item_list').empty();
             $('#sale_products').empty();
             $('#sale_products').append('<option value="">Select Item</option>');
@@ -691,8 +691,8 @@
                     $('#sale_id').val(sale_id);
                     $('#customer_id').val(customer_id);
                     $('#invoice_due').val(invoice_due);
-                    $('.invoice_due_field').removeClass('d-none');
-                    $('.customer_pre_due_field').addClass('d-none');
+                    $('.invoice_due_field').removeClass('d-hide');
+                    $('.customer_pre_due_field').addClass('d-hide');
                     $('.invoice_search_result').hide();
                     $('#return_item_list').empty();
 
@@ -1758,8 +1758,8 @@
             $('#edit_sale_return_form')[0].reset();
             $('#return_item_list').empty();
 
-            $('.invoice_due_field').addClass('d-none');
-            $('.customer_pre_due_field').removeClass('d-none');
+            $('.invoice_due_field').addClass('d-hide');
+            $('.customer_pre_due_field').removeClass('d-hide');
 
             $('#sale_products').prop('disabled', true);
             $('#search_product').prop('disabled', false);

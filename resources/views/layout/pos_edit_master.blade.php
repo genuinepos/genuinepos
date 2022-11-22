@@ -105,7 +105,7 @@
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                                 <a href="" class="c-btn button-success me-0 float-end" id="submit_btn" data-action_id="1">Confirm (F10)</a>
                                 <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">Close</button>
                             </div>

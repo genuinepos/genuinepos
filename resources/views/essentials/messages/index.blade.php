@@ -62,7 +62,7 @@
                                                 <input required type="text" name="description" id="description" class="form-control form-control-sm" placeholder="Type Message" autofocus>
 
                                                 <button type="submit" class="c-btn me-0 float-start submit_button">
-                                                    <i class="fas fa-spinner ts_preloader d-none" id="ts_preloader"></i>
+                                                    <i class="fas fa-spinner ts_preloader d-hide" id="ts_preloader"></i>
                                                     <i class="fas fa-paper-plane"></i>
                                                 </button>
                                             </div>
@@ -103,7 +103,7 @@
     //Add message request by ajax
     $(document).on('submit', '#add_message_form', function(e){
         e.preventDefault();
-        $('#ts_preloader').removeClass('d-none');
+        $('#ts_preloader').removeClass('d-hide');
         var url = $(this).attr('action');
         var request = $(this).serialize();
         $.ajax({
@@ -114,7 +114,7 @@
                 message_list();
                 $('#add_message_form')[0].reset();
                 toastr.success(data);
-                $('#ts_preloader').addClass('d-none');
+                $('#ts_preloader').addClass('d-hide');
                 scroll_down_chat_div();
             }
         });

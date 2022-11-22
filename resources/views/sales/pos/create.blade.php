@@ -33,7 +33,7 @@
                                     <!-- Total Item & Qty section -->
                                     @include('sales.pos.partial.total_item_and_qty')
                                     <!-- Total Item & Qty section End-->
-                                    <div class="row g-0 d-lg-flex d-none" style="height: 117px">
+                                    <div class="row g-0 d-lg-flex d-hide" style="height: 117px">
                                         <div class="col-lg-4">
                                             <div class="bg-white h-100 border-end p-5"></div>
                                         </div>

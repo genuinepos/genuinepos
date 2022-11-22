@@ -28,6 +28,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 {{-- DataTable Global CSS --}}
 <style>
+    .d-hide {
+        display: none;
+    }
     .dt-buttons {
         padding-top: 0px !important;
         padding-bottom: 0px !important;

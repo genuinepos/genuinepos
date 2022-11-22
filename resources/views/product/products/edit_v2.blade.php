@@ -642,7 +642,7 @@
 
                 <div class="d-flex justify-content-end">
                     <div class="btn-loading">
-                        <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
+                        <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
                         <button type="submit" class="btn btn-success submit_button btn-sm">Save Changes</button>
                     </div>
                 </div>
@@ -714,7 +714,7 @@
                         <div class="form-group row mt-2">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
@@ -749,7 +749,7 @@
                         <div class="form-group row mt-2">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
                                     <button type="submit" id="save" class="btn btn-sm btn-success submit_button">Save Changes</button>
                                 </div>
@@ -784,7 +784,7 @@
                         <div class="form-group row mt-2">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
@@ -851,7 +851,7 @@
                         <div class="form-group row mt-2">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
@@ -1675,7 +1675,7 @@
     // Add category from create product by ajax
     $(document).on('submit', '#add_warranty_form', function(e) {
         e.preventDefault();
-         $('.loading_button').removeClass('d-none');
+         $('.loading_button').removeClass('d-hide');
         var url = $(this).attr('action');
         var request = $(this).serialize();
         var inputs = $('.add_warranty_input');
@@ -1692,7 +1692,7 @@
         });
 
         if (countErrorField > 0) {
-             $('.loading_button').addClass('d-none');
+             $('.loading_button').addClass('d-hide');
             return;
         }
 
@@ -1701,7 +1701,7 @@
             type: 'post',
             data: request,
             success: function(data) {
-                $('.loading_button').addClass('d-none');
+                $('.loading_button').addClass('d-hide');
                 toastr.success('Successfully warranty is added.');
                 $('#warranty_id').append('<option value="' + data.id + '">' + data.name + ' (' + data
                     .type+' '+data.duration_type+ ')' + '</option>');

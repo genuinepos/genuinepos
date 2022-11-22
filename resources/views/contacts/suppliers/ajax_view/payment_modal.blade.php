@@ -196,7 +196,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="due_purchase_table_area due_table d-none">
+                                        <div class="due_purchase_table_area due_table d-hide">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="row">
@@ -261,7 +261,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="due_purchase_orders_table_area due_table d-none">
+                                        <div class="due_purchase_orders_table_area due_table d-hide">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="row">
@@ -449,7 +449,7 @@
         
                 <div class="form-group row mt-4">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
                         <button name="action" type="submit" value="save" class="c-btn button-success float-end" id="add_supplier_payment">Save</button>
                         <button name="action" value="save_and_print" type="button" class="c-btn button-success float-end" id="add_supplier_payment">Save & Print</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>

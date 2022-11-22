@@ -46,7 +46,7 @@
                                                 <div class="form-group mt-2">
                                                     <div class="col-md-12 d-flex justify-content-end">
                                                         <div class="btn-loading">
-                                                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i></button>
+                                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
                                                             <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                                         </div>
                                                     </div>
@@ -147,7 +147,7 @@
             // Add brand by ajax
             $('#add_brand_form').on('submit', function(e) {
                 e.preventDefault();
-                $('.loading_button').removeClass('d-none');
+                $('.loading_button').removeClass('d-hide');
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
                 var inputs = $('.add_input');
@@ -197,7 +197,7 @@
                     $("#edit_form_body").html(data);
                     $('#add_form').hide();
                     $('#edit_form').show();
-                    // $('#edit_form').removeClass('d-none');
+                    // $('#edit_form').removeClass('d-hide');
                     $('.data_preloader').hide();
                 })
             });

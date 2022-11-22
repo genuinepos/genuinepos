@@ -23,7 +23,7 @@
     </div>
 
     @if (auth()->user()->role_type == 1 || auth()->user()->role_type)
-        <div class="form-group row mt-1 {{ $account->account_type == 2 ? '' : 'd-none' }} e_bank_account_field">
+        <div class="form-group row mt-1 {{ $account->account_type == 2 ? '' : 'd-hide' }} e_bank_account_field">
             <div class="col-md-12">
                 <label><strong>Bank Name :</strong> <span class="text-danger">*</span> </label>
                 <select name="bank_id" class="form-control edit_input" data-name="Bank name" id="bank_id">
@@ -80,7 +80,7 @@
 
     <div class="form-group d-flex justify-content-end text-right py-2">
         <div class="btn-loading">
-            <button type="button" class="btn loading_button d-none"><i
+            <button type="button" class="btn loading_button d-hide"><i
                     class="fas fa-spinner"></i><span> Loading...</span></button>
             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
             <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>

@@ -182,6 +182,7 @@
             $('#e_code').val(unitInfo.code_name);
             $('#add_form').hide();
             $('#edit_form').show();
+            $('#edit_form').removeClass('d-none');
             document.getElementById('e_name').focus();
         });
 

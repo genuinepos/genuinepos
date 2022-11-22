@@ -197,6 +197,7 @@
                     $("#edit_form_body").html(data);
                     $('#add_form').hide();
                     $('#edit_form').show();
+                    // $('#edit_form').removeClass('d-none');
                     $('.data_preloader').hide();
                 })
             });

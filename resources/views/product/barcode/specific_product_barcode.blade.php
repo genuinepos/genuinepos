@@ -30,11 +30,11 @@
                         <div class="card">
                             <div class="card ">
                                 <form id="multiple_completed_form"
-                                    action="{{ route('barcode.multiple.genereate.completed') }}" method="post">
+                                    action="{{ route('barcode.multiple.generate.completed') }}" method="post">
                                     @csrf
                                 </form>
                                 <!--begin::Form-->
-                                <form id="preview" action="{{ route('barcode.preview') }}" target="_blank" method="get">
+                                <form id="preview" action="{{ route('barcode.preview') }}" target="_blank" method="post">
                                     @csrf
                                     <div class="card-body">
                                         <input type="hidden" id="business_name"

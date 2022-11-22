@@ -30,7 +30,7 @@
                         <div class="card">
                             <div class="card ">
                                 <form id="multiple_completed_form"
-                                    action="{{ route('barcode.multiple.genereate.completed') }}" method="post">
+                                    action="{{ route('barcode.multiple.generate.completed') }}" method="post">
                                     @csrf
                                 </form>
                                 <!--begin::Form-->

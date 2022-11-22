@@ -211,6 +211,7 @@
                 $('#e_calculation_percent').val(group.calc_percentage);
                 $('#add_form').hide();
                 $('#edit_form').show();
+                $('#edit_form').removeClass('d-none');
                 document.getElementById('e_name').focus();
             });
 

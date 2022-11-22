@@ -66,7 +66,7 @@ class POSController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $openedCashRegister = CashRegister::with('admin', 'admin.role', 'cash_counter')
+        $openedCashRegister = CashRegister::with('admin', 'cash_counter')
             ->where('admin_id', auth()->user()->id)
             ->where('status', 1)
             ->first();
@@ -447,7 +447,7 @@ class POSController extends Controller
     // Get invoice info by edit invoice method
     public function edit($saleId)
     {
-        $sale = Sale::with('branch', 'sale_products', 'customer', 'admin', 'admin.role')->where('id', $saleId)->first();
+        $sale = Sale::with('branch', 'sale_products', 'customer', 'admin')->where('id', $saleId)->first();
         $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
         $brands = DB::table('brands')->get(['id', 'name']);
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);

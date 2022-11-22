@@ -133,7 +133,6 @@ class SaleController extends Controller
             'branch.add_sale_invoice_layout',
             'customer:id,name,phone,alternative_phone,city,state,country,landline,email,address,tax_number,point',
             'admin:id,prefix,name,last_name',
-            'admin.role',
             'sale_products',
             'sale_products.product:id,name,product_code,warranty_id,unit_id,tax_id',
             'sale_products.product.warranty',
@@ -154,7 +153,6 @@ class SaleController extends Controller
             'branch.pos_sale_invoice_layout',
             'customer',
             'admin',
-            'admin.role',
             'sale_products',
             'sale_products.product',
             'sale_products.product.warranty',
@@ -193,7 +191,7 @@ class SaleController extends Controller
     public function quotationDetails($quotationId)
     {
         $quotation = Sale::with([
-            'branch', 'branch.add_sale_invoice_layout', 'customer', 'admin:id,prefix,name,last_name', 'admin.role', 'sale_products', 'sale_products.branch', 'sale_products.warehouse', 'sale_products.product:id,name,product_code', 'sale_products.variant:id,variant_name,variant_code', 'sale_payments',
+            'branch', 'branch.add_sale_invoice_layout', 'customer', 'admin:id,prefix,name,last_name', 'sale_products', 'sale_products.branch', 'sale_products.warehouse', 'sale_products.product:id,name,product_code', 'sale_products.variant:id,variant_name,variant_code', 'sale_payments',
         ])->where('id', $quotationId)->first();
 
         $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($quotation->id);

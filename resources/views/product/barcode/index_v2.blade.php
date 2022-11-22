@@ -29,6 +29,9 @@
                         <div class="row g-3">
                             <div class="col-md-7">
                                 <div class="card ">
+                                    <div class="card-header">
+                                        <p><b>Barcode Setting :</b></p>
+                                    </div>
                                     <form id="multiple_completed_form" class="d-hide"
                                         action="{{ route('barcode.multiple.generate.completed') }}" method="post">
                                         @csrf
@@ -44,7 +47,6 @@
                                                 value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
                                             <div class="form-group row">
                                                 <div class="col-md-8">
-                                                    <label><b>Barcode Setting :</b></label>
                                                     <select name="br_setting_id" class="form-control">
                                                         @foreach ($bc_settings as $bc_setting)
                                                             <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
@@ -116,7 +118,7 @@
                                                             <div class="table-responsive">
                                                                 <table class="table modal-table table-sm">
                                                                     <thead>
-                                                                        <tr class="bg-primary text-white text-start">
+                                                                        <tr class="bg-secondary text-white text-start">
                                                                             <th class="text-start">Product</th>
                                                                             <th class="text-start">Supplier</th>
                                                                             <th class="text-start">Quantity</th>
@@ -154,27 +156,29 @@
 
                             <div class="col-md-5">
                                 <div class="table_product_list">
-                                    <div class="card p-1">
-                                        <div class="heading">
+                                    <div class="card">
+                                        <div class="card-header">
                                             <p><strong>Purchased Product List</strong></p>
                                         </div>
-                                        <table class="display data_tbl data__table table-hover" id="data">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start"><input type="checkbox" id="chack_all">All</th>
-                                                    <th class="text-start">Product</th>
-                                                    <th class="text-start">Supplier</th>
-                                                    <th class="text-start">Quantity</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="purchased_product_list"></tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th colspan="3" class="text-end">Total Pending Qty :</th>
-                                                    <th colspan="3" class="text-end">0</th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
+                                        <div class="card-body p-2">
+                                            <table class="display data_tbl data__table table-hover" id="data">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-start"><input type="checkbox" id="chack_all">All</th>
+                                                        <th class="text-start">Product</th>
+                                                        <th class="text-start">Supplier</th>
+                                                        <th class="text-start">Quantity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="purchased_product_list"></tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th colspan="3" class="text-end">Total Pending Qty :</th>
+                                                        <th colspan="3" class="text-end">0</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

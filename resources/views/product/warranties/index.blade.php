@@ -23,9 +23,7 @@
                             <div class="col-md-4">
                                 <div class="card" id="add_form">
                                     <div class="section-header">
-                                        <div class="col-md-6">
-                                            <h6>Add Warranty/Guaranty</h6>
-                                        </div>
+                                        <h6>Add Warranty/Guaranty</h6>
                                     </div>
 
                                     <div class="form-area px-3 pb-2">
@@ -67,7 +65,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group mt-1">
+                                            <div class="form-group mt-2">
                                                 <strong>Description :</strong>
                                                 <textarea name="description" id="description" class="form-control" cols="10" rows="3"
                                                     placeholder="Warranty description"></textarea>
@@ -138,7 +136,7 @@
                                                     rows="3" placeholder="Warranty description"></textarea>
                                             </div>
 
-                                            <div class="form-group row mt-2">
+                                            <div class="form-group row mt-3">
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
                                                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>

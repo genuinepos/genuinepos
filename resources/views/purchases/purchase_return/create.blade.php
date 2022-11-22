@@ -5,91 +5,86 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-undo"></span>
+                    <h5>Purchase Return</h5>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="add_purchase_return_form" action="{{ route('purchases.returns.store', $purchaseId) }}" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action" value="">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h5>Purchase Return</h5>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="m-0"><strong>Invoice ID: </strong> {{ $purchase->invoice_id }} </p>
+                                    <p class="m-0"><strong>Date: </strong> {{ $purchase->date }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                    <p class="m-0 "><strong> Supplier : </strong> {{ $purchase->supplier->name }}</p>
+                                    <p class="m-0 branch"><strong>Business Location : </strong>
+                                        @if($purchase->branch)
+                                            {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(B.L.)</b>
+                                        @else
+                                            {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
+                                        @endif
+                                    </p>
+                                        <p class="m-0 warehouse"><strong>Purchase Stored Location : </strong>
+                                        @if ($purchase->warehouse)
+                                            {{ $purchase->warehouse->warehouse_name.'/'.$purchase->warehouse->warehouse_code }}<b>(WH)</b>
+                                        @elseif($purchase->branch)
+                                            {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }} <b>(B.L.)</b>
+                                        @else
+                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
+                                        @endif
+                                    </p>
+                                    </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4"><b>PR.Invoice ID : </b><span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="Purchase Return Invoice ID" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p class="m-0"><strong>Invoice ID: </strong> {{ $purchase->invoice_id }} </p>
-                                            <p class="m-0"><strong>Date: </strong> {{ $purchase->date }}</p>
-                                         </div>
-                                         <div class="col-md-6">
-                                            <p class="m-0 "><strong> Supplier : </strong> {{ $purchase->supplier->name }}</p>
-                                            <p class="m-0 branch"><strong>Business Location : </strong>
-                                                @if($purchase->branch)
-                                                    {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(B.L.)</b>
-                                                @else
-                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
-                                                @endif
-                                            </p>
-                                             <p class="m-0 warehouse"><strong>Purchase Stored Location : </strong>
-                                                @if ($purchase->warehouse)
-                                                    {{ $purchase->warehouse->warehouse_name.'/'.$purchase->warehouse->warehouse_code }}<b>(WH)</b>
-                                                @elseif($purchase->branch)
-                                                    {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }} <b>(B.L.)</b>
-                                                @else
-                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
-                                                @endif
-                                            </p>
-                                         </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-2"><b>Date :</b> <span
+                                            class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                                            <span class="error error_date"></span>
+                                        </div>
                                     </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>PR.Invoice ID : </b><span
-                                                        class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="Purchase Return Invoice ID" autocomplete="off">
-                                                </div>
-                                            </div>
-                                        </div>
+                                </div>
 
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-2"><b>Date :</b> <span
-                                                    class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
-                                                    <span class="error error_date"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-5"><b>Purchase Return A/C : <span
-                                                    class="text-danger">*</span></b></label>
-                                                <div class="col-7">
-                                                    <select name="purchase_return_account_id" class="form-control add_input"
-                                                        id="purchase_return_account_id" data-name="Purchase Return A/C">
-                                                        @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
-                                                            <option value="{{ $purchaseReturnAccount->id }}">
-                                                                {{ $purchaseReturnAccount->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_purchase_return_account_id"></span>
-                                                </div>
-                                            </div>
+                                <div class="col-md-4">
+                                    <div class="input-group mt-1">
+                                        <label for="inputEmail3" class="col-5"><b>Purchase Return A/C : <span
+                                            class="text-danger">*</span></b></label>
+                                        <div class="col-7">
+                                            <select name="purchase_return_account_id" class="form-control add_input"
+                                                id="purchase_return_account_id" data-name="Purchase Return A/C">
+                                                @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
+                                                    <option value="{{ $purchaseReturnAccount->id }}">
+                                                        {{ $purchaseReturnAccount->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_purchase_return_account_id"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -99,32 +94,26 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table-striped">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th>Product Name</th>
-                                                                    <th></th>
-                                                                    <th>Unit Cost</th>
-                                                                    <th>Lot Number</th>
-                                                                    <th>Purchase Quantity</th>
-                                                                    <th>Return Quantity</th>
-                                                                    <th>Return Subtotal</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="purchase_return_list"></tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="sale-item-sec">
+                                    <div class="sale-item-inner">
+                                        <div class="table-responsive">
+                                            <table class="display data__table table-striped">
+                                                <thead class="staky">
+                                                    <tr>
+                                                        <th>Product Name</th>
+                                                        <th></th>
+                                                        <th>Unit Cost</th>
+                                                        <th>Lot Number</th>
+                                                        <th>Purchase Quantity</th>
+                                                        <th>Return Quantity</th>
+                                                        <th>Return Subtotal</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="purchase_return_list"></tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -133,19 +122,15 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-2"><b>Total Return Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</b>  </label>
-                                                <div class="col-8">
-                                                    <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00">
-                                                </div>
-                                            </div>
+                <section>
+                    <div class="form_element mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-2"><b>Total Return Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</b>  </label>
+                                        <div class="col-8">
+                                            <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00">
                                         </div>
                                     </div>
                                 </div>
@@ -154,13 +139,15 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area pt-1">
+                <div class="submit_button_area">
                     <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-hide"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" data-action="save" class="btn btn-sm btn-primary submit_button float-end">Save</button>
-                            <button type="submit" data-action="save_and_print" class="btn btn-sm btn-primary submit_button float-end me-1">Save & Print</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i
+                                    class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="submit" data-action="save" class="btn btn-sm btn-success submit_button">Save</button>
+                                <button type="submit" data-action="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print</button>
+                            </div>
                         </div>
                     </div>
                 </div>

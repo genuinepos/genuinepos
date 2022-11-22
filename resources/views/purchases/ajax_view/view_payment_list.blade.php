@@ -93,7 +93,7 @@
     <div class="table-responsive">
         <table class="display modal-table table-sm table-striped">
             <thead>
-                <tr class="bg-primary">
+                <tr class="bg-secondary">
                     <th class="text-start text-white">Date</th>
                     <th class="text-start text-white">Voucher No</th>
                     <th class="text-start text-white">Method</th>

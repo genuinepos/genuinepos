@@ -161,7 +161,6 @@ class PurchaseController extends Controller
     public function create()
     {
         if (!auth()->user()->can('purchase_add')) {
-
             abort(403, 'Access Forbidden.');
         }
 

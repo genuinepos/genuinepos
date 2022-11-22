@@ -4,7 +4,7 @@
 @endphp 
  <!-- Details Modal -->
  <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-     <div class="modal-dialog modal-full-display">
+     <div class="modal-dialog modal-xl">
          <div class="modal-content">
              <div class="modal-header">
                  <h5 class="modal-title" id="exampleModalLabel">
@@ -94,7 +94,7 @@
                          <div class="table-responsive">
                              <table id="" class="table modal-table table-sm table-striped">
                                  <thead>
-                                     <tr class="bg-primary">
+                                     <tr class="bg-secondary">
                                          <th class="text-white text-start">Product</th>
                                          <th class="text-white text-start">Ordered Quantity</th>
                                          <th class="text-white text-start">Unit Cost({{ json_decode($generalSettings->business, true)['currency']}}) (Before Discount)</th>
@@ -174,7 +174,7 @@
                              <div class="table-responsive">
                                 <table class="table modal-table table-striped table-sm">
                                     <thead>
-                                        <tr class="bg-primary text-white">
+                                        <tr class="bg-secondary text-white">
                                             <th class="text-start">Date</th>
                                             <th class="text-start">Voucher No</th>
                                             <th class="text-start">Method</th>
@@ -313,10 +313,10 @@
              <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="{{ route('purchases.po.receive.process', $purchase->id) }}" class="c-btn btn-secondary py-1 px-1 text-white"> <i class="fas fa-check-double"></i> PO To Receive</a>
-                        <a href="{{ route('purchases.order.supplier.copy.print', $purchase->id) }}" id="print_supplier_copy" class="c-btn btn-info py-1 px-1 text-white"> <i class="fas fa-print"></i> Print Supplier Copy</a>
-                        <button type="submit" class="c-btn button-success print_btn">Print</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                        <a href="{{ route('purchases.po.receive.process', $purchase->id) }}" class="btn btn-sm btn-secondary"> <i class="fas fa-check-double"></i> PO To Receive</a>
+                        <a href="{{ route('purchases.order.supplier.copy.print', $purchase->id) }}" id="print_supplier_copy" class="btn btn-sm btn-info text-white"> <i class="fas fa-print"></i> Print Supplier Copy</a>
+                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                        <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
                     </div>
                 </div>
              </div>

@@ -55,7 +55,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="card" id="edit_form">
+                                    <div class="card d-hide" id="edit_form">
                                         <div class="section-header">
                                             <div class="col-md-12">
                                                 <h6>Edit Brand </h6>

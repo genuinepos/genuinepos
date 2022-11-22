@@ -127,7 +127,7 @@
         <div class="col-md-12">
             <table class="table modal-table table-sm custom-table">
                 <thead>
-                    <tr class="bg-primary">
+                    <tr class="bg-secondary">
                         <th class="text-white">Default Purchase Price</th>
                         <th class="text-white">x Margin(%)</th>
                         <th class="text-white">Selling Price</th>

@@ -779,7 +779,7 @@ class PurchaseUtil
 
         if (auth()->user()->branch_id == $row->branch_id) {
 
-            if (!auth()->user()->can('purchase_payment')) {
+            if (auth()->user()->can('purchase_payment')) {
 
                 if ($row->due > 0) {
 
@@ -792,18 +792,18 @@ class PurchaseUtil
                 }
             }
 
-            if (!auth()->user()->can('purchase_edit')) {
+            if (auth()->user()->can('purchase_edit')) {
 
                 $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'purchased']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
             }
         }
 
-        if (!auth()->user()->can('purchase_delete')) {
+        if (auth()->user()->can('purchase_delete')) {
 
             $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
         }
 
-        if (!auth()->user()->can('purchase_return')) {
+        if (auth()->user()->can('purchase_return')) {
 
             $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
         }
@@ -833,7 +833,7 @@ class PurchaseUtil
 
         if (auth()->user()->branch_id == $row->branch_id) {
 
-            if (!auth()->user()->can('purchase_payment')) {
+            if (auth()->user()->can('purchase_payment')) {
 
                 if ($row->due > 0) {
 
@@ -841,13 +841,13 @@ class PurchaseUtil
                 }
             }
 
-            if (!auth()->user()->can('purchase_edit')) {
+            if (auth()->user()->can('purchase_edit')) {
 
                 $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
             }
         }
 
-        if (!auth()->user()->can('purchase_delete')) {
+        if (auth()->user()->can('purchase_delete')) {
 
             $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
         }

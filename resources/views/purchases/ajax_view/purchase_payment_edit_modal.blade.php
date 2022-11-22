@@ -10,7 +10,7 @@
     .payment_details_contant{background: azure!important;}
     h6.checkbox_input_wrap {border: 1px solid #495677;padding: 0px 7px;}
 </style>
-<div class="modal-dialog four-col-modal" role="document">
+<div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h6 class="modal-title" id="exampleModalLabel">Edit Payment <span class="type_name"></span></h6>
@@ -170,10 +170,12 @@
                 </div>
 
                 <div class="form-group row mt-3">
-                    <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button type="submit" class="c-btn button-success me-0 float-end">Save Changes</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                            <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
+                        </div>
                     </div>
                 </div>
             </form>

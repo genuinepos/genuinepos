@@ -60,12 +60,12 @@
                     </div>
 
                     <div class="form-group row mt-2">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                            <button type="reset" data-bs-dismiss="modal"
-                                class="c-btn btn_orange float-end">Close</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -95,12 +95,12 @@
                     </div>
 
                     <div class="form-group row mt-2">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                            <button type="reset" data-bs-dismiss="modal"
-                                class="c-btn btn_orange float-end">Close</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -130,12 +130,12 @@
                     </div>
 
                     <div class="form-group row mt-2">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                            <button type="reset" data-bs-dismiss="modal"
-                                class="c-btn btn_orange float-end">Close</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -177,7 +177,7 @@ aria-hidden="true">
                             <label><b>Duration :</b> </label> <span class="text-danger">*</span>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="row">
+                                    <div class="row g-0">
                                         <input type="number" step="any" name="duration" class="form-control w-50 add_warranty_input" data-name="Warranty duration" id="add_warranty_duration" placeholder="Warranty duration">
                                         <select name="duration_type" class="form-control w-50" id="duration_type">
                                             <option value="Months">Months</option>
@@ -197,12 +197,12 @@ aria-hidden="true">
                     </div>
 
                     <div class="form-group row mt-2">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                            <button type="reset" data-bs-dismiss="modal"
-                                class="c-btn btn_orange float-end">Close</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                            </div>
                         </div>
                     </div>
                 </form>

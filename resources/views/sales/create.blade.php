@@ -578,7 +578,7 @@
 
                         <div class="form-group mt-1">
                             <label> <strong>Unit Price Exc.Tax</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" step="any" {{ !auth()->user()->can('edit_price_sale_screen') ? '' : 'readonly' }} step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" />
+                            <input type="number" step="any" {{ auth()->user()->can('edit_price_sale_screen') ? '' : 'readonly' }} step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" />
                             <span class="error error_e_unit_price"></span>
                         </div>
 

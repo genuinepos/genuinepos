@@ -12,13 +12,14 @@ class WarehouseController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('warehouse')) : abort(403, 'Access Forbidden.');
-        endif;
+        if (!auth()->user()->can('warehouse')) {
+            abort(403, 'Access Forbidden.');
+        }
 
         if ($request->ajax()) {
 

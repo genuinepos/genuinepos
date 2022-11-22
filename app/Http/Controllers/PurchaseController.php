@@ -57,7 +57,7 @@ class PurchaseController extends Controller
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->purchaseReturnUtil = $purchaseReturnUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
     public function index_v2(Request $request)
@@ -97,7 +97,6 @@ class PurchaseController extends Controller
     public function poList(Request $request)
     {
         if (!auth()->user()->can('purchase_all')) {
-
             abort(403, 'Access Forbidden.');
         }
 

@@ -158,29 +158,24 @@ class UserController extends Controller
         $addUser->status = 1;
 
         if (isset($request->allow_login)) {
-
             $addUser->allow_login = 1;
             $addUser->username = $request->username;
             $addUser->password = Hash::make($request->password);
-
             $roleId = $request->role_id ?? 3;
             $role = Role::find($roleId);
-
             if ($role->name == 'superadmin') {
-
                 $addUser->role_type = 1;
                 $addUser->assignRole($role->name);
             } else if ($role->name == 'admin') {
-
                 $addUser->role_type = 2;
                 $addUser->assignRole($role->name);
+                $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
             } else {
-
+                $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
                 $addUser->role_type = 3;
                 $addUser->assignRole($role->name);
             }
         } else {
-
             $addUser->allow_login = 0;
             $addUser->branch_id = $request->belonging_branch_id == 'head_office' ? NULL : $request->belonging_branch_id;
         }
@@ -206,6 +201,11 @@ class UserController extends Controller
         $addUser->bank_identifier_code = $request->bank_identifier_code;
         $addUser->bank_branch = $request->bank_branch;
         $addUser->tax_payer_id = $request->tax_payer_id;
+        $addUser->shift_id = $request->shift_id;
+        $addUser->department_id = $request->department_id;
+        $addUser->designation_id = $request->designation_id;
+        $addUser->salary = $request->salary ? $request->salary : 0;
+        $addUser->salary_type = $request->pay_type;
         $addUser->save();
 
         session()->flash('successMsg', 'User created successfully');
@@ -273,6 +273,8 @@ class UserController extends Controller
                 ]);
             }
         }
+        $addons = DB::table('addons')->first();
+
         \Log::info('validation passed');
         $updateUser->prefix = $request->prefix;
         $updateUser->name = $request->first_name;
@@ -282,11 +284,9 @@ class UserController extends Controller
         $updateUser->email = $request->email;
 
         if (isset($request->allow_login)) {
-
             $updateUser->allow_login = 1;
             $updateUser->username = $request->username;
             $updateUser->password = $request->password ? Hash::make($request->password) : $updateUser->password;
-
             $roleId = $request->role_id ?? 3;
             $role = Role::find($roleId);
             $roleName = $role->name;
@@ -332,7 +332,11 @@ class UserController extends Controller
         $updateUser->bank_identifier_code = $request->bank_identifier_code;
         $updateUser->bank_branch = $request->bank_branch;
         $updateUser->tax_payer_id = $request->tax_payer_id;
-
+        $updateUser->shift_id = $request->shift_id;
+        $updateUser->department_id = $request->department_id;
+        $updateUser->designation_id = $request->designation_id;
+        $updateUser->salary = $request->salary ? $request->salary : 0;
+        $updateUser->salary_type = $request->pay_type;
 
         // dd($updateUser);
         $updateUser->save();

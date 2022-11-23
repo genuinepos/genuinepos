@@ -176,9 +176,9 @@
                                 <label><b>Employee :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="employee_id" id="e_employee_id" required="">
                                     <option value="">Select Employee</option>
-                                    @foreach ($employees as $emp)
+                                    {{-- @foreach ($employees as $emp)
                                         <option value="{{ $emp->id }}">{{ $emp->prefix.' '.$emp->name.' '.$emp->last_name }}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                             </div>
                         </div>
@@ -229,7 +229,11 @@
 @push('scripts')
 <script src="{{ asset('backend/asset/js/bootstrap-date-picker.min.js') }}"></script>
 <script>
-    // Get all category by ajax
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     function getAllLeave(){
         $('.data_preloader').show();
         $.ajax({
@@ -246,7 +250,6 @@
     $('#department_id').on('change', function(e){
         e.preventDefault();
         var department_id = $(this).val();
-        console.log(department_id);
         $.ajax({
             url:"{{ url('hrm/leave/department/employees/') }}"+"/"+department_id,
             type:'get',
@@ -254,37 +257,16 @@
                 $('#employee_id').empty();
                 $('#employee_id').append('<option value="">Select Employee</option>');
                 $.each(employees, function (key, emp) {
+                    emp.prefix = emp.prefix || '';
+                    emp.name = emp.name || '';
+                    emp.last_name = emp.last_name || '';
+                    // console.log(emp);
                     $('#employee_id').append('<option value="'+emp.id+'">'+ emp.prefix+' '+emp.name+' '+emp.last_name +'</option>');
                 });
             }
         });
     });
 
-    $('#e_department_id').on('change', function(e){
-        e.preventDefault();
-        var department_id = $(this).val();
-        console.log(department_id);
-        $.ajax({
-            url:"{{ url('hrm/leave/department/employees/') }}"+"/"+department_id,
-            type:'get',
-            success:function(employees){
-                $('#e_employee_id').empty();
-                $('#e_employee_id').append('<option value="">Select Employee</option>');
-                $.each(employees, function (key, emp) {
-                    $('#e_employee_id').append('<option value="'+emp.id+'">'+ emp.prefix+' '+emp.name+' '+emp.last_name +'</option>');
-                });
-            }
-        });
-    });
-
-    // Setup ajax for csrf token.
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-    // call jquery method
     $(document).ready(function(){
         // Add department by ajax
         $('#add_leave_form').on('submit', function(e){
@@ -300,6 +282,7 @@
                     toastr.success(data);
                     getAllLeave();
                     $('#addModal').modal('hide');
+                    $('.loading_button').hide();
                 }
             });
         });
@@ -331,7 +314,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    console.log(data);
+                    // console.log(data);
                     toastr.success(data);
                     $('.loading_button').hide();
                     getAllLeave();

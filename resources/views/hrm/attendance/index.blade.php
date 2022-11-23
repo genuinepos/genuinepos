@@ -148,9 +148,9 @@
                                 <label class="text-navy-blue"><b>Employee :</b></label>
                                 <select  class="form-control" id="employee">
                                     <option disabled selected> Select Employee </option>
-                                    @foreach($employee as $row)
+                                    {{-- @foreach($employee as $row)
                                        <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                             </div>
                         </div>
@@ -243,6 +243,9 @@
                 $('#employee').empty();
                 $('#employee').append('<option value="">Select Employee</option>');
                 $.each(employees, function (key, emp) {
+                    emp.prefix = emp.prefix || '';
+                    emp.name = emp.name || '';
+                    emp.last_name = emp.last_name || '';
                     $('#employee').append('<option value="'+emp.id+'">'+ emp.prefix+' '+emp.name+' '+emp.last_name +'</option>');
                 });
             }

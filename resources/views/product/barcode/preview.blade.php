@@ -105,10 +105,10 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                         <tr>
                                             <th class="product_name">
                                                 @if (isset($req->is_product_name))
-                                                    @php
+                                                    {{-- @php
                                                         $variant = isset($req->is_product_variant) ? $req->product_variant[$index] : '';
                                                     @endphp
-                                                    {{ Str::limit($req->product_name[$index] . '' . $variant, 14, '') }}
+                                                    {{ Str::limit($req->product_name[$index] . '' . $variant, 14, '') }} --}}
                                                     :{{ isset($req->is_supplier_prefix) ? $req->supplier_prefix[$index] : '' }}
                                                 @endif
                                             </th>

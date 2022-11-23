@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\SaleReturn;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
-use App\Models\User;
 use App\Models\CustomerLedger;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +17,7 @@ class Sale extends Model
     {
         return $this->belongsTo(Branch::class, 'branch_id');
     }
-    
+
     public function sale_products()
     {
         return $this->hasMany(SaleProduct::class, 'sale_id');
@@ -27,7 +27,7 @@ class Sale extends Model
     {
         return $this->hasMany(SalePayment::class, 'sale_id');
     }
-    
+
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
@@ -37,7 +37,7 @@ class Sale extends Model
     {
         return $this->hasOne(SaleReturn::class, 'sale_id');
     }
-    
+
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');

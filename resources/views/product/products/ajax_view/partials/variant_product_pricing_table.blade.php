@@ -1,6 +1,6 @@
 <table id="variant_product_pricing_table" class="table modal-table table-sm">
     <thead>
-        <tr class="bg-primary">
+        <tr class="bg-secondary">
             <th class="text-white text-start">Variations</th>
             <th class="text-white text-start">Variant Code (SKU)</th>
             <th class="text-white text-start">Stock</th>

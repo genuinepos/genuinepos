@@ -97,7 +97,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -169,7 +169,7 @@
         <!--Payment list modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
             aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
@@ -191,7 +191,7 @@
 
         <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
             aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content payment_details_contant">
                     <div class="modal-header">
                         <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span
@@ -210,13 +210,9 @@
                                 </ul>
                             </div>
 
-                            <div class="col-md-6 text-end">
-                                <ul class="list-unstyled">
-                                    <li class="mt-1">
-                                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                        <button type="submit" id="print_payment" class="c-btn me-0 button-success">Print</button>
-                                    </li>
-                                </ul>
+                            <div class="col-md-6 d-flex gap-2 justify-content-end">
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="submit" id="print_payment" class="btn btn-sm btn-success">Print</button>
                             </div>
                         </div>
                     </div>

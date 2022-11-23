@@ -96,7 +96,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start">
+                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start">
                                                             <i class="fas fa-funnel-dollar"></i> Filter
                                                         </button>
                                                     </div>
@@ -173,7 +173,7 @@
     <div id="purchase_details"></div>
 
     <!-- Change purchase status modal-->
-    <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
+    {{-- <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -183,7 +183,7 @@
                 <div class="modal-body" id="change_status_modal_body"></div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     @if(auth()->user()->can('purchase_payment'))
         <!--Payment list modal-->
@@ -209,12 +209,13 @@
 
         <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
             aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content payment_details_contant">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span
-                                class="payment_invoice"></span>)</h6>
-                            <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                        <h6 class="modal-title" id="exampleModalLabel">Payment Details 
+                            {{-- (<span class="payment_invoice"></span>) --}}
+                        </h6>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
                         <div class="payment_details_area">
@@ -228,13 +229,9 @@
                                 </ul>
                             </div>
 
-                            <div class="col-md-6 text-end">
-                                <ul class="list-unstyled">
-                                    <li class="mt-1">
-                                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                        <button type="submit" id="print_payment" class="c-btn me-0 button-success">Print</button>
-                                    </li>
-                                </ul>
+                            <div class="col-md-6 d-flex gap-2 justify-content-end">
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="submit" id="print_payment" class="btn btn-sm btn-success">Print</button>
                             </div>
                         </div>
                     </div>

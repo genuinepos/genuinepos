@@ -1,6 +1,6 @@
 <table id="single_product_branch_stock_table" class="table modal-table table-sm">
     <thead>
-        <tr class="bg-primary">
+        <tr class="bg-secondary">
             <th class="text-white text-start">Product Code(SKU)</th>
             <th class="text-white text-start">Product</th>
             <th class="text-white text-start">Business Location</th>

@@ -69,7 +69,6 @@ class SaleController extends Controller
     public function index2(Request $request)
     {
         if (!auth()->user()->can('view_add_sale')) {
-
             abort(403, 'Access Forbidden.');
         }
 
@@ -86,7 +85,6 @@ class SaleController extends Controller
     public function posList(Request $request)
     {
         if (!auth()->user()->can('pos_all')) {
-
             abort(403, 'Access Forbidden.');
         }
 
@@ -203,7 +201,6 @@ class SaleController extends Controller
     public function create()
     {
         if (!auth()->user()->can('create_add_sale')) {
-
             abort(403, 'Access Forbidden.');
         }
 
@@ -627,7 +624,6 @@ class SaleController extends Controller
     public function edit($saleId)
     {
         if (!auth()->user()->can('edit_add_sale')) {
-
             abort(403, 'Access Forbidden.');
         }
 
@@ -689,7 +685,6 @@ class SaleController extends Controller
     public function update(Request $request, $saleId)
     {
         if (!auth()->user()->can('edit_add_sale')) {
-
             return response()->json('Access Denied');
         }
 
@@ -1007,7 +1002,6 @@ class SaleController extends Controller
     public function delete(Request $request, $saleId)
     {
         if (!auth()->user()->can('delete_add_sale')) {
-
             return response()->json('Access Denied');
         }
 
@@ -1030,7 +1024,6 @@ class SaleController extends Controller
     public function shipments(Request $request)
     {
         if (!auth()->user()->can('shipment_access')) {
-
             abort(403, 'Access Forbidden.');
         }
 
@@ -1047,7 +1040,6 @@ class SaleController extends Controller
     public function updateShipment(Request $request, $saleId)
     {
         if (!auth()->user()->can('shipment_access')) {
-
             return response()->json('Access Denied');
         }
 
@@ -1210,7 +1202,6 @@ class SaleController extends Controller
     public function paymentAdd(Request $request, $saleId)
     {
         if (!auth()->user()->can('sale_payment')) {
-
             return response()->json('Access Denied');
         }
 
@@ -1287,7 +1278,6 @@ class SaleController extends Controller
     public function paymentEdit($paymentId)
     {
         if (!auth()->user()->can('sale_payment')) {
-
             return response()->json('Access Denied');
         }
 
@@ -1315,7 +1305,6 @@ class SaleController extends Controller
     public function paymentUpdate(Request $request, $paymentId)
     {
         if (!auth()->user()->can('sale_payment')) {
-
             return response()->json('Access Denied');
         }
 
@@ -1365,7 +1354,6 @@ class SaleController extends Controller
     public function returnPaymentModal($saleId)
     {
         if (!auth()->user()->can('sale_payment')) {
-
             return response()->json('Access Denied');
         }
 
@@ -1394,7 +1382,6 @@ class SaleController extends Controller
     public function returnPaymentAdd(Request $request, $saleId)
     {
         if (!auth()->user()->can('sale_payment')) {
-
             return response()->json('Access Denied');
         }
 
@@ -1538,7 +1525,6 @@ class SaleController extends Controller
     public function paymentDetails($paymentId)
     {
         if (!auth()->user()->can('sale_payment')) {
-
             return response()->json('Access Denied');
         }
 
@@ -1550,7 +1536,6 @@ class SaleController extends Controller
     public function paymentDelete(Request $request, $paymentId)
     {
         if (!auth()->user()->can('sale_payment')) {
-
             return response()->json('Access Denied');
         }
 
@@ -1760,11 +1745,7 @@ class SaleController extends Controller
     // Get notification form method
     public function settings()
     {
-        if (
-            !auth()->user()->can('add_sale_settings') ||
-            !auth()->user()->can('add_sale_settings')
-        ) {
-
+        if (!auth()->user()->can('add_sale_settings')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -1777,11 +1758,7 @@ class SaleController extends Controller
     // Add tax settings
     public function settingsStore(Request $request)
     {
-        if (
-            !auth()->user()->can('add_sale_settings') ||
-            !auth()->user()->can('add_sale_settings')
-        ) {
-
+        if (!auth()->user()->can('add_sale_settings')) {
             return response()->json('Asses Forbidden.');
         }
 

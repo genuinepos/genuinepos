@@ -46,7 +46,7 @@ class PurchaseReturnController extends Controller
         AccountUtil $accountUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
-        
+
         $this->purchaseReturnUtil = $purchaseReturnUtil;
         $this->nameSearchUtil = $nameSearchUtil;
         $this->productStockUtil = $productStockUtil;
@@ -55,14 +55,13 @@ class PurchaseReturnController extends Controller
         $this->converter = $converter;
         $this->accountUtil = $accountUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        
+
     }
 
     // Sale return index view
     public function index(Request $request)
     {
         if (!auth()->user()->can('purchase_return')) {
-
             abort(403, 'Access Forbidden.');
         }
 
@@ -238,7 +237,6 @@ class PurchaseReturnController extends Controller
     public function create($purchaseId)
     {
         if (!auth()->user()->can('purchase_return')) {
-
             abort(403, 'Access Forbidden.');
         }
 
@@ -352,7 +350,7 @@ class PurchaseReturnController extends Controller
         return response()->json($purchase);
     }
 
-    //Deleted purchase return 
+    //Deleted purchase return
     public function delete($purchaseReturnId)
     {
         $purchaseReturn = PurchaseReturn::with(['purchase', 'purchase.supplier', 'supplier', 'purchase_return_products'])->where('id', $purchaseReturnId)->first();
@@ -424,7 +422,6 @@ class PurchaseReturnController extends Controller
     public function supplierReturn()
     {
         if (!auth()->user()->can('purchase_return')) {
-
             abort(403, 'Access Forbidden.');
         }
 

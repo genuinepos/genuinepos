@@ -29,18 +29,12 @@
                         <div class="p-3">
                             <div class="card p-3 mb-3">
                                 <div class="tab_list_area row pb-0">
-                                    <div class="col-md-8">
+                                    <div class="col-12">
                                         <div class="btn-group">
                                             <a id="tab_btn" data-show="branch_stock" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Business Location Stock</a>
 
                                             <a id="tab_btn" data-show="warehouse_stock" class="btn btn-sm btn-primary tab_btn" href="#">
                                             <i class="fas fa-scroll"></i> Warehouse Stock</a>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="input-group justify-content-end">
-                                            <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i> Print</a>
                                         </div>
                                     </div>
                                 </div>
@@ -112,11 +106,16 @@
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <div class="row">
+                                                            <div class="row align-items-end">
                                                                 <div class="col-md-6">
                                                                     <label><strong></strong></label>
                                                                     <div class="input-group">
-                                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="input-group justify-content-end">
+                                                                        <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i> Print</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -257,13 +256,15 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group row">
+                                                    <div class="form-group row align-items-end">
                                                         <div class="col-md-2 offset-8">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end mt-1" id="w_print_report"><i class="fas fa-print"></i> Print</a>
+                                                            <div class="input-group justify-content-end">
+                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i> Print</a>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary mt-1 float-end"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                            <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info mt-1 float-end"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                         </div>
                                                     </div>
                                                 </form>

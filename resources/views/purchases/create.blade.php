@@ -473,7 +473,7 @@
                     </div>
 
                     <div class="form-group text-end mt-3">
-                        <button type="submit" id="add_description" class="c-btn button-success float-end me-0">Add</button>
+                        <button type="submit" id="add_description" class="btn btn-sm btn-success float-end">Add</button>
                     </div>
                 </div>
             </div>

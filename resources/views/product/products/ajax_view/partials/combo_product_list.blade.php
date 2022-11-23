@@ -1,6 +1,6 @@
 <table id="single_product_pricing_table" class="table modal-table table-sm">
     <thead>
-        <tr class="bg-primary">
+        <tr class="bg-secondary">
             <th class="text-white text-start">Product Name</th>
             <th class="text-white text-start">Prodcut cost (Inc.Tax)</th>
             <th class="text-white text-start">Profit Margin(%)</th>

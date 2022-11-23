@@ -1810,3 +1810,9 @@ table.display tbody tr:hover {
 #add_message_form .attach-document-group label:hover {
     background: #D6D6D6;
 }
+.product_dscr_btn {
+    border: 1px solid green;
+    border-radius: 3px;
+    padding: 2px 3px;
+    cursor: pointer;
+}

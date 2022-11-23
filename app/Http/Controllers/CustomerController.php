@@ -56,7 +56,7 @@ class CustomerController extends Controller
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->customerPaymentUtil = $customerPaymentUtil;
         $this->branchWiseCustomerAmountUtil = $branchWiseCustomerAmountUtil;
-        
+
     }
 
     public function index(Request $request)
@@ -379,7 +379,7 @@ class CustomerController extends Controller
 
                     $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Packing Slip</a>';
 
-                    if (!auth()->user()->can('shipment_access')) {
+                    if (auth()->user()->can('shipment_access')) {
 
                         $html .= '<a class="dropdown-item" id="edit_shipment"
                             href="' . route('sales.shipment.edit', [$row->id]) . '"><i
@@ -390,13 +390,13 @@ class CustomerController extends Controller
 
                         if ($row->due > 0) {
 
-                            if (!auth()->user()->can('sale_payment')) {
+                            if (auth()->user()->can('sale_payment')) {
 
                                 $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                             }
                         }
 
-                        if (!auth()->user()->can('sale_payment')) {
+                        if (auth()->user()->can('sale_payment')) {
 
                             $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
                             data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
@@ -417,8 +417,7 @@ class CustomerController extends Controller
 
                     if ($row->sale_return_due > 0) {
 
-                        if (!auth()->user()->can('sale_payment')) {
-
+                        if (auth()->user()->can('sale_payment')) {
                             $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '" ><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                         }
                     }
@@ -591,7 +590,7 @@ class CustomerController extends Controller
 
                         return $row->b_name;
                     } else {
-    
+
                         return json_decode($settings->business, true)['shop_name'];
                     }
                 })

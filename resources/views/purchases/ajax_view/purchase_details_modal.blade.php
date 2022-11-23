@@ -90,7 +90,7 @@
                          <div class="table-responsive">
                              <table id="" class="table modal-table table-sm table-striped">
                                  <thead>
-                                     <tr class="bg-primary">
+                                     <tr class="bg-secondary">
                                          <th class="text-white text-start">Product</th>
                                          <th class="text-white text-start">Quantity</th>
                                          <th class="text-white text-start">Unit Cost(Before Discount)</th>
@@ -139,7 +139,7 @@
                              <div class="table-responsive">
                                 <table class="table modal-table table-striped table-sm">
                                     <thead>
-                                        <tr class="bg-primary text-white">
+                                        <tr class="bg-secondary text-white">
                                             <th>Date</th>
                                             <th>Voucher No</th>
                                             <th>Method</th>

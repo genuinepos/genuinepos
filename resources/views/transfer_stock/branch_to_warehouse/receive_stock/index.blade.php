@@ -133,7 +133,9 @@
 
         function transferDetails(url) {
             $('.data_preloader').show();
+            console.log("URL", url);
             $.get(url, function(data) {
+                console.log(data);
                 $('#transfer_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
@@ -142,7 +144,9 @@
 
         $(document).on('click', '.details_button', function(e) {
             e.preventDefault();
-            var url = $(this).closest('tr').data('href');
+            // console.log("Getting", $(this).attr('href'))
+            // var url = $(this).closest('tr').data('href');
+            var url = $(this).attr('href');
             transferDetails(url);
         });
 

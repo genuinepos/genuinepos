@@ -23,7 +23,7 @@
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li><strong>B.Location (To) : </strong></li>
-                            <li><strong>Name :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                            <li><strong>Name :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                             <li><strong>Phone : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                             @if ($sendStock->branch)
                                 <li><strong>Address : </strong> 
@@ -142,7 +142,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>B.Location (To) : </strong></li>
-                            <li><strong>Name :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                            <li><strong>Name :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                             <li><strong>Phone : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                             @if ($sendStock->branch)
                                 <li><strong>Address : </strong> 

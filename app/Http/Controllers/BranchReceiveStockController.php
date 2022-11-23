@@ -16,7 +16,7 @@ class BranchReceiveStockController extends Controller
     public function __construct(ProductStockUtil $productStockUtil,)
     {
         $this->productStockUtil = $productStockUtil;
-        
+
     }
 
     //Branch receiving stock index view

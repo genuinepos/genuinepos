@@ -1,4 +1,7 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
+@php 
+    $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); 
+    // $variant = '';
+@endphp
   <!-- Details Modal -->
   <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-xl">
@@ -125,7 +128,7 @@
                             @foreach ($quotation->sale_products as $saleProduct)
                                 <tr>
                                     @php
-                                        $variant = $saleProduct->variant ? ' -' . $saleProduct->variant->variant_name : '';
+                                        $variant = $saleProduct?->variant ? ' -' . $saleProduct?->variant?->variant_name : '';
                                     @endphp
                                     <td class="text-start">{{ $saleProduct->product->name . $variant }}</td>
                                     <td class="text-start">
@@ -387,12 +390,12 @@
 
                                     {{ $sale_product->p_name }}
 
-                                    @if ($sale_product->variant)
+                                    @if ($sale_product->variant_name)
 
                                         -{{ $sale_product->variant_name }}
                                     @endif
 
-                                    @if ($sale_product->variant)
+                                    @if ($sale_product->variant_code)
 
                                         ({{ $sale_product->variant_code }})
                                     @else

@@ -60,7 +60,7 @@
                 <div class="table-responsive">
                     <table id="" class="table modal-table table-striped table-sm">
                         <thead>
-                            <tr class="bg-primary text-white">
+                            <tr class="bg-secondary text-white">
                                 <th class="text-start">SL</th>
                                 <th class="text-start">Product</th>
                                 <th class="text-start">Unit Price</th>
@@ -147,8 +147,8 @@
           </div>
         </div>
         <div class="modal-footer">
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-            <button type="submit" class="c-btn button-success print_btn float-end">Print</button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
         </div>
       </div>
     </div>

@@ -23,119 +23,114 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-edit"></span>
+                    <h6>Edit Sale Return</h6>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="edit_sale_return_form" action="{{ route('sale.return.random.update', $return->id) }}" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h6>Edit Sale Return | <small class="text-muted">Save Changes = (Ctrl + Enter) </small></h6>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-4">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>Sale INV. ID :</b> </label>
+                                        <div class="col-8">
+                                            <div style="position: relative;">
+                                                <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control scanable" placeholder="Search And Select Sale Invoice ID" autocomplete="off" value="{{ $return->sale ? $return->sale->invoice_id : '' }}">
+                                                <input type="hidden" name="sale_id" id="sale_id" class="resetable" value="{{ $return->sale_id }}">
+
+                                                <div class="invoice_search_result d-hide">
+                                                    <ul id="invoice_list" class="list-unstyled">
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>B. Location :</b></label>
+                                        <div class="col-8">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1">
+                                            <input type="hidden" value="{{ $return->branch_id ? $return->branch_id : 'NULL' }}" id="branch_id">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class=" col-4"><b>Sale INV. ID :</b> </label>
-                                                <div class="col-8">
-                                                    <div style="position: relative;">
-                                                        <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control scanable" placeholder="Search And Select Sale Invoice ID" autocomplete="off" value="{{ $return->sale ? $return->sale->invoice_id : '' }}">
-                                                        <input type="hidden" name="sale_id" id="sale_id" class="resetable" value="{{ $return->sale_id }}">
-
-                                                        <div class="invoice_search_result d-hide">
-                                                            <ul id="invoice_list" class="list-unstyled">
-
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"><b>B. Location :</b></label>
-                                                <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1">
-                                                    <input type="hidden" value="{{ $return->branch_id ? $return->branch_id : 'NULL' }}" id="branch_id">
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>Customer :</b> </label>
+                                        <div class="col-8">
+                                            <select name="customer_id" class="form-control" id="customer_id">
+                                                <option value="">Walk-In-Customer</option>
+                                                @foreach ($customers as $customer)
+                                                    <option {{ $customer->id == $return->customer_id ? 'SELECTED' : '' }} value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Customer :</b> </label>
-                                                <div class="col-8">
-                                                    <select name="customer_id" class="form-control" id="customer_id">
-                                                        <option value="">Walk-In-Customer</option>
-                                                        @foreach ($customers as $customer)
-                                                            <option {{ $customer->id == $return->customer_id ? 'SELECTED' : '' }} value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4">
+                                            <b>Return A/C : <span class="text-danger">*</span></b>
+                                        </label>
 
-                                            <div class="input-group mt-1">
-                                                <label class="col-4">
-                                                    <b>Return A/C : <span class="text-danger">*</span></b>
-                                                </label>
-
-                                                <div class="col-8">
-                                                    <select name="sale_return_account_id" class="form-control add_input" id="sale_return_account_id" data-name="Sale Return A/C">
-                                                        @foreach ($saleReturnAccounts as $saleReturnAccount)
-                                                            <option {{ $return->sale_return_account_id ==  $saleReturnAccount->id ? 'SELECTED' : ''}} value="{{ $saleReturnAccount->id }}">
-                                                                {{ $saleReturnAccount->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_sale_return_account_id"></span>
-                                                </div>
-                                            </div>
+                                        <div class="col-8">
+                                            <select name="sale_return_account_id" class="form-control add_input" id="sale_return_account_id" data-name="Sale Return A/C">
+                                                @foreach ($saleReturnAccounts as $saleReturnAccount)
+                                                    <option {{ $return->sale_return_account_id ==  $saleReturnAccount->id ? 'SELECTED' : ''}} value="{{ $saleReturnAccount->id }}">
+                                                        {{ $saleReturnAccount->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_sale_return_account_id"></span>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4">
-                                                    <b>Return Date : <span class="text-danger">*</span></b>
-                                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4">
+                                            <b>Return Date : <span class="text-danger">*</span></b>
+                                        </label>
 
-                                                <div class="col-8">
-                                                    <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($return->date)) }}" autocomplete="off" id="date">
-                                                    <span class="error error_date"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"><b> Price Group : </b></label>
-
-                                                <div class="col-8">
-                                                    <select name="price_group_id" class="form-control"
-                                                        id="price_group_id">
-                                                        <option value="">Default Selling Price</option>
-                                                        @foreach ($price_groups as $pg)
-                                                            <option {{ json_decode($generalSettings->sale, true)['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                        <div class="col-8">
+                                            <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($return->date)) }}" autocomplete="off" id="date">
+                                            <span class="error error_date"></span>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class=" col-4"><b>Re. Invoice ID:</b> </label>
-                                                <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Sale Return Invoice ID" autocomplete="off" value="{{ $return->invoice_id }}">
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b> Price Group : </b></label>
+
+                                        <div class="col-8">
+                                            <select name="price_group_id" class="form-control"
+                                                id="price_group_id">
+                                                <option value="">Default Selling Price</option>
+                                                @foreach ($price_groups as $pg)
+                                                    <option {{ json_decode($generalSettings->sale, true)['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>Re. Invoice ID:</b> </label>
+                                        <div class="col-8">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Sale Return Invoice ID" autocomplete="off" value="{{ $return->invoice_id }}">
                                         </div>
                                     </div>
                                 </div>
@@ -146,110 +141,106 @@
 
                 <section>
                     <div class="sale-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="searching_area" style="position: relative;">
-                                                    <label class="col-form-label">Select Item</label>
-                                                    <select {{ $return->sale_id ? '' : 'disabled' }} class="form-control" id="sale_products">
-                                                        <option value="">Select Item</option>
-                                                        @if ($return->sale)
+                        <div class="card mb-3">
+                            <div class="card-body p-2">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="searching_area" style="position: relative;">
+                                            <label class="col-form-label">Select Item</label>
+                                            <select {{ $return->sale_id ? '' : 'disabled' }} class="form-control" id="sale_products">
+                                                <option value="">Select Item</option>
+                                                @if ($return->sale)
 
-                                                            @foreach ($return->sale->sale_products as $sale_product)
-                                                                <option value="{{ $sale_product->product_id }}" data-product_name="{{ $sale_product->product->name }}" data-unit_cost_inc_tax="{{ $sale_product->unit_cost_inc_tax }}" data-variant_id="{{ $sale_product->variant_id }}" data-variant_name="{{ $sale_product->variant ? $sale_product->variant->variant_name : '' }}" data-sale_product_id="{{ $sale_product->id }}" data-unit_price_exc_tax="{{ $sale_product->unit_price_exc_tax }}" data-unit_price_inc_tax="{{ $sale_product->unit_price_inc_tax }}" data-sale_quantity="{{ $sale_product->quantity }}" data-unit_discount_type="{{ $sale_product->unit_discount_type }}" data-unit_discount="{{ $sale_product->unit_discount }}" data-unit_discount_amount="{{ $sale_product->unit_discount_amount }}" data-unit="{{ $sale_product->unit }}" data-is_manage_stock="{{ $sale_product->product->is_manage_stock }}" data-product_code="{{ $sale_product->variant ? $sale_product->variant->variant_code : $sale_product->product->product_code }}" data-tax_type="{{ $sale_product->product->tax_type }}" data-unit_tax_percent="{{ $sale_product->unit_tax_percent }}" data-unit_tax_amount="{{ $sale_product->unit_tax_amount }}">{{ $sale_product->product->name }}</option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
+                                                    @foreach ($return->sale->sale_products as $sale_product)
+                                                        <option value="{{ $sale_product->product_id }}" data-product_name="{{ $sale_product->product->name }}" data-unit_cost_inc_tax="{{ $sale_product->unit_cost_inc_tax }}" data-variant_id="{{ $sale_product->variant_id }}" data-variant_name="{{ $sale_product->variant ? $sale_product->variant->variant_name : '' }}" data-sale_product_id="{{ $sale_product->id }}" data-unit_price_exc_tax="{{ $sale_product->unit_price_exc_tax }}" data-unit_price_inc_tax="{{ $sale_product->unit_price_inc_tax }}" data-sale_quantity="{{ $sale_product->quantity }}" data-unit_discount_type="{{ $sale_product->unit_discount_type }}" data-unit_discount="{{ $sale_product->unit_discount }}" data-unit_discount_amount="{{ $sale_product->unit_discount_amount }}" data-unit="{{ $sale_product->unit }}" data-is_manage_stock="{{ $sale_product->product->is_manage_stock }}" data-product_code="{{ $sale_product->variant ? $sale_product->variant->variant_code : $sale_product->product->product_code }}" data-tax_type="{{ $sale_product->product->tax_type }}" data-unit_tax_percent="{{ $sale_product->unit_tax_percent }}" data-unit_tax_amount="{{ $sale_product->unit_tax_amount }}">{{ $sale_product->product->name }}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div class="searching_area" style="position: relative;">
+                                            <label class="col-form-label">Item Search</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-barcode text-dark input_f"></i>
+                                                    </span>
                                                 </div>
+
+                                                <input {{ $return->sale_id ? 'disabled' : '' }} type="text" name="search_product" class="form-control scanable" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autocomplete="off" autofocus>
                                             </div>
 
-                                            <div class="col-md-8">
-                                                <div class="searching_area" style="position: relative;">
-                                                    <label class="col-form-label">Item Search</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">
-                                                                <i class="fas fa-barcode text-dark input_f"></i>
-                                                            </span>
-                                                        </div>
-
-                                                        <input {{ $return->sale_id ? 'disabled' : '' }} type="text" name="search_product" class="form-control scanable" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autocomplete="off" autofocus>
-                                                    </div>
-
-                                                    <div class="select_area">
-                                                        <ul id="list" class="variant_list_area"></ul>
-                                                    </div>
-                                                </div>
+                                            <div class="select_area">
+                                                <ul id="list" class="variant_list_area"></ul>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="row mt-1">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table sale-product-table">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th class="text-start">Product</th>
-                                                                    <th class="text-center">Unit Price</th>
-                                                                    <th class="text-center">Unit</th>
-                                                                    <th class="text-center">Return Quantity</th>
-                                                                    <th class="text-center">SubTotal</th>
-                                                                    <th><i class="fas fa-minus text-dark"></i></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="return_item_list">
-                                                                @foreach ($return->sale_return_products as $return_item)
+                                <div class="row mt-1">
+                                    <div class="sale-item-sec">
+                                        <div class="sale-item-inner">
+                                            <div class="table-responsive">
+                                                <table class="display data__table table sale-product-table">
+                                                    <thead class="staky">
+                                                        <tr>
+                                                            <th class="text-start">Product</th>
+                                                            <th class="text-center">Unit Price</th>
+                                                            <th class="text-center">Unit</th>
+                                                            <th class="text-center">Return Quantity</th>
+                                                            <th class="text-center">SubTotal</th>
+                                                            <th><i class="fas fa-minus text-dark"></i></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="return_item_list">
+                                                        @foreach ($return->sale_return_products as $return_item)
 
-                                                                    <tr>
-                                                                        <td class="text-start">
-                                                                            <a href="#" class="text-success" id="edit_product" tabindex="-1">
-                                                                            <span class="product_name">{{ $return_item->product->name.($return_item->variant ? ' -'.$return_item->variant->variant_name : '') }}</span>
-                                                                            </a>
-                                                                            <input type="hidden" name="unit_costs_inc_tax[]" value="{{ $return_item->unit_cost_inc_tax }}">
-                                                                            <input type="hidden" name="sale_product_ids[]" id="sale_product_id" value="{{ $return_item->sale_product_id }}">
-                                                                            <input type="hidden" value="{{ $return_item->product_id }}" class="productId-{{ $return_item->product_id }}" id="product_id" name="product_ids[]">
-                                                                            <input type="hidden" value="{{ $return_item->product_variant_id }}" class="variantId-{{ $return_item->product_variant_id }}" id="variant_id" name="variant_ids[]">
-                                                                            <input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="{{ $return_item->unit_discount_type }}">
-                                                                            <input type="hidden" name="unit_discounts[]"  id="unit_discount" value="{{ $return_item->unit_discount }}">
-                                                                            <input type="hidden" name="unit_discount_amounts[]"  id="unit_discount_amount" value="{{ $return_item->unit_discount_amount }}">
-                                                                            <input type="hidden" name="tax_types[]" value="{{ $return_item->tax_type }}" id="tax_type">
-                                                                            <input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="{{ $return_item->unit_tax_percent }}">
-                                                                            <input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="{{ $return_item->unit_tax_amount }}">
-                                                                        </td>
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                    <a href="#" class="text-success" id="edit_product" tabindex="-1">
+                                                                    <span class="product_name product_dscr_btn">{{ $return_item->product->name.($return_item->variant ? ' -'.$return_item->variant->variant_name : '') }}</span>
+                                                                    </a>
+                                                                    <input type="hidden" name="unit_costs_inc_tax[]" value="{{ $return_item->unit_cost_inc_tax }}">
+                                                                    <input type="hidden" name="sale_product_ids[]" id="sale_product_id" value="{{ $return_item->sale_product_id }}">
+                                                                    <input type="hidden" value="{{ $return_item->product_id }}" class="productId-{{ $return_item->product_id }}" id="product_id" name="product_ids[]">
+                                                                    <input type="hidden" value="{{ $return_item->product_variant_id }}" class="variantId-{{ $return_item->product_variant_id }}" id="variant_id" name="variant_ids[]">
+                                                                    <input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="{{ $return_item->unit_discount_type }}">
+                                                                    <input type="hidden" name="unit_discounts[]"  id="unit_discount" value="{{ $return_item->unit_discount }}">
+                                                                    <input type="hidden" name="unit_discount_amounts[]"  id="unit_discount_amount" value="{{ $return_item->unit_discount_amount }}">
+                                                                    <input type="hidden" name="tax_types[]" value="{{ $return_item->tax_type }}" id="tax_type">
+                                                                    <input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="{{ $return_item->unit_tax_percent }}">
+                                                                    <input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="{{ $return_item->unit_tax_amount }}">
+                                                                </td>
 
-                                                                        <td>
-                                                                            <input type="hidden" name="unit_prices_exc_tax[]" value="{{ $return_item->unit_price_exc_tax }}" id="unit_price_exc_tax" tabindex="-1">
-                                                                            <input type="hidden" name="unit_prices[]" id="unit_price" value="{{ $return_item->unit_price_inc_tax }}" tabindex="-1">
-                                                                            <b><span id="span_unit_price">{{ $return_item->unit_price_inc_tax }}</span></b>
-                                                                        </td>
+                                                                <td>
+                                                                    <input type="hidden" name="unit_prices_exc_tax[]" value="{{ $return_item->unit_price_exc_tax }}" id="unit_price_exc_tax" tabindex="-1">
+                                                                    <input type="hidden" name="unit_prices[]" id="unit_price" value="{{ $return_item->unit_price_inc_tax }}" tabindex="-1">
+                                                                    <b><span id="span_unit_price">{{ $return_item->unit_price_inc_tax }}</span></b>
+                                                                </td>
 
-                                                                        <td class="text">
-                                                                            <b><span class="span_unit">{{ $return_item->unit }}</span></b>
-                                                                            <input type="hidden" name="units[]" id="unit" value="{{ $return_item->unit }}">
-                                                                        </td>
+                                                                <td class="text">
+                                                                    <b><span class="span_unit">{{ $return_item->unit }}</span></b>
+                                                                    <input type="hidden" name="units[]" id="unit" value="{{ $return_item->unit }}">
+                                                                </td>
 
-                                                                        <td>
-                                                                            <input required type="number" step="any" name="return_quantities[]" class="form-control text-center" id="return_quantity" value="{{ $return_item->return_qty }}">
-                                                                        </td>
+                                                                <td>
+                                                                    <input required type="number" step="any" name="return_quantities[]" class="form-control text-center" id="return_quantity" value="{{ $return_item->return_qty }}">
+                                                                </td>
 
-                                                                        <td class="text text-center">
-                                                                            <strong><span class="span_subtotal">{{ $return_item->return_subtotal }}</span></strong>
-                                                                            <input readonly type="hidden" name="subtotals[]" id="subtotal" value="{{ $return_item->return_subtotal }}" tabindex="-1">
-                                                                        </td>
+                                                                <td class="text text-center">
+                                                                    <strong><span class="span_subtotal">{{ $return_item->return_subtotal }}</span></strong>
+                                                                    <input readonly type="hidden" name="subtotals[]" id="subtotal" value="{{ $return_item->return_subtotal }}" tabindex="-1">
+                                                                </td>
 
-                                                                        <td class="text-center">
-                                                                            <a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                                                                <td class="text-center">
+                                                                    <a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -259,10 +250,10 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="row">
+                <section class="mb-3">
+                    <div class="row g-3">
                         <div class="col-md-6">
-                            <div class="form_element">
+                            <div class="form_element rounded m-0">
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -352,7 +343,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="form_element">
+                            <div class="form_element rounded m-0">
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -445,9 +436,11 @@
 
                 <div class="submitBtn">
                     <div class="row justify-content-center">
-                        <div class="col-12 text-end">
-                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-danger"></i> </button>
-                            <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button">Save Changes</button>
+                        <div class="col-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> </button>
+                                <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button">Save Changes</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -517,7 +510,7 @@
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="c-btn button-success float-end me-0">Update</button>
+                            <button type="submit" class="btn btn-sm btn-success">Update</button>
                         </div>
                     </form>
                 </div>

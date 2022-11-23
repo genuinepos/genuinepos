@@ -66,7 +66,7 @@
     <div class="table-responsive">
         <table class="table modal-table table-sm table-striped">
             <thead>
-                <tr class="bg-primary">
+                <tr class="bg-secondary">
                     <th class="text-white text-start">Date</th>
                     <th class="text-white text-start">Voucher No</th>
                     <th class="text-white text-start">Method</th>
@@ -84,11 +84,11 @@
                             </td>
 
                             <td class="text-start">{{ $payment->invoice_id }}</td>
-                            
+
                             <td class="text-start">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode  }}</td>
-                            
+
                             <td class="text-start">{{ $payment->account ? $payment->account->name.' (A/C :'.$payment->account->account_number.')' : 'N/A' }}</td>
-                            
+
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>
@@ -96,7 +96,7 @@
                             <td>
                                 <a href="{{ route('sales.return.payment.edit', $payment->id) }}"
                                         id="edit_return_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
-                            
+
                                 <a href="{{ route('sales.payment.details', $payment->id) }}" id="payment_details"
                                     class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
 

@@ -463,7 +463,7 @@
                                         <div class="row justify-content-center">
                                             <div class="col-12 d-flex justify-content-end">
                                                 <div class="btn-loading d-flex flex-wrap gap-2">
-                                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading . . .</span></button>
+                                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
                                                     <button type="submit" id="quotation" class="btn btn-info text-white submit_button" data-status="4" value="save_and_print">Quotation</button>
                                                     <button type="submit" id="order" class="btn btn-secondary text-white submit_button" data-status="3" value="save_and_print">Order</button>
                                                     <button type="submit" id="save_and_print" class="btn btn-success submit_button" data-status="1" value="save_and_print">Final & Print</button>

@@ -956,20 +956,20 @@ class SaleUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
-                // if (auth()->user()->can('sale_payment')) {
+                if (auth()->user()->can('sale_payment')) {
 
-                //     if ($row->due > 0) {
+                    if ($row->due > 0) {
 
-                //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                //     }
-                // }
+                        $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                    }
+                }
 
-                // if (auth()->user()->can('sale_payment')) {
+                if (auth()->user()->can('sale_payment')) {
 
-                //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
-                //         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-                // }
+                    $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
+                    data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
+                        class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 

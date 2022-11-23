@@ -46,7 +46,7 @@ class DiscountController extends Controller
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.discounts.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
 
-                    $html .= '<a href="' . route('sales.discounts.change.status', [$row->id]) . '" class="dropdown-item" id="change_status" title="change_status">Change Status</a>';
+                    $html .= '<a href="' . route('sales.discounts.change.status', [$row->id]) . '" class="dropdown-item" id="change_status" title="change_status"><i class="fas fa-toggle-off text-primary"></i> Change Status</a>';
 
                     $html .= '</div>';
                     $html .= '</div>';

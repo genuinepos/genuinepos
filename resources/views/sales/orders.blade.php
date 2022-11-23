@@ -91,7 +91,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -185,16 +185,6 @@
 
         <!--Add Payment modal-->
         <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">Payment</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                    </div>
-                    <div class="modal-body" id="payment-modal-body"></div>
-                </div>
-            </div>
         </div>
 
         <!--Payment list modal-->
@@ -220,8 +210,8 @@
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
                                     {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a></li> --}}
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                    <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="submit" id="print_payment" class="btn btn-sm btn-success">Print</button>
                                 </ul>
                             </div>
                         </div>
@@ -354,7 +344,7 @@
 
             $.get(url, function(data) {
 
-                $('#payment-modal-body').html(data);
+                $('#paymentModal').html(data);
                 $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
@@ -371,7 +361,7 @@
             $.get(url, function(data) {
 
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data);
+                $('#paymentModal').html(data);
                 $('#paymentModal').modal('show');
             });
         });

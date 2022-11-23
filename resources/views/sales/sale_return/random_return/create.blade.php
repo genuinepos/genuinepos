@@ -441,7 +441,7 @@
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="c-btn button-success float-end me-0">Update</button>
+                            <button type="submit" class="btn btn-sm btn-success">Update</button>
                         </div>
                     </form>
                 </div>
@@ -820,7 +820,7 @@
                                     tr += '<tr>';
                                     tr += '<td class="text-start">';
                                     tr += '<a href="#" id="edit_product" class="text-success" tabindex="-1">';
-                                    tr += '<span class="product_name">'+name+'</span>';
+                                    tr += '<span class="product_name product_dscr_btn">'+name+'</span>';
                                     tr += '</a>';
                                     tr += '<input name="unit_costs_inc_tax[]" type="hidden" value="'+product.product_cost_with_tax+'">';
                                     tr += '<input name="sale_product_ids[]" type="hidden" id="sale_product_id">';
@@ -977,7 +977,7 @@
                                 tr += '<tr>';
                                 tr += '<td class="text-start">';
                                 tr += '<a href="#" id="edit_product" class="text-success" tabindex="-1">';
-                                tr += '<span class="product_name">'+name+' -'+variant_product.variant_name+'</span>';
+                                tr += '<span class="product_name product_dscr_btn">'+name+' -'+variant_product.variant_name+'</span>';
                                 tr += '</a>';
                                 tr += '<input name="unit_costs_inc_tax[]" type="hidden" value="'+variant_product.variant_cost_with_tax+'">';
                                 tr += '<input name="sale_product_ids[]" type="hidden" id="sale_product_id">';
@@ -1181,7 +1181,7 @@
                 tr += '<tr>';
                 tr += '<td class="text-start">';
                 tr += '<a href="#" id="edit_product" class="text-success" id="edit_product" tabindex="-1">';
-                tr += '<span class="product_name">'+ data.product_name +'</span>';
+                tr += '<span class="product_name product_dscr_btn">'+ data.product_name +'</span>';
                 tr += '</a>';
                 tr += '<input name="sale_product_ids[]" type="hidden" id="sale_product_id" value="'+data.sale_product_id+'">';
                 tr += '<input name="unit_costs_inc_tax[]" type="hidden" value="'+data.unit_cost_inc_tax+'">';
@@ -1309,7 +1309,7 @@
                 tr += '<tr>';
                 tr += '<td class="text-start">';
                 tr += '<a href="#" id="edit_product" class="text-success" id="edit_product" tabindex="-1">';
-                tr += '<span class="product_name">'+ data.product_name + ' - ' + data.variant_name +'</span>';
+                tr += '<span class="product_name product_dscr_btn">'+ data.product_name + ' - ' + data.variant_name +'</span>';
                 tr += '</a>';
                 tr += '<input name="unit_costs_inc_tax[]" type="hidden" value="'+data.unit_cost_inc_tax+'">';
                 tr += '<input name="sale_product_ids[]" type="hidden" id="sale_product_id" value="'+data.sale_product_id+'">';

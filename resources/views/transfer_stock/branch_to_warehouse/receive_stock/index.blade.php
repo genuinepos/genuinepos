@@ -94,7 +94,7 @@
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="c-btn button-success float-end me-0">Send</button>
+                            <button type="submit" class="btn btn-sm btn-success">Send</button>
                         </div>
                     </form>
                 </div>

@@ -37,13 +37,13 @@
                             <li><strong>Address : </strong> <span>{{ $draft->branch->name }}/{{ $draft->branch->branch_code }},
                                     {{ $draft->branch->city }}, {{ $draft->branch->state }},
                                     {{ $draft->branch->zip_code }}, {{ $draft->branch->country }}</span></li>
-                            <li><strong>Phone : </strong> <span>{{ $draft->branch->phone }}</span></li> 
-                        @else 
+                            <li><strong>Phone : </strong> <span>{{ $draft->branch->phone }}</span></li>
+                        @else
                             <li><strong>Business Name : </strong> <span>{{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b></span>
                             </li>
                             <li><strong>Address : </strong> <span>{{ json_decode($generalSettings->business, true)['address'] }}</span></li>
-                            <li><strong>Phone : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li> 
-                            <li><strong>Stock Location : </strong> 
+                            <li><strong>Phone : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li>
+                            <li><strong>Stock Location : </strong>
                                 <span>
                                     {{ $draft->warehouse->warehouse_name.'/'.$draft->warehouse->warehouse_code }},
                                     {{ $draft->warehouse->address }}
@@ -96,7 +96,7 @@
                                 } elseif ($draft->admin->role_type == 3) {
                                     $admin_role = '(' . $draft->admin->role->name . ')';
                                 }
-                            
+
                                 $prefix = $draft->admin ? $draft->admin->prefix : '';
                                 $name = $draft->admin ? $draft->admin->name : '';
                                 $lastName = $draft->admin ? $draft->admin->last_name : '';
@@ -106,7 +106,7 @@
                     </li>
                     </ul>
                 </div>
-                
+
             </div><br><br>
           <div class="row">
                 <div class="table-responsive">
@@ -126,7 +126,7 @@
                             @foreach ($draft->sale_products as $saleProduct)
                                 <tr>
                                     @php
-                                        $variant = $saleProduct->variant ? ' -' . $saleProduct->variant->variant_name : '';
+                                        $variant = $saleProduct->variant_id ? ' -' . $saleProduct?->variant->variant_name : '';
                                     @endphp
                                     <td class="text-start">{{ $saleProduct->product->name . $variant }}</td>
                                     <td class="text-start">{{ $saleProduct->quantity }}</td>
@@ -164,7 +164,7 @@
                                     {{ $draft->net_total_amount }}
                             </td>
                         </tr>
-    
+
                         <tr>
                             <th class="text-start">Order Discount</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
@@ -174,21 +174,21 @@
                                 {{ $draft->order_discount_amount . $discount_type }}
                             </td>
                         </tr>
-    
+
                         <tr>
                             <th class="text-start">Order Tax</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                     {{ $draft->order_tax_amount . ' (' . $draft->order_tax_percent . '%)' }}
                             </td>
                         </tr>
-    
+
                         <tr>
                             <th class="text-start">Shipment Charge</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                               {{ $draft->shipment_charge }}
                             </td>
                         </tr>
-    
+
                         <tr>
                             <th class="text-start">Grand Total</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
@@ -200,7 +200,7 @@
                       </table>
                   </div>
               </div>
-          </div> 
+          </div>
           <hr class="p-0 m-0">
           <div class="row">
             <div class="col-md-6">
@@ -248,7 +248,7 @@
                             @if ($draft->branch->add_sale_invoice_layout->show_shop_logo == 1)
                                 @if ($draft->branch)
                                     <img style="height: 75px; width:200px;" src="{{ asset('uploads/branch_logo/' . $draft->branch->logo) }}">
-                                @else 
+                                @else
                                     <img style="height: 75px; width:200px;" src="{{asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
                                 @endif
                             @endif
@@ -278,7 +278,7 @@
                                     @if ($draft->branch->add_sale_invoice_layout->branch_email)
                                         <h6><b>Email</b> : {{ $draft->branch->email }}</h6>
                                     @endif
-                                @else 
+                                @else
                                     <h5 class="company_name">
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                                     <h6 class="company_address">
@@ -301,7 +301,7 @@
                     </div>
                 </div>
             @endif
-            
+
             @if ($draft->branch->add_sale_invoice_layout->is_header_less == 1)
                 @for ($i = 0; $i < $draft->branch->add_sale_invoice_layout->gap_from_top; $i++)
                     </br>
@@ -333,7 +333,7 @@
                         <ul class="list-unstyled">
                             <li><strong> Invoice No : </strong> {{ $draft->invoice_id }}</li>
                             <li><strong> Date : </strong> <{{ $draft->date . ' ' . $draft->time }}</li>
-                            <li><strong> Entered By : </strong> {{ $draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }} 
+                            <li><strong> Entered By : </strong> {{ $draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}
                             </li>
                         </ul>
                     </div>
@@ -365,11 +365,11 @@
                             <tr>
                                 <td class="text-start">
                                     {{ $sale_product->product->name }}
-                                    @if ($sale_product->variant)
-                                        -{{ $sale_product->variant->variant_name }}
+                                    @if ($sale_product->variant_id)
+                                        -{{ $sale_product?->variant?->variant_name }}
                                     @endif
-                                    @if ($sale_product->variant)
-                                        ({{ $sale_product->variant->variant_code }})
+                                    @if ($sale_product->variant_id)
+                                        ({{ $sale_product?->variant?->variant_code }})
                                     @else
                                         ({{ $sale_product->product->product_code }})
                                     @endif
@@ -507,7 +507,7 @@
             {{-- <div class="row">
                 <div class="barcode text-center">
                     <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($sale->invoice_id, $generatorPNG::TYPE_CODE_128)) }}">
-                </div> 
+                </div>
             </div><br>--}}
 
             <div class="row">
@@ -527,7 +527,7 @@
             </div><br>
 
             <div id="footer">
-    
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="heading text-center">
@@ -539,13 +539,13 @@
                             <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Nomhost logo.png') }}">
                         </div>
                     </div>
-    
+
                     <div class="col-md-3">
                         <div class="image_area text-center">
                             <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Creative Studio.png') }}">
                         </div>
                     </div>
-    
+
                     <div class="col-md-3">
                         <div class="image_area text-center">
                             <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Speeddigitposprologo.png') }}">
@@ -557,7 +557,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="row">
                     <div class="col-md-6 text-center">
                         <small>Print Date : {{ date('d/m/Y') }}</h6>
@@ -566,7 +566,7 @@
                         <small>Print Time : {{ date('h:i:s') }}</h6>
                     </div>
                 </div>
-    
+
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <small>Powered By <b>SpeedDigit Pvt. Ltd.</b></small>
@@ -600,7 +600,7 @@
                             @if ($defaultLayout->show_shop_logo == 1)
                                 @if ($draft->branch)
                                     <img style="height: 75px; width:200px;" src="{{ asset('uploads/branch_logo/' . $draft->branch->logo) }}">
-                                @else 
+                                @else
                                     <img style="height: 75px; width:200px;" src="{{ asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
                                 @endif
                             @endif
@@ -647,13 +647,13 @@
                                         <h6><b>Email</b> : {{ json_decode($generalSettings->business, true)['email'] }}</h6>
                                     @endif
                                 @endif
-                                
+
                             </div>
                         </div>
                     </div>
                 </div>
             @endif
-            
+
             @if ($defaultLayout->is_header_less == 1)
                 @for ($i = 0; $i < $defaultLayout->gap_from_top; $i++)
                     </br>
@@ -686,7 +686,7 @@
                             @endif
                         </ul>
                     </div>
-                    
+
                     <div class="col-lg-4">
 
                     </div>
@@ -725,11 +725,11 @@
                             <tr>
                                 <td class="text-start">
                                     {{ $sale_product->product->name }}
-                                    @if ($sale_product->variant)
-                                        -{{ $sale_product->variant->variant_name }}
+                                    @if ($sale_product->variant_id)
+                                        -{{ $sale_product?->variant->variant_name }}
                                     @endif
-                                    @if ($sale_product->variant)
-                                        ({{ $sale_product->variant->variant_code }})
+                                    @if ($sale_product->variant_id)
+                                        ({{ $sale_product?->variant->variant_code }})
                                     @else
                                         ({{ $sale_product->product->product_code }})
                                     @endif
@@ -771,7 +771,7 @@
                     </div>
                 </div>
             @endif
-            
+
             <div class="row">
                 <div class="col-md-6">
                     @if ($defaultLayout->show_total_in_word)
@@ -864,8 +864,8 @@
 
             {{-- <div class="row">
                 <div class="barcode text-center">
-                    <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($sale->invoice_id, $generatorPNG::TYPE_CODE_128)) }}"> 
-                </div> 
+                    <img src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($sale->invoice_id, $generatorPNG::TYPE_CODE_128)) }}">
+                </div>
             </div><br>--}}
 
             <div class="row">
@@ -882,7 +882,7 @@
                     </div>
                 </div>
             </div>
-        
+
             <div id="footer">
                 <div class="row">
                     <div class="col-md-12">
@@ -895,13 +895,13 @@
                             <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Nomhost logo.png') }}">
                         </div>
                     </div>
-    
+
                     <div class="col-md-3">
                         <div class="image_area text-center">
                             <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Creative Studio.png') }}">
                         </div>
                     </div>
-    
+
                     <div class="col-md-3">
                         <div class="image_area text-center">
                             <img style="width: 130px; height:50px;" src="{{ asset('assets/images/layout_concern_logo/Speeddigitposprologo.png') }}">
@@ -913,7 +913,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="row">
                     <div class="col-md-6 text-center">
                         <small>Print Date : {{ date('d/m/Y') }}</small>
@@ -922,7 +922,7 @@
                         <small>Print Time : {{ date('h:i:s') }}</small>
                     </div>
                 </div>
-    
+
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <small>Powered By <b>SpeedDigit Pvt. Ltd.</b></small>

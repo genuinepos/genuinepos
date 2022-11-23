@@ -33,7 +33,7 @@
                         <div class="table-responsive">
                             <table id="" class="table modal-table table-sm table-striped">
                                 <thead>
-                                    <tr class="bg-primary text-white">
+                                    <tr class="bg-secondary text-white">
                                         <th class="text-start">SL</th>
                                         <th class="text-start">Product</th>
                                         <th class="text-start">Unit Price</th>
@@ -56,9 +56,9 @@
                                                 @if ($sale_return_product->variant)
 
                                                     ({{ $sale_return_product->variant->variant_code }})
-                                                @else   
+                                                @else
 
-                                                    ({{ $sale_return_product->product->product_code }}) 
+                                                    ({{ $sale_return_product->product->product_code }})
                                                 @endif
                                             </td>
                                             <td class="text-start">
@@ -68,7 +68,7 @@
                                                 {{ $sale_return_product->return_qty }} ({{ $sale_return_product->unit }})
                                             </td>
                                             <td class="text-start">
-                                                {{ $sale_return_product->return_subtotal }} 
+                                                {{ $sale_return_product->return_subtotal }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -115,16 +115,16 @@
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="c-btn button-success print_btn">Print</button>
-                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
             </div>
-            
+
           </div>
         </div>
     </div>
     <!-- Details Modal End-->
 
-    @php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
+    @php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp
     <style>
         @media print
         {
@@ -148,8 +148,8 @@
                             @if ($saleReturn->branch)
                                 <h5 class="company_name">{{ $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code}}</h5>
                                 <p class="company_address">
-                                    {{ $saleReturn->branch->city }}, 
-                                    {{ $saleReturn->branch->state }}, 
+                                    {{ $saleReturn->branch->city }},
+                                    {{ $saleReturn->branch->state }},
                                     {{ $saleReturn->branch->zip_code }},
                                     {{ $saleReturn->branch->country }},
                                 </p>
@@ -178,7 +178,7 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            
+
                         </ul>
                     </div>
                     <div class="col-lg-4">
@@ -223,9 +223,9 @@
                                     @if ($sale_return_product->variant)
 
                                         ({{ $sale_return_product->variant->variant_code }})
-                                    @else   
+                                    @else
 
-                                        ({{ $sale_return_product->product->product_code }}) 
+                                        ({{ $sale_return_product->product->product_code }})
                                     @endif
                                 </td>
                                 <td class="text-start">
@@ -235,7 +235,7 @@
                                     {{ $sale_return_product->return_qty }} ({{ $sale_return_product->unit }})
                                 </td>
                                 <td class="text-start">
-                                    {{ App\Utils\Converter::format_in_bdt($sale_return_product->return_subtotal) }} 
+                                    {{ App\Utils\Converter::format_in_bdt($sale_return_product->return_subtotal) }}
                                 </td>
                             </tr>
                         @endforeach
@@ -251,17 +251,17 @@
                             <td class="text-start" colspan="2">
                                 @if ($saleReturn->return_discount_type == 1)
                                     {{ App\Utils\Converter::format_in_bdt($saleReturn->return_discount_amount) }} (Fixed)
-                                @else  
+                                @else
                                     {{ App\Utils\Converter::format_in_bdt($saleReturn->return_discount_amount) }} ({{ $saleReturn->return_discount}}%)
                                 @endif
                             </td>
                         </tr>
-                        
+
                         <tr>
                             <th class="text-end" colspan="4">Total Return Amount :</th>
                             <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_amount) }}</td>
                         </tr>
-    
+
                         <tr>
                             <th class="text-end" colspan="4">Total Paid/Refunded Amount :</th>
                             <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_due_pay) }}</td>

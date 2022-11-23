@@ -87,7 +87,7 @@
                                                     <div class="col-xl-2 col-md-4">
                                                         <label><strong></strong></label>
                                                         <div class="input-group">
-                                                            <button type="submit" id="filter_button" class="btn btn-sm btn-secondary float-start py-1 px-2"><i class="fa-solid fa-filter-list"></i><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                            <button type="submit" id="filter_button" class="btn btn-sm btn-info float-start text-white"><i class="fa-solid fa-filter-list"></i><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                         </div>
                                                     </div>
                                                 </div>

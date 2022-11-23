@@ -31,6 +31,7 @@
     .d-hide {
         display: none;
     }
+
     .dt-buttons {
         padding-top: 0px !important;
         padding-bottom: 0px !important;
@@ -224,7 +225,9 @@
     .rtl .name-head span {
         margin-left: 5px;
     }
-    .rtl .dropdown-item span, .rtl .dropdown-item i {
+
+    .rtl .dropdown-item span,
+    .rtl .dropdown-item i {
         padding: 0px 5px;
     }
 
@@ -233,6 +236,7 @@
         left: 6%;
         right: auto;
     }
+
     .orange-theme .main__nav {
         background: var(--orange-color-gradient);
     }
@@ -245,6 +249,7 @@
     .rtl .sub-menu-width .switch_text {
         font-size: 14px !important;
     }
+
     .rtl .section-header span {
         padding-left: 9px;
     }
@@ -252,8 +257,88 @@
     html {
         color: red;
     }
+
     .rtl {
         font-family: Arial, 'Noto Naskh Arabic', serif;
     }
 
+</style>
+
+{{-- Harrison Bootstrap-Custom --}}
+<style>
+    @media (min-width: 576px) {
+        .modal-full-display {
+            max-width: 93% !important;
+        }
+
+        .four-col-modal {
+            max-width: 70% !important;
+            margin: 3.8rem auto;
+        }
+
+        .five-col-modal {
+            max-width: 90% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-80-modal {
+            max-width: 80% !important;
+            margin: 3.8rem auto;
+        }
+
+        .double-col-modal {
+            max-width: 35% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-40-modal {
+            max-width: 40% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-45-modal {
+            max-width: 45% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-50-modal {
+            max-width: 50% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-55-modal {
+            max-width: 55% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-60-modal {
+            max-width: 60% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-65-modal {
+            max-width: 65% !important;
+            margin: 3.8rem auto;
+        }
+    }
+
+    .modal-middle {
+        margin-top: 33%;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #cbe4ee
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        /* background-color: #EBEDF3;*/
+        background-color: #cbe4ee;
+    }
+
+    /*# sourceMappingURL=bootstrap.min.css.map  background:linear-gradient(#f7f3f3, #c3c0c0);*/
+
+
+    .widget_content .table-responsive {
+        min-height: 80vh !important;
+    }
 </style>

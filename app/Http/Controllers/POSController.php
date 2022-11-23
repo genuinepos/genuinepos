@@ -56,7 +56,7 @@ class POSController extends Controller
         $this->productStockUtil = $productStockUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
     // Create pos view
@@ -1032,6 +1032,8 @@ class POSController extends Controller
             $this->customerUtil->updateCustomerLedger(
                 voucher_type_id: 1,
                 customer_id: $updateSale->customer_id,
+                previous_branch_id: $updateSale->branch_id,
+                new_branch_id: $updateSale->branch_id,
                 date: $updateSale->date,
                 trans_id: $updateSale->id,
                 amount: $updateSale->total_payable_amount

@@ -120,7 +120,7 @@
         <div class="col-md-12">
             <table class="table modal-table table-sm">
                 <thead>
-                    <tr class="bg-primary text-white">
+                    <tr class="bg-secondary text-white">
                         <th>Default Purchase Price</th>
                         <th>x Margin(%)</th>
                         <th>Selling Price</th>
@@ -169,7 +169,7 @@
             <div class="table-responsive">
                 <table class="table modal-table table-sm">
                     <thead>
-                        <tr class="bg-primary text-white">
+                        <tr class="bg-secondary text-white">
                             <th>Business Location</th>
                             <th>Quantity</th>
                             <th>Unit Cost Inc.Tax</th>

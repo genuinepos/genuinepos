@@ -3,7 +3,7 @@
     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-full-display">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
@@ -137,7 +137,7 @@
                     <div class="table-responsive">
                         <table id="" class="table modal-table table-sm table-striped">
                             <thead>
-                                <tr class="bg-primary text-white">
+                                <tr class="bg-secondary text-white">
                                     <th class="text-start">S/L</th>
                                     <th class="text-start">Product</th>
                                     <th class="text-start">Stock Location</th>

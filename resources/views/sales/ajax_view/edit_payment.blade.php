@@ -13,7 +13,7 @@
             <h6 class="modal-title" id="payment_heading">Edit Receive Payment</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
-        <div class="modal-body" id="payment-modal-body"> 
+        <div class="modal-body" id="payment-modal-body">
             <div class="info_area mb-2">
                 <div class="row">
                     <div class="col-md-4">
@@ -35,7 +35,7 @@
                                         @else
                                             {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
                                         @endif
-                                    </span>  
+                                    </span>
                                 </li>
                             </ul>
                         </div>
@@ -46,7 +46,7 @@
                             <ul class="list-unstyled">
                                 <li class="sale_due">
                                     <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                                    <span>{{ $payment->sale->due }}</span> 
+                                    <span>{{ $payment->sale->due }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -94,9 +94,9 @@
                             </div>
                             <select name="payment_method_id" class="form-control" id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option 
+                                    <option
                                         {{ $method->id == $payment->payment_method_id ? 'SELECTED' : '' }}
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                         value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
@@ -145,19 +145,21 @@
                 </div>
 
                 <div class="form-group row mt-3">
-                    <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button type="submit" class="c-btn button-success me-0 float-end">Save Changes</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                            <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
+                        </div>
                     </div>
                 </div>
-            </form>    
+            </form>
         </div>
     </div>
 </div>
 
 <script>
-    
+
     $('#payment_form').on('submit', function(e){
         e.preventDefault();
 
@@ -203,11 +205,11 @@
                 $('.error').html('');
 
                 if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
-                    
-                    toastr.error('Server error. Please contact to the support team.'); 
+
+                    toastr.error('Server error. Please contact to the support team.');
                     return;
                 }
 

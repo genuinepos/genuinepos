@@ -31,7 +31,7 @@
                                 <div class="col-md-12">
                                     <div class="form_element rounded mt-0 mb-3">
                                         <div class="element-body">
-                                            <div class="row">
+                                            <div class="row align-items-end">
                                                 <div class="col-md-8">
                                                     <form id="sale_purchase_filter" action="{{ route('reports.profit.sales.filter.purchases.amounts') }}" method="get">
                                                         <div class="form-group row">
@@ -81,7 +81,7 @@
                                                             <div class="col-md-2">
                                                                 <label><strong></strong></label>
                                                                 <div class="input-group">
-                                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                                 </div>
                                                             </div>
                                                         </div>

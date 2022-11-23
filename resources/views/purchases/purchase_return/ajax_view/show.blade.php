@@ -1,7 +1,7 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog col-60-modal">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
@@ -23,23 +23,23 @@
                                 <strong>Return Date : </strong> {{ $return->date }}
                             </li>
                             <li>
-                                <strong>supplier Name : </strong> 
+                                <strong>supplier Name : </strong>
                                 {{ $return->purchase ? $return->purchase->supplier->name.' (ID'.$return->purchase->supplier->contact_id.')' : $return->supplier->name.' (ID'.$return->supplier->contact_id.')' }}</span>
                             </li>
-                            <li class="warehouse"><strong>Business Location : </strong> 
-                                @if($return->branch) 
+                            <li class="warehouse"><strong>Business Location : </strong>
+                                @if($return->branch)
                                     {{ $return->branch->name.'/'.$return->branch->branch_code }}<b>(BL)</b>
-                                @else 
+                                @else
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
                                 @endif
                             </li>
-                            <li class="warehouse"><strong>Return Stock Location : </strong> 
+                            <li class="warehouse"><strong>Return Stock Location : </strong>
                                 @if ($return->warehouse)
                                     {{ $return->warehouse->warehouse_name.'/'.$return->warehouse->warehouse_code }}<b>(WH)</b>
                                 @elseif($return->branch)
                                     {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(BL)</b>
-                                @else 
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b> 
+                                @else
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                 @endif
                             </li>
                         </ul>
@@ -53,10 +53,10 @@
                         <ul class="list-unstyled">
                             <li class="parent_purchase"><strong>Purchase Details :</strong>  </li>
                             <li class="parent_purchase">
-                                <strong>P.Invoice ID : </strong> 
+                                <strong>P.Invoice ID : </strong>
                                 {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}
                             </li>
-                            <li class="parent_purchase"><strong>Date : </strong> 
+                            <li class="parent_purchase"><strong>Date : </strong>
                                 {{ $return->purchase ? $return->purchase->date : 'N/A' }}
                             </li>
                         </ul>
@@ -66,7 +66,7 @@
                     <div class="table-responsive">
                         <table id="" class="table modal-table table-sm table-striped">
                             <thead>
-                                <tr class="bg-primary text-white text-start">
+                                <tr class="bg-secondary text-white text-start">
                                     <th class="text-start" scope="col">SL</th>
                                     <th class="text-start" scope="col">Product</th>
                                     <th class="text-start" scope="col">Unit cost</th>
@@ -86,8 +86,8 @@
                                                 @endif
                                                 @if ($return_product->variant)
                                                     ({{ $return_product->variant->variant_code }})
-                                                @else   
-                                                ({{ $return_product->product->product_code }}) 
+                                                @else
+                                                ({{ $return_product->product->product_code }})
                                                 @endif
                                             </td>
 
@@ -108,9 +108,9 @@
                                             </td>
 
                                             <td class="text-start">
-                                                {{ $return_product->return_subtotal }} 
+                                                {{ $return_product->return_subtotal }}
                                             </td>
-                                        </tr> 
+                                        </tr>
                                     @endif
                                 @endforeach
                             </tbody>
@@ -132,8 +132,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="c-btn button-success print_btn">Print</button>
-                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
             </div>
         </div>
     </div>
@@ -161,13 +161,13 @@
                     @if ($return->branch)
                         @if ($return->branch->logo != 'default.png')
                             <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $return->branch->logo) }}">
-                        @else 
+                        @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch->name }}</span>
                         @endif
-                    @else 
+                    @else
                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                             <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                        @else 
+                        @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                         @endif
                     @endif
@@ -190,34 +190,34 @@
                 <div class="col-6">
                     <ul class="list-unstyled">
                         <li><strong>Return Details : </strong> </li>
-                        
-                        <li><strong>PR.Invoice ID : </strong> 
+
+                        <li><strong>PR.Invoice ID : </strong>
                             <span class="return_invoice_id">{{ $return->invoice_id }}</span>
                         </li>
 
-                        <li><strong>Return Date : </strong> 
+                        <li><strong>Return Date : </strong>
                             <span class="return_date">{{ $return->date }}</span>
                         </li>
 
-                        <li><strong>Supplier Name : </strong> 
+                        <li><strong>Supplier Name : </strong>
                             {{ $return->supplier ? $return->supplier->name : $return->purchase->supplier->name }}
                         </li>
 
-                        <li><strong>Return Stock Loction : </strong> 
+                        <li><strong>Return Stock Loction : </strong>
                             @if ($return->warehouse)
 
                                 {{ $return->warehouse->warehouse_name.'/'.$return->warehouse->warehouse_code }}<b>(WH)</b>
                             @elseif($return->branch)
 
                                 {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(B.L)</b>
-                            @else 
+                            @else
 
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(Head Office)</b> 
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(Head Office)</b>
                             @endif
                         </li>
                     </ul>
                 </div>
-                
+
                 <div class="col-6">
                     <ul class="list-unstyled float-right">
                         <li><strong>Purchase Details : </strong> </li>
@@ -258,9 +258,9 @@
                                     @if ($purchase_return_product->variant)
 
                                         ({{ $purchase_return_product->variant->variant_code }})
-                                    @else   
-                                    
-                                        ({{ $purchase_return_product->product->product_code }}) 
+                                    @else
+
+                                        ({{ $purchase_return_product->product->product_code }})
                                     @endif
                                 </td>
 
@@ -273,7 +273,7 @@
                                 </td>
 
                                 <td class="text-end">
-                                    {{ $purchase_return_product->return_subtotal }} 
+                                    {{ $purchase_return_product->return_subtotal }}
                                 </td>
                             </tr>
                         @endif
@@ -288,14 +288,14 @@
 
                     <tr>
                         <th colspan="4" class="text-end">Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                        
+
                         <td colspan="2" class="text-end">
 
                             @if ($return->purchase_id)
 
                                 {{ App\Utils\Converter::format_in_bdt($return->total_return_due) }}
-                            @else 
-                            
+                            @else
+
                                 CHECK SUPPLIER DUE
                             @endif
                         </td>

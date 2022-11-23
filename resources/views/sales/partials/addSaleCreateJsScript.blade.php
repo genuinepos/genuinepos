@@ -175,7 +175,7 @@
                                 tr += '<tr>';
                                 tr += '<td class="text-start">';
                                 tr += '<a href="#" class="text-success" id="edit_product">';
-                                tr += '<span class="product_name">'+name+'</span>';
+                                tr += '<span class="product_name product_dscr_btn">'+name+'</span>';
                                 tr += '</a><input type="'+(product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
                                 tr += '<input value="'+product.id+'" type="hidden" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+product.tax_type+'" type="hidden" id="tax_type">';
@@ -366,7 +366,7 @@
                             tr += '<tr>';
                             tr += '<td class="text-start">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
-                            tr += '<span class="product_name">'+name+' -'+variant_product.variant_name+'</span>';
+                            tr += '<span class="product_name product_dscr_btn">'+name+' -'+variant_product.variant_name+'</span>';
                             tr += '</a><input type="'+(variant_product.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable" placeholder="IMEI, Serial number or other info.">';
                             tr += '<input value="'+variant_product.product.id+'" type="hidden" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_product.id+'" type="hidden" id="variant_id" name="variant_ids[]">';
@@ -643,7 +643,7 @@
                         tr += '<tr>';
                         tr += '<td class="text-start">';
                         tr += '<a href="#" class="text-success" id="edit_product">';
-                        tr += '<span class="product_name">'+name+'</span>';
+                        tr += '<span class="product_name product_dscr_btn">'+name+'</span>';
                         tr += '</a><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info">';
                         tr += '<input value="'+product_id+'" type="hidden" id="product_id" name="product_ids[]">';
                         tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
@@ -848,7 +848,7 @@
                         tr += '<tr>';
                         tr += '<td class="text-start">';
                         tr += '<a href="#" class="text-success" id="edit_product">';
-                        tr += '<span class="product_name">'+name+' -'+variant_name+'</span>';
+                        tr += '<span class="product_name product_dscr_btn">'+name+' -'+variant_name+'</span>';
                         tr += '</a><input type="'+(description == 1 ? 'text' : 'hidden')+'" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other info.">';
                         tr += '<input value="'+product_id+'" type="hidden" id="product_id" name="product_ids[]">';
                         tr += '<input value="'+variant_id+'" type="hidden" id="variant_id" name="variant_ids[]">';

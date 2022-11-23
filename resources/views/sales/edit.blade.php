@@ -15,126 +15,121 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-edit"></span>
+                    <h6>Edit Sale</h6>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="edit_sale_form" action="{{ route('sales.update', $sale->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-1 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h6>Edit Sale | <small class="text-dark"><strong>Save Changes = (Shift + Enter)</strong> </small></h6>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>Customer :</b> </label>
+                                        <div class="col-8">
+                                            <div class="input-group width-60">
+                                                <input readonly type="text" value="{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}" id="customer_name" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"> <b>Warehouse :</b> </label>
+                                        <div class="col-8">
+                                            {{-- <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1"> --}}
+                                            <select name="warehouse_id" class="form-control" id="warehouse_id">
+                                                <option value="">Select Warehouse</option>
+                                                @foreach ($warehouses as $warehouse)
+                                                    <option data-w_name="{{ $warehouse->name.'/'.$warehouse->code }}" value="{{ $warehouse->id }}">
+                                                        {{ $warehouse->name.'/'.$warehouse->code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class=" col-4"><b>Customer :</b> </label>
-                                                <div class="col-8">
-                                                    <div class="input-group width-60">
-                                                        <input readonly type="text" value="{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}" id="customer_name" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"> <b>Warehouse :</b> </label>
-                                                <div class="col-8">
-                                                    {{-- <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1"> --}}
-                                                    <select name="warehouse_id" class="form-control" id="warehouse_id">
-                                                        <option value="">Select Warehouse</option>
-                                                        @foreach ($warehouses as $warehouse)
-                                                            <option data-w_name="{{ $warehouse->name.'/'.$warehouse->code }}" value="{{ $warehouse->id }}">
-                                                                {{ $warehouse->name.'/'.$warehouse->code }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>Invoice ID :</b> </label>
+                                        <div class="col-8">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" value="{{ $sale->invoice_id }}">
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Invoice ID :</b> </label>
-                                                <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" value="{{ $sale->invoice_id }}">
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"><b>Attachment :</b>
-                                                    <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc." class="fas fa-info-circle tp"></i></label>
-                                                <div class="col-8">
-                                                    <input type="file" name="attachment" class="form-control">
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>Attachment :</b>
+                                            <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc." class="fas fa-info-circle tp"></i></label>
+                                        <div class="col-8">
+                                            <input type="file" name="attachment" class="form-control">
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4">Status : <span
-                                                        class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <select name="status" class="form-control add_input" data-name="Status"
-                                                        id="status">
-                                                        <option value="">Select status</option>
-                                                        @foreach (App\Utils\SaleUtil::saleStatus() as $key => $status)
-                                                            <option {{ $sale->status == $key ? 'SELECTED' : '' }} value="{{ $key }}">
-                                                                {{ $status }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_status"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"><b>Price Group :</b></label>
-                                                <div class="col-8">
-                                                    <select name="price_group_id" class="form-control"
-                                                        id="price_group_id">
-                                                        <option value="">Default Selling Price</option>
-                                                        @foreach ($price_groups as $pg)
-                                                            <option value="{{ $pg->id }}">{{ $pg->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4">Status : <span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <select name="status" class="form-control add_input" data-name="Status"
+                                                id="status">
+                                                <option value="">Select status</option>
+                                                @foreach (App\Utils\SaleUtil::saleStatus() as $key => $status)
+                                                    <option {{ $sale->status == $key ? 'SELECTED' : '' }} value="{{ $key }}">
+                                                        {{ $status }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_status"></span>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"> <b>Sale Date :</b> <span
-                                                    class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <input type="text" name="date" class="form-control" id="date" autocomplete="off"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) }}">
-                                                    <span class="error error_date"></span>
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>Price Group :</b></label>
+                                        <div class="col-8">
+                                            <select name="price_group_id" class="form-control"
+                                                id="price_group_id">
+                                                <option value="">Default Selling Price</option>
+                                                @foreach ($price_groups as $pg)
+                                                    <option value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                            <div class="input-group mt-1">
-                                                <label class=" col-4"> <b>Sale A/C :</b> <span
-                                                    class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <select name="sale_account_id" class="form-control add_input"
-                                                        id="sale_account_id" data-name="Sale account">
-                                                        @foreach ($saleAccounts as $saleAc)
-                                                            <option {{ $sale->sale_account_id == $saleAc->id ? 'SELECTED': '' }} value="{{ $saleAc->id }}">{{ $saleAc->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_sale_account_id"></span>
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"> <b>Sale Date :</b> <span
+                                            class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <input type="text" name="date" class="form-control" id="date" autocomplete="off"
+                                                value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) }}">
+                                            <span class="error error_date"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group mt-1">
+                                        <label class=" col-4"> <b>Sale A/C :</b> <span
+                                            class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <select name="sale_account_id" class="form-control add_input"
+                                                id="sale_account_id" data-name="Sale account">
+                                                @foreach ($saleAccounts as $saleAc)
+                                                    <option {{ $sale->sale_account_id == $saleAc->id ? 'SELECTED': '' }} value="{{ $saleAc->id }}">{{ $saleAc->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_sale_account_id"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -145,10 +140,10 @@
 
                 <section>
                     <div class="sale-content">
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-9">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
+                                <div class="card mb-3">
+                                    <div class="card-body p-2">
                                         <div class="row">
                                             <div class="col-md-9">
                                                 <div class="searching_area" style="position: relative;">
@@ -213,7 +208,7 @@
                                                                                     $variant = $s_product->product_variant_id != null ? ' -'.$s_product->variant->variant_name : '';
                                                                                 @endphp
 
-                                                                                <span class="product_name">{{ $s_product->product->name.$variant }}</span>
+                                                                                <span class="product_name product_dscr_btn">{{ $s_product->product->name.$variant }}</span>
 
                                                                             </a><br/><input type="{{ $s_product->product->is_show_emi_on_pos == 1 ? 'text' : 'hidden'}}" name="descriptions[]" class="form-control scanable mb-1" placeholder="IMEI, Serial number or other informations here." value="{{ $s_product->description ? $s_product->description : '' }}">
                                                                             <input value="{{ $s_product->product_id }}" type="hidden" id="product_id" name="product_ids[]">
@@ -310,8 +305,8 @@
                                     </div>
                                 </div>
 
-                                <div class="item-details-sec mt-2 payment_body">
-                                    <div class="content-inner">
+                                <div class="card payment_body">
+                                    <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="input-group">
@@ -380,23 +375,23 @@
                             </div>
 
                             <div class="col-md-3">
-                                <div class="item-details-sec mb-3 number-fields">
-                                    <div class="content-inner">
-                                        <div class="row">
+                                <div class="card number-fields">
+                                    <div class="card-body">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Total Item :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="{{ $sale->total_item }}" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Net Total :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="{{ $sale->net_total_amount }}" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Discount :</label>
                                             <div class="col-sm-3">
                                                 <select name="order_discount_type" class="form-control" id="order_discount_type">
@@ -410,7 +405,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Order Tax :</label>
                                             <div class="col-sm-7">
                                                 <select name="order_tax" class="form-control" id="order_tax">
@@ -423,14 +418,14 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Shipment Cost :</label>
                                             <div class="col-sm-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="{{ $sale->shipment_charge }}">
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <label class="col-sm-5 col-form-label">Total Payable :</label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
@@ -439,21 +434,21 @@
 
                                         <div class="payment_body {{ $sale->status == 1 || $sale->status == 3 ? '' : 'd-hide' }}">
 
-                                            <div class="row">
+                                            <div class="row mb-2">
                                                 <label class="col-sm-5 col-form-label">Paid :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" name="previous_paid" class="form-control text-success" id="previous_paid" value="{{ $sale->paid }}" tabindex="-1">
                                                 </div>
                                             </div>
 
-                                            <div class="row">
+                                            <div class="row mb-2">
                                                 <label class="col-sm-5 col-form-label">CR. Receivable :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly class="form-control" name="current_receivable" type="number" step="any" id="current_receivable" value="" tabindex="-1">
                                                 </div>
                                             </div>
 
-                                            <div class="row">
+                                            <div class="row mb-2">
                                                 <label class="col-sm-5 col-form-label">Cash Receive : >></label>
                                                 <div class="col-sm-7">
                                                     <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
@@ -467,7 +462,7 @@
                                                 </div>
                                             </div> --}}
 
-                                            <div class="row">
+                                            <div class="row mb-2">
                                                 <label class="col-sm-5 col-form-label">Paid By :</label>
                                                 <div class="col-sm-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id">
@@ -482,7 +477,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row">
+                                            <div class="row mb-2">
                                                 <label class="col-sm-5 col-form-label">Debit A/C : <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-sm-7">
@@ -503,7 +498,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row">
+                                            <div class="row mb-2">
                                                 <label class="col-sm-5 col-form-label">Due :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">
@@ -512,9 +507,11 @@
                                         </div>
 
                                         <div class="row justify-content-center">
-                                            <div class="col-12 text-end">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                                                <button type="submit" id="save" class="btn btn-sm btn-success submit_button">Save Change </button>
+                                            <div class="col-12 d-flex justify-content-end">
+                                                <div class="btn-loading">
+                                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
+                                                    <button type="submit" id="save" class="btn btn-sm btn-success submit_button">Save Change </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -606,7 +603,7 @@
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="c-btn button-success float-end me-0">Update</button>
+                            <button type="submit" class="btn btn-sm btn-success float-end">Update</button>
                         </div>
                     </form>
                 </div>
@@ -618,7 +615,7 @@
     @if(auth()->user()->can('product_add'))
         <!--Add Product Modal-->
         <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>

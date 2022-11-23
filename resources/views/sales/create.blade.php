@@ -535,10 +535,12 @@
                         </div>
 
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn op_loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button name="action" value="save" type="submit" class="c-btn button-success float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn op_loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button name="action" value="save" type="submit" class="btn btn-sm btn-success">Save</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -621,7 +623,7 @@
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="c-btn button-success float-end me-0">Update</button>
+                            <button type="submit" class="btn btn-sm btn-success">Update</button>
                         </div>
                     </form>
                 </div>
@@ -657,19 +659,13 @@
                 <div class="modal-body">
                     <!--begin::Form-->
                     <div class="tab_list_area">
-                        <ul class="list-unstyled">
-                            <li>
-                                <a id="tab_btn" class="tab_btn tab_active text-white" href="{{url('common/ajax/call/recent/sales/1')}}"><i class="fas fa-info-circle"></i> Final</a>
-                            </li>
+                        <div class="btn-group">
+                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn tab_active" href="{{url('common/ajax/call/recent/sales/1')}}"><i class="fas fa-info-circle"></i> Final</a>
 
-                            <li>
-                                <a id="tab_btn" class="tab_btn text-white" href="{{url('common/ajax/call/recent/quotations/1')}}"><i class="fas fa-scroll"></i>Quotation</a>
-                            </li>
+                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn" href="{{url('common/ajax/call/recent/quotations/1')}}"><i class="fas fa-scroll"></i>Quotation</a>
 
-                            <li>
-                                <a id="tab_btn" class="tab_btn text-white" href="{{url('common/ajax/call/recent/drafts/1')}}"><i class="fas fa-shopping-bag"></i> Draft</a>
-                            </li>
-                        </ul>
+                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn" href="{{url('common/ajax/call/recent/drafts/1')}}"><i class="fas fa-shopping-bag"></i> Draft</a>
+                        </div>
                     </div>
 
                     <div class="tab_contant">
@@ -700,7 +696,7 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">Close</button>
                         </div>
                     </div>
                 </div>
@@ -710,7 +706,7 @@
 
     <!-- Show stock modal-->
     <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-50-modal" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="data_preloader mt-5" id="stock_preloader">
                     <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>

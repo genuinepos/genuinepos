@@ -2,7 +2,7 @@
     <div class="table-responsive">
         <table class="table modal-table table-sm table-striped custom-table">
             <thead>
-                <tr class="bg-primary text-white">
+                <tr class="bg-secondary text-white">
                     <th class="text-start">Date</th>
                     <th class="text-start">Invoice ID</th>
                     <th class="text-start">Amount</th>

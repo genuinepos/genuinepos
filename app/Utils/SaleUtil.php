@@ -675,28 +675,28 @@ class SaleUtil
                     $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
 
-                // if (auth()->user()->can('sale_payment')) {
+                if (auth()->user()->can('sale_payment')) {
 
-                //     if ($row->due > 0) {
+                    if ($row->due > 0) {
 
-                //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                //     }
-                // }
+                        $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                    }
+                }
 
-                // if (auth()->user()->can('sale_payment')) {
+                if (auth()->user()->can('sale_payment')) {
 
-                //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
-                //         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-                // }
+                    $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
+                    data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
+                        class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                }
 
-                // if ($row->sale_return_due > 0) {
+                if ($row->sale_return_due > 0) {
 
-                //     if (auth()->user()->can('sale_payment')) {
+                    if (auth()->user()->can('sale_payment')) {
 
-                //         $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
-                //     }
-                // }
+                        $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                    }
+                }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 

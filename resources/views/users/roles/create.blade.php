@@ -481,7 +481,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_payment_report" class="report"> &nbsp; Purchase Payment Report</p>
+                                            <input type="checkbox" name="purchase_payment_report" class="report purchase"> &nbsp; Purchase Payment Report</p>
                                         </div>
                                     </div>
                                 </div>
@@ -881,7 +881,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="another_register_close" class="another_register_close"> &nbsp; Close Another Cash Register </p>
+                                            <input type="checkbox" name="another_register_close" class="another_register_close cash_register"> &nbsp; Close Another Cash Register </p>
                                         </div>
                                     </div>
                                 </div>

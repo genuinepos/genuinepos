@@ -192,7 +192,7 @@
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
                                                                 {{ $role->hasPermissionTo('supplier_report') ? 'CHECKED' : '' }}
-                                                            name="supplier_report" class="report"> &nbsp; Supplier Report</p>
+                                                            name="supplier_report" class="report contacts"> &nbsp; Supplier Report</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -247,7 +247,7 @@
                                                         <p class="checkbox_input_wrap mt-1">
                                                             <input type="checkbox"
                                                                     {{ $role->hasPermissionTo('customer_report') ? 'CHECKED' : '' }}
-                                                            name="customer_report" class="report"> &nbsp; Customer Report</p>
+                                                            name="customer_report" class="report contacts"> &nbsp; Customer Report</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -325,7 +325,7 @@
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
                                                                 {{ $role->hasPermissionTo('stock_report') ? 'CHECKED' : '' }}
-                                                         name="stock_report" class="report"> &nbsp; stock Report</p>
+                                                         name="stock_report" class="report product"> &nbsp; stock Report</p>
                                                     </div>
                                                 </div>
 
@@ -948,7 +948,7 @@
                                                         <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
                                                                 {{ $role->hasPermissionTo('another_register_close') ? 'CHECKED' : '' }}
-                                                        name="another_register_close" class="another_register_close"> &nbsp; Close Another Cash Register </p>
+                                                        name="another_register_close" class="another_register_close cash_register"> &nbsp; Close Another Cash Register </p>
                                                     </div>
                                                 </div>
                                             </div>

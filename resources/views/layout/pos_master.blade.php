@@ -40,6 +40,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="{{ asset('assets/plugins/custom/digital_clock/digital_clock.js') }}"></script>
     <script src="{{asset('backend/js/number-bdt-formater.js')}}"></script>
+    <style>
+        .d-hide {
+            display: none;
+        }
+    </style>
 </head>
 
 <body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'dark-theme' }}">

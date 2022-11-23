@@ -1216,6 +1216,13 @@ class RolePermissionSeeder extends Seeder
                 'created_at' => '2022-11-16 18:46:30',
                 'updated_at' => '2022-11-16 18:46:30',
             ],
+            [
+                'id' => '154',
+                'name' => 'receive_payment_index',
+                'guard_name' => 'web',
+                'created_at' => '2022-11-16 18:46:30',
+                'updated_at' => '2022-11-16 18:46:30',
+            ],
         ];
 
         return $permissions;

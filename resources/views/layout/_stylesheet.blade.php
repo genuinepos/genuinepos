@@ -337,4 +337,8 @@
 
     /*# sourceMappingURL=bootstrap.min.css.map  background:linear-gradient(#f7f3f3, #c3c0c0);*/
 
+
+    .widget_content .table-responsive {
+        min-height: 80vh !important;
+    }
 </style>

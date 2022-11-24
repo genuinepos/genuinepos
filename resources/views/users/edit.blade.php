@@ -63,9 +63,9 @@
                                 <div class="row g-2 mt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><b>@lang('menu.phone') :</b> <span class="text-danger">*</span> </label>
+                                            <label class="col-4"><b>@lang('menu.phone') :</b></label>
                                             <div class="col-8">
-                                                <input required type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{ $user->phone }}" autocomplete="off">
+                                                <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{ $user->phone }}" autocomplete="off">
                                                 <span class="error error_phone"></span>
                                             </div>
                                         </div>
@@ -431,7 +431,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     @if ($addons->hrm == 1)
                         <div class="col-md-8">
                             <div class="form_element m-0 mt-2">
@@ -528,7 +528,7 @@
                             </div>
                         </div>
                         @endif
-                        
+
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-box">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>

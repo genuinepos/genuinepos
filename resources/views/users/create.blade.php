@@ -36,8 +36,8 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><span class="text-danger">*
-                                            </span><b>First Name :</b> </label>
+                                        <label class="col-4"><b>First Name :</b><span class="text-danger">*
+                                        </span></label>
 
                                         <div class="col-8">
                                             <input type="text" name="first_name" class="form-control"
@@ -61,12 +61,20 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><span
-                                                class="text-danger">*</span> <b>Email :</b> </label>
+                                        <label class="col-4"><b>Email :</b><span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input type="text" name="email" id="email" class="form-control"
                                                 placeholder="exmple@email.com">
                                             <span class="error error_email"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>@lang('menu.phone') :</b></label>
+                                        <div class="col-8">
+                                            <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="" autocomplete="off">
+                                            <span class="error error_phone"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -93,8 +101,8 @@
                                 <div class="row mt-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><span
-                                                    class="text-danger">*</span> <b>Username :</b>  </label>
+                                            <label class="col-4"><b>Username :</b><span
+                                                class="text-danger">*</span> </label>
                                             <div class="col-8">
                                                 <input type="text" name="username" id="username"
                                                     class="form-control " placeholder="Username" autocomplete="off">
@@ -105,8 +113,8 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"> <span
-                                                    class="text-danger">*</span> <b>Role :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all branch." class="fas fa-info-circle tp"></i> </label>
+                                            <label class="col-4"><b>Role :</b><span
+                                                class="text-danger">*</span><i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all branch." class="fas fa-info-circle tp"></i> </label>
                                             <div class="col-8">
                                                 <select name="role_id" id="role_id" class="form-control">
                                                     <option value="">Admin</option>
@@ -119,8 +127,8 @@
                                 <div class="row mt-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><span
-                                                    class="text-danger">*</span> <b>Password :</b> </label>
+                                            <label class="col-4"><b>Password :</b><span
+                                                    class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off">
                                                 <span class="error error_password"></span>
@@ -130,8 +138,8 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><b><span
-                                                class="text-danger">*</span> Confirm Pass : </b> </label>
+                                            <label class="col-4"><b>Confirm Pass : </b><span
+                                                class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm password" autocomplete="off">
                                             </div>
@@ -159,8 +167,8 @@
 
                                     <div class="col-md-6 belonging_branch d-hide">
                                         <div class="input-group">
-                                            <label class="col-4"><span
-                                                    class="text-danger">*</span> <b>Belonging Location :</b> </label>
+                                            <label class="col-4"><b>Belonging Location :</b><span
+                                                class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
                                                     <option value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
@@ -264,15 +272,6 @@
                                     </div>
                                 </div>
                             <div class="row mt-2">
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <label class="col-4"><b>Phone :</b> </label>
-                                        <div class="col-8">
-                                            <input type="text" name="phone" class="form-control" autocomplete="off" placeholder="Phone number">
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Facebook Link :</b> </label>

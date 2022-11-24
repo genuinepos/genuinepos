@@ -43,7 +43,7 @@
                                                                 <label><strong></strong></label>
                                                                 <div class="input-group">
                                                                     <button type="submit"
-                                                                        class="btn text-white btn-sm btn-secondary float-start">
+                                                                        class="btn text-white btn-sm btn-info float-start">
                                                                         <i class="fas fa-funnel-dollar"></i> Filter</button>
                                                                 </div>
                                                             </div>
@@ -79,7 +79,7 @@
                                                 <div id="data-list">
                                                     <table class="table modal-table table-sm table-bordered">
                                                         <thead>
-                                                            <tr class="bg-primary">
+                                                            <tr class="bg-secondary">
                                                                 <th class="liability text-white">Liability</th>
                                                                 <th class="assets text-white">Assets</th>
                                                             </tr>
@@ -239,7 +239,7 @@
                                                             </tr>
                                                         </tbody>
                                                         <tfoot>
-                                                            <tr class="bg-primary">
+                                                            <tr class="bg-secondary">
                                                                 <td class="total_liability_area">
                                                                     <table class="table table-sm">
                                                                         <tbody>
@@ -273,7 +273,7 @@
                                             </div>
 
                                             <div class="print_btn_area">
-                                                <a id="print_btn" href="#" class="btn btn-sm btn-primary float-end"><i class="fas fa-print"></i> Print</a>
+                                                <a id="print_btn" href="#" class="btn btn-sm btn-success float-end"><i class="fas fa-print"></i> Print</a>
                                             </div>
                                         </div>
                                     </div>

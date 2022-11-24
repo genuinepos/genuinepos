@@ -5,7 +5,7 @@
 ?>
 <table class="table modal-table table-sm table-bordered">
     <thead>
-        <tr class="bg-primary">
+        <tr class="bg-secondary">
             <th class="liability text-white">Liabilities</th>
             <th class="assets text-white">Assets</th>
         </tr>
@@ -212,7 +212,7 @@
         </tr>
     </tbody>
     <tfoot>
-        <tr class="bg-primary">
+        <tr class="bg-secondary">
             {{-- Calculate difference --}}
             @php
                 $differ = $totalAsset - $totalLiability;

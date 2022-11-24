@@ -68,11 +68,14 @@
         <input type="text" name="remarks" class="form-control" id="e_remarks" placeholder="Remarks" value="{{ $contra->remarks }}"/>
     </div>
 
-    <div class="form-group text-right py-2">
-        <button type="button" class="btn loading_button d-hide"><i
-                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-        <button type="submit" class="c-btn me-0 button-success submit_button float-end">Save Changes</button>
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+    <div class="form-group d-flex justify-content-end pb-2 pt-4">
+        <div class="btn-loading">
+            <button type="button" class="btn loading_button d-hide">
+                <i class="fas fa-spinner"></i><span> Loading...</span>
+            </button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="submit" class="btn btn-sm btn-success submit_button">Save Changes</button>
+        </div>
     </div>
 </form>
 

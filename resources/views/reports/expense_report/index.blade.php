@@ -74,15 +74,15 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <div class="row">
+                                    <div class="row align-items-end">
                                         <div class="col-md-6">
                                             <label><strong></strong></label>
                                             <div class="input-group">
-                                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6 mt-4">
+                                        <div class="col-md-6">
                                             <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
                                         </div>
                                     </div>
@@ -91,7 +91,7 @@
                         </form>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="data_preloader">
                         <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>

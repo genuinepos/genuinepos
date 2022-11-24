@@ -21,10 +21,10 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li> 
+                    <li>
                         <p>
-                            <b >Total Loan & Advance : </b> {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            {{ App\Utils\Converter::format_in_bdt($company->pay_loan_amount) }} 
+                            <b >Total Loan & Advance : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ App\Utils\Converter::format_in_bdt($company->pay_loan_amount) }}
                         </p>
                     </li>
 
@@ -48,9 +48,9 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li> 
+                    <li>
                         <p>
-                            <b>Total Loan Liability  : </b> {{ json_decode($generalSettings->business, true)['currency'] }} 
+                            <b>Total Loan Liability  : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}
                         </p>
                     </li>
@@ -72,7 +72,7 @@
             </div>
         </div>
 
-        
+
     </div>
 </div>
 
@@ -83,7 +83,7 @@
     <div class="table-responsive">
         <table class="table modal-table table-sm table-striped">
             <thead>
-                <tr class="bg-primary">
+                <tr class="bg-secondary">
                     <th class="text-white text-start">Date</th>
                     <th class="text-white text-start">Voucher No</th>
                     <th class="text-white text-start">Payment Type</th>

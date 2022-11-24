@@ -66,15 +66,15 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="row">
+                                        <div class="row align-items-end">
                                             <div class="col-md-6">
                                                 <label><strong></strong></label>
                                                 <div class="input-group">
-                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6 mt-4">
+                                            <div class="col-md-6">
                                                 <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
                                             </div>
                                         </div>
@@ -108,7 +108,7 @@
                                                 {{-- Cash Flow from investing --}}
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <strong>ASSET :</strong>
+                                                        <span>ASSET :</span>
                                                     </th>
                                                 </tr>
 
@@ -121,7 +121,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <strong>SALES :</strong>
+                                                        <span>SALES :</span>
                                                     </th>
                                                 </tr>
 
@@ -157,7 +157,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <strong>PURCHASE :</strong>
+                                                        <span>PURCHASE :</span>
                                                     </th>
                                                 </tr>
 
@@ -193,7 +193,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <strong>EXPENSES :</strong>
+                                                        <span>EXPENSES :</span>
                                                     </th>
                                                 </tr>
 
@@ -219,7 +219,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <strong>PRODUCTS :</strong>
+                                                        <span>PRODUCTS :</span>
                                                     </th>
                                                 </tr>
 
@@ -255,7 +255,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <strong>LOAN & LIABILITIES :</strong>
+                                                        <span>LOAN & LIABILITIES :</span>
                                                     </th>
                                                 </tr>
 
@@ -291,7 +291,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <strong>LOAN & ADVANCE :</strong>
+                                                        <span>LOAN & ADVANCE :</span>
                                                     </th>
                                                 </tr>
 
@@ -327,7 +327,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <strong>PROFIT LOSS :</strong>
+                                                        <span>PROFIT LOSS :</span>
                                                     </th>
                                                 </tr>
 
@@ -363,7 +363,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <strong>ACCOUNT BALANCE :</strong>
+                                                        <span>ACCOUNT BALANCE :</span>
                                                     </th>
                                                 </tr>
 

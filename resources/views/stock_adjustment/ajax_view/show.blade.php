@@ -1,4 +1,4 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
  <!-- Details Modal -->
  <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog col-80-modal">
@@ -12,35 +12,35 @@
                 <div class="col-md-6 text-left">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>Business Location : </strong> 
-                            {{ 
-                                $adjustment->branch ? $adjustment->branch->name.'/'.$adjustment->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' 
+                            <strong>Business Location : </strong>
+                            {{
+                                $adjustment->branch ? $adjustment->branch->name.'/'.$adjustment->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)'
                             }}
                         </li>
 
                         @if ($adjustment->warehouse_id)
                             <li>
-                                <strong>Adjustment Location : </strong> 
-                                {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b> 
+                                <strong>Adjustment Location : </strong>
+                                {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
                             </li>
                             <li><strong>Phone : </strong> {{ $adjustment->warehouse->phone}}</li>
                             <li><strong>Address : </strong> {{ $adjustment->warehouse->address}}</li>
                         @elseif($adjustment->branch_id)
                             <li>
-                                <strong>Adjustment Location : </strong> 
+                                <strong>Adjustment Location : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
                             <li><strong>Phone : </strong> {{ $adjustment->branch->phone}}</li>
-                            <li><strong>Address : </strong> 
+                            <li><strong>Address : </strong>
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
                         @else
                             <li>
-                                <strong>Adjustment Location : </strong> 
+                                <strong>Adjustment Location : </strong>
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
                             </li>
                             <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
-                            <li><strong>Address : </strong> 
+                            <li><strong>Address : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif
@@ -65,7 +65,7 @@
                 <div class="table-responsive">
                     <table id="" class="table modal-table table-sm">
                         <thead>
-                            <tr class="bg-primary text-white text-start">
+                            <tr class="bg-secondary text-white text-start">
                                 <th class="text-start">SL</th>
                                 <th class="text-start">Product</th>
                                 <th class="text-start">Quantity</th>
@@ -78,7 +78,7 @@
                                 <tr>
                                     <td class="text-start">{{ $loop->index + 1 }}</td>
                                     @php
-                                        $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
+                                        $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : '';
                                     @endphp
                                     <td class="text-start">{{ $product->product->name.$variant }}</td>
                                     <td class="text-start">{{ $product->quantity.' ('.$product->unit.')' }}</td>
@@ -99,7 +99,7 @@
                         <div class="table-responsive">
                            <table class="table modal-table table-striped table-sm">
                                <thead>
-                                   <tr class="bg-primary text-white">
+                                   <tr class="bg-secondary text-white">
                                        <th>Date</th>
                                        <th>Voucher No</th>
                                        <th>Method</th>
@@ -120,10 +120,10 @@
                                         </td>
                                         <td>{{ App\Utils\Converter::format_in_bdt($adjustment->recover->recovered_amount) }}</td>
                                     </tr>
-                                  @else   
+                                  @else
                                       <tr>
                                           <td colspan="7" class="text-center">No Data Found</td>
-                                      </tr>  
+                                      </tr>
                                   @endif
                                </tbody>
                            </table>
@@ -162,8 +162,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-            <button type="submit" class="c-btn button-success print_btn">Print</button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
         </div>
       </div>
     </div>
@@ -203,33 +203,33 @@
                         <li><strong>Reference No : </strong>{{ $adjustment->invoice_id }}</li>
                           @if ($adjustment->warehouse_id)
                             <li>
-                                <strong>Adjustment Location : </strong> 
+                                <strong>Adjustment Location : </strong>
                                 {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
                             </li>
                             <li><strong>Phone : </strong> {{ $adjustment->warehouse->phone }}</li>
                             <li><strong>Address : </strong> {{ $adjustment->warehouse->address }}</li>
                         @elseif($adjustment->branch_id)
                             <li>
-                                <strong>Adjustment Location : </strong> 
+                                <strong>Adjustment Location : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
                             <li><strong>Phone : </strong> {{ $adjustment->branch->phone}}</li>
-                            <li><strong>Address : </strong> 
+                            <li><strong>Address : </strong>
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
                         @else
                             <li>
-                                <strong>Adjustment Location : </strong> 
+                                <strong>Adjustment Location : </strong>
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
                             </li>
                             <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
-                            <li><strong>Address : </strong> 
+                            <li><strong>Address : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif
                     </ul>
                 </div>
-        
+
                 <div class="col-4">
                     <ul class="list-unstyled float-right">
                         <li>
@@ -263,7 +263,7 @@
                         <tr>
                             <td class="text-start">{{ $loop->index + 1 }}</td>
                             @php
-                                $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
+                                $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : '';
                             @endphp
                             <td class="text-start">{{ $product->product->name.$variant }}</td>
                             <td class="text-start">{{ $product->quantity.' ('.$product->unit.')' }}</td>

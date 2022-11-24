@@ -1,4 +1,4 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-full-display">
@@ -18,13 +18,13 @@
                         <li><strong>Name :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>Phone : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         @if ($transfer->branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>Address : </strong>
                                 {{ $transfer->branch->city }},
                                 {{ $transfer->branch->state }},
                                 {{ $transfer->branch->zip_code }},
                                 {{ $transfer->branch->country }}.
                             </li>
-                        @else 
+                        @else
                             {{ json_decode($generalSettings->business, true)['address'] }}
                         @endif
                     </ul>
@@ -43,8 +43,8 @@
                     <ul class="list-unstyled float-right">
                         <li><strong>Date : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>Status : </strong> 
-                            @if ($transfer->status == 1) 
+                        <li><strong>Status : </strong>
+                            @if ($transfer->status == 1)
                                 <span class="badge bg-danger">Pending</span>
                             @elseif($transfer->status == 2)
                                 <span class="badge bg-primary">Partial</span>
@@ -59,7 +59,7 @@
                 <div class="table-responsive">
                     <table id="" class="table modal-table table-striped table-sm">
                         <thead>
-                            <tr class="bg-primary text-white">
+                            <tr class="bg-secondary text-white">
                                 <th class="text-start">SL</th>
                                 <th class="text-start">Product</th>
                                 <th class="text-start">Unit Price</th>
@@ -105,7 +105,7 @@
                                     {{ $transfer->net_total_amount }}
                                 </th>
                             </tr>
-                        
+
                             <tr>
                                 <th class="text-start" colspan="6">Shipping Charge</th>
                                 <th class="text-start" colspan="2">
@@ -113,7 +113,7 @@
                                     {{ $transfer->shipping_charge }}
                                 </th>
                             </tr>
-        
+
                             <tr>
                                 <th class="text-start" colspan="6">Grand Total</th>
                                 @php
@@ -127,7 +127,7 @@
                         </table>
                     </div>
                 </div>
-            </div> <br> 
+            </div> <br>
           <hr class="p-0 m-0">
           <div class="row">
             <div class="col-md-6">
@@ -146,8 +146,8 @@
           </div>
         </div>
         <div class="modal-footer">
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-            <button type="submit" class="c-btn button-success print_btn float-end">Print</button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
         </div>
       </div>
     </div>
@@ -178,13 +178,13 @@
                         <li><strong>Name :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>Phone : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         @if ($transfer->branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>Address : </strong>
                                 {{ $transfer->branch->city }},
                                 {{ $transfer->branch->state }},
                                 {{ $transfer->branch->zip_code }},
                                 {{ $transfer->branch->country }}.
                             </li>
-                        @else 
+                        @else
                             {{ json_decode($generalSettings->business, true)['address'] }}
                         @endif
                     </ul>
@@ -203,8 +203,8 @@
                     <ul class="list-unstyled float-end">
                         <li><strong>Date : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>Status : </strong> 
-                            @if ($transfer->status == 1) 
+                        <li><strong>Status : </strong>
+                            @if ($transfer->status == 1)
                                 Pending
                             @elseif($transfer->status == 2)
                                 Partial
@@ -256,7 +256,7 @@
                             {{ $transfer->net_total_amount }}
                         </th>
                     </tr>
-                   
+
                     <tr>
                         <th class="text-start" colspan="6">Shipping Charge :</th>
                         <th class="text-start" colspan="2">
@@ -278,9 +278,9 @@
                 </tfoot>
             </table>
         </div>
-        
+
         <br><br>
-   
+
         <div class="row">
             <div class="col-md-6">
                 <p><strong>Receiver's Signature</strong></p>
@@ -299,7 +299,7 @@
                 @endif
             </div>
         </div>
-     
+
     </div>
 </div>
 <!-- Print Template End-->

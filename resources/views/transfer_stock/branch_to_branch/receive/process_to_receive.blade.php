@@ -9,79 +9,74 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-exchange-alt"></span>
+                    <h6>Process To Receive Stock <small>(Transferred From Another Business Location)</small></h6>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                </a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="receive_stock_form" action="{{ route('transfer.stock.branch.to.branch.ProcessToReceive.save', $transfer->id) }}" method="POST">
                 @csrf
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h6>Process To Receive Stock <small>(Transferred From Another Business Location)</small></h6>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-4">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                                            </a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="m-0"><strong>Transfer Reference ID: </strong> {{ $transfer->ref_id }}</p>
+                                    <p class="m-0"><strong>Date: </strong> {{ $transfer->date }}</p>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <p class="m-0"><strong>Transfered From: </strong>
+
+                                        @if ($transfer->sender_branch)
+
+                                            {{ $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code }}
+                                        @else
+
+                                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)
+                                        @endif
+                                    </p>
+                                    </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class="col-4">Store In Location :</label>
+                                        <div class="col-8">
+                                            <input
+                                                readonly
+                                                type="text"
+                                                name="receiver_branch_id"
+                                                id="receiver_branch_id"
+                                                class="form-control"
+                                                value="{{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}"
+                                            >
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p class="m-0"><strong>Transfer Reference ID: </strong> {{ $transfer->ref_id }}</p>
-                                            <p class="m-0"><strong>Date: </strong> {{ $transfer->date }}</p>
-                                         </div>
-
-                                         <div class="col-md-6">
-                                             <p class="m-0"><strong>Transfered From: </strong>
-
-                                                @if ($transfer->sender_branch)
-
-                                                    {{ $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code }}
-                                                @else
-
-                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)
-                                                @endif
-                                            </p>
-                                         </div>
-                                    </div>
-
-                                    <hr>
-
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label class="col-4">Store In Location :</label>
-                                                <div class="col-8">
-                                                    <input
-                                                        readonly
-                                                        type="text"
-                                                        name="receiver_branch_id"
-                                                        id="receiver_branch_id"
-                                                        class="form-control"
-                                                        value="{{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}"
-                                                    >
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-5">
-                                            <div class="input-group">
-                                                <label class="col-4">Store In Warehouse : <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, Received stock will be added to Business Location/Shop" class="fas fa-info-circle tp"></i></label>
-                                                <div class="col-8">
-                                                    <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" autofocus>
-                                                        <option value="">None</option>
-                                                        @foreach ($warehouses as $w)
-                                                            <option {{ $transfer->receiver_warehouse_id == $w->id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <label class="col-4">Store In Warehouse : <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, Received stock will be added to Business Location/Shop" class="fas fa-info-circle tp"></i></label>
+                                        <div class="col-8">
+                                            <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" autofocus>
+                                                <option value="">None</option>
+                                                @foreach ($warehouses as $w)
+                                                    <option {{ $transfer->receiver_warehouse_id == $w->id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -91,114 +86,100 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table-striped">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th>Product</th>
-                                                                    <th>Send Quantity</th>
-                                                                    <th>Unit</th>
-                                                                    <th>Pending Qty</th>
-                                                                    <th>Receive Quantity</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="send_stock_list">
-                                                                @foreach ($transfer->transfer_products as $transfer_product)
-                                                                    <tr>
-                                                                        <td>
-                                                                            <input type="hidden" name="product_ids[]" value="{{ $transfer_product->product->id }}">
-                                                                            <input
-                                                                                type="hidden"
-                                                                                name="variant_ids[]"
-                                                                                value="{{ $transfer_product->variant ? $transfer_product->variant->id : 'no_id' }}"
-                                                                            >
-                                                                            {{ $transfer_product->product->name }}
-                                                                            {{ $transfer_product->variant ? '/'.$transfer_product->variant->variant_name : '' }}
-                                                                        </td>
+                    <div class="sale-content mb-3">
+                        <div class="card">
+                            <div class="card-body px-2">
+                                <div class="table-responsive">
+                                    <table class="display data__table table-striped">
+                                        <thead class="staky">
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Send Quantity</th>
+                                                <th>Unit</th>
+                                                <th>Pending Qty</th>
+                                                <th>Receive Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="send_stock_list">
+                                            @foreach ($transfer->transfer_products as $transfer_product)
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" name="product_ids[]" value="{{ $transfer_product->product->id }}">
+                                                        <input
+                                                            type="hidden"
+                                                            name="variant_ids[]"
+                                                            value="{{ $transfer_product->variant ? $transfer_product->variant->id : 'no_id' }}"
+                                                        >
+                                                        {{ $transfer_product->product->name }}
+                                                        {{ $transfer_product->variant ? '/'.$transfer_product->variant->variant_name : '' }}
+                                                    </td>
 
-                                                                        <td>
-                                                                            <input type="hidden" id="qty_limit" value="{{ $transfer_product->send_qty }}">
-                                                                            {{ $transfer_product->send_qty }}
-                                                                        </td>
+                                                    <td>
+                                                        <input type="hidden" id="qty_limit" value="{{ $transfer_product->send_qty }}">
+                                                        {{ $transfer_product->send_qty }}
+                                                    </td>
 
-                                                                        <td>
-                                                                            {{ $transfer_product->product->unit->name }}
-                                                                        </td>
+                                                    <td>
+                                                        {{ $transfer_product->product->unit->name }}
+                                                    </td>
 
-                                                                        <td>
-                                                                            <input
-                                                                                type="hidden"
-                                                                                name="pending_quantities[]"
-                                                                                id="pending_qty"
-                                                                                value="{{ $transfer_product->pending_qty }}"
-                                                                            >
-                                                                            <span id="span_pending_qty">{{ $transfer_product->pending_qty }}</span>
-                                                                        </td>
+                                                    <td>
+                                                        <input
+                                                            type="hidden"
+                                                            name="pending_quantities[]"
+                                                            id="pending_qty"
+                                                            value="{{ $transfer_product->pending_qty }}"
+                                                        >
+                                                        <span id="span_pending_qty">{{ $transfer_product->pending_qty }}</span>
+                                                    </td>
 
-                                                                        <td>
-                                                                            <input type="number"
-                                                                                step="any"
-                                                                                name="received_quantities[]"
-                                                                                class="form-control"
-                                                                                id="received_qty"
-                                                                                value="{{ $transfer_product->received_qty }}"
-                                                                                autocomplete="off"
-                                                                            >
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                    <td>
+                                                        <input type="number"
+                                                            step="any"
+                                                            name="received_quantities[]"
+                                                            class="form-control"
+                                                            id="received_qty"
+                                                            value="{{ $transfer_product->received_qty }}"
+                                                            autocomplete="off"
+                                                        >
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label class="col-4">Receiver Note :</label>
-                                                <div class="col-8">
-                                                    <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="Receiver note">
-                                                </div>
-                                            </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class="col-4">Receiver Note :</label>
+                                        <div class="col-8">
+                                            <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="Receiver note">
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label class=" col-4">Total Received Qty :</label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control" value="0.00">
-                                                </div>
-                                            </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class=" col-4">Total Received Qty :</label>
+                                        <div class="col-8">
+                                            <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control" value="0.00">
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label class=" col-4">Total Pending Qty :</label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" step="any" name="total_pending_quantity" id="total_pending_quantity" class="form-control" value="0.00">
-                                                </div>
-                                            </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class=" col-4">Total Pending Qty :</label>
+                                        <div class="col-8">
+                                            <input readonly type="number" step="any" name="total_pending_quantity" id="total_pending_quantity" class="form-control" value="0.00">
                                         </div>
                                     </div>
                                 </div>
@@ -208,11 +189,13 @@
                 </section>
 
                 <div class="row">
-                    <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-hide">
-                            <i class="fas fa-spinner text-primary"></i><b> Loading...</b>
-                        </button>
-                        <button type="submit" id="save" class="btn btn-sm btn-primary float-end">Save (Ctrl + Enter)</button>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide">
+                                <i class="fas fa-spinner"></i><span> Loading...</span>
+                            </button>
+                            <button type="submit" id="save" class="btn btn-sm btn-success">Save (Ctrl + Enter)</button>
+                        </div>
                     </div>
                 </div>
             </form>

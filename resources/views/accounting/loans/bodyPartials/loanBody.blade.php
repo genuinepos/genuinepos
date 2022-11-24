@@ -171,7 +171,7 @@
                         <div class="col-md-2">
                             <label><strong></strong></label>
                             <div class="input-group">
-                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
+                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-search"></i> Filter</button>
                             </div>
                         </div>
                     </div>
@@ -225,10 +225,10 @@
 
                 <div class="row">
                     <div class="col-md-12 text-end">
-                        <ul class="list-unstyled">
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                            <button type="submit" id="print_loan_details" class="c-btn button-success">Print</button>
-                        </ul>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                            <button type="submit" id="print_loan_details" class="btn btn-sm btn-success">Print</button>
+                        </div>
                     </div>
                 </div>
             </div>

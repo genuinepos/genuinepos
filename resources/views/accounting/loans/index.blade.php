@@ -6,34 +6,28 @@
 @section('title', 'Loans - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-glass-whiskey"></span>
-                                <h5>Loans</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-glass-whiskey"></span>
+                    <h5>Loans</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                </a>
+            </div>
 
-                        <div class="p-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="tab_list_area">
-                                        <div class="btn-group">
-                                            <a id="tab_btn" data-show="companies" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Companies/Peoples</a>
-                                            <a id="tab_btn" data-show="loans" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i> Loans</a>
-                                        </div>
-                                    </div>
-                                    @include('accounting.loans.bodyPartials.companyBody')
-                                    @include('accounting.loans.bodyPartials.loanBody')
-                                </div>
+            <div class="p-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab_list_area">
+                            <div class="btn-group">
+                                <a id="tab_btn" data-show="companies" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Companies/Peoples</a>
+                                <a id="tab_btn" data-show="loans" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i> Loans</a>
                             </div>
                         </div>
+                        @include('accounting.loans.bodyPartials.companyBody')
+                        @include('accounting.loans.bodyPartials.loanBody')
                     </div>
                 </div>
             </div>

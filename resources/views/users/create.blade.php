@@ -215,7 +215,7 @@
                         </div>
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row g-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"> <b>Date of birth :</b> </label>
@@ -240,7 +240,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-2">
+                            <div class="row g-2 mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Marital Status :</b> </label>
@@ -263,7 +263,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            <div class="row mt-2">
+                            </div>
+
+                            <div class="row g-2 mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Phone :</b> </label>
@@ -283,7 +285,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-2">
+                            <div class="row g-2 mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Twitter Link :</b> </label>
@@ -303,7 +305,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-2">
+                            <div class="row g-2 mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Guardian Name:</b> </label>
@@ -323,7 +325,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-2">
+                            <div class="row g-2 mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>ID Proof Number :</b> </label>
@@ -334,9 +336,9 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-2">
+                            <div class="row g-2 mt-2">
                                 <div class="col-md-12">
-                                    <div class="input-group">
+                                    <div class="input-group ">
                                         <label class="col-2"><b>Permanent Address :</b> </label>
                                         <div class="col-10">
                                             <input type="text" name="permanent_address" class="form-control form-control-sm" autocomplete="off" placeholder="Permanent address">
@@ -345,7 +347,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-2">
+                            <div class="row g-2 mt-2">
                                 <div class="col-md-12">
                                     <div class="input-group">
                                         <label class="col-2"><b>Current Address :</b> </label>

@@ -309,7 +309,7 @@ class ExpenseUtil
             }
             $expensePaymentAttachment = $request->file('attachment');
             $expensePaymentAttachmentName = uniqid() . '-' . '.' . $expensePaymentAttachment->getClientOriginalExtension();
-            $expansePaymentAttachment->move(public_path('uploads/payment_attachment/'), $expensePaymentAttachmentName);
+            // $expansePaymentAttachment->move(public_path('uploads/payment_attachment/'), $expensePaymentAttachmentName);
             $expensePayment->attachment = $expensePaymentAttachmentName;
         }
 

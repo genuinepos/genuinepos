@@ -26,27 +26,27 @@
                             </ul>
                         </div>
                     </div>
-            
+
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li><strong>Total Loan Get : </strong>
                                     <span class="card_text invoice_no">
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
-                                       <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}</b> 
+                                       <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}</b>
                                     </span>
                                 </li>
 
                                 <li><strong>Total Due Paid : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-success">
-                                        <b>{{ App\Utils\Converter::format_in_bdt($company->total_pay) }}</b> 
+                                        <b>{{ App\Utils\Converter::format_in_bdt($company->total_pay) }}</b>
                                     </span>
                                 </li>
                                 <li><strong>Total Payment Due : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-danger">
-                                        <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}</b> 
+                                        <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}</b>
                                     </span>
                                 </li>
                             </ul>
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!--begin::Form-->
             <form id="loan_payment_form" action="{{ route('accounting.loan.liability.payment.store', $company->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -74,7 +74,7 @@
                         </div>
                         <span class="error error_p_paying_amount"></span>
                     </div>
-            
+
                     <div class="col-md-4">
                         <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
@@ -88,7 +88,7 @@
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
-            
+
                     <div class="col-md-4">
                         <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
@@ -108,7 +108,7 @@
                         </div>
                     </div>
                 </div>
-            
+
                 <div class="form-group row mt-2">
                     <div class="col-md-7">
                         <label><strong>Credit Account :</strong> </label>
@@ -133,19 +133,21 @@
                         </div>
                     </div>
                 </div>
-            
+
                 <div class="form-group mt-2">
                     <label><strong> Payment Note :</strong></label>
                     <textarea name="note" class="form-control" id="note" cols="30" rows="3"
                         placeholder="Note"></textarea>
                 </div>
-            
+
                 <div class="form-group row mt-3">
-                    <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button name="action" value="save" type="submit" class="c-btn button-success float-end" id="add_payment">Save</button>
-                        <button name="action" value="save_and_print" type="submit" class="c-btn button-success float-end" id="add_payment">Save & Print</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                            <button name="action" value="save_and_print" type="submit" class="btn btn-sm btn-success" id="add_payment">Save & Print</button>
+                            <button name="action" value="save" type="submit" class="btn btn-sm btn-success" id="add_payment">Save</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -194,10 +196,10 @@
                 $('.error').html('');
 
                 if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
-                    toastr.error('Server error. Please contact the support team.'); 
+                    toastr.error('Server error. Please contact the support team.');
                     return;
                 }
 

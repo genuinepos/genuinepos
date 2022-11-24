@@ -78,7 +78,7 @@
                                                 <div class="col-md-3">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button class="btn text-white btn-sm btn-secondary float-start">
+                                                        <button class="btn text-white btn-sm btn-info float-start">
                                                             <i class="fas fa-funnel-dollar"></i> Filter
                                                         </button>
                                                     </div>

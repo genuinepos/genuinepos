@@ -8,7 +8,7 @@
 </style>
 <table class="table modal-table table-sm table-bordered">
     <thead>
-        <tr class="bg-primary">
+        <tr class="bg-secondary">
             <th class="trial_balance text-start text-white">Accounts</th>
             <th class="text-white text-end">Debit</th>
             <th class="text-white text-end">Credit</th>
@@ -140,7 +140,7 @@
     </tbody>
 
     <tfoot>
-        <tr class="bg-primary">
+        <tr class="bg-secondary">
             <th class="text-white text-end"><em>Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</em></th>
             
             <th class="text-white text-end">

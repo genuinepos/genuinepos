@@ -8,37 +8,63 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-exchange-alt"></span>
+                    <h5>Process To Receive Stock</h5>
+                </div>
+
+                <div class="col-6">
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                </div>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="receive_stock_form" action="{{ route('transfer.stocks.to.branch.receive.stock.process.save', $sendStockId) }}" method="POST">
                 @csrf
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h5>Process To Receive Stock</h5>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                        </div>
+                        <div class="element-body">
+                            <p class="m-0"><strong>Transfer Stock Details </strong></p>
+                            <hr class="m-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="m-0"><strong>Reference ID: </strong> <span class="transfer_invoice_id">SI-14252-45525588</span> </p>
+                                    <p class="m-0"><strong>Date: </strong> <span class="transfer_date">05-12-2020</span></p>
                                     </div>
-                                </div>
+                                    <div class="col-md-6">
+                                    <p class="m-0"><strong>Business Location (From): </strong> <span class="branch">Dhaka Branch - 145225</span></p>
+                                        <p class="m-0"><strong>Warehouse (To) : </strong> <span class="warehouse">Warehouse-1 (W-1)</span> </p>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-                                <div class="element-body">
-                                    <p class="m-0"><strong>Transfer Stock Details </strong></p>
-                                    <hr class="m-1">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p class="m-0"><strong>Reference ID: </strong> <span class="transfer_invoice_id">SI-14252-45525588</span> </p>
-                                            <p class="m-0"><strong>Date: </strong> <span class="transfer_date">05-12-2020</span></p>
-                                         </div>
-                                         <div class="col-md-6">
-                                            <p class="m-0"><strong>Business Location (From): </strong> <span class="branch">Dhaka Branch - 145225</span></p>
-                                             <p class="m-0"><strong>Warehouse (To) : </strong> <span class="warehouse">Warehouse-1 (W-1)</span> </p>
-                                         </div>
+                <section>
+                    <div class="sale-content mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="sale-item-sec">
+                                        <div class="sale-item-inner">
+                                            <div class="table-responsive">
+                                                <table class="display data__table table-striped">
+                                                    <thead class="staky">
+                                                        <tr>
+                                                            <th>Product</th>
+                                                            <th class="text-center">Send Quantity</th>
+                                                            <th class="text-center">Unit</th>
+                                                            <th class="text-center">Pending Qty</th>
+                                                            <th class="text-center">Receive Quantity</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="send_stock_list"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -47,30 +73,23 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table-striped">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th>Product</th>
-                                                                    <th class="text-center">Send Quantity</th>
-                                                                    <th class="text-center">Unit</th>
-                                                                    <th class="text-center">Pending Qty</th>
-                                                                    <th class="text-center">Receive Quantity</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="send_stock_list"></tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-4">Receiver Note :</label>
+                                        <div class="col-8">
+                                            <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="Receiver note">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4">Net Total :</label>
+                                        <div class="col-8">
+                                            <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -79,42 +98,13 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-4">Receiver Note :</label>
-                                                <div class="col-8">
-                                                    <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="Receiver note">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Net Total :</label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <div class="submit_button_area py-2">
+                <div class="submit_button_area">
                     <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-hide"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-primary float-end">Save</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
+                                <button class="btn btn-sm btn-success float-end">Save</button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -69,12 +69,12 @@
                             <li><strong>Status : </strong>
                                 @if ($transfer->receive_status == 1)
 
-                                    <span class="text-danger">Pending</span> 
+                                    <span class="text-danger">Pending</span>
                                 @elseif($transfer->receive_status == 2)
 
-                                    <span class="text-primary">Partial</span> 
+                                    <span class="text-primary">Partial</span>
                                 @elseif($transfer->receive_status == 3)
-                                    <span class="text-success">Completed</span> 
+                                    <span class="text-success">Completed</span>
                                 @endif
                             </li>
                         </ul>
@@ -85,7 +85,7 @@
                     <div class="table-responsive">
                         <table class="table modal-table table-sm table-striped">
                             <thead>
-                                <tr class="bg-primary text-white">
+                                <tr class="bg-secondary text-white">
                                     <th class="text-start">SL</th>
                                     <th class="text-start">Product</th>
                                     <th class="text-start">Unit Cost Inc.Tax</th>
@@ -144,8 +144,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="footer_btn btn btn-sm btn-primary print_btn">Print</button>
-                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button> 
+                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="footer_btn btn btn-sm btn-success print_btn">Print</button>
             </div>
         </div>
     </div>
@@ -171,16 +171,16 @@
                         <li><strong>From : </strong></li>
                         <li><strong>B.Location Name :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>Phone : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
-                        
+
                         @if ($transfer->sender_branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>Address : </strong>
                                 {{ $transfer->sender_branch->city }},
                                 {{ $transfer->sender_branch->state }},
                                 {{ $transfer->sender_branch->zip_code }},
                                 {{ $transfer->sender_branch->country }}.
                             </li>
-                        @else 
-                            <li><strong>Address : </strong> 
+                        @else
+                            <li><strong>Address : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif
@@ -191,16 +191,16 @@
                         <li><strong>To : </strong></li>
                         <li><strong>B.Location Name :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>Phone : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
-                        
+
                         @if ($transfer->receiver_branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>Address : </strong>
                                 {{ $transfer->receiver_branch->city }},
                                 {{ $transfer->receiver_branch->state }},
                                 {{ $transfer->receiver_branch->zip_code }},
                                 {{ $transfer->receiver_branch->country }}.
                             </li>
-                        @else 
-                            <li><strong>Address : </strong> 
+                        @else
+                            <li><strong>Address : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif
@@ -211,16 +211,16 @@
                     <ul class="list-unstyled float-end">
                         <li><strong>Date : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
-                        <li><strong>Status : </strong> 
+                        <li><strong>Status : </strong>
                             @if ($transfer->receive_status == 1)
 
-                                <span class="text-danger">Pending</span> 
+                                <span class="text-danger">Pending</span>
                             @elseif($transfer->receive_status == 2)
 
-                                <span class="text-primary">Partial</span> 
+                                <span class="text-primary">Partial</span>
                             @elseif($transfer->receive_status == 3)
 
-                                <span class="text-success">Completed</span> 
+                                <span class="text-success">Completed</span>
                             @endif
                         </li>
                     </ul>

@@ -8,58 +8,52 @@
 @section('title', 'HRM Leaves Types - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-th-large"></span>
-                                <h6>Leave Types</h6>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-th-large"></span>
+                    <h6>Leave Types</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
+                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-md-6">
+                        <h6>Leave Types</h6>
                     </div>
-
-                    <div class="p-3">
-                        <div class="form_element rounded m-0">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Leave Types</h6>
-                                </div>
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                </div>
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th>Serial</th>
-                                                <th>Type</th>
-                                                <th>Max leave</th>
-                                                <th>Leave Count Interval</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
-                        </div>
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
                     </div>
                 </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>Serial</th>
+                                    <th>Type</th>
+                                    <th>Max leave</th>
+                                    <th>Leave Count Interval</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -99,12 +93,14 @@
                         </div>
 
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-hide"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn me-0 button-success float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-hide">
+                                        <i class="fas fa-spinner"></i><span> Loading...</span>
+                                    </button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -144,11 +140,14 @@
                             </select>
                         </div>
 
-                        <div class="form-group text-right mt-3">
-                            <button type="button" class="btn loading_button d-hide"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="me-0 c-btn button-success float-end">Save Change</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <div class="form-group d-flex justify-content-end mt-3">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide">
+                                    <i class="fas fa-spinner text-primary"></i><span> Loading...</span>
+                                </button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="submit" class="btn btn-sm btn-success">Save Change</button>
+                            </div>
                         </div>
                     </form>
                 </div>

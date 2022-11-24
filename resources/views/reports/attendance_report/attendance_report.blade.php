@@ -28,7 +28,7 @@
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="element-body">
                             <form id="filter_form">
-                                <div class="form-group row">
+                                <div class="form-group row align-items-end">
                                     @if ($addons->branches == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-3">
@@ -85,7 +85,7 @@
                                                 autocomplete="off">
                                         </div>
                                     </div>
-                                    <div class="col-md-1 mt-4">
+                                    <div class="col-md-1">
                                         <a href="{{ route('reports.attendance.print') }}" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
                                     </div>
                                 </div>

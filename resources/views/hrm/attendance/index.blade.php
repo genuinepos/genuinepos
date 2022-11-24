@@ -9,113 +9,107 @@
 @section('title', 'HRM Attendances - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-paste"></span>
+                    <h6>Attendances</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
+                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+
+        <div class="p-3">
             <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-paste"></span>
-                                <h6>Attendances</h6>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
-                    </div>
-
-                    <div class="p-3">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form_element rounded mt-0 mb-3">
-                                    <div class="element-body">
-                                        <form action="" method="get">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
-                                                            <label><strong>Branch :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                                <div class="col-md-3">
-                                                    <label><strong>Users :</strong></label>
-                                                    <select name="user_id"
-                                                        class="form-control submit_able" id="user_id" autofocus>
-                                                        <option value="">All</option>
-                                                        @foreach($employee as $row)
-                                                            <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label><strong>Date Range :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
-                                                        </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <form action="" method="get">
+                                <div class="form-group row">
+                                    @if ($addons->branches == 1)
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-3">
+                                                <label><strong>Branch :</strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control submit_able" id="branch_id" autofocus>
+                                                    <option value="">All</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        </form>
+                                        @endif
+                                    @endif
+
+                                    <div class="col-md-3">
+                                        <label><strong>Users :</strong></label>
+                                        <select name="user_id"
+                                            class="form-control submit_able" id="user_id" autofocus>
+                                            <option value="">All</option>
+                                            @foreach($employee as $row)
+                                                <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label><strong>Date Range :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_i"></i></span>
+                                            </div>
+                                            <input readonly type="text" name="date_range" id="date_range"
+                                                class="form-control daterange submit_able_input"
+                                                autocomplete="off">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form_element rounded m-0">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Attendances <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
-                                </div>
-
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                </div>
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Employee</th>
-                                                <th>Clock IN - CLock Out</th>
-                                                <th>Work Duration</th>
-                                                <th>Clockin note</th>
-                                                <th>Clockout note</th>
-                                                <th>Shift</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-md-6">
+                        <h6>Attendances <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
+                    </div>
+
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
+                    </div>
+                </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Employee</th>
+                                    <th>Clock IN - CLock Out</th>
+                                    <th>Work Duration</th>
+                                    <th>Clockin note</th>
+                                    <th>Clockout note</th>
+                                    <th>Shift</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -178,7 +172,7 @@
     </div>
     <!-- Add Modal End-->
 
-    <!-- Add Modal -->
+    <!-- Edit Modal -->
     <div class="modal fade" id="editAttendanceModel" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog col-45-modal" role="document">
@@ -194,7 +188,7 @@
             </div>
         </div>
     </div>
-    <!-- Add Modal End-->
+    <!-- Edit Modal End-->
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>

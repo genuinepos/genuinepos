@@ -54,7 +54,7 @@
     <div class="table-responsive">
         <table class="table modal-table table-sm table-striped">
             <thead>
-                <tr class="bg-primary">
+                <tr class="bg-secondary">
                     <th class="text-white">Date</th>
                     <th class="text-white">Voucher No</th>
                     <th class="text-white">Amount</th>

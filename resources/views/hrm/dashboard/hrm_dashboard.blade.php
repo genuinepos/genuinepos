@@ -78,151 +78,152 @@
                 </div>
             </div> --}}
 
-            <div class="card pt-3 px-4 mt-1">
-                <div class="card-title mt-4 ps-4">
-                    <h1 class="text-start text-primary pl-5">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span class="">HRM</span> Dashboard
-                    </h1>
-                </div>
-
-                @if ($addons->branches == 1)
-                    <div class="card-title mt-2 ps-4">
-                        <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
-                            <option value="">All Business Lacation</option>
-                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                            @foreach ($branches as $branch)
-                                <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                @endif
-
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="preloader_area" style="position: relative;">
-                                <div class="data_preloader mt-4">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                            </div>
-
-                            <div class="form_element users_data">
-                                <div class="section-header d-flex justify-content-between align-items-center px-3">
-                                    <h6><span class="fas fa-users"></span>Users</h6>
-                                    <span class="badge bg-secondary text-white">
-                                        <div id="small-badge">Total: 4324</div>
-                                    </span>
-                                </div>
-                                <div class="widget_content">
-                                    <div class="mtr-table">
-                                        <div class="table-responsive" id="user_data">
-                                            <table id="users_table" class="display data__table data_tble stock_table compact" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Department</th>
-                                                        <th>Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Branch Manger</td>
-                                                        <td>125</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="preloader_area" style="position: relative;">
-                                <div class="data_preloader mt-4">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                            </div>
-
-                            <div class="form_element today_attendance_table">
-                                <div class="section-header d-flex justify-content-between align-items-center px-3">
-                                    <h6>
-                                        <span class="fas fa-user-check"></span>
-                                        Today's Attendance
-                                    </h6>
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="mtr-table">
-                                        <div class="table-responsive" id="today_attendance_table">
-                                            <table class="display data__table data_tble stock_table compact"
-                                                width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Employee</th>
-                                                        <th>Clock-in Time</th>
-                                                        <th>Clock-out Time</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>John Doe</td>
-                                                        <td>10:00am</td>
-                                                        <td>04:00pm</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="p-3">
+                <div class="card">
+                    <div class="card-title mt-4 ps-4">
+                        <h1 class="text-start text-primary pl-5">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="">HRM</span> Dashboard
+                        </h1>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="preloader_area" style="position: relative;">
-                                <div class="data_preloader mt-4">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                            </div>
-                            <div class="form_element">
-                                <div class="section-header d-flex justify-content-between align-items-center px-3">
-                                    <h6>
-                                        <span class="far fa-file-alt"></span>
-                                        Leave Applications
-                                    </h6>
-                                </div>
-                                <div class="widget_content">
-                                    <div class="mtr-table">
-                                        <div class="table-responsive leave_application">
-                                            <table id="leave_application_table"
-                                                class="display data__table data_tble stock_table compact mt-2" width="100%">
-                                                <tbody class="mx-2 mt-5" id="leaves">
+                    @if ($addons->branches == 1)
+                        <div class="card-title mt-2 ps-4">
+                            <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
+                                <option value="">All Business Lacation</option>
+                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                @foreach ($branches as $branch)
+                                    <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
 
-                                                </tbody>
-                                            </table>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="preloader_area" style="position: relative;">
+                                    <div class="data_preloader mt-4">
+                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    </div>
+                                </div>
+
+                                <div class="form_element rounded m-0 users_data">
+                                    <div class="section-header d-flex justify-content-between align-items-center px-3">
+                                        <h6><span class="fas fa-users"></span>Users</h6>
+                                        <span class="badge bg-secondary text-white">
+                                            <div id="small-badge">Total: 4324</div>
+                                        </span>
+                                    </div>
+                                    <div class="widget_content">
+                                        <div class="mtr-table">
+                                            <div class="table-responsive" id="user_data">
+                                                <table id="users_table" class="display data__table data_tble stock_table compact" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Department</th>
+                                                            <th>Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Branch Manger</td>
+                                                            <td>125</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form_element">
-                                <div class="section-header d-flex justify-content-between align-items-center px-3">
-                                    <h6>
-                                        <span class="far fa-file-alt"></span>
-                                        Holidays
-                                    </h6>
+
+                            <div class="col-md-6">
+                                <div class="preloader_area" style="position: relative;">
+                                    <div class="data_preloader mt-4">
+                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    </div>
                                 </div>
-                                <div class="widget_content">
-                                    <div class="px-3 pt-2 pb-2">
-                                        <div class="px-1">
-                                            <span><strong>Upcoming Holidays:</strong></span>
+
+                                <div class="form_element rounded m-0 today_attendance_table">
+                                    <div class="section-header d-flex justify-content-between align-items-center px-3">
+                                        <h6>
+                                            <span class="fas fa-user-check"></span>
+                                            Today's Attendance
+                                        </h6>
+                                    </div>
+
+                                    <div class="widget_content">
+                                        <div class="mtr-table">
+                                            <div class="table-responsive" id="today_attendance_table">
+                                                <table class="display data__table data_tble stock_table compact"
+                                                    width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Employee</th>
+                                                            <th>Clock-in Time</th>
+                                                            <th>Clock-out Time</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>John Doe</td>
+                                                            <td>10:00am</td>
+                                                            <td>04:00pm</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                        <ul class="list-group list-group-flush upcoming_holiday_list">
-                                            <li class="list-group-item list-group-item-warning">A simple warning list group item</li>
-                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="preloader_area" style="position: relative;">
+                                    <div class="data_preloader mt-4">
+                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    </div>
+                                </div>
+                                <div class="form_element rounded m-0">
+                                    <div class="section-header d-flex justify-content-between align-items-center px-3">
+                                        <h6>
+                                            <span class="far fa-file-alt"></span>
+                                            Leave Applications
+                                        </h6>
+                                    </div>
+                                    <div class="widget_content">
+                                        <div class="mtr-table">
+                                            <div class="table-responsive leave_application">
+                                                <table id="leave_application_table"
+                                                    class="display data__table data_tble stock_table compact mt-2" width="100%">
+                                                    <tbody class="mx-2 mt-5" id="leaves">
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form_element rounded m-0">
+                                    <div class="section-header d-flex justify-content-between align-items-center px-3">
+                                        <h6>
+                                            <span class="far fa-file-alt"></span>
+                                            Holidays
+                                        </h6>
+                                    </div>
+                                    <div class="widget_content">
+                                        <div class="px-3 pt-2 pb-2">
+                                            <div class="px-1">
+                                                <span><strong>Upcoming Holidays:</strong></span>
+                                            </div>
+                                            <ul class="list-group list-group-flush upcoming_holiday_list">
+                                                <li class="list-group-item list-group-item-warning">A simple warning list group item</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

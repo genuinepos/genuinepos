@@ -389,7 +389,7 @@
             $.get(url, function(data) {
 
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data);
+                $('#paymentModal').html(data);
                 $('#paymentModal').modal('show');
             });
         });

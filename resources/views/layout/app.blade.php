@@ -31,7 +31,12 @@
     <link rel="stylesheet" href="{{ asset('backend/asset/css/comon.css') }} ">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/layout.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/style.css') }}">
+    <style>
+        .d-hide {
+            display: none;
+        }
 
+    </style>
 
 </head>
 

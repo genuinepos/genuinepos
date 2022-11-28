@@ -49,7 +49,7 @@
         </p>
         <p><b>Invoice No :</b> {{ $payment->sale->invoice_id }}</p>
         <p>
-            <b>Customer :</b>
+            <b>@lang('menu.customer') :</b>
             {{ $payment->sale->customer ? $payment->sale->customer->name : 'Walk-In-Customer' }}
         </p>
     </div>

@@ -3,12 +3,12 @@
     <div class="form-group">
         <label><strong>Name :</strong> <span class="text-danger">*</span></label>
         <input type="text" name="name" class="form-control edit_input" data-name="Type name" id="e_name"
-            placeholder="Account Name" value="{{ $account->name }}"/>
+            placeholder="@lang('menu.account_name')" value="{{ $account->name }}"/>
         <span class="error error_e_name"></span>
     </div>
     
     <div class="form-group mt-1">
-        <label><strong>Account Type : <span class="text-danger">*</span></strong></label>
+        <label><strong>@lang('menu.account_types') : <span class="text-danger">*</span></strong></label>
         <select name="account_type" class="form-control edit_input" data-name="Account Type"
             id="e_account_type">
             <option value="">Select Account type</option>
@@ -68,7 +68,7 @@
     @endif
 
     <div class="form-group mt-1">
-        <label><strong>Opening Balance :</strong></label>
+        <label><strong>@lang('menu.opening_balance') :</strong></label>
         <input type="number" step="any" name="opening_balance" class="form-control" 
             id="e_opening_balance" value="{{ $account->opening_balance }}"/>
     </div>

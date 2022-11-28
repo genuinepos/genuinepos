@@ -4,7 +4,7 @@
             <th>P.Code(SKU)</th>
             <th>Product</th>
             <th>Unit Price Exc.Tax</th>
-            <th>B.Location</th>
+            <th>@lang('menu.b_location')</th>
             <th>Warehouse</th>
             <th>Current Stock</th>
             <th>Current Stock Value <b><small>(By Purchase Price)</small></b></th>

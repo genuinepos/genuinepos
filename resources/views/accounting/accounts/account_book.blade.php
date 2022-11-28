@@ -66,8 +66,8 @@
                                                     <label><strong>Transaction Type :</strong></label>
                                                     <select name="transaction_type" class="form-control submit_able" id="transaction_type" autofocus>
                                                         <option value=""><strong>All</strong></option>
-                                                        <option value="debit"><strong>Debit</strong></option>
-                                                        <option value="credit">Credit</option>
+                                                        <option value="debit"><strong>@lang('menu.debit')</strong></option>
+                                                        <option value="credit">@lang('menu.credit')</option>
                                                     </select>
                                                 </div>
 
@@ -133,7 +133,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>Account Ledgers</h6>
+                                    <h6>@lang('menu.account') @lang('menu.ledger')</h6>
                                 </div>
                             </div>
                             <div class="widget_content">
@@ -144,11 +144,11 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">Date</th>
+                                                <th class="text-start">@lang('menu.date')</th>
                                                 <th class="text-start">Perticulars</th>
                                                 <th class="text-start">Voucher/Invoice</th>
-                                                <th class="text-start">Debit</th>
-                                                <th class="text-start">Credit</th>
+                                                <th class="text-start">@lang('menu.debit')</th>
+                                                <th class="text-start">@lang('menu.credit')</th>
                                                 <th class="text-start">Running Balance</th>
                                             </tr>
                                         </thead>

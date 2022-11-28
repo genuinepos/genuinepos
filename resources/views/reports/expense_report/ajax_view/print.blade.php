@@ -37,9 +37,9 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>Date :</b>
+            <p><b>@lang('menu.date') :</b>
                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
-                <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+                <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;"><b>Expense Report </b></h6>
@@ -51,10 +51,10 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Reference No</th>
+                    <th class="text-start">@lang('menu.date')</th>
+                    <th class="text-start">@lang('menu.reference_no')</th>
                     <th class="text-start">Description</th>
-                    <th class="text-start">B.Location</th>
+                    <th class="text-start">@lang('menu.b_location')</th>
                     <th class="text-start">Expense For</th>
                     <th class="text-start">Total Amount</th>
                     <th class="text-start">Paid</th>

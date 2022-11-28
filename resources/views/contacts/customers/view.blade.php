@@ -158,12 +158,12 @@
                                                     <thead>
                                                         <tr>
                                                             <tr>
-                                                                <th>Date</th>
-                                                                <th>Particulars</th>
+                                                                <th>@lang('menu.date')</th>
+                                                                <th>@lang('menu.particulars')</th>
                                                                 <th>Business Location</th>
                                                                 <th>Voucher/Invoice</th>
-                                                                <th>Debit</th>
-                                                                <th>Credit</th>
+                                                                <th>@lang('menu.debit')</th>
+                                                                <th>@lang('menu.credit')</th>
                                                                 <th>Running Balance</th>
                                                             </tr>
                                                         </tr>
@@ -214,7 +214,7 @@
                                     <div class="col-md-3">
                                         <ul class="list-unstyled">
                                             <li>
-                                                <strong> Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                                <strong> @lang('menu.opening_balance') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                                 <span class="opening_balance">{{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</span>
                                             </li>
 
@@ -335,8 +335,8 @@
                                                 <table class="display data_tbl data__table sales_table w-100">
                                                     <thead>
                                                         <tr>
-                                                            <th>Actions</th>
-                                                            <th>Date</th>
+                                                            <th>@lang('menu.action')</th>
+                                                            <th>@lang('menu.date')</th>
                                                             <th>Invoice ID</th>
                                                             <th>Business Location</th>
                                                             <th>Customer</th>
@@ -475,7 +475,7 @@
                                                     <table class="display data_tbl data__table payments_table w-100">
                                                         <thead>
                                                             <tr class="text-start">
-                                                                <th class="text-start">Date</th>
+                                                                <th class="text-start">@lang('menu.date')</th>
                                                                 <th class="text-start">Voucher No</th>
                                                                 <th class="text-start">Reference</th>
                                                                 <th class="text-start">Against Invoice</th>
@@ -485,7 +485,7 @@
                                                                 <th class="text-start">Account</th>
                                                                 <th class="text-endx">Less Amount</th>
                                                                 <th class="text-end">Paid Amount</th>
-                                                                <th class="text-start">Actions</th>
+                                                                <th class="text-start">@lang('menu.action')</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody></tbody>

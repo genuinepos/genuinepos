@@ -113,7 +113,7 @@
                                                         <th>Serial</th>
                                                         <th>Name</th>
                                                         <th>Calculation Percent</th>
-                                                        <th>Action</th>
+                                                        <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

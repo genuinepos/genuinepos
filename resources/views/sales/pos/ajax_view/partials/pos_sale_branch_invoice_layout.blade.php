@@ -230,7 +230,7 @@
                     )
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px; margin-top:13px;">
                             @if ($sale->branch->pos_sale_invoice_layout->account_name)
-                                <p>Account Name : {{ $sale->branch->pos_sale_invoice_layout->account_name }}</p>
+                                <p>@lang('menu.account_name') : {{ $sale->branch->pos_sale_invoice_layout->account_name }}</p>
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->account_no)

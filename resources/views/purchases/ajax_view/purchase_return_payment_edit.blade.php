@@ -21,7 +21,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Supplier : </strong><span>{{ $payment->purchase->supplier->name }}</span></li>
+                                <li><strong>@lang('menu.supplier') : </strong><span>{{ $payment->purchase->supplier->name }}</span></li>
                                 <li><strong>Business : </strong>
                                     <span>{{ $payment->purchase->supplier->business_name }}</span> 
                                 </li>
@@ -36,7 +36,7 @@
                             <ul class="list-unstyled">
                                 <li><strong> Reference ID : </strong><span class="invoice_no">{{ $payment->purchase->invoice_id }}</span>
                                 </li>
-                                <li><strong>B.Location : </strong>
+                                <li><strong>@lang('menu.b_location') : </strong>
                                     <span class="warehouse">
                                         {{ $payment->purchase->branch ? $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}
                                     </span>
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">

@@ -19,7 +19,7 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Supplier : </strong><span class="card_text customer_name">{{ $supplier->name }}</span>
+                                <li><strong>@lang('menu.supplier') : </strong><span class="card_text customer_name">{{ $supplier->name }}</span>
                                 </li>
                                 <li><strong>Business : </strong><span
                                         class="card_text customer_business">{{ $supplier->business_name }}</span>
@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>

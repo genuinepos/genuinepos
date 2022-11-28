@@ -42,7 +42,7 @@
                                                 <th>S/L</th>
                                                 <th>Name</th>
                                                 <th>Description</th>
-                                                <th>Action</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody>

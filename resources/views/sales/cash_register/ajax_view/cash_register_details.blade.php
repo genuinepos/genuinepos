@@ -22,7 +22,7 @@
     <table class="cash_register_table table modal-table table-sm">
         <tbody>
             <tr>
-                <td width="50" class="text-start">Opening Balance :</td>
+                <td width="50" class="text-start">@lang('menu.opening_balance') :</td>
                 <td width="50" class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 
                     {{ App\Utils\Converter::format_in_bdt($activeCashRegister->cash_in_hand) }}
                 </td>

@@ -68,7 +68,7 @@
                                                         <th class="text-start">Supplier</th>
                                                         <th class="text-start">Quantity</th>
                                                         <th class="text-start">Packing Date</th>
-                                                        <th class="text-start">Action</th>
+                                                        <th class="text-start">@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="barcode_product_list">

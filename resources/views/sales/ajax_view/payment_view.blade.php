@@ -11,7 +11,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Customer : </strong>
+                    <li><strong>@lang('menu.customer') : </strong>
                         {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                     </li>
                     <li><strong>Business : </strong>
@@ -42,7 +42,7 @@
                 <ul class="list-unstyled">
                     <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ $sale->due }}</li>
-                    <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) }}</li>
+                    <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) }}</li>
                 </ul>
             </div>
         </div>
@@ -57,13 +57,13 @@
         <table class="display modal-table table-sm table-striped">
             <thead>
                 <tr class="bg-primary">
-                    <th class="text-white">Date</th>
+                    <th class="text-white">@lang('menu.date')</th>
                     <th class="text-white">Voucher No</th>
                     <th class="text-white">Amount</th>
                     <th class="text-white">Method</th>
                     <th class="text-white">Type</th>
                     <th class="text-white">Account</th>
-                    <th class="text-white">Action</th>
+                    <th class="text-white">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">

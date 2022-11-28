@@ -73,7 +73,7 @@
                                 <th class="text-black">Photo</th>
                                 <th class="text-black">Name</th>
                                 <th class="text-black">Description</th>
-                                <th class="text-black">Actions</th>
+                                <th class="text-black">@lang('menu.action')</th>
                             </tr>
                         </thead>
                         <tbody></tbody>

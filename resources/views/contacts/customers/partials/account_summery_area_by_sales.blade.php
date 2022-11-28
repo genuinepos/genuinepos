@@ -8,7 +8,7 @@
             <tbody>
                 <tr>
                     <td class="text-end">
-                        <strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                        <strong>@lang('menu.opening_balance') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
                     </td>
 
                     <td class="text-end opening_balance" id="sales_opening_balance">0.00</td>

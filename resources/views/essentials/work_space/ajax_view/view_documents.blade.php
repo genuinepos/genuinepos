@@ -12,7 +12,7 @@
                     <tr>
                         <th class="text-start text-white">#</th>
                         <th class="text-start text-white">File</th>
-                        <th class="text-start text-white">Action</th>
+                        <th class="text-start text-white">@lang('menu.action')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,7 +32,7 @@
                                 <td class="text-start">
                                     <a data-magnify="gallery" data-caption="ddd" data-group="" href="{{ asset('uploads/workspace_docs/'.$doc->attachment) }}" class="btn btn-sm btn-info text-white">View</a>
                                     <a href="{{ asset('uploads/workspace_docs/'.$doc->attachment) }}" class="btn btn-sm btn-secondary" download>Download</a>
-                                    <a href="{{ route('workspace.delete.doc', $doc->id) }}" id="delete_doc" class="btn btn-sm btn-danger">Delete</a>
+                                    <a href="{{ route('workspace.delete.doc', $doc->id) }}" id="delete_doc" class="btn btn-sm btn-danger">@lang('menu.delete')</a>
                                 </td>
                             </tr>
                         @endforeach

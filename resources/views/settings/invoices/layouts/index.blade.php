@@ -35,7 +35,7 @@
                                         <th>Serial</th>
                                         <th>Layout Name</th>
                                         <th>Is Header Less</th>
-                                        <th>Actions</th>
+                                        <th>@lang('menu.action')</th>
                                     </tr>
                                 </thead>
                                 <tbody>

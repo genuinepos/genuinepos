@@ -6,7 +6,7 @@
             <th>Duration</th>
             <th>Type</th>
             <th>Description</th>
-            <th>Action</th>
+            <th>@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

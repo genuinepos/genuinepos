@@ -7,7 +7,7 @@
                 </th>
             @endif
             <th class="text-white">Image</th>
-            <th class="text-white">Actions</th>
+            <th class="text-white">@lang('menu.action')</th>
             <th class="text-white">Product</th>
             <th class="text-white">Purchase Cost</th>
             <th class="text-white">Salling Price</th>
@@ -45,7 +45,7 @@
                             @endif
 
                             @if (auth()->user()->can('product_delete'))
-                                <a class="dropdown-item" id="delete" href="{{ route('products.delete', $product->id) }}"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>
+                                <a class="dropdown-item" id="delete" href="{{ route('products.delete', $product->id) }}"><i class="far fa-trash-alt mr-1 text-primary"></i>@lang('menu.delete')</a>
                             @endif
 
                             @if ($product->status == 1)

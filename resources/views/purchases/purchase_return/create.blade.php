@@ -62,7 +62,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-2"><b>Date :</b> <span
+                                        <label for="inputEmail3" class=" col-2"><b>@lang('menu.date') :</b> <span
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">

@@ -45,7 +45,7 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Supplier :</strong></label>
+                                                    <label><strong>@lang('menu.supplier') : </strong></label>
                                                     <select name="supplier_id"
                                                         class="form-control submit_able"
                                                         id="supplier_id" autofocus>
@@ -128,8 +128,8 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Actions</th>
-                                                <th>Date</th>
+                                                <th>@lang('menu.action')</th>
+                                                <th>@lang('menu.date')</th>
                                                 <th>P.Invoice ID</th>
                                                 <th>Purchase From</th>
                                                 <th>Supplier</th>

@@ -35,13 +35,13 @@
     <div class="reference_area pt-3">
         <h6 class="text-navy-blue"><b>Title :</b>
             @if ($payment->is_advanced == 1)
-                <b>PO Advance Payment</b>
+                <b>@lang('menu.po_advance_payment')</b>
             @else 
                 {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Received Return Amt.' }}
             @endif
         </h6>
         <h6 class="text-navy-blue"><b>P.Invoice ID :</b> {{ $payment->purchase->invoice_id }}</h6>
-        <h6 class="text-navy-blue"><b>Supplier :</b> {{ $payment->purchase->supplier->name }}</h6>
+        <h6 class="text-navy-blue"><b>@lang('menu.supplier')</b> {{ $payment->purchase->supplier->name }}</h6>
     </div>
 
     <div class="total_amount_table_area pt-3">

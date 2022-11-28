@@ -140,8 +140,8 @@
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-black">Actions</th>
-                                                    <th class="text-black">Date</th>
+                                                    <th class="text-black">@lang('menu.action')</th>
+                                                    <th class="text-black">@lang('menu.date')</th>
                                                     <th class="text-black">Voucher No</th>
                                                     <th class="text-black">Business Location</th>
                                                     <th class="text-black">Product</th>

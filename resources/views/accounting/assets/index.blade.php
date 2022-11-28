@@ -79,7 +79,7 @@
                                                         <th>S/L</th>
                                                         <th>Type</th>
                                                         <th>Type Code</th>
-                                                        <th>Action</th>
+                                                        <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -111,7 +111,7 @@
                                                         <th>Quantity</th>
                                                         <th>Per Unit Value</th>
                                                         <th>Total Value</th>
-                                                        <th>Action</th>
+                                                        <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>

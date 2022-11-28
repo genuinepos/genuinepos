@@ -151,8 +151,8 @@
                             <table class="display data_tbl data__table">
                                 <thead>
                                     <tr>
-                                        <th class="text-start">Date</th>
-                                        <th class="text-start">Reference No</th>
+                                        <th class="text-start">@lang('menu.date')</th>
+                                        <th class="text-start">@lang('menu.reference_no')</th>
                                         <th class="text-start">Adjustment From</th>
                                         <th class="text-start">Type</th>
                                         <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>

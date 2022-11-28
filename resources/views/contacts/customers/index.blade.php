@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-people-arrows"></span>
-                                <h5>Customers</h5>
+                                <h5>@lang('menu.customers')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
@@ -80,14 +80,14 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr class="text-start">
-                                                <th>Actions</th>
-                                                <th>Customer ID</th>
+                                                <th>@lang('menu.action')</th>
+                                                <th>@lang('menu.customer') ID</th>
                                                 <th>Name</th>
                                                 <th>Business</th>
                                                 <th>Phone</th>
                                                 <th>Group</th>
                                                 <th>Credit Limit</th>
-                                                <th>Opening Balance</th>
+                                                <th>@lang('menu.opening_balance')</th>
                                                 <th>Total Sale</th>
                                                 <th>Total Paid</th>
                                                 <th>Sale Due</th>
@@ -154,9 +154,9 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>Customer ID :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i></label>
+                                <label><strong>@lang('menu.customer') ID :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i></label>
                                 <input type="text" name="contact_id" class="form-control"
-                                    placeholder="Customer ID"/>
+                                    placeholder="@lang('menu.customer') ID"/>
                             </div>
 
                             <div class="col-md-3">
@@ -194,9 +194,9 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>Opening Balance :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
+                                <label><strong>@lang('menu.opening_balance') :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
                                 <input type="number" step="any" name="opening_balance" class="form-control"
-                                    placeholder="Opening balance" value="0.00" />
+                                    placeholder="@lang('menu.opening_balance')" value="0.00" />
                             </div>
 
                             <div class="col-md-3">

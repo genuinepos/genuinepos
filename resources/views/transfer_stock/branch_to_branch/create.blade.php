@@ -37,7 +37,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>B.Location :</b></label>
+                                        <label class="col-4"><b>@lang('menu.b_location') :</b></label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                             <input type="hidden" name="sender_branch_id" value="{{ auth()->user()->branch_id }}" id="sender_branch_id">
@@ -94,7 +94,7 @@
                                         <div class="col-8">
                                             <select class="form-control changeable add_input"
                                                 name="receiver_branch_id" data-name="Receive By" id="receiver_branch_id">
-                                                <option value="">Select Receiver B.Location</option>
+                                                <option value="">Select Receiver @lang('menu.b_location')</option>
                                                 <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</option>
 
                                                 @foreach ($branches as $b)
@@ -278,7 +278,7 @@
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
                                                         <label class="col-4">
-                                                            <b>Credit A/C :
+                                                            <b>@lang('menu.credit') A/C :
                                                                 <span class="text-danger">*</span>
                                                             </b>
                                                         </label>

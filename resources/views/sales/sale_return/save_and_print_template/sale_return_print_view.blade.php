@@ -61,7 +61,7 @@
                         <li>
                             <strong>Invoice No : </strong> {{ $saleReturn->sale ? $saleReturn->sale->invoice_id : '' }}
                         </li>
-                        <li><strong>Date : </strong>  {{ $saleReturn->sale ? $saleReturn->sale->date : '' }} </li>
+                        <li><strong>@lang('menu.date') : </strong>  {{ $saleReturn->sale ? $saleReturn->sale->date : '' }} </li>
                     </ul>
                 </div>
             </div>

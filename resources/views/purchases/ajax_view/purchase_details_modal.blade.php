@@ -16,7 +16,7 @@
                  <div class="row">
                      <div class="col-md-4">
                          <ul class="list-unstyled">
-                             <li><strong>Supplier :- </strong></li>
+                             <li><strong>@lang('menu.supplier') : - </strong></li>
                              <li><strong>Name : </strong> <span
                                      class="supplier_name">{{ $purchase->supplier->name }}</span></li>
                              <li><strong>Address : </strong> <span
@@ -51,7 +51,7 @@
                      </div>
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li><strong>Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                             <li><strong>@lang('menu.date') : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                              <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
 
                              <li>
@@ -140,7 +140,7 @@
                                 <table class="table modal-table table-striped table-sm">
                                     <thead>
                                         <tr class="bg-secondary text-white">
-                                            <th>Date</th>
+                                            <th>@lang('menu.date')</th>
                                             <th>Voucher No</th>
                                             <th>Method</th>
                                             <th>Type</th>
@@ -148,7 +148,7 @@
                                             <th>
                                                 Amount({{ json_decode($generalSettings->business, true)['currency'] }})
                                             </th>
-                                            <th class="action_hideable">Action</th>
+                                            <th class="action_hideable">@lang('menu.action')</th>
                                         </tr>
                                     </thead>
                                     <tbody id="p_details_payment_list">
@@ -160,7 +160,7 @@
                                                    <td>{{ $payment->pay_mode }}</td>
                                                    <td>
                                                         @if ($payment->is_advanced == 1)
-                                                            <b>PO Advance Payment</b>
+                                                            <b>@lang('menu.po_advance_payment')</b>
                                                         @else
                                                             {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Received Return Amt.' }}
                                                         @endif
@@ -335,7 +335,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Supplier :- </strong></li>
+                            <li><strong>@lang('menu.supplier') : - </strong></li>
                             <li><strong>Namne : </strong>{{ $purchase->supplier->name }}</li>
                             <li><strong>Address : </strong>{{ $purchase->supplier->address }}</li>
                             <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
@@ -378,7 +378,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
-                            <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                            <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>Purchase Status : </strong>
                                 <span class="purchase_status">
                                     @if ($purchase->purchase_status == 1)

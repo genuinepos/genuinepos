@@ -33,14 +33,14 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
+                                                <th>@lang('menu.date')</th>
                                                 <th>Reference ID</th>
                                                 <th>Warehouse(From) </th>
-                                                <th>B.Location(To)</th>
+                                                <th>@lang('menu.b_location')(To)</th>
                                                 <th>Shipping Charge({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Total Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Status</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody>

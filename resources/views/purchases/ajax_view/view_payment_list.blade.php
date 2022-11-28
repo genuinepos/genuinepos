@@ -15,7 +15,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Supplier : </strong><span>{{ $purchase->supplier->name }}</span>
+                    <li><strong>@lang('menu.supplier') : </strong><span>{{ $purchase->supplier->name }}</span>
                     </li>
                     <li><strong>Business : </strong>
                         <span>{{ $purchase->supplier->business_name }}</span>
@@ -58,7 +58,7 @@
                         <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                         {{ $purchase->due }}
                     </li>
-                    <li><strong>Date : </strong>{{date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date))  . ' ' . date($timeFormat, strtotime($purchase->time)) }} </li>
+                    <li><strong>@lang('menu.date') : </strong>{{date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date))  . ' ' . date($timeFormat, strtotime($purchase->time)) }} </li>
                     <li><strong>Purchase Status : </strong>
                         @if ($purchase->purchase_status == 1)
                             <span class="text-success"><b>Received</b></span>
@@ -94,13 +94,13 @@
         <table class="display modal-table table-sm table-striped">
             <thead>
                 <tr class="bg-secondary">
-                    <th class="text-start text-white">Date</th>
+                    <th class="text-start text-white">@lang('menu.date')</th>
                     <th class="text-start text-white">Voucher No</th>
                     <th class="text-start text-white">Method</th>
                     <th class="text-start text-white">Type</th>
                     <th class="text-start text-white">Account</th>
                     <th class="text-end text-white">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                    <th class="text-start text-white">Action</th>
+                    <th class="text-start text-white">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">
@@ -121,7 +121,7 @@
 
                             <td>
                                 @if ($payment->is_advanced == 1)
-                                    <b>PO Advance Payment</b>
+                                    <b>@lang('menu.po_advance_payment')</b>
                                 @else
                                     {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Received Return Amt.' }}
                                 @endif

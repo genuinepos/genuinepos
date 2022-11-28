@@ -4,7 +4,7 @@
             <th class="text-start">Serial</th>
             <th class="text-start">Tax Name</th>
             <th class="text-start">Tax Percent</th>
-            <th class="text-start">Actions</th>
+            <th class="text-start">@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

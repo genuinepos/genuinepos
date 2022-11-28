@@ -103,14 +103,14 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">Date</th>
+                                                <th class="text-start">@lang('menu.date')</th>
                                                 <th class="text-start">Voucher No.</th>
                                                 <th class="text-start">Receiver A/C</th>
                                                 <th class="text-start">Sender A/C </th>
                                                 <th class="text-start">Business Location</th>
                                                 <th class="text-start">Remarks</th>
                                                 <th class="text-start">Amount</th>
-                                                <th class="text-start">Action</th>
+                                                <th class="text-start">@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

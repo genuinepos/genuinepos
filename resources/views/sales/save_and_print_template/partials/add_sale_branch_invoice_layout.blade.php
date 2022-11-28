@@ -86,7 +86,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Customer : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                            <li><strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($sale->branch->add_sale_invoice_layout->customer_address)
                                 <li><strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
@@ -242,7 +242,7 @@
                     )
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
                             @if ($sale->branch->add_sale_invoice_layout->account_name)
-                                <p>Account Name : {{ $sale->branch->add_sale_invoice_layout->account_name }}</p>
+                                <p>@lang('menu.account_name') : {{ $sale->branch->add_sale_invoice_layout->account_name }}</p>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->account_no)

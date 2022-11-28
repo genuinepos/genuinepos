@@ -25,11 +25,11 @@
     <div class="reference_area pt-3">
         <div class="row">
             <div class="col-md-6">
-                <p><b>Reference No :</b> {{ $expense->invoice_id }}</p>
+                <p><b>@lang('menu.reference_no') :</b> {{ $expense->invoice_id }}</p>
             </div>
 
             <div class="col-md-6 text-end">
-                <p><b>Date :</b> {{ date('d/m/Y', strtotime($expense->date))  }}</p>
+                <p><b>@lang('menu.date') :</b> {{ date('d/m/Y', strtotime($expense->date))  }}</p>
             </div>
         </div>
     </div>

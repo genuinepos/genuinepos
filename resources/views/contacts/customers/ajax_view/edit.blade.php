@@ -15,8 +15,8 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>Customer ID</b> : </label>
-            <input readonly type="text" name="contact_id" class="form-control" placeholder="Customer ID" value="{{ $customer->contact_id }}"/>
+            <label><b>@lang('menu.customer') ID</b> : </label>
+            <input readonly type="text" name="contact_id" class="form-control" placeholder="@lang('menu.customer') ID" value="{{ $customer->contact_id }}"/>
         </div>
 
         <div class="col-md-3">
@@ -49,8 +49,8 @@
         </div>
 
         <div class="col-md-3">
-            <label><strong>Opening Balance :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
-            <input type="number" step="any" name="opening_balance" class="form-control" id="e_opening_balance" placeholder="Opening balance" value="{{ $branchOpeningBalance ? $branchOpeningBalance->amount : 0.00 }}" />
+            <label><strong>@lang('menu.opening_balance') :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
+            <input type="number" step="any" name="opening_balance" class="form-control" id="e_opening_balance" placeholder="@lang('menu.opening_balance')" value="{{ $branchOpeningBalance ? $branchOpeningBalance->amount : 0.00 }}" />
         </div>
 
         <div class="col-md-3">

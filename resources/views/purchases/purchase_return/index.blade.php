@@ -46,7 +46,7 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Supplier :</strong></label>
+                                                    <label><strong>@lang('menu.supplier') : </strong></label>
                                                     <select name="supplier_id"
                                                         class="form-control selectpicker submit_able"
                                                         id="supplier_id">
@@ -108,8 +108,8 @@
                                     <table class="display data_tbl modal-table table-sm table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Actions</th>
-                                                <th>Date</th>
+                                                <th>@lang('menu.action')</th>
+                                                <th>@lang('menu.date')</th>
                                                 <th>Return Invoice ID</th>
                                                 <th>Parent Purchase</th>
                                                 <th>Supplier Name</th>

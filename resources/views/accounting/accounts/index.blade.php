@@ -40,7 +40,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>Account Type :</strong></label>
+                                        <label><strong>@lang('menu.account_types') :</strong></label>
                                         <select name="account_type" id="f_account_type" class="form-control">
                                             <option value="">All</option>
                                             @foreach (App\Utils\Util::allAccountTypes(1) as $key => $accountType)
@@ -85,9 +85,9 @@
                                     <th class="text-start">A/C Number</th>
                                     <th class="text-start">Bank </th>
                                     <th class="text-start">Business Location </th>
-                                    <th class="text-start">Opening Balance</th>
-                                    <th class="text-start">Balance</th>
-                                    <th class="text-start">Action</th>
+                                    <th class="text-start">@lang('menu.opening_balance')</th>
+                                    <th class="text-start">@lang('menu.balance')</th>
+                                    <th class="text-start">@lang('menu.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -118,12 +118,12 @@
                         <div class="form-group">
                             <label><strong>Name :</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control add_input" data-name="Name" id="name"
-                                placeholder="Account Name" autocomplete="off" autofocus/>
+                                placeholder="@lang('menu.account_name')" autocomplete="off" autofocus/>
                             <span class="error error_name"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><strong>Account Type : <span class="text-danger">*</span></strong></label>
+                            <label><strong>@lang('menu.account_types') : <span class="text-danger">*</span></strong></label>
                             <select name="account_type" class="form-control add_input" data-name="Account Type"
                                 id="account_type">
                                 <option value="">Select Account type</option>
@@ -170,7 +170,7 @@
                         @endif
 
                         <div class="form-group mt-1">
-                            <label><strong>Opening Balance :</strong></label>
+                            <label><strong>@lang('menu.opening_balance') :</strong></label>
                             <input type="number" name="opening_balance" class="form-control" id="opening_balance" value="0.00" step="any"/>
                         </div>
 

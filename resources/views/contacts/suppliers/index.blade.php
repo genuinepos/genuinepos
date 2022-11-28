@@ -76,13 +76,13 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr class="text-start">
-                                                <th>Actions</th>
+                                                <th>@lang('menu.action')</th>
                                                 <th>Supplier ID</th>
                                                 <th>Prefix</th>
                                                 <th>Name</th>
                                                 <th>Business</th>
                                                 <th>Phone</th>
-                                                <th>Opening Balance</th>
+                                                <th>@lang('menu.opening_balance')</th>
                                                 <th>Total Purchase</th>
                                                 <th>Total Paid</th>
                                                 <th>Purchase Due</th>
@@ -189,8 +189,8 @@
                             </div>
 
                             <div class="col-md-3">
-                                <b>Opening Balance :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this supplier due." class="fas fa-info-circle tp"></i>
-                                <input type="number" name="opening_balance" class="form-control" placeholder="Opening balance"/>
+                                <b>@lang('menu.opening_balance') :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this supplier due." class="fas fa-info-circle tp"></i>
+                                <input type="number" name="opening_balance" class="form-control" placeholder="@lang('menu.opening_balance')"/>
                             </div>
 
                             <div class="col-md-3">

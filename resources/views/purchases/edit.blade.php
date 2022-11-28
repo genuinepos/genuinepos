@@ -37,7 +37,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Supplier :</b></label>
+                                        <label class=" col-4"><b>@lang('menu.supplier')</b></label>
                                         <div class="col-8">
                                             <input readonly type="text" id="supplier_name" class="form-control">
                                         </div>
@@ -105,7 +105,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Date :</b></label>
+                                        <label class="col-4"><b>@lang('menu.date') :</b></label>
                                         <div class="col-8">
                                             <input type="text" name="date" class="form-control changeable"
                                                     id="date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) }}">

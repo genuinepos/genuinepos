@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <ul class="list-unstyled">
-                        <li><strong>Customer :- </strong></li>
+                        <li><strong>@lang('menu.customer') :- </strong></li>
                         <li>
                             <strong>Name : </strong>{{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
                         </li>
@@ -57,7 +57,7 @@
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>Date : </strong> {{ $quotation->date . ' ' . $quotation->time }}
+                            <strong>@lang('menu.date') : </strong> {{ $quotation->date . ' ' . $quotation->time }}
                         </li>
                         <li>
                             <strong>Quotation ID : </strong> {{ $quotation->invoice_id }}
@@ -329,7 +329,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Customer : </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}</li>
+                            <li><strong>@lang('menu.customer') : </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}</li>
                             @if ($quotation->branch->add_sale_invoice_layout->customer_address)
                                 <li><strong>Address : </strong> {{ $quotation->customer ? $quotation->customer->address : '' }}</li>
                             @endif
@@ -659,7 +659,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>Customer : </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.customer') : </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($defaultLayout->customer_address)
                                 <li>

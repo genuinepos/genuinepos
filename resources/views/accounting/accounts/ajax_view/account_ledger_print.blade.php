@@ -30,10 +30,10 @@
         @endif
         
         @if ($fromDate && $toDate)
-            <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
+            <p><b>@lang('menu.date') :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
         @endif 
         
-        <p><b>Account Ledger </b></p> 
+        <p><b>@lang('menu.account') @lang('menu.ledger') </b></p> 
     </div>
 </div>
 
@@ -41,8 +41,8 @@
     <div class="row">
         <div class="col-12">
             <ul class="list-unstyled">
-                <li><strong>Account Type : </strong> {{ App\Utils\Util::accountType($account->account_type) }}</li>
-                <li><strong>Account Name : </strong> {{ $account->name }}</li>
+                <li><strong>@lang('menu.account_types') : </strong> {{ App\Utils\Util::accountType($account->account_type) }}</li>
+                <li><strong>@lang('menu.account_name') : </strong> {{ $account->name }}</li>
                 <li><strong>Bank : </strong> {{ $account->bank_name }}</li>
                 <li><strong>Balance : </strong> {{ App\Utils\Converter::format_in_bdt($account->balance) }}</li> 
             </ul>
@@ -61,11 +61,11 @@
         <table class="table modal-table table-sm table-bordered" >
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
+                    <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">Perticulars</th>
                     <th class="text-start">Voucher/Invoice</th>
-                    <th class="text-end">Debit</th>
-                    <th class="text-end">Credit</th>
+                    <th class="text-end">@lang('menu.debit')</th>
+                    <th class="text-end">@lang('menu.credit')</th>
                     <th class="text-end">Running Balance</th>
                 </tr>
             </thead>

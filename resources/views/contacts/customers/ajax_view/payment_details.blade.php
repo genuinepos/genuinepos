@@ -55,7 +55,7 @@
     <br>
     <div class="row">
         <div class="col-6">
-            <p><strong>Customer :</strong> {{ $customerPayment->customer->name }}</p>
+            <p><strong>@lang('menu.customer') :</strong> {{ $customerPayment->customer->name }}</p>
             <p><strong>Phone :</strong> {{ $customerPayment->customer->phone }}</p>
             <p><strong>Address :</strong> {{ $customerPayment->customer->address }}</p>
         </div>

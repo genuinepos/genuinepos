@@ -119,7 +119,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Customer : </strong> 
+                            <li><strong>@lang('menu.customer') : </strong> 
                                 {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($defaultLayout->customer_address)
@@ -286,7 +286,7 @@
                     )
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
                             @if ($defaultLayout->account_name)
-                                <p>Account Name : {{ $defaultLayout->account_name }}</p>
+                                <p>@lang('menu.account_name') : {{ $defaultLayout->account_name }}</p>
                             @endif
 
                             @if ($defaultLayout->account_no)

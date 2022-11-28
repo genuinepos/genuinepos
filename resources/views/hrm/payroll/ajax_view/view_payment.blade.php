@@ -40,7 +40,7 @@
                 <ul class="list-unstyled">
                     <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ $payroll->due }} </li>
-                    <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payroll->date))}} </li>
+                    <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payroll->date))}} </li>
                 </ul>
             </div>
         </div>
@@ -55,12 +55,12 @@
         <table class="table modal-table table-sm table-striped">
             <thead>
                 <tr class="bg-primary">
-                    <th class="text-white">Date</th>
+                    <th class="text-white">@lang('menu.date')</th>
                     <th class="text-white">Voucher No</th>
                     <th class="text-white">Amount</th>
                     <th class="text-white">Method</th>
                     <th class="text-white">Account</th>
-                    <th class="text-white">Action</th>
+                    <th class="text-white">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">

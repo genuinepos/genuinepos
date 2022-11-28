@@ -36,7 +36,7 @@
                                         <th class="text-start">Name</th>
                                         <th class="text-start">Prefix</th>
                                         <th class="text-start">Start From</th>
-                                        <th class="text-start">Actions</th>
+                                        <th class="text-start">@lang('menu.action')</th>
                                     </tr>
                                 </thead>
                                 <tbody>

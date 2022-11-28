@@ -111,7 +111,7 @@
                                                         <th>Heading</th>
                                                         <th>Description</th>
                                                         <th>Created Date</th>
-                                                        <th>Actions</th>
+                                                        <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>

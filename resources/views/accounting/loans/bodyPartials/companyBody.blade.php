@@ -77,7 +77,7 @@
                                 <th>Total Receive</th>
                                 <th>Total Loan&Liabilities</th>
                                 <th>Total Pay</th>
-                                <th>Action</th>
+                                <th>@lang('menu.action')</th>
                             </tr>
                         </thead>
                         <tbody></tbody>

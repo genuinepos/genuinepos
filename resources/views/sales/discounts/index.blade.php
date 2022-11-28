@@ -50,7 +50,7 @@
                                                 <th>Brand</th>
                                                 <th>Category</th>
                                                 <th>Applicable Products</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

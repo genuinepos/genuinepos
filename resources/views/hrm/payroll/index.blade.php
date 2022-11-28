@@ -123,7 +123,7 @@
                                                 <th>Total Amount</th>
                                                 <th>Payment Status</th>
                                                 <th>Created By</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -209,7 +209,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h6 class="modal-title" id="exampleModalLabel">Payroll Payments</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payroll_payment')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="payment_view_modal_body"></div>

@@ -102,7 +102,7 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
+                                    <th>@lang('menu.date')</th>
                                     <th>Employee</th>
                                     <th>Clock IN - CLock Out</th>
                                     <th>Work Duration</th>

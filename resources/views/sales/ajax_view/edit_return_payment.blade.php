@@ -19,7 +19,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Customer : </strong><span>{{ $payment->customer ? $payment->customer->name : 'Walk-In-Customer' }}</span> </li>
+                                <li><strong>@lang('menu.customer') : </strong><span>{{ $payment->customer ? $payment->customer->name : 'Walk-In-Customer' }}</span> </li>
                                 <li><strong>Business : </strong><span>{{ $payment->customer ? $payment->customer->business_name : '' }}</span> </li>
                             </ul>
                         </div>
@@ -79,7 +79,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">

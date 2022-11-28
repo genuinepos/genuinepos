@@ -45,7 +45,7 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
+            <p><b>@lang('menu.date') :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
         @endif 
         <p><b>Supplier Ledger </b></p> 
     </div>
@@ -55,7 +55,7 @@
     <div class="row">
         <div class="col-8">
             <ul class="list-unstyled">
-                <li><strong>Supplier : </strong> {{ $supplier->name }} (ID: {{ $supplier->contact_id }})</li>
+                <li><strong>@lang('menu.supplier') : </strong> {{ $supplier->name }} (ID: {{ $supplier->contact_id }})</li>
                 <li><strong>Phone : </strong> {{ $supplier->phone }}</li>
                 <li><strong>Address : </strong> {{ $supplier->address  }}</li> 
             </ul>
@@ -72,11 +72,11 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Particulars</th>
+                    <th class="text-start">@lang('menu.date')</th>
+                    <th class="text-start">@lang('menu.particulars')</th>
                     <th class="text-start">Voucher/P.Invoice</th>
-                    <th class="text-end">Debit</th>
-                    <th class="text-end">Credit</th>
+                    <th class="text-end">@lang('menu.debit')</th>
+                    <th class="text-end">@lang('menu.credit')</th>
                     <th class="text-end">Running Balance</th>
                 </tr>
             </thead>

@@ -36,7 +36,7 @@
                                         <th class="text-start">S/L</th>
                                         <th class="text-start">Sticker Settings Name</th>
                                         <th class="text-start">Sticker Settings Description</th>
-                                        <th class="text-start">Actions</th>
+                                        <th class="text-start">@lang('menu.action')</th>
                                     </tr>
                                 </thead>
                                 <tbody>

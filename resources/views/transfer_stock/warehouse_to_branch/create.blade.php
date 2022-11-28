@@ -55,7 +55,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>B.Location :</b></label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.b_location') :</b></label>
                                         <div class="col-8">
                                             <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                             <input readonly type="text" class="form-control" value="{{
@@ -67,7 +67,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>Date :</b></label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.date') :</b></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control changeable" id="datepicker"
                                                 value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off">

@@ -36,7 +36,7 @@
                             <table class="display data_tbl data__table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Date</th>
+                                        <th>@lang('menu.date')</th>
                                         <th>Invoice ID</th>
                                         <th>Supplier</th>
                                         <th>Tax Number</th>
@@ -99,7 +99,7 @@
                             <table class="display data_tbl data__table table-striped" id="s-tax">
                                 <thead>
                                     <tr class="bg-navey-blue">
-                                        <th>Date</th>
+                                        <th>@lang('menu.date')</th>
                                         <th>Invoice ID</th>
                                         <th>Customer</th>
                                         <th>Tax Number</th>
@@ -169,7 +169,7 @@
                             <table class="display data_tbl data__table table-striped" id="e-tax">
                                 <thead>
                                     <tr class="bg-navey-blue">
-                                        <th>Date</th>
+                                        <th>@lang('menu.date')</th>
                                         <th>Invoice ID</th>
                                         <th>Total Amount</th>
                                         <th>Tax Percent</th>

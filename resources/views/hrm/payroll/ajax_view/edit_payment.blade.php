@@ -11,7 +11,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Customer : </strong>{{ $payment->payroll->employee->prefix.' '.$payment->payroll->employee->name.' '.$payment->payroll->employee->last_name}}</li>
+                    <li><strong>@lang('menu.customer') : </strong>{{ $payment->payroll->employee->prefix.' '.$payment->payroll->employee->name.' '.$payment->payroll->employee->last_name}}</li>
                     <li><strong>Branch/Business : </strong>
                         <span>
                             @if ($payment->payroll->employee->branch)
@@ -61,7 +61,7 @@
         </div>
 
         <div class="col-md-4">
-            <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+            <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>

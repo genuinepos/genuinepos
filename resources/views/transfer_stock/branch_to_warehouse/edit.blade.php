@@ -37,7 +37,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-3"><b>B.Location :</b><span class="text-danger">*</span></label>
+                                                <label for="inputEmail3" class="col-3"><b>@lang('menu.b_location') :</b><span class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                     <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
@@ -64,7 +64,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class=" col-2"><b>Date :</b></label>
+                                                <label for="inputEmail3" class=" col-2"><b>@lang('menu.date') :</b></label>
                                                 <div class="col-8">
                                                     <input required type="text" name="date" class="form-control  changeable"
                                                         value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}" id="datepicker">

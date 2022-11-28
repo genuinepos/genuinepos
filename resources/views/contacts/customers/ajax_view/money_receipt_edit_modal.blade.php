@@ -12,7 +12,7 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Customer : </strong>
+                    <li><strong>@lang('menu.customer') : </strong>
                         <span class="card_text customer_name">
                             {{ $receipt->cus_name }} 
                         </span>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="col-md-3">
-            <label for="p_date"><strong>Date :</strong></label>
+            <label for="p_date"><strong>@lang('menu.date') :</strong></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i

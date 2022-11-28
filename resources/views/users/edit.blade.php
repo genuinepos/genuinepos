@@ -372,7 +372,7 @@
                                 <div class="row g-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-sm-4 col-5"><b>Account Name :</b> </label>
+                                            <label class="col-sm-4 col-5"><b>@lang('menu.account_name') :</b> </label>
                                             <div class="col-sm-8 col-7">
                                                 <input type="text" name="bank_ac_holder_name" class="form-control " placeholder="Account holder's name" autocomplete="off" value="{{ $user->bank_ac_holder_name }}">
                                             </div>

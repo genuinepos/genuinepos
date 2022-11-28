@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>B.Location (To) : </strong></li>
+                        <li><strong>@lang('menu.b_location') (To) : </strong></li>
                         <li><strong>Name :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>Phone : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         @if ($transfer->branch)
@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
                         <li><strong>Status : </strong> 
                             @if ($transfer->status == 1) 

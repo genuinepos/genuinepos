@@ -63,7 +63,7 @@
             </div>
 
             <div class="col-4 text-end">
-                <p> <b>Date</b> : {{ $receipt->is_date ? date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($receipt->date)) : '.......................................' }}</p>
+                <p> <b>@lang('menu.date')</b> : {{ $receipt->is_date ? date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($receipt->date)) : '.......................................' }}</p>
             </div>
         </div><br>
 
@@ -226,7 +226,7 @@
             </div>
 
             <div class="col-4 text-end">
-                <p><b>Date</b> : {{ $receipt->is_date ? date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($receipt->date)) : '.......................................' }}</p>
+                <p><b>@lang('menu.date')</b> : {{ $receipt->is_date ? date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($receipt->date)) : '.......................................' }}</p>
             </div>
         </div><br>
 

@@ -43,7 +43,7 @@
                                                 <th>Shift Name</th>
                                                 <th>Start Time</th>
                                                 <th>End Time</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

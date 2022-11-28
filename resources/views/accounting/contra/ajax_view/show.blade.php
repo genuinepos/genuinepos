@@ -29,7 +29,7 @@
     <div class="reference_area">
         <p><b>Title :</b> Contra Entry</p>
         <p><b>Voucher No :</b> {{ $contra->voucher_no }}</p>
-        <p><b>Date :</b> {{ $contra->date}}</p>
+        <p><b>@lang('menu.date') :</b> {{ $contra->date}}</p>
         <p><b>Business Location :</b> 
             @if ($contra->branch)
 

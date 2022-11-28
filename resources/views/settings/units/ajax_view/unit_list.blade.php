@@ -5,7 +5,7 @@
             <th class="text-start">Unit Name</th>
             <th class="text-start">Code Name</th>
     
-            <th class="text-start">Actions</th>
+            <th class="text-start">@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

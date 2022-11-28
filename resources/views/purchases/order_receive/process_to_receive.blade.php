@@ -29,7 +29,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Supplier :</b><span class="text-danger">*</span></label>
+                                        <label class="col-4"><b>@lang('menu.supplier')</b><span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input readonly type="text" id="supplier_name" class="form-control" value="{{ $purchase->supplier->name.' ('.$purchase->supplier->phone.')' }}">
                                         </div>
@@ -51,7 +51,7 @@
                                         </div>
                                     @else
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><span class="text-danger">*</span> <b>B.Location :</b> </label>
+                                            <label class="col-4"><span class="text-danger">*</span> <b>@lang('menu.b_location') :</b> </label>
                                             <div class="col-8">
                                                 <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}">
                                             </div>
@@ -70,7 +70,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-2"><b>Date :</b></label>
+                                        <label class=" col-2"><b>@lang('menu.date') :</b></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control changeable"
                                                     id="datepicker" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) }}">

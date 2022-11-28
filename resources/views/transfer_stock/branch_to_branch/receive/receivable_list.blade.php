@@ -109,8 +109,8 @@
                                     <table class="display data_tbl table-sm table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Actions</th>
-                                                <th>Date</th>
+                                                <th>@lang('menu.action')</th>
+                                                <th>@lang('menu.date')</th>
                                                 <th>Reference ID</th>
                                                 <th>Send From</th>
                                                 <th>Receive Status</th>

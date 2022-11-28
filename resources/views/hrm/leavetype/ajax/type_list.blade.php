@@ -5,7 +5,7 @@
             <th class="text-start">Type</th>
             <th class="text-start">Max leave</th>
             <th class="text-start">Leave Count Interval</th>
-            <th class="text-start">Actions</th>
+            <th class="text-start">@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

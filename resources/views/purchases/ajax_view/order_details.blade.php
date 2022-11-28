@@ -16,7 +16,7 @@
                  <div class="row">
                      <div class="col-md-4">
                          <ul class="list-unstyled">
-                             <li><strong>Supplier :- </strong></li>
+                             <li><strong>@lang('menu.supplier') : - </strong></li>
                              <li><strong>Name : </strong> {{ $purchase->supplier->name }}</li>
                              <li><strong>Address : </strong> {{ $purchase->supplier->address }}</li>
                              <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
@@ -175,7 +175,7 @@
                                 <table class="table modal-table table-striped table-sm">
                                     <thead>
                                         <tr class="bg-secondary text-white">
-                                            <th class="text-start">Date</th>
+                                            <th class="text-start">@lang('menu.date')</th>
                                             <th class="text-start">Voucher No</th>
                                             <th class="text-start">Method</th>
                                             <th class="text-start">Type</th>
@@ -183,7 +183,7 @@
                                             <th class="text-end">
                                                 Amount({{ json_decode($generalSettings->business, true)['currency'] }})
                                             </th>
-                                            <th>Action</th>
+                                            <th>@lang('menu.action')</th>
                                         </tr>
                                     </thead>
                                     <tbody id="p_details_payment_list">
@@ -198,7 +198,7 @@
                                                    <td class="text-start">
                                                         @if ($payment->is_advanced == 1)
 
-                                                            <b>PO Advance Payment</b>
+                                                            <b>@lang('menu.po_advance_payment')</b>
                                                         @else 
                                                         
                                                             {{ $payment->payment_type == 1 ? 'Payment' : 'Received Return Amt.' }}
@@ -382,7 +382,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Supplier :- </strong></li>
+                            <li><strong>@lang('menu.supplier') : - </strong></li>
                             <li><strong>Name : </strong>{{ $purchase->supplier->name }}</li>
                             <li><strong>Address : </strong>{{ $purchase->supplier->address }}</li>
                             <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>

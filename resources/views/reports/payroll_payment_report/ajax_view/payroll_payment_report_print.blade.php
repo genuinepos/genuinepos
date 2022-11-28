@@ -38,9 +38,9 @@
             @endif
     
             @if ($s_date && $e_date)
-                <p><b>Date :</b>
+                <p><b>@lang('menu.date') :</b>
                     {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($s_date)) }}
-                    <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($e_date)) }}
+                    <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($e_date)) }}
                 </p>
             @endif
             <h6 style="margin-top: 10px;">Payroll Payment Report</h6>
@@ -52,9 +52,9 @@
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-start">Date</th>
+                        <th class="text-start">@lang('menu.date')</th>
                         <th class="text-start">Employee</th>
-                        <th class="text-start">Payment Voucher No</th>
+                        <th class="text-start">@lang('menu.payment_voucher_no')</th>
                         <th class="text-start">Paid</th>
                         <th class="text-start">Pay For(Payroll)</th>
                         <th class="text-start">Paid By</th>

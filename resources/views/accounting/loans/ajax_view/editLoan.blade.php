@@ -2,7 +2,7 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-6">
-            <label><strong>Date : <span class="text-danger">*</span></strong></label>
+            <label><strong>@lang('menu.date') : <span class="text-danger">*</span></strong></label>
             <input type="text" name="date" class="form-control" id="e_date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($loan->report_date)) }}">
             <span class="error error_e_date"></span>
         </div>

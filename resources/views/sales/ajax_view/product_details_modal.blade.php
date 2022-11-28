@@ -20,7 +20,7 @@
                     <div class="col-md-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>Customer :- </strong>
+                                <strong>@lang('menu.customer') :- </strong>
                             </li>
 
                             <li>
@@ -67,7 +67,7 @@
 
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
-                            <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
+                            <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
                             <li><strong> {{ $sale->status == 1 ? 'Invoice ID' : 'Order No' }}  : </strong> {{ $sale->invoice_id }}</li>
                             <li><strong>Sale Status : </strong>
                                 @if ($sale->status == 1)

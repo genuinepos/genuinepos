@@ -160,7 +160,7 @@
                                                         <th class="text-start">Reference/InvoiceId</th>
                                                         <th class="text-start">Customer</th>
                                                         <th class="text-start">Total</th>
-                                                        <th class="text-start">Actions</th>
+                                                        <th class="text-start">@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="data-list" id="transection_list"></tbody>

@@ -37,7 +37,7 @@
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <label class=" col-4"><span
-                                            class="text-danger">*</span> <b>Supplier :</b></label>
+                                            class="text-danger">*</span> <b>@lang('menu.supplier')</b></label>
                                         <div class="col-8">
                                             <div class="input-group">
                                                 <select name="supplier_id" class="form-control add_input"
@@ -368,7 +368,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Credit A/C : <span
+                                                        <label class="col-4"><b>@lang('menu.credit') A/C : <span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">

@@ -126,7 +126,7 @@
                                                                 <table class="display data_tbl data__table" id="sale_table">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>Date</th>
+                                                                            <th>@lang('menu.date')</th>
                                                                             <th>Invoice ID</th>
                                                                             <th>Customer</th>
                                                                             <th>Branch</th>
@@ -178,8 +178,8 @@
                                                                 <table class="display data_tbl data__table w-100" id="expense_table">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>Date</th>
-                                                                            <th>Reference No</th>
+                                                                            <th>@lang('menu.date')</th>
+                                                                            <th>@lang('menu.reference_no')</th>
                                                                             <th>Branch</th>
                                                                             <th>Expense For</th>
                                                                             <th>Payment Status</th>

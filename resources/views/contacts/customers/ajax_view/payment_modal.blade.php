@@ -26,7 +26,7 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Customer : </strong><span class="card_text customer_name">{{ $customer->name }}</span></li>
+                                <li><strong>@lang('menu.customer') : </strong><span class="card_text customer_name">{{ $customer->name }}</span></li>
                                 <li><strong>Business : </strong><span class="card_text customer_business">{{ $customer->business_name }}</span></li>
                             </ul>
                         </div>
@@ -35,7 +35,7 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Opening Balance : </strong>
+                                <li><strong>@lang('menu.opening_balance') : </strong>
                                     <span class="card_text" id="customer_payment_opening_balance">
                                         {{ App\Utils\Converter::format_in_bdt($amounts['opening_balance']) }} 
                                     </span>
@@ -142,7 +142,7 @@
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">Select</th>
-                                                                    <th class="text-start text-white">Date</th>
+                                                                    <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">Order/Invoice</th>
                                                                     <th class="text-start text-white">Status</th>
                                                                     <th class="text-start text-white">Pay Status</th>
@@ -219,7 +219,7 @@
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">Select</th>
-                                                                    <th class="text-start text-white">Date</th>
+                                                                    <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">Invoice ID</th>
                                                                     <th class="text-start text-white">Pay Status</th>
                                                                     <th class="text-start text-white">Sold Amt.</th>
@@ -281,7 +281,7 @@
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">Select</th>
-                                                                    <th class="text-start text-white">Date</th>
+                                                                    <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">Order ID</th>
                                                                     <th class="text-start text-white">Pay Status</th>
                                                                     <th class="text-start text-white">Sold Amt.</th>
@@ -351,7 +351,7 @@
                             </div>
         
                             <div class="col-md-4">
-                                <label for="cp_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                                <label for="cp_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_f"></i></span>

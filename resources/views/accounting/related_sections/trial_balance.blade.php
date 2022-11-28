@@ -32,8 +32,8 @@
                                                 <thead>
                                                     <tr class="bg-primary">
                                                         <th class="trial_balance text-start text-white">Accounts</th>
-                                                        <th class="debit text-white">Debit</th>
-                                                        <th class="credit text-white">Credit</th>
+                                                        <th class="debit text-white">@lang('menu.debit')</th>
+                                                        <th class="credit text-white">@lang('menu.credit')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

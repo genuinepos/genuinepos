@@ -106,7 +106,7 @@
                                                     <th class="text-start">Serial</th>
                                                     <th class="text-start">Name</th>
                                                     <th class="text-start">Code</th>
-                                                    <th class="text-start">Actions</th>
+                                                    <th class="text-start">@lang('menu.action')</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>

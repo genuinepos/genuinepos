@@ -41,9 +41,9 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>Date :</b>
+            <p><b>@lang('menu.date') :</b>
                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
-                <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+                <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;"><b>Stock Adjustment Report </b></h6> 
@@ -55,9 +55,9 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Reference No.</th>
-                    <th class="text-start">B.Location</th>
+                    <th class="text-start">@lang('menu.date')</th>
+                    <th class="text-start">@lang('menu.reference_no').</th>
+                    <th class="text-start">@lang('menu.b_location')</th>
                     <th class="text-start">Type</th>
                     <th class="text-end">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                     <th class="text-end">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>

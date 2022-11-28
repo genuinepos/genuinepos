@@ -254,7 +254,7 @@
                     )
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
                             @if ($defaultLayout->account_name)
-                                <p>Account Name : {{ $defaultLayout->account_name  }}</p>
+                                <p>@lang('menu.account_name') : {{ $defaultLayout->account_name  }}</p>
                             @endif
 
                             @if ($defaultLayout->account_no)

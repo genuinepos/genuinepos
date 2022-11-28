@@ -59,7 +59,7 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled float-end">
-                            <li><strong>Date : </strong> {{ $transfer->date }}</li>
+                            <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                             <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
                             <li><strong>Status : </strong>
                                 @if ($transfer->receive_status == 1)
@@ -206,7 +206,7 @@
 
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
                         <li><strong>Status : </strong> 
                             @if ($transfer->receive_status == 1)
@@ -352,7 +352,7 @@
 
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
                     </ul>
                 </div>

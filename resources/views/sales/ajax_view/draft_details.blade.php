@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <ul class="list-unstyled">
-                        <li><strong>Customer :- </strong></li>
+                        <li><strong>@lang('menu.customer') :- </strong></li>
                         <li>
                             <strong>Namne : </strong>{{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
                         </li>
@@ -55,7 +55,7 @@
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>Date : </strong> {{ $draft->date . ' ' . $draft->time }}
+                            <strong>@lang('menu.date') : </strong> {{ $draft->date . ' ' . $draft->time }}
                         </li>
                         <li>
                             <strong>draft ID : </strong> {{ $draft->invoice_id }}
@@ -312,7 +312,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Customer : </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}</li>
+                            <li><strong>@lang('menu.customer') : </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}</li>
                             @if ($draft->branch->add_sale_invoice_layout->customer_address)
                                 <li><strong>Address : </strong> {{ $draft->customer ? $draft->customer->address : '' }}</li>
                             @endif
@@ -665,7 +665,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>Customer : </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.customer') : </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($defaultLayout->customer_address)
                                 <li>

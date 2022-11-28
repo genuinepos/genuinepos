@@ -33,7 +33,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Supplier :</b> <span
+                                        <label class=" col-4"><b>@lang('menu.supplier')</b> <span
                                                 class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select name="supplier_id" class="form-control add_input"
@@ -49,7 +49,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>B.Location :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.b_location') :</b> </label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
                                         </div>
@@ -80,7 +80,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Date :</b> <span
+                                        <label class="col-4"><b>@lang('menu.date') :</b> <span
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control changeable" autocomplete="off"

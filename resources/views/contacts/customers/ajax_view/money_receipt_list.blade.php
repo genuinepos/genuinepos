@@ -12,7 +12,7 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li class="text-navy-blue"><strong>Customer : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.customer') : </strong>
                         <span class="card_text customer_name">
                             {{ $customer->name }}
                         </span>
@@ -68,11 +68,11 @@
         <table class="display data_tbl data__table table-striped">
             <thead>
                 <tr>
-                    <th>Date</th>
+                    <th>@lang('menu.date')</th>
                     <th>From</th>
                     <th>Voucher No</th>
                     <th>Amount</th>
-                    <th>Action</th>
+                    <th>@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="receipt_list_body">

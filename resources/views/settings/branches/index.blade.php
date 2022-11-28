@@ -52,7 +52,7 @@
                                                 <th class="text-white">Zip-Code</th>
                                                 <th class="text-white">Country</th>
                                                 <th class="text-white">Email</th>
-                                                <th class="text-white">Actions</th>
+                                                <th class="text-white">@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

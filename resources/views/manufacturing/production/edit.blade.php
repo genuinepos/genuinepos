@@ -67,7 +67,7 @@
                                         </div>
 
                                         <div class="col-md-2">
-                                            <label><b>Date :</b></label>
+                                            <label><b>@lang('menu.date') :</b></label>
                                             <input required type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($production->date)) }}" id="datepicker">
                                         </div>
 

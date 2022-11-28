@@ -378,7 +378,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-4"><b>Account Name :</b> </label>
+                                    <label for="inputEmail3" class="col-4"><b>@lang('menu.account_name') :</b> </label>
                                     <div class="col-8">
                                         <input type="text" name="bank_ac_holder_name" class="form-control "
                                             placeholder="Account holder's name" autocomplete="off"

@@ -10,7 +10,7 @@
             <th class="text-start">Zip-Code</th>
             <th class="text-start">Country</th>
             <th class="text-start">Email</th>
-            <th class="text-start">Actions</th>
+            <th class="text-start">@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

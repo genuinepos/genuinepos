@@ -36,7 +36,7 @@
                                     <th class="text-black">Counter Name</th>
                                     <th class="text-black">Short Name</th>
                                     <th class="text-black">Branch</th>
-                                    <th class="text-black">Actions</th>
+                                    <th class="text-black">@lang('menu.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li><strong>B.Location (To) : </strong></li>
+                            <li><strong>@lang('menu.b_location') (To) : </strong></li>
                             <li><strong>Name :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                             <li><strong>Phone : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                             @if ($sendStock->branch)
@@ -38,7 +38,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled float-right">
-                            <li><strong>Date : </strong> {{ $sendStock->date }}</li>
+                            <li><strong>@lang('menu.date') : </strong> {{ $sendStock->date }}</li>
                             <li><strong>Reference ID : </strong>{{ $sendStock->invoice_id }}</li>
                             <li><strong>Status : </strong> 
                                 @if ($sendStock->status == 1) 
@@ -131,7 +131,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>B.Location (From) : </strong></li>
+                            <li><strong>@lang('menu.b_location') (From) : </strong></li>
                             <li><strong>Name :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                             <li><strong>Phone : </strong> 
                                 {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}
@@ -162,7 +162,7 @@
                     
                     <div class="col-lg-4">
                         <ul class="list-unstyled float-right">
-                            <li><strong>Date : </strong> {{ $sendStock->date }}</li>
+                            <li><strong>@lang('menu.date') : </strong> {{ $sendStock->date }}</li>
                             <li><strong>Reference ID : </strong>{{ $sendStock->invoice_id }}</li>
                             <li><strong>Status : </strong> 
                                 @if ($sendStock->status == 1) 

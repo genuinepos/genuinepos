@@ -71,7 +71,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Customer :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.customer') :</b> </label>
                                         <div class="col-8">
                                             <select name="customer_id" class="form-control" id="customer_id">
                                                 <option value="">Walk-In-Customer</option>
@@ -332,7 +332,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Credit A/C: </b> </label>
+                                                        <label class="col-4"><b>@lang('menu.credit') A/C: </b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
                                                                 @foreach ($accounts as $account)

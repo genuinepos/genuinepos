@@ -20,8 +20,8 @@
     </div>
 
     <div class="reference_area pt-3">
-        <h6><b>Title :</b> Payroll Payment</h6>
-        <h6><b>Reference No :</b> {{ $payment->payroll->reference_no }}</h6>
+        <h6><b>Title :</b> @lang('menu.payroll_payment')</h6>
+        <h6><b>@lang('menu.reference_no') :</b> {{ $payment->payroll->reference_no }}</h6>
     </div>
 
     <div class="total_amount_table_area pt-3">

@@ -27,12 +27,12 @@
     <div class="reference_area pt-3">
         <div class="row">
             <div class="col-md-6">
-                <p><b>Reference No :</b> {{ $payment->expense->invoice_id }}</p>
+                <p><b>@lang('menu.reference_no') :</b> {{ $payment->expense->invoice_id }}</p>
                 <p><b>Voucher No :</b> {{ $payment->invoice_id }}</p>
             </div>
 
             <div class="col-md-6 text-end">
-                <p><b>Date :</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date))  }}</p>
+                <p><b>@lang('menu.date') :</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date))  }}</p>
             </div>
         </div>
     </div>

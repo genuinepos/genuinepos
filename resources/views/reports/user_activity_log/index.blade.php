@@ -131,7 +131,7 @@
                                         <table class="log_table display data_tbl modal-table table-sm table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
+                                                <th>@lang('menu.date')</th>
                                                 <th>Business Location</th>
                                                 <th>Action By</th>
                                                 <th>Action Name</th>

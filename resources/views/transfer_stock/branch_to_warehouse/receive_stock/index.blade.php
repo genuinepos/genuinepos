@@ -33,14 +33,14 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">Date</th>
+                                                <th class="text-start">@lang('menu.date')</th>
                                                 <th class="text-start">Reference ID</th>
                                                 <th class="text-start">Warehouse(From)</th>
-                                                <th class="text-start">B.Location(To)</th>
+                                                <th class="text-start">@lang('menu.b_location')(To)</th>
                                                 <th class="text-start">Total Item</th>
                                                 <th class="text-start">Total Qty</th>
                                                 <th class="text-start">Status</th>
-                                                <th class="text-center">Actions</th>
+                                                <th class="text-center">@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -79,7 +79,7 @@
                     <form id="send_mail_form" action="" method="POST">
                         @csrf
                         <div class="form-group mt-1">
-                            <label><strong>To :</strong> </label>
+                            <label><strong>@lang('menu.to') :</strong> </label>
                             <select required name="user_email" class="form-control" id="user_email">
                                 <option value="">Select User</option>
                                 @foreach ($users as $user)

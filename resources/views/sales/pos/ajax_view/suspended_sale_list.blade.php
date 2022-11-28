@@ -18,7 +18,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <a id="delete" href="{{ route('sales.delete', $sale->id) }}" class="a btn btn-sm btn-danger" tabindex="-1">Delete</a>
+                                <a id="delete" href="{{ route('sales.delete', $sale->id) }}" class="a btn btn-sm btn-danger" tabindex="-1">@lang('menu.delete')</a>
                             </div>
                         </div>
                     </div>

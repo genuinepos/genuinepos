@@ -58,8 +58,8 @@
         </div>
 
         <div class="col-md-3">
-            <label><strong>Opening Balance :</strong>  </label>
-            <input type="number" name="opening_balance" class="form-control" placeholder="Opening Balance"/>
+            <label><strong>@lang('menu.opening_balance') :</strong>  </label>
+            <input type="number" name="opening_balance" class="form-control" placeholder="@lang('menu.opening_balance')"/>
         </div>
 
         <div class="col-md-3">

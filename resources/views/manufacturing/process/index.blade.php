@@ -46,7 +46,7 @@
                                                     <th data-bSortable="false">
                                                         <input class="all" type="checkbox" name="all_checked"/>
                                                     </th>
-                                                    <th class="text-black">Actions</th>
+                                                    <th class="text-black">@lang('menu.action')</th>
                                                     <th class="text-black">Product Name</th>
                                                     <th class="text-black">Category</th>
                                                     <th class="text-black">SubCategory</th>

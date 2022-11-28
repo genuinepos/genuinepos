@@ -84,13 +84,13 @@
         <table class="table modal-table table-sm table-striped">
             <thead>
                 <tr class="bg-primary">
-                    <th class="text-white text-start">Date</th>
+                    <th class="text-white text-start">@lang('menu.date')</th>
                     <th class="text-white text-start">Voucher No</th>
                     <th class="text-white text-start">Payment Type</th>
                     <th class="text-white text-start">Method</th>
                     <th class="text-white text-start">Account</th>
                     <th class="text-white text-end">Amount({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-white text-start">Action</th>
+                    <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">

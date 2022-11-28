@@ -49,8 +49,8 @@
 
                 <div class="col-md-6 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
-                        <li><strong>Reference No : </strong> {{ $adjustment->invoice_id }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
+                        <li><strong>@lang('menu.reference_no') : </strong> {{ $adjustment->invoice_id }}</li>
                         <li><strong>Type : </strong>
                             {!! $adjustment->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>' !!}
                         </li>
@@ -100,7 +100,7 @@
                            <table class="table modal-table table-striped table-sm">
                                <thead>
                                    <tr class="bg-primary text-white">
-                                       <th>Date</th>
+                                       <th>@lang('menu.date')</th>
                                        <th>Voucher No</th>
                                        <th>Method</th>
                                        <th>Account</th>
@@ -199,8 +199,8 @@
             <div class="row">
                 <div class="col-8">
                     <ul class="list-unstyled">
-                        <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
-                        <li><strong>Reference No : </strong>{{ $adjustment->invoice_id }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
+                        <li><strong>@lang('menu.reference_no') : </strong>{{ $adjustment->invoice_id }}</li>
                           @if ($adjustment->warehouse_id)
                             <li>
                                 <strong>Adjustment Location : </strong> 

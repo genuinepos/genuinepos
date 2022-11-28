@@ -222,7 +222,7 @@
                                             <th>Status</th>
                                             <th>Due Date</th>
                                             <th>Assigned To</th>
-                                            <th>Actions</th>
+                                            <th>@lang('menu.action')</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

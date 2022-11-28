@@ -94,14 +94,14 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
+                                                <th>@lang('menu.date')</th>
                                                 <th>Employee</th>
                                                 <th>Clock IN - CLock Out</th>
                                                 <th>Work Duration</th>
                                                 <th>Clockin note</th>
                                                 <th>Clockout note</th>
                                                 <th>Shift</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

@@ -58,8 +58,8 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>Opening Balance :</b></label>
-            <input type="text" name="opening_balance" class="form-control " placeholder="Opening Balance" id="e_opening_balance" value="{{ $branchOpeningBalance ? $branchOpeningBalance->amount : 0.00 }}"/>
+            <label><b>@lang('menu.opening_balance') :</b></label>
+            <input type="text" name="opening_balance" class="form-control " placeholder="@lang('menu.opening_balance')" id="e_opening_balance" value="{{ $branchOpeningBalance ? $branchOpeningBalance->amount : 0.00 }}"/>
         </div>
 
         <div class="col-md-3">

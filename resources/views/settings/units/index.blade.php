@@ -101,7 +101,7 @@
                                                         <th>Serial</th>
                                                         <th>Short Name</th>
                                                         <th>Code Name</th>
-                                                        <th>Actions</th>
+                                                        <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>

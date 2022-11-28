@@ -99,7 +99,7 @@
                                                 <th>Name</th>
                                                 <th>Description</th>
                                                 <th>Status</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody>

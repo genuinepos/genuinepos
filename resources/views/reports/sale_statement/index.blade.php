@@ -45,7 +45,7 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Customer :</strong></label>
+                                                    <label><strong>@lang('menu.customer') :</strong></label>
                                                     <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
                                                         <option value="">All</option>
                                                         <option value="NULL">Walk-In-Customer</option>
@@ -127,7 +127,7 @@
                                         <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
+                                                <th>@lang('menu.date')</th>
                                                 <th>Invoice ID</th>
                                                 <th>Stock Location</th>
                                                 <th>Customer</th>

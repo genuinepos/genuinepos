@@ -448,7 +448,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Customer ID :</strong></label>
+                                            <label><strong>@lang('menu.customer') ID :</strong></label>
                                             <input type="text" name="customer_id" class="form-control" autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['customer_id'] }}">
                                         </div>

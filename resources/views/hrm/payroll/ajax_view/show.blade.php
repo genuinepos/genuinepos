@@ -34,7 +34,7 @@
         <div class="reference_area pt-2">
             <h6 class="text-dark"><b>Title :</b> Employee Salary</h6>
             <h6 class="text-dark"><b>Month :</b> {{ $payroll->month }}/{{ $payroll->year }} </h6>
-            <h6 class="text-dark"><b>Reference No :</b> {{ $payroll->reference_no }}</h6>
+            <h6 class="text-dark"><b>@lang('menu.reference_no') :</b> {{ $payroll->reference_no }}</h6>
             <h6 class="text-dark"><b>Created By :</b> {{ $payroll->admin->prefix.' '.$payroll->admin->name.' '.$payroll->admin->last_name }} </h6>
         </div>
 

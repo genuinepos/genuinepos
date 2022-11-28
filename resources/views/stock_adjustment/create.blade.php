@@ -21,7 +21,7 @@
                     <h5>Add Stock Adjustment <small>(From Business Location.)</small></h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back') </a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back') </a>
             </div>
         </div>
         <div class="p-3">

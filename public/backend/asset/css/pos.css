@@ -767,6 +767,21 @@ div#calculatorModal {
     overflow-y: hidden;
 }
 
+.form-control {
+    height: 26px !important;
+}
+textarea.form-control {
+    height: auto !important;
+}
+.input-group-text {
+    height: 26px !important;
+}
+
+.btn.tab_active {
+    border-bottom: 1px solid rgb(0 0 0 / 20%) !important;
+    border-top: 1px solid rgb(0 0 0 / 20%) ;
+}
+
 .pos-body .form-control:hover {
     background: #ddddddf7 !important;
 }

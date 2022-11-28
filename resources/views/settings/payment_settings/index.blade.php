@@ -11,13 +11,13 @@
                     <h6>Payment Method Settings </h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
             </div>
         </div>
         <section class="p-3">
             <div class="form_element rounded m-0">
 
-                <div class="element-body px-5">
+                <div class="element-body px-4">
                     <form id="payment_method_settings_form" action="{{ route('settings.payment.method.settings.update') }}" method="POST">
                         @csrf
                         <div class="row">

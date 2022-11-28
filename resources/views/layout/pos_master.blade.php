@@ -10,7 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <link rel="stylesheet" href="{{asset('backend/asset/css/fontawesome/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{asset('backend/asset/css/bootstrap.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{asset('backend/asset/css/bootstrap.min.css') }}"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <link href="{{asset('backend/css/typography.css') }}" rel="stylesheet" type="text/css">
     <link href="{{asset('backend/css/body.css') }}" rel="stylesheet" type="text/css">
@@ -43,6 +44,85 @@
     <style>
         .d-hide {
             display: none;
+        }
+    </style>
+
+{{-- Harrison Bootstrap-Custom --}}
+    <style>
+        @media (min-width: 576px) {
+            .modal-full-display {
+                max-width: 93% !important;
+            }
+
+            .four-col-modal {
+                max-width: 70% !important;
+                margin: 3.8rem auto;
+            }
+
+            .five-col-modal {
+                max-width: 90% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-80-modal {
+                max-width: 80% !important;
+                margin: 3.8rem auto;
+            }
+
+            .double-col-modal {
+                max-width: 35% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-40-modal {
+                max-width: 40% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-45-modal {
+                max-width: 45% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-50-modal {
+                max-width: 50% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-55-modal {
+                max-width: 55% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-60-modal {
+                max-width: 60% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-65-modal {
+                max-width: 65% !important;
+                margin: 3.8rem auto;
+            }
+        }
+
+        .modal-middle {
+            margin-top: 33%;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #cbe4ee
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            /* background-color: #EBEDF3;*/
+            background-color: #cbe4ee;
+        }
+
+        /*# sourceMappingURL=bootstrap.min.css.map  background:linear-gradient(#f7f3f3, #c3c0c0);*/
+
+
+        .widget_content .table-responsive {
+            min-height: 80vh !important;
         }
     </style>
 </head>
@@ -112,10 +192,12 @@
                         </div>
 
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
-                                <a href="#" class="c-btn button-success me-0 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Confirm (F10)</a>
-                                <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">@lang('menu.close')</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')</span></button>
+                                    <button type="button" class="btn btn-sm btn-danger" id="cancel_pay_mathod">@lang('menu.close')</button>
+                                    <a href="#" class="btn btn-sm btn-success" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">Confirm (F10)</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -180,19 +262,13 @@
                 <div class="modal-body">
                     <!--begin::Form-->
                     <div class="tab_list_area">
-                        <ul class="list-unstyled">
-                            <li>
-                                <a id="tab_btn" class="tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> Final</a>
-                            </li>
+                        <div class="btn-group">
+                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> Final</a>
 
-                            <li>
-                                <a id="tab_btn" class="tab_btn text-white" href="{{url('common/ajax/call/recent/quotations/2')}}" tabindex="-1"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
-                            </li>
+                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{url('common/ajax/call/recent/quotations/2')}}" tabindex="-1"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
 
-                            <li>
-                                <a id="tab_btn" class="tab_btn text-white" href="{{url('common/ajax/call/recent/drafts/2')}}" tabindex="-1"><i class="fas fa-shopping-bag"></i> Draft</a>
-                            </li>
-                        </ul>
+                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{url('common/ajax/call/recent/drafts/2')}}" tabindex="-1"><i class="fas fa-shopping-bag"></i> Draft</a>
+                        </div>
                     </div>
 
                     <div class="tab_contant">
@@ -223,7 +299,7 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">@lang('menu.close')</button>
                         </div>
                     </div>
                 </div>
@@ -386,10 +462,9 @@
                         </div>
 
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="submit" class="c-btn button-success me-0 float-end">@lang('menu.update')</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">@lang('menu.close')</button>
+                            <div class="col-md-12 d-flex justify-content-end gap-2">
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.update')</button>
                             </div>
                         </div>
                     </form>

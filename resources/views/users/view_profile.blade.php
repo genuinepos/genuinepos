@@ -4,128 +4,27 @@
 @endpush
 @section('content')
 <div class="body-wraper">
-    <div class="container-fluid p-0">
+    <div class="main__content">
         <div class="sec-name">
-            <h6>View Profile</h6>
-            <a href="{{ url()->previous() }}" class="btn text-white btn-sm float-end back-button"><i class="fa-thin fa-left-to-line fa-2x"></i><br> @lang('menu.back')</a>
+            <div class="name-head">
+                <span class="fas fa-user"></span>
+                <h6>View Profile</h6>
+            </div>
+            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
         </div>
         <form id="add_user_form" action="{{ route('users.store') }}" enctype="multipart/form-data" method="POST">
             @csrf
-            <section class="p-15">
-                {{-- <div class="row g-1">
+            <section class="p-3">
 
-                    <div class="col-md-6">
-                        <div class="form_element rounded m-0 mb-1">
-
-                            <div class="element-body">
-                                <div class="heading_area">
-                                    <p class="text-primary"><b>Role Permission</b> </p>
-                                </div>
-                                <div class="p-1 row">
-                                    <div class="col-md-12">
-                                        <p><b>User Name :</b> {!! $user->username ? $user->username : '<span class="badge bg-secondary">Not-Allowed-to-Login</span>' !!} </p>
-                                        <p><b>Role :</b>
-                                            {{ $user?->roles()?->first()?->name }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form_element rounded m-0 mb-1">
-
-                            <div class="element-body">
-                                <div class="heading_area">
-                                    <p class="text-primary"><b>Basic Information</b> </p>
-                                </div>
-                                <div class="p-1 row">
-                                    <div class="col-md-12">
-                                        <p><b>Fullname :</b> {{ $user->prefix.' '.$user->name.' '.$user->last_name }} </p>
-                                        <p><b>@lang('menu.email') :</b> {{ $user->email}} </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-1">
-                    <div class="col-md-6">
-                        <div class="form_element rounded m-0 mb-1">
-
-                            <div class="element-body">
-                                <div class="heading_area">
-                                    <p class="text-primary"><b>Personal Information</b> </p>
-                                </div>
-                                <div class="p-1 row">
-                                    <div class="col-md-12">
-                                        <p><b>@lang('menu.date_of_birth') :</b> {{ $user->date_of_birth }}</p>
-                                        <p><b>Gender :</b> {{ $user->gender }}</p>
-                                        <p><b>Marital Status :</b> {{ $user->marital_status }}</p>
-                                        <p><b>Blood Group : </b> {{ $user->blood_group }}</p>
-                                        <p><b>@lang('menu.phone_number'): </b> {{ $user->phone }}</p>
-                                        <p><b>ID proof name : </b> {{ $user->id_proof_name }}</p>
-                                        <p><b>ID proof Number : </b> {{ $user->id_proof_number }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form_element rounded m-0 mb-1">
-
-                            <div class="element-body">
-                                <div class="heading_area">
-                                    <p class="text-primary"><b>Other Information</b> </p>
-                                </div>
-                                <div class="p-1 row">
-                                    <div class="col-md-12">
-                                        <p><b>Guardian Name :</b> {{ $user->guardian_name }}</p>
-                                        <p><b>Facebook Link :</b> {{ $user->facebook_link }}</p>
-                                        <p><b>Twitter Link :</b> {{ $user->twitter_link }}</p>
-                                        <p><b>Instagram Link :</b> {{ $user->instagram_link }}</p>
-                                        <p><b>@lang('menu.custom_field') 1 :</b> {{ $user->custom_field_1 }}</p>
-                                        <p><b>Permanent Address :</b> {{ $user->permanent_address }}</p>
-                                        <p><b>Current Address :</b> {{ $user->current_address }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-1">
-                    <div class="col-md-6">
-                        <div class="form_element rounded m-0">
-
-                            <div class="element-body">
-                                <div class="heading_area">
-                                    <p class="text-primary"><b>Bank Information</b></p>
-                                </div>
-                                <div class="p-1 row">
-                                    <div class="col-md-12">
-                                        <p><b>Account Holder's Name :</b> {{ $user->bank_ac_holder_name }}</p>
-                                        <p><b>Account No :</b> {{ $user->bank_ac_no }}</p>
-                                        <p><b>@lang('menu.bank_name') :</b> {{ $user->bank_name }}</p>
-                                        <p><b>Bank Identifier Code :</b> {{ $user->bank_identifier_code }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-
-                <div class="row g-1">
+                <div class="row g-3">
                     <div class="col-xl-3 col-lg-4 col-md-5">
                         <div class="card">
                             <div class="card-body p-2">
                                 <div class="profile-sidebar">
                                     <div class="profile-top">
                                         <div class="part-img">
-                                            <img src="{{ asset('uploads/product/thumbnail/avatar.png')}}" alt="Image">
+                                            <img src="{{ asset('assets/images/avatar.png')}}" alt="Image">
                                         </div>
                                         <div class="part-txt text-center">
                                             <h4>{!! $user->username ? $user->username : '<span class="badge bg-secondary">Not-Allowed-to-Login</span>' !!}</h4>

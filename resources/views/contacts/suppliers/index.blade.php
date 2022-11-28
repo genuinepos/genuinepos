@@ -5,119 +5,114 @@
 @section('title', 'Supplier List - ')
 @section('content')
 <div class="body-woaper">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="border-class">
-                <div class="main__content">
-                    <div class="sec-name">
-                        <div class="name-head">
-                            <span class="fas fa-users"></span>
-                            <h5>Suppliers</h5>
-                        </div>
+    <div class="main__content">
+        <div class="sec-name">
+            <div class="name-head">
+                <span class="fas fa-users"></span>
+                <h5>Suppliers</h5>
+            </div>
 
-                        <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                    </div>
-                </div>
+            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+        </div>
+    </div>
 
-                <div class="p-3">
-                    @if ($addons->branches == 1)
-                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form_element rounded mt-0 mb-3">
-                                        <form id="filter_form" class="p-2">
-                                            <div class="form-group row">
-                                                <div class="col-md-2">
-                                                    <label><strong>Business Location :</strong></label>
-                                                    <select name="branch_id"
-                                                        class="form-control submit_able" id="branch_id" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                        @foreach ($branches as $branch)
-                                                            <option value="{{ $branch->id }}">
-                                                                {{ $branch->name . '/' . $branch->branch_code }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+    <div class="p-3">
+        @if ($addons->branches == 1)
+            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form_element rounded mt-0 mb-3">
+                            <form id="filter_form" class="p-2">
+                                <div class="form-group row">
+                                    <div class="col-md-2">
+                                        <label><strong>Business Location :</strong></label>
+                                        <select name="branch_id"
+                                            class="form-control submit_able" id="branch_id" autofocus>
+                                            <option value="">All</option>
+                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                            @foreach ($branches as $branch)
+                                                <option value="{{ $branch->id }}">
+                                                    {{ $branch->name . '/' . $branch->branch_code }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong></strong></label>
-                                                    <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
+                                    <div class="col-md-2">
+                                        <label><strong></strong></label>
+                                        <div class="input-group">
+                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endif
-                    @endif
-
-                    <div class="card">
-                        <div class="section-header">
-                            <div class="col-md-6">
-                                <h6>All Supplier</h6>
-                            </div>
-
-                            <div class="col-md-6 d-flex justify-content-end gap-2">
-                                <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
-
-                                <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Import Suppliers</a>
-                            </div>
-                        </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6>
-                                    <i class="fas fa-spinner"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr class="text-start">
-                                                <th>Actions</th>
-                                                <th>Supplier ID</th>
-                                                <th>Prefix</th>
-                                                <th>Name</th>
-                                                <th>Business</th>
-                                                <th>Phone</th>
-                                                <th>Opening Balance</th>
-                                                <th>Total Purchase</th>
-                                                <th>Total Paid</th>
-                                                <th>Purchase Due</th>
-                                                <th>Total Return</th>
-                                                <th>Return Due</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                        <tfoot>
-                                            <tr class="bg-secondary">
-                                                <th colspan="6" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th id="opening_balance" class="text-white text-end"></th>
-                                                <th id="total_purchase" class="text-white text-end"></th>
-                                                <th id="total_paid" class="text-white text-end"></th>
-                                                <th id="total_purchase_due" class="text-white text-end"></th>
-                                                <th id="total_return" class="text-white text-end"></th>
-                                                <th id="total_purchase_return_due" class="text-white text-end"></th>
-                                                <th class="text-white text-start">---</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
                             </form>
                         </div>
                     </div>
                 </div>
+            @endif
+        @endif
+
+        <div class="card">
+            <div class="section-header">
+                <div class="col-md-6">
+                    <h6>All Supplier</h6>
+                </div>
+
+                <div class="col-md-6 d-flex justify-content-end gap-2">
+                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
+
+                    <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Import Suppliers</a>
+                </div>
+            </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6>
+                        <i class="fas fa-spinner"></i> Processing...</h6>
+                    </div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr class="text-start">
+                                    <th>Actions</th>
+                                    <th>Supplier ID</th>
+                                    <th>Prefix</th>
+                                    <th>Name</th>
+                                    <th>Business</th>
+                                    <th>Phone</th>
+                                    <th>Opening Balance</th>
+                                    <th>Total Purchase</th>
+                                    <th>Total Paid</th>
+                                    <th>Purchase Due</th>
+                                    <th>Total Return</th>
+                                    <th>Return Due</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr class="bg-secondary">
+                                    <th colspan="6" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                    <th id="opening_balance" class="text-white text-end"></th>
+                                    <th id="total_purchase" class="text-white text-end"></th>
+                                    <th id="total_paid" class="text-white text-end"></th>
+                                    <th id="total_purchase_due" class="text-white text-end"></th>
+                                    <th id="total_return" class="text-white text-end"></th>
+                                    <th id="total_purchase_return_due" class="text-white text-end"></th>
+                                    <th class="text-white text-start">---</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Add Modal ---->
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">

@@ -72,7 +72,7 @@
                                     @endforeach
                                 </tbody>
                                 <tfoot>
-                                    <tr class="bg-primary">
+                                    <tr class="bg-secondary">
                                         <th colspan="4" class="text-white"><b>Total :</b></th>
                                         <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
@@ -142,7 +142,7 @@
                                     @endforeach
                                 </tbody>
                                 <tfoot>
-                                    <tr class="bg-primary">
+                                    <tr class="bg-secondary">
                                         <th colspan="4" class="text-center text-white"><b>Total :</b></th>
                                         <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
@@ -203,7 +203,7 @@
                                     @endforeach
                                 </tbody>
                                 <tfoot>
-                                    <tr class="bg-primary">
+                                    <tr class="bg-secondary">
                                         <th colspan="2" class="text-center text-white"><b>Total :</b></th>
                                         <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}

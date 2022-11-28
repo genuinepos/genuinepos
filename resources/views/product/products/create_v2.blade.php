@@ -17,7 +17,7 @@
                     <span class="fas fa-plus-circle"></span>
                     <h6>Add Product</h6>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
             </div>
         </div>
         <form id="add_product_form" action="{{ route('products.add.store') }}" enctype="multipart/form-data" method="POST">

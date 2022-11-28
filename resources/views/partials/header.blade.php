@@ -27,9 +27,9 @@
                     <div class="head__content__sec">
                         <ul class="head__cn">
                             <li class="top-icon d-hide d-md-block" id="hard_reload"><a href="#" title="Reload"><b><span class="fas fa-redo-alt"></span></b></a></li>
-                            @if ($addons->e_commerce == 1)
+                            {{-- @if ($addons->e_commerce == 1)
                                 <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
-                            @endif
+                            @endif --}}
 
                             @if(auth()->user()->can('communication'))
                                 <li class="top-icon d-hide d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i

@@ -5,7 +5,7 @@
 <!-- Pos Header End-->
 <div class="body-wraper">
     <div class="container-fluid p-0 h-100">
-        <div class="pos-content p-15">
+        <div class="pos-content p-1">
             <div class="row g-1">
                 <div class="col-lg-9">
                     <div class="row g-1">

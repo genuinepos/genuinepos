@@ -34,10 +34,16 @@
         </div>
     </div>
 
-    <div class="form-group text-end mt-3">
-        <button type="button" class="btn loading_button d-hide q_ld_btn"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-        <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+
+    <div class="form-group d-flex justify-content-end mt-3">
+        <div class="btn-loading">
+            <button type="button" class="btn loading_button d-hide q_ld_btn">
+                <i class="fas fa-spinner"></i>
+                <span> Loading...</span>
+            </button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="submit" class="btn btn-sm btn-success">Save</button>
+        </div>
     </div>
 </form>
 

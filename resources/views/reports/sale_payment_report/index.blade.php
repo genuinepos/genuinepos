@@ -15,7 +15,7 @@
                                 <h5>Sale Payment Report</h5>
                             </div>
 
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                             </a>
                         </div>
@@ -95,7 +95,7 @@
                                     </form>
                                 </div>
                             </div>
-                        
+
                             <div class="card">
                                 <div class="data_preloader">
                                     <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>

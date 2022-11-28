@@ -9,123 +9,117 @@
 @section('title', 'All Memos -')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-file-alt"></span>
-                                <h6>Memo</h6>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-file-alt"></span>
+                    <h6>Memo</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                </a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <div class="card" id="add_form">
+                        <div class="section-header">
+                            <div class="col-md-12">
+                                <h6>Add Memo </h6>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
+                        </div>
+
+                        <div class="form-area px-2 pb-2">
+                            <form id="add_memo_form" action="{{ route('memos.store') }}">
+                                @csrf
+                                <div class="from-group">
+                                    <label><b>Heading :</b></label>
+                                    <input required type="text" class="form-control" name="heading" placeholder="Memo Heading">
+                                </div>
+
+                                <div class="from-group mt-1">
+                                    <label><b>Description :</b></label>
+                                    <textarea required name="description" class="form-control" cols="10" rows="4" placeholder="Memo Description"></textarea>
+                                </div>
+
+                                <div class="form-group row mt-2">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <div class="btn-loading">
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
+                                            <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
-                    <div class="p-3">
-                        <div class="row g-3">
-                            <div class="col-md-5">
-                                <div class="card" id="add_form">
-                                    <div class="section-header">
-                                        <div class="col-md-12">
-                                            <h6>Add Memo </h6>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-area px-2 pb-2">
-                                        <form id="add_memo_form" action="{{ route('memos.store') }}">
-                                            @csrf
-                                            <div class="from-group">
-                                                <label><b>Heading :</b></label>
-                                                <input required type="text" class="form-control" name="heading" placeholder="Memo Heading">
-                                            </div>
-
-                                            <div class="from-group mt-1">
-                                                <label><b>Description :</b></label>
-                                                <textarea required name="description" class="form-control" cols="10" rows="4" placeholder="Memo Description"></textarea>
-                                            </div>
-
-                                            <div class="form-group row mt-2">
-                                                <div class="col-md-12 d-flex justify-content-end">
-                                                    <div class="btn-loading">
-                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                                                        <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-
-                                <div class="card d-hide" id="edit_form">
-                                    <div class="section-header">
-                                        <div class="col-md-12">
-                                            <h6>Edit Memo</h6>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-area px-2 pb-2">
-                                        <form id="edit_memo_form" action="{{ route('memos.update') }}">
-                                            @csrf
-                                            <input type="hidden" id="id" name="id">
-                                            <div class="from-group">
-                                                <label><b>Heading :</b></label>
-                                                <input required type="text" class="form-control" name="heading" id="heading" placeholder="Memo Heading">
-                                            </div>
-
-                                            <div class="from-group mt-1">
-                                                <label><b>Description :</b></label>
-                                                <textarea required name="description" class="form-control" id="description" cols="10" rows="4" placeholder="Memo Description"></textarea>
-                                            </div>
-
-                                            <div class="form-group row mt-2">
-                                                <div class="col-md-12 d-flex justify-content-end">
-                                                    <div class="btn-loading">
-                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                                        <button type="button" class="btn btn-sm btn-danger">Close</button>
-                                                        <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-7">
-                                <div class="card">
-                                    <div class="section-header">
-                                        <div class="col-md-12">
-                                            <h6>All Memos </h6>
-                                        </div>
-                                    </div>
-
-                                    <div class="widget_content">
-                                        <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                        <div class="table-responsive" id="data-list">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Heading</th>
-                                                        <th>Description</th>
-                                                        <th>Created Date</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
-                                </div>
+                    <div class="card d-hide" id="edit_form">
+                        <div class="section-header">
+                            <div class="col-md-12">
+                                <h6>Edit Memo</h6>
                             </div>
                         </div>
+
+                        <div class="form-area px-2 pb-2">
+                            <form id="edit_memo_form" action="{{ route('memos.update') }}">
+                                @csrf
+                                <input type="hidden" id="id" name="id">
+                                <div class="from-group">
+                                    <label><b>Heading :</b></label>
+                                    <input required type="text" class="form-control" name="heading" id="heading" placeholder="Memo Heading">
+                                </div>
+
+                                <div class="from-group mt-1">
+                                    <label><b>Description :</b></label>
+                                    <textarea required name="description" class="form-control" id="description" cols="10" rows="4" placeholder="Memo Description"></textarea>
+                                </div>
+
+                                <div class="form-group row mt-2">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <div class="btn-loading">
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                            <button type="button" class="btn btn-sm btn-danger">Close</button>
+                                            <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="card">
+                        <div class="section-header">
+                            <div class="col-md-12">
+                                <h6>All Memos </h6>
+                            </div>
+                        </div>
+
+                        <div class="widget_content">
+                            <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                            <div class="table-responsive" id="data-list">
+                                <table class="display data_tbl data__table">
+                                    <thead>
+                                        <tr>
+                                            <th>Heading</th>
+                                            <th>Description</th>
+                                            <th>Created Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <form id="deleted_form" action="" method="post">
+                            @method('DELETE')
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </div>

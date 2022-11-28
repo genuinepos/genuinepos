@@ -12,132 +12,126 @@
 @section('title', 'All Workspaces - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-th-large"></span>
+                    <h6>Work Spaces</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                </a>
+            </div>
+        </div>
+
+        <div class="p-3">
             <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-th-large"></span>
-                                <h6>Work Spaces</h6>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="p-3">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form_element rounded mt-0 mb-3">
-                                    <div class="element-body">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
-                                        <form action="" method="get">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                                <div class="col-md-3">
-                                                    <label><strong>Priority : </strong></label>
-                                                    <select name="priority"
-                                                        class="form-control submit_able" id="priority" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="Low">Low</option>
-                                                        <option value="Medium">Medium</option>
-                                                        <option value="High">High</option>
-                                                        <option value="Urgent">Urgent</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label><strong>Status : </strong></label>
-                                                    <select name="status"
-                                                        class="form-control submit_able" id="status" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="New">New</option>
-                                                        <option value="In-Progress">In-Progress</option>
-                                                        <option value="On-Hold">On-Hold</option>
-                                                        <option value="Complated">Complated</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label><strong>Date Range :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
-                                                        </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
+                            <form action="" method="get">
+                                <div class="form-group row">
+                                    @if ($addons->branches == 1)
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-3">
+                                                <label><strong>Business Location :</strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control submit_able" id="branch_id" autofocus>
+                                                    <option value="">All</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        </form>
+                                        @endif
+                                    @endif
+
+                                    <div class="col-md-3">
+                                        <label><strong>Priority : </strong></label>
+                                        <select name="priority"
+                                            class="form-control submit_able" id="priority" autofocus>
+                                            <option value="">All</option>
+                                            <option value="Low">Low</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="High">High</option>
+                                            <option value="Urgent">Urgent</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label><strong>Status : </strong></label>
+                                        <select name="status"
+                                            class="form-control submit_able" id="status" autofocus>
+                                            <option value="">All</option>
+                                            <option value="New">New</option>
+                                            <option value="In-Progress">In-Progress</option>
+                                            <option value="On-Hold">On-Hold</option>
+                                            <option value="Complated">Complated</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label><strong>Date Range :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_i"></i></span>
+                                            </div>
+                                            <input readonly type="text" name="date_range" id="date_range"
+                                                class="form-control daterange submit_able_input"
+                                                autocomplete="off">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>All Work Space </h6>
-                                </div>
-
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                </div>
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th>Entry Date</th>
-                                                <th>Name</th>
-                                                <th>Workspace ID</th>
-                                                <th>Location</th>
-                                                <th>Priority</th>
-                                                <th>Status</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Estimated Hour</th>
-                                                <th>Assigned By</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="card">
+                <div class="section-header">
+                    <div class="col-md-6">
+                        <h6>All Work Space </h6>
+                    </div>
+
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
+                    </div>
+                </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>Entry Date</th>
+                                    <th>Name</th>
+                                    <th>Workspace ID</th>
+                                    <th>Location</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Estimated Hour</th>
+                                    <th>Assigned By</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>

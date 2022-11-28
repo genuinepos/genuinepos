@@ -272,6 +272,44 @@ textarea {
     line-height: inherit;
 }
 
+.btn.btn-sm {
+    height: 25px;
+    line-height: 23px;
+    padding: 0 5px;
+    font-size: 12px;
+}
+
+.btn.btn-secondary {
+    background: linear-gradient(var(--secondary-color-1) 50%, var(--secondary-color-2) 50%);
+    box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
+}
+
+.btn.btn-success {
+    background: linear-gradient(var(--success-color-1) 50%, var(--success-color-2) 50%);
+    box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
+}
+
+.btn.btn-danger {
+    background: linear-gradient(var(--danger-color-1) 50%, var(--danger-color-2) 50%);
+    box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
+}
+
+.btn.btn-warning {
+    background: linear-gradient(var(--warning-color-1) 50%, var(--warning-color-2) 50%);
+    box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
+}
+
+.btn.btn-info {
+    background: linear-gradient(var(--info-color-1) 50%, var(--info-color-2) 50%);
+    border-color: var(--info-color-2) !important;
+    box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
+}
+
+.btn.btn-light {
+    background: linear-gradient(var(--light-color-1) 50%, var(--light-color-2) 50%);
+    box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
+}
+
 .element-body {
     padding: 10px;
     overflow: hidden;
@@ -291,25 +329,29 @@ textarea {
 }
 
 .input-group-text {
-    height: 31px;
+    height: 25px;
     border-radius: 0;
+    padding: 0 8px;
 }
 
 .form-control {
-    height: 31px;
+    height: 25px;
     font-size: 11px;
     border-radius: 0;
     padding: 4px;
 }
+textarea.form-control {
+    height: auto;
+}
 .form-control[type=file] {
-    padding: 6px 4px;
+    padding: 3px 3px;
     padding-left: 10px;
 }
 
 .form-control[type=file]::file-selector-button {
     background-color: var(--dark-color-1);
     color: var(--white-color);
-    font-size: 12px;
+    font-size: 11px;
     transition: .3s;
 }
 .form-control[type=file]:hover::file-selector-button {

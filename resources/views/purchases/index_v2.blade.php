@@ -14,7 +14,7 @@
                                 <span class="fas fa-shopping-basket"></span>
                                 <h5>Purchases</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
                     </div>
@@ -212,7 +212,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content payment_details_contant">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment Details 
+                        <h6 class="modal-title" id="exampleModalLabel">Payment Details
                             {{-- (<span class="payment_invoice"></span>) --}}
                         </h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>

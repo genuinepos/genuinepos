@@ -13,7 +13,7 @@
                     <h5>Add User</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
             </div>
         </div>
         <div class="p-3">
@@ -23,7 +23,7 @@
                     <div class="form_element rounded mt-0 mb-3">
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row g-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Prefix :</b> </label>
@@ -48,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-1">
+                            <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Last Name :</b> </label>
@@ -80,7 +80,7 @@
                         </div>
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row g-2">
                                 <div class="col-md-12">
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" checked name="allow_login" id="allow_login">
@@ -90,7 +90,7 @@
                             </div>
 
                             <div class="auth_field_area">
-                                <div class="row mt-2">
+                                <div class="row g-2 pt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <label class="col-4"><span
@@ -116,7 +116,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row mt-2">
+                                <div class="row g-2 pt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <label class="col-4"><span
@@ -140,7 +140,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-2">
+                            <div class="row g-2 pt-1">
                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                     <div class="col-md-6 access_branch">
                                         <div class="input-group">
@@ -187,7 +187,7 @@
 
                         <div class="element-body">
 
-                            <div class="row">
+                            <div class="row g-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"> <b>Commission (%) :</b> </label>
@@ -240,7 +240,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mt-2">
+                            <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Marital Status :</b> </label>
@@ -265,7 +265,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mt-2">
+                            <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Phone :</b> </label>
@@ -285,7 +285,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mt-2">
+                            <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Twitter Link :</b> </label>
@@ -305,7 +305,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mt-2">
+                            <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Guardian Name:</b> </label>
@@ -325,7 +325,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mt-2">
+                            <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>ID Proof Number :</b> </label>
@@ -336,7 +336,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mt-2">
+                            <div class="row g-2 pt-1">
                                 <div class="col-md-12">
                                     <div class="input-group ">
                                         <label class="col-2"><b>Permanent Address :</b> </label>
@@ -347,7 +347,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mt-2">
+                            <div class="row g-2 pt-1">
                                 <div class="col-md-12">
                                     <div class="input-group">
                                         <label class="col-2"><b>Current Address :</b> </label>
@@ -367,7 +367,7 @@
                         </div>
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row g-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Account Name :</b> </label>
@@ -387,7 +387,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-1">
+                            <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Bank Name :</b> </label>
@@ -407,7 +407,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-1">
+                            <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Branch :</b> </label>
@@ -436,7 +436,7 @@
                             </div>
 
                             <div class="element-body">
-                                <div class="row">
+                                <div class="row g-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <label class="col-4"><b>Employee ID :</b> </label>
@@ -462,7 +462,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row mt-1">
+                                <div class="row g-2 pt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <label class="col-4"><b>Department :</b> </label>
@@ -493,7 +493,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row mt-1">
+                                <div class="row g-2 pt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <label class="col-4"> <b>Salary :</b> </label>

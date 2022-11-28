@@ -17,97 +17,95 @@
                     <span class="fas fa-th-list"></span>
                     <h6>Todo</h6>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                 </a>
             </div>
         </div>
 
         <div class="p-3">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form_element rounded mt-0 mb-3">
-                        <div class="element-body">
-                            <form id="filter_form">
-                                <div class="form-group row">
-                                    @if ($addons->branches == 1)
-                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <div class="col-md-2">
-                                                <label><strong>Business Location :</strong></label>
-                                                <select name="branch_id"
-                                                    class="form-control submit_able" id="branch_id" autofocus>
-                                                    <option value="">All</option>
-                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                    @foreach ($branches as $branch)
-                                                        <option value="{{ $branch->id }}">
-                                                            {{ $branch->name . '/' .$branch->branch_code }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        @endif
+            <section>
+                <div class="form_element rounded mt-0 mb-3">
+                    <div class="element-body">
+                        <form id="filter_form">
+                            <div class="form-group row">
+                                @if ($addons->branches == 1)
+                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                        <div class="col-md-2">
+                                            <label><strong>Business Location :</strong></label>
+                                            <select name="branch_id"
+                                                class="form-control submit_able" id="branch_id" autofocus>
+                                                <option value="">All</option>
+                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        {{ $branch->name . '/' .$branch->branch_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     @endif
+                                @endif
 
-                                    <div class="col-md-2">
-                                        <label><strong>Priority : </strong></label>
-                                        <select name="priority"
-                                            class="form-control submit_able" id="priority" autofocus>
-                                            <option value="">All</option>
-                                            <option value="Low">Low</option>
-                                            <option value="Medium">Medium</option>
-                                            <option value="High">High</option>
-                                            <option value="Urgent">Urgent</option>
-                                        </select>
-                                    </div>
+                                <div class="col-md-2">
+                                    <label><strong>Priority : </strong></label>
+                                    <select name="priority"
+                                        class="form-control submit_able" id="priority" autofocus>
+                                        <option value="">All</option>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
+                                        <option value="Urgent">Urgent</option>
+                                    </select>
+                                </div>
 
-                                    <div class="col-md-2">
-                                        <label><strong>Status : </strong></label>
-                                        <select name="status"
-                                            class="form-control submit_able" id="status" autofocus>
-                                            <option value="">All</option>
-                                            <option value="New">New</option>
-                                            <option value="In-Progress">In-Progress</option>
-                                            <option value="On-Hold">On-Hold</option>
-                                            <option value="Complated">Complated</option>
-                                        </select>
-                                    </div>
+                                <div class="col-md-2">
+                                    <label><strong>Status : </strong></label>
+                                    <select name="status"
+                                        class="form-control submit_able" id="status" autofocus>
+                                        <option value="">All</option>
+                                        <option value="New">New</option>
+                                        <option value="In-Progress">In-Progress</option>
+                                        <option value="On-Hold">On-Hold</option>
+                                        <option value="Complated">Complated</option>
+                                    </select>
+                                </div>
 
-                                    <div class="col-md-2">
-                                        <label><strong>From Date :</strong></label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fas fa-calendar-week input_i"></i></span>
-                                            </div>
-                                            <input type="text" name="from_date" id="datepicker"
-                                                class="form-control from_date date"
-                                                autocomplete="off">
+                                <div class="col-md-2">
+                                    <label><strong>From Date :</strong></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1"><i
+                                                    class="fas fa-calendar-week input_i"></i></span>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <label><strong>To Date :</strong></label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fas fa-calendar-week input_i"></i></span>
-                                            </div>
-                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <label><strong></strong></label>
-                                        <div class="input-group">
-                                            <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                        </div>
+                                        <input type="text" name="from_date" id="datepicker"
+                                            class="form-control from_date date"
+                                            autocomplete="off">
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+
+                                <div class="col-md-2">
+                                    <label><strong>To Date :</strong></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1"><i
+                                                    class="fas fa-calendar-week input_i"></i></span>
+                                        </div>
+                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label><strong></strong></label>
+                                    <div class="input-group">
+                                        <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <div class="row g-3">
                 <div class="col-md-3">

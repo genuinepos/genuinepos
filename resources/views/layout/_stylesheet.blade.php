@@ -186,6 +186,19 @@
         --black-color-border: rgba(0, 0, 0, .3);
         --bs-primary: var(--dark-color-gradient) !important;
         --bs-blue: var(--dark-color-gradient) !important;
+
+        --secondary-color-1: #6c757d;
+        --secondary-color-2: #57595b;
+        --success-color-1: #198754;
+        --success-color-2: #135637;
+        --danger-color-1: #dc3545;
+        --danger-color-2: #741f28;
+        --warning-color-1: #ffc107;
+        --warning-color-2: #977612;
+        --info-color-1: #0dcaf0;
+        --info-color-2: #15a1cd;
+        --light-color-1: #f8f9fa;
+        --light-color-2: #e0e0e0;
     }
 
     .orange-theme .top-icon {

@@ -4,69 +4,63 @@
 @section('title', 'Business Location List - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-code-branch"></span>
-                                <h5>Business Locations</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-code-branch"></span>
+                    <h5>Business Locations</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                </a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="card">
+                <div class="section-header">
+                    <div class="col-md-6">
+                        <h6>All Business Locations</h6>
+                    </div>
+
+                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                        <div class="col-md-6 d-flex justify-content-end">
+                            <a id="create" href="{{ route('settings.branches.create') }}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-plus-square"></i> Add Business Location
                             </a>
                         </div>
+                    @endif
+                </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader">
+                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                     </div>
-
-                    <div class="p-3">
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>All Business Locations</h6>
-                                </div>
-
-                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                    <div class="col-md-6 d-flex justify-content-end">
-                                        <a id="create" href="{{ route('settings.branches.create') }}" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-plus-square"></i> Add Business Location
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-white">Logo</th>
-                                                <th class="text-white">B.Location Name</th>
-                                                <th class="text-white">Branch Code</th>
-                                                <th class="text-white">Phone</th>
-                                                <th class="text-white">City</th>
-                                                <th class="text-white">State</th>
-                                                <th class="text-white">Zip-Code</th>
-                                                <th class="text-white">Country</th>
-                                                <th class="text-white">Email</th>
-                                                <th class="text-white">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
-                        </div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th class="text-white">Logo</th>
+                                    <th class="text-white">B.Location Name</th>
+                                    <th class="text-white">Branch Code</th>
+                                    <th class="text-white">Phone</th>
+                                    <th class="text-white">City</th>
+                                    <th class="text-white">State</th>
+                                    <th class="text-white">Zip-Code</th>
+                                    <th class="text-white">Country</th>
+                                    <th class="text-white">Email</th>
+                                    <th class="text-white">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>

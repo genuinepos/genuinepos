@@ -11,501 +11,486 @@
         </style>
     @endpush
     <div class="body-woaper">
-        <div class="container-fluid">
-            <!--begin::Container-->
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-people-arrows"></span>
-                                <h6><strong>{{ $customer->name }}</strong></h6>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-people-arrows"></span>
+                    <h6><strong>{{ $customer->name }}</strong></h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="data_preloader">
+                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
                     </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="data_preloader">
-                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                            </div>
+                    <div class="tab_list_area">
+                        <div class="btn-group">
+                            <a id="tab_btn" data-show="ledger" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
+                                <i class="fas fa-scroll"></i> Ledger
+                            </a>
 
-                            <div class="tab_list_area">
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a id="tab_btn" data-show="ledger" class="tab_btn tab_active" href="#">
-                                            <i class="fas fa-scroll"></i> Ledger
-                                        </a>
-                                    </li>
+                            <a id="tab_btn" data-show="contract_info_area" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-info-circle">
+                                </i> Contract Info
+                            </a>
 
-                                    <li>
-                                        <a id="tab_btn" data-show="contract_info_area" class="tab_btn" href="#"><i class="fas fa-info-circle">
-                                            </i> Contract Info
-                                        </a>
-                                    </li>
+                            <a id="tab_btn" data-show="sale" class="btn btn-sm btn-primary tab_btn" href="#">
+                                <i class="fas fa-shopping-bag"></i> Sale
+                            </a>
 
-                                    <li>
-                                        <a id="tab_btn" data-show="sale" class="tab_btn" href="#">
-                                            <i class="fas fa-shopping-bag"></i> Sale
-                                        </a>
-                                    </li>
-
-                                    @if (auth()->user()->can('sale_payment'))
-                                        <li>
-                                            <a id="tab_btn" data-show="payments" class="tab_btn" href="#">
-                                                <i class="far fa-money-bill-alt"></i> Payments
-                                            </a>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </div>
-
-                            <div class="tab_contant ledger">
-                                <div class="row">
-                                    <div class="col-md-3 col-sm-12 col-lg-3">
-                                        @include('contacts.customers.partials.account_summery_area_by_ledgers')
-                                    </div>
-
-                                    <div class="col-md-9 col-sm-12 col-lg-9">
-                                        <div class="account_summary_area">
-                                            <div class="heading py-1">
-                                                <h5 class="py-1 pl-1 text-center">Filter Area</h5>
-                                            </div>
-
-                                            <div class="account_summary_table">
-                                                <form id="filter_customer_ledgers" method="get" class="px-2">
-                                                    <div class="form-group row mt-4">
-                                                        @if ($addons->branches == 1)
-                                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                                <div class="col-md-3">
-                                                                    <label><strong>Business Location :</strong></label>
-                                                                    <select name="branch_id" class="form-control submit_able"
-                                                                        id="ledger_branch_id" autofocus>
-                                                                        <option value="">All</option>
-                                                                        <option value="NULL">
-                                                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                                                        </option>
-                                                                        @foreach ($branches as $branch)
-                                                                            <option value="{{ $branch->id }}">
-                                                                                {{ $branch->name . '/' . $branch->branch_code }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            @endif
-                                                        @else
-                                                            <input type="hidden" name="branch_id" id="ledger_branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}">
-                                                        @endif
-
-                                                        <div class="col-md-3">
-                                                            <label><strong>Voucher Type :</strong></label>
-                                                            <select name="voucher_type" class="form-control submit_able" id="ledger_voucher_type" autofocus>
-                                                                <option value="">All</option>
-                                                                @foreach (App\Utils\CustomerUtil::voucherTypes() as $key => $type)
-                                                                    <option value="{{ $key }}">{{ $type }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-md-3">
-                                                            <label><strong>From Date :</strong></label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
-                                                                </div>
-                                                                <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-3">
-                                                            <label><strong>To Date :</strong></label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
-                                                                </div>
-
-                                                                <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-3">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <label><strong></strong></label>
-                                                                    <div class="input-group">
-                                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-md-6 mt-3">
-                                                                    <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="ledger_table_area">
-                                            <div class="table-responsive" id="payment_list_table">
-                                                <table class="display data_tbl data__table ledger_table">
-                                                    <thead>
-                                                        <tr>
-                                                            <tr>
-                                                                <th>Date</th>
-                                                                <th>Particulars</th>
-                                                                <th>Business Location</th>
-                                                                <th>Voucher/Invoice</th>
-                                                                <th>Debit</th>
-                                                                <th>Credit</th>
-                                                                <th>Running Balance</th>
-                                                            </tr>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                    <tfoot>
-                                                        <tr class="bg-secondary">
-                                                            <th colspan="4" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                            <th id="debit" class="text-white text-end"></th>
-                                                            <th id="credit" class="text-white text-end"></th>
-                                                            <th class="text-white text-end">---</th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab_contant contract_info_area d-hide">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <ul class="list-unstyled">
-                                            <li><strong>Customer Name :</strong></li>
-                                            <li><span class="name">{{ $customer->name }}</span></li><br>
-                                            <li><strong><i class="fas fa-map-marker-alt"></i> Address :</strong></li>
-                                            <li><span class="address">{{ $customer->address }}</span></li><br>
-                                            <li><strong><i class="fas fa-briefcase"></i> Business Name :</strong></li>
-                                            <li><span class="business">{{ $customer->business_name }}</span></li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <ul class="list-unstyled">
-                                            <li><strong><i class="fas fa-phone-square"></i> Phone</strong></li>
-                                            <li><span class="phone">{{ $customer->phone }}</span></li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <ul class="list-unstyled">
-                                            <li><strong><i class="fas fa-info"></i> Tax Number</strong></li>
-                                            <li><span class="tax_number">{{ $customer->tax_number }}</span></li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <strong> Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
-                                                <span class="opening_balance">{{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</span>
-                                            </li>
-
-                                            <li>
-                                                <strong> Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
-                                                <span class="total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</span>
-                                            </li>
-
-                                            <li>
-                                                <strong> Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
-                                                <span class="total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</span>
-                                            </li>
-
-                                            <li>
-                                                <strong> Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
-                                                <span class="total_less">{{ App\Utils\Converter::format_in_bdt($customer->total_less) }}</span>
-                                            </li>
-
-                                            <li>
-                                                <strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
-                                                <span class="total_paid">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</span>
-                                            </li>
-
-                                            <li>
-                                                <strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
-                                                <span class="total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</span>
-                                            </li>
-
-                                            <li>
-                                                <strong> Total Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
-                                                <span class="total_sale_return_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab_contant sale d-hide">
-                                <div class="row">
-                                    <div class="col-md-4 col-sm-12 col-lg-4">
-                                        @include('contacts.customers.partials.account_summery_area_by_sales')
-                                    </div>
-
-                                    <div class="col-md-8 col-sm-12 col-lg-8">
-                                        <div class="account_summary_area">
-                                            <div class="heading py-1">
-                                                <h5 class="py-1 pl-1 text-center">Filter Area</h5>
-                                            </div>
-
-                                            <div class="account_summary_table">
-                                                <form id="filter_customer_sales" method="get" class="px-2">
-                                                    <div class="form-group row mt-4">
-                                                        @if ($addons->branches == 1)
-                                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                                <div class="col-md-3">
-                                                                    <label><strong>Business Location :</strong></label>
-                                                                    <select name="branch_id" class="form-control submit_able" id="sale_branch_id" autofocus>
-                                                                        <option value="">All</option>
-                                                                        <option value="NULL">
-                                                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                                                        </option>
-                                                                        @foreach ($branches as $branch)
-                                                                            <option value="{{ $branch->id }}">
-                                                                                {{ $branch->name . '/' . $branch->branch_code }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            @endif
-                                                        @endif
-
-                                                        <div class="col-md-3">
-                                                            <label><strong>From Date :</strong></label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
-                                                                </div>
-                                                                <input type="text" name="from_date" id="from_sale_date" class="form-control" autocomplete="off">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-3">
-                                                            <label><strong>To Date :</strong></label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
-                                                                </div>
-
-                                                                <input type="text" name="to_date" id="to_sale_date" class="form-control" autocomplete="off">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-3">
-                                                            <div class="row">
-                                                                <div class="col-md-7">
-                                                                    <label><strong></strong></label>
-                                                                    <div class="input-group">
-                                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-md-5">
-                                                                    <a href="#" class="btn btn-sm btn-primary float-end mt-4" id="print_sale_statement"><i class="fas fa-print"></i> Print</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="table_area">
-                                            <div class="table-responsive">
-                                                <table class="display data_tbl data__table sales_table w-100">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Actions</th>
-                                                            <th>Date</th>
-                                                            <th>Invoice ID</th>
-                                                            <th>Business Location</th>
-                                                            <th>Customer</th>
-                                                            <th>Total Amount</th>
-                                                            <th>Total Paid</th>
-                                                            <th>Sell Due</th>
-                                                            <th>Return Amount</th>
-                                                            <th>Return Due</th>
-                                                            <th>Payment Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                    <tfoot>
-                                                        <tr class="bg-secondary">
-                                                            <th colspan="5" class="text-end text-white">Total :</th>
-                                                            <th class="text-end text-white" id="total_payable_amount"></th>
-                                                            <th class="text-end text-white" id="paid"></th>
-                                                            <th class="text-end text-white" id="due"></th>
-                                                            <th class="text-end text-white" id="sale_return_amount"></th>
-                                                            <th class="text-end text-white" id="sale_return_due"></th>
-                                                            <th class="text-start text-white">---</th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @if(auth()->user()->can('sale_payment'))
-                                <div class="tab_contant payments d-hide">
-                                    <div class="row">
-                                        <div class="col-md-3 col-sm-12 col-lg-3">
-                                            @include('contacts.customers.partials.account_summery_area_by_payments')
-                                        </div>
-
-                                        <div class="col-md-9 col-sm-12 col-lg-9">
-                                            <div class="account_summary_area">
-                                                <div class="heading py-1">
-                                                    <h5 class="py-1 pl-1 text-center">Filter Area</h5>
-                                                </div>
-
-                                                <div class="account_summary_table">
-                                                    <div class="row mt-2">
-                                                        <div class="col-md-9">
-                                                            <div class="card pb-5">
-                                                                <form id="filter_customer_payments" class="py-2 px-2 mt-2" method="get">
-                                                                    <div class="form-group row">
-
-                                                                        @if ($addons->branches == 1)
-                                                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                                                <div class="col-md-3">
-                                                                                    <label><strong>Business Location :</strong></label>
-                                                                                    <select name="branch_id" class="form-control submit_able" id="payment_branch_id" autofocus>
-                                                                                        <option value="">All</option>
-                                                                                        <option value="NULL">
-                                                                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                                                                        </option>
-                                                                                        @foreach ($branches as $branch)
-                                                                                            <option value="{{ $branch->id }}">
-                                                                                                {{ $branch->name . '/' . $branch->branch_code }}
-                                                                                            </option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </div>
-                                                                            @endif
-                                                                        @endif
-
-                                                                        <div class="col-md-3">
-                                                                            <label><strong>From Date :</strong></label>
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
-                                                                                </div>
-                                                                                <input type="text" name="p_from_date" id="payment_from_date" class="form-control" autocomplete="off">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="col-md-3">
-                                                                            <label><strong>To Date :</strong></label>
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
-                                                                                </div>
-                                                                                <input type="text" name="p_to_date" id="payment_to_date" class="form-control" autocomplete="off">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="col-md-3">
-                                                                            <div class="row">
-                                                                                <div class="col-md-12">
-                                                                                    <label><strong></strong></label>
-                                                                                    <div class="input-group">
-                                                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-3">
-                                                            <div class="col-md-12 col-sm-12 col-lg-12">
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        <a href="{{ route('customers.payment', $customer->id) }}" id="add_payment" class="btn btn-success"><i class="far fa-money-bill-alt text-white"></i> Receive</a>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row mt-2">
-                                                                    <div class="col-md-12">
-                                                                        <a class="btn btn-success return_payment_btn" id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund </a>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        <a href="{{ route('customers.all.payment.print', $customer->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="widget_content table_area">
-                                                <div class="table-responsive">
-                                                    <table class="display data_tbl data__table payments_table w-100">
-                                                        <thead>
-                                                            <tr class="text-start">
-                                                                <th class="text-start">Date</th>
-                                                                <th class="text-start">Voucher No</th>
-                                                                <th class="text-start">Reference</th>
-                                                                <th class="text-start">Against Invoice</th>
-                                                                {{-- <th>Created By</th> --}}
-                                                                <th class="text-start">Payment Status</th>
-                                                                <th class="text-start">Payment Type</th>
-                                                                <th class="text-start">Account</th>
-                                                                <th class="text-endx">Less Amount</th>
-                                                                <th class="text-end">Paid Amount</th>
-                                                                <th class="text-start">Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody></tbody>
-                                                        <tfoot>
-                                                            <tr class="bg-secondary">
-                                                                <th class="text-end text-white" colspan="7">Total : </th>
-                                                                <th class="text-end text-white" id="less_amount"></th>
-                                                                <th class="text-end text-white" id="amount"></th>
-                                                                <th class="text-start text-white">---</th>
-                                                            </tr>
-                                                        </tfoot>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            @if (auth()->user()->can('sale_payment'))
+                                <a id="tab_btn" data-show="payments" class="btn btn-sm btn-primary tab_btn" href="#">
+                                    <i class="far fa-money-bill-alt"></i> Payments
+                                </a>
                             @endif
                         </div>
                     </div>
+
+                    <div class="tab_contant ledger">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-12 col-lg-3">
+                                @include('contacts.customers.partials.account_summery_area_by_ledgers')
+                            </div>
+
+                            <div class="col-md-9 col-sm-12 col-lg-9">
+                                <div class="account_summary_area">
+                                    <div class="heading py-1">
+                                        <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                    </div>
+
+                                    <div class="account_summary_table">
+                                        <form id="filter_customer_ledgers" method="get" class="px-2">
+                                            <div class="form-group row align-items-end justify-content-end g-3">
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-3">
+                                                            <label><strong>Business Location :</strong></label>
+                                                            <select name="branch_id" class="form-control submit_able"
+                                                                id="ledger_branch_id" autofocus>
+                                                                <option value="">All</option>
+                                                                <option value="NULL">
+                                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                </option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
+                                                @else
+                                                    <input type="hidden" name="branch_id" id="ledger_branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}">
+                                                @endif
+
+                                                <div class="col-md-3">
+                                                    <label><strong>Voucher Type :</strong></label>
+                                                    <select name="voucher_type" class="form-control submit_able" id="ledger_voucher_type" autofocus>
+                                                        <option value="">All</option>
+                                                        @foreach (App\Utils\CustomerUtil::voucherTypes() as $key => $type)
+                                                            <option value="{{ $key }}">{{ $type }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label><strong>From Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                        </div>
+                                                        <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                        </div>
+
+                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="row align-items-end">
+                                                        <div class="col-md-6">
+                                                            <div class="input-group">
+                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="ledger_table_area">
+                                    <div class="table-responsive" id="payment_list_table">
+                                        <table class="display data_tbl data__table ledger_table">
+                                            <thead>
+                                                <tr>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Particulars</th>
+                                                        <th>Business Location</th>
+                                                        <th>Voucher/Invoice</th>
+                                                        <th>Debit</th>
+                                                        <th>Credit</th>
+                                                        <th>Running Balance</th>
+                                                    </tr>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                            <tfoot>
+                                                <tr class="bg-secondary">
+                                                    <th colspan="4" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th id="debit" class="text-white text-end"></th>
+                                                    <th id="credit" class="text-white text-end"></th>
+                                                    <th class="text-white text-end">---</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab_contant contract_info_area d-hide">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <ul class="list-unstyled">
+                                    <li><strong>Customer Name :</strong></li>
+                                    <li><span class="name">{{ $customer->name }}</span></li><br>
+                                    <li><strong><i class="fas fa-map-marker-alt"></i> Address :</strong></li>
+                                    <li><span class="address">{{ $customer->address }}</span></li><br>
+                                    <li><strong><i class="fas fa-briefcase"></i> Business Name :</strong></li>
+                                    <li><span class="business">{{ $customer->business_name }}</span></li>
+                                </ul>
+                            </div>
+
+                            <div class="col-md-3">
+                                <ul class="list-unstyled">
+                                    <li><strong><i class="fas fa-phone-square"></i> Phone</strong></li>
+                                    <li><span class="phone">{{ $customer->phone }}</span></li>
+                                </ul>
+                            </div>
+
+                            <div class="col-md-3">
+                                <ul class="list-unstyled">
+                                    <li><strong><i class="fas fa-info"></i> Tax Number</strong></li>
+                                    <li><span class="tax_number">{{ $customer->tax_number }}</span></li>
+                                </ul>
+                            </div>
+
+                            <div class="col-md-3">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <strong> Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <span class="opening_balance">{{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</span>
+                                    </li>
+
+                                    <li>
+                                        <strong> Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <span class="total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</span>
+                                    </li>
+
+                                    <li>
+                                        <strong> Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <span class="total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</span>
+                                    </li>
+
+                                    <li>
+                                        <strong> Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <span class="total_less">{{ App\Utils\Converter::format_in_bdt($customer->total_less) }}</span>
+                                    </li>
+
+                                    <li>
+                                        <strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <span class="total_paid">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</span>
+                                    </li>
+
+                                    <li>
+                                        <strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <span class="total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</span>
+                                    </li>
+
+                                    <li>
+                                        <strong> Total Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <span class="total_sale_return_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab_contant sale d-hide">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12 col-lg-4">
+                                @include('contacts.customers.partials.account_summery_area_by_sales')
+                            </div>
+
+                            <div class="col-md-8 col-sm-12 col-lg-8">
+                                <div class="account_summary_area">
+                                    <div class="heading py-1">
+                                        <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                    </div>
+
+                                    <div class="account_summary_table">
+                                        <form id="filter_customer_sales" method="get" class="px-2">
+                                            <div class="form-group row align-items-end justify-content-end g-3">
+                                                @if ($addons->branches == 1)
+                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                        <div class="col-md-3">
+                                                            <label><strong>Business Location :</strong></label>
+                                                            <select name="branch_id" class="form-control submit_able" id="sale_branch_id" autofocus>
+                                                                <option value="">All</option>
+                                                                <option value="NULL">
+                                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                </option>
+                                                                @foreach ($branches as $branch)
+                                                                    <option value="{{ $branch->id }}">
+                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    @endif
+                                                @endif
+
+                                                <div class="col-md-3">
+                                                    <label><strong>From Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                        </div>
+                                                        <input type="text" name="from_date" id="from_sale_date" class="form-control" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label><strong>To Date :</strong></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                        </div>
+
+                                                        <input type="text" name="to_date" id="to_sale_date" class="form-control" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="row align-items-end">
+                                                        <div class="col-md-7">
+                                                            <div class="input-group">
+                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-5">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_sale_statement"><i class="fas fa-print"></i> Print</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table_area">
+                                    <div class="table-responsive">
+                                        <table class="display data_tbl data__table sales_table w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th>Actions</th>
+                                                    <th>Date</th>
+                                                    <th>Invoice ID</th>
+                                                    <th>Business Location</th>
+                                                    <th>Customer</th>
+                                                    <th>Total Amount</th>
+                                                    <th>Total Paid</th>
+                                                    <th>Sell Due</th>
+                                                    <th>Return Amount</th>
+                                                    <th>Return Due</th>
+                                                    <th>Payment Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                            <tfoot>
+                                                <tr class="bg-secondary">
+                                                    <th colspan="5" class="text-end text-white">Total :</th>
+                                                    <th class="text-end text-white" id="total_payable_amount"></th>
+                                                    <th class="text-end text-white" id="paid"></th>
+                                                    <th class="text-end text-white" id="due"></th>
+                                                    <th class="text-end text-white" id="sale_return_amount"></th>
+                                                    <th class="text-end text-white" id="sale_return_due"></th>
+                                                    <th class="text-start text-white">---</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if(auth()->user()->can('sale_payment'))
+                        <div class="tab_contant payments d-hide">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-12 col-lg-3">
+                                    @include('contacts.customers.partials.account_summery_area_by_payments')
+                                </div>
+
+                                <div class="col-md-9 col-sm-12 col-lg-9">
+                                    <div class="account_summary_area">
+                                        <div class="heading py-1">
+                                            <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                        </div>
+
+                                        <div class="account_summary_table">
+                                            <div class="row mt-2">
+                                                <div class="col-md-9">
+                                                    <div class="card pb-5">
+                                                        <form id="filter_customer_payments" class="py-2 px-2 mt-2" method="get">
+                                                            <div class="form-group row">
+
+                                                                @if ($addons->branches == 1)
+                                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                                        <div class="col-md-3">
+                                                                            <label><strong>Business Location :</strong></label>
+                                                                            <select name="branch_id" class="form-control submit_able" id="payment_branch_id" autofocus>
+                                                                                <option value="">All</option>
+                                                                                <option value="NULL">
+                                                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                                </option>
+                                                                                @foreach ($branches as $branch)
+                                                                                    <option value="{{ $branch->id }}">
+                                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    @endif
+                                                                @endif
+
+                                                                <div class="col-md-3">
+                                                                    <label><strong>From Date :</strong></label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                                        </div>
+                                                                        <input type="text" name="p_from_date" id="payment_from_date" class="form-control" autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-3">
+                                                                    <label><strong>To Date :</strong></label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                                        </div>
+                                                                        <input type="text" name="p_to_date" id="payment_to_date" class="form-control" autocomplete="off">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-3">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <label><strong></strong></label>
+                                                                            <div class="input-group">
+                                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="col-md-12 col-sm-12 col-lg-12">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <a href="{{ route('customers.payment', $customer->id) }}" id="add_payment" class="btn btn-sm btn-success"><i class="far fa-money-bill-alt text-white"></i> Receive</a>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mt-2">
+                                                            <div class="col-md-12">
+                                                                <a class="btn btn-sm btn-success return_payment_btn" id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund </a>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mt-2">
+                                                            <div class="col-md-12">
+                                                                <a href="{{ route('customers.all.payment.print', $customer->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i> Print</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="widget_content table_area">
+                                        <div class="table-responsive">
+                                            <table class="display data_tbl data__table payments_table w-100">
+                                                <thead>
+                                                    <tr class="text-start">
+                                                        <th class="text-start">Date</th>
+                                                        <th class="text-start">Voucher No</th>
+                                                        <th class="text-start">Reference</th>
+                                                        <th class="text-start">Against Invoice</th>
+                                                        {{-- <th>Created By</th> --}}
+                                                        <th class="text-start">Payment Status</th>
+                                                        <th class="text-start">Payment Type</th>
+                                                        <th class="text-start">Account</th>
+                                                        <th class="text-endx">Less Amount</th>
+                                                        <th class="text-end">Paid Amount</th>
+                                                        <th class="text-start">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                                <tfoot>
+                                                    <tr class="bg-secondary">
+                                                        <th class="text-end text-white" colspan="7">Total : </th>
+                                                        <th class="text-end text-white" id="less_amount"></th>
+                                                        <th class="text-end text-white" id="amount"></th>
+                                                        <th class="text-start text-white">---</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

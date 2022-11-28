@@ -18,7 +18,7 @@
                 <span class="fas fa-people-arrows"></span>
                 <h6>{{ $supplier->name }}</h6>
             </div>
-            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
         </div>
     </div>
 
@@ -116,7 +116,7 @@
                                                     <div>
                                                         <label><strong></strong></label>
                                                         <div class="input-group">
-                                                            <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                         </div>
                                                     </div>
 
@@ -298,7 +298,7 @@
                                                     <div class="col-md-6">
                                                         <label><strong></strong></label>
                                                         <div class="input-group">
-                                                            <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                         </div>
                                                     </div>
 
@@ -420,7 +420,7 @@
                                                     <div class="col-md-6">
                                                         <label><strong></strong></label>
                                                         <div class="input-group">
-                                                            <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                         </div>
                                                     </div>
 
@@ -553,7 +553,7 @@
                                                                 <div class="col-md-12">
                                                                     <label><strong></strong></label>
                                                                     <div class="input-group">
-                                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -566,13 +566,13 @@
                                         <div class="col-md-2 col-sm-12 col-lg-2">
                                             <div class="row mt-3">
                                                 <div class="col-md-12">
-                                                    <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-success"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
+                                                    <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-sm btn-success"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
                                                 </div>
                                             </div>
 
                                             <div class="row mt-2">
                                                 <div class="col-md-12">
-                                                    <a class="btn btn-success return_payment_btn" id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i>Refund </a>
+                                                    <a class="btn btn-sm btn-success return_payment_btn" id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i>Refund </a>
                                                 </div>
                                             </div>
 
@@ -676,8 +676,8 @@
                                 <ul class="list-unstyled">
                                     <li class="mt-1">
                                         {{-- <a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a> --}}
-                                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                        <button type="submit" id="print_payment" class="c-btn me-0 button-success">Print</button>
+                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                        <button type="submit" id="print_payment" class="btn btn-sm btn-success">Print</button>
                                     </li>
                                 </ul>
                             </div>

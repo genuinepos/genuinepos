@@ -1,4 +1,4 @@
-@php 
+@php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
@@ -19,10 +19,10 @@
                             <li><strong>Stored Location : </strong>
                                 @if ($production->warehouse_id)
                                     {{ $production->warehouse->warehouse_name.'/'.$production->warehouse->warehouse_code }}<b>(WH)</b>
-                                @else 
+                                @else
                                     @if ($production->branch_id)
                                         {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
-                                    @else 
+                                    @else
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                     @endif
                                 @endif
@@ -30,10 +30,10 @@
                             <li><strong>Ingredients Stock Location : </strong>
                                 @if ($production->stock_warehouse_id)
                                     {{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}<b>(WH)</b>
-                                @else 
+                                @else
                                     @if ($production->stock_branch_id)
                                         {{ $production->stock_branch->name.'/'.$production->stock_branch->branch_code }}<b>(BL)</b>
-                                    @else 
+                                    @else
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                     @endif
                                 @endif
@@ -44,11 +44,11 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>Production Item : </strong> 
+                                <strong>Production Item : </strong>
                                 {{ $production->product->name }} {{ $production->variant_id ? $production->variant->variant_name : '' }} {{ $production->variant_id ? $production->variant->variant_code : $production->product->product_code }}
                             </li>
                             <li>
-                                <strong>Production Status: </strong> 
+                                <strong>Production Status: </strong>
                                 @if ($production->is_final == 1)
                                     <span class="text-success">Final</span>
                                 @else
@@ -72,7 +72,7 @@
                         <div class="table-responsive">
                             <table class="table modal-table table-sm table-striped">
                                 <thead>
-                                    <tr class="bg-primary">
+                                    <tr class="bg-secondary">
                                         <th class="text-white text-start">Ingredient Name</th>
                                         <th class="text-white text-start">Input Qty</th>
                                         <th class="text-white text-start">Unit Cost Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
@@ -83,9 +83,9 @@
                                     @foreach ($production->ingredients as $ingredient)
                                         <tr>
                                             @php
-                                                $variant = $ingredient->variant_id ? ' ('.$ingredient->variant->variant_name.')' : ''; 
+                                                $variant = $ingredient->variant_id ? ' ('.$ingredient->variant->variant_name.')' : '';
                                             @endphp
-                                            
+
                                             <td class="text-start">{{ Str::limit($ingredient->product->name, 40).' '.$variant }}</td>
                                             <td class="text-start">{{ $ingredient->input_qty }}</td>
                                             <td class="text-start">
@@ -111,28 +111,28 @@
                                         {{ $production->quantity.'/'.$production->unit->code_name }}
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Wasted Quantity : </th>
                                     <td class="text-end">
                                         {{ $production->wasted_quantity.'/'.$production->unit->code_name }}
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Final Quantity : </th>
                                     <td class="text-end">
                                         {{ $production->total_final_quantity.'/'.$production->unit->code_name }}
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Additional Cost : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($production->production_cost) }}
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Total Cost : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
@@ -142,7 +142,7 @@
                             </tbody>
                         </table>
                     </div>
-    
+
                     <div class="col-md-6 text-end">
                         <p><strong>Production Items's Costing And Pricing</strong></p>
                         <table class="table modal-table table-sm table-bordered">
@@ -153,28 +153,28 @@
                                         {{ $production->tax ? $production->tax->tax_percent : 0 }}%
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Per Unit Cost Exc.Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($production->unit_cost_exc_tax) }}
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Per Unit Cost Inc.Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($production->unit_cost_inc_tax) }}
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">xMargin(%) : </th>
                                     <td class="text-end">
                                         {{ $production->x_margin }}%
                                     </td>
                                 </tr>
-    
+
                                 <tr>
                                     <th class="text-end">Selling Price Exc.Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
@@ -189,10 +189,10 @@
 
             <div class="modal-footer">
                <div class="row">
-                   <div class="col-md-12">
-                       <a href="{{ route('manufacturing.productions.edit', $production->id) }}" class="c-btn btn_secondary py-1 text-white">Edit</a>
-                       <button type="submit" class="c-btn button-success print_btn">Print</button>
-                       <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                   <div class="col-md-12 d-flex justify-content-end gap-2">
+                        <a href="{{ route('manufacturing.productions.edit', $production->id) }}" class="btn btn-sm btn-secondary">Edit</a>
+                        <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
+                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
                    </div>
                </div>
             </div>
@@ -228,14 +228,14 @@
                     <h6>
                         @if ($production->branch_id)
                             {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
-                        @else 
+                        @else
                             {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                         @endif
                     </h6>
                     <p style="width: 60%; margin:0 auto;">
                         @if ($production->branch_id)
                             {{ $production->branch->city.', '.$production->branch->state.', '.$production->branch->zip_code.', '.$production->branch->country }}<b>(BL)</b>
-                        @else 
+                        @else
                             {{ json_decode($generalSettings->business, true)['address'] }}
                         @endif
                     </p>
@@ -249,13 +249,13 @@
                     @if ($production->branch_id)
                         @if ($production->branch->logo != 'default.png')
                             <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $production->branch->logo) }}">
-                        @else 
+                        @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $production->branch->name }}</span>
                         @endif
-                    @else 
+                    @else
                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                             <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                        @else 
+                        @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                         @endif
                     @endif
@@ -266,7 +266,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-4 col-lg-4">
-                    
+
                 </div>
             </div>
         </div>
@@ -278,10 +278,10 @@
                         <li><strong>Stored Location : </strong>
                             @if ($production->warehouse_id)
                                 {{ $production->warehouse->warehouse_name.'/'.$production->warehouse->warehouse_code }}<b>(WH)</b>
-                            @else 
+                            @else
                                 @if ($production->branch_id)
                                     {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
-                                @else 
+                                @else
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                 @endif
                             @endif
@@ -289,10 +289,10 @@
                         <li><strong>Ingredients Stock Location : </strong>
                             @if ($production->stock_warehouse_id)
                                 {{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}<b>(WH)</b>
-                            @else 
+                            @else
                                 @if ($production->stock_branch_id)
                                     {{ $production->stock_branch->name.'/'.$production->stock_branch->branch_code }}<b>(BL)</b>
-                                @else 
+                                @else
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                 @endif
                             @endif
@@ -302,11 +302,11 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>Production Item : </strong> 
+                            <strong>Production Item : </strong>
                             {{ $production->product->name }} {{ $production->variant_id ? $production->variant->variant_name : '' }} {{ $production->variant_id ? $production->variant->variant_code : $production->product->product_code }}
                         </li>
                         <li>
-                            <strong>Production Status: </strong> 
+                            <strong>Production Status: </strong>
                             @if ($production->is_final == 1)
                                 <span class="text-success">Final</span>
                             @else
@@ -339,9 +339,9 @@
                     @foreach ($production->ingredients as $ingredient)
                         <tr>
                             @php
-                                $variant = $ingredient->variant_id ? ' ('.$ingredient->variant->variant_name.')' : ''; 
+                                $variant = $ingredient->variant_id ? ' ('.$ingredient->variant->variant_name.')' : '';
                             @endphp
-                            
+
                             <td>{{ Str::limit($ingredient->product->name, 40).' '.$variant }}</td>
                             <td>{{ $ingredient->input_qty }}</td>
                             <td>

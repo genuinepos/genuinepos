@@ -22,7 +22,7 @@
                     <span class="fas fa-desktop"></span>
                     <h5>Sales Representative Report</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> Back
                 </a>
             </div>
@@ -118,7 +118,7 @@
                                     <div class="tab_list_area">
                                         <div class="btn-group">
                                             <a id="tab_btn" data-show="sales" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Seles</a>
-                                            
+
                                             <a id="tab_btn" data-show="expense" class="btn btn-sm btn-primary tab_btn" href="#">
                                             <i class="fas fa-scroll"></i> Expense</a>
                                         </div>
@@ -331,7 +331,7 @@
 </script>
 
 <script type="text/javascript">
-    {{-- 
+    {{--
     //Set accounts in payment and payment edit form
     function setAdmin(){
         $.ajax({

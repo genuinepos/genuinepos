@@ -8,7 +8,7 @@
     <div class="col-md-12">
         <div class="table-responsive">
             <table class="table modal-table table-sm">
-                <thead class="bg-primary">
+                <thead class="bg-secondary">
                     <tr>
                         <th class="text-start text-white">#</th>
                         <th class="text-start text-white">File</th>

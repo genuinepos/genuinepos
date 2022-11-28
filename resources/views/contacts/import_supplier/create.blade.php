@@ -13,7 +13,7 @@
                     <span class="fas fa-file-import"></span>
                     <h5>Import Suppliers </h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
             </div>
         </div>
         <form action="{{ route('contacts.suppliers.import.store') }}" enctype="multipart/form-data" method="POST">

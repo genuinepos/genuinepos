@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="col-3">
-                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="element-body">
                             <div class="heading_area">
@@ -188,7 +188,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="element-body">
                             <div class="heading_area">
@@ -196,13 +196,13 @@
                                     <div class="col-md-6">
                                         <p class="p-2 text-primary"><b>Deductions</b> </p>
                                     </div>
-    
+
                                     <div class="col-md-6 d-flex justify-content-end">
                                         <div id="add_more_deduction">
                                             <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
                                         </div>
                                     </div>
-    
+
                                 </div>
                             </div>
                             <div class="row">
@@ -308,7 +308,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="element-body">
                             <div class="row">
@@ -321,7 +321,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="submit-area d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>

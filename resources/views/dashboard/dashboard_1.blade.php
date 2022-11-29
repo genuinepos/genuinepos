@@ -9,7 +9,7 @@
         <div id="dashboard" class="p-3">
             <div class="row mb-3">
                 <div class="main__content">
-                    <div class="d-flex flex-wrap mx-2 mt-2 switch_bar_cards">
+                    <div class="d-flex flex-wrap mt-2 switch_bar_cards">
 
                         {{-- <div class="switch_bar">
                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)

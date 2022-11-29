@@ -122,7 +122,37 @@ ul#search_box {
 }
 
 /* ====================================================main button================================= */
+.sub-menu-group {
+    border: 1px solid #dddddd;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+.sub-menu-group:last-child {
+    margin-bottom: 0;
+}
+.sub-menu-group-title {
+    width: max-content;
+    position: relative;
+    font-size: 13px;
+    line-height: 100%;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-top: -27px;
+    margin-bottom: 15px;
+    background: #fff;
+    padding: 0 5px;
+}
+.sub-menu-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+.sub-menu-row:last-child {
+    margin-bottom: 0;
+}
 .switch-bar-wrap {
+    width: 203px;
     display: flex;
     align-items: center;
     border: 1px solid #a7a7a7;
@@ -133,11 +163,14 @@ ul#search_box {
 .switch_bar {
     border-right: 1px solid #a7a7a7;
     text-align: center;
-    width: 55px;
-    height: 55px;
-    line-height: 55px;
+    width: 52px;
+    height: 52px;
+    line-height: 52px;
     font-size: 20px;
     transition: .3s;
+}
+.sub-menu-width .switch_text {
+    width: calc(100% - 67px);
 }
 .switch-bar-wrap:hover {
     color: #323232;
@@ -280,33 +313,39 @@ textarea {
 }
 
 .btn.btn-secondary {
-    background: linear-gradient(var(--secondary-color-1) 50%, var(--secondary-color-2) 50%);
+    background: linear-gradient(var(--secondary-color-1) 50%, var(--secondary-color-2) 50%) !important;
+    background-image: linear-gradient(var(--secondary-color-1) 50%, var(--secondary-color-2) 50%) !important;
     box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
 }
 
 .btn.btn-success {
-    background: linear-gradient(var(--success-color-1) 50%, var(--success-color-2) 50%);
+    background: linear-gradient(var(--success-color-1) 50%, var(--success-color-2) 50%) !important;
+    background-image: linear-gradient(var(--success-color-1) 50%, var(--success-color-2) 50%) !important;
     box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
 }
 
 .btn.btn-danger {
-    background: linear-gradient(var(--danger-color-1) 50%, var(--danger-color-2) 50%);
+    background: linear-gradient(var(--danger-color-1) 50%, var(--danger-color-2) 50%) !important;
+    background-image: linear-gradient(var(--danger-color-1) 50%, var(--danger-color-2) 50%) !important;
     box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
 }
 
 .btn.btn-warning {
-    background: linear-gradient(var(--warning-color-1) 50%, var(--warning-color-2) 50%);
+    background: linear-gradient(var(--warning-color-1) 50%, var(--warning-color-2) 50%) !important;
+    background-image: linear-gradient(var(--warning-color-1) 50%, var(--warning-color-2) 50%) !important;
     box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
 }
 
 .btn.btn-info {
-    background: linear-gradient(var(--info-color-1) 50%, var(--info-color-2) 50%);
+    background: linear-gradient(var(--info-color-1) 50%, var(--info-color-2) 50%) !important;
+    background-image: linear-gradient(var(--info-color-1) 50%, var(--info-color-2) 50%) !important;
     border-color: var(--info-color-2) !important;
     box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
 }
 
 .btn.btn-light {
-    background: linear-gradient(var(--light-color-1) 50%, var(--light-color-2) 50%);
+    background: linear-gradient(var(--light-color-1) 50%, var(--light-color-2) 50%) !important;
+    background-image: linear-gradient(var(--light-color-1) 50%, var(--light-color-2) 50%) !important;
     box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
 }
 
@@ -472,6 +511,164 @@ input.form-check-input {
 
 div#star img {
     height: 17px;
+}
+
+/* ==================================================right sidebar desing======================= */
+div#rightSidebar {
+    right: -100%;
+    display: flex;
+    gap: 10px;
+    background: transparent;
+    width: max-content;
+    height: calc(100% - 62px);
+    padding: 5px 5px 5px 0;
+    overflow: hidden;
+    position: fixed;
+    margin-top: 62px;
+    top: 0px;
+    z-index: 99;
+    transition: 0.5s all ease-in-out;
+    -webkit-transition: 0.5s all ease-in-out;
+    -moz-transition: 0.5s all ease-in-out;
+    -ms-transition: 0.5s all ease-in-out;
+    -o-transition: 0.5s all ease-in-out;
+}
+div#rightSidebar.open {
+    right: 0;
+}
+#rightSidebar .sidebar-container {
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(255, 255, 255, .05);
+    backdrop-filter: blur(3px);
+    border-radius: 5px;
+    padding: 20px;
+    height: 100%;
+    position: relative;
+}
+#rightSidebar li.icon {
+    font-size: 25px;
+    padding: 6px 8px;
+    color: var(--brand-color);
+}
+#rightSidebar .shortcut-bar {
+   background: var(--dark-color-2);
+   border: 1px solid rgba(255, 255, 255, .05);
+   border-radius: 5px;
+   padding: 10px;
+   padding-bottom: 0;
+   text-align: center;
+   height: 100%;
+   overflow-y: scroll;
+   -ms-overflow-style: none;
+   scrollbar-width: none;
+}
+.shortcut-bar::-webkit-scrollbar {
+   display: none;
+}
+#rightSidebar .shortcut-bar .shorcut-box {
+   width: 35px;
+   height: 35px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background: #fff;
+   border-radius: 7px;
+   margin-bottom: 15px;
+   position: relative;
+}
+#rightSidebar .shortcut-bar .shorcut-box.add-new-box {
+   margin-bottom: 0;
+}
+#rightSidebar.shortcut-bar.shorcut-box .shortcut-wrap{
+   width: 100%;
+   height: 100%;
+   overflow: hidden;
+}
+#rightSidebar .shortcut-bar .shorcut-box .shortcut-wrap a {
+   text-align: center;
+   width: 27px;
+   height: 27px;
+   line-height: 27px;
+   display: inline-block;
+   font-size: 12px;
+   background: #004566;
+   color: #fff;
+   border-radius: 50%;
+   position: relative;
+   z-index: 2;
+}
+#rightSidebar .shortcut-bar .shorcut-box .shortcut-wrap a .icon {
+   width: 12px;
+}
+#rightSidebar .shortcut-bar .shorcut-box .shortcut-wrap a::before {
+   content: "";
+   position: absolute;
+   top: -3.5px;
+   left: 10px;
+   width: 100%;
+   height: 200%;
+   background: rgba(13, 31, 42, 0.3);
+   border-radius: calc(27px / 2);
+   transform: rotate(-45deg);
+   z-index: -1;
+}
+#rightSidebar .shortcut-bar .shorcut-box .dropdown {
+   position: absolute;
+   top: 50%;
+   left: calc(100% + 2px);
+   transform: translateY(-50%);
+   font-size: 12px;
+   z-index: 3;
+}
+#rightSidebar .shortcut-bar .shorcut-box .dropdown .shortcut-action {
+   background: transparent;
+   padding: 0;
+   color: #fff;
+   border: none;
+   opacity: 0;
+   transition: .2s;
+}
+#rightSidebar .shortcut-bar .shorcut-box .dropdown .dropdown-menu {
+   min-width: auto;
+   border: 0;
+   border-radius: 2px;
+   padding: 0;
+}
+#rightSidebar .shortcut-bar .shorcut-box .dropdown .dropdown-menu li {
+   line-height: 14px;
+   border-bottom: 1px solid #ededed;
+}
+#rightSidebar .shortcut-bar .shorcut-box .dropdown .dropdown-menu li:last-child {
+   border-bottom: 0;
+}
+#rightSidebar .shortcut-bar .shorcut-box .dropdown .dropdown-menu button {
+   width: 100%;
+   padding: 2px;
+   font-size: 10px;
+   line-height: 100%;
+   background: transparent;
+   border: 0;
+}
+#rightSidebar .shortcut-bar .shorcut-box:hover .dropdown .shortcut-action {
+   opacity: 1;
+}
+.shortcut-modal {
+   position: fixed;
+   top: 0;
+   left: 50%;
+   transform: translateX(-50%) translateY(-30%);
+   width: 100%;
+   max-width: 500px;
+   opacity: 0;
+   visibility: hidden;
+   transition: .2s ease-in;
+   z-index: 1054;
+   pointer-events: all;
+}
+.shortcut-modal.show {
+   transform: translateX(-50%) translateY(0);
+   opacity: 1;
+   visibility: visible;
 }
 
 /* ==================================================switch desing======================= */
@@ -1182,7 +1379,7 @@ legend {
     left: 142px;
     display: none;
     padding: 0 0px;
-    padding-top: 62px;
+    padding-top: 80px;
     padding-right: 142px;
 }
 

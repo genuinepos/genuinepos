@@ -18,7 +18,7 @@
 </head>
 
 <body id="dashboard-8"
-class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-theme' }} 
+class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-theme' }}
 @if($rtl) rtl @endif" @if($rtl) dir="rtl" @endif>
 
     <div class="all__content">
@@ -30,6 +30,9 @@ class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-t
                 @yield('content')
             </div>
         </div>
+
+        @include('partials.right_sidebar')
+
         <footer>
             <div class="logo_wrapper">
                 <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">

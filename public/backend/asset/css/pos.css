@@ -1,3 +1,42 @@
+:root {
+    --red-color-gradient: linear-gradient(#8c0437ee, #1e000d);
+    --red-color-1: #7e0d3d;
+    --red-color-2: #5d1b3f;
+    --red-color-border: rgba(93, 27, 63, .3);
+    --blue-color-gradient: linear-gradient(#036dad 0%, #29b0fd 100%);
+    --blue-color-1: #29b0fd;
+    --blue-color-2: #036dad;
+    --blue-color-border: rgba(3, 109, 173, .3);
+    --orange-color-gradient: linear-gradient(#bd5e1e, #ff934b);
+    --orange-color-gradient-2: linear-gradient(to right, #bd5e1e, #ff934b);
+    --orange-color-1: #bd5e1e;
+    --orange-color-2: #ff934b;
+    --orange-color-border: rgba(255, 147, 75, .3);
+    --light-color-gradient: linear-gradient(#e1e1e1, #989898);
+    --light-color-1: #c4c4c4;
+    --light-color-2: #989898;
+    --light-color-border: rgba(152, 152, 152, .3);
+    --white-color: #fff;
+    --black-color: #000;
+    --black-color-1: #232323;
+    --black-color-border: rgba(0, 0, 0, .3);
+    --bs-primary: var(--dark-color-gradient) !important;
+    --bs-blue: var(--dark-color-gradient) !important;
+
+    --secondary-color-1: #6c757d;
+    --secondary-color-2: #57595b;
+    --success-color-1: #198754;
+    --success-color-2: #135637;
+    --danger-color-1: #dc3545;
+    --danger-color-2: #741f28;
+    --warning-color-1: #ffc107;
+    --warning-color-2: #977612;
+    --info-color-1: #0dcaf0;
+    --info-color-2: #15a1cd;
+    --light-color-1: #f8f9fa;
+    --light-color-2: #e0e0e0;
+}
+
 /* =============================pos nav====================== */
 
 .body-wraper {
@@ -663,6 +702,8 @@ a.resent-tn:hover {
  /* amar code ------------ */
 @media (min-width: 1200px) and (max-width: 1400px) {
     .function-card {
+        font-size: 10px;
+        line-height: 2;
         padding: 10px 0px;
     }
 }

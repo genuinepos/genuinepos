@@ -6,11 +6,12 @@
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
-                    <div class="name-head">
-                        <span class="fas fa-key"></span>
-                        <h5>Change Password</h5>
-                    </div>
-                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <div class="name-head">
+                    <span class="fas fa-key"></span>
+                    <h5>Change Password</h5>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
             </div>
         </div>
         <section class="p-3">
@@ -79,6 +80,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
                         <div class="button-area d-flex justify-content-end mt-3">
                             <div class="btn-loading">
@@ -139,7 +141,11 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div class="form_element rounded mt-0 mb-3">
+                    <div class="element-body">
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <label for="inputEmail3" class="col-4"><span
@@ -152,9 +158,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row mt-1">
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <label for="inputEmail3" class="col-4"><b>Default Language :</b>

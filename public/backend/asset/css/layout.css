@@ -176,8 +176,10 @@ ul.head__cn {
     display: flex;
 }
 
+ul.head__cn li button,
 ul.head__cn li a {
     /* width: 100%; */
+    background: transparent;
     padding: 7px 10px;
     display: flex;
     justify-content: center;

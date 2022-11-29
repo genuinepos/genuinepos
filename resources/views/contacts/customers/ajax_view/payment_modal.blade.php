@@ -37,7 +37,7 @@
                             <ul class="list-unstyled">
                                 <li><strong>Opening Balance : </strong>
                                     <span class="card_text" id="customer_payment_opening_balance">
-                                        {{ App\Utils\Converter::format_in_bdt($amounts['opening_balance']) }} 
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['opening_balance']) }}
                                     </span>
                                 </li>
 
@@ -49,13 +49,13 @@
 
                                 <li><strong>Total Return : </strong>
                                     <span class="card_text" id="customer_payment_total_return">
-                                        {{ App\Utils\Converter::format_in_bdt($amounts['total_return']) }} 
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['total_return']) }}
                                     </span>
                                 </li>
 
                                 <li><strong>Total Paid : </strong>
                                     <span class="card_text text-success" id="customer_payment_total_paid">
-                                        {{ App\Utils\Converter::format_in_bdt($amounts['total_paid']) }} 
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['total_paid']) }}
                                     </span>
                                 </li>
 
@@ -96,7 +96,7 @@
                                                 </div>
                                             </div>
                                         </div>
-        
+
                                         <div class="col-md-12">
                                             <div class="input-group mt-1">
                                                 <div class="col-12">
@@ -108,7 +108,7 @@
                                                 </div>
                                             </div>
                                         </div>
-        
+
                                         <div class="col-md-12">
                                             <div class="input-group mt-1">
                                                 <div class="col-12">
@@ -120,7 +120,7 @@
                                             </div>
                                         </div>
                                     </div>
-        
+
                                     <div class="invoice_and_order_table_area mt-2">
                                         <div class="all_orders_and_invoices_area due_table">
                                             <div class="row">
@@ -131,16 +131,16 @@
                                                                 <p><strong>All </strong></p>
                                                             </div>
                                                         </div>
-        
+
                                                         <div class="col-md-6">
                                                             <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
                                                         </div>
                                                     </div>
-        
+
                                                     <div class="due_all_table">
                                                         <table class="table modal-table table-sm mt-1">
                                                             <thead>
-                                                                <tr class="bg-primary">
+                                                                <tr class="bg-secondary">
                                                                     <th class="text-start text-white">Select</th>
                                                                     <th class="text-start text-white">Date</th>
                                                                     <th class="text-start text-white">Order/Invoice</th>
@@ -155,13 +155,13 @@
                                                                     <tr>
                                                                         <td class="text-start"><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $row->id }}" id="sale_id" data-due_amount="{{ $row->due }}"></td>
                                                                         <td class="text-start">{{ $row->date }}</td>
-        
+
                                                                         <td class="text-start">
                                                                             @if ($row->status == 1)
-                                                                            
+
                                                                                 <a class="details_button text-info" title="Details" href="{{ route('sales.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
                                                                             @elseif($row->status == 3 || $row->status == 7)
-        
+
                                                                                 <a class="details_button text-info" title="Details" href="{{ route('sales.order.show', [$row->id]) }}">{{ $row->order_id }}</a>
                                                                             @endif
                                                                         </td>
@@ -176,15 +176,15 @@
                                                                             @php
                                                                                 $payable = $row->total_payable_amount - $row->sale_return_amount;
                                                                             @endphp
-        
-                                                                            @if ($row->due <= 0) 
-        
+
+                                                                            @if ($row->due <= 0)
+
                                                                                 <span class="text-success"><b>Paid</b></span>
-                                                                            @elseif ($row->due > 0 && $row->due < $payable) 
-        
+                                                                            @elseif ($row->due > 0 && $row->due < $payable)
+
                                                                                 <span class="text-primary"><b>Partial</b></span>
-                                                                            @elseif ($payable == $row->due) 
-        
+                                                                            @elseif ($payable == $row->due)
+
                                                                                 <span class="text-danger"><b>Due</b></span>
                                                                             @endif
                                                                         </td>
@@ -198,7 +198,7 @@
                                                 </div>
                                             </div>
                                         </div>
-        
+
                                         <div class="due_invoice_table_area due_table d-hide">
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -208,12 +208,12 @@
                                                                 <p><strong>Due Sale Invoice List</strong></p>
                                                             </div>
                                                         </div>
-        
+
                                                         <div class="col-md-6">
                                                             <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
                                                         </div>
                                                     </div>
-                                                
+
                                                     <div class="due_invoice_table">
                                                         <table class="table modal-table table-sm mt-1 custom-tbl">
                                                             <thead>
@@ -238,15 +238,15 @@
                                                                             @php
                                                                                 $payable = $invoice->total_payable_amount - $invoice->sale_return_amount;
                                                                             @endphp
-        
-                                                                            @if ($invoice->due <= 0) 
-        
+
+                                                                            @if ($invoice->due <= 0)
+
                                                                                 <span class="text-success"><b>Paid</b></span>
-                                                                            @elseif ($invoice->due > 0 && $invoice->due < $payable) 
-        
+                                                                            @elseif ($invoice->due > 0 && $invoice->due < $payable)
+
                                                                                 <span class="text-primary"><b>Partial</b></span>
-                                                                            @elseif ($payable == $invoice->due) 
-        
+                                                                            @elseif ($payable == $invoice->due)
+
                                                                                 <span class="text-danger"><b>Due</b></span>
                                                                             @endif
                                                                         </td>
@@ -260,7 +260,7 @@
                                                 </div>
                                             </div>
                                         </div>
-        
+
                                         <div class="due_orders_table_area due_table d-hide">
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -270,16 +270,16 @@
                                                                 <p><strong>Due Sales Order List</strong> </p>
                                                             </div>
                                                         </div>
-        
+
                                                         <div class="col-md-6">
                                                             <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
                                                         </div>
                                                     </div>
-                                                
+
                                                     <div class="due_orders_table">
                                                         <table class="table modal-table table-sm mt-1">
                                                             <thead>
-                                                                <tr class="bg-primary">
+                                                                <tr class="bg-secondary">
                                                                     <th class="text-start text-white">Select</th>
                                                                     <th class="text-start text-white">Date</th>
                                                                     <th class="text-start text-white">Order ID</th>
@@ -300,15 +300,15 @@
                                                                             @php
                                                                                 $payable = $order->total_payable_amount - $order->sale_return_amount;
                                                                             @endphp
-        
-                                                                            @if ($order->due <= 0) 
-        
+
+                                                                            @if ($order->due <= 0)
+
                                                                                 <span class="text-success"><b>Paid</b></span>
-                                                                            @elseif ($order->due > 0 && $order->due < $payable) 
-        
+                                                                            @elseif ($order->due > 0 && $order->due < $payable)
+
                                                                                  <span class="text-primary"><b>Partial</b></span>
-                                                                            @elseif ($payable == $order->due) 
-        
+                                                                            @elseif ($payable == $order->due)
+
                                                                                 <span class="text-danger"><b>Due</b></span>
                                                                             @endif
                                                                         </td>
@@ -322,7 +322,7 @@
                                                 </div>
                                             </div>
                                         </div>
-        
+
                                         <div class="total_amount_area mt-1">
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -349,7 +349,7 @@
                                 </div>
                                 <span class="error error_cp_paying_amount"></span>
                             </div>
-        
+
                             <div class="col-md-4">
                                 <label for="cp_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
@@ -367,7 +367,7 @@
                                 <input type="text" name="reference" class="form-control" placeholder="Payment Reference" autocomplete="off"/>
                             </div>
                         </div>
-        
+
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
                                 <label><strong>Less Amount :</strong> </label>
@@ -397,7 +397,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
                                     </div>
-                                    
+
                                     <select name="account_id" class="form-control" id="cp_account_id">
                                         @foreach ($accounts as $account)
                                             <option value="{{ $account->id }}">
@@ -413,7 +413,7 @@
                                 </div>
                             </div>
                         </div>
-        
+
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
                                 <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
@@ -433,12 +433,14 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-group row mt-3">
-                    <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button name="action" value="save" type="submit" class="c-btn button-success float-end">Save</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><b> Loading...</b></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                            <button name="action" value="save" type="submit" class="btn btn-sm btn-success">Save</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -452,9 +454,9 @@
         e.preventDefault();
 
         $('.loading_button').show();
-        
+
         var url = $(this).attr('action');
-        
+
         $.ajax({
             url: url,
             type: 'post',
@@ -507,11 +509,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Please check the connection.'); 
+                    toastr.error('Net Connetion Error. Please check the connection.');
                     return;
                 }else if (err.status == 500) {
-                    
-                    toastr.error('Server error. Please contact to the support team.'); 
+
+                    toastr.error('Server error. Please contact to the support team.');
                     return;
                 }
 
@@ -524,7 +526,7 @@
     });
 
     var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
-    
+
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
@@ -571,7 +573,7 @@
     $(document).on('click', '#payment_against', function() {
 
         var saleIds = document.querySelectorAll('#sale_id');
-        
+
         saleIds.forEach(function(input){
 
             $(input).prop('checked', false);
@@ -605,12 +607,12 @@
         calculateTotalDue();
     });
 
-    
+
     $(document).on('click', '#close', function (e) {
         e.preventDefault();
 
         var saleIds = document.querySelectorAll('#sale_id');
-        
+
         saleIds.forEach(function(input){
 
             $(input).prop('checked', false);
@@ -632,7 +634,7 @@
     });
 
     function calculateTotalDue() {
-        
+
         var cp_paying_amount = $('#cp_paying_amount').val() ? $('#cp_paying_amount').val() : 0;
         var card_total_due = $('#card_total_due').val() ? $('#card_total_due').val() : 0;
         var cp_less_amount = $('#cp_less_amount').val() ? $('#cp_less_amount').val() : 0;
@@ -654,7 +656,7 @@
 <script>
     var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
     var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
-  
+
       function inWords (num) {
           if ((num = num.toString()).length > 9) return 'overflow';
           n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
@@ -668,7 +670,7 @@
       }
 
         $(document).on('click', '.invoice_and_order_table_area table tbody tr', function () {
-            $('.invoice_and_order_table_area table tbody tr').removeClass('active_tr'); 
+            $('.invoice_and_order_table_area table tbody tr').removeClass('active_tr');
             $(this).addClass('active_tr');
         });
 </script>

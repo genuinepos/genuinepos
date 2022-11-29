@@ -80,8 +80,8 @@
                             </div>
                             <select name="payment_method_id" class="form-control" id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option 
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                    <option
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                         value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
@@ -128,10 +128,12 @@
                 </div>
 
                 <div class="form-group row mt-3">
-                    <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button type="submit" class="c-btn button-success float-end">Save</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                            <button type="submit" class="btn btn-sm btn-success">Save</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -146,7 +148,7 @@
         $('.loading_button').show();
         var available_amount = $('#p_available_amount').val();
         var paying_amount = $('#p_paying_amount').val();
-        
+
         if (parseFloat(paying_amount) > parseFloat(available_amount)) {
 
             $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
@@ -155,7 +157,7 @@
         }
 
         var url = $(this).attr('action');
-        
+
         $.ajax({
             url: url,
             type: 'post',
@@ -185,11 +187,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Please check the connection.'); 
+                    toastr.error('Net Connetion Error. Please check the connection.');
                     return;
                 }else if (err.status == 500) {
-                    
-                    toastr.error('Server error. Please contact to the support team.'); 
+
+                    toastr.error('Server error. Please contact to the support team.');
                     return;
                 }
 

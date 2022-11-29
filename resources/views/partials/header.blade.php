@@ -31,7 +31,7 @@
                                 <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif --}}
 
-                            @if(auth()->user()->can('communication'))
+                            {{-- @if(auth()->user()->can('communication'))
                                 <li class="top-icon d-hide d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
                                                 class="fas fa-th-large"></i></b></a>
                                     <ul class="lists">
@@ -45,7 +45,7 @@
                                                     Center</span></a></li>
                                     </ul>
                                 </li>
-                            @endif
+                            @endif --}}
 
                             @if(auth()->user()->can('today_summery'))
                                 <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
@@ -154,7 +154,7 @@
                             </li>
                             </li>
                             <li class="top-icon">
-                                <a href="" id="logout_option"><span class="fas fa-power-off" title="Logout"></span></a>
+                                <button id="openRightSidebar" ><i class="fas fa-bars"></i></button>
                             </li>
                         </ul>
                     </div>

@@ -104,7 +104,7 @@
                 <div class="row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                             <button class="btn btn-success submit_button float-end">@lang('menu.save_change')</button>
                         </div>
                     </div>

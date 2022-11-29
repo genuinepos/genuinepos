@@ -158,7 +158,7 @@
                                         <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                                         <th class="text-start">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                                         <th class="text-start">Reason</th>
-                                        <th class="text-start">Created By</th>
+                                        <th class="text-start">@lang('menu.created_by')</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

@@ -20,7 +20,7 @@
                     <div class="col-md-4">
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.customer') :- </strong></li>
-                            <li><strong>Name : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                            <li><strong>@lang('menu.name') :</strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             <li><strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                             </li>

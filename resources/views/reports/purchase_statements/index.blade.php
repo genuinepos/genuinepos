@@ -143,7 +143,7 @@
                                                 <th>P.Invoice ID</th>
                                                 <th>Purchase From</th>
                                                 <th>Supplier</th>
-                                                <th>Created By</th>
+                                                <th>@lang('menu.created_by')</th>
                                                 <th>Purchase Status</th>
                                                 <th>Total Item</th>
                                                 <th>Net Total Amt.</th>

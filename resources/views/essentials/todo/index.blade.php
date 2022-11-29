@@ -172,7 +172,7 @@
 
                                 <div class="form-group mt-1">
                                     <div class="col-md-12">
-                                        <label><b>Description : </b></label>
+                                        <label><b>@lang('menu.description') : </b></label>
                                         <textarea name="description" class="form-control" id="description" cols="10" rows="3" placeholder="Workspace Description."></textarea>
                                     </div>
                                 </div>

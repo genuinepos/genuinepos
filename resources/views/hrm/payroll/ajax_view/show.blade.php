@@ -20,7 +20,7 @@
                         @else
                             <h6>{{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>)</h6>
                             <p>{{json_decode($generalSettings->business, true)['address']}} </p> 
-                            <p><b>Phone :</b>  {{json_decode($generalSettings->business, true)['phone']}} </p> 
+                            <p><b>@lang('menu.phone') :</b>  {{json_decode($generalSettings->business, true)['phone']}} </p> 
                         @endif
                         <h6 class="modal-title" id="exampleModalLabel">Payroll Of
                             <b>{{ $payroll->employee->prefix . ' ' . $payroll->employee->name . ' ' . $payroll->employee->last_name }}</b>
@@ -35,7 +35,7 @@
             <h6 class="text-dark"><b>Title :</b> Employee Salary</h6>
             <h6 class="text-dark"><b>Month :</b> {{ $payroll->month }}/{{ $payroll->year }} </h6>
             <h6 class="text-dark"><b>@lang('menu.reference_no') :</b> {{ $payroll->reference_no }}</h6>
-            <h6 class="text-dark"><b>Created By :</b> {{ $payroll->admin->prefix.' '.$payroll->admin->name.' '.$payroll->admin->last_name }} </h6>
+            <h6 class="text-dark"><b>@lang('menu.created_by') :</b> {{ $payroll->admin->prefix.' '.$payroll->admin->name.' '.$payroll->admin->last_name }} </h6>
         </div>
 
         <div class="total_amount_table_area pt-4">
@@ -185,7 +185,7 @@
 
 <div class="modal-footer">
     <div class="form-group text-end">
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
         <button type="submit" class="c-btn button-success print_payroll">Print</button>
     </div>
 </div>

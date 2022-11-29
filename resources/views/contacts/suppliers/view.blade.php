@@ -149,7 +149,7 @@
                                                 <th>Voucher/P.Invoice</th>
                                                 <th>@lang('menu.debit')</th>
                                                 <th>@lang('menu.credit')</th>
-                                                <th>Running Balance</th>
+                                                <th>@lang('menu.running_balance')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -333,7 +333,7 @@
                                                 <th>Payment Due</th>
                                                 <th>Return Amount</th>
                                                 <th>Return Due</th>
-                                                <th>Created By</th>
+                                                <th>@lang('menu.created_by')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -448,7 +448,7 @@
                                                 <th class="text-start">Order ID</th>
                                                 <th class="text-start">Purchase From</th>
                                                 <th class="text-start">Supplier</th>
-                                                <th class="text-start">Created By</th>
+                                                <th class="text-start">@lang('menu.created_by')</th>
                                                 <th class="text-start">Receiving Status</th>
                                                 <th class="text-end">Ordered Qty</th>
                                                 <th class="text-end">Received Qty</th>
@@ -598,7 +598,7 @@
                                                     <th class="text-start">Voucher No</th>
                                                     <th class="text-start">Reference</th>
                                                     <th class="text-start">Against Invoice</th>
-                                                    {{-- <th>Created By</th> --}}
+                                                    {{-- <th>@lang('menu.created_by')</th> --}}
                                                     <th class="text-start">Payment Status</th>
                                                     <th class="text-start">Payment Type</th>
                                                     <th class="text-start">Account</th>
@@ -676,7 +676,7 @@
                                 <ul class="list-unstyled">
                                     <li class="mt-1">
                                         {{-- <a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a> --}}
-                                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
                                         <button type="submit" id="print_payment" class="c-btn me-0 button-success">Print</button>
                                     </li>
                                 </ul>

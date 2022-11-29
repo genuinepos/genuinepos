@@ -95,9 +95,9 @@
         </div>
 
         <div class="form-group text-end mt-3">
-            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
             <button type="submit" class="c-btn button-success me-0 float-end">Close Register</button>
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
         </div>
     </form>
 </div>

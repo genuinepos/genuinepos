@@ -116,7 +116,7 @@
 
             <div class="modal-footer">
                 <button type="submit" class="c-btn button-success print_btn">Print</button>
-                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
             </div>
             
           </div>
@@ -153,11 +153,11 @@
                                     {{ $saleReturn->branch->zip_code }},
                                     {{ $saleReturn->branch->country }},
                                 </p>
-                                <p class="company_phone">Phone : {{ $saleReturn->branch->phone }}</p>
+                                <p class="company_phone">@lang('menu.phone') : {{ $saleReturn->branch->phone }}</p>
                             @else
                                 <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                                 <p class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-                                <p class="company_address">Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                                <p class="company_address">@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                             @endif
                             <h6 class="bill_name">Sale Return Invoice</h6>
                         </div>

@@ -64,15 +64,15 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><strong>Remarks :</strong></label>
+        <label><strong>@lang('menu.remarks') :</strong></label>
         <input type="text" name="remarks" class="form-control" id="e_remarks" placeholder="Remarks" value="{{ $contra->remarks }}"/>
     </div>
 
     <div class="form-group text-right py-2">
         <button type="button" class="btn loading_button d-hide"><i
-                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
         <button type="submit" class="c-btn me-0 button-success submit_button float-end">Save Changes</button>
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
     </div>
 </form>
 

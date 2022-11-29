@@ -20,7 +20,7 @@
                     <li><strong>Business : </strong>
                         <span>{{ $purchase->supplier->business_name }}</span>
                     </li>
-                    <li><strong>phone : </strong>
+                    <li><strong>@lang('menu.phone') : </strong>
                         <span>{{ $purchase->supplier->phone }}</span>
                     </li>
                 </ul>

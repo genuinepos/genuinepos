@@ -351,7 +351,7 @@
                                 <div class="row mt-1">
                                     <div class="col-md-12">
                                         <button type="button" class="btn loading_button d-hide"><i
-                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                                         <button class="btn btn-sm btn-success submit_button float-end">Save Changes</button>
                                     </div>
                                 </div>

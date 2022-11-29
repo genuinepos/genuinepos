@@ -17,13 +17,13 @@
                      <div class="col-md-4">
                          <ul class="list-unstyled">
                              <li><strong>@lang('menu.supplier') : - </strong></li>
-                             <li><strong>Name : </strong> <span
+                             <li><strong>@lang('menu.name') :</strong> <span
                                      class="supplier_name">{{ $purchase->supplier->name }}</span></li>
                              <li><strong>Address : </strong> <span
                                      class="supplier_address">{{ $purchase->supplier->address }}</span></li>
                              <li><strong>Tax Number : </strong> <span
                                      class="supplier_tax_number">{{ $purchase->supplier->tax_number }}</span></li>
-                             <li><strong>Phone : </strong> <span
+                             <li><strong>@lang('menu.phone') : </strong> <span
                                      class="supplier_phone">{{ $purchase->supplier->phone }}</span></li>
                          </ul>
                      </div>
@@ -38,7 +38,7 @@
                                 @endif
                             </li>
 
-                             <li><strong>Phone : </strong>
+                             <li><strong>@lang('menu.phone') : </strong>
                                 @if ($purchase->branch)
                                     {{ $purchase->branch->phone }}, <br>
                                 @elseif($purchase->warehouse_id)
@@ -78,7 +78,7 @@
                                 @endif
                              </li>
                              <li>
-                                 <strong>Created By : </strong>
+                                 <strong>@lang('menu.created_by') : </strong>
                                 {{ $purchase->admin ? $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name : 'N/A' }}
                              </li>
                          </ul>
@@ -271,7 +271,7 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
                             <a href="{{ route('purchases.edit', [$purchase->id, 'purchased']) }}" class="btn btn-sm btn-secondary">Edit</a>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                             <button type="submit" class="footer_btn btn btn-sm btn-success print_btn">Print</button>
                         </div>
                     </div>
@@ -339,7 +339,7 @@
                             <li><strong>Namne : </strong>{{ $purchase->supplier->name }}</li>
                             <li><strong>Address : </strong>{{ $purchase->supplier->address }}</li>
                             <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
-                            <li><strong>Phone : </strong> {{ $purchase->supplier->phone }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4">
@@ -364,7 +364,7 @@
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
-                            <li><strong>Phone : </strong>
+                            <li><strong>@lang('menu.phone') : </strong>
                                 @if ($purchase->branch)
                                     {{ $purchase->branch->phone }}
                                 @elseif($purchase->warehouse_id)
@@ -402,7 +402,7 @@
                                    Due
                                @endif
                             </li>
-                            <li><strong>Created By : </strong>
+                            <li><strong>@lang('menu.created_by') : </strong>
                                 {{ $purchase->admin ? $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name : '' }}
                             </li>
                         </ul>
@@ -414,7 +414,7 @@
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">Description</th>
+                            <th scope="col">@lang('menu.description')</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) </th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>

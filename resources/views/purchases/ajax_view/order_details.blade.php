@@ -1,7 +1,7 @@
-@php 
+@php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
-@endphp 
+@endphp
  <!-- Details Modal -->
  <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-xl">
@@ -17,13 +17,13 @@
                      <div class="col-md-4">
                          <ul class="list-unstyled">
                              <li><strong>@lang('menu.supplier') : - </strong></li>
-                             <li><strong>Name : </strong> {{ $purchase->supplier->name }}</li>
+                             <li><strong>@lang('menu.name') :</strong> {{ $purchase->supplier->name }}</li>
                              <li><strong>Address : </strong> {{ $purchase->supplier->address }}</li>
                              <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
-                             <li><strong>Phone : </strong> {{ $purchase->supplier->phone }}</li>
+                             <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                          </ul>
                      </div>
-                     
+
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
                              <li><strong>Purchase From : </strong></li>
@@ -35,8 +35,8 @@
                                     Office</b>)
                                 @endif
                             </li>
-                     
-                             <li><strong>Phone : </strong>
+
+                             <li><strong>@lang('menu.phone') : </strong>
                                 @if ($purchase->branch)
 
                                     {{ $purchase->branch->phone }}, <br>
@@ -57,7 +57,7 @@
                             <li><strong>PO Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>Delivery : </strong> {{$purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) : '' }}</li>
                             <li><strong>Purchase Status : </strong> <span class="badge bg-primary">Ordered</span></li>
-                            <li><strong>Receiving Status : </strong> 
+                            <li><strong>Receiving Status : </strong>
                                 @if ($purchase->po_receiving_status == 'Pending')
 
                                     <span class="badge bg-danger">Pending</span>
@@ -65,7 +65,7 @@
 
                                     <span class="badge bg-success">Completed</span>
                                 @else
-                                
+
                                     <span class="badge bg-primary">Partial</span>
                                 @endif
                             </li>
@@ -75,14 +75,14 @@
                                 @endphp
                                 @if ($purchase->due <= 0)
                                      <span class="badge bg-success">Paid</span>
-                                @elseif($purchase->due > 0 && $purchase->due < $payable) 
+                                @elseif($purchase->due > 0 && $purchase->due < $payable)
                                     <span class="badge bg-primary text-white">Partial</span>
                                 @elseif($payable == $purchase->due)
                                     <span class="badge bg-danger text-white">Due</span>
                                 @endif
                              </li>
                              <li>
-                                 <strong>Created By : </strong>
+                                 <strong>@lang('menu.created_by') : </strong>
                                 {{ $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name }}
                              </li>
                          </ul>
@@ -112,9 +112,9 @@
                                      @foreach ($purchase->purchase_order_products as $product)
                                         <tr>
                                             @php
-                                                $variant = $product->variant ? '('.$product->variant->variant_name.')' : ''; 
+                                                $variant = $product->variant ? '('.$product->variant->variant_name.')' : '';
                                             @endphp
-                                            
+
                                             <td class="text-start">{{ $product->product->name.' '.$variant }}</td>
                                             <td class="text-start">{{ $product->order_quantity }}</td>
                                             <td class="text-start">
@@ -129,10 +129,10 @@
                                             <td class="text-start text-danger">{{ $product->pending_quantity }}</td>
                                             <td class="text-start text-success">{{ $product->received_quantity }}</td>
                                             @if (count($product->receives) > 0)
-                                                
+
                                                 <tr>
                                                     <td colspan="3" class="text-center"><strong>Receive Details ➡</strong></td>
-                                                    
+
                                                     <td colspan="8">
                                                         <table class="table modal-table table-sm table-striped">
                                                             <thead>
@@ -199,8 +199,8 @@
                                                         @if ($payment->is_advanced == 1)
 
                                                             <b>@lang('menu.po_advance_payment')</b>
-                                                        @else 
-                                                        
+                                                        @else
+
                                                             {{ $payment->payment_type == 1 ? 'Payment' : 'Received Return Amt.' }}
                                                         @endif
                                                     </td>
@@ -220,17 +220,17 @@
                                                            @endif
 
                                                            <a href="{{ route('purchases.payment.details', $payment->id) }}" id="payment_details" class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
-                                                       @else   
+                                                       @else
                                                            ......
                                                        @endif
                                                    </td>
                                                </tr>
                                            @endforeach
-                                       @else 
-                                        
+                                       @else
+
                                            <tr>
                                                <td colspan="7" class="text-center">No Data Found</td>
-                                           </tr>  
+                                           </tr>
                                        @endif
                                     </tbody>
                                 </table>
@@ -244,7 +244,7 @@
                                 <tr>
                                     <th class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }} 
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                                    </td>
                                 </tr>
 
@@ -257,18 +257,18 @@
 
                                 <tr>
                                     <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                                    <td class="text-end"> 
+                                    <td class="text-end">
                                         {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
                                    </td>
                                 </tr>
 
                                 <tr>
                                     <th class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                                    <td class="text-end"><b></b> 
+                                    <td class="text-end"><b></b>
                                            {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                    </td>
                                 </tr>
-   
+
                                 <tr>
                                     <th class="text-end">Grand Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
@@ -292,7 +292,7 @@
                             </table>
                         </div>
                     </div>
-                 </div> 
+                 </div>
                  <hr>
                  <div class="row">
                      <div class="col-md-6">
@@ -315,7 +315,7 @@
                     <div class="col-md-12">
                         <a href="{{ route('purchases.po.receive.process', $purchase->id) }}" class="btn btn-sm btn-secondary"> <i class="fas fa-check-double"></i> PO To Receive</a>
                         <a href="{{ route('purchases.order.supplier.copy.print', $purchase->id) }}" id="print_supplier_copy" class="btn btn-sm btn-info text-white"> <i class="fas fa-print"></i> Print Supplier Copy</a>
-                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                         <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
                     </div>
                 </div>
@@ -353,15 +353,15 @@
                             @if ($purchase->branch->logo != 'default.png')
 
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase->branch->logo) }}">
-                            @else 
+                            @else
 
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
                             @endif
-                        @else 
+                        @else
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
 
                                 <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                            @else 
+                            @else
 
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             @endif
@@ -373,7 +373,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
-                        
+
                     </div>
                 </div>
             </div>
@@ -383,17 +383,17 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.supplier') : - </strong></li>
-                            <li><strong>Name : </strong>{{ $purchase->supplier->name }}</li>
+                            <li><strong>@lang('menu.name') :</strong>{{ $purchase->supplier->name }}</li>
                             <li><strong>Address : </strong>{{ $purchase->supplier->address }}</li>
                             <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
-                            <li><strong>Phone : </strong> {{ $purchase->supplier->phone }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>Purchase From : </strong></li>
                             <li>
-                                <strong>Business Location : </strong> 
+                                <strong>Business Location : </strong>
                                 @if ($purchase->branch)
 
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
@@ -416,7 +416,7 @@
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
                                 @endif
                             </li>
-                            <li><strong>Phone : </strong>
+                            <li><strong>@lang('menu.phone') : </strong>
                                 @if ($purchase->branch)
 
                                     {{ $purchase->branch->phone }}
@@ -435,7 +435,7 @@
                             <li><strong>PO.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>Purchase Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>Delivery Date : </strong>{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}</li>
-                            
+
                             <li><strong>Purchase Status : </strong>Ordered</li>
                             <li><strong>Receiving Status : </strong>{{ $purchase->po_receiving_status }}</li>
                             <li><strong>Payment Status : </strong>
@@ -445,15 +445,15 @@
                                @if ($purchase->due <= 0)
 
                                    Paid
-                               @elseif($purchase->due > 0 && $purchase->due < $payable) 
+                               @elseif($purchase->due > 0 && $purchase->due < $payable)
 
                                    Partial
                                @elseif($payable == $purchase->due)
-                               
+
                                    Due
                                @endif
                             </li>
-                            <li><strong>Created By : </strong>
+                            <li><strong>@lang('menu.created_by') : </strong>
                                 {{ $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name }}
                             </li>
                         </ul>
@@ -479,9 +479,9 @@
                         @foreach ($purchase->purchase_order_products as $product)
                             <tr>
                                 @php
-                                    $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
+                                    $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : '';
                                 @endphp
-                                
+
                                 <td>
                                     {{ Str::limit($product->product->name, 25).' '.$variant }}
                                     <small>{!! $product->description ? '<br/>'.$product->description : '' !!}</small>
@@ -500,7 +500,7 @@
                                 @if (count($product->receives) > 0)
                                     <tr>
                                         <td colspan="3" class="text-center"><strong>Receive Details ➡</strong></td>
-                                        
+
                                         <td colspan="8">
                                             <table class="table modal-table table-sm table-bordered">
                                                 <thead>
@@ -548,12 +548,12 @@
                         <thead>
                             <tr>
                                 <th colspan="11" class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                                <td colspan="2" class="text-end"> 
+                                <td colspan="2" class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                                 </td>
                             </tr>
                             <tr>
-                                <th colspan="11" class="text-end">Order Discount : 
+                                <th colspan="11" class="text-end">Order Discount :
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                 </th>
                                 <td colspan="2" class="text-end">
@@ -566,14 +566,14 @@
                                     {{ App\Utils\Converter::format_in_bdt($purchase->purchase_tax_amount).' ('.$purchase->purchase_tax_percent.'%)' }}
                                 </td>
                             </tr>
-    
+
                             <tr>
                                 <th colspan="11" class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                 </td>
                             </tr>
-    
+
                             <tr>
                                 <th colspan="11" class="text-end">Grand Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <td colspan="2" class="text-end">

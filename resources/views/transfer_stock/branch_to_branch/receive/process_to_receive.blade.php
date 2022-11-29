@@ -210,7 +210,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide">
-                            <i class="fas fa-spinner text-primary"></i><b> Loading...</b>
+                            <i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b>
                         </button>
                         <button type="submit" id="save" class="btn btn-sm btn-primary float-end">Save (Ctrl + Enter)</button>
                     </div>

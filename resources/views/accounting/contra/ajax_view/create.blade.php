@@ -63,16 +63,16 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><strong>Remarks :</strong></label>
-        <input type="text" name="remarks" class="form-control" id="remarks" placeholder="Remarks"/>
+        <label><strong>@lang('menu.remarks') :</strong></label>
+        <input type="text" name="remarks" class="form-control" id="remarks" placeholder="@lang('menu.remarks')"/>
     </div>
 
     <div class="form-group text-right py-2">
         <button type="button" class="btn loading_button d-hide">
-            <i class="fas fa-spinner text-primary"></i><b> Loading...</b>
+            <i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b>
         </button>
         <button type="submit" class="c-btn me-0 button-success submit_button float-end">Save</button>
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
     </div>
 </form>
 

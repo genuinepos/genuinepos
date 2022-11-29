@@ -24,10 +24,10 @@
         <p>{{ json_decode($generalSettings->business, true)['address'] }}</p>
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
-        @endif 
+            <p><b>@lang('menu.date') :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p>
+        @endif
 
-        <p class="mt-2"><b>Supplier Payments </b></p> 
+        <p class="mt-2"><b>Supplier Payments </b></p>
     </div>
 </div>
 
@@ -36,8 +36,8 @@
         <div class="col-8">
             <ul class="list-unstyled">
                 <li><strong>@lang('menu.supplier') : </strong> {{ $supplier->name }} (ID: {{ $supplier->contact_id }})</li>
-                <li><strong>Phone : </strong> {{ $supplier->phone }}</li>
-                <li><strong>Address : </strong> {{ $supplier->address  }}</li> 
+                <li><strong>@lang('menu.phone') : </strong> {{ $supplier->phone }}</li>
+                <li><strong>Address : </strong> {{ $supplier->address  }}</li>
             </ul>
         </div>
     </div>
@@ -52,7 +52,7 @@
                     <th class="text-start">Voucher No</th>
                     <th class="text-start">Reference</th>
                     <th class="text-start">Against Invoice</th>
-                    {{-- <th>Created By</th> --}}
+                    {{-- <th>@lang('menu.created_by')</th> --}}
                     <th class="text-start">Payment Status</th>
                     <th class="text-start">Payment Type</th>
                     <th class="text-start">Account</th>
@@ -60,7 +60,7 @@
                     <th class="text-end">Paid Amount</th>
                 </tr>
             </thead>
-        
+
             <tbody>
                 @foreach ($payments as $row)
                     <tr>
@@ -69,7 +69,7 @@
                                 $dateFormat = json_decode($generalSettings->business, true)['date_format'];
                                 $__date_format = str_replace('-', '/', $dateFormat);
                             @endphp
-                            
+
                             {{ date($__date_format, strtotime($row->report_date)) }}
                         </td>
 
@@ -80,24 +80,24 @@
                         <td class="text-start">{{ $row->reference }}</td>
 
                         <td class="text-start">
-                            @if ($row->purchase_inv || $row->return_inv) 
+                            @if ($row->purchase_inv || $row->return_inv)
 
-                                @if ($row->purchase_inv) 
-        
+                                @if ($row->purchase_inv)
+
                                     {{ 'Purchase : ' . $row->purchase_inv}}
-                                @else 
-        
+                                @else
+
                                     {{ 'Purchase Return : ' . $row->return_inv }}
                                 @endif
                             @endif
                         </td>
 
                         <td class="text-start">
-                            @if ($row->voucher_type == 3 || $row->voucher_type == 5) 
+                            @if ($row->voucher_type == 3 || $row->voucher_type == 5)
 
                                 {{ 'Payment' }}
-                            @else 
-        
+                            @else
+
                                 {{ 'Return Payment' }}
                             @endif
                         </td>
@@ -107,10 +107,10 @@
                         </td>
 
                         <td class="text-start">
-                            @if ($row->sp_account) 
+                            @if ($row->sp_account)
 
                                 {{ $row->sp_account . '(A/C:' . $row->sp_account_number . ')' }}
-                            @else 
+                            @else
 
                                 {{ $row->pp_account . '(A/C:' . $row->pp_account_number . ')' }}
                             @endif
@@ -133,7 +133,7 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small> 
+            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
         </div>
     </div>
 @endif

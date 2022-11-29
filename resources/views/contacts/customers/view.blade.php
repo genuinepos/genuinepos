@@ -161,10 +161,10 @@
                                                                 <th>@lang('menu.date')</th>
                                                                 <th>@lang('menu.particulars')</th>
                                                                 <th>Business Location</th>
-                                                                <th>Voucher/Invoice</th>
+                                                                <th>@lang('menu.voucher')/@lang('menu.invoice')</th>
                                                                 <th>@lang('menu.debit')</th>
                                                                 <th>@lang('menu.credit')</th>
-                                                                <th>Running Balance</th>
+                                                                <th>@lang('menu.running_balance')</th>
                                                             </tr>
                                                         </tr>
                                                     </thead>
@@ -479,7 +479,7 @@
                                                                 <th class="text-start">Voucher No</th>
                                                                 <th class="text-start">Reference</th>
                                                                 <th class="text-start">Against Invoice</th>
-                                                                {{-- <th>Created By</th> --}}
+                                                                {{-- <th>@lang('menu.created_by')</th> --}}
                                                                 <th class="text-start">Payment Status</th>
                                                                 <th class="text-start">Payment Type</th>
                                                                 <th class="text-start">Account</th>

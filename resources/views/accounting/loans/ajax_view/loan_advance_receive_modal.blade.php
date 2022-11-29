@@ -21,7 +21,7 @@
                             <ul class="list-unstyled">
                                 <li><strong>Company : </strong><span class="card_text">{{ $company->name }}</span>
                                 </li>
-                                <li><strong>Phone : </strong><span class="card_text"></span></li>
+                                <li><strong>@lang('menu.phone') : </strong><span class="card_text"></span></li>
                                 <li><strong>Address : </strong><span class="card_text"></span></li>
                             </ul>
                         </div>
@@ -136,9 +136,9 @@
             
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button_p loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                        <button type="button" class="btn loading_button_p loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                         <button name="action" value="save" type="submit" class="c-btn button-success float-end submit_button" id="add_payment">Save</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
                 </div>
             </form>

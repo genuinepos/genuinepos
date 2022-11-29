@@ -17,7 +17,7 @@
                             {{ $customer->name }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>Phone : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.phone') : </strong>
                         <span class="card_text customer_name">
                             {{ $customer->phone }}
                         </span>
@@ -129,7 +129,7 @@
 
 <div class="form-group row mt-3">
     <div class="col-md-12 d-flex justify-content-end gap-2">
-        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
         <a href="{{ route('money.receipt.voucher.create', [$customer->id]) }}" id="generate_receipt" class="btn btn-sm btn-success">Generate New</a>
     </div>
 </div>

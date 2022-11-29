@@ -192,7 +192,7 @@
                    <div class="col-md-12">
                        <a href="{{ route('manufacturing.productions.edit', $production->id) }}" class="c-btn btn_secondary py-1 text-white">Edit</a>
                        <button type="submit" class="c-btn button-success print_btn">Print</button>
-                       <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                       <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
                    </div>
                </div>
             </div>

@@ -53,7 +53,7 @@
             <div class="col-6">
                 <ul class="list-unstyled">
                     <li><strong>Company/People : </strong> {{ $company->name }}</li>
-                    <li><strong>Phone : </strong> </li>
+                    <li><strong>@lang('menu.phone') : </strong> </li>
                     <li><strong>Address : </strong> </li> 
                 </ul>
             </div>

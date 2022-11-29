@@ -378,7 +378,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>Account No :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="bank_ac_no" class="form-control" placeholder="Account number" autocomplete="off">
+                                            <input type="text" name="bank_ac_no" class="form-control" placeholder="@lang('menu.account_number')" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -387,9 +387,9 @@
                             <div class="row mt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Bank Name :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.bank_name') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="bank_name" class="form-control" placeholder="Bank name" autocomplete="off">
+                                            <input type="text" name="bank_name" class="form-control" placeholder="@lang('menu.bank_name')" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>

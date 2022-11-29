@@ -1,4 +1,4 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
  <!--Money Receipt design-->
  <div class="print_area">
     <div class="print_content">
@@ -9,13 +9,13 @@
                         @if ($receipt->logo)
                             @if ($receipt->logo != 'default.png')
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->logo) }}">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $receipt->branch_name }}</span>
                             @endif
-                        @else 
+                        @else
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                 <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             @endif
                         @endif
@@ -31,12 +31,12 @@
                                 <p class="company_address">
                                     {{ $receipt->city ? $receipt->city : '' }},{{ $receipt->state ? $receipt->state : '' }},{{ $receipt->zip_code ? $receipt->zip_code : '' }},{{ $receipt->country ? $receipt->country : '' }}.
                                 </p>
-                                <p><strong>Phone :</strong> {{ $receipt->phone }}</p>
+                                <p><strong>@lang('menu.phone') :</strong> {{ $receipt->phone }}</p>
                                 <p><strong>Email :</strong> {{ $receipt->email }}</p>
-                            @else 
+                            @else
                                 <h6 class="company_name"><b>{{ json_decode($generalSettings->business, true)['shop_name'] }}</b></h6>
                                 <p class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-                                <p>Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                                <p>@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                                 <p>Email : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                             @endif
                         </div>
@@ -93,10 +93,10 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p><b>In Words</b> : 
+                        <p><b>In Words</b> :
                             @if ($receipt->amount > 0)
                                 <span style="text-transform: uppercase;" id="inWord2"></span>.
-                            @endif 
+                            @endif
                         </p>
                     </div>
                     <div class="col-md-12">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </div><br>
-            
+
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
@@ -163,7 +163,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="print_content">
         @if ($receipt->is_header_less == 0)
             <div class="heading_area">
@@ -172,13 +172,13 @@
                         @if ($receipt->logo)
                             @if ($receipt->logo != 'default.png')
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->logo) }}">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $receipt->branch_name }}</span>
                             @endif
-                        @else 
+                        @else
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                 <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             @endif
                         @endif
@@ -194,12 +194,12 @@
                                 <p class="company_address">
                                     {{ $receipt->city ? $receipt->city : '' }},{{ $receipt->state ? $receipt->state : '' }},{{ $receipt->zip_code ? $receipt->zip_code : '' }},{{ $receipt->country ? $receipt->country : '' }}.
                                 </p>
-                                <p><strong>Phone :</strong> {{ $receipt->phone }}</p>
+                                <p><strong>@lang('menu.phone') :</strong> {{ $receipt->phone }}</p>
                                 <p><strong>Email :</strong> {{ $receipt->email }}</p>
-                            @else 
+                            @else
                                 <h6 class="company_name"><b>{{ json_decode($generalSettings->business, true)['shop_name'] }}</b></h6>
                                 <p class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-                                <p>Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                                <p>@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                                 <p>Email : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                             @endif
                         </div>
@@ -234,7 +234,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p> <b> Received With Thanks From </b> : 
+                        <p> <b> Received With Thanks From </b> :
                             {{ $receipt->is_customer_name ? $receipt->cus_name : ''}}
                         </p>
                     </div>
@@ -258,7 +258,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p><b>In Words</b> : 
+                        <p><b>In Words</b> :
                             @if ($receipt->amount > 0)
                                 <span style="text-transform: uppercase;" id="inWord1"></span>.
                             @endif
@@ -268,8 +268,8 @@
                         <h6 class="borderTop d-block"></h6>
                     </div>
                 </div>
-            </div><br> 
-            
+            </div><br>
+
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
@@ -333,7 +333,7 @@
 <script>
     var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
     var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
-  
+
     function inWords (num) {
           if ((num = num.toString()).length > 9) return 'overflow';
           n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);

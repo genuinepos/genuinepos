@@ -83,7 +83,7 @@
                                     <th class="text-start">A/C Type</th>
                                     <th class="text-start">A/C Name</th>
                                     <th class="text-start">A/C Number</th>
-                                    <th class="text-start">Bank </th>
+                                    <th class="text-start">@lang('menu.bank') </th>
                                     <th class="text-start">Business Location </th>
                                     <th class="text-start">@lang('menu.opening_balance')</th>
                                     <th class="text-start">@lang('menu.balance')</th>
@@ -116,7 +116,7 @@
                     <!--begin::Form-->
                     <form id="add_account_form" action="{{ route('accounting.accounts.store') }}">
                         <div class="form-group">
-                            <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                            <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control add_input" data-name="Name" id="name"
                                 placeholder="@lang('menu.account_name')" autocomplete="off" autofocus/>
                             <span class="error error_name"></span>
@@ -126,7 +126,7 @@
                             <label><strong>@lang('menu.account_types') : <span class="text-danger">*</span></strong></label>
                             <select name="account_type" class="form-control add_input" data-name="Account Type"
                                 id="account_type">
-                                <option value="">Select Account type</option>
+                                <option value="">@lang('menu.select_account_type')</option>
                                 @foreach (App\Utils\Util::allAccountTypes(0) as $key => $accountType)
                                     <option value="{{ $key }}">{{ $accountType }}</option>
                                 @endforeach
@@ -137,9 +137,9 @@
                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                             <div class="form-group row mt-1 bank_account_field d-hide">
                                 <div class="col-md-12">
-                                    <label><strong>Bank Name :</strong> <span class="text-danger">*</span> </label>
+                                    <label><strong>@lang('menu.bank_name') :</strong> <span class="text-danger">*</span> </label>
                                     <select name="bank_id" class="form-control add_input" data-name="Bank name" id="bank_id">
-                                        <option value="">Select Bank</option>
+                                        <option value="">@lang('menu.select_bank')</option>
                                         @foreach ($banks as $bank)
                                             <option value="{{ $bank->id }}">{{ $bank->name . ' (' . $bank->branch_name . ')' }}</option>
                                         @endforeach
@@ -148,13 +148,13 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label><strong>Account Number : </strong><span class="text-danger">*</span></label>
-                                    <input type="text" name="account_number" class="form-control add_input" data-name="Type name" id="account_number" placeholder="Account number" />
+                                    <label><strong>@lang('menu.account_number') : </strong><span class="text-danger">*</span></label>
+                                    <input type="text" name="account_number" class="form-control add_input" data-name="Type name" id="account_number" placeholder="@lang('menu.account_number')" />
                                     <span class="error error_account_number"></span>
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label><strong>Access Business Location :</strong> <span class="text-danger">*</span></label>
+                                    <label><strong>@lang('menu.access_business_location') :</strong> <span class="text-danger">*</span></label>
                                     <select name="business_location[]" id="business_location" class="form-control select2" multiple="multiple">
                                         <option {{ $addons->branches == 0 ? 'SELECTED' : '' }} value="NULL">
                                             {{ json_decode($generalSettings->business, true)['shop_name'] }}(HO)
@@ -175,14 +175,14 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><strong>Remarks :</strong></label>
-                            <input type="text" name="remark" class="form-control" id="remarks" placeholder="Remarks"/>
+                            <label><strong>@lang('menu.remarks') :</strong></label>
+                            <input type="text" name="remark" class="form-control" id="remarks" placeholder="@lang('menu.remarks')"/>
                         </div>
 
                         <div class="form-group d-flex justify-content-end py-2">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                 <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                             </div>
                         </div>

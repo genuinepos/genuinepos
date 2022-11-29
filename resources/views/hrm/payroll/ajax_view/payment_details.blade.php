@@ -10,7 +10,7 @@
             @else
                 <h6>{{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>)</h6>
                 <p>{{json_decode($generalSettings->business, true)['address']}} </p> 
-                <p><b>Phone :</b>  {{json_decode($generalSettings->business, true)['phone']}} </p> 
+                <p><b>@lang('menu.phone') :</b>  {{json_decode($generalSettings->business, true)['phone']}} </p> 
             @endif
             <h6 class="modal-title" id="exampleModalLabel">Payroll Of
                 <b>{{ $payment->payroll->employee->prefix . ' ' . $payment->payroll->employee->name . ' ' . $payment->payroll->employee->last_name }}</b>

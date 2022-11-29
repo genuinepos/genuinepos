@@ -385,7 +385,7 @@ return [
   'pdf' => 'Save as PDF',
   'excel' => 'Save as Excel',
   'must_be_unique' => 'Must be unique',
-  'loading' => 'Loading...',
+  'loading' => 'Loading',
   'save' => 'Save',
   'close' => 'Close',
   'date' => 'Date',
@@ -1960,4 +1960,5 @@ return [
   'po_advance_payment' => 'PO Advance Payment',
   'payroll_payment' => 'Payroll Payment',
   'person' => 'Person',
+  'particulars' => 'Particulars',
 ];

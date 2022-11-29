@@ -2,8 +2,8 @@
     <thead>
         <tr>
             <th class="text-start">@lang('menu.date')</th>
-            <th class="text-start">Description</th>
-            <th class="text-start">Created By</th>
+            <th class="text-start">@lang('menu.description')</th>
+            <th class="text-start">@lang('menu.created_by')</th>
             <th class="text-start">@lang('menu.debit')</th>
             <th class="text-start">@lang('menu.credit')</th>
             <th class="text-start">@lang('menu.balance')</th>

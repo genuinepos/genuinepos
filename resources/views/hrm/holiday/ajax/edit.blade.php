@@ -36,9 +36,9 @@
     </div>
 
     <div class="form-group mt-3">
-        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
         <button type="submit" class="c-btn me-0 button-success float-end">Save Change</button>
         <button type="reset" data-bs-dismiss="modal"
-            class="c-btn btn_orange float-end">Close</button>
+            class="c-btn btn_orange float-end">@lang('menu.close')</button>
     </div>
 </form>

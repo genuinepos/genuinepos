@@ -122,7 +122,7 @@
                                                 <th>Referance No</th>
                                                 <th>Total Amount</th>
                                                 <th>Payment Status</th>
-                                                <th>Created By</th>
+                                                <th>@lang('menu.created_by')</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
@@ -191,8 +191,8 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success">Save</button>
                                 </div>
                             </div>
@@ -248,7 +248,7 @@
 
                 <div class="modal-footer">
                     <div class="form-group text-end">
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
                         <button type="submit" class="c-btn button-success" id="payment_details_print">Print</button>
                     </div>
                 </div>

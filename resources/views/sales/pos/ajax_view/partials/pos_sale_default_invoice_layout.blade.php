@@ -262,7 +262,7 @@
                             @endif
 
                             @if ($defaultLayout->bank_name)
-                                <p>Bank : {{ $defaultLayout->bank_name }}</p>
+                                <p>@lang('menu.bank') : {{ $defaultLayout->bank_name }}</p>
                             @endif
 
                             @if ($defaultLayout->bank_branch)
@@ -500,7 +500,7 @@
                     <table class="w-100">
                         <thead class="t-head">
                             <tr>
-                                <th class="text-startx"> Description</th>
+                                <th class="text-startx">@lang('menu.description')</th>
                                 <th class="text-center">Qty</th>
                                 <th class="text-center">Price</th>
                                 <th class="text-endx">@lang('menu.total')</th>

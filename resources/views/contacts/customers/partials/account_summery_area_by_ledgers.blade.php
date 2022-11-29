@@ -40,7 +40,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.balance_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end total_sale_due" id="ledger_total_sale_due">0.00</td>
                 </tr>
 

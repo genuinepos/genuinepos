@@ -24,6 +24,6 @@
 </div>
 
 <div class="row">
-    <p><b>Description :</b> </p>
+    <p><b>@lang('menu.description') :</b> </p>
     <p>{{ $todo->description }}</p>
 </div>

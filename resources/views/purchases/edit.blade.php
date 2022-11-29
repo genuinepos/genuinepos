@@ -311,7 +311,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i
-                                    class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button id="save" class="btn btn-sm btn-success submit_button float-end">Save Changes</button>
                             </div>
                         </div>
@@ -350,7 +350,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <label><strong>Description :</strong></label>
+                            <label><strong>@lang('menu.description') :</strong></label>
                             <textarea name="product_description" id="product_description" class="form-control" cols="30" rows="10" placeholder="Description"></textarea>
                         </div>
                     </div>

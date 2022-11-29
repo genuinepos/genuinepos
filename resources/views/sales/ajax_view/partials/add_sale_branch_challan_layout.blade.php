@@ -51,7 +51,7 @@
                             </p>
 
                             @if ($sale->branch->add_sale_invoice_layout->branch_phone)
-                                <p><b>Phone :</b>  {{ $sale->branch->phone }}</p>
+                                <p><b>@lang('menu.phone') :</b>  {{ $sale->branch->phone }}</p>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->branch_email)
@@ -86,7 +86,7 @@
                         @endif
 
                         @if ($sale->branch->add_sale_invoice_layout->customer_phone)
-                            <li><strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                             </li>
                         @endif
                     </ul>

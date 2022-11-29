@@ -10,7 +10,7 @@
                 <form id="add_sub_category_form" action="{{ route('product.subcategories.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group mt-1">
-                        <label><b>Name :</b> <span class="text-danger">*</span></label>
+                        <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control " id="name"
                             placeholder="Sub category name" />
                         <span class="error error_sub_name"></span>
@@ -29,7 +29,7 @@
                     </div>
 
                     <div class="form-group mt-1">
-                        <label><b>Description :</b> </label>
+                        <label><b>@lang('menu.description') :</b> </label>
                         <textarea name="description" class="form-control" cols="30" rows="3" placeholder="Description"></textarea>
                     </div>
 
@@ -43,7 +43,7 @@
                     <div class="form-group mt-2">
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="reset" class="btn btn-sm btn-danger">Reset</button>
                                 <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                             </div>
@@ -84,7 +84,7 @@
                                 <th>Photo</th>
                                 <th>SubCategory</th>
                                 <th>Parent Category</th>
-                                <th>Description</th>
+                                <th>@lang('menu.description')</th>
                                 <th>@lang('menu.action')</th>
                             </tr>
                         </thead>

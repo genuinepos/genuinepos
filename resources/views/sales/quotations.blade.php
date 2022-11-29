@@ -108,7 +108,7 @@
                                                 <th>Business Location</th>
                                                 <th>Customer</th>
                                                 <th>Total Amount</th>
-                                                <th>Created By</th>
+                                                <th>@lang('menu.created_by')</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>

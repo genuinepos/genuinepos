@@ -140,7 +140,7 @@
                                                 <th>Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Return Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Return Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Created By</th>
+                                                <th>@lang('menu.created_by')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -230,7 +230,7 @@
                             </div>
 
                             <div class="col-md-6 d-flex gap-2 justify-content-end">
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                 <button type="submit" id="print_payment" class="btn btn-sm btn-success">Print</button>
                             </div>
                         </div>

@@ -125,7 +125,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Phone :</strong></label>
+                                            <label><strong>@lang('menu.phone') :</strong></label>
                                             <input type="text" name="phone" class="form-control bs_input" placeholder="Business phone number"
                                                 value="{{ json_decode($generalSettings->business, true)['phone'] }}">
                                         </div>
@@ -262,7 +262,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                                 <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
                                             </div>
                                         </div>
@@ -318,7 +318,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                                 <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
                                             </div>
                                         </div>
@@ -354,7 +354,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                                 <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
                                             </div>
                                         </div>
@@ -457,7 +457,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                                 <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
                                             </div>
                                         </div>
@@ -499,7 +499,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                                 <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
                                             </div>
                                         </div>
@@ -581,7 +581,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                                 <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
                                             </div>
                                         </div>
@@ -739,7 +739,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                                 <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
                                             </div>
                                         </div>
@@ -794,7 +794,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                                 <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
                                             </div>
                                         </div>

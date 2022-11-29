@@ -276,7 +276,7 @@
                                                 <th>Branch</th>
                                                 <th>Customer</th>
                                                 <th>Shipment Status</th>
-                                                <th>Created By</th>
+                                                <th>@lang('menu.created_by')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

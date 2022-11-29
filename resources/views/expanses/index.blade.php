@@ -126,7 +126,7 @@
                                     <th class="text-start">@lang('menu.date')</th>
                                     <th class="text-start">Reference ID</th>
                                     <th class="text-start">@lang('menu.b_location')</th>
-                                    <th class="text-start">Description</th>
+                                    <th class="text-start">@lang('menu.description')</th>
                                     <th class="text-start">Expanse For</th>
                                     <th class="text-start">Payment Status</th>
                                     <th class="text-start">Tax</th>
@@ -206,7 +206,7 @@
                         <div class="col-md-6 text-end">
                             <ul class="list-unstyled">
                                 <li class="mt-1">
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
                                     <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
                                 </li>
                             </ul>

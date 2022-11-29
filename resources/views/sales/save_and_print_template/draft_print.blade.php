@@ -46,7 +46,7 @@
                                 </h6>
 
                                 @if ($sale->branch->add_sale_invoice_layout->branch_phone)
-                                    <h6>Phone : {{ $sale->branch->phone }}</h6>
+                                    <h6>@lang('menu.phone') : {{ $sale->branch->phone }}</h6>
                                 @endif
 
                                 @if ($sale->branch->add_sale_invoice_layout->branch_email)
@@ -88,7 +88,7 @@
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->customer_phone)
-                                <li><strong>Phone : </strong> 
+                                <li><strong>@lang('menu.phone') : </strong> 
                                     {{ $sale->customer ? $sale->customer->phone : '' }}</li>
                             @endif
                         </ul>
@@ -295,7 +295,7 @@
                                     </h6>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <h6>Phone : {{ $sale->branch->phone }}</h6>
+                                        <h6>@lang('menu.phone') : {{ $sale->branch->phone }}</h6>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
@@ -311,7 +311,7 @@
                                     </h6>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <h6>Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</h6>
+                                        <h6>@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</h6>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
@@ -347,7 +347,7 @@
                             @endif
 
                             @if ($defaultLayout->customer_phone)
-                                <li><strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                                <li><strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                                 </li>
                             @endif
                         </ul>

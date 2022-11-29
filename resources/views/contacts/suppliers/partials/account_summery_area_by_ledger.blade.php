@@ -32,7 +32,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.balance_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end text-danger total_purchase_due" id="ledger_total_purchase_due"></td>
                 </tr>
 

@@ -48,7 +48,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Description:</th>
+                            <th class="text-start">@lang('menu.description'):</th>
                             <th class="text-end">Amount</th>
                         </tr>
 

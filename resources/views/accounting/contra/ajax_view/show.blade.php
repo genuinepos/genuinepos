@@ -85,7 +85,7 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Remarks :</th>
+                            <th width="50%" class="text-start">@lang('menu.remarks') :</th>
                             <td width="50%" class="text-start">
                                 {{ $contra->remarks }}
                             </td>

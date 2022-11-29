@@ -132,7 +132,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                 <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
             </div>
         </div>

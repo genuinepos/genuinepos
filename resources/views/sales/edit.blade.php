@@ -509,7 +509,7 @@
                                         <div class="row justify-content-center">
                                             <div class="col-12 d-flex justify-content-end">
                                                 <div class="btn-loading">
-                                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
+                                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
                                                     <button type="submit" id="save" class="btn btn-sm btn-success submit_button">Save Change </button>
                                                 </div>
                                             </div>

@@ -53,7 +53,7 @@
                 <tr>
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.reference_no')</th>
-                    <th class="text-start">Description</th>
+                    <th class="text-start">@lang('menu.description')</th>
                     <th class="text-start">@lang('menu.b_location')</th>
                     <th class="text-start">Expense For</th>
                     <th class="text-start">Total Amount</th>

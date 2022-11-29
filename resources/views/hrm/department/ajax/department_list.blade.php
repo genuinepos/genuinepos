@@ -4,7 +4,7 @@
             <th class="text-start">S/L</th>
             <th class="text-start">Name</th>
             <th class="text-start">Department ID</th>
-            <th class="text-start">description</th>
+            <th class="text-start">@lang('menu.description')</th>
             <th class="text-start">@lang('menu.action')</th>
         </tr>
     </thead>

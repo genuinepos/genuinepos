@@ -34,7 +34,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-start">SL</th>
-                                    <th class="text-start">Bank Name</th>
+                                    <th class="text-start">@lang('menu.bank_name')</th>
                                     <th class="text-start">Branch Name</th>
                                     <th class="text-start">Address</th>
                                     <th class="text-start">@lang('menu.action')</th>
@@ -67,8 +67,8 @@
                     <!--begin::Form-->
                     <form id="add_bank_form" action="{{ route('accounting.banks.store') }}">
                         <div class="form-group">
-                            <label><b>Bank Name</b> : <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm add_input" data-name="Bank name" id="name" placeholder="Bank name"/>
+                            <label><b>@lang('menu.bank_name')</b> : <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control form-control-sm add_input" data-name="Bank name" id="name" placeholder="@lang('menu.bank_name')"/>
                             <span class="error error_name"></span>
                         </div>
 
@@ -86,10 +86,10 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-hide"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                        class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                                 <button type="submit" class="c-btn me-0 button-success float-end submit_button">Save</button>
                                 <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                                    class="c-btn btn_orange float-end">@lang('menu.close')</button>
                             </div>
                         </div>
                     </form>
@@ -112,7 +112,7 @@
                     <form id="edit_bank_form" action="{{ route('accounting.banks.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>Bank Name</b> : <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.bank_name')</b> : <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control form-control-sm edit_input" data-name="Bank name" id="e_name" placeholder="Bank name"/>
                             <span class="error error_e_name"></span>
                         </div>
@@ -130,9 +130,9 @@
 
                         <div class="form-group text-right mt-3">
                             <button type="button" class="btn loading_button d-hide"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                    class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                             <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                         </div>
                     </form>
                 </div>

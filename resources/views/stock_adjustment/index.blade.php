@@ -102,7 +102,7 @@
                                         <th class="text-start">Adjustment location</th>
                                         <th class="text-start">Business location</th>
                                         <th class="text-start">Reason</th>
-                                        <th class="text-start">Created By</th>
+                                        <th class="text-start">@lang('menu.created_by')</th>
                                         <th class="text-start">Type</th>
                                         <th class="text-start">Total Amount</th>
                                         <th class="text-start">Total Recovered Amount</th>

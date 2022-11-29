@@ -108,7 +108,7 @@
                                                 <th class="text-start">Receiver A/C</th>
                                                 <th class="text-start">Sender A/C </th>
                                                 <th class="text-start">Business Location</th>
-                                                <th class="text-start">Remarks</th>
+                                                <th class="text-start">@lang('menu.remarks')</th>
                                                 <th class="text-start">Amount</th>
                                                 <th class="text-start">@lang('menu.action')</th>
                                             </tr>
@@ -178,7 +178,7 @@
                         <div class="col-md-12 text-end">
                             <ul class="list-unstyled">
                                 <li class="mt-1">
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
                                     <button type="submit" id="print_payment" class="c-btn me-0 button-success">Print</button>
                                 </li>
                             </ul>

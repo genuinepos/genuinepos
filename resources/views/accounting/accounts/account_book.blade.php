@@ -27,7 +27,7 @@
                                         <table class="table modal-table table-sm">
                                             <tbody>
                                                 <tr>
-                                                    <td class="text-start"> <strong>Bank :</strong> </td>
+                                                    <td class="text-start"> <strong>@lang('menu.bank') :</strong> </td>
                                                     <td class="bank_name text-start">{{ $account->bank ? $account->bank->name .'('.$account->bank->branch_name.')' : '' }}</td>
                                                 </tr>
 
@@ -47,7 +47,7 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="text-start"><strong>Balance :</strong> </td>
+                                                    <td class="text-start"><strong>@lang('menu.balance') :</strong> </td>
                                                     <td class="account_balance text-start">{{ App\Utils\Converter::format_in_bdt($account->balance) }}</td>
                                                 </tr>
                                             </tbody>
@@ -145,11 +145,11 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-start">@lang('menu.date')</th>
-                                                <th class="text-start">Perticulars</th>
-                                                <th class="text-start">Voucher/Invoice</th>
+                                                <th class="text-start">@lang('menu.particulars')</th>
+                                                <th class="text-start">@lang('menu.voucher')/@lang('menu.invoice')</th>
                                                 <th class="text-start">@lang('menu.debit')</th>
                                                 <th class="text-start">@lang('menu.credit')</th>
-                                                <th class="text-start">Running Balance</th>
+                                                <th class="text-start">@lang('menu.running_balance')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

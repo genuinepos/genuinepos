@@ -26,7 +26,7 @@
                                 {{ $saleReturn->branch->zip_code }},
                                 {{ $saleReturn->branch->country }},
                             </p>
-                            <p class="company_phone">Phone : {{ $saleReturn->branch->phone }}</p>
+                            <p class="company_phone">@lang('menu.phone') : {{ $saleReturn->branch->phone }}</p>
                         @else
                             <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                             <p class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</p>

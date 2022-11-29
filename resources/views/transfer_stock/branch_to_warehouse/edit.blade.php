@@ -195,7 +195,7 @@
                 <div class="submit_button_area">
                     <div class="row">
                         <div class="col-md-12 text-end">
-                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i> <strong>@lang('menu.loading')...</strong> </button>
                             <button type="submit" class="btn btn-sm btn-success submit_button">Save Changes </button>
                         </div>
                     </div>

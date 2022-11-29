@@ -144,7 +144,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i
-                                    class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="submit" data-action="save" class="btn btn-sm btn-success submit_button">Save</button>
                                 <button type="submit" data-action="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print</button>
                             </div>

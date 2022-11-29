@@ -140,14 +140,14 @@
                         @csrf
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control add_input"
                                     data-name="Customer name" id="name" placeholder="Customer name" />
                                 <span class="error error_name"></span>
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>Phone :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.phone') :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="phone" class="form-control add_input"
                                     data-name="Phone number" id="phone" placeholder="Phone number" />
                                 <span class="error error_phone"></span>
@@ -292,8 +292,8 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
                             </div>

@@ -24,7 +24,7 @@
                             </li>
 
                             <li>
-                                <strong>Name : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.name') :</strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
 
                             <li>
@@ -36,7 +36,7 @@
                             </li>
 
                             <li>
-                                <strong>Phone : </strong>{{ $sale->customer ? $sale->customer->phone : '' }}
+                                <strong>@lang('menu.phone') : </strong>{{ $sale->customer ? $sale->customer->phone : '' }}
                             </li>
                         </ul>
                     </div>
@@ -54,13 +54,13 @@
                                     {{ $sale->branch->city }}, {{ $sale->branch->state }},
                                         {{ $sale->branch->zip_code }}, {{ $sale->branch->country }}
                                 </li>
-                                <li><strong>Phone : </strong> {{ $sale->branch->phone }}</li>
+                                <li><strong>@lang('menu.phone') : </strong> {{ $sale->branch->phone }}</li>
                             @else
                                 <li><strong>Stock Location : </strong>
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
                                 </li>
                                 <li><strong>Address : </strong>{{ json_decode($generalSettings->business, true)['address'] }}</li>
-                                <li><strong>Phone : </strong>{{ json_decode($generalSettings->business, true)['phone'] }}</li>
+                                <li><strong>@lang('menu.phone') : </strong>{{ json_decode($generalSettings->business, true)['phone'] }}</li>
                             @endif
                         </ul>
                     </div>
@@ -105,7 +105,7 @@
                                     <span class="badge bg-info">Cancelled</span>
                                 @endif
                             </li>
-                            <li><strong>Created By : </strong>
+                            <li><strong>@lang('menu.created_by') : </strong>
                                 @php
                                     $admin_role = '';
                                     $prefix = '';
@@ -336,7 +336,7 @@
 
                 <button type="button" class="footer_btn btn btn-sm btn-info print_challan_btn text-white action_hideable">Print Challan</button>
                 <button type="button" class="footer_btn btn btn-sm btn-primary print_btn">Print {{ $sale->status == 1 ? 'Invoice' : 'Order' }} </button>
-                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">@lang('menu.close')</button>
             </div>
         </div>
     </div>

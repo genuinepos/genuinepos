@@ -537,8 +537,8 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn op_loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn op_loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button name="action" value="save" type="submit" class="btn btn-sm btn-success">Save</button>
                                 </div>
                             </div>
@@ -696,7 +696,7 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">@lang('menu.close')</button>
                         </div>
                     </div>
                 </div>

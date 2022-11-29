@@ -136,7 +136,7 @@
                                                 <th>Action By</th>
                                                 <th>Action Name</th>
                                                 <th>Subject Type</th>
-                                                <th>Description</th>
+                                                <th>@lang('menu.description')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

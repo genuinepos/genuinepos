@@ -395,7 +395,7 @@
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-end">
                             <button type="button" class="btn loading_button d-hide"><i
-                                class="fas fa-spinner"></i><span> Loading...</span></button>
+                                class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                             <button class="btn btn-sm btn-success submit_button">Save Changes</button>
                         </div>
                     </div>

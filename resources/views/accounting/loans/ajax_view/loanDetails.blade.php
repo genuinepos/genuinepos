@@ -48,7 +48,7 @@
         {{ $loan->type == 1 ? 'Loan pay' : 'Loan Receive' }} </p>
         <p><b>Company/People :</b> {{ $loan->company->name }}</p>
         <p><b>Address :</b></p>
-        <p><b>Phone :</b></p>
+        <p><b>@lang('menu.phone') :</b></p>
     </div>
 
     <div class="total_amount_table_area pt-5">

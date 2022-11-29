@@ -7,7 +7,7 @@
 
     <div class="form-group row">
         <div class="col-md-6">
-            <label>Name : <span class="text-danger">*</span></label>
+            <label>@lang('menu.name') :<span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control form-control-sm" id="name" placeholder="Schema name" value="{{ $schema->name }}"/>
             <span class="error error_e_name"></span>
         </div>
@@ -37,8 +37,8 @@
 
     <div class="form-group mt-3 d-flex justify-content-end">
         <div class="btn-loading">
-            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
             <button type="submit" class="btn btn-sm btn-success">Save</button>
         </div>
     </div>

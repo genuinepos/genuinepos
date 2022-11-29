@@ -51,7 +51,7 @@
     </div>
 </div>
 <div class="d-flex justify-content-end">
-    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
 </div>
 <script>
     $('[data-magnify=gallery]').magnify();

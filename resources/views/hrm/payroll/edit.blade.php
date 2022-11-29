@@ -335,7 +335,7 @@
                             <div class="col-md-8">
                                 <div class="submit-area py-3 mb-4">
                                     <button type="button" class="btn loading_button d-hide"><i
-                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                            class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                                     <button class="btn btn-sm btn-success submit_button float-end">Generate</button>
                                 </div>
                             </div>

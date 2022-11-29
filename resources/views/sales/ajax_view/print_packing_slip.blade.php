@@ -1,7 +1,7 @@
-@php 
+@php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';  
-@endphp 
+    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+@endphp
 <style>
     .packing_slip_print_template{font-family: monospace!important;font-weight: bolder;}
 </style>
@@ -14,11 +14,11 @@
                         @if ($sale->branch)
                             <h3><strong>{{$sale->branch ? $sale->branch->name . '/' . $sale->branch->branch_code : ''}}</strong> </h3>
                             <p style="width: 60%; margin:0 auto;">{{ $sale->branch->city . ', ' . $sale->branch->state . ', ' . $sale->branch->zip_code . ', ' . $sale->branch->country }}</p>
-                            <p><strong>Phone :</strong> {{ $sale->branch->phone }}</p>
+                            <p><strong>@lang('menu.phone') :</strong> {{ $sale->branch->phone }}</p>
                         @else
                             <h3>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h3>
-                            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p> 
-                            <p><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+                            <p><strong>@lang('menu.phone') : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                         @endif
                         <h6 >Packing Slip</h6>
                     </div>
@@ -31,13 +31,13 @@
                 <div class="col-4">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>Name : </strong>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                            <strong>@lang('menu.name') :</strong>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                         </li>
                         <li>
                             <strong>Address : </strong>
                             @if ($sale->shipment_address)
                                 {{  $sale->shipment_address }}
-                            @else 
+                            @else
                                 {{ $sale->customer ? $sale->customer->address : '' }}
                             @endif
                         </li>
@@ -45,7 +45,7 @@
                             <strong>Tax Number : </strong>{{ $sale->customer ? $sale->customer->tax_number : '' }}
                         </li>
                         <li>
-                            <strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                            <strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                         </li>
                     </ul>
                 </div>
@@ -55,7 +55,7 @@
                         </li>
                         <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
                         <li><img style="width: 100%; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}"></li>
-                        
+
                     </ul>
                 </div>
                 <div class="col-4">
@@ -81,7 +81,7 @@
                 <thead>
                     <tr>
                         <th style="" class="text-start">SL</th>
-                        <th class="text-start">Description</th>
+                        <th class="text-start">@lang('menu.description')</th>
                         <th class="text-start">Unit</th>
                         <th class="text-start">Quantity</th>
                     </tr>

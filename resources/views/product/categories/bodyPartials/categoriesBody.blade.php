@@ -12,14 +12,14 @@
                 enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label><b>Name :</b> <span class="text-danger">*</span></label>
+                        <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" id="name"
                                 placeholder="Category name"/>
                         <span class="error error_name"></span>
                     </div>
 
                     <div class="form-group mt-1">
-                        <label><b>Description :</b> </label>
+                        <label><b>@lang('menu.description') :</b> </label>
                         <textarea name="description" class="form-control" cols="30" rows="3" placeholder="Description"></textarea>
                     </div>
 
@@ -32,7 +32,7 @@
                     <div class="form-group row mt-2">
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><b> Loading...</b></button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><b> @lang('menu.loading')...</b></button>
                                 <button type="reset" class="btn btn-sm btn-danger">Reset</button>
                                 <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                             </div>
@@ -72,7 +72,7 @@
                                 <th class="text-black">Serial</th>
                                 <th class="text-black">Photo</th>
                                 <th class="text-black">Name</th>
-                                <th class="text-black">Description</th>
+                                <th class="text-black">@lang('menu.description')</th>
                                 <th class="text-black">@lang('menu.action')</th>
                             </tr>
                         </thead>

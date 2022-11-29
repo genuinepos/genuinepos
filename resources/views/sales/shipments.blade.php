@@ -117,7 +117,7 @@
                                                 <th>Invoice ID</th>
                                                 <th>Sale From</th>
                                                 <th>Customer</th>
-                                                <th>Created By</th>
+                                                <th>@lang('menu.created_by')</th>
                                                 <th>Shipment Status</th>
                                                 <th>Payment Status</th>
                                                 <th>@lang('menu.action')</th>

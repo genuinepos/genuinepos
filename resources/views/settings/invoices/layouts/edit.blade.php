@@ -29,7 +29,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-3"><span class="text-danger">*</span> <b>Name :</b> </label>
+                                                    <label for="inputEmail3" class="col-3"><span class="text-danger">*</span> <b>@lang('menu.name') :</b> </label>
                                                     <div class="col-9">
                                                         <input type="text" name="name" class="form-control" placeholder="Layout Name" value="{{ $layout->name }}">
                                                         <span class="error error_name"></span>
@@ -375,7 +375,7 @@
                                                 <div class="input-group">
                                                     <label for="inputEmail3" class="col-4"><b>Account No :</b></label>
                                                     <div class="col-8">
-                                                        <input type="text" name="account_no" class="form-control" placeholder="Account Number" value="{{ $layout->account_no}}">
+                                                        <input type="text" name="account_no" class="form-control" placeholder="@lang('menu.account_number')" value="{{ $layout->account_no}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -393,9 +393,9 @@
                                         <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Bank Name :</b> </label>
+                                                    <label for="inputEmail3" class="col-4"><b>@lang('menu.bank_name') :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="text" name="bank_name" class="form-control" placeholder="Bank Name" value="{{ $layout->bank_name}}">
+                                                        <input type="text" name="bank_name" class="form-control" placeholder="@lang('menu.bank_name')" value="{{ $layout->bank_name}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -447,7 +447,7 @@
                             <div class="col-md-8">
                                 <div class="submit-area py-3 mb-4">
                                     <button type="button" class="btn loading_button d-hide"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                        class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                                     <button class="btn btn-sm btn-success submit_button float-end">Save</button>
                                 </div>
                             </div>

@@ -132,7 +132,7 @@
                                                 <th>P.Invoice ID</th>
                                                 <th>Purchase From</th>
                                                 <th>Supplier</th>
-                                                <th>Created By</th>
+                                                <th>@lang('menu.created_by')</th>
                                                 <th>Receiving Status</th>
                                                 <th>Payment Status</th>
                                                 <th>Grand Total({{ json_decode($generalSettings->business, true)['currency'] }})</th>
@@ -211,7 +211,7 @@
                             </div>
 
                             <div class="col-md-6 d-flex gap-2 justify-content-end">
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                 <button type="submit" id="print_payment" class="btn btn-sm btn-success">Print</button>
                             </div>
                         </div>

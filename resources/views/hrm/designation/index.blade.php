@@ -41,7 +41,7 @@
                                             <tr>
                                                 <th>S/L</th>
                                                 <th>Name</th>
-                                                <th>Description</th>
+                                                <th>@lang('menu.description')</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
@@ -77,7 +77,7 @@
                     <!--begin::Form-->
                     <form id="add_designation_form" action="{{ route('hrm.designations.store') }}">
                         <div class="form-group">
-                            <label><b>Name :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="designation_name" class="form-control" data-name="Designation name" placeholder="Designation name" />
                         </div>
 
@@ -88,10 +88,10 @@
 
                         <div class="form-group mt-3">
                             <button type="button" class="btn loading_button d-hide"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                    class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                             <button type="submit" class="c-btn me-0 button-success float-end">Save</button>
                             <button type="reset" data-bs-dismiss="modal"
-                                class="c-btn btn_orange float-end">Close</button>
+                                class="c-btn btn_orange float-end">@lang('menu.close')</button>
                         </div>
                     </form>
                 </div>
@@ -113,7 +113,7 @@
                     <form id="edit_designation_form" action="{{ route('hrm.designations.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>Name :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="designation_name" class="form-control" id="e_designation_name" placeholder="Designation name"/>
                         </div>
 
@@ -124,10 +124,10 @@
 
                         <div class="form-group mt-3">
                             <button type="button" class="btn loading_button d-hide"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                    class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                             <button type="submit" class="c-btn me-0 button-success float-end">Save Change</button>
                             <button type="reset" data-bs-dismiss="modal"
-                                class="c-btn btn_orange float-end">Close</button>
+                                class="c-btn btn_orange float-end">@lang('menu.close')</button>
                         </div>
                     </form>
                 </div>

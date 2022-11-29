@@ -14,7 +14,7 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><b>Phone :</b>  <span class="text-danger">*</span></label>
+        <label><b>@lang('menu.phone') :</b>  <span class="text-danger">*</span></label>
         <input type="text" name="phone" class="form-control edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number" value="{{ $w->phone }}"/>
         <span class="error error_e_phone"></span>
     </div>
@@ -49,8 +49,8 @@
     <div class="form-group row mt-2">
         <div class="col-md-12 d-flex justify-content-end">
             <div class="btn-loading">
-                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                <button type="button" class="btn btn-sm btn-danger" id="close_form">Close</button>
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="button" class="btn btn-sm btn-danger" id="close_form">@lang('menu.close')</button>
                 <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
             </div>
         </div>

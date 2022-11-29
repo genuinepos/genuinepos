@@ -101,10 +101,10 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-hide"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                        class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                                 <button type="submit" class="c-btn me-0 button-success float-end">Save</button>
                                 <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                                    class="c-btn btn_orange float-end">@lang('menu.close')</button>
                             </div>
                         </div>
                     </form>
@@ -146,9 +146,9 @@
 
                         <div class="form-group text-right mt-3">
                             <button type="button" class="btn loading_button d-hide"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                    class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                             <button type="submit" class="me-0 c-btn button-success float-end">Save Change</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                         </div>
                     </form>
                 </div>

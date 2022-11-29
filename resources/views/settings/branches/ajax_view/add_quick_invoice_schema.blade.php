@@ -6,7 +6,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>Name :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control" id="q_name" placeholder="Schema name"/>
             <span class="error error_q_name"></span>
         </div>
@@ -35,9 +35,9 @@
     </div>
 
     <div class="form-group text-end mt-3">
-        <button type="button" class="btn loading_button d-hide q_ld_btn"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+        <button type="button" class="btn loading_button d-hide q_ld_btn"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
         <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
     </div>
 </form>
 

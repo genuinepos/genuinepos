@@ -8,7 +8,7 @@
             <tbody>
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.opening_balance') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                        <strong>@lang('menu.opening_balance') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                     </td>
 
                     <td class="text-end opening_balance" id="sales_opening_balance">0.00</td>
@@ -40,7 +40,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.balance_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end total_sale_due" id="sales_total_sale_due">0.00</td>
                 </tr>
 

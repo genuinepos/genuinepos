@@ -43,7 +43,7 @@
                                             </div>
 
                                             <div class="from-group mt-1">
-                                                <label><b>Description :</b></label>
+                                                <label><b>@lang('menu.description') :</b></label>
                                                 <textarea required name="description" class="form-control" cols="10" rows="4" placeholder="Memo Description"></textarea>
                                             </div>
 
@@ -76,15 +76,15 @@
                                             </div>
 
                                             <div class="from-group mt-1">
-                                                <label><b>Description :</b></label>
+                                                <label><b>@lang('menu.description') :</b></label>
                                                 <textarea required name="description" class="form-control" id="description" cols="10" rows="4" placeholder="Memo Description"></textarea>
                                             </div>
 
                                             <div class="form-group row mt-2">
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
-                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                                        <button type="button" class="btn btn-sm btn-danger">Close</button>
+                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                        <button type="button" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                                         <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
                                                     </div>
                                                 </div>
@@ -109,7 +109,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Heading</th>
-                                                        <th>Description</th>
+                                                        <th>@lang('menu.description')</th>
                                                         <th>Created Date</th>
                                                         <th>@lang('menu.action')</th>
                                                     </tr>

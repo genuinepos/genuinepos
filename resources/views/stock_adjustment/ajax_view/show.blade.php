@@ -23,14 +23,14 @@
                                 <strong>Adjustment Location : </strong> 
                                 {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b> 
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->warehouse->phone}}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone}}</li>
                             <li><strong>Address : </strong> {{ $adjustment->warehouse->address}}</li>
                         @elseif($adjustment->branch_id)
                             <li>
                                 <strong>Adjustment Location : </strong> 
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->branch->phone}}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->branch->phone}}</li>
                             <li><strong>Address : </strong> 
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
@@ -39,7 +39,7 @@
                                 <strong>Adjustment Location : </strong> 
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
                             <li><strong>Address : </strong> 
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
@@ -54,7 +54,7 @@
                         <li><strong>Type : </strong>
                             {!! $adjustment->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>' !!}
                         </li>
-                        <li><strong>Created By : </strong>
+                        <li><strong>@lang('menu.created_by') : </strong>
                             {{ $adjustment->admin ? $adjustment->admin->prefix.' '.$adjustment->admin->name.' '.$adjustment->admin->last_name : 'N/A' }}
                         </li>
                     </ul>
@@ -162,7 +162,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
             <button type="submit" class="c-btn button-success print_btn">Print</button>
         </div>
       </div>
@@ -206,14 +206,14 @@
                                 <strong>Adjustment Location : </strong> 
                                 {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->warehouse->phone }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone }}</li>
                             <li><strong>Address : </strong> {{ $adjustment->warehouse->address }}</li>
                         @elseif($adjustment->branch_id)
                             <li>
                                 <strong>Adjustment Location : </strong> 
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->branch->phone}}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->branch->phone}}</li>
                             <li><strong>Address : </strong> 
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
@@ -222,7 +222,7 @@
                                 <strong>Adjustment Location : </strong> 
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
                             <li><strong>Address : </strong> 
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
@@ -237,7 +237,7 @@
                             {{ $adjustment->type == 1 ? 'Normal' : 'Abnormal' }}
                         </li>
                         <li>
-                            <strong>Created By : </strong>
+                            <strong>@lang('menu.created_by') : </strong>
                             {{ $adjustment->admin ? $adjustment->admin->prefix.' '.$adjustment->admin->name.' '.$adjustment->admin->last_name : 'N/A' }}
                         </li>
                     </ul>

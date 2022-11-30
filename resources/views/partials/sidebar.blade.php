@@ -2540,6 +2540,7 @@
                                     </a>
                                 </div>
                             </div>
+
                             <div class="sub-menu-row">
                                 <div class="sub-menu-col">
                                     <a href="" class="switch-bar-wrap">
@@ -2562,7 +2563,19 @@
                                         <p class="switch_text">@lang('menu.email_settings')</p>
                                     </a>
                                 </div>
+
+                                <div class="sub-menu-col">
+                                    <a href="{{ route('communication.email.settings.server.setup.design.pages') }}" class="switch-bar-wrap">
+                                        <div class="switch_bar">
+                                            <div class="bar-link">
+                                                <span><i class="fas fa-sliders-h"></i></span>
+                                            </div>
+                                        </div>
+                                        <p class="switch_text">Email Server Setup Design</p>
+                                    </a>
+                                </div>
                             </div>
+
                             <div class="sub-menu-row">
                                 <div class="sub-menu-col">
                                     <a href="" class="switch-bar-wrap">

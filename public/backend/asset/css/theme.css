@@ -168,6 +168,11 @@ body.red-theme {
     color: #ffffff;
 }
 
+.red-theme ul.head__cn li a:hover,
+.red-theme ul.head__cn li a:focus {
+    color: #ffffff;
+}
+
 .red-theme .select-dropdown select {
     background-color: var(--red-color-2);
 }
@@ -332,7 +337,9 @@ body.red-theme {
 .red-theme ul.menus_unorder_list .menu_list .menu_btn.menu_active {
     border-color: var(--red-color-1);
 }
-
+.red-theme .switch_bar_cards  {
+    background: linear-gradient(var(--red-color-2), var(--red-color-1)) !important;
+}
 .red-theme .switch_bar_cards .bar-link span {
     background: var(--red-color-gradient);
 }
@@ -447,6 +454,11 @@ body.blue-theme {
 }
 
 .blue-theme ul.head__cn li a {
+    color: #ffffff;
+}
+
+.blue-theme ul.head__cn li a:hover,
+.blue-theme ul.head__cn li a:focus {
     color: #ffffff;
 }
 
@@ -613,6 +625,10 @@ body.blue-theme {
     border-color: var(--blue-color-1);
 }
 
+.blue-theme .switch_bar_cards  {
+    background: linear-gradient(var(--blue-color-2), var(--blue-color-1)) !important;
+}
+
 .blue-theme .switch_bar_cards .bar-link span {
     background: var(--blue-color-gradient);
 }
@@ -718,8 +734,12 @@ body.dark-theme {
     border: 2px solid #ffffff;
 }
 
-.dark-theme ul.head__cn li button,
 .dark-theme ul.head__cn li a {
+    color: #ffffff;
+}
+
+.dark-theme ul.head__cn li a:hover,
+.dark-theme ul.head__cn li a:focus {
     color: #ffffff;
 }
 
@@ -1154,12 +1174,20 @@ body.light-theme {
     border-color: var(--dark-color-2);
 }
 
+.light-theme .switch_bar_cards  {
+    background: linear-gradient(var(--light-color-1), var(--light-color-2)) !important;
+}
+
 .light-theme .switch_bar_cards .bar-link span {
     background: var(--light-color-gradient);
 }
 
 .light-theme .switch_bar_cards .bar-link i {
     color: var(--dark-color-2) !important;
+}
+
+.light-theme .switch_bar_cards .switch_bar p {
+    color: var(--black-color) !important;
 }
 
 .light-theme .switch-bar-wrap:hover {
@@ -1279,6 +1307,11 @@ body.orange-theme {
 }
 
 .orange-theme ul.head__cn li a {
+    color: #ffffff;
+}
+
+.orange-theme ul.head__cn li a:hover,
+.orange-theme ul.head__cn li a:focus {
     color: #ffffff;
 }
 
@@ -1446,6 +1479,10 @@ body.orange-theme {
 
 .orange-theme ul.menus_unorder_list .menu_list .menu_btn.menu_active {
     border-color: var(--orange-color-1);
+}
+
+.orange-theme .switch_bar_cards  {
+    background: linear-gradient(var(--orange-color-1), var(--orange-color-2)) !important;
 }
 
 .orange-theme .switch_bar_cards .bar-link span {

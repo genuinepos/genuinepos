@@ -12,6 +12,7 @@
     <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
     <!--Toaster.js js link end-->
 
+    {{-- Test  --}}
 
     <!-- DataTable Cdn -->
     <script type="text/javascript"  src="{{asset('backend/asset/cdn/js/jquery.dataTables.min.js')}}"></script>

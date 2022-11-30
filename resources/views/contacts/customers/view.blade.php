@@ -1365,6 +1365,6 @@
             });
         }
 
-        getCustomerAmountsBranchWise(filterObj)
+        getCustomerAmountsBranchWise(filterObj);
     </script>
 @endpush

@@ -154,7 +154,7 @@
                             </li>
                             </li>
                             <li class="top-icon">
-                                <button id="openRightSidebar" ><i class="fas fa-bars"></i></button>
+                                <a role="button" id="openRightSidebar" ><i class="fas fa-bars"></i></a>
                             </li>
                         </ul>
                     </div>

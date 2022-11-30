@@ -37,6 +37,8 @@ class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-t
             <div class="logo_wrapper">
                 <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
             </div>
+
+            <span class="version-txt float-end text-white pe-2" style="margin-top: -20px"><small>V - 1.0.1</small></span>
         </footer>
     </div>
 

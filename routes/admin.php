@@ -1073,7 +1073,10 @@ Route::group(['prefix' => 'communication'], function () {
     Route::group(['prefix' => 'email',], function () {
 
         Route::get('settings', [EmailController::class, 'emailSettings'])->name('communication.email.settings');
+
         Route::post('settings/store', [EmailController::class, 'emailSettingsStore'])->name('communication.email.settings.store');
+
+        Route::get('settings/server/setup/design/pages', [EmailController::class, 'emailServerSetupDesignPages'])->name('communication.email.settings.server.setup.design.pages');
     });
 
     Route::group(['prefix' => 'sms',], function () {

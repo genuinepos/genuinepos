@@ -9,6 +9,11 @@
         <div id="dashboard" class="p-3">
             <div class="row mb-3">
                 <div class="main__content">
+                    <div class="welcome-user">
+                        <div class="alert mb-1 py-0 w-100 h-auto alert-primary">
+                            <span>Welcome <strong>superadmin</strong></span>
+                        </div>
+                    </div>
                     <div class="d-flex flex-wrap mt-2 switch_bar_cards">
 
                         {{-- <div class="switch_bar">

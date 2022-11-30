@@ -10,7 +10,12 @@ class EmailController extends Controller
 {
     public function __construct()
     {
-        
+
+    }
+
+    public function emailServerSetupDesignPages()
+    {
+        return view('communication.email.design_pages');
     }
 
     public function emailSettings(Request $request)

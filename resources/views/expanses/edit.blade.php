@@ -180,9 +180,11 @@
 
                 <section class="">
                     <div class="submit-area d-flex justify-content-end">
-                        <button type="button" class="btn loading_button d-hide"><i
-                            class="fas fa-spinner"></i><span> Loading...</span></button>
-                        <button class="btn btn-sm btn-success submit_button">Save Changes</button>
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide"><i
+                                class="fas fa-spinner"></i><span> Loading...</span></button>
+                            <button class="btn btn-sm btn-success submit_button">Save Changes</button>
+                        </div>
                     </div>
                 </section>
             </form>

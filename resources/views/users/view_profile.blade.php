@@ -5,11 +5,15 @@
 <div class="body-wraper">
     <div class="main__content">
         <div class="sec-name">
-            <h6>@lang('menu.view_profile')</h6>
-            <a href="{{ url()->previous() }}" class="btn text-white btn-sm float-end back-button"><i class="fa-thin fa-left-to-line fa-2x"></i><br> @lang('menu.back')</a>
+            <div class="name-head">
+                <span class="fas fa-user"></span>
+                <h6>@lang('menu.view_profile')</h6>
+            </div>
+
+            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
         </div>
-        <section class="p-15">
-            <div class="row g-1">
+        <section class="p-3">
+            <div class="row g-3">
                 <div class="col-xl-3 col-lg-4 col-md-5">
                     <div class="card">
                         <div class="card-body p-2">
@@ -37,23 +41,23 @@
                 </div>
                 <div class="col-xl-9 col-lg-8 col-md-7">
                     <div class="card">
-                        <div class="card-body p-2">
+                        <div class="card-body">
                             <nav>
-                                <div class="nav nav-tabs pb-2 mb-2" id="nav-tab" role="tablist">
-                                    <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="true">@lang('menu.profile')</button>
-                                    <button class="nav-link" id="nav-payroll-tab" data-bs-toggle="tab" data-bs-target="#nav-payroll" type="button" role="tab" aria-controls="nav-payroll" aria-selected="false">@lang('menu.payroll')</button>
-                                    <button class="nav-link" id="nav-leaves-tab" data-bs-toggle="tab" data-bs-target="#nav-leaves" type="button" role="tab" aria-controls="nav-leaves" aria-selected="false">@lang('menu.leaves')</button>
-                                    <button class="nav-link" id="nav-attendance-tab" data-bs-toggle="tab" data-bs-target="#nav-attendance" type="button" role="tab" aria-controls="nav-attendance" aria-selected="false">@lang('menu.attendance')</button>
-                                    <button class="nav-link" id="nav-documents-tab" data-bs-toggle="tab" data-bs-target="#nav-documents" type="button" role="tab" aria-controls="nav-documents" aria-selected="false">@lang('menu.documents')</button>
-                                    <button class="nav-link" id="nav-timeline-tab" data-bs-toggle="tab" data-bs-target="#nav-timeline" type="button" role="tab" aria-controls="nav-timeline" aria-selected="false">@lang('menu.timeline')</button>
+                                <div class="nav nav-tabs pb-2 mb-2 btn-group" id="nav-tab" role="tablist">
+                                    <button class="btn btn-sm btn-primary active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="true">@lang('menu.profile')</button>
+                                    <button class="btn btn-sm btn-primary" id="nav-payroll-tab" data-bs-toggle="tab" data-bs-target="#nav-payroll" type="button" role="tab" aria-controls="nav-payroll" aria-selected="false">@lang('menu.payroll')</button>
+                                    <button class="btn btn-sm btn-primary" id="nav-leaves-tab" data-bs-toggle="tab" data-bs-target="#nav-leaves" type="button" role="tab" aria-controls="nav-leaves" aria-selected="false">@lang('menu.leaves')</button>
+                                    <button class="btn btn-sm btn-primary" id="nav-attendance-tab" data-bs-toggle="tab" data-bs-target="#nav-attendance" type="button" role="tab" aria-controls="nav-attendance" aria-selected="false">@lang('menu.attendance')</button>
+                                    <button class="btn btn-sm btn-primary" id="nav-documents-tab" data-bs-toggle="tab" data-bs-target="#nav-documents" type="button" role="tab" aria-controls="nav-documents" aria-selected="false">@lang('menu.documents')</button>
+                                    <button class="btn btn-sm btn-primary" id="nav-timeline-tab" data-bs-toggle="tab" data-bs-target="#nav-timeline" type="button" role="tab" aria-controls="nav-timeline" aria-selected="false">@lang('menu.timeline')</button>
                                 </div>
                             </nav>
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
                                     <div class="card">
-                                        <div class="card-body px-3">
+                                        <div class="card-body">
                                             <div class="table-responsive">
-                                                <table class="table profile-table mb-0">
+                                                <table class="display table-striped">
                                                     <tbody>
                                                         <tr>
                                                             <td>@lang('menu.name')</td>
@@ -88,13 +92,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card my-1">
-                                        <div class="card-header px-3 bg-secondary text-white">
-                                            <h5 class="card-title mt-0">@lang('menu.address') @lang('menu.details')</h5>
+                                    <div class="card my-3">
+                                        <div class="card-header">
+                                            <h6 class="card-title m-0">@lang('menu.address') @lang('menu.details')</h6>
                                         </div>
-                                        <div class="card-body py-0 px-3">
+                                        <div class="card-body">
                                             <div class="table-responsive">
-                                                <table class="table profile-table mb-0">
+                                                <table class="display table-striped">
                                                     <tbody>
                                                         <tr>
                                                             <td>@lang('menu.current') @lang('menu.address')</td>
@@ -109,13 +113,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card my-1">
-                                        <div class="card-header px-3 bg-secondary text-white">
-                                            <h5 class="card-title mt-0">@lang('menu.bank') @lang('menu.account_details')</h5>
+                                    <div class="card my-3">
+                                        <div class="card-header">
+                                            <h6 class="card-title m-0">@lang('menu.bank') @lang('menu.account_details')</h6>
                                         </div>
-                                        <div class="card-body py-0 px-3">
+                                        <div class="card-body">
                                             <div class="table-responsive">
-                                                <table class="table profile-table mb-0">
+                                                <table class="display table-striped">
                                                     <tbody>
                                                         <tr>
                                                             <td>@lang('menu.account_title')</td>
@@ -142,13 +146,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card mb-1">
-                                        <div class="card-header px-3 bg-secondary text-white">
-                                            <h5 class="card-title mt-0">@lang('menu.social_media_link')</h5>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="card-title m-0">@lang('menu.social_media_link')</h6>
                                         </div>
-                                        <div class="card-body py-0 px-3">
+                                        <div class="card-body">
                                             <div class="table-responsive">
-                                                <table class="table profile-table mb-0">
+                                                <table class="display table-striped">
                                                     <tbody>
                                                         <tr>
                                                             <td>@lang('menu.facebook_link') :</td>

@@ -14,25 +14,25 @@
                     <div class="col-md-4">
                         <ul class="list-unstyled">
                             <li><strong>Warehouse (From) : </strong></li>
-                            <li><strong>Name :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
-                            <li><strong>Phone : </strong> {{ $sendStock->warehouse->phone }}</li>
+                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->warehouse->phone }}</li>
                             <li><strong>Address : </strong> {{ $sendStock->warehouse->address }}</li>
                         </ul>
                     </div>
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li><strong>B.Location (To) : </strong></li>
-                            <li><strong>Name :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                            <li><strong>Phone : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                            <li><strong>@lang('menu.b_location') (To) : </strong></li>
+                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                             @if ($sendStock->branch)
-                                <li><strong>Address : </strong> 
+                                <li><strong>Address : </strong>
                                     {{ $sendStock->branch->city }},
                                     {{ $sendStock->branch->state }},
                                     {{ $sendStock->branch->zip_code }},
                                     {{ $sendStock->branch->country }}.
                                 </li>
-                            @else 
+                            @else
                                 <li><strong>Address : </strong> {{ json_decode($generalSettings->business, true)['address'] }}</li>
                             @endif
                         </ul>
@@ -40,10 +40,10 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled float-right">
-                            <li><strong>Date : </strong> {{ $sendStock->date }}</li>
+                            <li><strong>@lang('menu.date') : </strong> {{ $sendStock->date }}</li>
                             <li><strong>Reference ID : </strong>{{ $sendStock->invoice_id }}</li>
-                            <li><strong>Status : </strong> 
-                                @if ($sendStock->status == 1) 
+                            <li><strong>Status : </strong>
+                                @if ($sendStock->status == 1)
                                 <span class="badge bg-danger">Pending</span>
                                 @elseif($sendStock->status == 2)
                                     <span class="badge bg-primary">Partial</span>
@@ -93,7 +93,7 @@
                         </table>
                     </div>
                 </div>
-    
+
               <hr class="p-0 m-0">
               <div class="row">
                 <div class="col-md-6">
@@ -134,24 +134,24 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>Warehouse (Form) : </strong></li>
-                            <li><strong>Name :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
-                            <li><strong>Phone : </strong> {{ $sendStock->warehouse->phone }}</li>
+                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->warehouse->phone }}</li>
                             <li><strong>Address : </strong> {{ $sendStock->warehouse->address }}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>B.Location (To) : </strong></li>
-                            <li><strong>Name :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                            <li><strong>Phone : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                            <li><strong>@lang('menu.b_location') (To) : </strong></li>
+                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                             @if ($sendStock->branch)
-                                <li><strong>Address : </strong> 
+                                <li><strong>Address : </strong>
                                     {{ $sendStock->branch->city }},
                                     {{ $sendStock->branch->state }},
                                     {{ $sendStock->branch->zip_code }},
                                     {{ $sendStock->branch->country }}.
                                 </li>
-                            @else 
+                            @else
                             <li>
                                 <strong>Address : </strong> {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
@@ -160,10 +160,10 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled float-right">
-                            <<li><strong>Date : </strong> {{ $sendStock->date }}</li>
+                            <<li><strong>@lang('menu.date') : </strong> {{ $sendStock->date }}</li>
                             <li><strong>Reference ID : </strong>{{ $sendStock->invoice_id }}</li>
-                            <li><strong>Status : </strong> 
-                                @if ($sendStock->status == 1) 
+                            <li><strong>Status : </strong>
+                                @if ($sendStock->status == 1)
                                     Pending
                                 @elseif($sendStock->status == 2)
                                     Partial
@@ -214,7 +214,7 @@
                     </tbody>
                 </table>
             </div>
-            <br><br> 
+            <br><br>
             <div class="note">
                 <div class="row">
                     <div class="col-md-6">

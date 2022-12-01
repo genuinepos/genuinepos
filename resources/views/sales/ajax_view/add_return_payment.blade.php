@@ -19,7 +19,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Customer : </strong><span class="card_text customer_name">{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span> </li>
+                                <li><strong>@lang('menu.customer') : </strong><span class="card_text customer_name">{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span> </li>
                                 <li><strong>Business : </strong><span class="card_text customer_business">{{ $sale->customer ? $sale->customer->business_name : '' }}</span> </li>
                             </ul>
                         </div>
@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
@@ -139,9 +139,9 @@
 
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                         <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
                 </div>
             </form>

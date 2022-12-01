@@ -3,7 +3,7 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-3">
-            <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.name') :</strong>  <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control edit_input" data-name="Name" id="e_name" placeholder="Business Location Name" value="{{ $branch->name }}"/>
             <span class="error error_e_name"></span>
         </div>
@@ -15,7 +15,7 @@
         </div>
 
         <div class="col-md-3">
-            <label><strong>Phone :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.phone') :</strong>  <span class="text-danger">*</span></label>
             <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number" value="{{ $branch->phone }}"/>
             <span class="error error_e_phone"></span>
         </div>
@@ -115,8 +115,8 @@
 
     <div class="form-group d-flex justify-content-end">
         <div class="btn-loading">
-            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
             <button type="submit" class="btn btn-sm btn-success">Save</button>
         </div>
     </div>

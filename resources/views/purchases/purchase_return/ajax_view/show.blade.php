@@ -56,7 +56,7 @@
                                 <strong>P.Invoice ID : </strong>
                                 {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}
                             </li>
-                            <li class="parent_purchase"><strong>Date : </strong>
+                            <li class="parent_purchase"><strong>@lang('menu.date') : </strong>
                                 {{ $return->purchase ? $return->purchase->date : 'N/A' }}
                             </li>
                         </ul>
@@ -132,7 +132,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                 <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
             </div>
         </div>
@@ -222,7 +222,7 @@
                     <ul class="list-unstyled float-right">
                         <li><strong>Purchase Details : </strong> </li>
                         <li><strong>Invoice No : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
-                        <li><strong>Date : </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
                     </ul>
                 </div>
             </div>

@@ -29,7 +29,7 @@
             </select>
         </div>
     @endif
-    
+
     <div class="form-group mt-1">
         <label><b>Note :</b> </label>
         <textarea name="notes" class="form-control" cols="10" rows="3" placeholder="Note">{{ $holiday->notes }}</textarea>
@@ -37,8 +37,8 @@
 
     <div class="form-group d-flex justify-content-end mt-3">
         <div class="btn-loading">
-            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')......</span></button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
             <button type="submit" class="btn btn-sm btn-success">Save Change</button>
         </div>
     </div>

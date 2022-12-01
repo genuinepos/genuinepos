@@ -23,7 +23,7 @@
                             @if ($sale->branch->pos_sale_invoice_layout->show_shop_logo == 1)
                                 @if ($sale->branch->logo != 'default.png')
                                     <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
-                                @else 
+                                @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                                 @endif
                             @endif
@@ -41,7 +41,7 @@
                                 </p>
 
                                 @if ($sale->branch->pos_sale_invoice_layout->branch_phone)
-                                    <p><strong>Phone :</strong>{{ $sale->branch->phone }}</p>
+                                    <p><strong>@lang('menu.phone') :</strong>{{ $sale->branch->phone }}</p>
                                 @endif
 
                                 @if ($sale->branch->pos_sale_invoice_layout->branch_email && $sale->branch->email)
@@ -62,8 +62,8 @@
 
                                     @if ($sale->due <= 0)
                                         Paid
-                                    @elseif ($sale->due > 0 && $sale->due < $payable) 
-                                        Partial 
+                                    @elseif ($sale->due > 0 && $sale->due < $payable)
+                                        Partial
                                     @elseif($payable==$sale->due)
                                         Due
                                     @endif
@@ -73,7 +73,7 @@
                     </div>
                 </div>
             @endif
-            
+
             @if ($sale->branch->pos_sale_invoice_layout->is_header_less == 1)
                 @for ($i = 0; $i < $sale->branch->pos_sale_invoice_layout->gap_from_top; $i++)
                     <br/>
@@ -84,7 +84,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Customer : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                            <li><strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($sale->branch->pos_sale_invoice_layout->customer_address)
                                 <li><strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
@@ -97,7 +97,7 @@
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->customer_phone)
-                                <li><strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                                <li><strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                                 </li>
                             @endif
 
@@ -120,7 +120,7 @@
 
                                     @if ($sale->due <= 0)
                                         Paid
-                                    @elseif ($sale->due > 0 && $sale->due < $payable) 
+                                    @elseif ($sale->due > 0 && $sale->due < $payable)
                                         Partial
                                     @elseif($payable==$sale->due)
                                         Due
@@ -182,7 +182,7 @@
                                             {{ $sale_product->product->warranty->duration . ' ' . $sale_product->product->warranty->duration_type }}
                                             {{ $sale_product->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
                                             {!! $sale->branch->pos_sale_invoice_layout->product_w_discription ? '<br><small class="text-muted">' . $sale_product->product->warranty->description . '</small>' : '' !!}
-                                        @else 
+                                        @else
                                             <strong>No</strong>
                                         @endif
                                     </td>
@@ -229,11 +229,11 @@
                         $sale->branch->pos_sale_invoice_layout->account_name ||
                         $sale->branch->pos_sale_invoice_layout->account_no ||
                         $sale->branch->pos_sale_invoice_layout->bank_name ||
-                        $sale->branch->pos_sale_invoice_layout->bank_branch 
+                        $sale->branch->pos_sale_invoice_layout->bank_branch
                     )
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
                             @if ($sale->branch->pos_sale_invoice_layout->account_name)
-                                <p>Account Name : {{ $sale->branch->pos_sale_invoice_layout->account_name }}</p>
+                                <p>@lang('menu.account_name') : {{ $sale->branch->pos_sale_invoice_layout->account_name }}</p>
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->account_no)
@@ -241,7 +241,7 @@
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->bank_name)
-                                <p>Bank : {{ $sale->branch->pos_sale_invoice_layout->bank_name }}</p>
+                                <p>@lang('menu.bank') : {{ $sale->branch->pos_sale_invoice_layout->bank_name }}</p>
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->bank_branch)
@@ -259,8 +259,8 @@
                                 <td class="net_total text-end">
                                     {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                 </td>
-                            </tr> 
-                            
+                            </tr>
+
                             <tr>
                                 <td class="text-end"><strong> Order Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="order_discount text-end">
@@ -317,14 +317,14 @@
                                     </td>
                                 </tr>
                             @endif
-                            
+
                             <tr>
                                 <td class="text-end"><strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="total_due text-end">
                                     {{ App\Utils\Converter::format_in_bdt($total_due) }}
                                 </td>
                             </tr>
-                            
+
                         </tbody>
                     </table>
                 </div>
@@ -352,7 +352,7 @@
                     </div>
                 </div>
             </div><br/>
-            
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="invoice_notice">
@@ -374,7 +374,7 @@
                     <div class="col-4 text-start">
                         <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                     </div>
-                    
+
                     <div class="col-4 text-center">
                         @if (env('PRINT_SD_SALE') == true)
                             <small class="d-block">Software By <strong>SpeedDigit Pvt. Ltd.</strong></small>
@@ -388,7 +388,7 @@
             </div>
         </div>
     </div>
-@else 
+@else
     <style>@page{margin: 8px;}</style>
     <div class="sale_print_template">
         <div class="pos_print_template">
@@ -400,7 +400,7 @@
                                 <th class="text-center">
                                     @if ($sale->branch->logo != 'default.png')
                                         <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
-                                    @else 
+                                    @else
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600;">{{ $sale->branch->name }}</span>
                                     @endif
                                 </th>
@@ -420,7 +420,7 @@
 
                             <tr>
                                 <th class="text-center">
-                                    <span><b>Phone :</b>  {{ $sale->branch->phone }}</span>
+                                    <span><b>@lang('menu.phone') :</b>  {{ $sale->branch->phone }}</span>
                                 </th>
                             </tr>
 
@@ -432,45 +432,45 @@
                         </thead>
                     </table>
                 </div>
-                
+
                 <div class="customer_info mt-2">
                     <table class="w-100">
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <b>Date:</b> <span>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span> 
+                                    <b>Date:</b> <span>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-center">
-                                    <b>INV NO: </b> <span>{{ $sale->invoice_id }}</span> 
+                                    <b>INV NO: </b> <span>{{ $sale->invoice_id }}</span>
                                 </th>
                             </tr>
-                            
+
                             <tr>
                                 <th class="text-center">
-                                    <b>Customer:</b> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span> 
+                                    <b>Customer:</b> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
                                 </th>
                             </tr>
 
                             @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == 1)
                                 <tr>
                                     <th class="text-center">
-                                        <b>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} :</b>  
-                                        <span>{{ $sale->customer ? $sale->customer->point : 0 }}</span> 
+                                        <b>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} :</b>
+                                        <span>{{ $sale->customer ? $sale->customer->point : 0 }}</span>
                                     </th>
                                 </tr>
                             @endif
                         </thead>
                     </table>
                 </div>
-            
+
                 <div class="description_area pt-2 pb-1">
                     <table class="w-100">
                         <thead class="t-head">
                             <tr>
-                                <th class="text-start"> Description</th>
+                                <th class="text-start">@lang('menu.description')</th>
                                 <th class="text-center">Qty</th>
                                 <th class="text-center">Price</th>
                                 <th class="text-end">Total</th>
@@ -503,7 +503,7 @@
                                     </span>
                                 </th>
                             </tr>
-                            
+
                             <tr>
                                 <th class="text-end">Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
@@ -512,7 +512,7 @@
                                     </span>
                                 </th>
                             </tr>
-                            
+
                             <tr>
                                 <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
@@ -526,13 +526,13 @@
                                 <tr>
                                     <th class="text-end">Previous Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <th class="text-end">
-                                        <span> 
+                                        <span>
                                             {{ App\Utils\Converter::format_in_bdt($previous_due) }}
                                         </span>
                                     </th>
-                                </tr> 
+                                </tr>
                             @endif
-                            
+
                             <tr>
                                 <th class="text-end"> Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
@@ -563,7 +563,7 @@
                                     </tr>
                                 @endif
                             @endif
-                            
+
                             <tr>
                                 <th class="text-end"> <strong>Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></th>
                                 <th class="text-end">
@@ -581,14 +581,14 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <span>{{ $sale->branch->pos_sale_invoice_layout->invoice_notice ?  $sale->branch->pos_sale_invoice_layout->invoice_notice : '' }}</span> 
+                                    <span>{{ $sale->branch->pos_sale_invoice_layout->invoice_notice ?  $sale->branch->pos_sale_invoice_layout->invoice_notice : '' }}</span>
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-center">
                                     <br>
-                                    <span>{{ $sale->branch->pos_sale_invoice_layout->footer_text ?  $sale->branch->pos_sale_invoice_layout->footer_text : '' }}</span> 
+                                    <span>{{ $sale->branch->pos_sale_invoice_layout->footer_text ?  $sale->branch->pos_sale_invoice_layout->footer_text : '' }}</span>
                                 </th>
                             </tr>
                         </thead>

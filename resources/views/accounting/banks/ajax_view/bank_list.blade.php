@@ -2,10 +2,10 @@
     <thead>
         <tr>
             <th class="text-start">SL</th>
-            <th class="text-start">Bank Name</th>
+            <th class="text-start">@lang('menu.bank_name')</th>
             <th class="text-start">Branch Name</th>
             <th class="text-start">Address</th>
-            <th class="text-start">Action</th>
+            <th class="text-start">@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

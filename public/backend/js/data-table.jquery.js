@@ -9040,19 +9040,19 @@
 			 * parameter is not used when loading data by server-side processing, just
 			 * Ajax sourced data with client-side processing.
 			 *  @type string
-			 *  @default Loading...
+			 *  @default @lang('menu.loading')...
 			 *  @dtopt Language
 			 * 
 			 *  @example
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "oLanguage": {
-			 *          "sLoadingRecords": "Please wait - loading..."
+			 *          "sLoadingRecords": "Please wait - @lang('menu.loading')..."
 			 *        }
 			 *      } );
 			 *    } );
 			 */
-			"sLoadingRecords": "Loading...",
+			"sLoadingRecords": "@lang('menu.loading')...",
 		
 		
 			/**

@@ -21,7 +21,7 @@
                             <ul class="list-unstyled">
                                 <li><strong>Company : </strong><span class="card_text">{{ $company->name }}</span>
                                 </li>
-                                <li><strong>Phone : </strong><span class="card_text"></span></li>
+                                <li><strong>@lang('menu.phone') : </strong><span class="card_text"></span></li>
                                 <li><strong>Address : </strong><span class="card_text"></span></li>
                             </ul>
                         </div>
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i

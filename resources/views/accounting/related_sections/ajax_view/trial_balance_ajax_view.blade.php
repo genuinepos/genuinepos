@@ -10,8 +10,8 @@
     <thead>
         <tr class="bg-secondary">
             <th class="trial_balance text-start text-white">Accounts</th>
-            <th class="text-white text-end">Debit</th>
-            <th class="text-white text-end">Credit</th>
+            <th class="text-white text-end">@lang('menu.debit')</th>
+            <th class="text-white text-end">@lang('menu.credit')</th>
         </tr>
     </thead>
     <tbody>

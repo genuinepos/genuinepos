@@ -400,7 +400,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Credit A/C: </b> </label>
+                                                        <label class="col-4"><b>@lang('menu.credit') A/C: </b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
                                                                 @foreach ($accounts as $account)

@@ -51,7 +51,7 @@
                             </p>
 
                             @if ($sale->branch->add_sale_invoice_layout->branch_phone)
-                                <p><b>Phone :</b>  {{ $sale->branch->phone }}</p>
+                                <p><b>@lang('menu.phone') :</b>  {{ $sale->branch->phone }}</p>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->branch_email)
@@ -73,7 +73,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>Customer : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                        <li><strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                         </li>
                         @if ($sale->branch->add_sale_invoice_layout->customer_address)
                             <li><strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
@@ -86,7 +86,7 @@
                         @endif
 
                         @if ($sale->branch->add_sale_invoice_layout->customer_phone)
-                            <li><strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                             </li>
                         @endif
                     </ul>

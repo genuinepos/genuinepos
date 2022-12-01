@@ -81,7 +81,7 @@
                                         <tbody>
                                             <tr>
                                                 <td class="text-start">1</td>
-                                                <td class="text-start"> Customer ID </td>
+                                                <td class="text-start"> @lang('menu.customer') ID </td>
                                                 <td class="text-start"> Optional</td>
                                             </tr>
 
@@ -136,7 +136,7 @@
 
                                             <tr>
                                                 <td class="text-start">10</td>
-                                                <td class="text-start">Opening Balance </td>
+                                                <td class="text-start">@lang('menu.opening_balance') </td>
                                                 <td class="text-start">Optional <br>
                                                     (<small>Opening Balance will be added in customer balance due.</small>)</td>
                                             </tr>

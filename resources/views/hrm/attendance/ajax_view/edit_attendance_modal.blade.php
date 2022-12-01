@@ -1,4 +1,4 @@
-<form id="edit_attendance_form" action="{{ route('hrm.attendance.update') }}" method="POST"> 
+<form id="edit_attendance_form" action="{{ route('hrm.attendance.update') }}" method="POST">
     @csrf
     <input type="hidden" name="id" value="{{ $attendance->id }}">
     <label class="text-navy-blue"><b>Employee :</b> {{ $attendance->prefix . ' ' . $attendance->name . ' ' . $attendance->last_name }} </label><br>
@@ -28,7 +28,7 @@
             <textarea name="clock_out_note" cols="10" rows="3" class="form-control" placeholder="Clock out note">{{ $attendance->clock_out_note }}</textarea>
         </div>
     </div>
-    
+
     <div class="form-group row mt-3">
         <div class="col-md-12 d-flex justify-content-end">
             <div class="btn-loading">

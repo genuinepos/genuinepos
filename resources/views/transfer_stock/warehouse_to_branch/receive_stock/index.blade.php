@@ -33,14 +33,14 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">Date</th>
+                                                <th class="text-start">@lang('menu.date')</th>
                                                 <th class="text-start">Reference ID</th>
-                                                <th class="text-start">B.Location(From)</th>
+                                                <th class="text-start">@lang('menu.b_location')(From)</th>
                                                 <th class="text-start">Warehouse(To)</th>
                                                 <th class="text-start">Total Item</th>
                                                 <th class="text-start">Total Qty</th>
                                                 <th class="text-start">Status</th>
-                                                <th class="text-center">Actions</th>
+                                                <th class="text-center">@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody>

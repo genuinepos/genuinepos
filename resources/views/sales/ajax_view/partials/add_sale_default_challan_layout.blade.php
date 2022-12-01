@@ -57,7 +57,7 @@
                                 </p>
 
                                 @if ($defaultLayout->branch_phone)
-                                    <p><b>Phone :</b>{{ $sale->branch->phone }}</p>
+                                    <p><b>@lang('menu.phone') :</b>{{ $sale->branch->phone }}</p>
                                 @endif
 
                                 @if ($defaultLayout->branch_email)
@@ -70,7 +70,7 @@
                                 </p>
 
                                 @if ($defaultLayout->branch_phone)
-                                    <p><b>Phone :</b>
+                                    <p><b>@lang('menu.phone') :</b>
                                         {{ json_decode($generalSettings->business, true)['phone'] }}
                                     </p>
                                 @endif
@@ -97,7 +97,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>Customer : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                        <li><strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                         </li>
                         @if ($defaultLayout->customer_address)
                             <li><strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
@@ -110,7 +110,7 @@
                         @endif
 
                         @if ($defaultLayout->customer_phone)
-                            <li><strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}</li>
                         @endif
                     </ul>
                 </div>

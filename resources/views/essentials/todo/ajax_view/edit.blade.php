@@ -58,7 +58,7 @@
 
     <div class="form-group mt-1">
         <div class="col-md-12">
-            <label><b>Description : </b></label>
+            <label><b>@lang('menu.description') : </b></label>
             <textarea name="description" class="form-control" id="description" cols="10" rows="3" placeholder="Workspace Description.">{{ $todo->description }}</textarea>
         </div>
     </div>
@@ -66,8 +66,8 @@
     <div class="form-group row mt-2">
         <div class="col-md-12 d-flex justify-content-end">
             <div class="btn-loading">
-                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                <button type="button" class="btn btn-sm btn-danger" id="close_form">Close</button>
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="button" class="btn btn-sm btn-danger" id="close_form">@lang('menu.close')</button>
                 <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
             </div>
         </div>

@@ -134,23 +134,23 @@
                         @csrf
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control add_input"
                                     data-name="Customer name" id="name" placeholder="Customer name" />
                                 <span class="error error_name"></span>
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>Phone :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.phone') :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="phone" class="form-control add_input"
                                     data-name="Phone number" id="phone" placeholder="Phone number" />
                                 <span class="error error_phone"></span>
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>Customer ID :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i></label>
+                                <label><strong>@lang('menu.customer') ID :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i></label>
                                 <input type="text" name="contact_id" class="form-control"
-                                    placeholder="Customer ID"/>
+                                    placeholder="@lang('menu.customer') ID"/>
                             </div>
 
                             <div class="col-md-3">
@@ -188,9 +188,9 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>Opening Balance :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
+                                <label><strong>@lang('menu.opening_balance') :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
                                 <input type="number" step="any" name="opening_balance" class="form-control"
-                                    placeholder="Opening balance" value="0.00" />
+                                    placeholder="@lang('menu.opening_balance')" value="0.00" />
                             </div>
 
                             <div class="col-md-3">
@@ -286,8 +286,8 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
                             </div>

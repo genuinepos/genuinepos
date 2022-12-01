@@ -19,8 +19,8 @@
                             {{ $payroll->employee->branch->country == 1 ? $payroll->employee->branch->country : '' }}.
                         @else
                             <h6>{{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>)</h6>
-                            <p>{{json_decode($generalSettings->business, true)['address']}} </p> 
-                            <p><b>Phone :</b>  {{json_decode($generalSettings->business, true)['phone']}} </p> 
+                            <p>{{json_decode($generalSettings->business, true)['address']}} </p>
+                            <p><b>@lang('menu.phone') :</b>  {{json_decode($generalSettings->business, true)['phone']}} </p>
                         @endif
                         <h6 class="modal-title" id="exampleModalLabel">Payroll Of
                             <b>{{ $payroll->employee->prefix . ' ' . $payroll->employee->name . ' ' . $payroll->employee->last_name }}</b>
@@ -34,8 +34,8 @@
         <div class="reference_area pt-2">
             <h6 class="text-dark"><b>Title :</b> Employee Salary</h6>
             <h6 class="text-dark"><b>Month :</b> {{ $payroll->month }}/{{ $payroll->year }} </h6>
-            <h6 class="text-dark"><b>Reference No :</b> {{ $payroll->reference_no }}</h6>
-            <h6 class="text-dark"><b>Created By :</b> {{ $payroll->admin->prefix.' '.$payroll->admin->name.' '.$payroll->admin->last_name }} </h6>
+            <h6 class="text-dark"><b>@lang('menu.reference_no') :</b> {{ $payroll->reference_no }}</h6>
+            <h6 class="text-dark"><b>@lang('menu.created_by') :</b> {{ $payroll->admin->prefix.' '.$payroll->admin->name.' '.$payroll->admin->last_name }} </h6>
         </div>
 
         <div class="total_amount_table_area pt-4">
@@ -48,7 +48,7 @@
                                 {{ $payroll->duration_time . ' ' . $payroll->duration_unit }}
                             </td>
                         </tr>
-    
+
                         <tr>
                             <th width="50%" class="text-start">Amount per unit duration :</th>
                             <td width="50%" class="text-start">{{ $payroll->amount_per_unit }}</td>
@@ -153,7 +153,7 @@
                             <th width="50%" class="text-start">Paid :</th>
                             <td width="50%" class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->paid }}</b> </td>
                         </tr>
-    
+
                         <tr>
                             <th width="50%" class="text-start">Due :</th>
                             <td width="50%" class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->due }}</b> </td>

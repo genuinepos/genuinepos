@@ -143,13 +143,13 @@
                                     <table class="display data_tbl data__table ledger_table w-100">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
-                                                <th>Particulars</th>
+                                                <th>@lang('menu.date')</th>
+                                                <th>@lang('menu.particulars')</th>
                                                 <th>Business Location</th>
                                                 <th>Voucher/P.Invoice</th>
-                                                <th>Debit</th>
-                                                <th>Credit</th>
-                                                <th>Running Balance</th>
+                                                <th>@lang('menu.debit')</th>
+                                                <th>@lang('menu.credit')</th>
+                                                <th>@lang('menu.running_balance')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -321,8 +321,8 @@
                                     <table class="display data_tbl data__table purchase_table w-100">
                                         <thead>
                                             <tr class="text-left">
-                                                <th>Actions</th>
-                                                <th>Date</th>
+                                                <th>@lang('menu.action')</th>
+                                                <th>@lang('menu.date')</th>
                                                 <th>Reference ID</th>
                                                 <th>Purchase From</th>
                                                 <th>Supplier</th>
@@ -333,7 +333,7 @@
                                                 <th>Payment Due</th>
                                                 <th>Return Amount</th>
                                                 <th>Return Due</th>
-                                                <th>Created By</th>
+                                                <th>@lang('menu.created_by')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -443,12 +443,12 @@
                                     <table class="display data_tbl data__table uncompleted_orders_table w-100">
                                         <thead>
                                             <tr >
-                                                <th class="text-start">Actions</th>
-                                                <th class="text-start">Date</th>
+                                                <th class="text-start">@lang('menu.action')</th>
+                                                <th class="text-start">@lang('menu.date')</th>
                                                 <th class="text-start">Order ID</th>
                                                 <th class="text-start">Purchase From</th>
                                                 <th class="text-start">Supplier</th>
-                                                <th class="text-start">Created By</th>
+                                                <th class="text-start">@lang('menu.created_by')</th>
                                                 <th class="text-start">Receiving Status</th>
                                                 <th class="text-end">Ordered Qty</th>
                                                 <th class="text-end">Received Qty</th>
@@ -594,17 +594,17 @@
                                         <table class="display data_tbl data__table payments_table w-100">
                                             <thead>
                                                 <tr class="text-start">
-                                                    <th class="text-start">Date</th>
+                                                    <th class="text-start">@lang('menu.date')</th>
                                                     <th class="text-start">Voucher No</th>
                                                     <th class="text-start">Reference</th>
                                                     <th class="text-start">Against Invoice</th>
-                                                    {{-- <th>Created By</th> --}}
+                                                    {{-- <th>@lang('menu.created_by')</th> --}}
                                                     <th class="text-start">Payment Status</th>
                                                     <th class="text-start">Payment Type</th>
                                                     <th class="text-start">Account</th>
                                                     <th class="text-end">Less Amount</th>
                                                     <th class="text-end">Paid Amount</th>
-                                                    <th class="text-start">Actions</th>
+                                                    <th class="text-start">@lang('menu.action')</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>

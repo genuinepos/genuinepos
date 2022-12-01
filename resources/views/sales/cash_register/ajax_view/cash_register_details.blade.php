@@ -110,6 +110,6 @@
     </div>
 
     <div class="form-group text-end mt-3">
-        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
     </div>
 </div>

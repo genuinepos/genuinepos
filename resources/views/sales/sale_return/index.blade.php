@@ -36,8 +36,8 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">Actions</th>
-                                                <th class="text-start">Date</th>
+                                                <th class="text-start">@lang('menu.action')</th>
+                                                <th class="text-start">@lang('menu.date')</th>
                                                 <th class="text-start">Invoice ID</th>
                                                 <th class="text-start">Parent Sale</th>
                                                 <th class="text-start">Customer Name</th>
@@ -118,7 +118,7 @@
                             </div>
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
                                     <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
                                 </ul>
                             </div>

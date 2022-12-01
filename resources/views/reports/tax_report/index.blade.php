@@ -117,7 +117,7 @@
                                                             <table class="table" id="kt_datatable">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Date</th>
+                                                                        <th>@lang('menu.date')</th>
                                                                         <th>Invoice ID</th>
                                                                         <th>Customer</th>
                                                                         <th>Tax Number</th>
@@ -150,7 +150,7 @@
                                                             <table class="table" id="kt_datatable2">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Date</th>
+                                                                        <th>@lang('menu.date')</th>
                                                                         <th>Invoice ID</th>
                                                                         <th>Supplier</th>
                                                                         <th>Tax Number</th>
@@ -183,7 +183,7 @@
                                                             <table class="table" id="kt_datatable3">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Date</th>
+                                                                        <th>@lang('menu.date')</th>
                                                                         <th>Invoice ID</th>
                                                                         <th>Expense Category</th>
                                                                         <th>Branch</th>

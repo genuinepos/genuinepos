@@ -30,7 +30,7 @@
                                         <form id="add_warranty_form" action="{{ route('product.warranties.store') }}" method="POST">
                                             @csrf
                                             <div class="form-group">
-                                                <strong>Name :</strong> <span class="text-danger">*</span>
+                                                <strong>@lang('menu.name') :</strong> <span class="text-danger">*</span>
                                                 <input type="text" name="name" class="form-control add_input" data-name="Warranty name"
                                                     id="name" placeholder="Warranty name" />
                                                 <span class="error error_name"></span>
@@ -66,7 +66,7 @@
                                             </div>
 
                                             <div class="form-group mt-2">
-                                                <strong>Description :</strong>
+                                                <strong>@lang('menu.description') :</strong>
                                                 <textarea name="description" id="description" class="form-control" cols="10" rows="3"
                                                     placeholder="Warranty description"></textarea>
                                             </div>
@@ -74,7 +74,7 @@
                                             <div class="form-group row mt-3">
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
-                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                                         <button type="reset" class="btn btn-sm btn-danger">Reset</button>
                                                         <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                                     </div>
@@ -95,9 +95,9 @@
                                         <form id="edit_warranty_form" action="{{ route('product.warranties.update') }}">
                                             <input type="hidden" name="id" id="id">
                                             <div class="form-group">
-                                                <strong>Name :</strong> <span class="text-danger">*</span>
+                                                <strong>@lang('menu.name') :</strong> <span class="text-danger">*</span>
                                                 <input type="text" name="name" class="form-control edit_input" data-name="Bank name" id="e_name"
-                                                    placeholder="Bank name" />
+                                                    placeholder="@lang('menu.bank_name')" />
                                                 <span class="error error_e_name"></span>
                                             </div>
 
@@ -131,7 +131,7 @@
                                             </div>
 
                                             <div class="form-group mt-2">
-                                                <strong>Description :</strong>
+                                                <strong>@lang('menu.description') :</strong>
                                                 <textarea name="description" id="e_description" class="form-control form-control-sm" cols="10"
                                                     rows="3" placeholder="Warranty description"></textarea>
                                             </div>
@@ -139,8 +139,8 @@
                                             <div class="form-group row mt-3">
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
-                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                                        <button type="button" class="btn btn-sm btn-danger" id="close_form">Close</button>
+                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                        <button type="button" class="btn btn-sm btn-danger" id="close_form">@lang('menu.close')</button>
                                                         <button type="submit" class="btn btn-sm btn-success submit_button">Save Changes</button>
                                                     </div>
                                                 </div>
@@ -169,8 +169,8 @@
                                                         <th>SL</th>
                                                         <th>Name</th>
                                                         <th>Duration</th>
-                                                        <th>Description</th>
-                                                        <th>Action</th>
+                                                        <th>@lang('menu.description')</th>
+                                                        <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

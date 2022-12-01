@@ -30,7 +30,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong> Referance No : </strong>{{ $payroll->reference_no }} </li>
-                    
+
                 </ul>
             </div>
         </div>
@@ -40,7 +40,7 @@
                 <ul class="list-unstyled">
                     <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ $payroll->due }} </li>
-                    <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payroll->date))}} </li>
+                    <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payroll->date))}} </li>
                 </ul>
             </div>
         </div>
@@ -60,7 +60,7 @@
                     <th class="text-white">Amount</th>
                     <th class="text-white">Method</th>
                     <th class="text-white">Account</th>
-                    <th class="text-white">Action</th>
+                    <th class="text-white">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">

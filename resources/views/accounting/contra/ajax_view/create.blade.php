@@ -1,7 +1,7 @@
 <form id="add_contra_form" action="{{ route('accounting.contras.store') }}">
     <div class="form-group row">
         <div class="col-md-6">
-            <label><strong>Date :</strong> <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
             <input type="text" name="date" class="form-control add_input" data-name="Date" id="date"
                 placeholder="DD-MM-YYYY" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}"/>
             <span class="error error_date"></span>
@@ -63,8 +63,8 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><strong>Remarks :</strong></label>
-        <input type="text" name="remarks" class="form-control" id="remarks" placeholder="Remarks"/>
+        <label><strong>@lang('menu.remarks') :</strong></label>
+        <input type="text" name="remarks" class="form-control" id="remarks" placeholder="@lang('menu.remarks')"/>
     </div>
 
     <div class="form-group d-flex justify-content-end pb-2 pt-4">
@@ -120,7 +120,7 @@
             }
         });
     });
-    
+
     new Litepicker({
         singleMode: true,
         element: document.getElementById('date'),

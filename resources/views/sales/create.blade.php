@@ -53,7 +53,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Customer :</b> </label>
+                                        <label class=" col-4"><b>@lang('menu.customer') :</b> </label>
                                         <div class="col-8">
                                             <div class="input-group flex-nowrap">
                                                 <select name="customer_id" class="form-control select2" id="customer_id">
@@ -124,7 +124,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"><b>Date : <span
+                                        <label class=" col-4"><b>@lang('menu.date') : <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-8">
                                             <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off" id="date">
@@ -512,7 +512,7 @@
                         <input type="hidden" id="op_customer_id" name="customer_id">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <p><strong>Customer : </strong> <span class="op_customer_name"></span></p>
+                                <p><strong>@lang('menu.customer') : </strong> <span class="op_customer_name"></span></p>
                                 <p><strong>Phone No. : </strong> <span class="op_customer_phone"></span></p>
                             </div>
 
@@ -521,8 +521,8 @@
                             </div>
 
                             <div class="col-md-12 mt-2">
-                                <label><b>Opening Balance :</b> </label>
-                                <input type="number" step="any" name="opening_balance" class="form-control" placeholder="Opening Balance">
+                                <label><b>@lang('menu.opening_balance') :</b> </label>
+                                <input type="number" step="any" name="opening_balance" class="form-control" placeholder="@lang('menu.opening_balance')">
                             </div>
 
                             <div class="col-12 mt-2">
@@ -537,8 +537,8 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn op_loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn op_loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button name="action" value="save" type="submit" class="btn btn-sm btn-success">Save</button>
                                 </div>
                             </div>
@@ -683,7 +683,7 @@
                                                     <th class="text-start">Invoice ID</th>
                                                     <th class="text-start">Customer</th>
                                                     <th class="text-start">Total</th>
-                                                    <th class="text-start">Actions</th>
+                                                    <th class="text-start">@lang('menu.action')</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="data-list" id="transection_list"></tbody>
@@ -696,7 +696,7 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">@lang('menu.close')</button>
                         </div>
                     </div>
                 </div>

@@ -148,7 +148,7 @@
 
                                             <tr>
                                                 <td class="text-start">11</td>
-                                                <td class="text-start">Description (Optional)</td>
+                                                <td class="text-start">@lang('menu.description') (Optional)</td>
                                                 <td class="text-start">Description of product </td>
                                             </tr>
 

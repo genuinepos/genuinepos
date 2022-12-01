@@ -122,7 +122,7 @@
                                                                             <th class="text-start">Product</th>
                                                                             <th class="text-start">Supplier</th>
                                                                             <th class="text-start">Quantity</th>
-                                                                            <th class="text-start">Action</th>
+                                                                            <th class="text-start">@lang('menu.action')</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody id="barcode_product_list"></tbody>

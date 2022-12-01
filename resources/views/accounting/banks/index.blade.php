@@ -34,10 +34,10 @@
                             <thead>
                                 <tr>
                                     <th class="text-start">SL</th>
-                                    <th class="text-start">Bank Name</th>
+                                    <th class="text-start">@lang('menu.bank_name')</th>
                                     <th class="text-start">Branch Name</th>
                                     <th class="text-start">Address</th>
-                                    <th class="text-start">Action</th>
+                                    <th class="text-start">@lang('menu.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -67,8 +67,8 @@
                     <!--begin::Form-->
                     <form id="add_bank_form" action="{{ route('accounting.banks.store') }}">
                         <div class="form-group">
-                            <label><b>Bank Name</b> : <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm add_input" data-name="Bank name" id="name" placeholder="Bank name"/>
+                            <label><b>@lang('menu.bank_name')</b> : <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control form-control-sm add_input" data-name="Bank name" id="name" placeholder="@lang('menu.bank_name')"/>
                             <span class="error error_name"></span>
                         </div>
 
@@ -114,7 +114,7 @@
                     <form id="edit_bank_form" action="{{ route('accounting.banks.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>Bank Name</b> : <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.bank_name')</b> : <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control form-control-sm edit_input" data-name="Bank name" id="e_name" placeholder="Bank name"/>
                             <span class="error error_e_name"></span>
                         </div>

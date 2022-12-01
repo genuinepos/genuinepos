@@ -2,13 +2,13 @@
     <input type="hidden" name="id" id="id" value="{{ $supplier->id }}">
     <div class="form-group row mt-1">
         <div class="col-md-3">
-            <label><b>Name :</b></label><span class="text-danger">*</span>
+            <label><b>@lang('menu.name') :</b></label><span class="text-danger">*</span>
             <input type="text" name="name" class="form-control edit_input" data-name="Supplier name" id="e_name" placeholder="Supplier Name" value="{{ $supplier->name }}"/>
             <span class="error error_e_name"></span>
         </div>
 
         <div class="col-md-3">
-            <b>Phone :</b> <span class="text-danger">*</span>
+            <b>@lang('menu.phone') :</b> <span class="text-danger">*</span>
             <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone Number" value="{{ $supplier->phone }}"/>
             <span class="error error_e_phone"></span>
         </div>
@@ -58,8 +58,8 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>Opening Balance :</b></label>
-            <input type="text" name="opening_balance" class="form-control " placeholder="Opening Balance" id="e_opening_balance" value="{{ $branchOpeningBalance ? $branchOpeningBalance->amount : 0.00 }}"/>
+            <label><b>@lang('menu.opening_balance') :</b></label>
+            <input type="text" name="opening_balance" class="form-control " placeholder="@lang('menu.opening_balance')" id="e_opening_balance" value="{{ $branchOpeningBalance ? $branchOpeningBalance->amount : 0.00 }}"/>
         </div>
 
         <div class="col-md-3">
@@ -125,8 +125,8 @@
     <div class="form-group row">
         <div class="col-md-12 d-flex justify-content-end">
             <div class="btn-loading">
-                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                 <button type="submit" class="btn btn-sm btn-success">Save Change</button>
             </div>
         </div>

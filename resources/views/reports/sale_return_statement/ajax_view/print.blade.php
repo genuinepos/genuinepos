@@ -41,9 +41,9 @@
 
         @if ($fromDate && $toDate)
 
-            <p><b>Date :</b>
+            <p><b>@lang('menu.date') :</b>
                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
-                <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+                <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
 
@@ -68,7 +68,7 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
+                    <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">Invoice ID</th>
                     <th class="text-start">Parent Sale</th>
                     <th class="text-start">Stock Location</th>

@@ -12,12 +12,12 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Customer : </strong>
+                    <li><strong>@lang('menu.customer') : </strong>
                         <span class="card_text customer_name">
-                            {{ $receipt->cus_name }} 
+                            {{ $receipt->cus_name }}
                         </span>
                     </li>
-                    <li><strong>Phone : </strong>
+                    <li><strong>@lang('menu.phone') : </strong>
                         <span class="card_text customer_name">
                             {{ $receipt->cus_phone }}
                         </span>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="col-md-3">
-            <label for="p_date"><strong>Date :</strong></label>
+            <label for="p_date"><strong>@lang('menu.date') :</strong></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i
@@ -76,11 +76,11 @@
             <div class="col-md-3">
                 <p> <input type="checkbox" {{ $receipt->is_customer_name ? 'CHECKED' : '' }} name="is_customer_name" id="is_customer_name" value="1"> &nbsp; <b>Show Customer Name</b> </p>
             </div>
-            
+
             <div class="col-md-2">
                 <p> <input type="checkbox" {{ $receipt->is_date ? 'CHECKED' : '' }} name="is_date" value="1"> &nbsp; <b>Show Date</b></p>
             </div>
-          
+
             <div class="col-md-3 mt-2">
                 <p> <input type="checkbox" {{ $receipt->is_header_less ? 'CHECKED' : '' }} name="is_header_less" id="is_header_less" value="1"> &nbsp; <b>Is Header Less For Pad Print?</b> </p>
             </div>
@@ -94,9 +94,9 @@
 
     <div class="form-group row mt-3">
         <div class="col-md-12">
-            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
             <button type="submit" class="c-btn button-success float-end">Save</button>
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
         </div>
     </div>
 </form>

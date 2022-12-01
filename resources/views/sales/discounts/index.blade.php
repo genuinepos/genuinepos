@@ -50,7 +50,7 @@
                                                 <th>Brand</th>
                                                 <th>Category</th>
                                                 <th>Applicable Products</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -85,7 +85,7 @@
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control add_input"
                                     data-name="Discount name" id="name" placeholder="Offer name" />
                                 <span class="error error_name"></span>

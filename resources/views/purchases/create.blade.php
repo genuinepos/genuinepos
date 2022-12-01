@@ -37,7 +37,7 @@
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <label class=" col-4"><span
-                                            class="text-danger">*</span> <b>Supplier :</b></label>
+                                            class="text-danger">*</span> <b>@lang('menu.supplier')</b></label>
                                         <div class="col-8">
                                             <div class="input-group">
                                                 <select name="supplier_id" class="form-control add_input"
@@ -368,7 +368,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Credit A/C : <span
+                                                        <label class="col-4"><b>@lang('menu.credit') A/C : <span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
@@ -416,7 +416,7 @@
                 <div class="row justify-content-center">
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
                             <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">Save & Print</button>
                             <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">Save</button>
                         </div>
@@ -467,7 +467,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <label><strong>Description :</strong></label>
+                            <label><strong>@lang('menu.description') :</strong></label>
                             <textarea name="product_description" id="product_description" class="form-control" cols="30" rows="10" placeholder="Description"></textarea>
                         </div>
                     </div>

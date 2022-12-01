@@ -32,7 +32,7 @@
                                         <form id="add_variant_form" action="{{ route('product.variants.store') }}">
                                             <div class="form-group row">
                                                 <div class="col-md-12">
-                                                    <label><b>Name :</b> <span class="text-danger">*</span></label>
+                                                    <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                                                     <input type="text" name="variant_name" class="form-control add_input"
                                                         data-name="Variant name" id="variant_name" placeholder="Variant Name" />
                                                     <span class="error error_variant_name"></span>
@@ -60,8 +60,8 @@
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
                                                         <button type="button" class="btn loading_button d-hide"><i
-                                                                class="fas fa-spinner"></i><span> Loading...</span></button>
-                                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                                                class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                                         <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                                     </div>
                                                 </div>
@@ -81,7 +81,7 @@
                                         <form id="edit_variant_form" action="{{ route('product.variants.update') }}">
                                             <input type="hidden" name="id" id="id">
                                             <div class="form-group">
-                                                <b>Name :</b> <span class="text-danger">*</span>
+                                                <b>@lang('menu.name') :</b> <span class="text-danger">*</span>
                                                 <input type="text" name="variant_name" class="form-control edit_input"
                                                     data-name="Brand name" id="e_variant_name" placeholder="Brand Name" />
                                                 <span class="error error_e_variant_name"></span>
@@ -107,8 +107,8 @@
                                             <div class="form-group row mt-2">
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
-                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                                        <button type="button" data-bs-dismiss="modal" class="btn btn-sm btn-danger" id="close_form">Close</button>
+                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                        <button type="button" data-bs-dismiss="modal" class="btn btn-sm btn-danger" id="close_form">@lang('menu.close')</button>
                                                         <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
                                                     </div>
                                                 </div>
@@ -136,7 +136,7 @@
                                                     <tr>
                                                         <th class="text-start">Name</th>
                                                         <th class="text-start">Childs</th>
-                                                        <th class="text-start">Actions</th>
+                                                        <th class="text-start">@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

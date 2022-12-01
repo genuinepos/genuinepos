@@ -85,7 +85,7 @@
     <div class="submit-area d-flex justify-content-end mt-3">
         <div class="btn-loading">
             <button type="button" class="btn loading_button d-hide">
-                <i class="fas fa-spinner"></i><span> Loading...</span>
+                <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
             </button>
 
             <button data-action="save" id="save" class="btn btn-sm btn-success submit_button">

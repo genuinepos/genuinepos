@@ -12,7 +12,7 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-md-6">
-                            <label><strong>Date : <span class="text-danger">*</span></strong></label>
+                            <label><strong>@lang('menu.date') : <span class="text-danger">*</span></strong></label>
                             <input type="text" name="date" class="form-control" id="date" value="{{ str_replace('/', '-', date(json_decode($generalSettings->business, true)['date_format'])) }}">
                             <span class="error error_date"></span>
                         </div>
@@ -87,7 +87,7 @@
                     <div class="form-group row mt-2">
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Reset</button>
                                 <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                             </div>
@@ -185,9 +185,9 @@
                     <table class="display data_tbl2 data__table asset_table w-100">
                         <thead>
                             <tr>
-                                <th>Action</th>
-                                <th>Date</th>
-                                <th>B.Location</th>
+                                <th>@lang('menu.action')</th>
+                                <th>@lang('menu.date')</th>
+                                <th>@lang('menu.b_location')</th>
                                 <th>Ref. No.</th>
                                 <th>Company/People</th>
                                 <th>Type</th>

@@ -355,7 +355,7 @@
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
                                                         <label class="col-4">
-                                                            <b>Credit A/C :
+                                                            <b>@lang('menu.credit') A/C :
                                                                 <span class="text-danger">*</span>
                                                             </b>
                                                         </label>

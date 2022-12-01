@@ -8,7 +8,7 @@
             <tbody>
                 <tr>
                     <td class="text-end">
-                        <strong>Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong> 
+                        <strong>@lang('menu.opening_balance') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                     </td>
 
                     <td class="text-end opening_balance"> {{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</td>
@@ -40,7 +40,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.balance_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</td>
                 </tr>
 

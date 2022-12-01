@@ -19,7 +19,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Customer : </strong><span>{{ $payment->sale->customer ? $payment->sale->customer->name : 'Walk-In-Customer' }}</span> </li>
+                                <li><strong>@lang('menu.customer') : </strong><span>{{ $payment->sale->customer ? $payment->sale->customer->name : 'Walk-In-Customer' }}</span> </li>
                                 <li><strong>Business : </strong><span>{{ $payment->sale->customer ? $payment->sale->customerbusiness_name : '' }}</span> </li>
                             </ul>
                         </div>
@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -147,8 +147,8 @@
                 <div class="form-group row mt-3">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                             <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
                         </div>
                     </div>

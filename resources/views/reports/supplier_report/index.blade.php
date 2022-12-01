@@ -36,7 +36,7 @@
                                                         @csrf
                                                         <div class="form-group row">
                                                             <div class="col-md-4">
-                                                                <label><strong>Supplier :</strong></label>
+                                                                <label><strong>@lang('menu.supplier') : </strong></label>
                                                                 <select name="supplier_id" class="form-control submit_able" id="supplier_id" autofocus>
                                                                     <option value="">All</option>
                                                                     @foreach ($suppliers as $supplier)

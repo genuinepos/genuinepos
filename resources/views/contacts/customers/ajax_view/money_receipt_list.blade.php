@@ -12,12 +12,12 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li class="text-navy-blue"><strong>Customer : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.customer') : </strong>
                         <span class="card_text customer_name">
                             {{ $customer->name }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>Phone : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.phone') : </strong>
                         <span class="card_text customer_name">
                             {{ $customer->phone }}
                         </span>
@@ -68,11 +68,11 @@
         <table class="display data_tbl data__table table-striped">
             <thead>
                 <tr>
-                    <th>Date</th>
+                    <th>@lang('menu.date')</th>
                     <th>From</th>
                     <th>Voucher No</th>
                     <th>Amount</th>
-                    <th>Action</th>
+                    <th>@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="receipt_list_body">
@@ -129,7 +129,7 @@
 
 <div class="form-group row mt-3">
     <div class="col-md-12 d-flex justify-content-end gap-2">
-        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
         <a href="{{ route('money.receipt.voucher.create', [$customer->id]) }}" id="generate_receipt" class="btn btn-sm btn-success">Generate New</a>
     </div>
 </div>

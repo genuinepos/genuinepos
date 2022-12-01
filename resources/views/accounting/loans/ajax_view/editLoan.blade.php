@@ -2,7 +2,7 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-6">
-            <label><strong>Date : <span class="text-danger">*</span></strong></label>
+            <label><strong>@lang('menu.date') : <span class="text-danger">*</span></strong></label>
             <input type="text" name="date" class="form-control" id="e_date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($loan->report_date)) }}">
             <span class="error error_e_date"></span>
         </div>
@@ -80,8 +80,8 @@
     <div class="form-group row mt-2">
         <div class="col-md-12 d-flex justify-content-end">
             <div class="btn-loading">
-                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                <button type="button" class="btn btn-sm btn-danger" id="close_loan_edit_form">Close</button>
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="button" class="btn btn-sm btn-danger" id="close_loan_edit_form">@lang('menu.close')</button>
                 <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
             </div>
         </div>

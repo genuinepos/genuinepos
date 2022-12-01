@@ -109,9 +109,9 @@
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                                 <a href="" class="c-btn button-success me-0 float-end" id="submit_btn" data-action_id="1">Confirm (F10)</a>
-                                <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">Close</button>
+                                <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">@lang('menu.close')</button>
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                                                         <th class="text-start">Reference/InvoiceId</th>
                                                         <th class="text-start">Customer</th>
                                                         <th class="text-start">Total</th>
-                                                        <th class="text-start">Actions</th>
+                                                        <th class="text-start">@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="data-list" id="transection_list"></tbody>
@@ -173,7 +173,7 @@
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
+                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
                             </div>
                         </div>
                     </div>
@@ -208,7 +208,7 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
                         </div>
                     </div>
                 </div>
@@ -338,7 +338,7 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
                                 <button type="submit" class="c-btn button-success me-0 float-end">Update</button>
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                             </div>
                         </div>
                     </form>

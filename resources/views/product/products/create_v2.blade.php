@@ -536,7 +536,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-2"> <b>Description :</b> </label>
+                                                <label class="col-2"> <b>@lang('menu.description') :</b> </label>
                                                 <div class="col-10">
                                                     <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;"></textarea>
                                                 </div>
@@ -584,7 +584,7 @@
                                                 <th>Product</th>
                                                 <th>Unit Cost</th>
                                                 <th>Unit Price</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

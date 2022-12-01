@@ -2,7 +2,7 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-6">
-            <label><b>Name :</b></label>
+            <label><b>@lang('menu.name') :</b></label>
             <input required type="text" name="name" class="form-control" placeholder="Workspace Name" value="{{ $ws->name }}">
         </div>
 
@@ -60,7 +60,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-12">
-            <label><b>Description : </b></label>
+            <label><b>@lang('menu.description') : </b></label>
             <textarea name="description" class="form-control" id="description" cols="10" rows="3" placeholder="Workspace Description.">{{ $ws->description }}</textarea>
         </div>
     </div>
@@ -80,8 +80,8 @@
     <div class="form-group row mt-2">
         <div class="col-md-12 d-flex justify-content-end">
             <div class="btn-loading">
-                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                 <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
             </div>
         </div>

@@ -79,7 +79,7 @@
                                                         <th>S/L</th>
                                                         <th>Type</th>
                                                         <th>Type Code</th>
-                                                        <th>Action</th>
+                                                        <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -111,7 +111,7 @@
                                                         <th>Quantity</th>
                                                         <th>Per Unit Value</th>
                                                         <th>Total Value</th>
-                                                        <th>Action</th>
+                                                        <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
@@ -164,8 +164,8 @@
                         <div class="form-group row mt-2">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
                             </div>
@@ -276,8 +276,8 @@
                         <div class="form-group row mt-2">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
                             </div>

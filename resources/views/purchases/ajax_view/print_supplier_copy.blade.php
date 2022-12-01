@@ -1,7 +1,7 @@
-@php 
+@php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
-@endphp 
+@endphp
 
  <style>
     @media print
@@ -31,13 +31,13 @@
                         @if ($purchase->branch)
                             @if ($purchase->branch->logo != 'default.png')
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase->branch->logo) }}">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
                             @endif
-                        @else 
+                        @else
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                 <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             @endif
                         @endif
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
-                        
+
                     </div>
                 </div>
             </div>
@@ -57,18 +57,18 @@
                 <div class="row">
                     <div class="col-4">
                         <ul class="list-unstyled">
-                            <li><strong>Supplier :- </strong></li>
-                            <li><strong>Name : </strong>{{ $purchase->supplier->name }}</li>
+                            <li><strong>@lang('menu.supplier') : - </strong></li>
+                            <li><strong>@lang('menu.name') :</strong>{{ $purchase->supplier->name }}</li>
                             <li><strong>Address : </strong>{{ $purchase->supplier->address }}</li>
                             <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
-                            <li><strong>Phone : </strong> {{ $purchase->supplier->phone }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>
                     </div>
                     <div class="col-4">
                         <ul class="list-unstyled">
                             <li><strong>Ordered From : </strong></li>
                             <li>
-                                <strong>Business Location : </strong> 
+                                <strong>Business Location : </strong>
                                 @if ($purchase->branch)
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
@@ -95,9 +95,9 @@
                             <li><strong>Delivery Date : </strong>
                                 {{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}
                             </li>
-                            
+
                             <li><strong>Purchase Status : </strong>Ordered</li>
-                            <li><strong>Created By : </strong>
+                            <li><strong>@lang('menu.created_by') : </strong>
                                 {{ $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name }}
                             </li>
                         </ul>
@@ -110,7 +110,7 @@
                     <thead>
                         <tr>
                             <th class="text-start">SL</th>
-                            <th class="text-start">Description</th>
+                            <th class="text-start">@lang('menu.description')</th>
                             <th scope="col">Ordered Quantity</th>
                         </tr>
                     </thead>
@@ -119,11 +119,11 @@
                         @foreach ($purchase->purchase_order_products as $product)
                             <tr>
                                 @php
-                                    $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
+                                    $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : '';
                                 @endphp
                                 <td class="text-start">{{ $index + 1 }}</td>
                                 <td class="text-start">
-                                    {{ Str::limit($product->product->name, 25).' '.$variant }} 
+                                    {{ Str::limit($product->product->name, 25).' '.$variant }}
                                     <small>{!! $product->description ? '<br/>'.$product->description : '' !!}</small>
                                 </td>
                                 <td>{{ $product->order_quantity }}</td>

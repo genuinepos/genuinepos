@@ -31,7 +31,7 @@
                                     <div class="form-area px-3 pb-2">
                                         <form id="add_group_form" action="{{ route('contacts.customers.groups.store') }}">
                                             <div class="form-group mt-2">
-                                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                                <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
                                                 <input type="text" name="name" class="form-control add_input"
                                                     data-name="Group name" id="name" placeholder="Group name" />
                                                 <span class="error error_name"></span>
@@ -46,7 +46,7 @@
                                             <div class="form-group row mt-3">
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
-                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><span> Loading...</span></button>
+                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><span> @lang('menu.loading')...</span></button>
                                                         <button type="reset" class="btn btn-sm btn-danger">Reset</button>
                                                         <button type="submit" class="btn btn-sm btn-success">Save</button>
                                                     </div>
@@ -67,7 +67,7 @@
                                         <form id="edit_group_form" action="{{ route('contacts.customers.groups.update') }}">
                                             <input type="hidden" name="id" id="id">
                                             <div class="form-group mt-2">
-                                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                                <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
                                                 <input type="text" name="name" class="form-control edit_input"
                                                     data-name="Group name" id="e_name" placeholder="Group name" />
                                                 <span class="error error_e_name"></span>
@@ -83,8 +83,8 @@
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
                                                         <button type="button" class="btn loading_button d-hide"><i
-                                                                class="fas fa-spinner"></i><span> Loading...</span></button>
-                                                        <button type="button" id="close_form" class="btn btn-sm btn-danger">Close</button>
+                                                                class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                        <button type="button" id="close_form" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                                         <button type="submit" class="btn btn-sm btn-success">Save</button>
                                                     </div>
                                                 </div>
@@ -113,7 +113,7 @@
                                                         <th>Serial</th>
                                                         <th>Name</th>
                                                         <th>Calculation Percent</th>
-                                                        <th>Action</th>
+                                                        <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

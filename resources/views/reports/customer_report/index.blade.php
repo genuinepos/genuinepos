@@ -37,7 +37,7 @@
                                                         @csrf
                                                         <div class="form-group row">
                                                             <div class="col-md-4">
-                                                                <label><strong>Customer :</strong></label>
+                                                                <label><strong>@lang('menu.customer') :</strong></label>
                                                                 <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
                                                                     <option value="">All</option>
                                                                     @foreach ($customers as $customer)

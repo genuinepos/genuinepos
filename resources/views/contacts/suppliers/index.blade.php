@@ -128,13 +128,13 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <b>Name :</b>  <span class="text-danger">*</span>
+                                <b>@lang('menu.name') :</b>  <span class="text-danger">*</span>
                                 <input type="text" name="name" class="form-control  add_input" data-name="Supplier name" id="name" placeholder="Supplier name"/>
                                 <span class="error error_name" style="color: red;"></span>
                             </div>
 
                             <div class="col-md-3">
-                                <b>Phone :</b> <span class="text-danger">*</span>
+                                <b>@lang('menu.phone') :</b> <span class="text-danger">*</span>
                                 <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
                                 <span class="error error_phone"></span>
                             </div>
@@ -184,8 +184,8 @@
                             </div>
 
                             <div class="col-md-3">
-                                <b>Opening Balance :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this supplier due." class="fas fa-info-circle tp"></i>
-                                <input type="number" name="opening_balance" class="form-control" placeholder="Opening balance"/>
+                                <b>@lang('menu.opening_balance') :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this supplier due." class="fas fa-info-circle tp"></i>
+                                <input type="number" name="opening_balance" class="form-control" placeholder="@lang('menu.opening_balance')"/>
                             </div>
 
                             <div class="col-md-3">
@@ -250,8 +250,8 @@
                         <div class="form-group row">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
                             </div>

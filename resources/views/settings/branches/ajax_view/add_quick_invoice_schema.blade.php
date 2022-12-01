@@ -6,7 +6,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>Name :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control" id="q_name" placeholder="Schema name"/>
             <span class="error error_q_name"></span>
         </div>

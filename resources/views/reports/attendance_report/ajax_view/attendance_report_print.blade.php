@@ -42,7 +42,7 @@
     <table class="table modal-table table-sm table-bordered">
         <thead>
             <tr>
-                <th class="text-start">Date</th>
+                <th class="text-start">@lang('menu.date')</th>
                 <th class="text-start">Employee</th>
                 <th class="text-start">Clock In - Clock Out</th>
                 <th class="text-start">Work Duration</th>

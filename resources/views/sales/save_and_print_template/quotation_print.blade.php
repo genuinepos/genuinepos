@@ -45,11 +45,11 @@
                                 </h6>
 
                                 @if ($sale->branch->add_sale_invoice_layout->branch_phone)
-                                    <h6>Phone : {{ $sale->branch->phone }}</h6>
+                                    <h6>@lang('menu.phone') : {{ $sale->branch->phone }}</h6>
                                 @endif
 
                                 @if ($sale->branch->add_sale_invoice_layout->branch_email)
-                                    <h6>Phone : {{ $sale->branch->email }}</h6>
+                                    <h6>@lang('menu.phone') : {{ $sale->branch->email }}</h6>
                                 @endif
 
                                 <h6 class="bill_name">Entered By :
@@ -72,7 +72,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>Customer : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($sale->branch->add_sale_invoice_layout->customer_address)
                                 <li>
@@ -88,7 +88,7 @@
 
                             @if ($sale->branch->add_sale_invoice_layout->customer_phone)
                                 <li>
-                                    <strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                                    <strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                                 </li>
                             @endif
                         </ul>
@@ -307,7 +307,7 @@
                                     </h6>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <h6>Phone : {{ $sale->branch->phone }}</h6>
+                                        <h6>@lang('menu.phone') : {{ $sale->branch->phone }}</h6>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
@@ -323,7 +323,7 @@
                                     </h6>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <h6>Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</h6>
+                                        <h6>@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</h6>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
@@ -347,7 +347,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>Customer : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($defaultLayout->customer_address)
                                 <li>
@@ -363,7 +363,7 @@
 
                             @if ($defaultLayout->customer_phone)
                                 <li>
-                                    <strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                                    <strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                                 </li>
                             @endif
                         </ul>

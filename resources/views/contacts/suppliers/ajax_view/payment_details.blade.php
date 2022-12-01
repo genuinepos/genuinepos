@@ -28,8 +28,8 @@
         <p><strong>Title :</strong>
             {{ $supplierPayment->type == 1 ? 'Supplier Payment' : 'Return Payment' }} 
         </p>
-        <p><strong>Supplier :</strong> {{ $supplierPayment->supplier->name }}</p>
-        <p><strong>Phone :</strong> {{ $supplierPayment->supplier->phone }}</p>
+        <p><strong>@lang('menu.supplier') : </strong> {{ $supplierPayment->supplier->name }}</p>
+        <p><strong>@lang('menu.phone') :</strong> {{ $supplierPayment->supplier->phone }}</p>
         <p><strong>Address :</strong> {{ $supplierPayment->supplier->address }}</p>
     </div>
 

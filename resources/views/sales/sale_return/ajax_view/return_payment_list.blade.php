@@ -11,7 +11,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Customer : </strong>
+                    <li><strong>@lang('menu.customer') : </strong>
                         {{ $return->customer ? $return->customer->name : 'Walk-In-Customer' }}
                     </li>
 
@@ -72,7 +72,7 @@
                     <th class="text-white text-start">Method</th>
                     <th class="text-white text-start">Account</th>
                     <th class="text-white text-end">Amount</th>
-                    <th class="text-white text-start">Action</th>
+                    <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">

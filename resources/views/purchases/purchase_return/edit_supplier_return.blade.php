@@ -35,7 +35,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class=" col-4"><b>Supplier :</b> <span
+                                                <label class=" col-4"><b>@lang('menu.supplier')</b> <span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <input readonly type="text" id="supplier_name" class="form-control" value="{{ $return->supplier->name .'('.$return->supplier->phone.')' }}">
@@ -274,7 +274,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide"><i
-                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                            class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                         <button id="save" class="btn btn-sm btn-primary float-end">Save (Shift+Enter)</button>
                     </div>
                 </div>

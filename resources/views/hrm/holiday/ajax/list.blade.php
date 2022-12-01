@@ -3,10 +3,10 @@
         <tr class="text-center">
             <th>S/L</th>
             <th>Name</th>
-            <th>Date</th>
+            <th>@lang('menu.date')</th>
             <th>Allowed Branch</th>
             <th>Note</th>
-            <th>Actions</th>
+            <th>@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

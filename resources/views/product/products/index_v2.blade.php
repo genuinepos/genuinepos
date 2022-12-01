@@ -149,7 +149,7 @@
                                                         <input class="all" type="checkbox" name="all_checked"/>
                                                     </th>
                                                     <th>Image</th>
-                                                    <th>Actions</th>
+                                                    <th>@lang('menu.action')</th>
                                                     <th>Product</th>
                                                     <th>Access Locations</th>
                                                     <th>Purchase Cost</th>

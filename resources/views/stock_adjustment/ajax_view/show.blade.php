@@ -23,7 +23,7 @@
                                 <strong>Adjustment Location : </strong>
                                 {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->warehouse->phone}}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone}}</li>
                             <li><strong>Address : </strong> {{ $adjustment->warehouse->address}}</li>
                         @elseif($adjustment->branch_id)
                             <li>
@@ -49,12 +49,12 @@
 
                 <div class="col-md-6 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
-                        <li><strong>Reference No : </strong> {{ $adjustment->invoice_id }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
+                        <li><strong>@lang('menu.reference_no') : </strong> {{ $adjustment->invoice_id }}</li>
                         <li><strong>Type : </strong>
                             {!! $adjustment->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>' !!}
                         </li>
-                        <li><strong>Created By : </strong>
+                        <li><strong>@lang('menu.created_by') : </strong>
                             {{ $adjustment->admin ? $adjustment->admin->prefix.' '.$adjustment->admin->name.' '.$adjustment->admin->last_name : 'N/A' }}
                         </li>
                     </ul>
@@ -199,14 +199,14 @@
             <div class="row">
                 <div class="col-8">
                     <ul class="list-unstyled">
-                        <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
-                        <li><strong>Reference No : </strong>{{ $adjustment->invoice_id }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
+                        <li><strong>@lang('menu.reference_no') : </strong>{{ $adjustment->invoice_id }}</li>
                           @if ($adjustment->warehouse_id)
                             <li>
                                 <strong>Adjustment Location : </strong>
                                 {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->warehouse->phone }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone }}</li>
                             <li><strong>Address : </strong> {{ $adjustment->warehouse->address }}</li>
                         @elseif($adjustment->branch_id)
                             <li>
@@ -237,7 +237,7 @@
                             {{ $adjustment->type == 1 ? 'Normal' : 'Abnormal' }}
                         </li>
                         <li>
-                            <strong>Created By : </strong>
+                            <strong>@lang('menu.created_by') : </strong>
                             {{ $adjustment->admin ? $adjustment->admin->prefix.' '.$adjustment->admin->name.' '.$adjustment->admin->last_name : 'N/A' }}
                         </li>
                     </ul>

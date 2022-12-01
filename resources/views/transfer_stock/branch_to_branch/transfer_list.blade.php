@@ -116,11 +116,11 @@
                             <table class="display data_tbl table-sm table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Actions</th>
-                                        <th>Date</th>
+                                        <th>@lang('menu.action')</th>
+                                        <th>@lang('menu.date')</th>
                                         <th>Reference ID</th>
                                         <th>Sender B. Location</th>
-                                        <th>Receiver B.Location</th>
+                                        <th>Receiver @lang('menu.b_location')</th>
                                         <th>Receive Status</th>
                                         <th>Total Item</th>
                                         <th>Send Qty</th>

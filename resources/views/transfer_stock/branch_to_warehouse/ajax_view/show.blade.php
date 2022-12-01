@@ -14,9 +14,9 @@
             <div class="row">
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>B.Location (To) : </strong></li>
-                        <li><strong>Name :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        <li><strong>@lang('menu.b_location') (To) : </strong></li>
+                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         @if ($transfer->branch)
                             <li><strong>Address : </strong>
                                 {{ $transfer->branch->city }},
@@ -33,15 +33,15 @@
                 <div class="col-md-4">
                     <ul class="list-unstyled">
                         <li><strong>Warehouse (From) : </strong></li>
-                        <li><strong>Name :</strong>{{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
-                        <li><strong>Phone : </strong>{{ $transfer->warehouse->phone }}</li>
+                        <li><strong>@lang('menu.name') :</strong>{{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
+                        <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
                         <li><strong>Address : </strong>{{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
 
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled float-right">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
                         <li><strong>Status : </strong>
                             @if ($transfer->status == 1)
@@ -163,7 +163,7 @@
                     <div class="heading text-center">
                         <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                         <p>{{ json_decode($generalSettings->business, true)['address'] }}</p>
-                        <p>Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                        <p>@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                         <h6>Transfer Stock (To Warehouse)</h6>
                     </div>
                 </div>
@@ -174,9 +174,9 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>B.Location (From) : </strong></li>
-                        <li><strong>Name :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        <li><strong>@lang('menu.b_location') (From) : </strong></li>
+                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         @if ($transfer->branch)
                             <li><strong>Address : </strong>
                                 {{ $transfer->branch->city }},
@@ -193,15 +193,15 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>Warehouse (To) : </strong></li>
-                        <li><strong>Name :</strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
-                        <li><strong>Phone : </strong>{{ $transfer->warehouse->phone }}</li>
+                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
+                        <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
                         <li><strong>Address : </strong> {{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
 
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
                         <li><strong>Status : </strong>
                             @if ($transfer->status == 1)

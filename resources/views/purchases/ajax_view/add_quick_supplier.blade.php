@@ -2,13 +2,13 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-3">
-            <label><strong>Name :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.name') :</strong>  <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control s_add_input" data-name="Supplier name" id="name" placeholder="Supplier Name"/>
             <span class="error error_name"></span>
         </div>
 
         <div class="col-md-3">
-            <label><strong>Phone :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.phone') :</strong>  <span class="text-danger">*</span></label>
             <input type="text" name="phone" class="form-control s_add_input" data-name="Phone number" id="phone" placeholder="Phone Number"/>
             <span class="error error_phone"></span>
         </div>
@@ -58,8 +58,8 @@
         </div>
 
         <div class="col-md-3">
-            <label><strong>Opening Balance :</strong>  </label>
-            <input type="number" name="opening_balance" class="form-control" placeholder="Opening Balance"/>
+            <label><strong>@lang('menu.opening_balance') :</strong>  </label>
+            <input type="number" name="opening_balance" class="form-control" placeholder="@lang('menu.opening_balance')"/>
         </div>
 
         <div class="col-md-3">
@@ -121,8 +121,8 @@
     <div class="form-group row mt-3">
         <div class="col-md-12 d-flex justify-content-end">
             <div class="btn-loading">
-                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                 <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
             </div>
         </div>

@@ -189,7 +189,7 @@
 
                                 <div class="col-md-5">
                                     <div class="col-md-12">
-                                        <p><strong>Customers</strong></p>
+                                        <p><strong>@lang('menu.customers')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">

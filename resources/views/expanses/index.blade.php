@@ -122,11 +122,11 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th class="text-start">Actions</th>
-                                    <th class="text-start">Date</th>
+                                    <th class="text-start">@lang('menu.action')</th>
+                                    <th class="text-start">@lang('menu.date')</th>
                                     <th class="text-start">Reference ID</th>
-                                    <th class="text-start">B.Location</th>
-                                    <th class="text-start">Description</th>
+                                    <th class="text-start">@lang('menu.b_location')</th>
+                                    <th class="text-start">@lang('menu.description')</th>
                                     <th class="text-start">Expanse For</th>
                                     <th class="text-start">Payment Status</th>
                                     <th class="text-start">Tax</th>

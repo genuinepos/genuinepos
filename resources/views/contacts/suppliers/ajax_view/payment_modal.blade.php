@@ -27,7 +27,7 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Supplier : </strong>
+                                <li><strong>@lang('menu.supplier') : </strong>
                                     <span class="card_text customer_name">{{ $supplier->name }}</span>
                                 </li>
 
@@ -138,7 +138,7 @@
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">SL</th>
-                                                                    <th class="text-start text-white">Date</th>
+                                                                    <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">Order/Invoice ID</th>
                                                                     <th class="text-start text-white">Status</th>
                                                                     <th class="text-start text-white">Pay Status</th>
@@ -216,7 +216,7 @@
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">Select</th>
-                                                                    <th class="text-start text-white">Date</th>
+                                                                    <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">Invoice ID</th>
                                                                     <th class="text-start text-white">Payment Status</th>
                                                                     <th class="text-start text-white">Purchased Amt.</th>
@@ -281,7 +281,7 @@
                                                             <thead>
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">Select</th>
-                                                                    <th class="text-start text-white">Date</th>
+                                                                    <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">Order ID</th>
                                                                     <th class="text-start text-white">Payment Status</th>
                                                                     <th class="text-start text-white">Purchased Amt.</th>
@@ -361,7 +361,7 @@
                             </div>
         
                             <div class="col-md-4">
-                                <strong for="p_date">Date :</strong> <span class="text-danger">*</span>
+                                <strong for="p_date">@lang('menu.date') :</strong> <span class="text-danger">*</span>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_f"></i></span>
@@ -449,10 +449,10 @@
         
                 <div class="form-group row mt-4">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
+                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                         <button name="action" type="submit" value="save" class="c-btn button-success float-end" id="add_supplier_payment">Save</button>
                         <button name="action" value="save_and_print" type="button" class="c-btn button-success float-end" id="add_supplier_payment">Save & Print</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
                 </div>
             </form>

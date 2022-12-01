@@ -12,7 +12,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong>Company/People : </strong>{{ $company->name  }}</li>
-                    <li><strong>Phone : </strong>{{ $company->phone }}</li>
+                    <li><strong>@lang('menu.phone') : </strong>{{ $company->phone }}</li>
                     <li><strong>Address : </strong>{{ $company->address }}</li>
                 </ul>
             </div>
@@ -90,7 +90,7 @@
                     <th class="text-white text-start">Method</th>
                     <th class="text-white text-start">Account</th>
                     <th class="text-white text-end">Amount({{ json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-white text-start">Action</th>
+                    <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">

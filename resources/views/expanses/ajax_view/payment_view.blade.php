@@ -24,7 +24,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong>Total Due : </strong>{{ $expense->due }}</li>
-                    <li><strong>Date : </strong>{{ $expense->date }}</li>
+                    <li><strong>@lang('menu.date') : </strong>{{ $expense->date }}</li>
                     <li><strong>Payment Status : </strong> 
                         @php
                            $payable = $expense->net_total_amount; 
@@ -50,14 +50,14 @@
         <table class="display modal-table table-sm table-striped">
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
+                    <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">Voucher No</th>
                     <th class="text-start">Note</th>
                     <th class="text-start">Amount</th>
                     <th class="text-start">Method</th>
                     <th class="text-start">Type</th>
                     <th class="text-start">Account</th>
-                    <th class="text-start">Action</th>
+                    <th class="text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">

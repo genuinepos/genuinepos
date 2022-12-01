@@ -259,7 +259,7 @@
                         <div class="row mt-2">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-4"><b>Phone :</b> </label>
+                                    <label for="inputEmail3" class="col-4"><b>@lang('menu.phone') :</b> </label>
                                     <div class="col-8">
                                         <input type="text" name="phone" class="form-control"
                                             autocomplete="off" placeholder="Phone number"
@@ -382,7 +382,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-4"><b>Account Name :</b> </label>
+                                    <label for="inputEmail3" class="col-4"><b>@lang('menu.account_name') :</b> </label>
                                     <div class="col-8">
                                         <input type="text" name="bank_ac_holder_name" class="form-control "
                                             placeholder="Account holder's name" autocomplete="off"
@@ -396,7 +396,7 @@
                                     <label for="inputEmail3" class="col-4"><b>Account No :</b> </label>
                                     <div class="col-8">
                                         <input type="text" name="bank_ac_no" class="form-control"
-                                            placeholder="Account number" autocomplete="off"
+                                            placeholder="@lang('menu.account_number')" autocomplete="off"
                                             value="{{ auth()->user()->bank_ac_no }}">
                                     </div>
                                 </div>
@@ -406,10 +406,10 @@
                         <div class="row mt-1">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-4"><b>Bank Name :</b> </label>
+                                    <label for="inputEmail3" class="col-4"><b>@lang('menu.bank_name') :</b> </label>
                                     <div class="col-8">
                                         <input type="text" name="bank_name" class="form-control"
-                                            placeholder="Bank name" autocomplete="off"
+                                            placeholder="@lang('menu.bank_name')" autocomplete="off"
                                             value="{{ auth()->user()->bank_name }}">
                                     </div>
                                 </div>

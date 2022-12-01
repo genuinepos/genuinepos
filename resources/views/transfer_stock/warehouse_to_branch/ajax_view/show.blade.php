@@ -1,4 +1,4 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-full-display">
@@ -15,25 +15,25 @@
                 <div class="col-md-4">
                     <ul class="list-unstyled">
                         <li><strong>Warehouse (From) : </strong></li>
-                        <li><strong>Name :</strong>{{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
-                        <li><strong>Phone : </strong>{{ $transfer->warehouse->phone }}</li>
+                        <li><strong>@lang('menu.name') :</strong>{{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
+                        <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
                         <li><strong>Address : </strong>{{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
 
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>B.Location (To) : </strong></li>
-                        <li><strong>Name :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        <li><strong>@lang('menu.b_location') (To) : </strong></li>
+                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         @if ($transfer->branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>Address : </strong>
                                 {{ $transfer->branch->city }},
                                 {{ $transfer->branch->state }},
                                 {{ $transfer->branch->zip_code }},
                                 {{ $transfer->branch->country }}.
                             </li>
-                        @else 
+                        @else
                             {{ json_decode($generalSettings->business, true)['address'] }}
                         @endif
                     </ul>
@@ -41,10 +41,10 @@
 
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled float-right">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>Status : </strong> 
-                            @if ($transfer->status == 1) 
+                        <li><strong>Status : </strong>
+                            @if ($transfer->status == 1)
                                 <span class="badge bg-danger">Pending</span>
                             @elseif($transfer->status == 2)
                                 <span class="badge bg-primary">Partial</span>
@@ -55,7 +55,7 @@
                     </ul>
                 </div>
             </div><br>
-            
+
             <div class="row">
                 <div class="table-responsive">
                     <table id="" class="table modal-table table-striped table-sm">
@@ -106,7 +106,7 @@
                                     {{ $transfer->net_total_amount }}
                                 </td>
                             </tr>
-                        
+
                             <tr>
                                 <th class="text-start" colspan="6">Shipping Charge</th>
                                 <td class="text-start" colspan="2">
@@ -114,7 +114,7 @@
                                     {{ $transfer->shipping_charge }}
                                 </td>
                             </tr>
-        
+
                             <tr>
                                 <th class="text-start" colspan="6">Grand Total</th>
                                 @php
@@ -128,7 +128,7 @@
                         </table>
                     </div>
                 </div>
-            </div> <br> 
+            </div> <br>
           <hr class="p-0 m-0">
           <div class="row">
             <div class="col-md-6">
@@ -163,7 +163,7 @@
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class="heading text-center">
                         <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                     
+
                         <h6 class="bill_name">Transfer Stock Details (To Branch)</h6>
                     </div>
                 </div>
@@ -175,34 +175,34 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>Warehouse (Form) : </strong></li>
-                        <li><strong>Name :</strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
-                        <li><strong>Phone : </strong>{{ $transfer->warehouse->phone }}</li>
+                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
+                        <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
                         <li><strong>Address : </strong> {{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>B.Location (To) : </strong></li>
-                        <li><strong>Name :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        <li><strong>@lang('menu.b_location') (To) : </strong></li>
+                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         @if ($transfer->branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>Address : </strong>
                                 {{ $transfer->branch->city }},
                                 {{ $transfer->branch->state }},
                                 {{ $transfer->branch->zip_code }},
                                 {{ $transfer->branch->country }}.
                             </li>
-                        @else 
+                        @else
                             {{ json_decode($generalSettings->business, true)['address'] }}
                         @endif
                     </ul>
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>Status : </strong> 
-                            @if ($transfer->status == 1) 
+                        <li><strong>Status : </strong>
+                            @if ($transfer->status == 1)
                                 <span class="badge bg-danger">Pending</span>
                             @elseif($transfer->status == 2)
                                 <span class="badge bg-primary">Partial</span>
@@ -251,7 +251,7 @@
                         <td class="text-start" colspan="6"><strong>Net Total Amount :</strong></td>
                         <td class="text-start" colspan="2">{{ $transfer->net_total_amount }}</td>
                     </tr>
-                   
+
                     <tr>
                         <th class="text-start" colspan="6">Shipping Charge</th>
                         <td class="text-start" colspan="2">{{ $transfer->shipping_charge }}</td>
@@ -267,8 +267,8 @@
                 </tfoot>
             </table>
         </div><br>
-        
- 
+
+
         <div class="row">
             <div class="col-md-6">
                 <p><strong>Receiver's Signature</strong></p>

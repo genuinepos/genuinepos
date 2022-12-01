@@ -58,11 +58,11 @@
                 <div class="row">
                     <div class="col-4">
                         <ul class="list-unstyled">
-                            <li><strong>Supplier :- </strong></li>
+                            <li><strong>@lang('menu.supplier') : - </strong></li>
                             <li><strong>Namne : </strong>{{ $purchase->supplier->name }}</li>
                             <li><strong>Address : </strong>{{ $purchase->supplier->address }}</li>
                             <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
-                            <li><strong>Phone : </strong> {{ $purchase->supplier->phone }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>
                     </div>
 
@@ -90,7 +90,7 @@
                                 @endif
                             </li>
 
-                            <li><strong>Phone : </strong>
+                            <li><strong>@lang('menu.phone') : </strong>
                                 @if ($purchase->branch)
                                     {{ $purchase->branch->phone }}
                                 @elseif($purchase->warehouse_id)
@@ -105,7 +105,7 @@
                     <div class="col-4">
                         <ul class="list-unstyled">
                             <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
-                            <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                            <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>Purchase Status : </strong>
                                 <span class="purchase_status">
                                     @if ($purchase->purchase_status == 1)
@@ -129,7 +129,7 @@
                                    Due
                                @endif
                             </li>
-                            <li><strong>Created By : </strong>
+                            <li><strong>@lang('menu.created_by') : </strong>
                                 {{ $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name }}
                             </li>
                         </ul>
@@ -141,7 +141,7 @@
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">Description</th>
+                            <th scope="col">@lang('menu.description')</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) </th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>

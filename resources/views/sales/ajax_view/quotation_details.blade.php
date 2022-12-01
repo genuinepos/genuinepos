@@ -1,5 +1,5 @@
-@php 
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); 
+@php
+    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     // $variant = '';
 @endphp
   <!-- Details Modal -->
@@ -17,9 +17,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <ul class="list-unstyled">
-                        <li><strong>Customer :- </strong></li>
+                        <li><strong>@lang('menu.customer') :- </strong></li>
                         <li>
-                            <strong>Name : </strong>{{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
+                            <strong>@lang('menu.name') :</strong>{{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
                         </li>
                         <li>
                             <strong>Address : </strong>{{ $quotation->customer ? $quotation->customer->address : '' }}
@@ -28,7 +28,7 @@
                             <strong>Tax Number : </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}
                         </li>
                         <li>
-                            <strong>Phone : </strong> {{ $quotation->customer ? $quotation->customer->phone : '' }}
+                            <strong>@lang('menu.phone') : </strong> {{ $quotation->customer ? $quotation->customer->phone : '' }}
                         </li>
                     </ul>
                 </div>
@@ -39,7 +39,7 @@
                             <li>
                                 <strong>Business Location : </strong> {{ $quotation->branch->name.'/'.$quotation->branch->branch_code }}
                             </li>
-                            <li><strong>Phone : </strong> {{ $quotation->branch->phone }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $quotation->branch->phone }}</li>
                             <li><strong>Address : </strong>
                                 {{ $quotation->branch->name }}/{{ $quotation->branch->branch_code }},
                                 {{ $quotation->branch->city }}, {{ $quotation->branch->state }},
@@ -49,7 +49,7 @@
                             <li><strong>Business Location : </strong>
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
                             </li>
-                            <li><strong>Phone : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li>
+                            <li><strong>@lang('menu.phone') : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li>
                             <li><strong>Address : </strong> <span>{{ json_decode($generalSettings->business, true)['address'] }}</span></li>
                         @endif
                     </ul>
@@ -57,7 +57,7 @@
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>Date : </strong> {{ $quotation->date . ' ' . $quotation->time }}
+                            <strong>@lang('menu.date') : </strong> {{ $quotation->date . ' ' . $quotation->time }}
                         </li>
                         <li>
                             <strong>Quotation ID : </strong> {{ $quotation->invoice_id }}
@@ -85,7 +85,7 @@
                         </span>
                     </li>
                     <li>
-                        <strong>Created By : </strong>
+                        <strong>@lang('menu.created_by') : </strong>
                         @php
                             $admin_role = '';
                             $prefix = '';
@@ -234,7 +234,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+          <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
           <button type="submit" id="print_payment" class="btn btn-sm btn-success print_btn">Print</button>
         </div>
       </div>
@@ -303,7 +303,7 @@
                                     </p>
 
                                     @if ($quotation->branch->add_sale_invoice_layout->branch_phone)
-                                        <p>Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                                        <p>@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                                     @endif
 
                                     @if ($quotation->branch->add_sale_invoice_layout->branch_email)
@@ -329,7 +329,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Customer : </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}</li>
+                            <li><strong>@lang('menu.customer') : </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}</li>
                             @if ($quotation->branch->add_sale_invoice_layout->customer_address)
                                 <li><strong>Address : </strong> {{ $quotation->customer ? $quotation->customer->address : '' }}</li>
                             @endif
@@ -339,7 +339,7 @@
                             @endif
 
                             @if ($quotation->branch->add_sale_invoice_layout->customer_phone)
-                                <li><strong>Phone : </strong> {{ $quotation->customer ? $quotation->customer->phone : '' }}</li>
+                                <li><strong>@lang('menu.phone') : </strong> {{ $quotation->customer ? $quotation->customer->phone : '' }}</li>
                             @endif
                         </ul>
                     </div>
@@ -659,7 +659,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>Customer : </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.customer') : </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($defaultLayout->customer_address)
                                 <li>
@@ -675,7 +675,7 @@
 
                             @if ($defaultLayout->customer_phone)
                                 <li>
-                                    <strong>Phone : </strong>{{ $quotation->customer ? $quotation->customer->phone : '' }}
+                                    <strong>@lang('menu.phone') : </strong>{{ $quotation->customer ? $quotation->customer->phone : '' }}
                                 </li>
                             @endif
                         </ul>

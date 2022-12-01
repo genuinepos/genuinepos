@@ -2,7 +2,7 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-12">
-            <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control add_input" data-name="Offer name" id="name"
                 placeholder="Discount name" value="{{ $discount->name }}" autocomplete="off"/>
             <span class="error error_name"></span>
@@ -37,7 +37,7 @@
             <label><strong>Products :</strong> </label>
             <select name="product_ids[]" class="form-control select2" multiple="multiple" id="e_product_ids">
                 @foreach ($products as $product)
-                    <option 
+                    <option
                         @foreach ($discountProducts as $discountProduct)
                             {{ $product->id == $discountProduct->product_id ? 'SELECTED' : '' }}
                         @endforeach
@@ -155,7 +155,7 @@
         $('.loading_button').show();
         var url = $(this).attr('action');
         var request = $(this).serialize();
-        
+
         $('.submit_button').prop('type', 'button');
         $.ajax({
             url: url,
@@ -169,14 +169,14 @@
                 $('#editModal').modal('hide');
                 $('.submit_button').prop('type', 'submit');
             },error: function(err) {
-            
+
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
                 $('.error').html('');
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500){
 

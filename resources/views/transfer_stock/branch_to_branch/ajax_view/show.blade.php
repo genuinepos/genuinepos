@@ -19,7 +19,7 @@
                             <li><strong>B.Location Name :</strong>
                                 {{ $transfer->sender_branch? $transfer->sender_branch->name . '/' . $transfer->sender_branch->branch_code: json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
                             </li>
-                            <li><strong>Phone : </strong>
+                            <li><strong>@lang('menu.phone') : </strong>
                                 {{ $transfer->sender_branch? $transfer->sender_branch->phone: json_decode($generalSettings->business, true)['phone'] }}
                             </li>
 
@@ -38,7 +38,7 @@
                             <li><strong>B.Location Name :</strong>
                                 {{ $transfer->receiver_branch? $transfer->receiver_branch->name . '/' . $transfer->receiver_branch->branch_code: json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
                             </li>
-                            <li><strong>Phone : </strong>
+                            <li><strong>@lang('menu.phone') : </strong>
                                 {{ $transfer->receiver_branch? $transfer->receiver_branch->phone: json_decode($generalSettings->business, true)['phone'] }}
                             </li>
 
@@ -59,7 +59,7 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled float-end">
-                            <li><strong>Date : </strong> {{ $transfer->date }}</li>
+                            <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                             <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
                             <li><strong>Status : </strong>
                                 @if ($transfer->receive_status == 1)
@@ -206,7 +206,7 @@
 
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
                         <li><strong>Status : </strong>
                             @if ($transfer->receive_status == 1)
@@ -352,7 +352,7 @@
 
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
                     </ul>
                 </div>

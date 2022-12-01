@@ -3,13 +3,13 @@
         <table class="table modal-table table-sm table-striped custom-table">
             <thead>
                 <tr class="bg-secondary text-white">
-                    <th class="text-start">Date</th>
+                    <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">Invoice ID</th>
                     <th class="text-start">Amount</th>
                     <th class="text-start">Account</th>
                     <th class="text-start">Method</th>
                     <th class="text-start">Type</th>
-                    <th class="text-start action_hideable">Action</th>
+                    <th class="text-start action_hideable">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="p_details_payment_list">

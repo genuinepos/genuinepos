@@ -254,7 +254,7 @@
                     )
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
                             @if ($defaultLayout->account_name)
-                                <p>Account Name : {{ $defaultLayout->account_name  }}</p>
+                                <p>@lang('menu.account_name') : {{ $defaultLayout->account_name  }}</p>
                             @endif
 
                             @if ($defaultLayout->account_no)
@@ -262,7 +262,7 @@
                             @endif
 
                             @if ($defaultLayout->bank_name)
-                                <p>Bank : {{ $defaultLayout->bank_name }}</p>
+                                <p>@lang('menu.bank') : {{ $defaultLayout->bank_name }}</p>
                             @endif
 
                             @if ($defaultLayout->bank_branch)
@@ -500,7 +500,7 @@
                     <table class="w-100">
                         <thead class="t-head">
                             <tr>
-                                <th class="text-startx"> Description</th>
+                                <th class="text-startx">@lang('menu.description')</th>
                                 <th class="text-center">Qty</th>
                                 <th class="text-center">Price</th>
                                 <th class="text-endx">@lang('menu.total')</th>

@@ -119,7 +119,7 @@
                                     <th>Paid</th>
                                     <th>Due</th>
                                     <th>Payment Status</th>
-                                    <th>Created By</th>
+                                    <th>@lang('menu.created_by')</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -45,9 +45,9 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
-        @endif 
-        <p><b>Supplier Ledger </b></p> 
+            <p><b>@lang('menu.date') :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p>
+        @endif
+        <p><b>Supplier Ledger </b></p>
     </div>
 </div>
 
@@ -55,9 +55,9 @@
     <div class="row">
         <div class="col-8">
             <ul class="list-unstyled">
-                <li><strong>Supplier : </strong> {{ $supplier->name }} (ID: {{ $supplier->contact_id }})</li>
-                <li><strong>Phone : </strong> {{ $supplier->phone }}</li>
-                <li><strong>Address : </strong> {{ $supplier->address  }}</li> 
+                <li><strong>@lang('menu.supplier') : </strong> {{ $supplier->name }} (ID: {{ $supplier->contact_id }})</li>
+                <li><strong>@lang('menu.phone') : </strong> {{ $supplier->phone }}</li>
+                <li><strong>Address : </strong> {{ $supplier->address  }}</li>
             </ul>
         </div>
     </div>
@@ -72,15 +72,15 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Particulars</th>
+                    <th class="text-start">@lang('menu.date')</th>
+                    <th class="text-start">@lang('menu.particulars')</th>
                     <th class="text-start">Voucher/P.Invoice</th>
-                    <th class="text-end">Debit</th>
-                    <th class="text-end">Credit</th>
-                    <th class="text-end">Running Balance</th>
+                    <th class="text-end">@lang('menu.debit')</th>
+                    <th class="text-end">@lang('menu.credit')</th>
+                    <th class="text-end">@lang('menu.running_balance')</th>
                 </tr>
             </thead>
-        
+
             <tbody>
                 @php
                     $previousBalance = 0;
@@ -108,7 +108,7 @@
                                 $dateFormat = json_decode($generalSettings->business, true)['date_format'];
                                 $__date_format = str_replace('-', '/', $dateFormat);
                             @endphp
-                            
+
                             {{ date($__date_format, strtotime($row->report_date)) }}
                         </td>
 
@@ -118,7 +118,7 @@
                                 $__agp = $row->agp_purchase ? '/' . 'AGP: ' . $row->agp_purchase : '';
                                 $__less = $row->less_amount > 0 ? '/' . 'Less:(<b class="text-success">' . $row->less_amount . '</b>)' : '';
                                 $particulars = '<b>' . $type['name'] . '</b>' . $__agp. $__less . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
-                            @endphp 
+                            @endphp
 
                             {!! $particulars !!}
                         </td>
@@ -127,7 +127,7 @@
                             @php
                                 $type = $supplierUtil->voucherType($row->voucher_type);
                             @endphp
-                            
+
                             {{ $row->{$type['voucher_no']} }}
                         </td>
 
@@ -162,16 +162,16 @@
             <tbody>
                 <tr>
                     <td class="text-end">
-                        <strong>Total Credit :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>@lang('menu.total_credit') :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
                     </td>
-                    <td class="text-end"> 
+                    <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalCredit) }}
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-end">
-                        <strong>Total Debit :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>@lang('menu.total_debit') :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
                     </td>
                     <td class="text-end">
                         ({{ App\Utils\Converter::format_in_bdt($totalDebit) }})
@@ -188,7 +188,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Closing Balance :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}</td>
+                    <td class="text-end"><strong>@lang('menu.closing_balance') :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}</td>
                     <td class="text-end">
                         @php
                             $closingBalance = $totalCredit - ($totalDebit + $totalLess);
@@ -204,7 +204,7 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small> 
+            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
         </div>
     </div>
 @endif

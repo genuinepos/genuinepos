@@ -22,13 +22,13 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Supplier : </strong>
+                                <li><strong>@lang('menu.supplier') : </strong>
                                     {{ $payment->purchase->supplier->name }}
                                 </li>
                                 <li><strong>Business : </strong>
                                     {{ $payment->purchase->supplier->business_name }}
                                 </li>
-                                <li><strong>phone : </strong>
+                                <li><strong>@lang('menu.phone') : </strong>
                                     {{ $payment->purchase->supplier->phone }}
                                 </li>
                             </ul>
@@ -40,7 +40,7 @@
                                 <li><strong> Reference ID : </strong>
                                     {{ $payment->purchase->invoice_id }}
                                 </li>
-                                <li><strong>B.Location : </strong>
+                                <li><strong>@lang('menu.b_location') : </strong>
                                     {!! $payment->purchase->branch ? $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(<b>HO</b>)' !!}
                                 </li>
                             </ul>
@@ -53,7 +53,7 @@
                                 <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                                     <span class="total_due">{{ $payment->purchase->due }}</span>
                                 </li>
-                                <li><strong>Date : </strong>
+                                <li><strong>@lang('menu.date') : </strong>
                                     {{ 
                                         date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->purchase->date)) . ' ' . date($timeFormat, strtotime($payment->purchase->time)) 
                                     }}
@@ -101,7 +101,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
@@ -172,8 +172,8 @@
                 <div class="form-group row mt-3">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                             <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
                         </div>
                     </div>

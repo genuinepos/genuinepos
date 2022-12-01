@@ -67,7 +67,7 @@
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label><b>Date :</b></label>
+                                    <label><b>@lang('menu.date') :</b></label>
                                     <input type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
                                     <span class="error error_date"></span>
                                 </div>
@@ -300,7 +300,7 @@
                                 <div class="row mt-1">
                                     <div class="col-md-12 d-flex justify-content-end">
                                         <div class="btn-loading">
-                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                             <button value="save" class="btn btn-sm btn-success submit_button">Save</button>
                                             <button value="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print</button>
                                         </div>

@@ -99,9 +99,9 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
+                                    <th>@lang('menu.date')</th>
                                     <th>Employee</th>
-                                    <th>Payment Voucher No</th>
+                                    <th>@lang('menu.payment_voucher_no')</th>
                                     <th>Paid</th>
                                     <th>Pay For(Payroll)</th>
                                     <th>Paid By</th>

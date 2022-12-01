@@ -67,7 +67,7 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Supplier :</strong></label>
+                                                    <label><strong>@lang('menu.supplier') : </strong></label>
                                                     <select name="supplier_id" class="form-control submit_able"
                                                         id="supplier_id">
                                                         <option value="">All</option>
@@ -156,7 +156,7 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
+                                                <th>@lang('menu.date')</th>
                                                 <th>Product</th>
                                                 <th>P.Code</th>
                                                 <th>Supplier</th>

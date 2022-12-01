@@ -71,7 +71,7 @@
                     <!--begin::Form-->
                     <form id="add_designation_form" action="{{ route('hrm.designations.store') }}">
                         <div class="form-group">
-                            <label><b>Name :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="designation_name" class="form-control" data-name="Designation name" placeholder="Designation name" />
                         </div>
 
@@ -109,7 +109,7 @@
                     <form id="edit_designation_form" action="{{ route('hrm.designations.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>Name :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="designation_name" class="form-control" id="e_designation_name" placeholder="Designation name"/>
                         </div>
 

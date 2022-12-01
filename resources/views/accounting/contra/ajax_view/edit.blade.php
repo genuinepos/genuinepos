@@ -2,7 +2,7 @@
 
     <div class="form-group row">
         <div class="col-md-6">
-            <label><strong>Date :</strong> <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
             <input type="text" name="date" class="form-control add_input" data-name="Date" id="e_date"
                 placeholder="DD-MM-YYYY" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($contra->date)) }}"/>
             <span class="error error_e_date"></span>
@@ -64,7 +64,7 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><strong>Remarks :</strong></label>
+        <label><strong>@lang('menu.remarks') :</strong></label>
         <input type="text" name="remarks" class="form-control" id="e_remarks" placeholder="Remarks" value="{{ $contra->remarks }}"/>
     </div>
 

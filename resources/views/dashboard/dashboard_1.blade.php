@@ -168,7 +168,7 @@
                                             <i class="fas fa-file-invoice-dollar"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Expense</h3>
+                                            <h3 class="sub-title">@lang('menu.expense')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_expense"></span>
@@ -276,12 +276,12 @@
                                         cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
+                                                <th>@lang('menu.date')</th>
                                                 <th>Invoice ID</th>
                                                 <th>Branch</th>
                                                 <th>Customer</th>
                                                 <th>Shipment Status</th>
-                                                <th>Created By</th>
+                                                <th>@lang('menu.created_by')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

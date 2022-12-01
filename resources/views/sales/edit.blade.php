@@ -35,7 +35,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Customer :</b> </label>
+                                        <label class=" col-4"><b>@lang('menu.customer') :</b> </label>
                                         <div class="col-8">
                                             <div class="input-group width-60">
                                                 <input readonly type="text" value="{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}" id="customer_name" class="form-control">
@@ -509,7 +509,7 @@
                                         <div class="row justify-content-center">
                                             <div class="col-12 d-flex justify-content-end">
                                                 <div class="btn-loading">
-                                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
+                                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
                                                     <button type="submit" id="save" class="btn btn-sm btn-success submit_button">Save Change </button>
                                                 </div>
                                             </div>

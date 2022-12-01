@@ -97,9 +97,9 @@
                                             <tr>
                                                 <th>S/L</th>
                                                 <th>Name</th>
-                                                <th>Description</th>
+                                                <th>@lang('menu.description')</th>
                                                 <th>Status</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -135,7 +135,7 @@
                     <form id="add_price_group_form" action="{{ route('product.selling.price.groups.store') }}" method="POST">
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><b>Name :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control" id="name"
                                     placeholder="Name" />
                                 <span class="error error_name"></span>
@@ -144,7 +144,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>Description :</b></label>
+                                <label><b>@lang('menu.description') :</b></label>
                                 <textarea name="description" class="form-control" cols="10" rows="3" placeholder="Price Group Description"></textarea>
                                 <span class="error error_photo"></span>
                             </div>
@@ -153,8 +153,8 @@
                         <div class="form-group row mt-2">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
                             </div>

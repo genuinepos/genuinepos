@@ -927,6 +927,60 @@
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('another_register_close') ? 'CHECKED' : '' }}
                                             name="another_register_close" class="another_register_close cash_register"> &nbsp; Close Another Cash Register </p>
+                                            <div class="col-md-5">
+
+                                                <div class="col-md-12">
+                                                    <p><strong>@lang('menu.customers')</strong></p>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row"><p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_all') ? 'CHECKED' : '' }} name="customer_all" class="contacts"> &nbsp; View All Customer </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_add') ? 'CHECKED' : '' }} name="customer_add" class="contacts"> &nbsp; Add Customer </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_import') ? 'CHECKED' : '' }} name="customer_import" class="contacts"> &nbsp; Import Customer </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_edit') ? 'CHECKED' : '' }} name="customer_edit" class=" contacts"> &nbsp; Edit Customer </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row"><p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_delete') ? 'CHECKED' : '' }} name="customer_delete" class="contacts"> &nbsp; Delete Customer </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row"><p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_group') ? 'CHECKED' : '' }} name="customer_group" class="contacts"> &nbsp; Customer Group -> View/Add/Edit/Delete</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap mt-1">
+                                                            <input type="checkbox"
+                                                                    {{ $role->hasPermissionTo('customer_report') ? 'CHECKED' : '' }}
+                                                            name="customer_report" class="report contacts"> &nbsp; Customer Report</p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

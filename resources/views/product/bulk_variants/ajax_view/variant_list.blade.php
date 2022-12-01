@@ -4,7 +4,7 @@
             <th class="text-start">SL</th>
             <th class="text-start">Variant</th>
             <th class="text-start">Childs</th>
-            <th class="text-start">Action</th>
+            <th class="text-start">@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

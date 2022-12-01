@@ -11,7 +11,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Customer : </strong>{{ $payment->payroll->employee->prefix.' '.$payment->payroll->employee->name.' '.$payment->payroll->employee->last_name}}</li>
+                    <li><strong>@lang('menu.customer') : </strong>{{ $payment->payroll->employee->prefix.' '.$payment->payroll->employee->name.' '.$payment->payroll->employee->last_name}}</li>
                     <li><strong>Branch/Business : </strong>
                         <span>
                             @if ($payment->payroll->employee->branch)
@@ -19,7 +19,7 @@
                             @else
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
                             @endif
-                        </span>  
+                        </span>
                     </li>
                 </ul>
             </div>
@@ -28,7 +28,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong> Referance No : </strong><span>{{ $payment->payroll->reference_no }}</span> </li>
-                    
+
                 </ul>
             </div>
         </div>
@@ -61,7 +61,7 @@
         </div>
 
         <div class="col-md-4">
-            <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+            <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
@@ -159,7 +159,7 @@
             processData: false,
             success:function(data){
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.submit_button').prop('type', 'submit');
                     $('.loading_button').hide();
                 }else{
@@ -167,7 +167,7 @@
                     table.ajax.reload();
                     $('.loading_button').hide();
                     $('.submit_button').prop('type', 'submit');
-                    toastr.success(data); 
+                    toastr.success(data);
                 }
             },error: function(err) {
                 $('.submit_button').prop('type', 'submit');
@@ -175,10 +175,10 @@
                 $('.error').html('');
 
                 if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
-                    toastr.error('Server Error. Please contact the support team.'); 
+                    toastr.error('Server Error. Please contact the support team.');
                     return;
                 }
 

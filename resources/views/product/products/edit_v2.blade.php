@@ -618,7 +618,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-2"> <b>Description :</b> </label>
+                                    <label for="inputEmail3" class="col-2"> <b>@lang('menu.description') :</b> </label>
                                     <div class="col-10">
                                         <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;">{{ $product->product_details }}</textarea>
                                     </div>
@@ -698,7 +698,7 @@
                     <!--begin::Form-->
                     <form id="add_unit_form" action="{{ route('products.add.unit') }}">
                         <div class="form-group">
-                            <label><b>Name :</b></label> <span class="text-danger">*</span>
+                            <label><b>@lang('menu.name') :</b></label> <span class="text-danger">*</span>
                             <input type="text" name="name" class="form-control add_unit_input"
                                 data-name="Unit name" id="add_unit_name" placeholder="Unit name" />
                             <span class="error error_add_unit_name"></span>
@@ -714,8 +714,8 @@
                         <div class="form-group row mt-2">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
                             </div>
@@ -740,7 +740,7 @@
                     <!--begin::Form-->
                     <form id="add_category_form" action="{{ route('products.add.category') }}">
                         <div class="form-group">
-                            <b>Name :</b> <span class="text-danger">*</span>
+                            <b>@lang('menu.name') :</b> <span class="text-danger">*</span>
                             <input type="text" name="name" class="form-control add_cate_input"
                                 data-name="Category name" id="add_cate_name" placeholder="Category name" />
                             <span class="error error_add_cate_name"></span>
@@ -749,8 +749,8 @@
                         <div class="form-group row mt-2">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" id="save" class="btn btn-sm btn-success submit_button">Save Changes</button>
                                 </div>
                             </div>
@@ -775,7 +775,7 @@
                     <!--begin::Form-->
                     <form id="add_brand_form" action="{{ route('products.add.brand') }}">
                         <div class="form-group">
-                            <b>Name :</b> <span class="text-danger">*</span>
+                            <b>@lang('menu.name') :</b> <span class="text-danger">*</span>
                             <input type="text" name="name" class="form-control add_brand_input"
                                 data-name="Brand name" id="add_brand_name" placeholder="Brand name" />
                             <span class="error error_add_brand_name"></span>
@@ -784,8 +784,8 @@
                         <div class="form-group row mt-2">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
                             </div>
@@ -811,7 +811,7 @@
                     <!--begin::Form-->
                     <form id="add_warranty_form" action="{{ route('products.add.warranty') }}">
                         <div class="form-group">
-                            <label><b>Name :</b> </label> <span class="text-danger">*</span>
+                            <label><b>@lang('menu.name') :</b> </label> <span class="text-danger">*</span>
                             <input type="text" name="name" class="form-control add_warranty_input" id="add_warranty_name" data-name="Warranty name" placeholder="Warranty name"/>
                             <span class="error error_add_warranty_name"></span>
                         </div>
@@ -844,15 +844,15 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Description :</b></label>
+                            <label><b>@lang('menu.description') :</b></label>
                             <textarea name="description" id="description" class="form-control" cols="10" rows="3" placeholder="Warranty description"></textarea>
                         </div>
 
                         <div class="form-group row mt-2">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
                                 </div>
                             </div>

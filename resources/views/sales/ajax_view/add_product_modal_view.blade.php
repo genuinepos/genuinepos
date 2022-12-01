@@ -85,7 +85,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-8">
-            <label><b>Description :</b> </label>
+            <label><b>@lang('menu.description') :</b> </label>
             <textarea  name="product_details" class="form-control" cols="10" rows="3"></textarea>
         </div>
         <div class="col-md-4">
@@ -207,8 +207,8 @@
     <div class="form-group row mt-2">
         <div class="col-md-12 d-flex justify-content-end">
             <div class="btn-loading">
-                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                 <button type="submit" class="btn btn-sm btn-success">Save</button>
             </div>
         </div>

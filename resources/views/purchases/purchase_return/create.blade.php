@@ -62,7 +62,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-2"><b>Date :</b> <span
+                                        <label for="inputEmail3" class=" col-2"><b>@lang('menu.date') :</b> <span
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
@@ -144,7 +144,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i
-                                    class="fas fa-spinner"></i><span> Loading...</span></button>
+                                    class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="submit" data-action="save" class="btn btn-sm btn-success submit_button">Save</button>
                                 <button type="submit" data-action="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print</button>
                             </div>

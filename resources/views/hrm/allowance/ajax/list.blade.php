@@ -4,7 +4,7 @@
             <th>Title</th>
             <th>Type</th>
             <th>Amount</th>
-            <th>Actions</th>
+            <th>@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

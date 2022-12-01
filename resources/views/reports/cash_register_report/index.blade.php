@@ -145,7 +145,7 @@
                                                             <th class="text-start">Closing Note</th>
                                                             <th class="text-start">Status</th>
                                                             <th class="text-start">Closing Amount</th>
-                                                            <th class="text-start">Action</th>
+                                                            <th class="text-start">@lang('menu.action')</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody></tbody>

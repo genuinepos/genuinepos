@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <ul class="list-unstyled">
-                        <li><strong>Customer :- </strong></li>
+                        <li><strong>@lang('menu.customer') :- </strong></li>
                         <li>
                             <strong>Namne : </strong>{{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
                         </li>
@@ -24,7 +24,7 @@
                             <strong>Tax Number : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
                         </li>
                         <li>
-                            <strong>Phone : </strong> {{ $draft->customer ? $draft->customer->phone : '' }}
+                            <strong>@lang('menu.phone') : </strong> {{ $draft->customer ? $draft->customer->phone : '' }}
                         </li>
                     </ul>
                 </div>
@@ -55,7 +55,7 @@
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>Date : </strong> {{ $draft->date . ' ' . $draft->time }}
+                            <strong>@lang('menu.date') : </strong> {{ $draft->date . ' ' . $draft->time }}
                         </li>
                         <li>
                             <strong>draft ID : </strong> {{ $draft->invoice_id }}
@@ -83,7 +83,7 @@
                         </span>
                     </li>
                     <li>
-                        <strong>Created By : </strong>
+                        <strong>@lang('menu.created_by') : </strong>
                         @php
                             $admin_role = '';
                             $prefix = '';
@@ -219,7 +219,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+          <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
           <button type="submit" id="print_payment" class="c-btn button-success print_btn">Print</button>
         </div>
       </div>
@@ -286,7 +286,7 @@
                                     </h6>
 
                                     @if ($draft->branch->add_sale_invoice_layout->branch_phone)
-                                        <h6>Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</h6>
+                                        <h6>@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</h6>
                                     @endif
 
                                     @if ($draft->branch->add_sale_invoice_layout->branch_email)
@@ -312,7 +312,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Customer : </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}</li>
+                            <li><strong>@lang('menu.customer') : </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}</li>
                             @if ($draft->branch->add_sale_invoice_layout->customer_address)
                                 <li><strong>Address : </strong> {{ $draft->customer ? $draft->customer->address : '' }}</li>
                             @endif
@@ -322,7 +322,7 @@
                             @endif
 
                             @if ($draft->branch->add_sale_invoice_layout->customer_phone)
-                                <li><strong>Phone : </strong> {{ $draft->customer ? $draft->customer->phone : '' }}</li>
+                                <li><strong>@lang('menu.phone') : </strong> {{ $draft->customer ? $draft->customer->phone : '' }}</li>
                             @endif
                         </ul>
                     </div>
@@ -665,7 +665,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>Customer : </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.customer') : </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($defaultLayout->customer_address)
                                 <li>
@@ -681,7 +681,7 @@
 
                             @if ($defaultLayout->customer_phone)
                                 <li>
-                                    <strong>Phone : </strong>{{ $draft->customer ? $draft->customer->phone : '' }}
+                                    <strong>@lang('menu.phone') : </strong>{{ $draft->customer ? $draft->customer->phone : '' }}
                                 </li>
                             @endif
                         </ul>

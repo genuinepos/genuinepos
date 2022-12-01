@@ -534,7 +534,7 @@
         event      : 'click.editable',
         onblur     : 'cancel',
         loadtype   : 'GET',
-        loadtext   : '@lang('menu.loading')...',
+        loadtext   : 'Loading...',
         placeholder: 'Click to edit',
         loaddata   : {},
         submitdata : {},

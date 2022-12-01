@@ -2571,7 +2571,7 @@
                                                 <span><i class="fas fa-sliders-h"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">Email Server Setup Design</p>
+                                        <p class="switch_text">Email Server Setup Design Pages</p>
                                     </a>
                                 </div>
                             </div>
@@ -2596,6 +2596,17 @@
                                             </div>
                                         </div>
                                         <p class="switch_text">@lang('menu.sms_settings')</p>
+                                    </a>
+                                </div>
+
+                                <div class="sub-menu-col">
+                                    <a href="{{ route('communication.sms.settings.server.setup.design.pages') }}" class="switch-bar-wrap">
+                                        <div class="switch_bar">
+                                            <div class="bar-link">
+                                                <span><i class="fas fa-sliders-h"></i></span>
+                                            </div>
+                                        </div>
+                                        <p class="switch_text">SMS Server Setup Design Pages</p>
                                     </a>
                                 </div>
                             </div>

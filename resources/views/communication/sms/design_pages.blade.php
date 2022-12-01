@@ -1,14 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" href="{{ asset('backend/asset/css/richtext.min.css') }}">
     <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
     <style>
-        .richText .richText-editor {
-            border-left: 0;
-        }
-        .richText .richText-editor:focus {
-            border-left: 0;
-        }
         .table-responsive-y {
             max-height: 350px;
             overflow-y: auto;
@@ -25,14 +18,14 @@
     </style>
 
 @endpush
-@section('title', 'Email Setup Design Pages - ')
+@section('title', 'SMS Setup Design Pages - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-university"></span>
-                    <h5>Email Design Pages</h5>
+                    <h5>SMS Design Pages</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
@@ -41,7 +34,7 @@
         <div class="p-3">
             <div class="card mb-3">
                 <div class="card-header border-0">
-                    <strong>Email Server Setup</strong>
+                    <strong>SMS Setup</strong>
                 </div>
             </div>
             <div class="row g-3">
@@ -51,61 +44,29 @@
                             <form action="">
                                 <div class="form-area">
                                     <div class="row g-3 mb-1">
-                                        <label for="" class="col-3">Server</label>
-                                        <div class="col-9">
-                                            <input class="form-control" type="text" placeholder="E.x. smtp">
+                                        <div class="col-sm-9">
+                                            <div class="row g-3">
+                                                <label for="" class="col-4">Format Name</label>
+                                                <div class="col-8">
+                                                    <input class="form-control" type="text" placeholder="Format Name">
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row g-3 mb-1">
-                                        <label for="" class="col-3">Host</label>
-                                        <div class="col-9">
-                                            <input class="form-control" type="text" placeholder="E.x. smtp.gmail.com">
+                                        <div class="col-sm-3 d-flex justify-content-end">
+                                            <a role="button" class="btn btn-sm btn-primary">List</a>
                                         </div>
-                                    </div>
-                                    <div class="row g-3 mb-4">
-                                        <label for="" class="col-3">Port</label>
-                                        <div class="col-9">
-                                            <input class="form-control" type="number" placeholder="E.x. 587">
+                                        <div class="col-12">
+                                            <label for="smsBodyExample">SMS Body Example <i class="fas fa-info-circle"></i></label>
+                                            <textarea class="form-control" name="" id="smsBodyExample" rows="8"></textarea>
                                         </div>
-                                    </div>
-                                    <div class="row g-3 mb-1">
-                                        <label for="" class="col-3">User Name</label>
-                                        <div class="col-9">
-                                            <input class="form-control" type="text" placeholder="E.x. @username">
-                                        </div>
-                                    </div>
-                                    <div class="row g-3 mb-1">
-                                        <label for="" class="col-3">Password</label>
-                                        <div class="col-9">
-                                            <input class="form-control" type="password" placeholder="E.x. ************">
-                                        </div>
-                                    </div>
-                                    <div class="row g-3 mb-1">
-                                        <label for="" class="col-3">Sender</label>
-                                        <div class="col-9">
-                                            <input class="form-control" type="text" placeholder="E.x. abc@example.com">
-                                        </div>
-                                    </div>
-                                    <div class="row g-3 mb-1">
-                                        <label for="" class="col-3">Subject</label>
-                                        <div class="col-9">
-                                            <input class="form-control" type="text" placeholder="E.x. Invoice">
-                                        </div>
-                                    </div>
-                                    <div class="row g-3 mb-1">
-                                        <label for="" class="col-3">CC</label>
-                                        <div class="col-9">
-                                            <input class="form-control" type="text" placeholder="xyz@example.com,asdf@example.com">
-                                        </div>
-                                    </div>
-                                    <div class="row g-3 mb-1">
-                                        <label for="" class="col-3">BCC</label>
-                                        <div class="col-9">
-                                            <input class="form-control" type="text" placeholder="xyz@example.com,asdf@example.com">
+                                        <div class="col-12">
+                                            <div class="sms-preview">
+                                                <p class="text-secondary"><strong>Preview:</strong></p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-end gap-2">
-                                        <button class="btn btn-sm btn-danger">Reset</button>
+                                        <button type="reset" class="btn btn-sm btn-danger">Reset</button>
                                         <button class="btn btn-sm btn-success">Save</button>
                                     </div>
                                 </div>
@@ -114,31 +75,57 @@
                     </div>
                 </div>
                 <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <span>SMS APIs</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="">API Settings Name</label>
+                                    <input type="text" class="form-control" placeholder="E.x. Provider Name">
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <label for="">Get Balance</label>
+                                        <div>
+                                            <span class="balance-txt">0.00</span>
+                                            <a roole="button" class="btn btn-sm btn-success">Test</a>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control">
+                                    <p><small class="text-secondary">E.x. https://www.example.com/key</small></p>
+                                </div>
+                                <div class="col-12">
+                                    <label for=""> Send SMS (API) <i class="fas fa-info-circle"></i></label>
+                                    <textarea name="" id="" rows="4" class="form-control"></textarea>
+                                    <p><small class="text-secondary">E.x. https://www.example.com/Key.contact=@reciever_number.senderId=@senderId.message=message</small></p>
+                                </div>
+                                <div class="col-12 d-flex justify-content-between">
+                                    <button class="btn btn-sm btn-primary">List</button>
+                                    <button class="btn btn-sm btn-success">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card">
-                        <div class="card-body p-1">
-                            <div class="table-responsive">
-                                <table class=" display table-striped">
-                                    <thead>
-                                        <tr class="bg-secondary text-white">
-                                            <td>Serial</td>
-                                            <td>Sender</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>1</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="card-header">
+                            <span>SMS Status Code Display Message</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="">API Status Code</label>
+                                    <input type="number" class="form-control" placeholder="E.x. 1001">
+                                </div>
+                                <div class="col-12">
+                                    <label for="">Display Message</label>
+                                    <textarea name="" id="" rows="3" class="form-control" placeholder="E.x. Insufficient balance"></textarea>
+                                </div>
+                                <div class="col-12 d-flex justify-content-between">
+                                    <button class="btn btn-sm btn-primary">List</button>
+                                    <button class="btn btn-sm btn-success">Save</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -149,46 +136,7 @@
         <div class="p-3">
             <div class="card mb-3">
                 <div class="card-header border-0">
-                    <strong>Email Body Format</strong>
-                </div>
-            </div>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <form action="">
-                                <div class="row g-2 mb-3">
-                                    <div class="col-sm-8">
-                                        <div class="row g-2">
-                                            <label for="" class="col-4">Format Name</label>
-                                            <div class="col-8">
-                                                <input type="text" class="form-control" placeholder="Format Name">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4 d-flex justify-content-end">
-                                        <a role="button" class="btn btn-sm btn-success">Format List & Settings</a>
-                                    </div>
-                                </div>
-                                <textarea class="text-editor" name="example"></textarea>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <p><strong>Preview:</strong></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr class="my-5">
-        <div class="p-3">
-            <div class="card mb-3">
-                <div class="card-header border-0">
-                    <strong>Email Settings</strong>
+                    <strong>Module Wise SMS Activation</strong>
                 </div>
             </div>
             <div class="row g-3">
@@ -342,8 +290,9 @@
                                         <tr class="bg-secondary text-white">
                                             <td>SL</td>
                                             <td>Module</td>
-                                            <td>Sender</td>
-                                            <td>Format Name</td>
+                                            <td>API Settings</td>
+                                            <td>Format</td>
+                                            <td>Status</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -352,14 +301,17 @@
                                             <td>1</td>
                                             <td>1</td>
                                             <td>1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>1</td>
                                             <td>1</td>
                                         </tr>
                                         <tr>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
                                             <td>1</td>
                                             <td>1</td>
                                             <td>1</td>
@@ -377,7 +329,7 @@
         <div class="p-3">
             <div class="card mb-3">
                 <div class="card-header border-0">
-                    <strong>Manual Email Service</strong>
+                    <strong>Manual SMS Service</strong>
                 </div>
             </div>
             <div class="row g-3">
@@ -386,22 +338,28 @@
                         <div class="card-body">
                             <div class="tab_list_area">
                                 <div class="btn-group">
-                                    <a id="tab_btn" data-show="receiver-email" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
-                                        <i class="fas fa-scroll"></i> Receiver Email
+                                    <a id="tab_btn" data-show="receiver-number" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
+                                        <i class="fas fa-scroll"></i> Receiver Number
                                     </a>
 
-                                    <a id="tab_btn" data-show="blocked-email" class="btn btn-sm btn-primary tab_btn" href="#">
-                                        <i class="fas fa-info-circle"></i> Blocked Email
+                                    <a id="tab_btn" data-show="blocked-number" class="btn btn-sm btn-primary tab_btn" href="#">
+                                        <i class="fas fa-info-circle"></i> Blocked Number
                                     </a>
                                 </div>
                             </div>
-                            <div class="tab_contant receiver-email">
+                            <div class="tab_contant receiver-number">
                                 <form action="" class="mb-2">
-                                    <div class="d-flex gap-3 mb-2">
+                                    <div class="d-flex flex-wrap gap-3 mb-2" style="row-gap: 0 !important">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="" id="customerCheck">
                                             <label class="form-check-label" for="customerCheck">
                                                 Customer
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="customerAlternateCheck">
+                                            <label class="form-check-label" for="customerAlternateCheck">
+                                                Customer Alternat
                                             </label>
                                         </div>
                                         <div class="form-check">
@@ -410,136 +368,160 @@
                                                 Supplier
                                             </label>
                                         </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="supplierAlternatCheck">
+                                            <label class="form-check-label" for="supplierAlternatCheck">
+                                                Supplier Alternat
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="membershipCheck">
+                                            <label class="form-check-label" for="membershipCheck">
+                                                Membership
+                                            </label>
+                                        </div>
                                     </div>
-                                    <input type="search" name="" id="" class="form-control" placeholder="Search Email">
+                                    <input type="search" name="" id="" class="form-control" placeholder="Search Contact">
                                 </form>
                                 <div class="table-responsive-y">
                                     <table class=" display table-striped">
                                         <tbody>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
+                                            </tr>
+                                            <tr>
+                                                <td>012 345 678 9</td>
+                                            </tr>
+                                            <tr>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <span>Double click on email to block</span>
+                                <span>Double click on number to block</span>
                             </div>
-                            <div class="tab_contant blocked-email d-hide">
+                            <div class="tab_contant blocked-number d-hide">
                                 <form action="" class="mb-2">
-                                    <input type="search" name="" id="" class="form-control" placeholder="Search Email">
+                                    <input type="search" name="" id="" class="form-control" placeholder="Search Contect">
                                 </form>
                                 <div class="table-responsive-y">
                                     <table class=" display table-striped">
                                         <tbody>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>abc@gmail.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@email.com</td>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                             <tr>
-                                                <td>email@example.com</td>
+                                                <td>012 345 678 9</td>
+                                            </tr>
+                                            <tr>
+                                                <td>012 345 678 9</td>
+                                            </tr>
+                                            <tr>
+                                                <td>012 345 678 9</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <span>Double click on email to unblock</span>
+                                <span>Double click on number to unblock</span>
                             </div>
                         </div>
                     </div>
@@ -547,14 +529,15 @@
                 <div class="col-md-7">
                     <div class="card">
                         <div class="card-header py-1">
-                            <span>Manual Mail</span>
+                            <span>Manual SMS</span>
                         </div>
                         <div class="card-body">
                             <form action="">
                                 <div class="row g-2">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-1 col-2">API</div>
+                                    <div class="col-sm-5 col-10">
                                         <select name="" id="" class="form-control">
-                                            <option value="">--Select Sender--</option>
+                                            <option value="">--Select API Settings--</option>
                                             <option value="">1</option>
                                             <option value="">2</option>
                                             <option value="">3</option>
@@ -562,25 +545,8 @@
                                             <option value="">5</option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-6 d-flex justify-content-end">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="sendHtmlWithImageCheck">
-                                            <label class="form-check-label" for="sendHtmlWithImageCheck">
-                                                Send HTML with image
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input class="form-control" type="text" placeholder="CC: E.x. abs@example.com, xyz@wxample.com">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input class="form-control" type="text" placeholder="BCC: E.x. abs@example.com, xyz@wxample.com">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input class="form-control" type="text" placeholder="Email Subject">
-                                    </div>
                                     <div class="col-12 mb-2">
-                                        <textarea class="text-editor" name="example"></textarea>
+                                        <textarea class="form-control" rows="10" name="example"></textarea>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-check">
@@ -591,7 +557,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6 d-flex justify-content-end">
-                                        <button class="btn btn-sm btn-success">Send Mail</button>
+                                        <button class="btn btn-sm btn-success">Send SMS</button>
                                     </div>
                                     <div class="col-sm-6 specific-number-field">
                                         <input type="tel" class="form-control" placeholder="Number">
@@ -606,12 +572,7 @@
     </div>
 @endsection
 @push('scripts')
-
-{{-- <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script> --}}
-<script src="{{ asset('backend/asset/js/jquery.richtext.min.js') }}"></script>
 <script type="text/javascript">
-
-    $('.text-editor').richText();
 
     $('.specific-number-field').hide();
     $('#specificNumberCheck').on('change', function() {

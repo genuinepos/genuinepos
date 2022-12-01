@@ -1083,6 +1083,8 @@ Route::group(['prefix' => 'communication'], function () {
 
         Route::get('settings', [SmsController::class, 'smsSettings'])->name('communication.sms.settings');
         Route::post('settings/store', [SmsController::class, 'smsSettingsStore'])->name('communication.sms.settings.store');
+
+        Route::get('settings/server/setup/design/pages', [SmsController::class, 'smsServerSetupDesignPages'])->name('communication.sms.settings.server.setup.design.pages');
     });
 });
 

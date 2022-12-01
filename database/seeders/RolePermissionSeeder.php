@@ -256,7 +256,22 @@ class RolePermissionSeeder extends Seeder
             array('id' => '151','name' => 'e_com_map_tax_rate','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '152','name' => 'today_summery','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '153','name' => 'communication','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
-            array('id' => '154','name' => 'receive_payment_index','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42')
+            array('id' => '154','name' => 'receive_payment_index','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
+
+            // TODO:: These permission are required for app, but need to add on Create+Update permissions page
+            array('id' => '155','name' => 'email_setting_index','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
+            array('id' => '156','name' => 'email_setting_create','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
+            array('id' => '157','name' => 'email_setting_view','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
+            array('id' => '158','name' => 'email_setting_update','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
+            array('id' => '159','name' => 'email_setting_delete','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
+            
+            array('id' => '160','name' => 'sms_setting_index','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
+            array('id' => '161','name' => 'sms_setting_create','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
+            array('id' => '162','name' => 'sms_setting_view','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
+            array('id' => '163','name' => 'sms_setting_update','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
+            array('id' => '164','name' => 'sms_setting_delete','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
+
+
           );
 
         return $permissions;

@@ -266,7 +266,7 @@
                             @endif
 
                             @if ($defaultLayout->bank_branch)
-                                <p>Branch : {{ $defaultLayout->bank_branch }}</p>
+                                <p>@lang('menu.branch') : {{ $defaultLayout->bank_branch }}</p>
                             @endif
                         </div>
                       @endif

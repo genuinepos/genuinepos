@@ -17,7 +17,7 @@
     tr.noBorder td {border: 0px !important;}
     tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="loan_details_print_area">
     <div class="header_area">
         <div class="company_name text-center">
@@ -26,11 +26,11 @@
                     @if ($loan->branch)
                         {{ $loan->branch->name . '/' . $loan->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
-            
+
             <p style="width: 60%; margin:0 auto;">
                 @if ($loan->branch)
                     {{ $loan->branch->city . ', ' . $loan->branch->branch->state . ', ' . $loan->branch->zip_code . ', ' . $loan->branch->country }}

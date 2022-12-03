@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="col-4">
-                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                 </div>
             </div>
         </div>
@@ -256,7 +256,7 @@
 
                                                         <div class="col-8">
                                                             <select name="return_tax" class="form-control" id="return_tax">
-                                                                <option value="0.00">NoTax</option>
+                                                                <option value="0.00">@lang('menu.no_tax')</option>
                                                                 @foreach ($taxes as $tax)
                                                                     <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                                 @endforeach
@@ -371,7 +371,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> </button>
                             <button type="submit" id="save_and_print" class="btn btn-sm btn-success submit_button" value="save_and_print">Save & Print</button>
-                            <button type="submit" id="save" class="btn btn-sm btn-success submit_button" data-action="save">Save</button>
+                            <button type="submit" id="save" class="btn btn-sm btn-success submit_button" data-action="save">@lang('menu.save')</button>
                         </div>
                     </div>
                 </div>
@@ -424,7 +424,7 @@
                             <div class="col-md-6">
                                 <label><strong>Tax</strong> :</label>
                                 <select class="form-control" id="e_unit_tax">
-                                    <option value="0.00">NoTax</option>
+                                    <option value="0.00">@lang('menu.no_tax')</option>
                                     @foreach ($taxes as $tax)
                                         <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                     @endforeach

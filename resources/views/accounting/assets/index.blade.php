@@ -9,7 +9,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-glass-whiskey"></span>
-                    <h5>Assets</h5>
+                    <h5>@lang('menu.assets')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> Back
@@ -27,10 +27,10 @@
                                         @if ($addons->branches == 1)
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-3">
-                                                    <label><strong>Business Location :</strong></label>
+                                                    <label><strong>@lang('menu.business_location') :</strong></label>
                                                     <select name="branch_id" class="form-control submit_able" id="filter_branch_id" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                        <option value="">@lang('menu.all')</option>
+                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                         @foreach ($branches as $br)
                                                             <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
                                                         @endforeach
@@ -42,7 +42,7 @@
                                         @endif
 
                                         <div class="col-md-3">
-                                            <label><strong>Asset Type :</strong></label>
+                                            <label><strong>@lang('menu.asset_type') :</strong></label>
                                             <select name="type_id" class="form-control submit_able" id="filter_type_id" autofocus>
 
                                             </select>
@@ -54,14 +54,14 @@
                     </div>
                 </div>
 
-                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                 <div class="card">
                     <div class="card-body">
                         <!--begin: Datatable-->
                         <div class="tab_list_area">
                             <div class="btn-group">
-                                <a id="tab_btn" data-show="asset_type" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Asset Types</a>
-                                <a id="tab_btn" data-show="assets" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i> Assets</a>
+                                <a id="tab_btn" data-show="asset_type" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> @lang('menu.asset_type')</a>
+                                <a id="tab_btn" data-show="assets" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i> @lang('menu.assets')</a>
                             </div>
                         </div>
 
@@ -69,16 +69,16 @@
                             <div class="tab_contant asset_type">
                                 <div class="row">
                                     <div class="col-md-12 d-flex justify-content-end">
-                                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAssetTypeModal"><i class="fas fa-plus-square"></i> Add Type</a>
+                                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAssetTypeModal"><i class="fas fa-plus-square"></i>@lang('menu.add_type')</a>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="table-responsive" >
                                             <table class="display data_tbl data__table asset_type_table">
                                                 <thead>
                                                     <tr>
-                                                        <th>S/L</th>
+                                                        <th>@lang('menu.sl')</th>
                                                         <th>Type</th>
-                                                        <th>Type Code</th>
+                                                        <th>@lang('menu.type_code')</th>
                                                         <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
@@ -104,13 +104,13 @@
                                             <table class="display data_tbl data__table asset_table w-100">
                                                 <thead>
                                                     <tr>
-                                                        <th>S/L</th>
-                                                        <th>Asset</th>
+                                                        <th>@lang('menu.sl')</th>
+                                                        <th>@lang('menu.asset')</th>
                                                         <th>Type</th>
                                                         <th>Available Loaction</th>
                                                         <th>Quantity</th>
-                                                        <th>Per Unit Value</th>
-                                                        <th>Total Value</th>
+                                                        <th>@lang('menu.per_unit_value')</th>
+                                                        <th>@lang('menu.total_value')</th>
                                                         <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
@@ -147,17 +147,17 @@
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><b>Type Name :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.type_name') :</b> <span class="text-danger">*</span></label>
                                 <input type="text" name="asset_type_name" class="form-control" id="asset_type_name"
-                                    placeholder="Asset Type name" />
+                                    placeholder="@lang('menu.type_name')" />
                                 <span class="error error_asset_type_name"></span>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>Type Code :</b> </label>
-                                <input type="text" name="asset_type_code" class="form-control" placeholder="Asset Type Code"/>
+                                <label><b>@lang('menu.type_code') :</b> </label>
+                                <input type="text" name="asset_type_code" class="form-control" placeholder="@lang('menu.type_code')"/>
                             </div>
                         </div>
 
@@ -166,7 +166,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>
@@ -212,16 +212,16 @@
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><b>Asset Name :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.asset_name') :</b> <span class="text-danger">*</span></label>
                                 <input type="text" name="asset_name" class="form-control" id="asset_name"
-                                    placeholder="Asset Type name" autofocus/>
+                                    placeholder="@lang('menu.asset_type')" autofocus/>
                                 <span class="error error_asset_name"></span>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>Asset Type :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.asset_type')Type :</b> <span class="text-danger">*</span></label>
                                 <select name="type_id" class="form-control" id="type_id" >
                                 <option value="">Select Asset Type</option>
                                 </select>
@@ -232,9 +232,9 @@
                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                             <div class="form-group row mt-1">
                                 <div class="col-md-12">
-                                    <label><b>Branch :</b> <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.branch') :</b> <span class="text-danger">*</span></label>
                                     <select name="branch_id" class="form-control" id="branch_id">
-                                        <option value="">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                        <option value="">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                         @foreach ($branches as $br)
                                             <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
                                         @endforeach
@@ -248,7 +248,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>Quantity :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.quantity') :</b> <span class="text-danger">*</span></label>
                                 <input type="number" step="any" name="quantity" class="form-control" id="quantity"
                                     placeholder="Asset Quantity"/>
                                 <span class="error error_quantity"></span>
@@ -257,16 +257,16 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>Per Unit Value :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.per_unit_value') :</b> <span class="text-danger">*</span></label>
                                 <input type="number" step="any" name="per_unit_value" class="form-control" id="per_unit_value"
-                                    placeholder="Per Unit Value"/>
+                                    placeholder="@lang('menu.per_unit_value')"/>
                                 <span class="error error_per_unit_value"></span>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>Total Value :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.total_value') :</b> <span class="text-danger">*</span></label>
                                 <input type="number" step="any" name="total_value" class="form-control" id="total_value"
                                     placeholder="Total Asset Value" />
                                 <span class="error error_total_value"></span>
@@ -278,7 +278,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>
@@ -440,7 +440,7 @@
                 $('#type_id').empty();
                 $('#filter_type_id').empty();
                 $('#type_id').append('<option value="">Select Asset Type</option>');
-                $('#filter_type_id').append('<option value="">All</option>');
+                $('#filter_type_id').append('<option value="">@lang('menu.all')</option>');
                 $.each(types, function(key, val){
                     $('#type_id').append('<option value="'+val.id+'">'+val.asset_type_name+'</option>');
                     $('#filter_type_id').append('<option value="'+val.id+'">'+val.asset_type_name+'</option>');

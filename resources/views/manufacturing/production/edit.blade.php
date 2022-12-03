@@ -15,7 +15,7 @@
                     <h5>Edit Production</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -267,7 +267,7 @@
                                                 <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
                                                 <div class="col-8">
                                                     <select class="form-control" name="tax_id" id="tax_id">
-                                                        <option value="">NoTax</option>
+                                                        <option value="">@lang('menu.no_tax')</option>
                                                         @foreach ($taxes as $tax)
                                                             <option {{ $tax->id == $production->tax_id ? 'SELECTED' : '' }} value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                         @endforeach

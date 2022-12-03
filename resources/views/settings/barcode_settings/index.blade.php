@@ -11,7 +11,7 @@
                     <span class="fas fa-barcode"></span>
                     <h5>Barcode Sticker Settings</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <!-- =========================================top section button=================== -->
@@ -33,7 +33,7 @@
                             <table class="display data_tbl data__table">
                                 <thead>
                                     <tr>
-                                        <th class="text-start">S/L</th>
+                                        <th class="text-start">@lang('menu.sl')</th>
                                         <th class="text-start">Sticker Settings Name</th>
                                         <th class="text-start">Sticker Settings Description</th>
                                         <th class="text-start">@lang('menu.action')</th>

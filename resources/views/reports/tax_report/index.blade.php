@@ -35,10 +35,10 @@
                                         @if ($addons->branches == 1)
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-3 offset-md-6">
-                                                    <label><strong>Branch :</strong></label>
+                                                    <label><strong>@lang('menu.branch') :</strong></label>
                                                     <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                        <option value="">@lang('menu.all')</option>
+                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                         @foreach ($branches as $branch)
                                                             <option value="{{ $branch->id }}">
                                                                 {{ $branch->name . '/' . $branch->branch_code }}
@@ -73,7 +73,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="report_data_area">
-                            <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                            <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                             <div class="report_data">
                                 <div class="sale_and_expense_sum_area">
                                     <div class="card-body card-custom px-0">

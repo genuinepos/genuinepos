@@ -17,7 +17,7 @@
                             </div>
 
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
@@ -33,10 +33,10 @@
                                                         <label><strong>Sender Business Location :</strong></label>
                                                         <select name="branch_id"
                                                             class="form-control submit_able" id="branch_id" autofocus>
-                                                            <option value="">All</option>
+                                                            <option value="">@lang('menu.all')</option>
 
                                                             @if (auth()->user()->role_type == 3)
-                                                                <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                             @endif
 
                                                             @foreach ($branches as $branch)
@@ -51,7 +51,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong>Payment Status :</strong></label>
                                                     <select name="receive_status" id="receive_status" class="form-control">
-                                                        <option value="">All</option>
+                                                        <option value="">@lang('menu.all')</option>
                                                         <option value="1">Pending</option>
                                                         <option value="2">Partial</option>
                                                         <option value="3">Completed</option>
@@ -59,7 +59,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -72,7 +72,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -85,7 +85,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -103,7 +103,7 @@
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl table-sm table-striped">
@@ -124,7 +124,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th colspan="5" class="text-white text-end">@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th id="total_item" class="text-white text-end"></th>
                                                 <th id="total_send_qty" class="text-white text-end"></th>
                                                 <th id="total_received_qty" class="text-white text-end"></th>

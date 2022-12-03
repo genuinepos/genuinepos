@@ -15,7 +15,7 @@
                                 <h5>Shipments</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
@@ -29,12 +29,12 @@
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
+                                                            <label><strong>@lang('menu.business_location') :</strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control" id="branch_id"
                                                                 data-live-search="true">
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                <option value="">@lang('menu.all')</option>
+                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -56,14 +56,14 @@
                                                 <div class="col-md-2">
                                                     <label><strong>Payment Status :</strong></label>
                                                     <select name="payment_status" id="payment_status" class="form-control submit_able">
-                                                        <option value="">All</option>
+                                                        <option value="">@lang('menu.all')</option>
                                                         <option value="1">Paid</option>
                                                         <option value="2">Due</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -76,7 +76,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -89,7 +89,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,7 +107,7 @@
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
@@ -321,7 +321,7 @@
     <script type="text/javascript">
         function setCustomers(){
             $.get("{{route('sales.get.all.customer')}}", function(customers) {
-                $('#customer_id').append('<option value="">All</option>');
+                $('#customer_id').append('<option value="">@lang('menu.all')</option>');
                 $('#customer_id').append('<option value="NULL">Walk-In-Customer</option>');
                 $.each(customers, function(key, val){
                     $('#customer_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');

@@ -13,7 +13,7 @@
                                 <span class="fas fa-balance-scale"></span>
                                 <h5>Balance Sheet</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
 
                         <div class="p-3">
@@ -27,10 +27,10 @@
                                                         <div class="form-group row">
 
                                                             <div class="col-md-2">
-                                                                <label><strong>Business Location :</strong></label>
+                                                                <label><strong>@lang('menu.business_location') :</strong></label>
                                                                 <select name="branch_id"
                                                                     class="form-control submit_able" id="branch_id" autofocus>
-                                                                    <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                    <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                     @foreach ($branches as $branch)
                                                                         <option value="{{ $branch->id }}">
                                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -60,7 +60,7 @@
                                 <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <div class="data_preloader mt-5 pt-5"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
+                                            <div class="data_preloader mt-5 pt-5"> <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6></div>
                                             <div class="balance_sheet_area">
                                                 <div class="print_header d-hide">
                                                     <div class="text-center pb-3">
@@ -81,7 +81,7 @@
                                                         <thead>
                                                             <tr class="bg-secondary">
                                                                 <th class="liability text-white">Liability</th>
-                                                                <th class="assets text-white">Assets</th>
+                                                                <th class="assets text-white">@lang('menu.assets')</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -273,7 +273,7 @@
                                             </div>
 
                                             <div class="print_btn_area">
-                                                <a id="print_btn" href="#" class="btn btn-sm btn-success float-end"><i class="fas fa-print"></i> Print</a>
+                                                <a id="print_btn" href="#" class="btn btn-sm btn-success float-end"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                             </div>
                                         </div>
                                     </div>

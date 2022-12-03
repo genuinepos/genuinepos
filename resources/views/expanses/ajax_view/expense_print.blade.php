@@ -7,7 +7,7 @@
                     @if ($expense->branch)
                         {{ $expense->branch->name . '/' . $expense->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
@@ -61,12 +61,12 @@
                             <th class="text-end">Tax :</th>
                             <th class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $expense->tax_amount }}</b> 
+                                {{ $expense->tax_amount }}</b>
                             </th>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Total :</th>
+                            <th class="text-end">@lang('menu.total') :</th>
                             <th class="text-end"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $expense->net_total_amount }}</b></th>
                         </tr>
 
@@ -74,7 +74,7 @@
                             <th class="text-end">Paid :</th>
                             <th class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $expense->paid }}</b> 
+                                {{ $expense->paid }}</b>
                             </th>
                         </tr>
 
@@ -82,13 +82,13 @@
                             <th class="text-end">Due :</th>
                             <th class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $expense->due }}</b> 
+                                {{ $expense->due }}</b>
                             </th>
                         </tr>
                     </tfoot>
                 </table>
             </div>
-         
+
         </div>
     </div>
 

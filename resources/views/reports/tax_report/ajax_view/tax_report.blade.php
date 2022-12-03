@@ -73,7 +73,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr class="bg-secondary">
-                                        <th colspan="4" class="text-white"><b>Total :</b></th>
+                                        <th colspan="4" class="text-white"><b>@lang('menu.total') :</b></th>
                                         <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalPurchaseAmount, 2, '.', '') }}</b>
@@ -143,7 +143,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr class="bg-secondary">
-                                        <th colspan="4" class="text-center text-white"><b>Total :</b></th>
+                                        <th colspan="4" class="text-center text-white"><b>@lang('menu.total') :</b></th>
                                         <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalSaleAmount, 2, '.', '') }}</b>
@@ -204,7 +204,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr class="bg-secondary">
-                                        <th colspan="2" class="text-center text-white"><b>Total :</b></th>
+                                        <th colspan="2" class="text-center text-white"><b>@lang('menu.total') :</b></th>
                                         <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalExpense, 2, '.', '') }}</b>

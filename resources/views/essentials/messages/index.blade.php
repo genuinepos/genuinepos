@@ -41,7 +41,7 @@
                             </div>
 
                             <div class="py-2 px-3">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                                 <div class="row">
                                     <div class="message_area" id="chat-box">
 

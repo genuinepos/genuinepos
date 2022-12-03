@@ -11,7 +11,7 @@
                     <span class="fas fa-people-arrows"></span>
                     <h5>Customers</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
@@ -26,11 +26,11 @@
                                     <form id="filter_form" class="p-2">
                                         <div class="form-group row">
                                             <div class="col-md-2">
-                                                <label><strong>Business Location :</strong></label>
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able" id="branch_id" autofocus>
-                                                    <option value="">All</option>
-                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -42,7 +42,7 @@
                                             <div class="col-md-2">
                                                 <label><strong></strong></label>
                                                 <div class="input-group">
-                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -61,7 +61,7 @@
 
                     <div class="col-md-6 d-flex justify-content-end gap-2">
                         <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary">
-                            <i class="fas fa-plus-square"></i> Add (Ctrl+Enter)
+                            <i class="fas fa-plus-square"></i> @lang('menu.add') (Ctrl+Enter)
                         </a>
                         <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Import Customers</a>
                         <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> Print All</a>
@@ -71,7 +71,7 @@
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
@@ -96,7 +96,7 @@
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="7" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                    <th colspan="7" class="text-white text-end">@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th id="opening_balance" class="text-white text-end"></th>
                                     <th id="total_sale" class="text-white text-end"></th>
                                     <th id="total_paid" class="text-white text-end"></th>
@@ -288,7 +288,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>

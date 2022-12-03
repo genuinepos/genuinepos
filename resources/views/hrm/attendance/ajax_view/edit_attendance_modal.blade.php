@@ -36,7 +36,7 @@
                     <i class="fas fa-spinner"></i><span> Loading...</span>
                 </button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
             </div>
         </div>
     </div>

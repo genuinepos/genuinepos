@@ -1,15 +1,15 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="sale_payment_print_area">
     <div class="header_area d-hide">
         <div class="company_name text-center">
             <h3>
                 <strong>
                     @if ($supplierPayment->branch)
-                    
+
                         {{ $supplierPayment->branch->name . '/' . $supplierPayment->branch->branch_code }}
                     @else
 
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} 
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
                     @endif
                 </strong>
             </h3>
@@ -26,7 +26,7 @@
 
     <div class="reference_area">
         <p><strong>Title :</strong>
-            {{ $supplierPayment->type == 1 ? 'Supplier Payment' : 'Return Payment' }} 
+            {{ $supplierPayment->type == 1 ? 'Supplier Payment' : 'Return Payment' }}
         </p>
         <p><strong>@lang('menu.supplier') : </strong> {{ $supplierPayment->supplier->name }}</p>
         <p><strong>@lang('menu.phone') :</strong> {{ $supplierPayment->supplier->phone }}</p>
@@ -47,7 +47,7 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Credit Account :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.credit_account') :</strong></td>
                             <td width="50%" class="text-start">{{ $supplierPayment->account ? $supplierPayment->account->name : '' }}</td>
                         </tr>
 
@@ -132,7 +132,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="2" class="text-end">Total : </th>
+                        <th colspan="2" class="text-end">@lang('menu.total') : </th>
                         <th class="text-start">{{ App\Utils\Converter::format_in_bdt($total_paid) }}</th>
                     </tr>
                 </tfoot>

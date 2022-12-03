@@ -26,7 +26,7 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                                         </div>
                                     </div>
                                 </div>
@@ -237,7 +237,7 @@
                                                 <div class="col-8">
 
                                                     <select name="purchase_tax" class="form-control" id="purchase_tax">
-                                                        <option value="0">NoTax</option>
+                                                        <option value="0">@lang('menu.no_tax')</option>
                                                         @foreach ($taxes as $tax)
                                                             <option {{ $return->purchase_tax_percent == $tax->tax_percent }} value="{{ $tax->tax_percent }}">
                                                                 {{ $tax->tax_name }}

@@ -16,7 +16,7 @@
                     <h6>Attendances</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
@@ -30,11 +30,11 @@
                                     @if ($addons->branches == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-3">
-                                                <label><strong>Branch :</strong></label>
+                                                <label><strong>@lang('menu.branch') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able" id="branch_id" autofocus>
-                                                    <option value="">All</option>
-                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -49,7 +49,7 @@
                                         <label><strong>Users :</strong></label>
                                         <select name="user_id"
                                             class="form-control submit_able" id="user_id" autofocus>
-                                            <option value="">All</option>
+                                            <option value="">@lang('menu.all')</option>
                                             @foreach($employee as $row)
                                                 <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
                                             @endforeach
@@ -86,12 +86,12 @@
                 </div>
 
                 <div class="widget_content">
-                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
+                                    <th>@lang('menu.date')</th>
                                     <th>Employee</th>
                                     <th>Clock IN - CLock Out</th>
                                     <th>Work Duration</th>
@@ -150,7 +150,7 @@
                         </div>
 
                         <div class="attendance_table">
-                            <div class="data_preloader d-hide" id="attendance_row_loader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                            <div class="data_preloader d-hide" id="attendance_row_loader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                             <table class="table modal-table table-sm" id="table_data">
 
                             </table>
@@ -161,7 +161,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>

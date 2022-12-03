@@ -15,7 +15,7 @@
                                 <h6>@lang('menu.pos_sales')</h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                                class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                         <div class="p-3">
                             <div class="row">

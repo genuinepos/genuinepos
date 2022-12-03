@@ -20,7 +20,7 @@
                     <h5>Edit Process</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -172,7 +172,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                                <button class="btn btn-sm btn-success submit_button">Save</button>
+                                <button class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>

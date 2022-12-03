@@ -59,7 +59,7 @@
                                     <div class="barcode_product_table_area">
                                         <div class="table_area">
                                             <div class="data_preloader d-hide">
-                                                <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                                <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                                             </div>
                                             <table class="table modal-table table-sm">
                                                 <thead>

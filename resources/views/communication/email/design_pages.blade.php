@@ -35,7 +35,7 @@
                     <h5>Email Design Pages</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -106,7 +106,7 @@
                                     </div>
                                     <div class="d-flex justify-content-end gap-2">
                                         <button class="btn btn-sm btn-danger">Reset</button>
-                                        <button class="btn btn-sm btn-success">Save</button>
+                                        <button class="btn btn-sm btn-success">@lang('menu.save')</button>
                                     </div>
                                 </div>
                             </form>
@@ -327,7 +327,7 @@
                                 </div>
                                 <div class="d-flex justify-content-end gap-2">
                                     <button class="btn btn-sm btn-danger">Reset</button>
-                                    <button class="btn btn-sm btn-success">Save</button>
+                                    <button class="btn btn-sm btn-success">@lang('menu.save')</button>
                                 </div>
                             </form>
                         </div>

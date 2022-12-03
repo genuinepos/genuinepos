@@ -111,7 +111,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-7">
-                        <label><strong>Credit Account :</strong> </label>
+                        <label><strong>@lang('menu.credit_account') :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -146,7 +146,7 @@
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
                             <button name="action" value="save_and_print" type="submit" class="btn btn-sm btn-success" id="add_payment">Save & Print</button>
-                            <button name="action" value="save" type="submit" class="btn btn-sm btn-success" id="add_payment">Save</button>
+                            <button name="action" value="save" type="submit" class="btn btn-sm btn-success" id="add_payment">@lang('menu.save')</button>
                         </div>
                     </div>
                 </div>

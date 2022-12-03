@@ -30,7 +30,7 @@
                     <h6>Edit Sale Return</h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -308,7 +308,7 @@
 
                                                         <div class="col-8">
                                                             <select name="return_tax" class="form-control" id="return_tax">
-                                                                <option value="0.00">NoTax</option>
+                                                                <option value="0.00">@lang('menu.no_tax')</option>
                                                                 @foreach ($taxes as $tax)
                                                                     <option {{ $return->return_tax == $tax->tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                                 @endforeach
@@ -493,7 +493,7 @@
                             <div class="col-md-6">
                                 <label><strong>Tax</strong> :</label>
                                 <select class="form-control" id="e_unit_tax">
-                                    <option value="0.00">NoTax</option>
+                                    <option value="0.00">@lang('menu.no_tax')</option>
                                     @foreach ($taxes as $tax)
                                         <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                     @endforeach

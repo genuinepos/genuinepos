@@ -22,7 +22,7 @@
                     <h6>Add Purchase</h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -280,7 +280,7 @@
                                                         <label class="col-4"><b>Order Tax :</b><span class="text-danger">*</span></label>
                                                         <div class="col-8">
                                                             <select name="purchase_tax" class="form-control" id="purchase_tax">
-                                                                <option value="0.00">NoTax</option>
+                                                                <option value="0.00">@lang('menu.no_tax')</option>
                                                             </select>
                                                             <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00" tabindex="-1">
                                                         </div>
@@ -418,7 +418,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
                             <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">Save & Print</button>
-                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">Save</button>
+                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                         </div>
                     </div>
                 </div>

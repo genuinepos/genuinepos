@@ -52,11 +52,11 @@
                                     @if ($addons->branches == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
-                                                <label><strong>Business Location :</strong></label>
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able" id="branch_id" autofocus>
-                                                    <option value="">All</option>
-                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -82,7 +82,7 @@
 
                                             <label><strong>Warehouse :</strong></label>
                                             <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
-                                                <option value="">All</option>
+                                                <option value="">@lang('menu.all')</option>
                                                 @foreach ($wh as $row)
                                                     <option value="{{ $row->id }}">{{ $row->warehouse_name.'/'.$row->warehouse_code }}</option>
                                                 @endforeach
@@ -94,7 +94,7 @@
                                         <label><strong>Category :</strong></label>
                                         <select name="category_id" class="form-control submit_able"
                                             id="category_id">
-                                            <option value="">All</option>
+                                            <option value="">@lang('menu.all')</option>
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}">{{$category->name}}</option>
                                             @endforeach
@@ -104,7 +104,7 @@
                                     <div class="col-md-2">
                                         <label><strong>Sub-Category :</strong></label>
                                         <select name="sub_category_id" class="form-control submit_able" id="sub_category_id">
-                                            <option value="">All</option>
+                                            <option value="">@lang('menu.all')</option>
                                         </select>
                                     </div>
 
@@ -112,7 +112,7 @@
                                         <label><strong>Status :</strong></label>
                                         <div class="input-group">
                                             <select name="status" class="form-control" id="status" autofocus>
-                                                <option value="">All</option>
+                                                <option value="">@lang('menu.all')</option>
                                                 <option value="1">Final</option>
                                                 <option value="0">Hold</option>
                                             </select>
@@ -120,7 +120,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>From Date :</strong></label>
+                                        <label><strong>@lang('menu.from_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -133,7 +133,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>To Date :</strong></label>
+                                        <label><strong>@lang('menu.to_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -171,14 +171,14 @@
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                     </div>
                     <div class="table-responsive">
                         <form id="update_product_cost_form" action="">
                             <table class="display data_tbl data__table">
                                 <thead>
                                     <tr>
-                                        <th class="text-black">Date</th>
+                                        <th class="text-black">@lang('menu.date')</th>
                                         <th class="text-black">Voucher No</th>
                                         <th class="text-black">Business Location</th>
                                         <th class="text-black">Product</th>
@@ -196,7 +196,7 @@
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr class="bg-secondary">
-                                        <th colspan="7" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                        <th colspan="7" class="text-white text-end">@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                         <th id="quantity" class="text-white text-end"></th>
                                         <th id="wasted_quantity" class="text-white text-end"></th>
                                         <th id="total_final_quantity" class="text-white text-end"></th>
@@ -303,7 +303,7 @@
                         success:function(data){
 
                             $('#warehouse_id').empty();
-                            $('#warehouse_id').append('<option value="">All</option>');
+                            $('#warehouse_id').append('<option value="">@lang('menu.all')</option>');
                             $.each(data, function (key, val) {
 
                                 $('#warehouse_id').append('<option value="'+val.id+'">'+val.warehouse_name+'/'+val.warehouse_code+'</option>');

@@ -59,11 +59,11 @@
 
 <div class="receipt_list_table">
     <div class="data_preloader receipt_list_preloader">
-        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
     </div>
     <div class="table-responsive">
         <div class="data_preloader receipt_preloader">
-            <h6><i class="fas fa-spinner"></i> Processing...</h6>
+            <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
         </div>
         <table class="display data_tbl data__table table-striped">
             <thead>
@@ -85,7 +85,7 @@
                                 @if ($receipt->branch)
                                     {{ $receipt->branch->name }}/{{ $receipt->branch->branch_code }}
                                 @else
-                                    Head Office
+                                    @lang('menu.head_office')
                                 @endif
                             </td>
 
@@ -103,7 +103,7 @@
 
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         @if ($receipt->status != 'Completed')
-                                            <a class="dropdown-item" id="print_receipt" href="{{ route('money.receipt.voucher.print', $receipt->id) }}"><i class="fas fa-print text-primary"></i> Print</a>
+                                            <a class="dropdown-item" id="print_receipt" href="{{ route('money.receipt.voucher.print', $receipt->id) }}"><i class="fas fa-print text-primary"></i>@lang('menu.print')</a>
                                             <a class="dropdown-item" id="edit_receipt" href="{{ route('money.receipt.voucher.edit', $receipt->id) }}"><i class="fas fa-edit text-primary"></i> Edit</a>
                                             <a class="dropdown-item" id="change_receipt_status" href="{{ route('money.receipt.voucher.status.change.modal', $receipt->id) }}"><i class="far fa-file-alt text-primary"></i> Change Status</a>
                                         @endif

@@ -39,7 +39,7 @@
                     <h6>Add Sale</h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -432,10 +432,10 @@
                                             </div>
 
                                             <div class="row mb-2">
-                                                <label class="col-sm-5 col-form-label">Debit A/C : <span
+                                                <label class="col-sm-5 col-form-label">@lang('menu.debit') A/C : <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-sm-7">
-                                                    <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
+                                                    <select name="account_id" class="form-control" id="account_id" data-name="@lang('menu.debit') A/C">
                                                         @foreach ($accounts as $account)
                                                             <option value="{{ $account->id }}">
                                                                 @php
@@ -517,7 +517,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <p><strong>Business Location : </strong> <span class="op_branch_name"></span></p>
+                                <p><strong>@lang('menu.business_location') : </strong> <span class="op_branch_name"></span></p>
                             </div>
 
                             <div class="col-md-12 mt-2">
@@ -539,7 +539,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn op_loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button name="action" value="save" type="submit" class="btn btn-sm btn-success">Save</button>
+                                    <button name="action" value="save" type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>
@@ -673,7 +673,7 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="data_preloader" id="recent_trans_preloader">
-                                        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                                     </div>
                                     <div class="table-responsive">
                                         <table class="table modal-table table-sm table-striped">
@@ -709,7 +709,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="data_preloader mt-5" id="stock_preloader">
-                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">Item Stocks</h6>

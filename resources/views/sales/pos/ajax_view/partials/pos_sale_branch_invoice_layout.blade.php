@@ -242,7 +242,7 @@
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->bank_branch)
-                                <p>Branch : {{ $sale->branch->pos_sale_invoice_layout->bank_branch }}</p>
+                                <p>@lang('menu.branch') : {{ $sale->branch->pos_sale_invoice_layout->bank_branch }}</p>
                             @endif
                         </div>
                     @endif

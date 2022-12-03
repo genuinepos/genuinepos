@@ -5,9 +5,9 @@
                 <div class="col-md-6">
                     <div class="input-group">
                         <label class=" col-4">
-                            <b>Paying : 
+                            <b>Paying :
                                 ({{ json_decode($generalSettings->business, true)['currency'] }})
-                            </b> 
+                            </b>
                         </label>
 
                         <div class="col-8">
@@ -23,8 +23,8 @@
                         <div class="col-8">
                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option 
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                    <option
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                         value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
@@ -38,7 +38,7 @@
             <div class="row mt-1">
                 <div class="col-md-6">
                     <div class="input-group">
-                        <label class="col-4"><b>Credit Account :</b></label>
+                        <label class="col-4"><b>@lang('menu.credit_account') :</b></label>
                         <div class="col-8">
                             <select required name="account_id" class="form-control" id="account_id">
                                 @foreach ($accounts as $account)
@@ -91,7 +91,7 @@
             <button data-action="save" id="save" class="btn btn-sm btn-success submit_button">
                 Save (Shift+Enter)
             </button>
-            
+
             <button data-action="sale_and_print" id="save_and_print" class="btn btn-sm btn-success submit_button">
                 Save & Print (Ctrl+Enter)
             </button>

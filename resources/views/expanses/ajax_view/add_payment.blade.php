@@ -12,7 +12,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong> Voucher No : </strong>{{ $expense->invoice_id }} </li>
-                    <li><strong>Business Location : </strong>
+                    <li><strong>@lang('menu.business_location') : </strong>
                         {{ $expense->branch ? $expense->branch->name.''.$expense->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}
                     </li>
                 </ul>
@@ -74,7 +74,7 @@
 
     <div class="form-group row mt-2">
         <div class="col-md-7">
-            <label><strong>Credit Account :</strong> </label>
+            <label><strong>@lang('menu.credit_account') :</strong> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -108,7 +108,7 @@
             <div class="btn-loading">
                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
             </div>
         </div>
     </div>

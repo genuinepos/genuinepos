@@ -108,7 +108,7 @@
             <div class="col-md-3 ">
                 <label><b>Tax :</b> </label>
                 <select class="form-control" name="tax_id" id="add_tax_id">
-                    <option value="">NoTax</option>
+                    <option value="">@lang('menu.no_tax')</option>
                     @foreach ($taxes as $tax)
                         <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
                     @endforeach
@@ -175,7 +175,7 @@
             <div class="btn-loading">
                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
             </div>
         </div>
     </div>

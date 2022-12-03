@@ -14,7 +14,7 @@
                     <span class="fas fa-plus-circle"></span>
                     <h5>Add Production</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -225,7 +225,7 @@
                                                 <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
                                                 <div class="col-8">
                                                     <select class="form-control" name="tax_id" id="tax_id">
-                                                        <option value="">NoTax</option>
+                                                        <option value="">@lang('menu.no_tax')</option>
                                                         @foreach ($taxes as $tax)
                                                             <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                         @endforeach
@@ -301,7 +301,7 @@
                                     <div class="col-md-12 d-flex justify-content-end">
                                         <div class="btn-loading">
                                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                            <button value="save" class="btn btn-sm btn-success submit_button">Save</button>
+                                            <button value="save" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                             <button value="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print</button>
                                         </div>
                                     </div>

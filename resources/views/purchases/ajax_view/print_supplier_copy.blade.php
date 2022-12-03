@@ -68,7 +68,7 @@
                         <ul class="list-unstyled">
                             <li><strong>Ordered From : </strong></li>
                             <li>
-                                <strong>Business Location : </strong>
+                                <strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch)
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else

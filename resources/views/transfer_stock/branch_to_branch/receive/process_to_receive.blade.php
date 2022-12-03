@@ -42,7 +42,7 @@
                                             {{ $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code }}
                                         @else
 
-                                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)
+                                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))
                                         @endif
                                     </p>
                                     </div>

@@ -36,10 +36,10 @@
                                 @if ($addons->branches == 1)
                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                         <div class="col-md-3">
-                                            <label><strong>Business Location :</strong></label>
+                                            <label><strong>@lang('menu.business_location') :</strong></label>
                                             <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                <option value="">All</option>
-                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                <option value="">@lang('menu.all')</option>
+                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -54,7 +54,7 @@
                                 <div class="col-md-3">
                                     <label><strong>User :</strong></label>
                                     <select name="user_id" class="form-control submit_able" id="user_id" autofocus>
-                                        <option value="">All</option>
+                                        <option value="">@lang('menu.all')</option>
                                     </select>
                                 </div>
 
@@ -82,7 +82,7 @@
                                         </div>
 
                                         <div class="col-md-6">
-                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
+                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                 </div>
 
                 <div class="card report_data_area p-2">
-                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                     <div class="report_data">
                         <div class="sale_and_expense_sum_area">
                             <div class="card-body card-custom px-0">
@@ -131,7 +131,7 @@
                                                     <table class="display data_tbl data__table" id="sale_table">
                                                         <thead>
                                                             <tr>
-                                                                <th>Date</th>
+                                                                <th>@lang('menu.date')</th>
                                                                 <th>Invoice ID</th>
                                                                 <th>Customer</th>
                                                                 <th>Branch</th>
@@ -151,7 +151,7 @@
                                                                 <th></th>
                                                                 <th></th>
                                                                 <th></th>
-                                                                <th class="text-white">Total :</th>
+                                                                <th class="text-white">@lang('menu.total') :</th>
                                                                 <th class="text-white">
                                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                     <span id="total_amount"></span>
@@ -183,7 +183,7 @@
                                                     <table class="display data_tbl data__table w-100" id="expense_table">
                                                         <thead>
                                                             <tr>
-                                                                <th>Date</th>
+                                                                <th>@lang('menu.date')</th>
                                                                 <th>Reference No</th>
                                                                 <th>Branch</th>
                                                                 <th>Expense For</th>
@@ -202,7 +202,7 @@
                                                                 <th></th>
                                                                 <th></th>
                                                                 <th></th>
-                                                                <th class="text-white">Total :</th>
+                                                                <th class="text-white">@lang('menu.total') :</th>
                                                                 <th class="text-white">
                                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                     <span id="ex_total_amount"></span>

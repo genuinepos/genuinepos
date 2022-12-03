@@ -9,9 +9,9 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-money-check-alt"></span>
-                    <h5>Accounts</h5>
+                    <h5>@lang('menu.account')</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
@@ -25,10 +25,10 @@
                                     @if ($addons->branches == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
-                                                <label><strong>Business Location :</strong></label>
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able" id="f_branch_id" autofocus>
-                                                    <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -42,7 +42,7 @@
                                     <div class="col-md-2">
                                         <label><strong>@lang('menu.account_types') :</strong></label>
                                         <select name="account_type" id="f_account_type" class="form-control">
-                                            <option value="">All</option>
+                                            <option value="">@lang('menu.all')</option>
                                             @foreach (App\Utils\Util::allAccountTypes(1) as $key => $accountType)
                                                 <option value="{{ $key }}">{{ $accountType }}</option>
                                             @endforeach
@@ -64,27 +64,27 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-10">
-                        <h6>All Accounts</h6>
+                        <h6>@lang('menu.all_accounts')</h6>
                     </div>
 
                     <div class="col-md-2 d-flex justify-content-end">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" id="add" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" id="add" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.add') (Ctrl+Enter)</a>
                     </div>
                 </div>
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th class="text-start">A/C Type</th>
-                                    <th class="text-start">A/C Name</th>
-                                    <th class="text-start">A/C Number</th>
-                                    <th class="text-start">@lang('menu.bank') </th>
-                                    <th class="text-start">Business Location </th>
+                                    <th class="text-start">A/C @lang('menu.type')</th>
+                                    <th class="text-start">A/C @lang('menu.name')</th>
+                                    <th class="text-start">A/C @lang('menu.number')</th>
+                                    <th class="text-start">@lang('menu.bank')</th>
+                                    <th class="text-start">@lang('menu.business_location')</th>
                                     <th class="text-start">@lang('menu.opening_balance')</th>
                                     <th class="text-start">@lang('menu.balance')</th>
                                     <th class="text-start">@lang('menu.action')</th>
@@ -108,7 +108,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Account</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_account')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -183,7 +183,7 @@
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                             </div>
                         </div>
                     </form>
@@ -198,7 +198,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Account</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_account')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>

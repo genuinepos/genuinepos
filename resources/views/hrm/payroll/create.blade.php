@@ -23,7 +23,7 @@
                                             <div class="col-8"><h5>Generate Payroll Of {{ $month.'/'.$year }}</h5></div>
 
                                             <div class="col-4">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                                             </div>
                                         </div>
                                     </div>
@@ -58,7 +58,7 @@
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label><b>Total :</b> <span class="text-danger">*</span></label>
+                                                <label><b>@lang('menu.total') :</b> <span class="text-danger">*</span></label>
                                                 <input readonly type="total" step="any" name="total_amount"
                                                     id="total_amount" class="form-control" placeholder="total" value="0.00">
                                             </div>

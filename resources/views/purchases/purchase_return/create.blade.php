@@ -12,7 +12,7 @@
                     <h5>Purchase Return</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -30,7 +30,7 @@
                                     </div>
                                     <div class="col-md-6">
                                     <p class="m-0 "><strong> Supplier : </strong> {{ $purchase->supplier->name }}</p>
-                                    <p class="m-0 branch"><strong>Business Location : </strong>
+                                    <p class="m-0 branch"><strong>@lang('menu.business_location') : </strong>
                                         @if($purchase->branch)
                                             {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(B.L.)</b>
                                         @else
@@ -145,7 +145,7 @@
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i
                                     class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                <button type="submit" data-action="save" class="btn btn-sm btn-success submit_button">Save</button>
+                                <button type="submit" data-action="save" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 <button type="submit" data-action="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print</button>
                             </div>
                         </div>

@@ -3,7 +3,7 @@
         <div class="category-sec col-lg-4 col-md-3">
             <div class="left-cat-pos">
                 <div class="all-cat">
-                    <a href="#" data-id="" class="cat-button active" tabindex="-1">All</a>
+                    <a href="#" data-id="" class="cat-button active" tabindex="-1">@lang('menu.all')</a>
                     @foreach ($categories as $cate)
                         <a href="#" data-id="{{ $cate->id }}" class="cat-button" tabindex="-1">{{ $cate->name }}</a>
                     @endforeach

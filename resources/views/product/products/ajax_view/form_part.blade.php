@@ -50,7 +50,7 @@
                     <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
                     <div class="col-8">
                         <select class="form-control" name="tax_id" id="tax_id">
-                            <option value="">NoTax</option>
+                            <option value="">@lang('menu.no_tax')</option>
                             @foreach ($taxes as $tax)
                                 <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
                             @endforeach

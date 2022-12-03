@@ -139,7 +139,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button_p loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                            <button name="action" value="save" type="submit" class="btn btn-sm btn-success submit_button" id="add_payment">Save</button>
+                            <button name="action" value="save" type="submit" class="btn btn-sm btn-success submit_button" id="add_payment">@lang('menu.save')</button>
                         </div>
                     </div>
                 </div>

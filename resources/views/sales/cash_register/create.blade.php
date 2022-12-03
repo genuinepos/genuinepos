@@ -23,7 +23,7 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -62,7 +62,7 @@
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Business Location :</b></label>
+                                                    <label class="col-4"><b>@lang('menu.business_location') :</b></label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                                     </div>

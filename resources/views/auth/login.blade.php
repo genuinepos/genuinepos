@@ -101,7 +101,7 @@
 
     {{-- <div class="back_btn_wrapper">
         <div class="back_btn">
-            <a href="#" class="btn">Back</a>
+            <a href="#" class="btn">@lang('menu.back')</a>
         </div>
     </div> --}}
 @endsection

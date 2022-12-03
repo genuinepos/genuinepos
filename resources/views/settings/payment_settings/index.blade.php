@@ -11,7 +11,7 @@
                     <h6>Payment Method Settings </h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <section class="p-3">
@@ -38,7 +38,7 @@
                                                 <div class="col-md-12">
                                                     <table class="table table-sm">
                                                         <thead>
-                                                            <th class="text-start">S/L</th>
+                                                            <th class="text-start">@lang('menu.sl')</th>
                                                             <th class="text-start">Payment Method</th>
                                                             <th class="text-start">Default Account</th>
                                                         </thead>
@@ -82,7 +82,7 @@
                                                                 <td class="d-flex justify-content-end">
                                                                     <div class="btn-loading">
                                                                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
-                                                                        <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                                                        <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -124,7 +124,7 @@
                                     {{-- <div class="row mt-2">
                                         <div class="col-12 text-end">
                                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i> <strong>@lang('menu.loading')...</strong> </button>
-                                            <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                            <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                         </div>
                                     </div> --}}
                                 </div>

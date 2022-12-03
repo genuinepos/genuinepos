@@ -32,11 +32,11 @@
                                     @if ($addons->branches == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-3">
-                                                <label><strong>Business Location :</strong></label>
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able" id="branch_id" autofocus>
-                                                    <option value="">All</option>
-                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -51,7 +51,7 @@
                                         <label><strong>Department :</strong></label>
                                         <select name="department_id"
                                             class="form-control submit_able" id="department_id" autofocus>
-                                            <option value="">All</option>
+                                            <option value="">@lang('menu.all')</option>
                                             @foreach ($departments as $department)
                                                 <option value="{{ $department->id }}">
                                                     {{ $department->department_name }}
@@ -61,7 +61,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>From Date :</strong></label>
+                                        <label><strong>@lang('menu.from_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -86,7 +86,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-1">
-                                        <a href="{{ route('reports.attendance.print') }}" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                        <a href="{{ route('reports.attendance.print') }}" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                     </div>
                                 </div>
                             </form>
@@ -97,7 +97,7 @@
 
             <div class="card">
                 <div class="widget_content">
-                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
                             <thead>

@@ -17,7 +17,7 @@
                     <span class="fas fa-plus-circle"></span>
                     <h6>Add Product</h6>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <form id="add_product_form" action="{{ route('products.add.store') }}" enctype="multipart/form-data" method="POST">
@@ -192,7 +192,7 @@
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>Business Location :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.business_location') :</b> </label>
                                                         <div class="col-8">
                                                             <input type="hidden" name="branch_count" value="branch_count">
                                                             <select class="form-control select2" name="branch_ids[]" id="branch_ids" multiple>
@@ -313,7 +313,7 @@
                                                         <label class="col-4"><b>Tax :</b> </label>
                                                         <div class="col-8">
                                                             <select class="form-control" name="tax_id" id="tax_id">
-                                                                <option value="">NoTax</option>
+                                                                <option value="">@lang('menu.no_tax')</option>
                                                                 @foreach ($taxes as $tax)
                                                                     <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                                 @endforeach
@@ -563,7 +563,7 @@
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading</span> </button>
                                 <button type="submit" name="action" value="save_and_new" class="btn btn-success submit_button btn-sm" id="save_and_new">Save And Add Another</button>
-                                <button type="submit" name="action" value="save" class="btn btn-success submit_button btn-sm" id="save">Save</button>
+                                <button type="submit" name="action" value="save" class="btn btn-success submit_button btn-sm" id="save">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>

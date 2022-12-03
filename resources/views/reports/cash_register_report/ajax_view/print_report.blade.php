@@ -1,5 +1,5 @@
 @php
-   use Carbon\Carbon; 
+   use Carbon\Carbon;
 @endphp
 <style>
     @media print
@@ -31,11 +31,11 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
             <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php
@@ -86,19 +86,19 @@
                         <td class="text-start">
                             {{ Carbon::createFromFormat('Y-m-d H:i:s', $row->created_at)->format('jS M, Y h:i A') }}
                         </td>
-                        
+
                         <td class="text-start">
-                            @if ($row->closed_at) 
+                            @if ($row->closed_at)
                                  {{ Carbon::createFromFormat('Y-m-d H:i:s', $row->closed_at)->format('jS M, Y h:i A') }}
                             @endif
                         </td>
 
                         <td class="text-start">
-                            @if ($row->b_name) 
+                            @if ($row->b_name)
 
-                                {!! $row->b_name.'/'.$row->b_code.'(<b>BL</b>)' !!} 
-                            @else 
-        
+                                {!! $row->b_name.'/'.$row->b_code.'(<b>BL</b>)' !!}
+                            @else
+
                                 {!! json_decode($generalSettings->business, true)['shop_name'].'(<b>HO</b>)' !!}
                             @endif
                         </td>
@@ -148,7 +148,7 @@
                     </tr>
                 @endforeach
             </tbody>
-          
+
         </table>
     </div>
 </div>

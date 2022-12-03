@@ -17,14 +17,14 @@
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">
                 {{ json_decode($generalSettings->business, true)['address'] }}
             </p>
             <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
 
@@ -89,21 +89,21 @@
                         <td class="text-start">{{ date($__date_format, strtotime($return->date))}}</td>
                         <td class="text-start">{{ $return->invoice_id }}</td>
                         <td class="text-start">{{ $return->parent_sale }}</td>
-                        <td class="text-start"> 
-                            @if ($return->branch_name) 
+                        <td class="text-start">
+                            @if ($return->branch_name)
 
                                  {!! $return->branch_name . '/' . $return->branch_code . '(<b>BL</b>)' !!}
-                            @else 
-        
+                            @else
+
                                 {!! json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
 
-                        <td class="text-start"> 
+                        <td class="text-start">
                             {{ $return->customer_name ? $return->customer_name : 'Walk-In-Customer' }}
                         </td>
 
-                        <td class="text-start"> 
+                        <td class="text-start">
                             {{ $return->u_prefix . ' ' . $return->u_name . ' ' . $return->u_last_name }}
                         </td>
 
@@ -113,7 +113,7 @@
                                 $totalItems += $return->total_item;
                             @endphp
                         </td>
-             
+
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($return->total_qty) }}
                             @php
@@ -168,7 +168,7 @@
     <div class="col-6">
         <table class="table modal-table table-sm table-bordered">
             <thead>
-          
+
                 <tr>
                     <th class="text-end">Total Return Item : </th>
                     <td class="text-end">
@@ -196,7 +196,7 @@
                         {{ App\Utils\Converter::format_in_bdt($TotalReturnDiscount) }}
                     </td>
                 </tr>
-                
+
                 <tr>
                     <th class="text-end">Total Return Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">

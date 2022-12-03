@@ -64,7 +64,7 @@
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>
@@ -172,7 +172,7 @@ aria-hidden="true">
                                 <option value="2">Guaranty</option>
                             </select>
                         </div>
-                        
+
                         <div class="col-lg-8">
                             <label><b>Duration :</b> </label> <span class="text-danger">*</span>
                             <div class="row">
@@ -184,15 +184,15 @@ aria-hidden="true">
                                             <option value="Days">Days</option>
                                             <option value="Years">Years</option>
                                         </select>
-                                    </div> 
+                                    </div>
                                     <span class="error error_add_warranty_duration"></span>
                                 </div>
                             </div>
-                        </div>  
+                        </div>
                     </div>
 
                     <div class="form-group mt-1">
-                        <label><b>@lang('menu.description') :</b></label> 
+                        <label><b>@lang('menu.description') :</b></label>
                         <textarea name="description" id="description" class="form-control" cols="10" rows="3" placeholder="Warranty description"></textarea>
                     </div>
 
@@ -201,7 +201,7 @@ aria-hidden="true">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>

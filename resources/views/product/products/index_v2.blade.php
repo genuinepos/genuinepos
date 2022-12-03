@@ -13,7 +13,7 @@
                                 <span class="fas fa-shopping-cart"></span>
                                 <h6>Products</h6>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
@@ -25,9 +25,9 @@
                                         @if ($addons->branches == 1)
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-2">
-                                                    <label><b>Business Location :</b> </label>
+                                                    <label><b>@lang('menu.business_location') :</b> </label>
                                                     <select class="form-control submit_able" name="branch_id" id="branch_id">
-                                                        <option value="">All</option>
+                                                        <option value="">@lang('menu.all')</option>
                                                         <option value="NULL">
                                                             {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
                                                         </option>
@@ -45,7 +45,7 @@
                                             <label><b>Type :</b></label>
                                             <select name="product_type" id="product_type"
                                                 class="form-control submit_able" autofocus>
-                                                <option value="">All</option>
+                                                <option value="">@lang('menu.all')</option>
                                                 <option value="1">Single</option>
                                                 <option value="2">Variant</option>
                                                 <option value="3">Combo</option>
@@ -56,7 +56,7 @@
                                             <label><b>Category :</b></label>
                                             <select id="category_id" name="category_id"
                                                 class="form-control submit_able">
-                                                <option value="">All</option>
+                                                <option value="">@lang('menu.all')</option>
                                                 @foreach ($categories as $cate)
                                                     <option value="{{ $cate->id }}">{{ $cate->name }}</option>
                                                 @endforeach
@@ -67,7 +67,7 @@
                                             <label><b>Unit :</b></label>
                                             <select id="unit_id" name="unit_id"
                                                 class="form-control submit_able">
-                                                <option value="">All</option>
+                                                <option value="">@lang('menu.all')</option>
                                                 @foreach ($units as $unit)
                                                     <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
                                                 @endforeach
@@ -77,7 +77,7 @@
                                         <div class="col-md-2">
                                             <label><b>Tax :</b></label>
                                             <select id="tax_id" name="tax_id" class="form-control submit_able">
-                                                <option value="">All</option>
+                                                <option value="">@lang('menu.all')</option>
                                                 @foreach ($taxes as $tax)
                                                     <option value="{{ $tax->id }}">{{ $tax->tax_name.' ('.$unit->code_name.')' }}</option>
                                                 @endforeach
@@ -87,7 +87,7 @@
                                         <div class="col-md-2">
                                             <label><b>Status : </b></label>
                                             <select name="status" id="status" class="form-control submit_able">
-                                                <option value="">All</option>
+                                                <option value="">@lang('menu.all')</option>
                                                 <option value="1">Active</option>
                                                 <option value="0">In-Active</option>
                                             </select>
@@ -97,7 +97,7 @@
                                             <label><b>Brand :</b></label>
                                             <select id="brand_id" name="brand_id"
                                                 class="form-control submit_able">
-                                                <option value="">All</option>
+                                                <option value="">@lang('menu.all')</option>
                                                 @foreach ($brands as $brand)
                                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                                 @endforeach
@@ -140,7 +140,7 @@
                                     @method('DELETE')
                                     @csrf
                                     <input type="hidden" name="action" id="action">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
+                                    <div class="data_preloader"> <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6></div>
                                     <div class="table-responsive" id="data_list">
                                         <table class="display table-hover data_tbl data__table">
                                             <thead>

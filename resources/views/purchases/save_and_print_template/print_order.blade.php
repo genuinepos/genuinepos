@@ -1,4 +1,4 @@
-@php 
+@php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
@@ -30,13 +30,13 @@
                         @if ($purchase->branch)
                             @if ($purchase->branch->logo != 'default.png')
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase->branch->logo) }}">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
                             @endif
-                        @else 
+                        @else
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                 <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             @endif
                         @endif
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
-                        
+
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                         <ul class="list-unstyled">
                             <li><strong>Purchase From : </strong></li>
                             <li>
-                                <strong>Business Location : </strong> 
+                                <strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch)
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
@@ -109,7 +109,7 @@
                                @endphp
                                @if ($purchase->due <= 0)
                                    Paid
-                               @elseif($purchase->due > 0 && $purchase->due < $payable) 
+                               @elseif($purchase->due > 0 && $purchase->due < $payable)
                                    Partial
                                @elseif($payable == $purchase->due)
                                    Due
@@ -141,9 +141,9 @@
                         @foreach ($purchase->purchase_order_products as $product)
                             <tr>
                                 @php
-                                    $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
+                                    $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : '';
                                 @endphp
-                                
+
                                 <td>
                                     {{ Str::limit($product->product->name, 25).' '.$variant }}
                                     <small>{!! $product->description ? '<br/>'.$product->description : '' !!}</small>
@@ -176,12 +176,12 @@
                         <thead>
                             <tr>
                                 <th colspan="11" class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                                <td colspan="2" class="text-end"> 
+                                <td colspan="2" class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                                 </td>
                             </tr>
                             <tr>
-                                <th colspan="11" class="text-end">Order Discount : 
+                                <th colspan="11" class="text-end">Order Discount :
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                 </th>
                                 <td colspan="2" class="text-end">
@@ -194,14 +194,14 @@
                                     {{ App\Utils\Converter::format_in_bdt($purchase->purchase_tax_amount).' ('.$purchase->purchase_tax_percent.'%)' }}
                                 </td>
                             </tr>
-    
+
                             <tr>
                                 <th colspan="11" class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                 </td>
                             </tr>
-    
+
                             <tr>
                                 <th colspan="11" class="text-end">Order Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <td colspan="2" class="text-end">

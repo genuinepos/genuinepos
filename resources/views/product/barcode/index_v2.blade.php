@@ -21,7 +21,7 @@
                                 <h5>Generate Barcode</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
@@ -113,7 +113,7 @@
                                                         </div>
                                                         <div class="table_area">
                                                             <div class="data_preloader d-hide">
-                                                                <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                                                <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                                                             </div>
                                                             <div class="table-responsive">
                                                                 <table class="table modal-table table-sm">
@@ -158,13 +158,13 @@
                                 <div class="table_product_list">
                                     <div class="card">
                                         <div class="card-header">
-                                            <p><strong>Purchased Product List</strong></p>
+                                            <p><strong>@lang('menu.purchase_product_list')</strong></p>
                                         </div>
                                         <div class="card-body p-2">
                                             <table class="display data_tbl data__table table-hover" id="data">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-start"><input type="checkbox" id="chack_all">All</th>
+                                                        <th class="text-start"><input type="checkbox" id="chack_all">@lang('menu.all')</th>
                                                         <th class="text-start">Product</th>
                                                         <th class="text-start">Supplier</th>
                                                         <th class="text-start">Quantity</th>

@@ -38,7 +38,7 @@
                                                             <div class="col-md-4">
                                                                 <label><strong>@lang('menu.supplier') : </strong></label>
                                                                 <select name="supplier_id" class="form-control submit_able" id="supplier_id" autofocus>
-                                                                    <option value="">All</option>
+                                                                    <option value="">@lang('menu.all')</option>
                                                                     @foreach ($suppliers as $supplier)
                                                                         <option value="{{ $supplier->id }}">{{ $supplier->name.' ('.$supplier->phone.')' }}</option>
                                                                     @endforeach
@@ -51,7 +51,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label></label>
-                                                        <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                                        <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -62,7 +62,7 @@
 
                             <div class="row">
                                 <div class="report_data_area">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                                     <div class="report_data">
                                         <div class="card">
                                             <div class="table-responsive" >
@@ -82,7 +82,7 @@
                                                     </tbody>
                                                     <tfoot>
                                                         <tr class="bg-secondary">
-                                                            <th class="text-end text-white">Total : ({{json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                            <th class="text-end text-white">@lang('menu.total') : ({{json_decode($generalSettings->business, true)['currency'] }})</th>
                                                             <th id="total_op_blc_due" class="text-white">0.00</th>
                                                             <th id="total_purchase" class="text-white">0.00</th>
                                                             <th id="total_paid" class="text-white">0.00</th>

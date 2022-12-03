@@ -13,7 +13,7 @@
             <h6 class="modal-title" id="payment_heading">Edit Return Payment</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
-        <div class="modal-body" id="payment-modal-body"> 
+        <div class="modal-body" id="payment-modal-body">
             <div class="info_area mb-2">
                 <div class="row">
                     <div class="col-md-4">
@@ -28,7 +28,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li><strong> Invoice ID : </strong><span>{{ $payment->sale_return->invoice_id }}</span> </li>
-                                <li><strong>Business Location : </strong>
+                                <li><strong>@lang('menu.business_location') : </strong>
                                     <span>
                                         @if ($payment->sale_return->branch)
 
@@ -37,7 +37,7 @@
 
                                             {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                         @endif
-                                    </span>  
+                                    </span>
                                 </li>
                             </ul>
                         </div>
@@ -48,12 +48,12 @@
                             <ul class="list-unstyled">
                                 <li class="sale_due">
                                     <strong>Total Return Amount: {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                                    <span>{{ $payment->sale_return->total_return_amount }}</span> 
+                                    <span>{{ $payment->sale_return->total_return_amount }}</span>
                                 </li>
 
                                 <li class="sale_due">
                                     <strong>Total Paid/Refunded Amount: {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                                    <span>{{ $payment->sale_return->total_return_due_pay }}</span> 
+                                    <span>{{ $payment->sale_return->total_return_due_pay }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -101,9 +101,9 @@
                             </div>
                             <select name="payment_method_id" class="form-control" id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option 
+                                    <option
                                         {{ $method->id == $payment->payment_method_id ? 'SELECTED' : '' }}
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                         value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
@@ -116,7 +116,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-4">
-                        <label><strong>Credit Account :</strong> </label>
+                        <label><strong>@lang('menu.credit_account') :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -152,7 +152,7 @@
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
-                        <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
+                        <button type="submit" class="c-btn button-success me-0 float-end">@lang('menu.save')</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
                 </div>
@@ -206,11 +206,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
 
-                    toastr.error('Server Error. Please contact to support team.'); 
+                    toastr.error('Server Error. Please contact to support team.');
                     return;
                 }
 

@@ -7,7 +7,7 @@
     <thead>
         <tr class="bg-secondary">
             <th class="liability text-white">Liabilities</th>
-            <th class="assets text-white">Assets</th>
+            <th class="assets text-white">@lang('menu.assets')</th>
         </tr>
     </thead>
     <tbody>

@@ -11,7 +11,7 @@
                     <h5>Change Password</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <section class="p-3">
@@ -85,7 +85,7 @@
                         <div class="button-area d-flex justify-content-end mt-3">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                                <button class="btn btn-sm btn-success submit_button">Save</button>
+                                <button class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                             </div>
                         </div>
 
@@ -430,10 +430,10 @@
                         <div class="row mt-1">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-4"><b>Branch :</b> </label>
+                                    <label for="inputEmail3" class="col-4"><b>@lang('menu.branch') :</b> </label>
                                     <div class="col-8">
                                         <input type="text" name="bank_branch" class="form-control"
-                                            placeholder="Branch" autocomplete="off"
+                                            placeholder="@lang('menu.branch')" autocomplete="off"
                                             value="{{ auth()->user()->bank_branch }}">
                                     </div>
                                 </div>
@@ -456,7 +456,7 @@
                 <div class="submit-area d-flex justify-content-end">
                     <div class="btn-loading">
                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                        <button class="btn btn-sm btn-success submit_button">Save</button>
+                        <button class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                     </div>
                 </div>
             </form>

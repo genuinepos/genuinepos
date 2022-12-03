@@ -27,7 +27,7 @@
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
                              <li><strong>Purchase From : </strong></li>
-                             <li><strong>Business Location : </strong>
+                             <li><strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch_id)
                                     {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>Branch/Concern</b>)
                                 @else
@@ -393,7 +393,7 @@
                         <ul class="list-unstyled">
                             <li><strong>Purchase From : </strong></li>
                             <li>
-                                <strong>Business Location : </strong>
+                                <strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch)
 
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
@@ -413,7 +413,7 @@
                                     (<b>B.L</b>)
                                 @else
 
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                                 @endif
                             </li>
                             <li><strong>@lang('menu.phone') : </strong>

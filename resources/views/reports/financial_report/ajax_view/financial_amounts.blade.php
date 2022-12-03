@@ -7,7 +7,7 @@
                         {{-- Cash Flow from investing --}}
                         <tr>
                             <th class="text-start bg-secondary text-white" colspan="2">
-                                <span>ASSET :</span>
+                                <span>@lang('menu.asset') :</span>
                             </th>
                         </tr>
 

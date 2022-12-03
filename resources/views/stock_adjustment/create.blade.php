@@ -235,7 +235,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Debit A/C : <span
+                                                        <label class="col-4"><b>@lang('menu.debit') A/C : <span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
@@ -267,7 +267,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                <button name="save" value="save" class="btn btn-sm btn-success submit_button float-end">Save</button>
+                                <button name="save" value="save" class="btn btn-sm btn-success submit_button float-end">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>

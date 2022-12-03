@@ -19,11 +19,11 @@
             <td class="text-start"><em>Supplier Balance :</em> </td>
 
             <td class="text-end">
-                <em class="debit">0.00</em> 
+                <em class="debit">0.00</em>
             </td>
 
             <td class="text-end">
-                <em class="credit">{{ App\Utils\Converter::format_in_bdt($suppliers->sum('balance')) }}</em> 
+                <em class="credit">{{ App\Utils\Converter::format_in_bdt($suppliers->sum('balance')) }}</em>
                 @php
                     $totalCredit += $suppliers->sum('balance');
                 @endphp
@@ -34,7 +34,7 @@
             <td class="text-start"><em>Supplier Return Balance :</em> </td>
 
             <td class="text-end">
-                <em class="debit">{{ App\Utils\Converter::format_in_bdt($suppliers->sum('return_balance')) }}</em> 
+                <em class="debit">{{ App\Utils\Converter::format_in_bdt($suppliers->sum('return_balance')) }}</em>
                 @php
                     $totalDebit += $suppliers->sum('return_balance');
                 @endphp
@@ -86,7 +86,7 @@
                             @php
                                 $totalDebit += $account->total_balance;
                             @endphp
-                        @else 
+                        @else
                             0.00
                         @endif
                     </em>
@@ -99,14 +99,14 @@
                             @php
                                 $totalCredit += $account->total_balance;
                             @endphp
-                        @else 
+                        @else
                             0.00
                         @endif
                     </em>
                 </td>
             </tr>
         @endforeach
-        
+
         <tr>
             <td class="text-start"><em>Opening Stock :</em> </td>
 
@@ -141,14 +141,14 @@
 
     <tfoot>
         <tr class="bg-secondary">
-            <th class="text-white text-end"><em>Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</em></th>
-            
+            <th class="text-white text-end"><em>@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</em></th>
+
             <th class="text-white text-end">
-                <em class="total_debit">{{ App\Utils\Converter::format_in_bdt($totalDebit) }}</em> 
+                <em class="total_debit">{{ App\Utils\Converter::format_in_bdt($totalDebit) }}</em>
             </th>
 
             <th class="text-white text-end">
-                <em class="total_credit">{{ App\Utils\Converter::format_in_bdt($totalCredit) }}</em> 
+                <em class="total_credit">{{ App\Utils\Converter::format_in_bdt($totalCredit) }}</em>
              </th>
         </tr>
     </tfoot>

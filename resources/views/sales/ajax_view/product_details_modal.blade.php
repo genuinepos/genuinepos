@@ -57,7 +57,7 @@
                                 <li><strong>@lang('menu.phone') : </strong> {{ $sale->branch->phone }}</li>
                             @else
                                 <li><strong>Stock Location : </strong>
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                                 </li>
                                 <li><strong>Address : </strong>{{ json_decode($generalSettings->business, true)['address'] }}</li>
                                 <li><strong>@lang('menu.phone') : </strong>{{ json_decode($generalSettings->business, true)['phone'] }}</li>
@@ -138,7 +138,7 @@
                         <table id="" class="table modal-table table-sm table-striped">
                             <thead>
                                 <tr class="bg-secondary text-white">
-                                    <th class="text-start">S/L</th>
+                                    <th class="text-start">@lang('menu.sl')</th>
                                     <th class="text-start">Product</th>
                                     <th class="text-start">Stock Location</th>
                                     <th class="text-start">Warranty</th>

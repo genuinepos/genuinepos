@@ -19,11 +19,11 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
             <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php
@@ -72,7 +72,7 @@
                         <td class="text-start">
                             {{ date($__date_format, strtotime($ex->date)) }}
                         </td>
-                        
+
                         <td class="text-start">{{ $ex->invoice_id }}</td>
 
                         <td class="text-start">
@@ -104,7 +104,7 @@
                     </tr>
                 @endforeach
             </tbody>
-          
+
         </table>
     </div>
 </div>

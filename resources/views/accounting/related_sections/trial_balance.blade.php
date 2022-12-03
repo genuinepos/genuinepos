@@ -9,13 +9,13 @@
                     <span class="fas fa-balance-scale-left"></span>
                     <h5>Trial Balance</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
 
             <div class="p-3">
                 <div class="card">
                     <div class="card-body">
-                        <div class="data_preloader mt-5 pt-5"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
+                        <div class="data_preloader mt-5 pt-5"> <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6></div>
                         <div class="trial_balance_area">
                             <div class="print_header d-hide">
                                 <div class="text-center pb-3">
@@ -29,8 +29,8 @@
                                     <thead>
                                         <tr class="bg-secondary">
                                             <th class="trial_balance text-start text-white">Accounts</th>
-                                            <th class="debit text-white">Debit</th>
-                                            <th class="credit text-white">Credit</th>
+                                            <th class="debit text-white">@lang('menu.debit')</th>
+                                            <th class="credit text-white">@lang('menu.credit')</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -133,7 +133,7 @@
 
                                     <tfoot>
                                         <tr class="bg-secondary">
-                                            <th class="text-white text-start">Total :</th>
+                                            <th class="text-white text-start">@lang('menu.total') :</th>
                                             <th class="text-white">
                                                 <span class="total_credit">0.00</span>
                                                 {{ json_decode($generalSettings->business, true)['currency'] }}
@@ -155,7 +155,7 @@
                         </div>
 
                         <div class="print_btn_area">
-                            <a id="print_btn" href="#" class="btn btn-sm btn-success float-end"><i class="fas fa-print"></i> Print</a>
+                            <a id="print_btn" href="#" class="btn btn-sm btn-success float-end"><i class="fas fa-print"></i>@lang('menu.print')</a>
                         </div>
                     </div>
                 </div>

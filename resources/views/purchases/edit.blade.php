@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="col-6">
-                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                 </div>
             </div>
         </div>
@@ -246,7 +246,7 @@
                                         <label class="col-4"><b>Tax :</b></label>
                                         <div class="col-8">
                                             <select name="purchase_tax" class="form-control" id="purchase_tax">
-                                                <option value="0.00">NoTax</option>
+                                                <option value="0.00">@lang('menu.no_tax')</option>
                                             </select>
                                             <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00">
                                         </div>

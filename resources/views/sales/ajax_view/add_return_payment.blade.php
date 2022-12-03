@@ -13,7 +13,7 @@
             <h6 class="modal-title" id="payment_heading">Add Return Payment</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
-        <div class="modal-body" id="payment-modal-body"> 
+        <div class="modal-body" id="payment-modal-body">
             <div class="info_area mb-2">
                 <div class="row">
                     <div class="col-md-4">
@@ -35,9 +35,9 @@
                                             {{ $sale->branch->name.'/'.$sale->branch->branch_code }}
                                         @else
 
-                                            {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>HO</b>) 
+                                            {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>HO</b>)
                                         @endif
-                                    </span>  
+                                    </span>
                                 </li>
                             </ul>
                         </div>
@@ -48,7 +48,7 @@
                             <ul class="list-unstyled">
                                 <li class="sale_due">
                                     <strong>Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                                    <span class="text-end">{{ $sale->sale_return_due }}</span> 
+                                    <span class="text-end">{{ $sale->sale_return_due }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -90,8 +90,8 @@
                             </div>
                             <select name="payment_method_id" class="form-control"  id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option 
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                    <option
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                         value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
@@ -104,7 +104,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-4">
-                        <label><strong>Credit Account :</strong> </label>
+                        <label><strong>@lang('menu.credit_account') :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -140,7 +140,7 @@
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
-                        <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
+                        <button type="submit" class="c-btn button-success me-0 float-end submit_button">@lang('menu.save')</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
                 </div>
@@ -196,11 +196,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
-                    
-                    toastr.error('Server error. Please contact to the support team.'); 
+
+                    toastr.error('Server error. Please contact to the support team.');
                     return;
                 }
 

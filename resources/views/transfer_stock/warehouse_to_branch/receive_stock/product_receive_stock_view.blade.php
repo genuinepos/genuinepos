@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="col-6">
-                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                                     <p class="m-0"><strong>Date: </strong> <span class="transfer_date">05-12-2020</span></p>
                                     </div>
                                     <div class="col-md-6">
-                                    <p class="m-0"><strong>Business Location (From): </strong> <span class="branch">Dhaka Branch - 145225</span></p>
+                                    <p class="m-0"><strong>@lang('menu.business_location') (From): </strong> <span class="branch">Dhaka Branch - 145225</span></p>
                                         <p class="m-0"><strong>Warehouse (To) : </strong> <span class="warehouse">Warehouse-1 (W-1)</span> </p>
                                     </div>
                             </div>
@@ -103,7 +103,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                                <button class="btn btn-sm btn-success float-end">Save</button>
+                                <button class="btn btn-sm btn-success float-end">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>

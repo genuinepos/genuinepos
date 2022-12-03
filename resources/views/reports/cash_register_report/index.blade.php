@@ -31,11 +31,11 @@
                                                     @if ($addons->branches == 1)
                                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                             <div class="col-md-2">
-                                                                <label><strong>Business Location :</strong></label>
+                                                                <label><strong>@lang('menu.business_location') :</strong></label>
                                                                 <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                                    <option value="">All</option>
+                                                                    <option value="">@lang('menu.all')</option>
                                                                     <option value="NULL">
-                                                                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)
+                                                                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))
                                                                     </option>
 
                                                                     @foreach ($branches as $branch)
@@ -54,9 +54,9 @@
                                                         <label><strong>User :</strong></label>
                                                         <select name="user_id" class="form-control submit_able" id="user_id" autofocus>
                                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                                <option value="">All</option>
+                                                                <option value="">@lang('menu.all')</option>
                                                             @else
-                                                                <option value="">All</option>
+                                                                <option value="">@lang('menu.all')</option>
                                                                 @foreach ($branchUsers as $user)
                                                                     <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
                                                                 @endforeach
@@ -67,14 +67,14 @@
                                                     <div class="col-md-2">
                                                         <label><strong>Status :</strong></label>
                                                         <select name="status" class="form-control submit_able" id="status">
-                                                            <option value="">All</option>
+                                                            <option value="">@lang('menu.all')</option>
                                                             <option value="1">Open</option>
                                                             <option value="2">Closed</option>
                                                         </select>
                                                     </div>
 
                                                     <div class="col-md-2">
-                                                        <label><strong>From Date :</strong></label>
+                                                        <label><strong>@lang('menu.from_date') :</strong></label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1">
@@ -89,7 +89,7 @@
                                                     </div>
 
                                                     <div class="col-md-2">
-                                                        <label><strong>To Date :</strong></label>
+                                                        <label><strong>@lang('menu.to_date') :</strong></label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1">
@@ -113,7 +113,7 @@
                                                             </div>
 
                                                             <div class="col-md-6">
-                                                                <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
+                                                                <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -129,7 +129,7 @@
                                     <div class="report_data_area">
                                         <div class="data_preloader">
                                             <h6>
-                                                <i class="fas fa-spinner text-primary"></i> Processing...
+                                                <i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...
                                             </h6>
                                         </div>
 
@@ -151,7 +151,7 @@
                                                     <tbody></tbody>
                                                     <tfoot>
                                                         <tr class="bg-secondary">
-                                                            <th colspan="6" class="text-end text-white">Total :
+                                                            <th colspan="6" class="text-end text-white">@lang('menu.total') :
                                                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                                             </th>
                                                             <th id="closed_amount" class="text-end text-white"></th>
@@ -232,14 +232,14 @@
         $(document).on('change', '#branch_id', function () {
             var branch_id = $(this).val();
             $('#user_id').empty();
-            $('#user_id').append('<option value="">All</option>');
+            $('#user_id').append('<option value="">@lang('menu.all')</option>');
             $.ajax({
                 url:"{{ url('common/ajax/call/branch/authenticated/users/') }}"+"/"+branch_id,
                 type: 'get',
                 dataType: 'json',
                 success:function(users){
                     $('#user_id').empty();
-                    $('#user_id').append('<option value="">All</option>');
+                    $('#user_id').append('<option value="">@lang('menu.all')</option>');
 
                     $.each(users, function(key, val){
                         var prefix = val.prefix ? val.prefix : '';

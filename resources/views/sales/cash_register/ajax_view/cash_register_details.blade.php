@@ -95,7 +95,7 @@
             </li>
 
             <li>
-                <b>Business Location : </b>
+                <b>@lang('menu.business_location') : </b>
                 {!!
                     $activeCashRegister->b_name
                     ? $activeCashRegister->b_name.'/'.$activeCashRegister->b_code

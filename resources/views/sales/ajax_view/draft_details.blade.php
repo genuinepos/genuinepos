@@ -39,7 +39,7 @@
                                     {{ $draft->branch->zip_code }}, {{ $draft->branch->country }}</span></li>
                             <li><strong>Phone : </strong> <span>{{ $draft->branch->phone }}</span></li>
                         @else
-                            <li><strong>Business Name : </strong> <span>{{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b></span>
+                            <li><strong>Business Name : </strong> <span>{{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b></span>
                             </li>
                             <li><strong>Address : </strong> <span>{{ json_decode($generalSettings->business, true)['address'] }}</span></li>
                             <li><strong>Phone : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li>

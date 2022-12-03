@@ -25,10 +25,10 @@
                             <ul class="list-unstyled">
                                 <li><strong>@lang('menu.supplier') : </strong><span>{{ $purchase->supplier->name }}</span></li>
                                 <li><strong>Business : </strong>
-                                    <span>{{ $purchase->supplier->business_name }}</span> 
+                                    <span>{{ $purchase->supplier->business_name }}</span>
                                 </li>
                                 <li><strong>@lang('menu.phone') : </strong>
-                                    <span>{{ $purchase->supplier->phone }}</span> 
+                                    <span>{{ $purchase->supplier->phone }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -52,8 +52,8 @@
                                 </li>
                                 <li>
                                     <strong>@lang('menu.date') : </strong>
-                                    {{ 
-                                        date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) 
+                                    {{
+                                        date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time))
                                     }}
                                 </li>
                                 <li><strong>Purchase Status : </strong>
@@ -71,7 +71,7 @@
                                     @endphp
                                     @if ($purchase->due <= 0)
                                         <span class="text-success"><b>Paid</b></span>
-                                    @elseif($purchase->due > 0 && $purchase->due < $payable) 
+                                    @elseif($purchase->due > 0 && $purchase->due < $payable)
                                         <span class="text-primary"><b>Partial</b></span>
                                     @elseif($payable == $purchase->due)
                                         <span class="text-danger "><b>Due</b></span>
@@ -123,8 +123,8 @@
                             </div>
                             <select name="payment_method_id" class="form-control" id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option 
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                    <option
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                         value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
@@ -137,7 +137,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-4">
-                        <label><strong>Credit Account :</strong> </label>
+                        <label><strong>@lang('menu.credit_account') :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -175,7 +175,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                            <button type="submit" class="btn btn-sm btn-success">Save</button>
+                            <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                         </div>
                     </div>
                 </div>
@@ -199,7 +199,7 @@
         }
 
         var url = $(this).attr('action');
-    
+
         $.ajax({
             url: url,
             type: 'post',
@@ -210,7 +210,7 @@
             success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
-                    
+
                     toastr.error(data.errorMsg, 'ERROR');
                     $('.loading_button').hide();
                 } else {
@@ -227,7 +227,7 @@
                 $('.error').html('');
 
                 if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }
 

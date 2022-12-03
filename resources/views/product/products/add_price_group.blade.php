@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="col-6">
-                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                 </div>
             </div>
         </div>
@@ -115,7 +115,7 @@
                     <div class="btn-loading">
                         <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner"></i><span>Loading</span> </button>
                         <button type="submit" name="action" value="save_and_new" class="btn btn-success submit_button btn-sm">Save And Add Another</button>
-                        <button type="submit" name="action" value="save" class="btn btn-success submit_button btn-sm">Save</button>
+                        <button type="submit" name="action" value="save" class="btn btn-success submit_button btn-sm">@lang('menu.save')</button>
                     </div>
                 </div>
             </form>

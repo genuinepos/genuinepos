@@ -30,7 +30,7 @@
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
                              <li><strong>Purchase From : </strong></li>
-                             <li><strong>Business Location : </strong>
+                             <li><strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch_id)
                                     {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>BL</b>)
                                 @else
@@ -346,7 +346,7 @@
                         <ul class="list-unstyled">
                             <li><strong>Purchase From : </strong></li>
                             <li>
-                                <strong>Business Location : </strong>
+                                <strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch)
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else

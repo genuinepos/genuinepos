@@ -14,7 +14,7 @@
                                 <h5>Variants</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
@@ -62,7 +62,7 @@
                                                         <button type="button" class="btn loading_button d-hide"><i
                                                                 class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                                         <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                                        <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                                        <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -128,7 +128,7 @@
 
                                     <div class="widget_content">
                                         <div class="data_preloader">
-                                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                            <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                         </div>
                                         <div class="table-responsive" id="data-list">
                                             <table class="display data_tbl data__table">

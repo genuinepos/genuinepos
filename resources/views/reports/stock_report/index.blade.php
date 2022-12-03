@@ -51,10 +51,10 @@
                                                         @if ($addons->branches == 1)
                                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                                 <div class="col-md-2">
-                                                                    <label><strong>Business Location :</strong></label>
+                                                                    <label><strong>@lang('menu.business_location') :</strong></label>
                                                                     <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                                        <option value="">All</option>
-                                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                        <option value="">@lang('menu.all')</option>
+                                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                         @foreach ($branches as $branch)
                                                                             <option value="{{ $branch->id }}">
                                                                                 {{ $branch->name . '/' . $branch->branch_code }}
@@ -68,7 +68,7 @@
                                                         <div class="col-md-2">
                                                             <label><strong>Category :</strong></label>
                                                             <select id="category_id" name="category_id" class="form-control">
-                                                                <option value="">All</option>
+                                                                <option value="">@lang('menu.all')</option>
                                                                 @foreach ($categories as $c)
                                                                     <option value="{{ $c->id }}">{{ $c->name }}</option>
                                                                 @endforeach
@@ -78,7 +78,7 @@
                                                         <div class="col-md-2">
                                                             <label><strong>Brand :</strong></label>
                                                             <select id="brand_id" name="brand_id" class="form-control">
-                                                                <option value="">All</option>
+                                                                <option value="">@lang('menu.all')</option>
                                                                 @foreach ($brands as $b)
                                                                     <option value="{{ $b->id }}">{{ $b->name }}</option>
                                                                 @endforeach
@@ -88,7 +88,7 @@
                                                         <div class="col-md-2">
                                                             <label><strong>Unit :</strong></label>
                                                             <select id="unit_id" name="unit_id" class="form-control">
-                                                                <option value="">All</option>
+                                                                <option value="">@lang('menu.all')</option>
                                                                 @foreach ($units as $u)
                                                                     <option value="{{ $u->id }}">{{ $u->name }}</option>
                                                                 @endforeach
@@ -98,7 +98,7 @@
                                                         <div class="col-md-2">
                                                             <label><strong>Tax :</strong></label>
                                                             <select id="tax_id" name="tax_id" class="form-control">
-                                                                <option value="">All</option>
+                                                                <option value="">@lang('menu.all')</option>
                                                                 @foreach ($taxes as $t)
                                                                     <option value="{{ $t->id }}">{{ $t->tax_name }}</option>
                                                                 @endforeach
@@ -110,12 +110,12 @@
                                                                 <div class="col-md-6">
                                                                     <label><strong></strong></label>
                                                                     <div class="input-group">
-                                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="input-group justify-content-end">
-                                                                        <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i> Print</a>
+                                                                        <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -129,7 +129,7 @@
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="data_preloader">
-                                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                             </div>
                                             <div class="table-responsive" id="data_list1">
                                                 <table class="display data_tbl data__table b_data_tbl">
@@ -147,7 +147,7 @@
                                                     <tbody></tbody>
                                                     <tfoot>
                                                         <tr class="bg-secondary">
-                                                            <th class="text-white text-end" colspan="3">Total : </th>
+                                                            <th class="text-white text-end" colspan="3">@lang('menu.total') : </th>
                                                             <th class="text-white text-end">---</th>
                                                             <th class="text-white text-end" id="stock"></th>
                                                             <th class="text-white text-end" id="stock_value"></th>
@@ -172,10 +172,10 @@
                                                         @if ($addons->branches == 1)
                                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                                 <div class="col-md-2">
-                                                                    <label><strong>Business Location :</strong></label>
+                                                                    <label><strong>@lang('menu.business_location') :</strong></label>
                                                                     <select name="branch_id" class="form-control" id="w_branch_id" autofocus>
-                                                                        <option value="">All</option>
-                                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                        <option value="">@lang('menu.all')</option>
+                                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                         @foreach ($branches as $branch)
                                                                             <option value="{{ $branch->id }}">
                                                                                 {{ $branch->name . '/' . $branch->branch_code }}
@@ -207,7 +207,7 @@
 
                                                                 <label><strong>Warehouse :</strong></label>
                                                                 <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
-                                                                    <option value="">All</option>
+                                                                    <option value="">@lang('menu.all')</option>
                                                                     @foreach ($wh as $row)
                                                                         <option value="{{ $row->id }}">{{ $row->warehouse_name.'/'.$row->warehouse_code }}</option>
                                                                     @endforeach
@@ -218,7 +218,7 @@
                                                         <div class="col-md-2">
                                                             <label><strong>Category :</strong></label>
                                                             <select id="w_category_id" name="category_id" class="form-control common_submitable">
-                                                                <option value="">All</option>
+                                                                <option value="">@lang('menu.all')</option>
                                                                 @foreach ($categories as $c)
                                                                     <option value="{{ $c->id }}">{{ $c->name }}</option>
                                                                 @endforeach
@@ -228,7 +228,7 @@
                                                         <div class="col-md-2">
                                                             <label><strong>Brand :</strong></label>
                                                             <select id="w_brand_id" name="brand_id" class="form-control common_submitable">
-                                                                <option value="">All</option>
+                                                                <option value="">@lang('menu.all')</option>
                                                                 @foreach ($brands as $b)
                                                                     <option value="{{ $b->id }}">{{ $b->name }}</option>
                                                                 @endforeach
@@ -238,7 +238,7 @@
                                                         <div class="col-md-2">
                                                             <label><strong>Unit :</strong></label>
                                                             <select id="w_unit_id" name="unit_id" class="form-control common_submitable">
-                                                                <option value="">All</option>
+                                                                <option value="">@lang('menu.all')</option>
                                                                 @foreach ($units as $u)
                                                                     <option value="{{ $u->id }}">{{ $u->name }}</option>
                                                                 @endforeach
@@ -248,7 +248,7 @@
                                                         <div class="col-md-2">
                                                             <label><strong>Tax :</strong></label>
                                                             <select id="w_tax_id" name="tax_id" class="form-control common_submitable">
-                                                                <option value="">All</option>
+                                                                <option value="">@lang('menu.all')</option>
                                                                 @foreach ($taxes as $t)
                                                                     <option value="{{ $t->id }}">{{ $t->tax_name }}</option>
                                                                 @endforeach
@@ -259,12 +259,12 @@
                                                     <div class="form-group row align-items-end">
                                                         <div class="col-md-2 offset-8">
                                                             <div class="input-group justify-content-end">
-                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i> Print</a>
+                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info mt-1 float-end"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                            <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info mt-1 float-end"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -274,7 +274,7 @@
 
                                     <div class="col-12">
                                         <div class="card">
-                                            <div class="data_preloader" id="w_data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                            <div class="data_preloader" id="w_data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                                             <div class="table-responsive" id="data_list">
                                                 <table class="display data_tbl data__table w_data_tbl w-100">
                                                     <thead>
@@ -290,7 +290,7 @@
                                                     </thead>
                                                     <tbody></tbody>
                                                     <tr class="bg-secondary">
-                                                        <th class="text-white text-end" colspan="4">Total : </th>
+                                                        <th class="text-white text-end" colspan="4">@lang('menu.total') : </th>
                                                         <th class="text-white text-end">---</th>
                                                         <th class="text-white text-end" id="w_stock"></th>
                                                         <th class="text-white text-end" id="w_stock_value"></th>
@@ -431,7 +431,7 @@
             success:function(data){
 
                 $('#warehouse_id').empty();
-                $('#warehouse_id').append('<option value="">All</option>');
+                $('#warehouse_id').append('<option value="">@lang('menu.all')</option>');
                 $.each(data, function (key, val) {
 
                     $('#warehouse_id').append('<option value="'+val.id+'">'+val.warehouse_name+'/'+val.warehouse_code+'</option>');

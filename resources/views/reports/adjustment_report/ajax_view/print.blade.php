@@ -23,11 +23,11 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
             <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php
@@ -46,7 +46,7 @@
                 <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
-        <h6 style="margin-top: 10px;"><b>Stock Adjustment Report </b></h6> 
+        <h6 style="margin-top: 10px;"><b>Stock Adjustment Report </b></h6>
     </div>
 </div>
 <br>
@@ -79,15 +79,15 @@
                         <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ad->date)) }}</td>
                         <td class="text-start">{{ $ad->invoice_id }}</td>
                         <td class="text-start">
-                            @if (!$ad->branch_name && !$ad->warehouse_name) 
+                            @if (!$ad->branch_name && !$ad->warehouse_name)
                                 {!! json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}
-                            @else 
-                                @if ($ad->branch_name) 
+                            @else
+                                @if ($ad->branch_name)
                                     {!! $ad->branch_name . '/' . $ad->branch_code . '(<b>BL</b>)' !!}
-                                @else 
-                                    {!! $ad->warehouse_name . '/' . $ad->warehouse_code . '(<b>WH</b>)' !!} 
+                                @else
+                                    {!! $ad->warehouse_name . '/' . $ad->warehouse_code . '(<b>WH</b>)' !!}
                                 @endif
-                            @endif   
+                            @endif
                         </td>
                         <td class="text-start">
                             {{ $ad->type == 1 ? 'Normal' : 'Abnormal' }}
@@ -112,15 +112,15 @@
             <tbody>
                 <tr>
                     <th class="text-end">Total Normal : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                    <td class="text-end"> 
-                        {{ App\Utils\Converter::format_in_bdt($totalNormal)  }} 
+                    <td class="text-end">
+                        {{ App\Utils\Converter::format_in_bdt($totalNormal)  }}
                     </td>
                 </tr>
 
                 <tr>
                     <th class="text-end">Total Abormal : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
-                        {{ App\Utils\Converter::format_in_bdt($totalAbnormal)  }} 
+                        {{ App\Utils\Converter::format_in_bdt($totalAbnormal)  }}
                     </td>
                 </tr>
 
@@ -145,7 +145,7 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small> 
+            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
         </div>
     </div>
 @endif

@@ -58,7 +58,7 @@
                                 <li><strong>Total Due : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-danger">
-                                        <b id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase_due']) }}</b> 
+                                        <b id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase_due']) }}</b>
                                         <input type="hidden" id="card_total_due" value="{{ $amounts['total_purchase_due'] }}">
                                     </span>
                                 </li>
@@ -74,7 +74,7 @@
                     <div class="col-md-5">
                         <div class="row">
                             <div class="col-lg-12 mt-2">
-                                <label><strong>Business Location : </strong> </label>
+                                <label><strong>@lang('menu.business_location') : </strong> </label>
                                 <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
                             </div>
 
@@ -86,7 +86,7 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                            <input type="radio" checked name="payment_against" id="payment_against" class="all"  data-show_table="all_purchase_and_orders_area" value="all"> &nbsp; <b>All</b>
+                                                            <input type="radio" checked name="payment_against" id="payment_against" class="all"  data-show_table="all_purchase_and_orders_area" value="all"> &nbsp; <b>@lang('menu.all')</b>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -155,7 +155,7 @@
                                                                             @if ($row->purchase_status == 1)
 
                                                                                 <a class="details_button text-info" title="Details" href="{{ route('purchases.show', [$row->id]) }}"><strong>{{ $row->invoice_id }}</strong></a>
-                                                                            @else 
+                                                                            @else
 
                                                                                 <a class="details_button text-info" title="Details" href="{{ route('purchases.show.order', [$row->id]) }}"><strong>{{ $row->invoice_id }}</strong></a>
                                                                             @endif
@@ -173,11 +173,11 @@
                                                                             @php
                                                                                 $payable = $row->total_purchase_amount - $row->purchase_return_amount;
                                                                             @endphp
-                                                                            
+
                                                                             @if ($row->due <= 0)
 
                                                                                 <span class="text-success"><b>Paid</b></span>
-                                                                            @elseif ($row->due > 0 && $row->due < $payable) 
+                                                                            @elseif ($row->due > 0 && $row->due < $payable)
 
                                                                                 <span class="text-primary"><b>Partial</b></span>
                                                                             @elseif ($payable == $row->due)
@@ -238,11 +238,11 @@
                                                                             @php
                                                                                 $payable = $purchase->total_purchase_amount - $purchase->purchase_return_amount;
                                                                             @endphp
-                                                                            
+
                                                                             @if ($purchase->due <= 0)
 
                                                                                 <span class="text-success"><b>Paid</b></span>
-                                                                            @elseif ($purchase->due > 0 && $purchase->due < $payable) 
+                                                                            @elseif ($purchase->due > 0 && $purchase->due < $payable)
 
                                                                                 <span class="text-primary"><b>Partial</b></span>
                                                                             @elseif ($payable == $purchase->due)
@@ -275,7 +275,7 @@
                                                             <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
                                                         </div>
                                                     </div>
-                                                
+
                                                     <div class="due_orders_table">
                                                         <table class="table modal-table table-sm mt-1">
                                                             <thead>
@@ -302,11 +302,11 @@
                                                                             @php
                                                                                 $payable = $order->total_purchase_amount - $order->purchase_return_amount;
                                                                             @endphp
-                                                                            
+
                                                                             @if ($order->due <= 0)
 
                                                                                 <span class="text-success"><b>Paid</b></span>
-                                                                            @elseif ($order->due > 0 && $order->due < $payable) 
+                                                                            @elseif ($order->due > 0 && $order->due < $payable)
 
                                                                                 <span class="text-primary"><b>Partial</b></span>
                                                                             @elseif ($payable == $order->due)
@@ -344,7 +344,7 @@
                             </div>
                         </div>
                     </div>
-                  
+
                     <div class="col-md-7">
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
@@ -359,7 +359,7 @@
                                 </div>
                                 <span class="error error_p_paying_amount"></span>
                             </div>
-        
+
                             <div class="col-md-4">
                                 <strong for="p_date">@lang('menu.date') :</strong> <span class="text-danger">*</span>
                                 <div class="input-group">
@@ -377,7 +377,7 @@
                                 <input type="text" name="reference" class="form-control" step="any" placeholder="Payment Reference" autocomplete="off"/>
                             </div>
                         </div>
-        
+
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
                                 <label><strong>Less Amount :</strong> </label>
@@ -385,7 +385,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <strong>Credit Account :</strong> 
+                                <strong>@lang('menu.credit_account') :</strong>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_f"></i></span>
@@ -415,8 +415,8 @@
                                     </div>
                                     <select required name="payment_method_id" class="form-control" id="p_payment_method_id">
                                         @foreach ($methods as $method)
-                                            <option 
-                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                            <option
+                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                                 value="{{ $method->id }}">
                                                 {{ $method->name }}
                                             </option>
@@ -429,10 +429,10 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> 
+                                <strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small>
                                 <input type="file" name="attachment" class="form-control">
                             </div>
-        
+
                             <div class="col-md-8">
                                 <strong> Payment Note :</strong>
                                 <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
@@ -446,11 +446,11 @@
                         </div>
                     </div>
                 </div>
-        
+
                 <div class="form-group row mt-4">
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
-                        <button name="action" type="submit" value="save" class="c-btn button-success float-end" id="add_supplier_payment">Save</button>
+                        <button name="action" type="submit" value="save" class="c-btn button-success float-end" id="add_supplier_payment">@lang('menu.save')</button>
                         <button name="action" value="save_and_print" type="button" class="c-btn button-success float-end" id="add_supplier_payment">Save & Print</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
@@ -466,9 +466,9 @@
         e.preventDefault();
 
         $('.loading_button').show();
-  
+
         var url = $(this).attr('action');
-        
+
         $.ajax({
             url:url,
             type:'post',
@@ -529,16 +529,16 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Please Check the connection.'); 
+                    toastr.error('Net Connetion Error. Please Check the connection.');
                     return;
                 }else if (err.status == 500) {
-                    
-                    toastr.error('Server Error. Please contact to the support team.'); 
+
+                    toastr.error('Server Error. Please contact to the support team.');
                     return;
                 }
 
                 $.each(err.responseJSON.errors, function(key, error) {
-                    
+
                     $('.error_p_' + key + '').html(error[0]);
                 });
             }
@@ -569,7 +569,7 @@
         format: _expectedDateFormat,
     });
 
-    
+
     $('#p_payment_method_id').on('change', function () {
 
         var account_id = $(this).find('option:selected').data('account_id');
@@ -631,7 +631,7 @@
         e.preventDefault();
 
         var purchaseIds = document.querySelectorAll('#purchase_id');
-        
+
         purchaseIds.forEach(function(input){
 
             $(input).prop('checked', false);
@@ -644,7 +644,7 @@
 
     $(document).on('input', '#p_paying_amount', function (e) {
 
-        calculateTotalDue(); 
+        calculateTotalDue();
     });
 
     $(document).on('input', '#p_less_amount', function (e) {
@@ -653,7 +653,7 @@
     });
 
     function calculateTotalDue() {
-        
+
         var p_paying_amount = $('#p_paying_amount').val() ? $('#p_paying_amount').val() : 0;
         var card_total_due = $('#card_total_due').val() ? $('#card_total_due').val() : 0;
         var p_less_amount = $('#p_less_amount').val() ? $('#p_less_amount').val() : 0;
@@ -675,7 +675,7 @@
 <script>
     var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
     var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
-  
+
       function inWords (num) {
           if ((num = num.toString()).length > 9) return 'overflow';
           n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
@@ -689,7 +689,7 @@
       }
 
         $(document).on('click', '.purchase_and_order_table_area table tbody tr', function () {
-            $('.purchase_and_order_table_area table tbody tr').removeClass('active_tr'); 
+            $('.purchase_and_order_table_area table tbody tr').removeClass('active_tr');
             $(this).addClass('active_tr');
         });
 </script>

@@ -16,7 +16,7 @@
                                 <h5>Selling Price Group</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
 
                         {{-- <div class="sec-name">
@@ -95,7 +95,7 @@
                                     <table class="display data_tbl data__table table-hover">
                                         <thead>
                                             <tr>
-                                                <th>S/L</th>
+                                                <th>@lang('menu.sl')</th>
                                                 <th>Name</th>
                                                 <th>@lang('menu.description')</th>
                                                 <th>Status</th>
@@ -155,7 +155,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>

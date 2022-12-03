@@ -25,11 +25,11 @@
     <div class="row">
         <div class="col-md-12 text-center">
             @if ($branch_id == '')
-                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
                 <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
                 <p><b>All Business Location</b></p>
             @elseif ($branch_id == 'NULL')
-                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
                 <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
             @else
                 @php
@@ -83,7 +83,7 @@
                             <td class="text-start">{{ $sProduct->variant_code ? $sProduct->variant_code : $sProduct->product_code}}</td>
                             <td class="text-start">{{ $sProduct->customer_name ? $sProduct->customer_name : 'Walk-In-Customer' }}</td>
                             <td class="text-start">{{ $sProduct->invoice_id }}</td>
-                            
+
                             <td class="text-start">{!! $sProduct->quantity . ' (<span class="qty" data-value="' . $sProduct->quantity . '">' . $sProduct->unit_code . '</span>)' !!}</td>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sProduct->unit_price_inc_tax) }}</td>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sProduct->subtotal) }}</td>
@@ -113,7 +113,7 @@
                         <th class="text-end">Net Total Amount : {{json_decode($generalSettings->business, true)['currency'] }}</th>
                         <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalSubTotal) }}</td>
                     </tr>
-            
+
                 </thead>
             </table>
         </div>

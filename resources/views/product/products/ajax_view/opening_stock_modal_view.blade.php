@@ -8,7 +8,7 @@
     @csrf
     <div class="card mt-3">
         <div class="card-header">
-            <p class="m-0"><b>Business Location : {{ auth()->user()->branch ? auth()->user()->branch->name .'/'. auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}</b> </p>
+            <p class="m-0"><b>@lang('menu.business_location') : {{ auth()->user()->branch ? auth()->user()->branch->name .'/'. auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}</b> </p>
         </div>
         <div class="card_body">
             <div class="product_stock_table_area">
@@ -60,7 +60,7 @@
                                             <input type="hidden" id="subtotal" name="subtotals[]" value="{{ $os->subtotal }}">
                                         </td>
                                     </tr>
-                                @else 
+                                @else
                                     <tr>
                                         <td class="text">{{ $pro->p_name.' '.$pro->v_name }}</td>
                                         <td>
@@ -98,12 +98,12 @@
             </div>
         </div>
     </div>
-  
+
     <div class="d-flex justify-content-end mt-3">
         <div class="btn-loading">
             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-            <button type="submit" class="btn btn-sm btn-success">Save</button>
+            <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
         </div>
     </div>
 </form>

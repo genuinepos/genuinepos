@@ -15,7 +15,7 @@
                     <h5>Edit Role</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -1489,7 +1489,7 @@
                     <div class="submit-area d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                            <button class="btn btn-sm btn-success submit_button float-end">Save</button>
+                            <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save')</button>
                         </div>
                     </div>
                 </section>

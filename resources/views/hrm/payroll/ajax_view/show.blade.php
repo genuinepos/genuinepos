@@ -18,7 +18,7 @@
                             {{ $payroll->employee->branch->zip_code == 1 ? $payroll->employee->branch->zip_code : '' }},
                             {{ $payroll->employee->branch->country == 1 ? $payroll->employee->branch->country : '' }}.
                         @else
-                            <h6>{{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>)</h6>
+                            <h6>{{json_decode($generalSettings->business, true)['shop_name']}}  (<b>@lang('menu.head_office')</b>)</h6>
                             <p>{{json_decode($generalSettings->business, true)['address']}} </p>
                             <p><b>@lang('menu.phone') :</b>  {{json_decode($generalSettings->business, true)['phone']}} </p>
                         @endif
@@ -56,7 +56,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th width="50%" class="text-start">Total : ({{ $payroll->duration_time }} * {{  $payroll->amount_per_unit }})</th>
+                            <th width="50%" class="text-start">@lang('menu.total') : ({{ $payroll->duration_time }} * {{  $payroll->amount_per_unit }})</th>
                             <th width="50%" class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->total_amount }}</th>
                         </tr>
                     </tfoot>
@@ -87,7 +87,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th width="50%" class="text-start">Total : </th>
+                            <th width="50%" class="text-start">@lang('menu.total') : </th>
                             <th width="50%" class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->total_allowance_amount }}</th>
                         </tr>
                     </tfoot>
@@ -120,7 +120,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th width="50%" class="text-start">Total : </th>
+                            <th width="50%" class="text-start">@lang('menu.total') : </th>
                             <th class="text-start text-danger" width="50%">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->total_deduction_amount }}</th>
                         </tr>
                     </tfoot>

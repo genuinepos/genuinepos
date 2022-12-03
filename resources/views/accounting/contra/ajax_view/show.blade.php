@@ -1,4 +1,4 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="contra_print_area">
     <div class="header_area d-hide">
         <div class="company_name text-center">
@@ -9,7 +9,7 @@
                         {{ $contra->branch->name . '/' . $contra->branch->branch_code }}
                     @else
 
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h6>
@@ -30,13 +30,13 @@
         <p><b>Title :</b> Contra Entry</p>
         <p><b>Voucher No :</b> {{ $contra->voucher_no }}</p>
         <p><b>@lang('menu.date') :</b> {{ $contra->date}}</p>
-        <p><b>Business Location :</b> 
+        <p><b>@lang('menu.business_location') :</b>
             @if ($contra->branch)
 
                 {{ $contra->branch->name . '/' . $contra->branch->branch_code }}
             @else
 
-                {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
             @endif
         </p>
         <p><b>Entered By :</b> {{ $contra->user ? $contra->user->prefix.' '.$contra->user->name.' '.$contra->user->last_name : '' }}</p>
@@ -49,7 +49,7 @@
                     <tbody>
                         <tr>
                             <th class="text-start">Sender Account :
-                                
+
                             </th>
                             <td class="text-start">
                                 @php

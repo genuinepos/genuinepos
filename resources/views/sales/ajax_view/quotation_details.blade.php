@@ -37,7 +37,7 @@
                         <li><strong>Entered From : </strong></li>
                         @if ($quotation->branch)
                             <li>
-                                <strong>Business Location : </strong> {{ $quotation->branch->name.'/'.$quotation->branch->branch_code }}
+                                <strong>@lang('menu.business_location') : </strong> {{ $quotation->branch->name.'/'.$quotation->branch->branch_code }}
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $quotation->branch->phone }}</li>
                             <li><strong>Address : </strong>
@@ -46,8 +46,8 @@
                                 {{ $quotation->branch->zip_code }}, {{ $quotation->branch->country }}
                             </li>
                         @else
-                            <li><strong>Business Location : </strong>
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                            <li><strong>@lang('menu.business_location') : </strong>
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li>
                             <li><strong>Address : </strong> <span>{{ json_decode($generalSettings->business, true)['address'] }}</span></li>

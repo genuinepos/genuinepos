@@ -17,7 +17,7 @@
                             @if ($payment->payroll->employee->branch)
                                 {{ $payment->payroll->employee->branch->name.'/'.$payment->payroll->employee->branch->branch_code }}
                             @else
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                             @endif
                         </span>
                     </li>
@@ -91,7 +91,7 @@
 
     <div class="form-group row mt-2">
         <div class="col-md-4">
-            <label><strong>Credit Account :</strong> </label>
+            <label><strong>@lang('menu.credit_account') :</strong> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -129,7 +129,7 @@
                     <i class="fas fa-spinner"></i><span> Loading...</span>
                 </button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
             </div>
         </div>
     </div>

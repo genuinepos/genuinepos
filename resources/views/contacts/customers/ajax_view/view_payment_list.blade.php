@@ -26,24 +26,24 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li> 
+                    <li>
                         <h6>
-                            Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }} 
-                            <b class="text-success">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</b> 
+                            Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-success">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</b>
                         </h6>
                     </li>
-                    
+
                     <li>
                         <h6>
                             Total Sale Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</b> 
+                            <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</b>
                         </h6>
                     </li>
 
                     <li>
                         <h6>
                             Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <b class="text-danger"> {{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</b> 
+                            <b class="text-danger"> {{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</b>
                         </h6>
                     </li>
                 </ul>
@@ -54,7 +54,7 @@
 
 <div class="payment_list_table">
     <div class="data_preloader payment_list_preloader">
-        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
     </div>
     <div class="table-responsive">
         <table class="display modal-table table-sm table-striped">
@@ -101,7 +101,7 @@
             </tbody>
             <tfoot>
                 <tr class="bg-secondary">
-                    <th colspan="5" class="text-white text-end"> <b>Total : {{json_decode($generalSettings->business, true)['currency'] }}</b> </th>
+                    <th colspan="5" class="text-white text-end"> <b>@lang('menu.total') : {{json_decode($generalSettings->business, true)['currency'] }}</b> </th>
                     <th class="text-white text-end"><b>{{App\Utils\Converter::format_in_bdt($total) }}</b></th>
                     <th></th>
                 </tr>

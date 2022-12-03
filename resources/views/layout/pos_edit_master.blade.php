@@ -150,7 +150,7 @@
                                 <div class="col-md-12">
                                     <div class="table_area">
                                         <div class="data_preloader" id="recent_trans_preloader">
-                                            <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                            <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                                         </div>
                                         <div class="table-responsive">
                                             <table class="table modal-table table-sm table-striped">
@@ -198,7 +198,7 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="data_preloader" id="hold_invoice_preloader">
-                                        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                                     </div>
                                     <div class="table-responsive" id="hold_invoices"></div>
                                 </div>
@@ -222,7 +222,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="data_preloader" id="stock_preloader">
-                    <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                    <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">Item Stocks</h6>
@@ -353,7 +353,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="data_preloader mt-5" id="stock_preloader">
-                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">Item Stocks</h6>

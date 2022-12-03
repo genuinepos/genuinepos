@@ -16,7 +16,7 @@
                     <h6>Edit Product</h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -198,7 +198,7 @@
                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><b>Business Location :</b> </label>
+                                            <label class="col-4"><b>@lang('menu.business_location') :</b> </label>
                                             <div class="col-8">
                                                 <input type="hidden" name="branch_count" value="branch_count">
                                                 <select class="form-control select2" name="branch_ids[]" id="branch_ids" multiple>
@@ -326,7 +326,7 @@
                                                 <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
                                                 <div class="col-8">
                                                     <select class="form-control" name="tax_id" id="tax_id">
-                                                        <option value="">NoTax</option>
+                                                        <option value="">@lang('menu.no_tax')</option>
                                                         @foreach ($taxes as $tax)
                                                         <option {{ $product->tax_id == $tax->id ? 'SELECTED' : '' }} value="{{ $tax->id . '-' . $tax->tax_percent }}">
                                                                 {{ $tax->tax_name }}</option>
@@ -716,7 +716,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>
@@ -786,7 +786,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>
@@ -853,7 +853,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>

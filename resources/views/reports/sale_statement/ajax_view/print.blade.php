@@ -17,14 +17,14 @@
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">
                 {{ json_decode($generalSettings->business, true)['address'] }}
             </p>
             <p><b>All Business Location</b></p>
         @elseif ($branch_id == 'NULL')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
 
@@ -91,21 +91,21 @@
                     <tr>
                         <td class="text-start">{{ date($__date_format, strtotime($sale->date))}}</td>
                         <td class="text-start">{{ $sale->invoice_id }}</td>
-                        <td class="text-start"> 
-                            @if ($sale->branch_name) 
+                        <td class="text-start">
+                            @if ($sale->branch_name)
 
                                  {!! $sale->branch_name . '/' . $sale->branch_code . '(<b>BL</b>)' !!}
-                            @else 
-        
+                            @else
+
                                 {!! json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
 
-                        <td class="text-start"> 
+                        <td class="text-start">
                             {{ $sale->customer_name ? $sale->customer_name : 'Walk-In-Customer' }}
                         </td>
 
-                        <td class="text-start"> 
+                        <td class="text-start">
                             {{ $sale->u_prefix . ' ' . $sale->u_name . ' ' . $sale->u_last_name }}
                         </td>
 
@@ -115,7 +115,7 @@
                                 $totalItems += $sale->total_item;
                             @endphp
                         </td>
-             
+
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                             @php
@@ -184,7 +184,7 @@
     <div class="col-6">
         <table class="table modal-table table-sm table-bordered">
             <thead>
-          
+
                 <tr>
                     <th class="text-end">Total Sold Item : </th>
                     <td class="text-end">
@@ -212,7 +212,7 @@
                         {{ App\Utils\Converter::format_in_bdt($TotalOrderTax) }}
                     </td>
                 </tr>
-                
+
                 <tr>
                     <th class="text-end">Total Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">

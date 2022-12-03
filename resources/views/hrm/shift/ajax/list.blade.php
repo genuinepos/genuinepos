@@ -1,7 +1,7 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr class="text-start">
-            <th class="text-start">S/L</th>
+            <th class="text-start">@lang('menu.sl')</th>
             <th class="text-start">Shift Name</th>
             <th class="text-start">Start Time</th>
             <th class="text-start">End Time</th>

@@ -14,7 +14,7 @@
                     <span class="fas fa-toggle-off"></span>
                     <h6>Holidays</h6>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
@@ -31,14 +31,14 @@
                 </div>
 
                 <div class="widget_content">
-                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>S/L</th>
+                                    <th>@lang('menu.sl')</th>
                                     <th>Name</th>
-                                    <th>Date</th>
+                                    <th>@lang('menu.date')</th>
                                     <th>Allowed Branch</th>
                                     <th>Note</th>
                                     <th>Actions</th>
@@ -94,7 +94,7 @@
                                 <label><b>Allowed Branch</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="branch_id" required>
                                     <option value="All"> All </option>
-                                    <option value=""> {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>) </option>
+                                    <option value=""> {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>@lang('menu.head_office')</b>) </option>
                                     @foreach($branches as $row)
                                         <option value="{{ $row->id }}"> {{ $row->name.'/'.$row->branch_code }}</option>
                                     @endforeach
@@ -112,7 +112,7 @@
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                             </div>
                         </div>
                     </form>

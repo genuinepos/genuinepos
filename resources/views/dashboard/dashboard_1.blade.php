@@ -49,7 +49,7 @@
                                                 <option value="">All Business Locations</option>
                                                 <option value="NULL">
                                                     {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                                    (Head Office)</option>
+                                                    (@lang('menu.head_office'))</option>
                                                 @foreach ($branches as $br)
                                                     <option value="{{ $br->id }}">
                                                         {{ $br->name . '/' . $br->branch_code }}
@@ -249,7 +249,7 @@
                                         width="100%">
                                         <thead>
                                             <tr>
-                                                <th>S/L</th>
+                                                <th>@lang('menu.sl')</th>
                                                 <th>Product</th>
                                                 <th>Product Code(SKU)</th>
                                                 <th>Current Stock</th>

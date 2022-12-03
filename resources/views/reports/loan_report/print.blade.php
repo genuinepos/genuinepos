@@ -21,7 +21,7 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if (!auth()->user()->branch_id)
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b></h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b></h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php
@@ -54,7 +54,7 @@
                 <ul class="list-unstyled">
                     <li><strong>Company/People : </strong> {{ $company->name }}</li>
                     <li><strong>@lang('menu.phone') : </strong> </li>
-                    <li><strong>Address : </strong> </li> 
+                    <li><strong>Address : </strong> </li>
                 </ul>
             </div>
         </div>
@@ -91,9 +91,9 @@
                     <tr>
                         <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($loan->report_date)) }}</td>
                         <td class="text-start">
-                            @if ($loan->b_name) 
+                            @if ($loan->b_name)
                                 {!! $loan->b_name . '/' . $loan->b_code . '(<b>BL</b>)' !!}
-                             @else 
+                             @else
                                 {!! json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
@@ -101,18 +101,18 @@
                         <td class="text-start">{{ $loan->reference_no }}</td>
                         <td class="text-start">{{ $loan->c_name }}</td>
 
-                        <td class="text-start"> 
-                            @if ($loan->type == 1) 
+                        <td class="text-start">
+                            @if ($loan->type == 1)
                                 Pay Loan
-                            @else 
+                            @else
                                 Receive Loan
                             @endif
                         </td>
 
                         <td class="text-start">
-                            @if ($loan->loan_by) 
+                            @if ($loan->loan_by)
                                  {{ $loan->loan_by }}
-                            @else 
+                            @else
                                  Cash Loan pay
                             @endif
                         </td>

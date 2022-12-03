@@ -11,7 +11,7 @@
                     <h5>Warehouses</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                        class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
@@ -25,12 +25,12 @@
                                     <div class="form-group row">
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-3">
-                                                <label><strong>Business Location :</strong></label>
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able"
                                                     id="branch_id" autofocus>
-                                                    <option value="">All</option>
-                                                    <option selected value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option selected value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -101,7 +101,7 @@
                                         <button type="button" class="btn loading_button d-hide"><i
                                             class="fas fa-spinner"></i><span> Loading...</span></button>
                                         <button type="reset" class="btn btn-sm btn-danger">Reset</button>
-                                        <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                        <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                     </div>
                                 </div>
                             </form>
@@ -131,7 +131,7 @@
 
                         <div class="widget_content">
                             <div class="data_preloader">
-                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                             </div>
                             <div class="table-responsive">
                                 <table class="display data_tbl data__table">

@@ -29,17 +29,17 @@
                 <div class="col-md-12">
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="element-body">
-                            <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
+                            <i class="fas fa-funnel-dollar ms-2"></i> <b>@lang('menu.filter')</b>
                             <form action="" method="get">
                                 <div class="form-group row">
                                     @if ($addons->branches == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-3">
-                                                <label><strong>Business Location :</strong></label>
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able" id="branch_id" autofocus>
-                                                    <option value="">All</option>
-                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -54,7 +54,7 @@
                                         <label><strong>Priority : </strong></label>
                                         <select name="priority"
                                             class="form-control submit_able" id="priority" autofocus>
-                                            <option value="">All</option>
+                                            <option value="">@lang('menu.all')</option>
                                             <option value="Low">Low</option>
                                             <option value="Medium">Medium</option>
                                             <option value="High">High</option>
@@ -66,7 +66,7 @@
                                         <label><strong>Status : </strong></label>
                                         <select name="status"
                                             class="form-control submit_able" id="status" autofocus>
-                                            <option value="">All</option>
+                                            <option value="">@lang('menu.all')</option>
                                             <option value="New">New</option>
                                             <option value="In-Progress">In-Progress</option>
                                             <option value="On-Hold">On-Hold</option>
@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="widget_content">
-                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
                             <thead>
@@ -225,7 +225,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>

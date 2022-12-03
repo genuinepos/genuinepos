@@ -13,7 +13,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong> Reference ID : </strong>{{ $expense->invoice_id }} </li>
-                    <li><strong>Business Location : </strong>
+                    <li><strong>@lang('menu.business_location') : </strong>
                         {{ $expense->branch ? $expense->branch->name.''.$expense->branch->branch_code : 'Head Office' }}
                     </li>
                 </ul>
@@ -25,16 +25,16 @@
                 <ul class="list-unstyled">
                     <li><strong>Total Due : </strong>{{ $expense->due }}</li>
                     <li><strong>@lang('menu.date') : </strong>{{ $expense->date }}</li>
-                    <li><strong>Payment Status : </strong> 
+                    <li><strong>Payment Status : </strong>
                         @php
-                           $payable = $expense->net_total_amount; 
+                           $payable = $expense->net_total_amount;
                         @endphp
-                        
-                        @if ($expense->due <= 0) 
+
+                        @if ($expense->due <= 0)
                             <span class="badge bg-success">Paid</span>
-                        @elseif ($expense->due > 0 && $expense->due < $payable) 
+                        @elseif ($expense->due > 0 && $expense->due < $payable)
                             <span class="badge bg-primary text-white">Partial</span>
-                        @elseif ($payable == $expense->due) 
+                        @elseif ($payable == $expense->due)
                             <span class="badge bg-danger text-white">Due</span>
                         @endif
                     </li>
@@ -45,7 +45,7 @@
 </div>
 
 <div class="payment_list_table">
-    <div class="data_preloader modal_preloader"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
+    <div class="data_preloader modal_preloader"> <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6></div>
     <div class="table-responsive">
         <table class="display modal-table table-sm table-striped">
             <thead>
@@ -71,7 +71,7 @@
                             <td class="text-start">
                                 @if ($payment->payment_method)
                                       {{ $payment->payment_method->name }}
-                                @else 
+                                @else
                                     {{ $payment->pay_mode }}
                                 @endif
                             </td>
@@ -84,7 +84,7 @@
                             </td>
                         </tr>
                     @endforeach
-                @else   
+                @else
                     <tr>
                         <td colspan="7" class="text-center">No Data Found</td>
                     </tr>

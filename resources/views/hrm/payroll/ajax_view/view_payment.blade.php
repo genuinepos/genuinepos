@@ -49,13 +49,13 @@
 
 <div class="payment_list_table">
     <div class="data_preloader payment_list_preloader">
-        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
     </div>
     <div class="table-responsive">
         <table class="table modal-table table-sm table-striped">
             <thead>
                 <tr class="bg-secondary">
-                    <th class="text-white">Date</th>
+                    <th class="text-white">@lang('menu.date')</th>
                     <th class="text-white">Voucher No</th>
                     <th class="text-white">Amount</th>
                     <th class="text-white">Method</th>

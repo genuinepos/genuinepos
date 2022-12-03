@@ -17,7 +17,7 @@
     tr.noBorder td {border: 0px !important;}
     tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="sale_payment_print_area">
     <div class="header_area">
         <div class="company_name text-center">
@@ -26,11 +26,11 @@
                     @if ($payment->sale->branch)
                         {{ $payment->sale->branch->name . '/' . $payment->sale->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
-            
+
             <p>
                 @if ($payment->sale->branch)
                     {{ $payment->sale->branch->city . ', ' . $payment->sale->branch->state . ', ' . $payment->sale->branch->zip_code . ', ' . $payment->sale->branch->country }}
@@ -45,7 +45,7 @@
     <div class="reference_area pt-3">
         <p>
             <b>Title :</b>
-            {{ $payment->payment_type == 1 ? 'Receive Payment' : 'Sale Return Payment' }} 
+            {{ $payment->payment_type == 1 ? 'Receive Payment' : 'Sale Return Payment' }}
         </p>
         <p><b>Invoice No :</b> {{ $payment->sale->invoice_id }}</p>
         <p>

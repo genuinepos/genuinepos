@@ -51,7 +51,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>Debit/Credit Account :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.debit')/@lang('menu.credit_account') :</b> <span class="text-danger">*</span></label>
             <select name="account_id" class="form-control" id="e_account_id">
                 <option value="">Select Account</option>
                 @foreach ($accounts as $account)
@@ -82,7 +82,7 @@
             <div class="btn-loading">
                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                 <button type="button" class="btn btn-sm btn-danger" id="close_loan_edit_form">@lang('menu.close')</button>
-                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
             </div>
         </div>
     </div>

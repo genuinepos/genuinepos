@@ -8,9 +8,9 @@
                 {{ $payment->payroll->employee->branch->zip_code == 1 ? $payment->payroll->employee->branch->zip_code : '' }},
                 {{ $payment->payroll->employee->branch->country == 1 ? $payment->payroll->employee->branch->country : '' }}.
             @else
-                <h6>{{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>)</h6>
-                <p>{{json_decode($generalSettings->business, true)['address']}} </p> 
-                <p><b>@lang('menu.phone') :</b>  {{json_decode($generalSettings->business, true)['phone']}} </p> 
+                <h6>{{json_decode($generalSettings->business, true)['shop_name']}}  (<b>@lang('menu.head_office')</b>)</h6>
+                <p>{{json_decode($generalSettings->business, true)['address']}} </p>
+                <p><b>@lang('menu.phone') :</b>  {{json_decode($generalSettings->business, true)['phone']}} </p>
             @endif
             <h6 class="modal-title" id="exampleModalLabel">Payroll Of
                 <b>{{ $payment->payroll->employee->prefix . ' ' . $payment->payroll->employee->name . ' ' . $payment->payroll->employee->last_name }}</b>

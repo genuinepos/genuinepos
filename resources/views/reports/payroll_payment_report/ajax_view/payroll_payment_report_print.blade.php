@@ -36,7 +36,7 @@
                 <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
                 <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
             @endif
-    
+
             @if ($s_date && $e_date)
                 <p><b>@lang('menu.date') :</b>
                     {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($s_date)) }}
@@ -81,7 +81,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="2" class="text-start"></th>
-                        <th class="text-end">Total : </th>
+                        <th class="text-end">@lang('menu.total') : </th>
                         <th class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($total_paid, 0, 2) }}</th>
                         <th>--</th>
                         <th>--</th>
@@ -90,7 +90,7 @@
             </table>
         </div>
     </div>
- 
+
     @if (env('PRINT_SD_OTHERS') == 'true')
         <div class="row">
             <div class="col-md-12 text-center">

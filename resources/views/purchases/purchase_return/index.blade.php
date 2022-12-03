@@ -15,7 +15,7 @@
                                 <h5>Purchase Returns</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
 
                     </div>
@@ -30,11 +30,11 @@
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
+                                                            <label><strong>@lang('menu.business_location') :</strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control submit_able" id="branch_id">
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }}(Head Office)</option>
+                                                                <option value="">@lang('menu.all')</option>
+                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }}(@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -50,7 +50,7 @@
                                                     <select name="supplier_id"
                                                         class="form-control selectpicker submit_able"
                                                         id="supplier_id">
-                                                        <option value="">All</option>
+                                                        <option value="">@lang('menu.all')</option>
                                                         @foreach ($suppliers as $supplier)
                                                             <option value="{{ $supplier->id }}">{{ $supplier->name .' ('.$supplier->phone.')' }}</option>
                                                         @endforeach
@@ -58,7 +58,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -71,7 +71,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -101,7 +101,7 @@
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     {{-- <table class="display data_tbl data__table"> --}}

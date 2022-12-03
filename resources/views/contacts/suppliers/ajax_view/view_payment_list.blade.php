@@ -52,7 +52,7 @@
 
 <div class="payment_list_table">
     <div class="data_preloader payment_list_preloader">
-        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
     </div>
     <div class="table-responsive">
         <table class="table modal-table table-sm table-striped">
@@ -72,7 +72,7 @@
                     $total = 0;
                 @endphp
                 @if (count($supplier_payments) > 0)
-                   
+
                     @foreach ($supplier_payments as $payment)
                         <tr>
                             <td class="text-start">
@@ -102,7 +102,7 @@
             </tbody>
             <tfoot>
                 <tr class="bg-secondary">
-                    <th colspan="5" class="text-white text-end"> <b>Total : {{json_decode($generalSettings->business, true)['currency'] }}</b> </th>
+                    <th colspan="5" class="text-white text-end"> <b>@lang('menu.total') : {{json_decode($generalSettings->business, true)['currency'] }}</b> </th>
                     <th class="text-white text-end">
                         <b>{{ App\Utils\Converter::format_in_bdt($total) }}</b>
                     </th>

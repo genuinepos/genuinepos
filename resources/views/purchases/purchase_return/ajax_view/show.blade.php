@@ -26,7 +26,7 @@
                                 <strong>supplier Name : </strong>
                                 {{ $return->purchase ? $return->purchase->supplier->name.' (ID'.$return->purchase->supplier->contact_id.')' : $return->supplier->name.' (ID'.$return->supplier->contact_id.')' }}</span>
                             </li>
-                            <li class="warehouse"><strong>Business Location : </strong>
+                            <li class="warehouse"><strong>@lang('menu.business_location') : </strong>
                                 @if($return->branch)
                                     {{ $return->branch->name.'/'.$return->branch->branch_code }}<b>(BL)</b>
                                 @else
@@ -212,7 +212,7 @@
                                 {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(B.L)</b>
                             @else
 
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(Head Office)</b>
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(@lang('menu.head_office'))</b>
                             @endif
                         </li>
                     </ul>

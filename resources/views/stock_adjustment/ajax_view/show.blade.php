@@ -12,7 +12,7 @@
                 <div class="col-md-6 text-left">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>Business Location : </strong>
+                            <strong>@lang('menu.business_location') : </strong>
                             {{
                                 $adjustment->branch ? $adjustment->branch->name.'/'.$adjustment->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)'
                             }}
@@ -37,7 +37,7 @@
                         @else
                             <li>
                                 <strong>Adjustment Location : </strong>
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
                             <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
                             <li><strong>Address : </strong>
@@ -100,7 +100,7 @@
                            <table class="table modal-table table-striped table-sm">
                                <thead>
                                    <tr class="bg-secondary text-white">
-                                       <th>Date</th>
+                                       <th>@lang('menu.date')</th>
                                        <th>Voucher No</th>
                                        <th>Method</th>
                                        <th>Account</th>
@@ -220,7 +220,7 @@
                         @else
                             <li>
                                 <strong>Adjustment Location : </strong>
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                                {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
                             <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
                             <li><strong>Address : </strong>

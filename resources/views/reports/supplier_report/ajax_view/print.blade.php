@@ -26,9 +26,9 @@
 @endphp
 <div class="row">
     <div class="col-md-12 text-center">
-        <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+        <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
         <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-        <h6 style="margin-top: 10px;"><b>Supplier Report</b></h6> 
+        <h6 style="margin-top: 10px;"><b>Supplier Report</b></h6>
     </div>
 </div>
 <br/>

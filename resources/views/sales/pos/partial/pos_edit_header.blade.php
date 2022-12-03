@@ -34,7 +34,7 @@
 
             <div class="col-lg-8 col-sm-12 col-12 address">
                 <p class="store-name">
-                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (HEAD OFFICE)
+                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))
                 </p>
                 <p class="address-name">
                     @if ($sale->branch)

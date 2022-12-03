@@ -81,8 +81,8 @@
                             </div>
                             <select name="payment_method_id" class="form-control p_input" id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option 
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                    <option
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                         value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
@@ -95,7 +95,7 @@
 
                 <div class="form-group row mt-1">
                     <div class="col-md-4">
-                        <label><strong>Credit Account :</strong> </label>
+                        <label><strong>@lang('menu.credit_account') :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -135,7 +135,7 @@
                 <div class="form-group row mt-4">
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
-                        <button type="submit" name="action" value="save" class="c-btn button-success float-end">Save</button>
+                        <button type="submit" name="action" value="save" class="c-btn button-success float-end">@lang('menu.save')</button>
                         <button type="submit" name="action" value="save_and_print" class="c-btn button-success float-end">Save & Print</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
@@ -154,14 +154,14 @@
         var paying_amount = $('#p_paying_amount').val();
 
         if (parseFloat(paying_amount)  > parseFloat(available_amount)) {
-            
+
             $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
             $('.loading_button').hide();
             return;
         }
 
         var url = $(this).attr('action');
-        
+
         $.ajax({
             url:url,
             type:'post',
@@ -191,16 +191,16 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Please Check the connection.'); 
+                    toastr.error('Net Connetion Error. Please Check the connection.');
                     return;
                 }else if (err.status == 500) {
-                    
-                    toastr.error('Server Error. Please contact to the support team.'); 
+
+                    toastr.error('Server Error. Please contact to the support team.');
                     return;
                 }
 
                 $.each(err.responseJSON.errors, function(key, error) {
-                    
+
                     $('.error_p_' + key + '').html(error[0]);
                 });
             }

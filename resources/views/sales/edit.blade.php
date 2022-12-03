@@ -22,7 +22,7 @@
                     <h6>Edit Sale</h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -409,7 +409,7 @@
                                             <label class="col-sm-5 col-form-label">Order Tax :</label>
                                             <div class="col-sm-7">
                                                 <select name="order_tax" class="form-control" id="order_tax">
-                                                    <option value="0.00">NoTax</option>
+                                                    <option value="0.00">@lang('menu.no_tax')</option>
                                                     @foreach ($taxes as $tax)
                                                         <option {{ $tax->tax_percent == $sale->order_tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                     @endforeach
@@ -478,10 +478,10 @@
                                             </div>
 
                                             <div class="row mb-2">
-                                                <label class="col-sm-5 col-form-label">Debit A/C : <span
+                                                <label class="col-sm-5 col-form-label">@lang('menu.debit') A/C : <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-sm-7">
-                                                    <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
+                                                    <select name="account_id" class="form-control" id="account_id" data-name="@lang('menu.debit') A/C">
                                                         @foreach ($accounts as $account)
                                                             <option value="{{ $account->id }}">
                                                                 @php
@@ -581,7 +581,7 @@
                             <div class="col-md-6">
                                 <label><strong>Tax</strong> :</label>
                                 <select class="form-control" id="e_unit_tax">
-                                    <option value="0.00">NoTax</option>
+                                    <option value="0.00">@lang('menu.no_tax')</option>
                                     @foreach ($taxes as $tax)
                                        <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                     @endforeach

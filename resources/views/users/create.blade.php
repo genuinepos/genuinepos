@@ -13,7 +13,7 @@
                     <h5>Add User</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -155,7 +155,7 @@
                                             <label class="col-4"><b>Access Location :</b> </label>
                                             <div class="col-8">
                                                 <select name="branch_id" id="branch_id" class="form-control">
-                                                    <option value="">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    <option value="">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $b)
                                                         <option value="{{ $b->id }}">{{$b->name.'/'.$b->branch_code}}</option>
                                                     @endforeach
@@ -171,7 +171,7 @@
                                                 class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
-                                                    <option value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    <option value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $b)
                                                     <option value="{{ $b->id }}">{{$b->name.'/'.$b->branch_code}}</option>
                                                     @endforeach
@@ -409,9 +409,9 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Branch :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.branch') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="bank_branch" class="form-control" placeholder="Branch" autocomplete="off">
+                                            <input type="text" name="bank_branch" class="form-control" placeholder="@lang('menu.branch')" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -526,7 +526,7 @@
                     <div class="submit-area d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                            <button class="btn btn-sm btn-success submit_button">Save</button>
+                            <button class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                         </div>
                     </div>
                 </section>

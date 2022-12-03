@@ -14,7 +14,7 @@
                     <span class="fas fa-plus-square"></span>
                     <h6>Add Expense</h6>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -131,7 +131,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Total : </b> </label>
+                                        <label class=" col-4"><b>@lang('menu.total') : </b> </label>
                                         <div class="col-8">
                                             <input readonly class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="0.00" step="any" placeholder="Total amount">
                                             <span class="error error_total_amount"></span>
@@ -144,7 +144,7 @@
                                         <label class="col-4"><b>Tax :</b> </label>
                                         <div class="col-8">
                                             <select name="tax" class="form-control" id="tax">
-                                                <option value="0.00">NoTax</option>
+                                                <option value="0.00">@lang('menu.no_tax')</option>
                                                 @foreach ($taxes as $tax)
                                                     <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                 @endforeach
@@ -199,7 +199,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>

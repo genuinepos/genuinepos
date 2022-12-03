@@ -11,7 +11,7 @@
                 <h6>Edit User</h6>
             </div>
 
-            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
         </div>
         <div class="p-3">
             <form id="update_user_form" action="{{ route('users.update', $user->id) }}" method="POST">
@@ -417,9 +417,9 @@
                                     <div class="row g-2 mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-sm-4 col-5"><b>Branch :</b> </label>
+                                                <label class="col-sm-4 col-5"><b>@lang('menu.branch') :</b> </label>
                                                 <div class="col-sm-8 col-7">
-                                                    <input type="text" name="bank_branch" class="form-control" placeholder="Branch" autocomplete="off" value="{{ $user->bank_branch }}">
+                                                    <input type="text" name="bank_branch" class="form-control" placeholder="@lang('menu.branch')" autocomplete="off" value="{{ $user->bank_branch }}">
                                                 </div>
                                             </div>
                                         </div>

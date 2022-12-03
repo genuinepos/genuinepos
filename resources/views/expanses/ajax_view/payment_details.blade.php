@@ -9,7 +9,7 @@
                     @if ($payment->expense->branch)
                         {{ $payment->expense->branch->name . '/' . $payment->expense->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
@@ -58,9 +58,9 @@
                                 <td class="text-end">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $expense_description->amount }}</td>
                             </tr>
                         @endforeach
-                       
+
                         <tr>
-                            <th class="text-start">Total :</th>
+                            <th class="text-start">@lang('menu.total') :</th>
                             <td class="text-end"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payment->expense->net_total_amount }}</b></td>
                         </tr>
 
@@ -68,7 +68,7 @@
                             <th class="text-start">Paid:</th>
                             <td class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $payment->paid_amount }}</b> 
+                                {{ $payment->paid_amount }}</b>
                             </td>
                         </tr>
 
@@ -82,7 +82,7 @@
                             <td class="text-end">
                                 @if ($payment->payment_method)
                                       {{ $payment->payment_method->name }}
-                                @else 
+                                @else
                                     {{ $payment->pay_mode }}
                                 @endif
                             </td>

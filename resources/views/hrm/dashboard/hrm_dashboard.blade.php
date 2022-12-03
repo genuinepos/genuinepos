@@ -91,7 +91,7 @@
                         <div class="card-title mt-2 ps-4">
                             <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
                                 <option value="">All Business Lacation</option>
-                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                 @foreach ($branches as $branch)
                                     <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
                                 @endforeach
@@ -104,7 +104,7 @@
                             <div class="col-md-6">
                                 <div class="preloader_area" style="position: relative;">
                                     <div class="data_preloader mt-4">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                     </div>
                                 </div>
 
@@ -141,7 +141,7 @@
                             <div class="col-md-6">
                                 <div class="preloader_area" style="position: relative;">
                                     <div class="data_preloader mt-4">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                     </div>
                                 </div>
 
@@ -182,7 +182,7 @@
                             <div class="col-md-6">
                                 <div class="preloader_area" style="position: relative;">
                                     <div class="data_preloader mt-4">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                     </div>
                                 </div>
                                 <div class="form_element rounded m-0">

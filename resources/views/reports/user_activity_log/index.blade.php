@@ -17,7 +17,7 @@
                     <h5>User Activities Log</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                        class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
@@ -31,10 +31,10 @@
                                     @if ($addons->branches == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
-                                                <label><strong>Business Location :</strong></label>
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control" id="branch_id" autofocus>
-                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -52,7 +52,7 @@
                                     <div class="col-md-2">
                                         <label><strong>Action By :</strong></label>
                                         <select name="user_id" class="form-control" id="user_id" autofocus>
-                                            <option value="">All</option>
+                                            <option value="">@lang('menu.all')</option>
 
                                         </select>
                                     </div>
@@ -60,7 +60,7 @@
                                     <div class="col-md-2">
                                         <label><strong>Action Name :</strong></label>
                                         <select name="action" class="form-control" id="action" autofocus>
-                                            <option value="">All</option>
+                                            <option value="">@lang('menu.all')</option>
                                             @foreach ($userActivityLogUtil->actions() as $key => $action)
                                                 <option value="{{ $key }}">{{ $action }}</option>
                                             @endforeach
@@ -70,7 +70,7 @@
                                     <div class="col-md-2">
                                         <label><strong>Subject Type :</strong></label>
                                         <select name="subject_type" class="form-control select2" id="subject_type" autofocus>
-                                            <option value="">All</option>
+                                            <option value="">@lang('menu.all')</option>
                                             @foreach ($userActivityLogUtil->subjectTypes() as $key => $subjectTypes)
                                                 <option value="{{ $key }}">{{ $subjectTypes }}</option>
                                             @endforeach
@@ -78,7 +78,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>From Date :</strong></label>
+                                        <label><strong>@lang('menu.from_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -91,7 +91,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>To Date :</strong></label>
+                                        <label><strong>@lang('menu.to_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -103,7 +103,7 @@
                                     </div>
 
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                        <button type="submit" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                     </div>
                                 </div>
                             </form>
@@ -121,14 +121,14 @@
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         {{-- <table class="display data_tbl data__table table-hover"> --}}
                             <table class="log_table display data_tbl modal-table table-sm table-striped">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
+                                    <th>@lang('menu.date')</th>
                                     <th>Business Location</th>
                                     <th>Action By</th>
                                     <th>Action Name</th>
@@ -218,7 +218,7 @@
                 success:function(data){
 
                     $('#user_id').empty();
-                    $('#user_id').append('<option value="">All</option>');
+                    $('#user_id').append('<option value="">@lang('menu.all')</option>');
                     $.each(data, function (key, val) {
 
                         var userPrefix = val.prefix != null ? val.prefix : '';

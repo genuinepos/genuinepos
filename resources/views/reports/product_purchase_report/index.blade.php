@@ -53,10 +53,10 @@
                                                     @if ($addons->branches == 1)
                                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                             <div class="col-md-2">
-                                                                <label><strong>Business Location :</strong></label>
+                                                                <label><strong>@lang('menu.business_location') :</strong></label>
                                                                 <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                                    <option value="">All</option>
-                                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                    <option value="">@lang('menu.all')</option>
+                                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                     @foreach ($branches as $branch)
                                                                         <option value="{{ $branch->id }}">
                                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -72,7 +72,7 @@
                                                     <div class="col-md-2">
                                                         <label><strong>@lang('menu.supplier') : </strong></label>
                                                         <select name="supplier_id" class="form-control submit_able" id="supplier_id" autofocus>
-                                                            <option value="">All</option>
+                                                            <option value="">@lang('menu.all')</option>
                                                             @foreach ($suppliers as $sup)
                                                                 <option value="{{ $sup->id }}">{{ $sup->name.' ('.$sup->phone.')' }}</option>
                                                             @endforeach
@@ -80,7 +80,7 @@
                                                     </div>
 
                                                     <div class="col-md-2">
-                                                        <label><strong>From Date :</strong></label>
+                                                        <label><strong>@lang('menu.from_date') :</strong></label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -93,7 +93,7 @@
                                                     </div>
 
                                                     <div class="col-md-2">
-                                                        <label><strong>To Date :</strong></label>
+                                                        <label><strong>@lang('menu.to_date') :</strong></label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -108,12 +108,12 @@
                                                             <div class="col-md-6">
                                                                 <label><strong></strong></label>
                                                                 <div class="input-group">
-                                                                    <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                    <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                                 </div>
                                                             </div>
 
                                                             <div class="col-md-6">
-                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print "></i> Print</a>
+                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -125,7 +125,7 @@
                             </div>
                             <div class="card">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
@@ -145,7 +145,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-end text-white">Total : </th>
+                                                <th colspan="5" class="text-end text-white">@lang('menu.total') : </th>
                                                 <th class="text-start text-white">(<span id="total_qty"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white">---</th>

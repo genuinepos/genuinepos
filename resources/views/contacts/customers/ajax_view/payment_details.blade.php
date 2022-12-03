@@ -15,39 +15,39 @@
 @php
     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="sale_payment_print_area">
     <div class="header_area d-hide">
         <div class="company_name text-center">
             <div class="company_name text-center">
                 <h4>
                     @if ($customerPayment->branch)
-    
+
                         @if ($customerPayment->branch->logo != 'default.png')
                             <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $customerPayment->branch->logo) }}">
-                        @else 
+                        @else
                             <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $customerPayment->branch->name }}</span>
                         @endif
                     @else
-    
+
                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                             <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                        @else 
+                        @else
                             <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                         @endif
                     @endif
                 </h4>
-    
+
                 <p>
                     @if ($customerPayment->branch)
 
                         <p style="width: 60%; margin:0 auto;">{{ $customerPayment->branch->city . ', ' . $customerPayment->branch->state . ', ' . $customerPayment->branch->zip_code . ', ' . $customerPayment->branch->country }}</p>
                     @else
-    
+
                         <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
                     @endif
                 </p>
-    
+
                 <h6 style="margin-top: 10px;">Payment Receive Voucher</h6>
             </div>
         </div>
@@ -62,7 +62,7 @@
 
         <div class="col-6">
             <p><strong>Type :</strong>
-                {{ $customerPayment->type == 1 ? 'Receive Payment' : 'Refund' }} 
+                {{ $customerPayment->type == 1 ? 'Receive Payment' : 'Refund' }}
             </p>
         </div>
     </div>
@@ -76,7 +76,7 @@
                             <td width="50%" class="text-start">
                                 <strong>Paid Amount :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
                             </td>
-                            
+
                             <td width="50%" class="text-start">
                                 {{ App\Utils\Converter::format_in_bdt($customerPayment->paid_amount) }}
                             </td>
@@ -162,7 +162,7 @@
                                     </td>
                                     <td class="text-start">{{ $pi->sale->invoice_id }}</h6></td>
                                     <td class="text-start">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                        {{ json_decode($generalSettings->business, true)['currency'] }}
                                         {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
                                         @php $total += $pi->paid_amount; @endphp
                                     </td>
@@ -174,7 +174,7 @@
                                     </td>
                                     <td class="text-start">{{ $pi->sale_return->invoice_id }}</h6></td>
                                     <td class="text-start">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                        {{ json_decode($generalSettings->business, true)['currency'] }}
                                         {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
                                         @php $total += $pi->paid_amount; @endphp
                                     </td>
@@ -185,7 +185,7 @@
 
                     <tfoot>
                         <tr>
-                            <th colspan="2" class="text-end">Total : </th>
+                            <th colspan="2" class="text-end">@lang('menu.total') : </th>
                             <th class="text-start">{{ App\Utils\Converter::format_in_bdt($total) }}</th>
                         </tr>
                     </tfoot>
@@ -193,7 +193,7 @@
             </div>
         </div>
     @endif
-    
+
     <div class="footer_area d-hide">
         <br><br>
         <div class="row">
@@ -222,13 +222,13 @@
                 <div class="col-4 text-start">
                     <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                 </div>
-        
+
                 <div class="col-4 text-center">
                     @if (env('PRINT_SD_SALE') == true)
                         <small>Powered By <b>SpeedDigit Software Solution.</b></small>
                     @endif
                 </div>
-        
+
                 <div class="col-4 text-end">
                     <small>Print Time : {{ date($timeFormat) }}</small>
                 </div>

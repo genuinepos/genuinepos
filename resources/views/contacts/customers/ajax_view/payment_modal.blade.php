@@ -78,7 +78,7 @@
                     <div class="col-md-5">
                         <div class="row">
                             <div class="col-lg-12">
-                                <label><strong>Business Location : </strong> </label>
+                                <label><strong>@lang('menu.business_location') : </strong> </label>
                                 <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
                             </div>
 
@@ -90,7 +90,7 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                            <input type="radio" checked name="payment_against" id="payment_against" class="all"  data-show_table="all_orders_and_invoices_area" value="all"> &nbsp; <b>All</b>
+                                                            <input type="radio" checked name="payment_against" id="payment_against" class="all"  data-show_table="all_orders_and_invoices_area" value="all"> &nbsp; <b>@lang('menu.all')</b>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -439,7 +439,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><b> Loading...</b></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                            <button name="action" value="save" type="submit" class="btn btn-sm btn-success">Save</button>
+                            <button name="action" value="save" type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                         </div>
                     </div>
                 </div>

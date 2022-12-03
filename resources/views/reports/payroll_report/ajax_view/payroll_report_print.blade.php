@@ -47,7 +47,7 @@
         <h6 style="margin-top: 10px;">Payroll Report</h6>
     </div>
 </div>
-   
+
 
     <br>
     <div class="row">
@@ -88,11 +88,11 @@
                             <td class="text-start">{{ $row->paid }}</td>
                             <td class="text-start">{{ $row->due }}</td>
                             <td class="text-start">
-                                @if ($row->due <= 0) 
+                                @if ($row->due <= 0)
                                     Paid
-                                @elseif($row->due > 0 && $row->due < $row->gross_amount) 
+                                @elseif($row->due > 0 && $row->due < $row->gross_amount)
                                     Partial
-                                @elseif($row->gross_amount == $row->due) 
+                                @elseif($row->gross_amount == $row->due)
                                     Due
                                 @endif
                             </td>
@@ -102,7 +102,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="4"></th>
-                        <th>Total : </th>
+                        <th>@lang('menu.total') : </th>
                         <th>${{ bcadd($total_gross, 0, 2) }}</th>
                         <th>${{ bcadd($total_paid, 0, 2) }}</th>
                         <th>${{ bcadd($total_due, 0, 2) }}</th>
@@ -112,7 +112,7 @@
             </table>
         </div>
     </div>
-    
+
     @if (env('PRINT_SD_OTHERS') == 'true')
         <div class="row">
             <div class="col-md-12 text-center">

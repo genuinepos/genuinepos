@@ -58,7 +58,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label><b>Debit/Credit Account :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.debit')/@lang('menu.credit_account') :</b> <span class="text-danger">*</span></label>
                             <select name="account_id" class="form-control" id="account_id">
                                 <option value="">Select Account</option>
                                 @foreach ($accounts as $account)
@@ -89,7 +89,7 @@
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Reset</button>
-                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                    <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                 </div>
             </div>
 
@@ -129,21 +129,21 @@
                         <div class="col-md-3">
                             <label><strong>Company/People :</strong></label>
                             <select name="company_id" class="form-control submit_able" id="f_company_id" autofocus>
-                                <option value="">All</option>
+                                <option value="">@lang('menu.all')</option>
                             </select>
                         </div>
 
                         <div class="col-md-3">
                             <label><strong>Loan Type :</strong></label>
                             <select name="type_id" class="form-control submit_able" id="type_id">
-                                <option value="">All</option>
+                                <option value="">@lang('menu.all')</option>
                                 <option value="1">Loan & Advance</option>
                                 <option value="2">Loan & Liabilities</option>
                             </select>
                         </div>
 
                         <div class="col-md-2">
-                            <label><strong>From Date :</strong></label>
+                            <label><strong>@lang('menu.from_date') :</strong></label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">
@@ -157,7 +157,7 @@
                         </div>
 
                         <div class="col-md-2">
-                            <label><strong>To Date :</strong></label>
+                            <label><strong>@lang('menu.to_date') :</strong></label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">
@@ -178,7 +178,7 @@
                 </form>
 
                 <div class="data_preloader">
-                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                 </div>
 
                 <div class="table-responsive" >

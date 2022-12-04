@@ -35,7 +35,7 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class=" col-4"><b>@lang('menu.supplier')</b></label>
                                         <div class="col-8">
@@ -69,7 +69,7 @@
                                     @endif
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Invoice ID :</b></label>
                                         <div class="col-8">
@@ -103,7 +103,7 @@
                                     @endif
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>@lang('menu.date') :</b></label>
                                         <div class="col-8">
@@ -135,7 +135,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Delivery Date :</b></label>
                                         <div class="col-8">
@@ -226,11 +226,11 @@
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class=" col-4"><b>Discount :</b></label>
                                         <div class="col-8">
-                                            <div class="row">
+                                            <div class="row g-0">
                                                 <select name="order_discount_type" class="form-control w-25" id="order_discount_type">
                                                     <option value="1">Fixed</option>
                                                     <option value="2">Percentage</option>
@@ -253,7 +253,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Ship Cost :</b> </label>
                                         <div class="col-8">
@@ -269,7 +269,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <input readonly name="total_qty" type="number" step="any" class="d-hide" id="total_qty" value="0.00">
                                     <div class="input-group">
                                         <label class="col-4">Total Item:</label>
@@ -286,7 +286,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Net Total :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                         <div class="col-8">

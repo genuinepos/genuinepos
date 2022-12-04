@@ -24,7 +24,7 @@
                         <div class="form_element rounded mt-0 mb-3">
                             <form id="filter_form" class="p-2">
                                 <div class="form-group row">
-                                    <div class="col-md-2">
+                                    <div class="col-xl-2 col-lg-3 col-md-4">
                                         <label><strong>@lang('menu.business_location') :</strong></label>
                                         <select name="branch_id"
                                             class="form-control submit_able" id="branch_id" autofocus>
@@ -38,10 +38,10 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-2">
+                                    <div class="col-xl-2 col-lg-3 col-md-4">
                                         <label><strong></strong></label>
                                         <div class="input-group">
-                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                         </div>
                                     </div>
                                 </div>
@@ -127,46 +127,46 @@
                     <form id="add_supplier_form" action="{{ route('contacts.supplier.store') }}">
 
                         <div class="form-group row mt-1">
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <b>@lang('menu.name') :</b>  <span class="text-danger">*</span>
                                 <input type="text" name="name" class="form-control  add_input" data-name="Supplier name" id="name" placeholder="Supplier name"/>
                                 <span class="error error_name" style="color: red;"></span>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <b>@lang('menu.phone') :</b> <span class="text-danger">*</span>
                                 <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
                                 <span class="error error_phone"></span>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                               <b>Supplier ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i>
                                 <input type="text" name="contact_id" class="form-control" placeholder="Contact ID"/>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <b>Business Name :</b>
                                 <input type="text" name="business_name" class="form-control" placeholder="Business name"/>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                <b>Alternative Number :</b>
                                 <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative phone number"/>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                <b>Landline :</b>
                                 <input type="text" name="landline" class="form-control " placeholder="landline number"/>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <b>Email :</b>
                                 <input type="text" name="email" class="form-control " placeholder="Email address"/>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <b>Date Of Birth :</b>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -178,17 +178,17 @@
                         </div>
 
                         <div class="form-group row mt-1">
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <b>Tax Number :</b>
                                 <input type="text" name="tax_number" class="form-control " placeholder="Tax number"/>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <b>@lang('menu.opening_balance') :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this supplier due." class="fas fa-info-circle tp"></i>
                                 <input type="number" name="opening_balance" class="form-control" placeholder="@lang('menu.opening_balance')"/>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <label><b>Pay Term</b> : </label>
                                 <div class="row">
                                     <div class="col-md-5">
@@ -219,22 +219,22 @@
                         </div>
 
                         <div class="form-group row mt-1">
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <b>City :</b>
                                 <input type="text" name="city" class="form-control " placeholder="City"/>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                <b>State :</b>
                                 <input type="text" name="state" class="form-control " placeholder="State"/>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <b>Country :</b>
                                 <input type="text" name="country" class="form-control " placeholder="Country"/>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <b>Zip-Code :</b>
                                 <input type="text" name="zip_code" class="form-control " placeholder="zip_code"/>
                             </div>

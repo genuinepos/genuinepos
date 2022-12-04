@@ -2064,6 +2064,11 @@ table.display tbody tr:hover {
 .modal.show .modal-dialog {
     margin-top: 60px;
 }
+@media screen and (max-width: 992px) and (min-width: 768px) {
+    .modal-dialog {
+        max-width: 700px;
+    }
+}
 .modal.show .modal-dialog.modal-fullscreen {
     margin-top: 0;
 }

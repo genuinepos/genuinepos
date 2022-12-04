@@ -55,7 +55,7 @@ class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-t
 
                     </div>
                     <div class="print-button-area">
-                        <a href="#" class="btn btn-sm btn-primary float-end" id="today_summery_print_btn">Print</a>
+                        <a href="#" class="btn btn-sm btn-primary float-end" id="today_summery_print_btn">@lang('menu.print')</a>
                     </div>
                 </div>
             </div>

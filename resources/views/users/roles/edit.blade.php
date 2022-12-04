@@ -768,7 +768,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input
                                                 {{ $role->hasPermissionTo('discounts') ? 'CHECKED' : '' }}
-                                        type="checkbox" name="discounts" class="sale"> &nbsp; Manage Offers </p>
+                                        type="checkbox" name="discounts" class="sale"> &nbsp; @lang('menu.manage_offers') </p>
                                         </div>
                                     </div>
 

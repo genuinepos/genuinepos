@@ -149,7 +149,7 @@
             </div>
             <div class="col-md-6">
                 <div class="details_area text-end">
-                    <h6 class="borderTop"> Signature Of Authority </h6>
+                    <h6 class="borderTop"> @lang('menu.signature_of_authority') </h6>
                 </div>
             </div>
         </div>
@@ -313,7 +313,7 @@
             </div>
             <div class="col-md-6">
                 <div class="details_area text-end">
-                    <h6 class="borderTop"> Signature Of Authority </h6>
+                    <h6 class="borderTop"> @lang('menu.signature_of_authority') </h6>
                 </div>
             </div>
         </div>

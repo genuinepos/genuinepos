@@ -34,7 +34,7 @@
                             <strong>@lang('menu.name') :</strong>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                         </li>
                         <li>
-                            <strong>Address : </strong>
+                            <strong>@lang('menu.address') : </strong>
                             @if ($sale->shipment_address)
                                 {{  $sale->shipment_address }}
                             @else

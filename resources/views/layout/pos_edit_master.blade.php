@@ -69,7 +69,7 @@
                         <!--begin::Form-->
                         <div class="form-group row">
                             <div class="col-md-4">
-                                <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.payment_method') :</strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
@@ -83,7 +83,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong>Debit Account :</strong> </label>
+                                <label><strong>@lang('menu.debit_account') :</strong> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
@@ -103,7 +103,7 @@
                         </div>
 
                         <div class="form-group mt-2">
-                            <label><strong> Payment Note :</strong></label>
+                            <label><strong> @lang('menu.payment_note') :</strong></label>
                             <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                         </div>
 

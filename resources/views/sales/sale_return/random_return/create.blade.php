@@ -350,9 +350,9 @@
 
                                                     <div class="col-md-12">
                                                         <div class="input-group mt-1">
-                                                            <label class="col-4"><b>Payment Note :</b></label>
+                                                            <label class="col-4"><b>@lang('menu.payment_note') :</b></label>
                                                             <div class="col-8">
-                                                                <input type="text" name="payment_note" id="payment_note" class="form-control" value="" placeholder="Payment Note.">
+                                                                <input type="text" name="payment_note" id="payment_note" class="form-control" value="" placeholder="@lang('menu.payment_note').">
                                                             </div>
                                                         </div>
                                                     </div>

@@ -53,7 +53,7 @@
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.voucher_no')</th>
                     <th class="text-start">Note</th>
-                    <th class="text-start">Amount</th>
+                    <th class="text-start">@lang('menu.amount')</th>
                     <th class="text-start">Method</th>
                     <th class="text-start">Type</th>
                     <th class="text-start">Account</th>

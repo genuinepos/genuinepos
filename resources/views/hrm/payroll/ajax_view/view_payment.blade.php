@@ -57,7 +57,7 @@
                 <tr class="bg-secondary">
                     <th class="text-white">@lang('menu.date')</th>
                     <th class="text-white">@lang('menu.voucher_no')</th>
-                    <th class="text-white">Amount</th>
+                    <th class="text-white">@lang('menu.amount')</th>
                     <th class="text-white">Method</th>
                     <th class="text-white">Account</th>
                     <th class="text-white">@lang('menu.action')</th>

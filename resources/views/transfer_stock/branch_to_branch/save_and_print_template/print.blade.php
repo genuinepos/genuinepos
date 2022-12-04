@@ -37,14 +37,14 @@
                         <li><strong>@lang('menu.phone') : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         
                         @if ($transfer->receiver_branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>@lang('menu.address') : </strong> 
                                 {{ $transfer->receiver_branch->city }},
                                 {{ $transfer->receiver_branch->state }},
                                 {{ $transfer->receiver_branch->zip_code }},
                                 {{ $transfer->receiver_branch->country }}.
                             </li>
                         @else 
-                            <li><strong>Address : </strong> 
+                            <li><strong>@lang('menu.address') : </strong> 
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif

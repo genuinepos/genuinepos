@@ -1,4 +1,4 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp
 <!-- Quotation print templete-->
 @if ($sale->branch && $sale->branch->add_sale_invoice_layout)
     <div class="sale_print_template">
@@ -21,7 +21,7 @@
                             @if ($sale->branch->add_sale_invoice_layout->show_shop_logo == 1)
                                 @if ($sale->branch->logo != 'default.png')
                                     <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
-                                @else 
+                                @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
                                 @endif
                             @endif
@@ -60,7 +60,7 @@
                     </div>
                 </div>
             @endif
-            
+
              @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
                 @for ($i = 0; $i < $sale->branch->add_sale_invoice_layout->gap_from_top; $i++)
                     </br>
@@ -76,7 +76,7 @@
                             </li>
                             @if ($sale->branch->add_sale_invoice_layout->customer_address)
                                 <li>
-                                    <strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                                    <strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                                 </li>
                             @endif
 
@@ -223,11 +223,11 @@
                 </div>
                 <div class="col-md-6">
                     <div class="details_area text-right">
-                        <h6> Signature Of Authority </h6>
+                        <h6> @lang('menu.signature_of_authority') </h6>
                     </div>
                 </div>
             </div>
-           
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="footer_text text-center">
@@ -242,7 +242,7 @@
                     <p>{{$sale->invoice_id}}</p>
                 </div>
             </div>
-    
+
             @if (env('PRINT_SD_SALE') == true)
                 <div class="row">
                     <div class="col-md-12 text-center">
@@ -276,13 +276,13 @@
                                 @if ($sale->branch)
                                     @if ($sale->branch->logo != 'default.png')
                                         <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
-                                    @else 
+                                    @else
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
                                     @endif
-                                @else 
+                                @else
                                     @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                         <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                                    @else 
+                                    @else
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                                     @endif
                                 @endif
@@ -312,7 +312,7 @@
 
                                     @if ($defaultLayout->branch_email)
                                         <h6>Email : {{ $sale->branch->email }}</h6>
-                                    @endif 
+                                    @endif
                                 @else
                                     <h4 class="company_name">
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }}
@@ -335,7 +335,7 @@
                     </div>
                 </div>
             @endif
-            
+
             @if ($defaultLayout->is_header_less == 1)
                 @for ($i = 0; $i < $defaultLayout->gap_from_top; $i++)
                     </br>
@@ -351,7 +351,7 @@
                             </li>
                             @if ($defaultLayout->customer_address)
                                 <li>
-                                    <strong>Address : </strong>{{ $sale->customer ? $sale->customer->address : '' }}
+                                    <strong>@lang('menu.address') : </strong>{{ $sale->customer ? $sale->customer->address : '' }}
                                 </li>
                             @endif
 
@@ -496,11 +496,11 @@
 
                 <div class="col-md-6">
                     <div class="details_area text-end">
-                        <h6> Signature Of Authority </h6>
+                        <h6> @lang('menu.signature_of_authority') </h6>
                     </div>
                 </div>
             </div>
-         
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="footer_text text-center">
@@ -515,7 +515,7 @@
                     <p>{{$sale->invoice_id}}</p>
                 </div>
             </div>
-    
+
             @if (env('PRINT_SD_SALE') == true)
                 <div class="row">
                     <div class="col-md-12 text-center">

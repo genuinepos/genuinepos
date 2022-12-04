@@ -18,7 +18,7 @@
                             <strong>Namne : </strong>{{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
                         </li>
                         <li>
-                            <strong>Address : </strong>{{ $draft->customer ? $draft->customer->address : '' }}
+                            <strong>@lang('menu.address') : </strong>{{ $draft->customer ? $draft->customer->address : '' }}
                         </li>
                         <li>
                             <strong>Tax Number : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
@@ -34,14 +34,14 @@
                         @if ($draft->branch)
                             <li><strong>Business Name : </strong> <span>{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             </li>
-                            <li><strong>Address : </strong> <span>{{ $draft->branch->name }}/{{ $draft->branch->branch_code }},
+                            <li><strong>@lang('menu.address') : </strong> <span>{{ $draft->branch->name }}/{{ $draft->branch->branch_code }},
                                     {{ $draft->branch->city }}, {{ $draft->branch->state }},
                                     {{ $draft->branch->zip_code }}, {{ $draft->branch->country }}</span></li>
                             <li><strong>Phone : </strong> <span>{{ $draft->branch->phone }}</span></li>
                         @else
                             <li><strong>Business Name : </strong> <span>{{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b></span>
                             </li>
-                            <li><strong>Address : </strong> <span>{{ json_decode($generalSettings->business, true)['address'] }}</span></li>
+                            <li><strong>@lang('menu.address') : </strong> <span>{{ json_decode($generalSettings->business, true)['address'] }}</span></li>
                             <li><strong>Phone : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li>
                             <li><strong>Stock Location : </strong>
                                 <span>
@@ -220,7 +220,7 @@
         </div>
         <div class="modal-footer">
           <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
-          <button type="submit" id="print_payment" class="c-btn button-success print_btn">Print</button>
+          <button type="submit" id="print_payment" class="c-btn button-success print_btn">@lang('menu.print')</button>
         </div>
       </div>
     </div>
@@ -314,7 +314,7 @@
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.customer') : </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}</li>
                             @if ($draft->branch->add_sale_invoice_layout->customer_address)
-                                <li><strong>Address : </strong> {{ $draft->customer ? $draft->customer->address : '' }}</li>
+                                <li><strong>@lang('menu.address') : </strong> {{ $draft->customer ? $draft->customer->address : '' }}</li>
                             @endif
 
                             @if ($draft->branch->add_sale_invoice_layout->customer_tax_no)
@@ -499,7 +499,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Signature Of Authority</b></p>
+                        <p class="borderTop"><b>@lang('menu.signature_of_authority')</b></p>
                     </div>
                 </div>
             </div><br/>
@@ -669,7 +669,7 @@
                             </li>
                             @if ($defaultLayout->customer_address)
                                 <li>
-                                    <strong>Address : </strong>{{ $draft->customer ? $draft->customer->address : '' }}
+                                    <strong>@lang('menu.address') : </strong>{{ $draft->customer ? $draft->customer->address : '' }}
                                 </li>
                             @endif
 
@@ -857,7 +857,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Signature Of Authority</b></p>
+                        <p class="borderTop"><b>@lang('menu.signature_of_authority')</b></p>
                     </div>
                 </div>
             </div><br/>

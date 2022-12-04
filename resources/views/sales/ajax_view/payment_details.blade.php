@@ -44,7 +44,7 @@
 
     <div class="reference_area pt-3">
         <p>
-            <b>Title :</b>
+            <b>@lang('menu.title') :</b>
             {{ $payment->payment_type == 1 ? 'Receive Payment' : 'Sale Return Payment' }}
         </p>
         <p><b>Invoice No :</b> {{ $payment->sale->invoice_id }}</p>
@@ -68,7 +68,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Method :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_method') :</th>
                             <td width="50%">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                         </tr>
                     </tbody>
@@ -95,7 +95,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Note :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_note') :</th>
                             <td width="50%">
                                 {{ $payment->note }}
                             </td>
@@ -111,7 +111,7 @@
         <table class="w-100 pt-5">
             <tbody>
                 <tr>
-                    <th width="50%">Signature Of Authority</th>
+                    <th width="50%">@lang('menu.signature_of_authority')</th>
                     <th width="50%" class="text-end">Signature Of Receiver</th>
                 </tr>
 
@@ -124,7 +124,7 @@
 
                 @if (env('PRINT_SD_PAYMENT') == true)
                     <tr>
-                        <td colspan="2" class="text-center"><small>Software by SpeedDigit Pvt. Ltd.</small></td>
+                        <td colspan="2" class="text-center"><small>@lang('menu.software_by_speedDigit_pvt_ltd')</small></td>
                     </tr>
                 @endif
             </tbody>

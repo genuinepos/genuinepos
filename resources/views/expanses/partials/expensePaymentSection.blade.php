@@ -71,10 +71,10 @@
             <div class="row mt-1">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <label class=" col-2"><b>Payment Note :</b></label>
+                        <label class=" col-2"><b>@lang('menu.payment_note') :</b></label>
 
                         <div class="col-10">
-                            <input type="text" name="payment_note" class="form-control form-control-sm" id="payment_note" placeholder="Payment note">
+                            <input type="text" name="payment_note" class="form-control form-control-sm" id="payment_note" placeholder="@lang('menu.payment_note')">
                         </div>
                     </div>
                 </div>

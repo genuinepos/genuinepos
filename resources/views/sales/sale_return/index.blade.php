@@ -119,7 +119,7 @@
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
                                     <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
-                                    <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
+                                    <button type="submit" id="print_payment" class="c-btn button-success">@lang('menu.print')</button>
                                 </ul>
                             </div>
                         </div>

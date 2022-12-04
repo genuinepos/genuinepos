@@ -521,7 +521,7 @@ return [
   'quotation_list' => 'Quotation List',
   'challan_list' => 'Challan List',
   'shipments' => 'Shipments',
-  'discounts' => 'Manage Offers',
+  'discounts' => 'Discounts',
   'hrm' => 'HRM',
   'essentials' => 'Manage Task',
   'e_commerce' => 'Ecommerce',
@@ -1982,4 +1982,9 @@ return [
   'sender_ac' => 'Sender A/C',
   'select_receiver_ac' => 'Select Receiver A/C',
   'receiver_ac' => 'Receiver A/C',
+  'transaction_amount' => 'Transaction Amount',
+  'contra_list' => 'Contra List',
+  'add_contra' => 'Add Contra',
+  'loan_ac' => 'Loan A/C',
+  'software_by_speedDigit_pvt_ltd.' => 'Software by SpeedDigit Pvt. Ltd.',
 ];

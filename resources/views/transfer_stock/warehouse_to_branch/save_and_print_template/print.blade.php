@@ -19,7 +19,7 @@
                         <li><strong>Warehouse (From) : </strong></li>
                         <li><strong>@lang('menu.name') :</strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
                         <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
-                        <li><strong>Address : </strong> {{ $transfer->warehouse->address }}</li>
+                        <li><strong>@lang('menu.address') : </strong> {{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
@@ -28,7 +28,7 @@
                         <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         @if ($transfer->branch)
-                            <li><strong>Address : </strong>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->branch->city }},
                                 {{ $transfer->branch->state }},
                                 {{ $transfer->branch->zip_code }},
@@ -118,7 +118,7 @@
                     <p><strong>Receiver's Signature</strong></p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p><strong>Signature Of Authority</strong></p>
+                    <p><strong>@lang('menu.signature_of_authority')</strong></p>
                 </div>
             </div>
         </div>

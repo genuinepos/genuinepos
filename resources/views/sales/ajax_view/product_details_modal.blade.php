@@ -28,7 +28,7 @@
                             </li>
 
                             <li>
-                                <strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                                <strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                             </li>
 
                             <li>
@@ -50,7 +50,7 @@
                                     {{ $sale->branch->name }}/{{ $sale->branch->branch_code }}
                                 </li>
                                 <li>
-                                    <strong>Address : </strong>
+                                    <strong>@lang('menu.address') : </strong>
                                     {{ $sale->branch->city }}, {{ $sale->branch->state }},
                                         {{ $sale->branch->zip_code }}, {{ $sale->branch->country }}
                                 </li>
@@ -59,7 +59,7 @@
                                 <li><strong>Stock Location : </strong>
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                                 </li>
-                                <li><strong>Address : </strong>{{ json_decode($generalSettings->business, true)['address'] }}</li>
+                                <li><strong>@lang('menu.address') : </strong>{{ json_decode($generalSettings->business, true)['address'] }}</li>
                                 <li><strong>@lang('menu.phone') : </strong>{{ json_decode($generalSettings->business, true)['phone'] }}</li>
                             @endif
                         </ul>

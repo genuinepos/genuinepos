@@ -143,7 +143,7 @@
                                 </div>
                                 @if(auth()->user()->can('purchase_add'))
                                     <div class="col-md-2 d-flex justify-content-end">
-                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
+                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                                     </div>
                                 @endif
                             </div>

@@ -549,7 +549,7 @@
                             </div>
                             <div class="col-md-6 text-right">
                                 <ul class="list-unstyled">
-                                    <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary float-end">Print</a></li>
+                                    <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary float-end">@lang('menu.print')</a></li>
                                 </ul>
                             </div>
                         </div>

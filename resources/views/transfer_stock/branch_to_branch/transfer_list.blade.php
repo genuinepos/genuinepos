@@ -102,7 +102,7 @@
                         </div>
 
                         <div class="col-md-2 d-flex justify-content-end">
-                            <a href="{{ route('transfer.stock.branch.to.branch.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> Add (Ctrl + Enter)</a>
+                            <a href="{{ route('transfer.stock.branch.to.branch.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
                         </div>
 
                     </div>

@@ -115,7 +115,7 @@
                                 </li>
                                 @if ($defaultLayout->customer_address)
                                     <li>
-                                        <strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                                        <strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                                     </li>
                                 @endif
 
@@ -364,7 +364,7 @@
 
                     <div class="col-md-3">
                         <div class="details_area text-center">
-                            <p class="borderTop"><b>Signature Of Authority</b></p>
+                            <p class="borderTop"><b>@lang('menu.signature_of_authority')</b></p>
                         </div>
                     </div>
                 </div>

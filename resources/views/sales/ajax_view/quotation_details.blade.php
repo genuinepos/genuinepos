@@ -22,7 +22,7 @@
                             <strong>@lang('menu.name') :</strong>{{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
                         </li>
                         <li>
-                            <strong>Address : </strong>{{ $quotation->customer ? $quotation->customer->address : '' }}
+                            <strong>@lang('menu.address') : </strong>{{ $quotation->customer ? $quotation->customer->address : '' }}
                         </li>
                         <li>
                             <strong>Tax Number : </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}
@@ -40,7 +40,7 @@
                                 <strong>@lang('menu.business_location') : </strong> {{ $quotation->branch->name.'/'.$quotation->branch->branch_code }}
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $quotation->branch->phone }}</li>
-                            <li><strong>Address : </strong>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $quotation->branch->name }}/{{ $quotation->branch->branch_code }},
                                 {{ $quotation->branch->city }}, {{ $quotation->branch->state }},
                                 {{ $quotation->branch->zip_code }}, {{ $quotation->branch->country }}
@@ -50,7 +50,7 @@
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li>
-                            <li><strong>Address : </strong> <span>{{ json_decode($generalSettings->business, true)['address'] }}</span></li>
+                            <li><strong>@lang('menu.address') : </strong> <span>{{ json_decode($generalSettings->business, true)['address'] }}</span></li>
                         @endif
                     </ul>
                 </div>
@@ -235,7 +235,7 @@
         </div>
         <div class="modal-footer">
           <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-          <button type="submit" id="print_payment" class="btn btn-sm btn-success print_btn">Print</button>
+          <button type="submit" id="print_payment" class="btn btn-sm btn-success print_btn">@lang('menu.print')</button>
         </div>
       </div>
     </div>
@@ -331,7 +331,7 @@
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.customer') : </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}</li>
                             @if ($quotation->branch->add_sale_invoice_layout->customer_address)
-                                <li><strong>Address : </strong> {{ $quotation->customer ? $quotation->customer->address : '' }}</li>
+                                <li><strong>@lang('menu.address') : </strong> {{ $quotation->customer ? $quotation->customer->address : '' }}</li>
                             @endif
 
                             @if ($quotation->branch->add_sale_invoice_layout->customer_tax_no)
@@ -528,7 +528,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Signature Of Authority</b></p>
+                        <p class="borderTop"><b>@lang('menu.signature_of_authority')</b></p>
                     </div>
                 </div>
             </div><br/>
@@ -663,7 +663,7 @@
                             </li>
                             @if ($defaultLayout->customer_address)
                                 <li>
-                                    <strong>Address : </strong>{{ $quotation->customer ? $quotation->customer->address : '' }}
+                                    <strong>@lang('menu.address') : </strong>{{ $quotation->customer ? $quotation->customer->address : '' }}
                                 </li>
                             @endif
 
@@ -867,7 +867,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Signature Of Authority</b></p>
+                        <p class="borderTop"><b>@lang('menu.signature_of_authority')</b></p>
                     </div>
                 </div>
             </div><br/>

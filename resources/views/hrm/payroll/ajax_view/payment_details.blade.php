@@ -20,7 +20,7 @@
     </div>
 
     <div class="reference_area pt-3">
-        <h6><b>Title :</b> @lang('menu.payroll_payment')</h6>
+        <h6><b>@lang('menu.title') :</b> @lang('menu.payroll_payment')</h6>
         <h6><b>@lang('menu.reference_no') :</b> {{ $payment->payroll->reference_no }}</h6>
     </div>
 
@@ -45,7 +45,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Method :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_method') :</th>
                             <td width="50%" class="text-start">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                         </tr>
                     </tbody>
@@ -69,7 +69,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Note :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_note') :</th>
                             <td width="50%" class="text-start">
                                 {{ $payment->note }}
                             </td>
@@ -84,7 +84,7 @@
         <table class="w-100 pt-5">
             <tbody>
                 <tr>
-                    <th width="50%">Signature Of Authority</th>
+                    <th width="50%">@lang('menu.signature_of_authority')</th>
                     <th width="50%" class="text-end">Signature Of Receiver</th>
                 </tr>
 

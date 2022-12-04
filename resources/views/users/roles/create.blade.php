@@ -739,7 +739,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="discounts" class="sale"> &nbsp; Manage Offers </p>
+                                            <input type="checkbox" name="discounts" class="sale"> &nbsp; @lang('menu.manage_offers') </p>
                                         </div>
                                     </div>
 

@@ -44,9 +44,9 @@
     </div>
 
     <div class="reference_area pt-3">
-        <p><b>Title :</b>
+        <p><b>@lang('menu.title') :</b>
         {{ $loan->type == 1 ? 'Loan pay' : 'Loan Receive' }} </p>
-        <p><b>Company/People :</b> {{ $loan->company->name }}</p>
+        <p><b>@lang('menu.company')/@lang('menu.people') :</b> {{ $loan->company->name }}</p>
         <p><b>Address :</b></p>
         <p><b>@lang('menu.phone') :</b></p>
     </div>
@@ -96,7 +96,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Loan Reason :</th>
+                            <th width="50%" class="text-start">@lang('menu.loan_reason') :</th>
                             <td width="50%" class="text-start">
                                 {{ $loan->loan_reason }}
                             </td>

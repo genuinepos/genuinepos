@@ -16,7 +16,7 @@
                             <li><strong>Warehouse (From) : </strong></li>
                             <li><strong>@lang('menu.name') :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->warehouse->phone }}</li>
-                            <li><strong>Address : </strong> {{ $sendStock->warehouse->address }}</li>
+                            <li><strong>@lang('menu.address') : </strong> {{ $sendStock->warehouse->address }}</li>
                         </ul>
                     </div>
 
@@ -26,14 +26,14 @@
                             <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                             @if ($sendStock->branch)
-                                <li><strong>Address : </strong>
+                                <li><strong>@lang('menu.address') : </strong>
                                     {{ $sendStock->branch->city }},
                                     {{ $sendStock->branch->state }},
                                     {{ $sendStock->branch->zip_code }},
                                     {{ $sendStock->branch->country }}.
                                 </li>
                             @else
-                                <li><strong>Address : </strong> {{ json_decode($generalSettings->business, true)['address'] }}</li>
+                                <li><strong>@lang('menu.address') : </strong> {{ json_decode($generalSettings->business, true)['address'] }}</li>
                             @endif
                         </ul>
                     </div>
@@ -106,7 +106,7 @@
             </div>
             <div class="modal-footer">
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
+                <button type="submit" class="btn btn-sm btn-success print_btn">@lang('menu.print')</button>
             </div>
           </div>
         </div>
@@ -136,7 +136,7 @@
                             <li><strong>Warehouse (Form) : </strong></li>
                             <li><strong>@lang('menu.name') :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->warehouse->phone }}</li>
-                            <li><strong>Address : </strong> {{ $sendStock->warehouse->address }}</li>
+                            <li><strong>@lang('menu.address') : </strong> {{ $sendStock->warehouse->address }}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4">
@@ -145,7 +145,7 @@
                             <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                             @if ($sendStock->branch)
-                                <li><strong>Address : </strong>
+                                <li><strong>@lang('menu.address') : </strong>
                                     {{ $sendStock->branch->city }},
                                     {{ $sendStock->branch->state }},
                                     {{ $sendStock->branch->zip_code }},
@@ -153,7 +153,7 @@
                                 </li>
                             @else
                             <li>
-                                <strong>Address : </strong> {{ json_decode($generalSettings->business, true)['address'] }}
+                                <strong>@lang('menu.address') : </strong> {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                             @endif
                         </ul>
@@ -221,7 +221,7 @@
                         <h6><strong>Receiver's Signature</strong></h6>
                     </div>
                     <div class="col-md-6 text-end">
-                        <h6><strong>Signature Of Authority</strong></h6>
+                        <h6><strong>@lang('menu.signature_of_authority')</strong></h6>
                     </div>
                 </div>
             </div>

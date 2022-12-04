@@ -255,7 +255,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <span>LOAN & LIABILITIES :</span>
+                                                        <span>@lang('menu.loan_and_liabilities') :</span>
                                                     </th>
                                                 </tr>
 
@@ -291,7 +291,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <span>LOAN & ADVANCE :</span>
+                                                        <span>@lang('menu.loan_and_advance') :</span>
                                                     </th>
                                                 </tr>
 

@@ -32,7 +32,7 @@
         </div>
 
         <div class="reference_area pt-2">
-            <h6 class="text-dark"><b>Title :</b> Employee Salary</h6>
+            <h6 class="text-dark"><b>@lang('menu.title') :</b> Employee Salary</h6>
             <h6 class="text-dark"><b>Month :</b> {{ $payroll->month }}/{{ $payroll->year }} </h6>
             <h6 class="text-dark"><b>@lang('menu.reference_no') :</b> {{ $payroll->reference_no }}</h6>
             <h6 class="text-dark"><b>@lang('menu.created_by') :</b> {{ $payroll->admin->prefix.' '.$payroll->admin->name.' '.$payroll->admin->last_name }} </h6>
@@ -169,12 +169,12 @@
                 <tbody>
                     <tr>
                         <th width="50%" class="text-dark"><h6 style="border-top:1px solid black;display:inline;">Signature Of Receiver</h6></th>
-                        <th width="50%" class="text-dark text-end"><h6 style="border-top:1px solid black;display:inline;">Signature Of Authority</h6>  </th>
+                        <th width="50%" class="text-dark text-end"><h6 style="border-top:1px solid black;display:inline;">@lang('menu.signature_of_authority')</h6>  </th>
                     </tr>
 
                     @if (env('PRINT_SD_OTHERS') == true)
                         <tr>
-                            <td colspan="2" class="text-dark text-center">Software by SpeedDigit Pvt. Ltd. </td>
+                            <td colspan="2" class="text-dark text-center">@lang('menu.software_by_speedDigit_pvt_ltd') </td>
                         </tr>
                     @endif
                 </tbody>
@@ -186,6 +186,6 @@
 <div class="modal-footer">
     <div class="form-group text-end">
         <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-        <button type="submit" class="btn btn-sm btn-success print_payroll">Print</button>
+        <button type="submit" class="btn btn-sm btn-success print_payroll">@lang('menu.print')</button>
     </div>
 </div>

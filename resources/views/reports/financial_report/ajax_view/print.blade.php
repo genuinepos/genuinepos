@@ -273,7 +273,7 @@
 
                                 <tr>
                                     <th class="text-start bg-secondary text-dark" colspan="2">
-                                        <strong>LOAN & ADVANCE :</strong>
+                                        <strong>@lang('menu.loan_and_advance') :</strong>
                                     </th>
                                 </tr>
 
@@ -309,7 +309,7 @@
 
                                 <tr>
                                     <th class="text-start bg-secondary text-dark" colspan="2">
-                                        <strong>LOAN & LIABILITIES :</strong>
+                                        <strong>@lang('menu.loan_and_liabilities') :</strong>
                                     </th>
                                 </tr>
 

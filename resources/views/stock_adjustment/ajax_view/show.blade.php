@@ -24,14 +24,14 @@
                                 {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone}}</li>
-                            <li><strong>Address : </strong> {{ $adjustment->warehouse->address}}</li>
+                            <li><strong>@lang('menu.address') : </strong> {{ $adjustment->warehouse->address}}</li>
                         @elseif($adjustment->branch_id)
                             <li>
                                 <strong>Adjustment Location : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
                             <li><strong>Phone : </strong> {{ $adjustment->branch->phone}}</li>
-                            <li><strong>Address : </strong>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
                         @else
@@ -40,7 +40,7 @@
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
                             <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
-                            <li><strong>Address : </strong>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif
@@ -163,7 +163,7 @@
         </div>
         <div class="modal-footer">
             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-            <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
+            <button type="submit" class="btn btn-sm btn-success print_btn">@lang('menu.print')</button>
         </div>
       </div>
     </div>
@@ -207,14 +207,14 @@
                                 {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone }}</li>
-                            <li><strong>Address : </strong> {{ $adjustment->warehouse->address }}</li>
+                            <li><strong>@lang('menu.address') : </strong> {{ $adjustment->warehouse->address }}</li>
                         @elseif($adjustment->branch_id)
                             <li>
                                 <strong>Adjustment Location : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
                             <li><strong>Phone : </strong> {{ $adjustment->branch->phone}}</li>
-                            <li><strong>Address : </strong>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
                         @else
@@ -223,7 +223,7 @@
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
                             <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
-                            <li><strong>Address : </strong>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif

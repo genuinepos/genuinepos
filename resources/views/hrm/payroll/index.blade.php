@@ -101,7 +101,7 @@
                     </div>
 
                     <div class="col-md-6 d-flex justify-content-end">
-                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                     </div>
                 </div>
 
@@ -242,7 +242,7 @@
                 <div class="modal-footer">
                     <div class="form-group text-end">
                         <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                        <button type="submit" class="btn btn-sm btn-success" id="payment_details_print">Print</button>
+                        <button type="submit" class="btn btn-sm btn-success" id="payment_details_print">@lang('menu.print')</button>
                     </div>
                 </div>
             </div>

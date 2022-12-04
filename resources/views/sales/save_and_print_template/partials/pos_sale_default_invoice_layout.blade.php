@@ -380,7 +380,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><strong>Signature Of Authority</strong></p>
+                        <p class="borderTop"><strong>@lang('menu.signature_of_authority')</strong></p>
                     </div>
                 </div>
             </div><br>

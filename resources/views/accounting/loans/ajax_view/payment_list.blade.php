@@ -11,9 +11,9 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Company/People : </strong>{{ $company->name  }}</li>
+                    <li><strong>@lang('menu.company')/@lang('menu.people') : </strong>{{ $company->name  }}</li>
                     <li><strong>@lang('menu.phone') : </strong>{{ $company->phone }}</li>
-                    <li><strong>Address : </strong>{{ $company->address }}</li>
+                    <li><strong>@lang('menu.address') : </strong>{{ $company->address }}</li>
                 </ul>
             </div>
         </div>

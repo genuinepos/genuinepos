@@ -111,7 +111,7 @@
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.voucher_no')</th>
                                                 <th>Supplier</th>
-                                                <th>Payment Method</th>
+                                                <th>@lang('menu.payment_method')</th>
                                                 <th>Purchase Invoice ID</th>
                                                 <th>Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                                             </tr>

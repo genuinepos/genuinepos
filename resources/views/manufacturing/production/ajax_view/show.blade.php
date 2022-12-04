@@ -191,7 +191,7 @@
                <div class="row">
                    <div class="col-md-12 d-flex justify-content-end gap-2">
                         <a href="{{ route('manufacturing.productions.edit', $production->id) }}" class="btn btn-sm btn-secondary">Edit</a>
-                        <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
+                        <button type="submit" class="btn btn-sm btn-success print_btn">@lang('menu.print')</button>
                         <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                    </div>
                </div>

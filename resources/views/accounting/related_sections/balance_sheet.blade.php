@@ -44,7 +44,7 @@
                                                                 <div class="input-group">
                                                                     <button type="submit"
                                                                         class="btn text-white btn-sm btn-info float-start">
-                                                                        <i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                        <i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                                 </div>
                                                             </div>
                                                         </div>

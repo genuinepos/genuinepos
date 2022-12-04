@@ -13,7 +13,7 @@
                     @endif
                 </b>
             </h3>
-            
+
             <h6>
                 @if ($payment->purchase->branch)
                     {{ $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code }}
@@ -33,10 +33,10 @@
     </div>
 
     <div class="reference_area pt-3">
-        <h6 class="text-navy-blue"><b>Title :</b>
+        <h6 class="text-navy-blue"><b>@lang('menu.title') :</b>
             @if ($payment->is_advanced == 1)
                 <b>@lang('menu.po_advance_payment')</b>
-            @else 
+            @else
                 {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Received Return Amt.' }}
             @endif
         </h6>
@@ -58,7 +58,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Method :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_method') :</th>
                             <td width="50%">
                                 @if ($payment->paymentMethod)
                                     {{ $payment->paymentMethod->name }}
@@ -88,7 +88,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Note :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_note') :</th>
                             <td width="50%">
                                 {{ $payment->note }}
                             </td>
@@ -104,7 +104,7 @@
         <table class="w-100 pt-5">
             <tbody>
                 <tr>
-                    <th width="50%">Signature Of Authority</th>
+                    <th width="50%">@lang('menu.signature_of_authority')</th>
                     <th width="50%" class="text-end">Signature Of Receiver</th>
                 </tr>
 

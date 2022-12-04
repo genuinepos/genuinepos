@@ -164,7 +164,7 @@
                     <div class="col-md-6"><h6>Productions</h6></div>
                     @if (auth()->user()->can('production_add'))
                         <div class="col-md-6 d-flex justify-content-end">
-                            <a href="{{ route('manufacturing.productions.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
+                            <a href="{{ route('manufacturing.productions.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                         </div>
                     @endif
                 </div>

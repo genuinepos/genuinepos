@@ -109,7 +109,7 @@
                     </div>
                     @if (auth()->user()->can('add_expense'))
                         <div class="col-md-2 d-flex justify-content-end">
-                            <a href="{{ route('expanses.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
+                            <a href="{{ route('expanses.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                         </div>
                     @endif
                 </div>
@@ -206,7 +206,7 @@
                         <div class="col-md-6 text-end">
                             <div class="d-flex gap-2 justify-content-end">
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" id="print_payment" class="btn btn-sm btn-success">Print</button>
+                                <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print')</button>
                             </div>
                         </div>
                     </div>

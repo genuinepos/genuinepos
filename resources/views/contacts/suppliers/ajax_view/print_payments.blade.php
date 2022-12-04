@@ -37,7 +37,7 @@
             <ul class="list-unstyled">
                 <li><strong>@lang('menu.supplier') : </strong> {{ $supplier->name }} (ID: {{ $supplier->contact_id }})</li>
                 <li><strong>@lang('menu.phone') : </strong> {{ $supplier->phone }}</li>
-                <li><strong>Address : </strong> {{ $supplier->address  }}</li>
+                <li><strong>@lang('menu.address') : </strong> {{ $supplier->address  }}</li>
             </ul>
         </div>
     </div>

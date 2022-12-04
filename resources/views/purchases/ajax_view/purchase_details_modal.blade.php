@@ -19,7 +19,7 @@
                              <li><strong>@lang('menu.supplier') : - </strong></li>
                              <li><strong>@lang('menu.name') :</strong> <span
                                      class="supplier_name">{{ $purchase->supplier->name }}</span></li>
-                             <li><strong>Address : </strong> <span
+                             <li><strong>@lang('menu.address') : </strong> <span
                                      class="supplier_address">{{ $purchase->supplier->address }}</span></li>
                              <li><strong>Tax Number : </strong> <span
                                      class="supplier_tax_number">{{ $purchase->supplier->tax_number }}</span></li>
@@ -272,7 +272,7 @@
                         <div class="btn-box">
                             <a href="{{ route('purchases.edit', [$purchase->id, 'purchased']) }}" class="btn btn-sm btn-secondary">Edit</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                            <button type="submit" class="footer_btn btn btn-sm btn-success print_btn">Print</button>
+                            <button type="submit" class="footer_btn btn btn-sm btn-success print_btn">@lang('menu.print')</button>
                         </div>
                     </div>
                 </div>
@@ -337,7 +337,7 @@
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.supplier') : - </strong></li>
                             <li><strong>Namne : </strong>{{ $purchase->supplier->name }}</li>
-                            <li><strong>Address : </strong>{{ $purchase->supplier->address }}</li>
+                            <li><strong>@lang('menu.address') : </strong>{{ $purchase->supplier->address }}</li>
                             <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>

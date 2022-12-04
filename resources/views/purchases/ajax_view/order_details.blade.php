@@ -18,7 +18,7 @@
                          <ul class="list-unstyled">
                              <li><strong>@lang('menu.supplier') : - </strong></li>
                              <li><strong>@lang('menu.name') :</strong> {{ $purchase->supplier->name }}</li>
-                             <li><strong>Address : </strong> {{ $purchase->supplier->address }}</li>
+                             <li><strong>@lang('menu.address') : </strong> {{ $purchase->supplier->address }}</li>
                              <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
                              <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                          </ul>
@@ -316,7 +316,7 @@
                         <a href="{{ route('purchases.po.receive.process', $purchase->id) }}" class="btn btn-sm btn-secondary"> <i class="fas fa-check-double"></i> PO To Receive</a>
                         <a href="{{ route('purchases.order.supplier.copy.print', $purchase->id) }}" id="print_supplier_copy" class="btn btn-sm btn-info text-white"> <i class="fas fa-print"></i> Print Supplier Copy</a>
                         <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                        <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
+                        <button type="submit" class="btn btn-sm btn-success print_btn">@lang('menu.print')</button>
                     </div>
                 </div>
              </div>
@@ -384,7 +384,7 @@
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.supplier') : - </strong></li>
                             <li><strong>@lang('menu.name') :</strong>{{ $purchase->supplier->name }}</li>
-                            <li><strong>Address : </strong>{{ $purchase->supplier->address }}</li>
+                            <li><strong>@lang('menu.address') : </strong>{{ $purchase->supplier->address }}</li>
                             <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>

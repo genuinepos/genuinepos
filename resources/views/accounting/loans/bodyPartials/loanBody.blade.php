@@ -18,9 +18,9 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label><b>Loan A/C :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.loan_ac') :</b> <span class="text-danger">*</span></label>
                             <select required name="loan_account_id" class="form-control" id="loan_account_id">
-                                <option value="">Select Loan Account</option>
+                                <option value="">@lang('menu.select_loan_account')</option>
                                 @foreach ($loanAccounts as $loanAc)
                                     <option value="{{ $loanAc->id }}">
                                         {{ $loanAc->name.' ('.App\Utils\Util::accountType($loanAc->account_type).')' }}
@@ -32,9 +32,9 @@
 
                     <div class="form-group row">
                         <div class="col-md-6">
-                            <label><strong>Company/People : <span class="text-danger">*</span></strong></label>
+                            <label><strong>@lang('menu.company')/@lang('menu.people') : <span class="text-danger">*</span></strong></label>
                             <select name="company_id" class="form-control" id="company_id">
-                                <option value="">Select Company</option>
+                                <option value="">@lang('menu.select_company')</option>
                             </select>
                             <span class="error error_company_id"></span>
                         </div>
@@ -42,9 +42,9 @@
                         <div class="col-md-6">
                             <label><b>Type :</b> <span class="text-danger">*</span></label>
                             <select name="type" class="form-control" id="type">
-                                <option value="">Select Type</option>
-                                <option value="1">Loan & Advance</option>
-                                <option value="2">Loan & Liabilities</option>
+                                <option value="">@lang('menu.select_type')</option>
+                                <option value="1">@lang('menu.loan_and_advance')</option>
+                                <option value="2">@lang('menu.loan_and_liabilities')</option>
                             </select>
                             <span class="error error_type"></span>
                         </div>
@@ -52,15 +52,15 @@
 
                     <div class="form-group row mt-1">
                         <div class="col-md-6">
-                            <label><b>Loan Amount :</b> <span class="text-danger">*</span> </label>
-                            <input type="number" step="any" name="loan_amount" class="form-control" id="loan_amount" placeholder="Loan Amount"/>
+                            <label><b>@lang('menu.loan_amount') :</b> <span class="text-danger">*</span> </label>
+                            <input type="number" step="any" name="loan_amount" class="form-control" id="loan_amount" placeholder="@lang('menu.loan_amount')"/>
                             <span class="error error_loan_amount"></span>
                         </div>
 
                         <div class="col-md-6">
                             <label><b>@lang('menu.debit')/@lang('menu.credit_account') :</b> <span class="text-danger">*</span></label>
                             <select name="account_id" class="form-control" id="account_id">
-                                <option value="">Select Account</option>
+                                <option value="">@lang('menu.select_account')</option>
                                 @foreach ($accounts as $account)
                                     <option value="{{ $account->id }}">
                                         @php
@@ -79,8 +79,8 @@
 
                     <div class="form-group row mt-1">
                         <div class="col-md-12">
-                            <label><b>Loan Reason :</b> </label>
-                            <textarea name="loan_reason" class="form-control" id="loan_reason" cols="10" rows="3" placeholder="Loan Reason"></textarea>
+                            <label><b>@lang('menu.loan_reason') :</b> </label>
+                            <textarea name="loan_reason" class="form-control" id="loan_reason" cols="10" rows="3" placeholder="@lang('menu.loan_reason')"></textarea>
                         </div>
                     </div>
 
@@ -127,7 +127,7 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-md-3">
-                            <label><strong>Company/People :</strong></label>
+                            <label><strong>@lang('menu.company')/@lang('menu.people') :</strong></label>
                             <select name="company_id" class="form-control submit_able" id="f_company_id" autofocus>
                                 <option value="">@lang('menu.all')</option>
                             </select>
@@ -137,8 +137,8 @@
                             <label><strong>Loan Type :</strong></label>
                             <select name="type_id" class="form-control submit_able" id="type_id">
                                 <option value="">@lang('menu.all')</option>
-                                <option value="1">Loan & Advance</option>
-                                <option value="2">Loan & Liabilities</option>
+                                <option value="1">@lang('menu.loan_and_advance')</option>
+                                <option value="2">@lang('menu.loan_and_liabilities')</option>
                             </select>
                         </div>
 
@@ -171,7 +171,7 @@
                         <div class="col-md-2">
                             <label><strong></strong></label>
                             <div class="input-group">
-                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-search"></i> Filter</button>
+                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-search"></i> @lang('menu.filter')</button>
                             </div>
                         </div>
                     </div>
@@ -189,10 +189,10 @@
                                 <th>@lang('menu.date')</th>
                                 <th>@lang('menu.b_location')</th>
                                 <th>Ref. No.</th>
-                                <th>Company/People</th>
+                                <th>@lang('menu.company')/@lang('menu.people')</th>
                                 <th>Type</th>
                                 <th>Loan By</th>
-                                <th>Loan Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                <th>@lang('menu.loan_amount')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                 <th>Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                 <th>Total Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             </tr>
@@ -227,7 +227,7 @@
                     <div class="col-md-12 text-end">
                         <div class="d-flex justify-content-end gap-2">
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                            <button type="submit" id="print_loan_details" class="btn btn-sm btn-success">Print</button>
+                            <button type="submit" id="print_loan_details" class="btn btn-sm btn-success">@lang('menu.print')</button>
                         </div>
                     </div>
                 </div>

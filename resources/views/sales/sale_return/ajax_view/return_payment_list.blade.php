@@ -71,7 +71,7 @@
                     <th class="text-white text-start">@lang('menu.voucher_no')</th>
                     <th class="text-white text-start">Method</th>
                     <th class="text-white text-start">Account</th>
-                    <th class="text-white text-end">Amount</th>
+                    <th class="text-white text-end">@lang('menu.amount')</th>
                     <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>

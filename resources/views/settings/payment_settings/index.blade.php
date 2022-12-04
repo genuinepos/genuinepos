@@ -39,7 +39,7 @@
                                                     <table class="table table-sm">
                                                         <thead>
                                                             <th class="text-start">@lang('menu.sl')</th>
-                                                            <th class="text-start">Payment Method</th>
+                                                            <th class="text-start">@lang('menu.payment_method')</th>
                                                             <th class="text-start">Default Account</th>
                                                         </thead>
                                                         <tbody>

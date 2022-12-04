@@ -106,7 +106,7 @@
                                         <div class="col-8">
                                             <select name="type" data-name="Adjustment type"
                                                 class="form-control add_input" title="Select branch" id="type">
-                                                <option value="">Select Type</option>
+                                                <option value="">@lang('menu.select_type')</option>
                                                 <option value="1">Normal</option>
                                                 <option value="2">Abnormal</option>
                                             </select>
@@ -237,7 +237,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Payment Method : <span
+                                                        <label class="col-4"><b>@lang('menu.payment_method') : <span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">

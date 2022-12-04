@@ -408,7 +408,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <strong>Payment Method :</strong> <span class="text-danger">*</span>
+                                <strong>@lang('menu.payment_method') :</strong> <span class="text-danger">*</span>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
@@ -434,7 +434,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <strong> Payment Note :</strong>
+                                <strong> @lang('menu.payment_note') :</strong>
                                 <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                             </div>
                         </div>

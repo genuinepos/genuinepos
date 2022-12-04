@@ -9,7 +9,7 @@
 <div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Loan Advance Receive</h6>
+            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.loan_advance_receive')</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                     class="fas fa-times"></span></a>
         </div>
@@ -19,10 +19,10 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Company : </strong><span class="card_text">{{ $company->name }}</span>
+                                <li><strong>@lang('menu.company') : </strong><span class="card_text">{{ $company->name }}</span>
                                 </li>
                                 <li><strong>@lang('menu.phone') : </strong><span class="card_text"></span></li>
-                                <li><strong>Address : </strong><span class="card_text"></span></li>
+                                <li><strong>@lang('menu.address') : </strong><span class="card_text"></span></li>
                             </ul>
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Loan&Advance : </strong>
+                                <li><strong>Total Loan & Advance : </strong>
                                     <span class="card_text invoice_no">
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                        <b>{{ App\Utils\Converter::format_in_bdt($company->pay_loan_amount) }}</b>
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.payment_method') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
@@ -107,7 +107,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-4">
-                        <label><strong>Debit Account :</strong> </label>
+                        <label><strong>@lang('menu.debit_account') :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -129,7 +129,7 @@
                 </div>
 
                 <div class="form-group mt-2">
-                    <label><strong> Payment Note :</strong></label>
+                    <label><strong> @lang('menu.payment_note') :</strong></label>
                     <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3"
                         placeholder="Note"></textarea>
                 </div>

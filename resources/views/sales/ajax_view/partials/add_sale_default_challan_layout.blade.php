@@ -25,13 +25,13 @@
                             @if ($sale->branch)
                                 @if ($sale->branch->logo != 'default.png')
                                     <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
-                                @else 
+                                @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                                 @endif
-                            @else 
+                            @else
                                 @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                     <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                                @else 
+                                @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                                 @endif
                             @endif
@@ -62,7 +62,7 @@
 
                                 @if ($defaultLayout->branch_email)
                                     <p><b>Email :</b> {{ $sale->branch->email }}</p>
-                                @endif 
+                                @endif
                             @else
                                 <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                                 <p class="company_address">
@@ -86,7 +86,7 @@
                 </div>
             </div>
         @endif
-        
+
         @if ($defaultLayout->is_header_less == 1)
             @for ($i = 0; $i < $defaultLayout->gap_from_top; $i++)
                 <br/>
@@ -100,7 +100,7 @@
                         <li><strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                         </li>
                         @if ($defaultLayout->customer_address)
-                            <li><strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                            <li><strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                             </li>
                         @endif
 
@@ -151,7 +151,7 @@
                             <td class="text-start">{{ $loop->index + 1 }}</td>
                             <td class="text-start">
                                 {{ $sale_product->p_name }}
-                                
+
                                 @if ($sale_product->product_variant_id)
                                     -{{ $sale_product->variant_name }}
                                 @endif
@@ -181,7 +181,7 @@
             </div>
             <div class="col-md-6">
                 <div class="details_area text-end">
-                    <h6> Signature Of Authority </h6>
+                    <h6> @lang('menu.signature_of_authority') </h6>
                 </div>
             </div>
         </div><br>
@@ -197,11 +197,11 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-center">
-                    <small>Print Date : 
+                    <small>Print Date :
                         {{ date(json_decode($generalSettings->business, true)['date_format']) }}
                     </small>
                 </div>
-                
+
                 <div class="col-4 text-center">
                     @if (env('PRINT_SD_SALE') == true)
                         <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>

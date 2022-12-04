@@ -42,7 +42,7 @@
 
                 <div class="row mt-2">
                     <div class="col-md-4">
-                        <label><strong>Payment Method :</strong> </strong></label>
+                        <label><strong>@lang('menu.payment_method') :</strong> </strong></label>
                         <select name="payment_method" class="form-control form-control-sm" id="vcs_status">
                             <option value="Cash">Cash</option>
                             <option value="Advanced">Advanced</option>

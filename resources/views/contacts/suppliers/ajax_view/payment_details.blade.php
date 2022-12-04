@@ -25,7 +25,7 @@
     </div>
 
     <div class="reference_area">
-        <p><strong>Title :</strong>
+        <p><strong>@lang('menu.title') :</strong>
             {{ $supplierPayment->type == 1 ? 'Supplier Payment' : 'Return Payment' }}
         </p>
         <p><strong>@lang('menu.supplier') : </strong> {{ $supplierPayment->supplier->name }}</p>
@@ -52,7 +52,7 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Payment Method :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.payment_method') :</strong></td>
                             <td width="50%" class="text-start">{{ $supplierPayment->paymentMethod ? $supplierPayment->paymentMethod->name : $supplierPayment->pay_mode }}</td>
                         </tr>
                     </tbody>
@@ -89,7 +89,7 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Payment Note :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.payment_note') :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ $supplierPayment->note }}
                             </td>
@@ -145,7 +145,7 @@
         <table class="w-100 pt-5">
             <tbody>
                 <tr>
-                    <th width="50%">Signature Of Authority</th>
+                    <th width="50%">@lang('menu.signature_of_authority')</th>
                     <th width="50%" class="text-end">Signature Of Receiver</th>
                 </tr>
 
@@ -158,7 +158,7 @@
 
                 @if (env('PRINT_SD_PAYMENT') == true)
                     <tr>
-                        <td colspan="2" class="text-center">Software by SpeedDigit Pvt. Ltd.</td>
+                        <td colspan="2" class="text-center">@lang('menu.software_by_speedDigit_pvt_ltd')</td>
                     </tr>
                 @endif
             </tbody>

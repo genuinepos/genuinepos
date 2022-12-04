@@ -26,7 +26,7 @@
                         @if ($sale->branch->add_sale_invoice_layout->show_shop_logo == 1)
                             @if ($sale->branch->logo != 'default.png')
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                             @endif
                         @endif
@@ -62,7 +62,7 @@
                 </div>
             </div>
         @endif
-        
+
         @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
             @for ($i = 0; $i < $sale->branch->add_sale_invoice_layout->gap_from_top; $i++)
                 <br/>
@@ -76,7 +76,7 @@
                         <li><strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                         </li>
                         @if ($sale->branch->add_sale_invoice_layout->customer_address)
-                            <li><strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                            <li><strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                             </li>
                         @endif
 
@@ -146,7 +146,7 @@
                 </div>
             </div>
         @endif
-       
+
         <div class="row">
             <div class="col-md-6">
                 <div class="details_area">
@@ -155,7 +155,7 @@
             </div>
             <div class="col-md-6">
                 <div class="details_area text-end">
-                    <h6> Signature Of Authority </h6>
+                    <h6> @lang('menu.signature_of_authority') </h6>
                 </div>
             </div>
         </div><br>
@@ -173,7 +173,7 @@
                 <div class="col-4 text-center">
                     <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                 </div>
-                
+
                 <div class="col-4 text-center">
                     <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                     @if (env('PRINT_SD_SALE') == true)

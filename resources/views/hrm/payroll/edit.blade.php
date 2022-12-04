@@ -82,7 +82,7 @@
 
                                     <div class="col-md-6 col-sm-6 d-flex justify-content-end">
                                         <div id="add_more_allowance">
-                                            <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
+                                            <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                                         </div>
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@
                                                 <tr>
                                                     <th class="text-navy-blue">Allowance</th>
                                                     <th class="text-navy-blue">Amount Type</th>
-                                                    <th class="text-navy-blue">Amount</th>
+                                                    <th class="text-navy-blue">@lang('menu.amount')</th>
                                                     <th class="text-right"><i class="fas fa-trash-alt text-dark"></i></th>
                                                 </tr>
                                             </thead>
@@ -199,7 +199,7 @@
 
                                     <div class="col-md-6 d-flex justify-content-end">
                                         <div id="add_more_deduction">
-                                            <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
+                                            <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                                         </div>
                                     </div>
 
@@ -213,7 +213,7 @@
                                                 <tr>
                                                     <th class="text-navy-blue">Deduction</th>
                                                     <th class="text-navy-blue">Amount Type</th>
-                                                    <th class="text-navy-blue">Amount</th>
+                                                    <th class="text-navy-blue">@lang('menu.amount')</th>
                                                     <th class="text-right"><i class="fas fa-trash-alt text-dark"></i></th>
                                                 </tr>
                                             </thead>

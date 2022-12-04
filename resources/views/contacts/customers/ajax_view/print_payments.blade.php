@@ -59,7 +59,7 @@
             <ul class="list-unstyled">
                 <li><strong>@lang('menu.customer') : </strong> {{ $customer->name }} (ID: {{ $customer->contact_id }})</li>
                 <li><strong>@lang('menu.phone') : </strong> {{ $customer->phone }}</li>
-                <li><strong>Address : </strong> {{ $customer->address  }}</li>
+                <li><strong>@lang('menu.address') : </strong> {{ $customer->address  }}</li>
             </ul>
         </div>
     </div>

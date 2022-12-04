@@ -49,7 +49,7 @@
 
                         <tr>
                             <th class="text-start">@lang('menu.description'):</th>
-                            <th class="text-end">Amount</th>
+                            <th class="text-end">@lang('menu.amount')</th>
                         </tr>
 
                         @foreach ($payment->expense->expense_descriptions as $expense_description)

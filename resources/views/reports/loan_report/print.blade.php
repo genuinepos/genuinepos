@@ -52,9 +52,9 @@
         <div class="row">
             <div class="col-6">
                 <ul class="list-unstyled">
-                    <li><strong>Company/People : </strong> {{ $company->name }}</li>
+                    <li><strong>@lang('menu.company')/@lang('menu.people') : </strong> {{ $company->name }}</li>
                     <li><strong>@lang('menu.phone') : </strong> </li>
-                    <li><strong>Address : </strong> </li>
+                    <li><strong>@lang('menu.address') : </strong> </li>
                 </ul>
             </div>
         </div>
@@ -70,10 +70,10 @@
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.b_location')</th>
                     <th class="text-start">@lang('menu.reference_no')</th>
-                    <th class="text-start">Company/People</th>
+                    <th class="text-start">@lang('menu.company')/@lang('menu.people')</th>
                     <th class="text-start">Type</th>
                     <th class="text-start">Loan By</th>
-                    <th class="text-end">Loan Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">@lang('menu.loan_amount')({{json_decode($generalSettings->business, true)['currency']}})</th>
                     <th class="text-end">Total Paid({{json_decode($generalSettings->business, true)['currency']}})</th>
                     <th class="text-end">Laon Due({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>

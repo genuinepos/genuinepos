@@ -59,7 +59,7 @@
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.supplier') : - </strong></li>
                             <li><strong>@lang('menu.name') :</strong>{{ $purchase->supplier->name }}</li>
-                            <li><strong>Address : </strong>{{ $purchase->supplier->address }}</li>
+                            <li><strong>@lang('menu.address') : </strong>{{ $purchase->supplier->address }}</li>
                             <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>

@@ -5,7 +5,7 @@
                 <tr class="bg-secondary text-white">
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">Invoice ID</th>
-                    <th class="text-start">Amount</th>
+                    <th class="text-start">@lang('menu.amount')</th>
                     <th class="text-start">Account</th>
                     <th class="text-start">Method</th>
                     <th class="text-start">Type</th>

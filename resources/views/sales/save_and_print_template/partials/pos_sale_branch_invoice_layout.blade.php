@@ -87,7 +87,7 @@
                             <li><strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($sale->branch->pos_sale_invoice_layout->customer_address)
-                                <li><strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                                <li><strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                                 </li>
                             @endif
 
@@ -348,7 +348,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><strong>Signature Of Authority</strong></p>
+                        <p class="borderTop"><strong>@lang('menu.signature_of_authority')</strong></p>
                     </div>
                 </div>
             </div><br/>

@@ -83,12 +83,12 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Debit Account :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.debit_account') :</strong></td>
                             <td width="50%" class="text-start">{{ $customerPayment->account ? $customerPayment->account->name : '' }}</td>
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong> Payment Method :</strong></td>
+                            <td width="50%" class="text-start"><strong> @lang('menu.payment_method') :</strong></td>
                             <td width="50%" class="text-start">{{ $customerPayment->paymentMethod ? $customerPayment->paymentMethod->name : $customerPayment->pay_mode }}</td>
                         </tr>
                     </tbody>
@@ -123,7 +123,7 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Payment Note :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.payment_note') :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ $customerPayment->note }}
                             </td>

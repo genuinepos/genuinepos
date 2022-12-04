@@ -1,4 +1,4 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="transfer_print_template">
     <div class="details_area">
         <div class="heading_area">
@@ -20,14 +20,14 @@
                         <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         @if ($transfer->branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->branch->city }},
                                 {{ $transfer->branch->state }},
                                 {{ $transfer->branch->zip_code }},
                                 {{ $transfer->branch->country }}.
                             </li>
-                        @else 
-                            <li><strong>Address : </strong> 
+                        @else
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif
@@ -38,15 +38,15 @@
                         <li><strong>Warehouse (To) : </strong></li>
                         <li><strong>@lang('menu.name') :</strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
                         <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
-                        <li><strong>Address : </strong> {{ $transfer->warehouse->address }}</li>
+                        <li><strong>@lang('menu.address') : </strong> {{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
                         <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>Status : </strong> 
-                            @if ($transfer->status == 1) 
+                        <li><strong>Status : </strong>
+                            @if ($transfer->status == 1)
                                 Pending
                             @elseif($transfer->status == 2)
                                 Partial
@@ -95,7 +95,7 @@
                         <td class="text-start" colspan="6"><strong>Net Total Amount :</strong></td>
                         <td class="text-start" colspan="2">{{ $transfer->net_total_amount }}</td>
                     </tr>
-                   
+
                     <tr>
                         <th class="text-start" colspan="6">Shipping Charge</th>
                         <td class="text-start" colspan="2">{{ $transfer->shipping_charge }}</td>
@@ -119,7 +119,7 @@
                     <p><strong>Receiver's Signature</strong></p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p><strong>Signature Of Authority</strong></p>
+                    <p><strong>@lang('menu.signature_of_authority')</strong></p>
                 </div>
             </div>
         </div>

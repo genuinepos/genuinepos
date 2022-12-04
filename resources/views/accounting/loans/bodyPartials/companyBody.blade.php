@@ -14,7 +14,7 @@
                         <div class="col-md-12">
                             <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control" id="name" autocomplete="off"
-                                placeholder="Company/People Name"/>
+                                placeholder="@lang('menu.company')/@lang('menu.people')"/>
                             <span class="error error_name"></span>
                         </div>
 

@@ -11,7 +11,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-money-check-alt"></span>
-                    <h5>Contras</h5>
+                    <h5>@lang('menu.contras')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                         class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -69,7 +69,7 @@
                                     <div class="col-md-2">
                                         <label><strong></strong></label>
                                         <div class="input-group">
-                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                         </div>
                                     </div>
                                 </div>
@@ -82,12 +82,12 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-10">
-                        <h6>Contra List</h6>
+                        <h6>@lang('menu.contra_list')</h6>
                     </div>
 
                     <div class="col-md-2 d-flex justify-content-end">
                         <a href="{{ route('accounting.contras.create') }}" class="btn btn-sm btn-primary" id="create">
-                            <i class="fas fa-plus-square"></i> Add
+                            <i class="fas fa-plus-square"></i> @lang('menu.add')
                         </a>
                     </div>
                 </div>
@@ -105,9 +105,9 @@
                                     <th class="text-start">@lang('menu.receiver_ac')</th>
                                     <th class="text-start">@lang('menu.sender_ac') </th>
                                     <th class="text-start">@lang('menu.business_location')</th>
-                                    <th class="text-start">Remarks</th>
-                                    <th class="text-start">Amount</th>
-                                    <th class="text-start">Action</th>
+                                    <th class="text-start">@lang('menu.remarks')</th>
+                                    <th class="text-start">@lang('menu.amount')</th>
+                                    <th class="text-start">@lang('menu.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -128,7 +128,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Contra</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_contra')</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
                         <span class="fas fa-times"></span>
                     </a>
@@ -145,7 +145,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Contra</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_contra')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -159,7 +159,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content payment_details_contant">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Contra Details (<span
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.contra_details') (<span
                             class="payment_invoice"></span>)</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
@@ -172,7 +172,7 @@
                         <div class="col-md-12 text-end">
                             <div class="d-flex justify-content-end gap-2">
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" id="print_payment" class="btn btn-sm btn-success">Print</button>
+                                <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print')</button>
                             </div>
                         </div>
                     </div>

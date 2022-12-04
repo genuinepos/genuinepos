@@ -353,6 +353,7 @@ a.bar-link {
 
 .section-header {
     display: flex;
+    row-gap: 10px;
     align-items: center;
     padding: 0px 8px;
     height: 40px;

@@ -477,7 +477,7 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th>Product</th>
-                                                                        <th>Quantity</th>
+                                                                        <th>@lang('menu.quantity')</th>
                                                                         <th>Unit price</th>
                                                                         <th>SubTotal</th>
                                                                         <th><i class="fas fa-trash-alt"></i></th>

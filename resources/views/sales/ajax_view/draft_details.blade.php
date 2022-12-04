@@ -114,7 +114,7 @@
                         <thead>
                             <tr class="bg-primary text-white">
                                 <th class="text-start">Product</th>
-                                <th class="text-start">Quantity</th>
+                                <th class="text-start">@lang('menu.quantity')</th>
                                 <th class="text-start">Unit Price Exc.Tax</th>
                                 <th class="text-start">Unit Discount</th>
                                 <th class="text-start">Unit Tax</th>
@@ -345,7 +345,7 @@
                     <thead>
                         <tr>
                             <th class="text-start">Descrpiton</th>
-                            <th class="text-start">Quantity</th>
+                            <th class="text-start">@lang('menu.quantity')</th>
 
                             <th class="text-start">Unit Price</th>
 

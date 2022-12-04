@@ -119,7 +119,7 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Voucher No : </strong> {{ $production->reference_no }}</li>
+                            <li><strong>@lang('menu.voucher_no') : </strong> {{ $production->reference_no }}</li>
                             <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
                         </ul>
                     </div>

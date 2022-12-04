@@ -58,10 +58,10 @@
                         <table id="" class="table table-sm modal-table">
                             <thead>
                                 <tr class="bg-secondary text-white">
-                                    <th class="text-start">SL</th>
+                                    <th class="text-start">@lang('menu.sl')</th>
                                     <th class="text-start">Product</th>
                                     <th class="text-start">Unit Price</th>
-                                    <th class="text-start">Quantity</th>
+                                    <th class="text-start">@lang('menu.quantity')</th>
                                     <th class="text-start">Unit</th>
                                     <th class="text-start">Pending Qty</th>
                                     <th class="text-start">Received Qty</th>
@@ -103,7 +103,7 @@
               </div>
             </div>
             <div class="modal-footer">
-                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                 <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
             </div>
           </div>
@@ -183,10 +183,10 @@
                     <thead>
                         <tr>
                             <tr>
-                                <th scope="col">SL</th>
+                                <th scope="col">@lang('menu.sl')</th>
                                 <th scope="col">Product</th>
                                 <th scope="col">Unit Price</th>
-                                <th scope="col">Quantity</th>
+                                <th scope="col">@lang('menu.quantity')</th>
                                 <th scope="col">Unit</th>
                                 <th scope="col">Pending Qty</th>
                                 <th scope="col">Received Qty</th>

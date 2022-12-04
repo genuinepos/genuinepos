@@ -142,7 +142,7 @@
                     <thead>
                         <tr>
                             <th scope="col">@lang('menu.description')</th>
-                            <th scope="col">Quantity</th>
+                            <th scope="col">@lang('menu.quantity')</th>
                             <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) </th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Tax(%)</th>

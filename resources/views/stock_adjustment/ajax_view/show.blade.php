@@ -66,9 +66,9 @@
                     <table id="" class="table modal-table table-sm">
                         <thead>
                             <tr class="bg-secondary text-white text-start">
-                                <th class="text-start">SL</th>
+                                <th class="text-start">@lang('menu.sl')</th>
                                 <th class="text-start">Product</th>
-                                <th class="text-start">Quantity</th>
+                                <th class="text-start">@lang('menu.quantity')</th>
                                 <th class="text-start">Unit Cost Inc.Tax</th>
                                 <th class="text-start">SubTotal</th>
                             </tr>
@@ -101,7 +101,7 @@
                                <thead>
                                    <tr class="bg-secondary text-white">
                                        <th>@lang('menu.date')</th>
-                                       <th>Voucher No</th>
+                                       <th>@lang('menu.voucher_no')</th>
                                        <th>Method</th>
                                        <th>Account</th>
                                        <th>
@@ -162,7 +162,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
             <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
         </div>
       </div>
@@ -250,9 +250,9 @@
                 <thead>
                     <tr>
                         <tr>
-                            <th scope="col" class="text-start">SL</th>
+                            <th scope="col" class="text-start">@lang('menu.sl')</th>
                             <th scope="col" class="text-start">Product</th>
-                            <th scope="col" class="text-start">Quantity</th>
+                            <th scope="col" class="text-start">@lang('menu.quantity')</th>
                             <th scope="col" class="text-start">Unit Cost Inc.Tax</th>
                             <th scope="col" class="text-start">SubTotal</th>
                         </tr>

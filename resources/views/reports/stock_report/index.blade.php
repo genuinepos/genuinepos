@@ -22,7 +22,7 @@
                                 <h5>Stock Report</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                                <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
                             </a>
                         </div>
 
@@ -137,7 +137,7 @@
                                                         <tr class="text-start">
                                                             <th>P.Code</th>
                                                             <th>Product</th>
-                                                            <th>Business Location</th>
+                                                            <th>@lang('menu.business_location')</th>
                                                             <th>Unit Price</th>
                                                             <th>Current Stock</th>
                                                             <th>Stock Value <b><small>(By Unit Cost)</small></b></th>
@@ -281,7 +281,7 @@
                                                         <tr class="text-start">
                                                             <th>P.Code</th>
                                                             <th>Product</th>
-                                                            <th>Business Location</th>
+                                                            <th>@lang('menu.business_location')</th>
                                                             <th>Warehouse</th>
                                                             <th>Unit Price</th>
                                                             <th>Current Stock</th>

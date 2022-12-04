@@ -282,7 +282,7 @@
                                         <table class="table modal-table table-sm table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-startx">SL</th>
+                                                    <th class="text-startx">@lang('menu.sl')</th>
                                                     <th class="text-startx">Reference/InvoiceId</th>
                                                     <th class="text-startx">@lang('menu.customer')</th>
                                                     <th class="text-startx">@lang('menu.total')</th>

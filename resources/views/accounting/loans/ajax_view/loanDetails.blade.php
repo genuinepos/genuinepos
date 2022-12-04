@@ -57,7 +57,7 @@
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Voucher No :</th>
+                            <th width="50%" class="text-start">@lang('menu.voucher_no') :</th>
                             <td width="50%" class="text-start">
                                 {{ $loan->reference_no }}
                             </td>

@@ -18,7 +18,7 @@
                 <table class="table data__table modal-table table-sm sale-product-table">
                     <thead>
                         <tr>
-                            <th scope="col">SL</th>
+                            <th scope="col">@lang('menu.sl')</th>
                             <th scope="col">@lang('menu.name')</th>
                             <th scope="col">@lang('menu.sold_quantity')</th>
                             <th scope="col">@lang('menu.unit')</th>

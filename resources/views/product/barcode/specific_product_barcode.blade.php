@@ -21,7 +21,7 @@
                                 <h5>Generate Barcode</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back </a>
+                                    class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back') </a>
                         </div>
                     </div>
 
@@ -66,7 +66,7 @@
                                                     <tr class="bg-secondary text-white text-start">
                                                         <th class="text-start">Product</th>
                                                         <th class="text-start">Supplier</th>
-                                                        <th class="text-start">Quantity</th>
+                                                        <th class="text-start">@lang('menu.quantity')</th>
                                                         <th class="text-start">Packing Date</th>
                                                         <th class="text-start">@lang('menu.action')</th>
                                                     </tr>

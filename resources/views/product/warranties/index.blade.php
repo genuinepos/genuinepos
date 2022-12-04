@@ -13,7 +13,7 @@
                                 <span class="fas fa-desktop"></span> <h5> Warranties/Guaranties</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                                <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
                             </a>
                         </div>
                     </div>
@@ -166,7 +166,7 @@
                                             <table class="display data_tbl data__table">
                                                 <thead>
                                                     <tr class="text-center">
-                                                        <th>SL</th>
+                                                        <th>@lang('menu.sl')</th>
                                                         <th>Name</th>
                                                         <th>Duration</th>
                                                         <th>@lang('menu.description')</th>

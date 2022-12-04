@@ -150,7 +150,7 @@
 
                 <div class="row">
                     <div class="heading">
-                        <label class="p-0 m-0">WON <strong>BUSINESS LOCATION</strong> STOCK DETAILS :</label>
+                        <label class="p-0 m-0">WON <strong>@lang('menu.business_location')</strong> STOCK DETAILS :</label>
                     </div>
                     <div class="table-responsive" id="branch_stock_details">
                         @include('product.products.ajax_view.partials.branch_stock_details')
@@ -162,7 +162,7 @@
                 @if ($addons->branches == 1)
                     <div class="row">
                         <div class="heading">
-                            <label class="p-0 m-0">ANOTHER <strong>BUSINESS LOCATION</strong> STOCK DETAILS :</label>
+                            <label class="p-0 m-0">ANOTHER <strong>@lang('menu.business_location')</strong> STOCK DETAILS :</label>
                         </div>
                         <div class="table-responsive" id="branch_stock_details">
                             @include('product.products.ajax_view.partials.another_branch_details')

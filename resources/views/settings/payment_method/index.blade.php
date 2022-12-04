@@ -11,7 +11,7 @@
                     <h5>Payment Methods</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
                 </a>
             </div>
 
@@ -38,8 +38,8 @@
                                 <div class="form-group row mt-2">
                                     <div class="col-md-12 d-flex justify-content-end">
                                         <div class="btn-loading">
-                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                             <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                         </div>
                                     </div>

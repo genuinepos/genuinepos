@@ -148,7 +148,7 @@
                                                     <tr>
                                                         <th>@lang('menu.date')</th>
                                                         <th>Particulars</th>
-                                                        <th>Business Location</th>
+                                                        <th>@lang('menu.business_location')</th>
                                                         <th>Voucher/Invoice</th>
                                                         <th>@lang('menu.debit')</th>
                                                         <th>@lang('menu.credit')</th>
@@ -325,7 +325,7 @@
                                                     <th>Actions</th>
                                                     <th>@lang('menu.date')</th>
                                                     <th>Invoice ID</th>
-                                                    <th>Business Location</th>
+                                                    <th>@lang('menu.business_location')</th>
                                                     <th>Customer</th>
                                                     <th>Total Amount</th>
                                                     <th>Total Paid</th>
@@ -463,7 +463,7 @@
                                                 <thead>
                                                     <tr class="text-start">
                                                         <th class="text-start">@lang('menu.date')</th>
-                                                        <th class="text-start">Voucher No</th>
+                                                        <th class="text-start">@lang('menu.voucher_no')</th>
                                                         <th class="text-start">Reference</th>
                                                         <th class="text-start">Against Invoice</th>
                                                         {{-- <th>Created By</th> --}}

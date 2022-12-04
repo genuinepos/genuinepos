@@ -210,7 +210,7 @@
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
                                     {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a></li> --}}
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" id="print_payment" class="btn btn-sm btn-success">Print</button>
                                 </ul>
                             </div>

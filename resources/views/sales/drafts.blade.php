@@ -109,7 +109,7 @@
                                             <tr>
                                                 <th>@lang('menu.date')</th>
                                                 <th>Draft ID</th>
-                                                <th>Business Location</th>
+                                                <th>@lang('menu.business_location')</th>
                                                 <th>Customer</th>
                                                 <th>Total Amount</th>
                                                 <th>@lang('menu.created_by')</th>

@@ -226,7 +226,7 @@
                 <div class="row">
                     <div class="col-md-12 text-end">
                         <div class="d-flex justify-content-end gap-2">
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                             <button type="submit" id="print_loan_details" class="btn btn-sm btn-success">Print</button>
                         </div>
                     </div>

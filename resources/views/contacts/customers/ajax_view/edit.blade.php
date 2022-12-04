@@ -98,7 +98,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>Address</b> : </label>
+            <label><b>@lang('menu.address')</b> : </label>
             <input type="text" name="address" class="form-control" placeholder="Address" value="{{ $customer->address }}">
         </div>
     </div>

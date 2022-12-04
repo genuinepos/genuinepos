@@ -66,10 +66,10 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Voucher No :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                        <label class=" col-4"><b>@lang('menu.voucher_no') :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id"
-                                                class="form-control" placeholder="Voucher No" autocomplete="off">
+                                                class="form-control" placeholder="@lang('menu.voucher_no')" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -140,7 +140,7 @@
                                                                 <tr>
                                                                     <th>Product</th>
                                                                     <th></th>
-                                                                    <th class="text-center">Quantity</th>
+                                                                    <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th>Unit</th>
                                                                     <th>Unit Cost.Inc.Tax</th>
                                                                     <th>SubTotal</th>

@@ -161,7 +161,7 @@
                                                 <th>P.Code</th>
                                                 <th>Supplier</th>
                                                 <th>P.Invoice ID</th>
-                                                <th>Quantity</th>
+                                                <th>@lang('menu.quantity')</th>
                                                 <th>Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>

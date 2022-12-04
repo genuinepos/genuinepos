@@ -71,7 +71,7 @@
                 <tr>
                     <th class="text-start">Open Time</th>
                     <th class="text-start">Closed Time</th>
-                    <th class="text-start">Business Location</th>
+                    <th class="text-start">@lang('menu.business_location')</th>
                     <th class="text-start">User</th>
                     <th class="text-start">Status</th>
                     <th class="text-end">Total Sale</th>

@@ -28,7 +28,7 @@
         <div class="row">
             <div class="col-md-6">
                 <p><b>@lang('menu.reference_no') :</b> {{ $payment->expense->invoice_id }}</p>
-                <p><b>Voucher No :</b> {{ $payment->invoice_id }}</p>
+                <p><b>@lang('menu.voucher_no') :</b> {{ $payment->invoice_id }}</p>
             </div>
 
             <div class="col-md-6 text-end">

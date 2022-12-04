@@ -12,7 +12,7 @@
                     <h5>@lang('menu.assets')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
                 </a>
             </div>
 
@@ -97,7 +97,7 @@
                             <div class="tab_contant assets" style="display: none;">
                                 <div class="row">
                                     <div class="col-md-12 d-flex justify-content-end">
-                                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAssetModal"><i class="fas fa-plus-square"></i> Add Asset</a>
+                                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAssetModal"><i class="fas fa-plus-square"></i>@lang('menu.add_asset')</a>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="table-responsive">
@@ -108,7 +108,7 @@
                                                         <th>@lang('menu.asset')</th>
                                                         <th>Type</th>
                                                         <th>Available Loaction</th>
-                                                        <th>Quantity</th>
+                                                        <th>@lang('menu.quantity')</th>
                                                         <th>@lang('menu.per_unit_value')</th>
                                                         <th>@lang('menu.total_value')</th>
                                                         <th>@lang('menu.action')</th>
@@ -137,7 +137,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Asset Type</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_asset_type')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -202,7 +202,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Asset</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_asset')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -223,7 +223,7 @@
                             <div class="col-md-12">
                                 <label><b>@lang('menu.asset_type')Type :</b> <span class="text-danger">*</span></label>
                                 <select name="type_id" class="form-control" id="type_id" >
-                                <option value="">Select Asset Type</option>
+                                <option value="">@lang('menu.select_asset_type')</option>
                                 </select>
                             <span class="error error_type_id"></span>
                             </div>

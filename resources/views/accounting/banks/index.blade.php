@@ -9,7 +9,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-university"></span>
-                    <h5>Banks</h5>
+                    <h5>@lang('menu.bank')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -20,11 +20,11 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-6">
-                        <h6>All Banks</h6>
+                        <h6>@lang('menu.all_bank')</h6>
                     </div>
 
                     <div class="col-md-6 d-flex justify-content-end">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
                     </div>
                 </div>
 
@@ -33,10 +33,10 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th class="text-start">SL</th>
+                                    <th class="text-start">@lang('menu.sl')</th>
                                     <th class="text-start">@lang('menu.bank_name')</th>
-                                    <th class="text-start">Branch Name</th>
-                                    <th class="text-start">Address</th>
+                                    <th class="text-start">@lang('menu.branch_name')</th>
+                                    <th class="text-start">@lang('menu.address')</th>
                                     <th class="text-start">@lang('menu.action')</th>
                                 </tr>
                             </thead>
@@ -59,7 +59,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Bank</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_bank')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -73,23 +73,23 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Branch Name</b> : <span class="text-danger">*</span></label>
-                            <input type="text" name="branch_name" class="form-control form-control-sm add_input" data-name="Branch name" id="branch_name" placeholder="Branch name"/>
+                            <label><b>@lang('menu.branch_name')</b> : <span class="text-danger">*</span></label>
+                            <input type="text" name="branch_name" class="form-control form-control-sm add_input" data-name="Branch name" id="branch_name" placeholder="@lang('menu.branch_name')"/>
                             <span class="error error_branch_name"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Bank Address</b> :</label>
-                            <textarea name="address" class="form-control form-control-sm"  id="address" cols="10" rows="3" placeholder="Bank address"></textarea>
+                            <label><b>@lang('menu.bank_address')</b> :</label>
+                            <textarea name="address" class="form-control form-control-sm"  id="address" cols="10" rows="3" placeholder="@lang('menu.bank_address')"></textarea>
                         </div>
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i
-                                        class="fas fa-spinner"></i><span> Loading...</span>
+                                        class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
                                     </button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Bank</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_bank')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -120,23 +120,23 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Branch Name</b> : <span class="text-danger">*</span></label>
-                            <input type="text" name="branch_name" class="form-control form-control-sm edit_input" data-name="Branch name" id="e_branch_name" placeholder="Branch name"/>
+                            <label><b>@lang('menu.branch_name')</b> : <span class="text-danger">*</span></label>
+                            <input type="text" name="branch_name" class="form-control form-control-sm edit_input" data-name="Branch name" id="e_branch_name" placeholder="@lang('menu.branch_name')"/>
                             <span class="error error_e_branch_name"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Bank Address</b> : </label>
-                            <textarea name="address" class="form-control form-control-sm" id="e_address" cols="10" rows="3" placeholder="Bank address"></textarea>
+                            <label><b>@lang('menu.bank_address')</b> : </label>
+                            <textarea name="address" class="form-control form-control-sm" id="e_address" cols="10" rows="3" placeholder="@lang('menu.bank_address')"></textarea>
                         </div>
 
                         <div class="form-group text-right mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i
-                                        class="fas fa-spinner"></i><span> Loading...</span>
+                                        class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
                                     </button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>

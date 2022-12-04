@@ -288,7 +288,7 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" {{ $layout->customer_address == 1 ? 'CHECKED' : '' }} name="customer_address"> &nbsp;<b>Address</b> </p>
+                                        <input type="checkbox" {{ $layout->customer_address == 1 ? 'CHECKED' : '' }} name="customer_address"> &nbsp;<b>@lang('menu.address')</b> </p>
                                     </div>
                                 </div>
 
@@ -429,7 +429,7 @@
 
                     <div class="submit-area d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                             <button class="btn btn-sm btn-success submit_button float-end">Save Changes</button>
                         </div>
                     </div>

@@ -116,7 +116,7 @@
 
                         <div class="form-group mt-1">
                             <label><b>Tax Percent :</b><span class="text-danger">*</span></label>
-                            <input type="text" name="tax_percent" class="form-control edit_input" data-name="Tax percent" id="e_tax_percent" placeholder="Branch Name"/>
+                            <input type="text" name="tax_percent" class="form-control edit_input" data-name="Tax percent" id="e_tax_percent" placeholder="@lang('menu.branch_name')"/>
                             <span class="error error_e_tax_percent"></span>
                         </div>
 

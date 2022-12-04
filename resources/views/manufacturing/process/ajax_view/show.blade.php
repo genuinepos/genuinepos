@@ -7,7 +7,7 @@
         <thead>
             <tr class="bg-secondary">
                 <th class="text-start text-white">Ingredients</th>
-                <th class="text-start text-white">Quantity</th>
+                <th class="text-start text-white">@lang('menu.quantity')</th>
                 <th class="text-start text-white">Cost Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                 <th class="text-start text-white">Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
             </tr>
@@ -73,7 +73,7 @@
     <div class="row">
         <div class="col-md-12">
             <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
-            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
         </div>
     </div>
  </div>

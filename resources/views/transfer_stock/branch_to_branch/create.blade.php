@@ -144,7 +144,7 @@
                                                                 <tr>
                                                                     <th class="text-start">Product</th>
                                                                     <th></th>
-                                                                    <th class="text-center">Quantity</th>
+                                                                    <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th class="text-center">Unit</th>
                                                                     <th class="text-center">Unit Cost Inc.Tax</th>
                                                                     <th class="text-center">SubTotal</th>

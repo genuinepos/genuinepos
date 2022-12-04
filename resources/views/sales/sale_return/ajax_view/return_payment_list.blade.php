@@ -27,7 +27,7 @@
                 <ul class="list-unstyled">
                     <li><strong> Return Invoice ID : </strong>{{ $return->invoice_id }}</li>
                     <li><strong>Return Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($return->date)) }}</li>
-                    <li><strong>Business Location: </strong>
+                    <li><strong>@lang('menu.business_location'): </strong>
 
                         @if ($return->branch)
 
@@ -68,7 +68,7 @@
             <thead>
                 <tr class="bg-secondary">
                     <th class="text-white text-start">@lang('menu.date')</th>
-                    <th class="text-white text-start">Voucher No</th>
+                    <th class="text-white text-start">@lang('menu.voucher_no')</th>
                     <th class="text-white text-start">Method</th>
                     <th class="text-white text-start">Account</th>
                     <th class="text-white text-end">Amount</th>

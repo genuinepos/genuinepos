@@ -59,8 +59,8 @@
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label > <b>Voucher No :</b></label>
-                                    <input type="text" name="reference_no" class="form-control changeable" placeholder="Voucher No" value="{{ $production->reference_no }}"/>
+                                    <label > <b>@lang('menu.voucher_no') :</b></label>
+                                    <input type="text" name="reference_no" class="form-control changeable" placeholder="@lang('menu.voucher_no')" value="{{ $production->reference_no }}"/>
                                 </div>
 
                                 <div class="col-md-2">
@@ -342,7 +342,7 @@
                                 <div class="row">
                                     <div class="col-md-12 d-flex justify-content-end">
                                         <div class="btn-loading">
-                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                             <button class="btn btn-sm btn-success submit_button">Save Changes</button>
                                         </div>
                                     </div>

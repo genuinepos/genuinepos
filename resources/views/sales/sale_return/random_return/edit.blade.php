@@ -462,7 +462,7 @@
                     <form id="update_return_product" action="">
 
                         <div class="form-group">
-                            <label> <strong>Quantity</strong> : <span class="text-danger">*</span></label>
+                            <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
                             <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_return_quantity" placeholder="Quantity" tabindex="-1"/>
                             <span class="error error_e_quantity"></span>
                         </div>

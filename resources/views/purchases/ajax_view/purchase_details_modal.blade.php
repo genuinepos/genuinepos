@@ -92,7 +92,7 @@
                                  <thead>
                                      <tr class="bg-secondary">
                                          <th class="text-white text-start">Product</th>
-                                         <th class="text-white text-start">Quantity</th>
+                                         <th class="text-white text-start">@lang('menu.quantity')</th>
                                          <th class="text-white text-start">Unit Cost(Before Discount)</th>
                                          <th class="text-white text-start">Unit Discount</th>
                                          <th class="text-white text-start">Unit Cost(Before Tax)</th>
@@ -141,7 +141,7 @@
                                     <thead>
                                         <tr class="bg-secondary text-white">
                                             <th>@lang('menu.date')</th>
-                                            <th>Voucher No</th>
+                                            <th>@lang('menu.voucher_no')</th>
                                             <th>Method</th>
                                             <th>Type</th>
                                             <th>Account</th>
@@ -415,7 +415,7 @@
                     <thead>
                         <tr>
                             <th scope="col">@lang('menu.description')</th>
-                            <th scope="col">Quantity</th>
+                            <th scope="col">@lang('menu.quantity')</th>
                             <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) </th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Tax(%)</th>

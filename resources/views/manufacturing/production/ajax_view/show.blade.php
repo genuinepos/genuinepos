@@ -60,7 +60,7 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Voucher No : </strong> {{ $production->reference_no }}</li>
+                            <li><strong>@lang('menu.voucher_no') : </strong> {{ $production->reference_no }}</li>
                             <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
                         </ul>
                     </div>
@@ -192,7 +192,7 @@
                    <div class="col-md-12 d-flex justify-content-end gap-2">
                         <a href="{{ route('manufacturing.productions.edit', $production->id) }}" class="btn btn-sm btn-secondary">Edit</a>
                         <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
-                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                    </div>
                </div>
             </div>
@@ -317,7 +317,7 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>Voucher No : </strong> {{ $production->reference_no }}</li>
+                        <li><strong>@lang('menu.voucher_no') : </strong> {{ $production->reference_no }}</li>
                         <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
                     </ul>
                 </div>

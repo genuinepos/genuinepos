@@ -27,7 +27,7 @@
                                 <h5>Product Purchase Report</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                                <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
                             </a>
                         </div>
 
@@ -136,7 +136,7 @@
                                                 <th>P.Code</th>
                                                 <th>Supplier</th>
                                                 <th>P.Invoice ID</th>
-                                                <th>Quantity</th>
+                                                <th>@lang('menu.quantity')</th>
                                                 <th>Unit Cost({{json_decode($generalSettings->business, true)['currency']}})</th>
                                                 <th>Unit Price({{json_decode($generalSettings->business, true)['currency']}})</th>
                                                 <th>Subtotal({{json_decode($generalSettings->business, true)['currency']}})</th>

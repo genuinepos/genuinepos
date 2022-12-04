@@ -137,7 +137,7 @@
                                                         <table class="table modal-table table-sm mt-1">
                                                             <thead>
                                                                 <tr class="bg-primary">
-                                                                    <th class="text-start text-white">SL</th>
+                                                                    <th class="text-start text-white">@lang('menu.sl')</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">Order/Invoice ID</th>
                                                                     <th class="text-start text-white">Status</th>

@@ -28,7 +28,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li><strong>Invoice ID : </strong><span class="card_text invoice_no">{{ $sale->invoice_id }}</span> </li>
-                                <li><strong>Business Location: </strong>
+                                <li><strong>@lang('menu.business_location'): </strong>
                                     <span>
                                         @if ($sale->branch)
 

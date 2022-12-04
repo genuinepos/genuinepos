@@ -120,7 +120,7 @@
                                                                 <tr>
                                                                     <th>Product</th>
                                                                     <th></th>
-                                                                    <th class="text-center">Quantity</th>
+                                                                    <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th class="text-center">Unit</th>
                                                                     <th class="text-center">SubTotal</th>
                                                                     <th><i class="fas fa-trash-alt text-danger"></i></th>

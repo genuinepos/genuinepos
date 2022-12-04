@@ -40,7 +40,7 @@
                                         <thead>
                                             <tr class="text-start">
                                                 <th>Offer Name</th>
-                                                <th>Business Location</th>
+                                                <th>@lang('menu.business_location')</th>
                                                 <th>Status</th>
                                                 <th>Start At</th>
                                                 <th>End At</th>
@@ -205,8 +205,8 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>

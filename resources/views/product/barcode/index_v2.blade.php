@@ -121,7 +121,7 @@
                                                                         <tr class="bg-secondary text-white text-start">
                                                                             <th class="text-start">Product</th>
                                                                             <th class="text-start">Supplier</th>
-                                                                            <th class="text-start">Quantity</th>
+                                                                            <th class="text-start">@lang('menu.quantity')</th>
                                                                             <th class="text-start">@lang('menu.action')</th>
                                                                         </tr>
                                                                     </thead>
@@ -167,7 +167,7 @@
                                                         <th class="text-start"><input type="checkbox" id="chack_all">@lang('menu.all')</th>
                                                         <th class="text-start">Product</th>
                                                         <th class="text-start">Supplier</th>
-                                                        <th class="text-start">Quantity</th>
+                                                        <th class="text-start">@lang('menu.quantity')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="purchased_product_list"></tbody>

@@ -101,10 +101,10 @@
                             <thead>
                                 <tr>
                                     <th class="text-start">@lang('menu.date')</th>
-                                    <th class="text-start">Voucher No.</th>
-                                    <th class="text-start">Receiver A/C</th>
-                                    <th class="text-start">Sender A/C </th>
-                                    <th class="text-start">Business Location</th>
+                                    <th class="text-start">@lang('menu.voucher_no').</th>
+                                    <th class="text-start">@lang('menu.receiver_ac')</th>
+                                    <th class="text-start">@lang('menu.sender_ac') </th>
+                                    <th class="text-start">@lang('menu.business_location')</th>
                                     <th class="text-start">Remarks</th>
                                     <th class="text-start">Amount</th>
                                     <th class="text-start">Action</th>
@@ -171,7 +171,7 @@
                     <div class="row">
                         <div class="col-md-12 text-end">
                             <div class="d-flex justify-content-end gap-2">
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                 <button type="submit" id="print_payment" class="btn btn-sm btn-success">Print</button>
                             </div>
                         </div>

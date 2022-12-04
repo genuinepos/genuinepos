@@ -340,7 +340,7 @@
                                 <table class=" display table-striped">
                                     <thead>
                                         <tr class="bg-secondary text-white">
-                                            <td>SL</td>
+                                            <td>@lang('menu.sl')</td>
                                             <td>Module</td>
                                             <td>Sender</td>
                                             <td>Format Name</td>

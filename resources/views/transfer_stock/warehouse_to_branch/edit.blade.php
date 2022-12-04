@@ -114,7 +114,7 @@
                                                                 <tr>
                                                                     <th>Product</th>
                                                                     <th></th>
-                                                                    <th class="text-center">Quantity</th>
+                                                                    <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th class="text-center">Unit</th>
                                                                     <th class="text-center">SubTotal</th>
                                                                     <th><i class="fas fa-trash-alt text-white"></i></th>
@@ -184,7 +184,7 @@
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
                                 <button type="submit" class="btn btn-sm btn-success submit_button">Update </button>
                             </div>
                         </div>

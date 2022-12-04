@@ -113,9 +113,9 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col" class="text-start">SL</th>
+                            <th scope="col" class="text-start">@lang('menu.sl')</th>
                             <th scope="col" class="text-start">Descrpiton</th>
-                            <th scope="col" class="text-start">Quantity</th>
+                            <th scope="col" class="text-start">@lang('menu.quantity')</th>
                             <th scope="col" class="text-start">Unit Price</th>
                             @if ($sale->branch->add_sale_invoice_layout->product_discount)
                                 <th scope="col" class="text-start">Discount</th>
@@ -390,9 +390,9 @@
                     <thead>
                         <tr>
                         <tr>
-                            <th class="text-start">SL</th>
+                            <th class="text-start">@lang('menu.sl')</th>
                             <th class="text-start">Descrpiton</th>
-                            <th class="text-start">Quantity</th>
+                            <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">Unit Price</th>
                             <th class="text-start">Discount</th>
                             <th class="text-start">SubTotal</th>

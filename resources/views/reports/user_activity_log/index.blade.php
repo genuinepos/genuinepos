@@ -129,7 +129,7 @@
                             <thead>
                                 <tr>
                                     <th>@lang('menu.date')</th>
-                                    <th>Business Location</th>
+                                    <th>@lang('menu.business_location')</th>
                                     <th>Action By</th>
                                     <th>Action Name</th>
                                     <th>Subject Type</th>

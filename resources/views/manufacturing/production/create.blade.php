@@ -62,8 +62,8 @@
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label > <b>Voucher No :</b></label>
-                                    <input type="text" name="reference_no" class="form-control changeable" placeholder="Voucher No"/>
+                                    <label > <b>@lang('menu.voucher_no') :</b></label>
+                                    <input type="text" name="reference_no" class="form-control changeable" placeholder="@lang('menu.voucher_no')"/>
                                 </div>
 
                                 <div class="col-md-2">

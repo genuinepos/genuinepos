@@ -61,10 +61,10 @@
                     <table id="" class="table modal-table table-striped table-sm">
                         <thead>
                             <tr class="bg-secondary text-white">
-                                <th class="text-start">SL</th>
+                                <th class="text-start">@lang('menu.sl')</th>
                                 <th class="text-start">Product</th>
                                 <th class="text-start">Unit Price</th>
-                                <th class="text-start">Quantity</th>
+                                <th class="text-start">@lang('menu.quantity')</th>
                                 <th class="text-start">Unit</th>
                                 <th class="text-start">Pending Qty</th>
                                 <th class="text-start">Received Qty</th>
@@ -147,7 +147,7 @@
           </div>
         </div>
         <div class="modal-footer">
-            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
             <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
         </div>
       </div>
@@ -220,10 +220,10 @@
                 <thead>
                     <tr>
                         <tr>
-                            <th class="text-start">SL</th>
+                            <th class="text-start">@lang('menu.sl')</th>
                             <th class="text-start">Product</th>
                             <th class="text-start">Unit Price</th>
-                            <th class="text-start">Quantity</th>
+                            <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">Unit</th>
                             <th class="text-start">Receive Qty</th>
                             <th class="text-start">SubTotal</th>

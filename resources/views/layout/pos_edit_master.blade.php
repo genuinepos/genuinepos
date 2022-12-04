@@ -156,7 +156,7 @@
                                             <table class="table modal-table table-sm table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-start">SL</th>
+                                                        <th class="text-start">@lang('menu.sl')</th>
                                                         <th class="text-start">Reference/InvoiceId</th>
                                                         <th class="text-start">Customer</th>
                                                         <th class="text-start">Total</th>
@@ -294,7 +294,7 @@
                     <!--begin::Form-->
                     <form id="update_selling_product">
                         <div class="form-group">
-                            <label> <strong>Quantity</strong> : <span class="text-danger">*</span></label>
+                            <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
                             <input type="number" readonly class="form-control form-control-sm edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" value="" />
                             <span class="error error_e_quantity"></span>
                         </div>

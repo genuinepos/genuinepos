@@ -176,7 +176,7 @@
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-start">SL</th>
+                            <th class="text-start">@lang('menu.sl')</th>
                             <th class="text-start">Descrpiton</th>
                             <th class="text-start">Sold Qty</th>
                             @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)

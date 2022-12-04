@@ -170,8 +170,8 @@
                 <table class="table modal-table table-sm">
                     <thead>
                         <tr class="bg-secondary text-white">
-                            <th>Business Location</th>
-                            <th>Quantity</th>
+                            <th>@lang('menu.business_location')</th>
+                            <th>@lang('menu.quantity')</th>
                             <th>Unit Cost Inc.Tax</th>
                             <th>SubTotal</th>
                         </tr>

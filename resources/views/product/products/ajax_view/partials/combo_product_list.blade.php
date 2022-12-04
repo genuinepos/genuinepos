@@ -6,7 +6,7 @@
             <th class="text-white text-start">Profit Margin(%)</th>
             <th class="text-white text-start">Default Selling Price (Exc.Tax)</th>
             <th class="text-white text-start">Default Selling Price (Inc.Tax)</th>
-            <th class="text-white text-start">Quantity</th>
+            <th class="text-white text-start">@lang('menu.quantity')</th>
             <th class="text-white text-start">Total Amount</th>
         </tr>
     </thead>

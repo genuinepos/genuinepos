@@ -205,7 +205,7 @@
                                             <thead class="staky">
                                                 <tr>
                                                     <th>Product</th>
-                                                    <th>Quantity</th>
+                                                    <th>@lang('menu.quantity')</th>
                                                     <th>Unit Cost(BD <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Discount" class="fas fa-info-circle tp"></i>)</th>
                                                     <th>Discount</th>
                                                     <th>Unit Cost(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>

@@ -34,7 +34,7 @@
                             <table id="" class="table modal-table table-sm table-striped">
                                 <thead>
                                     <tr class="bg-secondary text-white">
-                                        <th class="text-start">SL</th>
+                                        <th class="text-start">@lang('menu.sl')</th>
                                         <th class="text-start">Product</th>
                                         <th class="text-start">Unit Price</th>
                                         <th class="text-start">Return Quantity</th>
@@ -115,7 +115,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                 <button type="submit" class="btn btn-sm btn-success print_btn">Print</button>
             </div>
 
@@ -199,7 +199,7 @@
                     <thead>
                         <tr>
                             <tr>
-                                <th class="text-start">SL</th>
+                                <th class="text-start">@lang('menu.sl')</th>
                                 <th class="text-start">Product</th>
                                 <th class="text-start">Unit Price</th>
                                 <th class="text-start">Return Quantity</th>

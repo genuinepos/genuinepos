@@ -78,7 +78,7 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Voucher No :</th>
+                            <th width="50%" class="text-start">@lang('menu.voucher_no') :</th>
                             <td width="50%">
                                 {{ $payment->invoice_id }}
                             </td>

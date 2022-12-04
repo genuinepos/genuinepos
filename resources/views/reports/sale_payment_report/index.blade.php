@@ -16,7 +16,7 @@
                             </div>
 
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                                <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
                             </a>
                         </div>
 
@@ -105,7 +105,7 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Voucher No</th>
+                                                <th>@lang('menu.voucher_no')</th>
                                                 <th>Customer</th>
                                                 <th>Payment Method</th>
                                                 <th>Sale Invoice ID</th>

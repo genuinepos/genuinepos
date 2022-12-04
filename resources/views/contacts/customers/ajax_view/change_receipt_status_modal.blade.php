@@ -1,7 +1,7 @@
 <div class="modal-dialog four-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Change Money Receipt Voucher Status (Voucher No : {{ $receipt->invoice_id }} )</h6>
+            <h6 class="modal-title" id="exampleModalLabel">Change Money Receipt Voucher Status (@lang('menu.voucher_no') : {{ $receipt->invoice_id }} )</h6>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <i aria-hidden="true" class="ki ki-close"></i>
             </button>

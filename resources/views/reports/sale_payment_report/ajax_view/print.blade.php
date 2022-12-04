@@ -56,7 +56,7 @@
             <thead>
                 <tr>
                     <th class="text-start">@lang('menu.date')</th>
-                    <th class="text-start">Voucher No</th>
+                    <th class="text-start">@lang('menu.voucher_no')</th>
                     <th class="text-start">Customer</th>
                     <th class="text-start">Pay Method</th>
                     <th class="text-start">Sale Invoice ID</th>

@@ -376,7 +376,7 @@
                         <tr>
                         <tr>
                             <th class="text-start">Descrpiton</th>
-                            <th class="text-start">Quantity</th>
+                            <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">Unit Price</th>
                             @if ($defaultLayout->product_discount)
                                 <th class="text-start">Discount</th>

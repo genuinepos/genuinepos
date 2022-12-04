@@ -83,9 +83,9 @@
                         <div class="form-group d-flex justify-content-end mt-3">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide">
-                                    <i class="fas fa-spinner"></i><span> Loading...</span>
+                                    <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
                                 </button>
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                 <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                             </div>
                         </div>
@@ -121,9 +121,9 @@
                         <div class="form-group d-flex justify-content-end mt-3">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide">
-                                    <i class="fas fa-spinner"></i><span> Loading...</span>
+                                    <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
                                 </button>
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                 <button type="submit" class="btn btn-sm btn-success">Save Change</button>
                             </div>
                         </div>

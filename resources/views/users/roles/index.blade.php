@@ -32,10 +32,10 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th class="text-start">SL</th>
+                                    <th class="text-start">@lang('menu.sl')</th>
                                     <th class="text-start">@lang('menu.bank_name')</th>
-                                    <th class="text-start">Branch Name</th>
-                                    <th class="text-start">Address</th>
+                                    <th class="text-start">@lang('menu.branch_name')</th>
+                                    <th class="text-start">@lang('menu.address')</th>
                                     <th class="text-start">@lang('menu.action')</th>
                                 </tr>
                             </thead>

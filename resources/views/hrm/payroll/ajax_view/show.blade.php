@@ -185,7 +185,7 @@
 
 <div class="modal-footer">
     <div class="form-group text-end">
-        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
         <button type="submit" class="btn btn-sm btn-success print_payroll">Print</button>
     </div>
 </div>

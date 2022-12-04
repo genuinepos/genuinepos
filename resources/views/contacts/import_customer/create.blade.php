@@ -143,7 +143,7 @@
 
                                             <tr>
                                                 <td class="text-start">12</td>
-                                                <td class="text-start">Address</td>
+                                                <td class="text-start">@lang('menu.address')</td>
                                                 <td class="text-start">Optional</td>
                                             </tr>
 

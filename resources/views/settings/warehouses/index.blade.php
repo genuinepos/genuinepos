@@ -99,7 +99,7 @@
                                 <div class="form-group d-flex justify-content-end mt-3">
                                     <div class="btn-loading">
                                         <button type="button" class="btn loading_button d-hide"><i
-                                            class="fas fa-spinner"></i><span> Loading...</span></button>
+                                            class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                         <button type="reset" class="btn btn-sm btn-danger">Reset</button>
                                         <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                     </div>
@@ -137,12 +137,12 @@
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
-                                            <th class="text-start">SL</th>
+                                            <th class="text-start">@lang('menu.sl')</th>
                                             <th class="text-start">Name</th>
-                                            <th class="text-start">Business Location</th>
+                                            <th class="text-start">@lang('menu.business_location')</th>
                                             <th class="text-start">Warehouse Code</th>
                                             <th class="text-start">Phone</th>
-                                            <th class="text-start">Address</th>
+                                            <th class="text-start">@lang('menu.address')</th>
                                             <th class="text-start">Actions</th>
                                         </tr>
                                     </thead>

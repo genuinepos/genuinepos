@@ -145,7 +145,7 @@
                                             <tr>
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.particulars')</th>
-                                                <th>Business Location</th>
+                                                <th>@lang('menu.business_location')</th>
                                                 <th>Voucher/P.Invoice</th>
                                                 <th>@lang('menu.debit')</th>
                                                 <th>@lang('menu.credit')</th>
@@ -595,7 +595,7 @@
                                             <thead>
                                                 <tr class="text-start">
                                                     <th class="text-start">@lang('menu.date')</th>
-                                                    <th class="text-start">Voucher No</th>
+                                                    <th class="text-start">@lang('menu.voucher_no')</th>
                                                     <th class="text-start">Reference</th>
                                                     <th class="text-start">Against Invoice</th>
                                                     {{-- <th>@lang('menu.created_by')</th> --}}
@@ -676,7 +676,7 @@
                                 <ul class="list-unstyled">
                                     <li class="mt-1">
                                         {{-- <a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a> --}}
-                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                         <button type="submit" id="print_payment" class="btn btn-sm btn-success">Print</button>
                                     </li>
                                 </ul>

@@ -72,7 +72,7 @@
                 <thead>
                     <tr>
                         <tr>
-                            <th class="text-start">SL</th>
+                            <th class="text-start">@lang('menu.sl')</th>
                             <th class="text-start">Product</th>
                             <th class="text-start">Unit Price</th>
                             <th class="text-start">Return Quantity</th>

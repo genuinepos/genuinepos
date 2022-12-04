@@ -17,7 +17,7 @@
                             </div>
 
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                                <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
                             </a>
                         </div>
 
@@ -140,7 +140,7 @@
                                                         <tr>
                                                             <th class="text-start">Open Time</th>
                                                             <th class="text-start">Closed Time</th>
-                                                            <th class="text-start">Business Location</th>
+                                                            <th class="text-start">@lang('menu.business_location')</th>
                                                             <th class="text-start">User</th>
                                                             <th class="text-start">Closing Note</th>
                                                             <th class="text-start">Status</th>

@@ -63,7 +63,7 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <td width="50%" class="text-start"><strong>Voucher No :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.voucher_no') :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ $supplierPayment->voucher_no }}
                             </td>

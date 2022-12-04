@@ -70,7 +70,7 @@
                 <tr>
                     <th>@lang('menu.date')</th>
                     <th>From</th>
-                    <th>Voucher No</th>
+                    <th>@lang('menu.voucher_no')</th>
                     <th>Amount</th>
                     <th>@lang('menu.action')</th>
                 </tr>

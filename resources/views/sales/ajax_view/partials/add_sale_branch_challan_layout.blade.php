@@ -113,10 +113,10 @@
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-start">SL</th>
+                        <th class="text-start">@lang('menu.sl')</th>
                         <th class="text-start">Product</th>
                         <th class="text-start">Unit</th>
-                        <th class="text-start">Quantity</th>
+                        <th class="text-start">@lang('menu.quantity')</th>
                     </tr>
                 </thead>
                 <tbody class="sale_print_product_list">

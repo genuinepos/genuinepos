@@ -53,7 +53,7 @@
 
         <div class="row">
             <div class="col-4">
-                <p><b>Voucher No</b> : {{ $receipt->invoice_id }}</p>
+                <p><b>@lang('menu.voucher_no')</b> : {{ $receipt->invoice_id }}</p>
             </div>
 
             <div class="col-4 text-center">
@@ -216,7 +216,7 @@
 
         <div class="row">
             <div class="col-md-4 col-sm-4 col-lg-4">
-                <p><b>Voucher No</b> : {{ $receipt->invoice_id }}</p>
+                <p><b>@lang('menu.voucher_no')</b> : {{ $receipt->invoice_id }}</p>
             </div>
 
             <div class="col-4 text-center">

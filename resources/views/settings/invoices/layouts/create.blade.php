@@ -288,7 +288,7 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" checked name="customer_address"> &nbsp;<b>Address</b> </p>
+                                        <input type="checkbox" checked name="customer_address"> &nbsp;<b>@lang('menu.address')</b> </p>
                                     </div>
                                 </div>
 

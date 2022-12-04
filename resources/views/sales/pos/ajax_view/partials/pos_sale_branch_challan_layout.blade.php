@@ -108,7 +108,7 @@
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-startx">SL</th>
+                        <th class="text-startx">@lang('menu.sl')</th>
                         <th class="text-startx">@lang('menu.product')</th>
                         <th class="text-startx">@lang('menu.unit')</th>
                         <th class="text-startx">@lang('menu.quantity')</th>

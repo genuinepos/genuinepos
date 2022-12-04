@@ -288,7 +288,7 @@
                                 <table class=" display table-striped">
                                     <thead>
                                         <tr class="bg-secondary text-white">
-                                            <td>SL</td>
+                                            <td>@lang('menu.sl')</td>
                                             <td>Module</td>
                                             <td>API Settings</td>
                                             <td>Format</td>

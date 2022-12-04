@@ -13,7 +13,7 @@
                     <h6>Productions</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
                 </a>
             </div>
         </div>
@@ -139,8 +139,8 @@
                                     <tr>
                                         <th class="text-black">Actions</th>
                                         <th class="text-black">@lang('menu.date')</th>
-                                        <th class="text-black">Voucher No</th>
-                                        <th class="text-black">Business Location</th>
+                                        <th class="text-black">@lang('menu.voucher_no')</th>
+                                        <th class="text-black">@lang('menu.business_location')</th>
                                         <th class="text-black">Product</th>
                                         <th class="text-black">Status</th>
                                         <th class="text-black">Per Unit Cost(Inc.Tax)</th>

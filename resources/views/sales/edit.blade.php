@@ -191,7 +191,7 @@
                                                                 <tr>
                                                                     <th class="text-start">Product</th>
                                                                     <th class="text-start">Stock Location</th>
-                                                                    <th class="text-center">Quantity</th>
+                                                                    <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th>Unit</th>
                                                                     <th class="text-center">Price Inc.Tax</th>
                                                                     <th>SubTotal</th>
@@ -548,7 +548,7 @@
                         @endif
 
                         <div class="form-group">
-                            <label> <strong>Quantity</strong>  : <span class="text-danger">*</span></label>
+                            <label> <strong>@lang('menu.quantity')</strong>  : <span class="text-danger">*</span></label>
                             <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" tabindex="-1"/>
                             <span class="error error_e_quantity"></span>
                         </div>

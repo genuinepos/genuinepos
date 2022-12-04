@@ -137,7 +137,7 @@
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-startx">SL</th>
+                            <th class="text-startx">@lang('menu.sl')</th>
                             <th class="text-startx">@lang('menu.description')</th>
                             <th class="text-startx">@lang('menu.sold_quantity')</th>
                             @if ($sale->branch->pos_sale_invoice_layout->product_w_type || $sale->branch->pos_sale_invoice_layout->product_w_duration || $sale->branch->pos_sale_invoice_layout->product_w_discription)

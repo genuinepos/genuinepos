@@ -95,7 +95,7 @@
             <thead>
                 <tr class="bg-secondary">
                     <th class="text-start text-white">@lang('menu.date')</th>
-                    <th class="text-start text-white">Voucher No</th>
+                    <th class="text-start text-white">@lang('menu.voucher_no')</th>
                     <th class="text-start text-white">Method</th>
                     <th class="text-start text-white">Type</th>
                     <th class="text-start text-white">Account</th>

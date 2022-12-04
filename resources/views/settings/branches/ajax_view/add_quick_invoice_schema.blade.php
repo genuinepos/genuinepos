@@ -39,9 +39,9 @@
         <div class="btn-loading">
             <button type="button" class="btn loading_button d-hide q_ld_btn">
                 <i class="fas fa-spinner"></i>
-                <span> Loading...</span>
+                <span> @lang('menu.loading')...</span>
             </button>
-            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
             <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
         </div>
     </div>

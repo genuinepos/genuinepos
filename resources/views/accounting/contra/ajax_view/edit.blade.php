@@ -9,17 +9,17 @@
         </div>
 
         <div class="col-md-6">
-            <label><strong>Voucher No :</strong></label>
+            <label><strong>@lang('menu.voucher_no') :</strong></label>
             <input type="text" name="voucher_no" class="form-control add_input" data-name="Date" id="voucher_no" placeholder="Voucher Number" autocomplete="off" value="{{ $contra->voucher_no }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><strong>Sender A/C : </strong><span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.sender_ac') : </strong><span class="text-danger">*</span></label>
             <select name="sender_account_id" class="form-control add_input" data-name="Sender Account"
                 id="e_sender_account_id">
-                <option value="">Select Receiver A/C</option>
+                <option value="">@lang('menu.select_receiver_ac')</option>
                 @foreach ($accounts as $account)
                     <option {{ $contra->sender_account_id == $account->id ? 'SELECTED' : '' }} value="{{ $account->id }}">
                         @php
@@ -36,10 +36,10 @@
         </div>
 
         <div class="col-md-6">
-            <label><strong>Receiver A/C : </strong><span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.receiver_ac') : </strong><span class="text-danger">*</span></label>
             <select name="receiver_account_id" class="form-control add_input" data-name="Receiver Account"
                 id="e_receiver_account_id">
-                <option value="">Select Receiver A/C</option>
+                <option value="">@lang('menu.select_receiver_ac')</option>
                 @foreach ($accounts as $account)
                     <option {{ $contra->receiver_account_id == $account->id ? 'SELECTED' : '' }} value="{{ $account->id }}">
                         @php
@@ -71,9 +71,9 @@
     <div class="form-group d-flex justify-content-end pb-2 pt-4">
         <div class="btn-loading">
             <button type="button" class="btn loading_button d-hide">
-                <i class="fas fa-spinner"></i><span> Loading...</span>
+                <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
             </button>
-            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
             <button type="submit" class="btn btn-sm btn-success submit_button">Save Changes</button>
         </div>
     </div>

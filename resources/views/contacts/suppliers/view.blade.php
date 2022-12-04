@@ -8,7 +8,6 @@
     .contract_info_area ul li strong{color:#495677}
     .account_summary_area .heading h5{ background:#0F3057; color:white}
     .contract_info_area ul li strong i {color: #495b77;font-size: 13px;}
-    .account_summary_area {margin-bottom: -18px;}
 </style>
 
 <div class="body-woaper">

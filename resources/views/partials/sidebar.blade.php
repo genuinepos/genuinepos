@@ -2357,6 +2357,17 @@
                                         <p class="switch_text">Version Release Notes</p>
                                     </a>
                                 </div>
+
+                                <div class="sub-menu-col">
+                                    <a href="{{ route('settings.barcode.design.pages') }}" class="switch-bar-wrap">
+                                        <div class="switch_bar">
+                                            <div class="bar-link">
+                                                <span><i class="far fa-arrow-alt-circle-up"></i></span>
+                                            </div>
+                                        </div>
+                                        <p class="switch_text">Bercode Settings Design Pages</p>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

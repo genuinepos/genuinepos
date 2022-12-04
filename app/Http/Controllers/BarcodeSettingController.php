@@ -164,4 +164,9 @@ class BarcodeSettingController extends Controller
         $updateBs->save();
         return response()->json('Default set successfully');
     }
+
+    public function designPage()
+    {
+        return view('settings.barcode_settings.design_pages');
+    }
 }

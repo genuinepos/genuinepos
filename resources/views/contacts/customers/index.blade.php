@@ -59,7 +59,7 @@
                         <h6>All Customer</h6>
                     </div>
 
-                    <div class="col-md-6 d-flex justify-content-end gap-2">
+                    <div class="col-md-6 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
                         <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary">
                             <i class="fas fa-plus-square"></i> Add (Ctrl+Enter)
                         </a>

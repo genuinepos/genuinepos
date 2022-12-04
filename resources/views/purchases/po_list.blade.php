@@ -108,8 +108,8 @@
                         </div>
 
                         <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-10">
+                            <div class="section-header row">
+                                <div class="col-md-10 col-6">
                                     <h6>PO List</h6>
                                 </div>
                                 @if(auth()->user()->can('purchase_add'))

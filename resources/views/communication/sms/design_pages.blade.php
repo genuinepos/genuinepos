@@ -60,8 +60,13 @@
                                             <textarea class="form-control" name="" id="smsBodyExample" rows="8"></textarea>
                                         </div>
                                         <div class="col-12">
-                                            <div class="sms-preview">
-                                                <p class="text-secondary"><strong>Preview:</strong></p>
+                                            <div class="sms-example">
+                                                <p class="text-secondary"><strong>Example:</strong></p>
+                                                <p>Date @date,</p>
+                                                <p>Dear Customer,</p>
+                                                <p>Today Bill No @invoice_no. Net amount @net_amount + vat (@vat) and discount @discount. Total Amount: @total_amount</p>
+                                                <p>Earning Point: @point</p>
+                                                <p>Thank you.</p>
                                             </div>
                                         </div>
                                     </div>

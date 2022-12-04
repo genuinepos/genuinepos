@@ -178,7 +178,26 @@
                 <div class="col-md-6">
                     <div class="card h-100">
                         <div class="card-body">
-                            <p><strong>Preview:</strong></p>
+                            <p class="text-secondary"><strong>Example:</strong></p>
+                            <strong>Dear Customer,</strong>
+                            <p>THis is a notice that invoice @invoice which was originally generated on @date.</p>
+                            <br>
+                            <p><strong>Date #</strong> @date</p>
+                            <p><strong>Invoice #</strong> @invoice</p>
+                            <hr class="my-1">
+                            <p><strong>Sub Total :</strong> @subtotal</p>
+                            <p><strong>vat :</strong> @vat</p>
+                            <p><strong>Total Due :</strong> @due</p>
+                            <p><strong>Total Discount :</strong> @discount</p>
+                            <p><strong>Total :</strong> @total_amount</p>
+                            <br>
+                            <p><strong>Reward Points :</strong> @point</p>
+                            <br>
+                            <p><strong>Thank you for staying with us.</strong></p>
+                            <br>
+                            <p>Regards</p>
+                            <p>@user</p>
+                            <h4>@company_Name</h4>
                         </div>
                     </div>
                 </div>

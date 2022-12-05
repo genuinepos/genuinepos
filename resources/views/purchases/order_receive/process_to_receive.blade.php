@@ -27,7 +27,7 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>@lang('menu.supplier')</b><span class="text-danger">*</span></label>
                                         <div class="col-8">
@@ -59,7 +59,7 @@
                                     @endif
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>PO.Invoice ID :</b></label>
                                         <div class="col-8">
@@ -68,9 +68,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-2"><b>@lang('menu.date') :</b></label>
+                                        <label class=" col-4"><b>@lang('menu.date') :</b></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control changeable"
                                                     id="datepicker" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) }}">
@@ -78,9 +78,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-3"><b>Status :</b></label>
+                                        <label class="col-4"><b>Status :</b></label>
                                         <div class="col-8">
                                             <select class="form-control changeable" name="purchase_status" id="purchase_status">
                                                 <option value="3">Ordered</option>
@@ -228,7 +228,7 @@
 
                 <section class="mb-3">
                     <div class="row g-3">
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class="form_element rounded m-0">
                                 <div class="element-body">
                                     <div class="row">
@@ -297,7 +297,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class="form_element rounded m-0">
                                 <div class="element-body">
                                     <div class="row">

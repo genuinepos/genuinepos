@@ -733,9 +733,6 @@ footer img.logo {
     }
 }
 @media (max-width: 768px) {
-    #calculatorModal.modal.show .modal-dialog {
-        right: 41%;
-    }
     .top-icon {
         margin: 0 2px;
     }

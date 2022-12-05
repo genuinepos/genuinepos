@@ -25,7 +25,7 @@
                                 <div class="element-body">
                                     <form id="filter_form" class="p-2">
                                         <div class="form-group row">
-                                            <div class="col-md-2">
+                                            <div class="col-xl-2 col-lg-3 col-md-4">
                                                 <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able" id="branch_id" autofocus>
@@ -39,10 +39,10 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-2">
+                                            <div class="col-xl-2 col-lg-3 col-md-4">
                                                 <label><strong></strong></label>
                                                 <div class="input-group">
-                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                 </div>
                                             </div>
                                         </div>

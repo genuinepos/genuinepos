@@ -24,7 +24,7 @@
                     </div>
 
                     <div class="col-md-6 d-flex justify-content-end">
-                        <a href="{{ route('settings.barcode.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                        <a href="{{ route('settings.barcode.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
                     </div>
                 </div>
 
@@ -88,6 +88,7 @@
                 e.preventDefault();
                 $('.data_preloader').show();
                 var url = $(this).attr('href');
+                console.log(url);
                 $.ajax({
                     url:url,
                     type:'get',

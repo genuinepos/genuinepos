@@ -146,7 +146,7 @@
                     </tr>
 
                     <tr>
-                        <th colspan="4" class="text-end">Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                        <th colspan="4" class="text-end">@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
 
                         <td colspan="2" class="text-end">
 
@@ -184,7 +184,7 @@
         @if (env('PRINT_SD_PURCHASE') == true)
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 </div>
             </div>
         @endif

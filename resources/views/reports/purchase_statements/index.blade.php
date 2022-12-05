@@ -152,7 +152,7 @@
                                                 <th>Grand Total</th>
                                                 <th>Paid</th>
                                                 <th>Return Amount</th>
-                                                <th>Due</th>
+                                                <th>@lang('menu.due')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

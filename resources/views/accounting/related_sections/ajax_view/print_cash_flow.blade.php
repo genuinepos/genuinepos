@@ -65,13 +65,13 @@
                                 @endphp
                                 <tr>
                                     <th class="text-start" colspan="2">
-                                        <strong>CASH FLOW FROM OPERATIONS :</strong>
+                                        <strong>@lang('menu.cash_flow_from_operations') :</strong>
                                     </th>
                                 </tr>
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>Net Profit Before Tax :</em>
+                                       <em>@lang('menu.net_profit_before_tax') :</em>
                                     </td>
 
                                     <td class="text-start">
@@ -84,7 +84,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>Customer Balance : </em>
+                                       <em>@lang('menu.customer_balance') : </em>
                                     </td>
 
                                     <td class="text-start">
@@ -97,7 +97,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>Supplier Balance : </em>
+                                       <em>@lang('menu.supplier_balance') : </em>
                                     </td>
 
                                     <td class="text-start">
@@ -110,7 +110,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>Current Stock Value : </em>
+                                       <em>@lang('menu.current_stock_value') : </em>
                                     </td>
 
                                     <td class="text-start">
@@ -123,7 +123,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                        <em>Current Asset :</em>
+                                        <em>@lang('menu.current_asset') :</em>
                                     </td>
 
                                     <td class="text-start">
@@ -136,7 +136,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>Current Liability :</em>
+                                       <em>@lang('menu.current_liability') :</em>
                                     </td>
 
                                     <td class="text-start">
@@ -149,7 +149,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>Tax Payable :</em>
+                                       <em>@lang('menu.tax_payable') :</em>
                                     </td>
 
                                     <td class="text-start">
@@ -163,7 +163,7 @@
                                 <tr>
                                     <td class="text-end">
                                         <b>
-                                            <em>Total Operations :
+                                            <em>@lang('menu.total_operations') :
                                                 ({{ json_decode($generalSettings->business, true)['currency'] }})
                                             </em>
                                         </b>
@@ -181,7 +181,7 @@
 
                                 <tr>
                                     <th class="text-start" colspan="2">
-                                        <strong>CASH FLOW FROM INVESTING :</strong>
+                                        <strong>@lang('menu.cash_flow_from_investing') :</strong>
                                     </th>
                                 </tr>
 
@@ -223,7 +223,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                        <em>Capital A/C :</em>
+                                        <em>@lang('menu.capital_ac') :</em>
                                     </td>
                                     <td class="text-start">0.00</td>
                                 </tr>
@@ -284,7 +284,7 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+            <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
         </div>
     </div>
 @endif

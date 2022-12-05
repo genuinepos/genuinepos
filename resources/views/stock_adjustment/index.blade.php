@@ -43,7 +43,7 @@
                                         @endif
 
                                         <div class="col-md-2">
-                                            <label><strong>Type :</strong></label>
+                                            <label><strong>@lang('menu.type') :</strong></label>
                                             <select name="type" id="type" class="form-control submit_able" autofocus>
                                                 <option value="">@lang('menu.all')</option>
                                                 <option value="1">Normal</option>
@@ -103,7 +103,7 @@
                                         <th class="text-start">@lang('menu.business_location')</th>
                                         <th class="text-start">Reason</th>
                                         <th class="text-start">@lang('menu.created_by')</th>
-                                        <th class="text-start">Type</th>
+                                        <th class="text-start">@lang('menu.type')</th>
                                         <th class="text-start">Total Amount</th>
                                         <th class="text-start">Total Recovered Amount</th>
                                     </tr>

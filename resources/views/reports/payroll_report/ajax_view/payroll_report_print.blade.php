@@ -62,7 +62,7 @@
                         <th class="text-start">@lang('menu.reference_no')</th>
                         <th class="text-start">Gross Amount</th>
                         <th class="text-start">Paid</th>
-                        <th class="text-start">Due</th>
+                        <th class="text-start">@lang('menu.due')</th>
                         <th class="text-start">Payment Status</th>
                     </tr>
                 </thead>
@@ -116,7 +116,7 @@
     @if (env('PRINT_SD_OTHERS') == 'true')
         <div class="row">
             <div class="col-md-12 text-center">
-                <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
             </div>
         </div>
     @endif

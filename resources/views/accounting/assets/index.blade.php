@@ -77,7 +77,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>@lang('menu.sl')</th>
-                                                        <th>Type</th>
+                                                        <th>@lang('menu.type')</th>
                                                         <th>@lang('menu.type_code')</th>
                                                         <th>@lang('menu.action')</th>
                                                     </tr>
@@ -106,7 +106,7 @@
                                                     <tr>
                                                         <th>@lang('menu.sl')</th>
                                                         <th>@lang('menu.asset')</th>
-                                                        <th>Type</th>
+                                                        <th>@lang('menu.type')</th>
                                                         <th>Available Loaction</th>
                                                         <th>@lang('menu.quantity')</th>
                                                         <th>@lang('menu.per_unit_value')</th>

@@ -6,7 +6,7 @@
 <table class="table modal-table table-sm table-bordered">
     <thead>
         <tr class="bg-secondary">
-            <th class="liability text-white">Liabilities</th>
+            <th class="liability text-white">@lang('menu.liabilities')</th>
             <th class="assets text-white">@lang('menu.assets')</th>
         </tr>
     </thead>
@@ -16,7 +16,7 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <td class="text-start"><em>Supplier Balance :</em>  </td>
+                            <td class="text-start"><em>@lang('menu.supplier_balance') :</em>  </td>
                             <td class=" text-end"> 
                                 <span class="supplier_due"><em>{{ App\Utils\Converter::format_in_bdt($suppliers->sum('total_due')) }}</em> </span>
                                 @php $totalLiability += $suppliers->sum('total_due')  @endphp
@@ -24,7 +24,7 @@
                         </tr>
 
                         <tr>
-                            <td class="text-start"><em>Customer Return Balance : </em> </td>
+                            <td class="text-start"><em>@lang('menu.customer_return_balance') : </em> </td>
                             <td class="text-end">
                                 <em class="customer_return_due">{{ App\Utils\Converter::format_in_bdt($customers->sum('total_return_due')) }}</em>
                                 @php $totalLiability += $customers->sum('total_return_due')  @endphp
@@ -33,7 +33,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Payable Loan & Liabilities : </em>
+                                <em>@lang('menu.payable_loan_liabilities') : </em>
                             </td>
 
                             <td class="text-end">
@@ -44,7 +44,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Capital A/C : </em>
+                                <em>@lang('menu.capital_ac') : </em>
                             </td>
                             
                             <td class="text-end"> 
@@ -55,7 +55,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Profit & Loss A/C : </em>
+                                <em>@lang('menu.profit_loss_ac') : </em>
                             </td>
                             
                             <td class="text-end"> 
@@ -66,7 +66,7 @@
 
                         <tr class="bg-danger">
                             <td class="text-end text-white">
-                                <em>Current Total : </em>
+                                <em>@lang('menu.current_total') : </em>
                             </td>
                             <td class="text-end text-white">
                                 <em>{{ App\Utils\Converter::format_in_bdt($totalLiability) }}</em>
@@ -75,7 +75,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Difference In Opening Balance: </em>
+                                <em>@lang('menu.difference_in_opening_balance') </em>
                             </td>
                             
                             <td class="text-end"> 
@@ -93,7 +93,7 @@
                     @endphp
                     <tbody>
                         <tr>
-                            <td class="text-start"><em>Cash-In-Hand : </em></td>
+                            <td class="text-start"><em>@lang('menu.cash_in_hand') : </em></td>
                             <td class="text-end"> 
                                 <em class="cash_in_hand">{{ App\Utils\Converter::format_in_bdt($totalCashInHand->sum('total_cash')) }}</em>
                                 @php 
@@ -104,7 +104,7 @@
                         </tr>
 
                         <tr>
-                            <td class="text-start"><em>Bank A/C Balance : </em></td>
+                            <td class="text-start"><em>@lang('menu.bank_ac_balance') </em></td>
                             <td class="text-end"> 
                                 <em class="bank_balance">{{ App\Utils\Converter::format_in_bdt($TotalBankBalance->sum('total_bank_balance')) }}</em>
                                 @php 
@@ -115,7 +115,7 @@
                         </tr>
 
                         <tr>
-                            <td class="text-start"><em>Customer Balance : </em></td>
+                            <td class="text-start"><em>@lang('menu.customer_balance') : </em></td>
                             <td class="text-end"> 
                                 <em class="customer_due">{{ App\Utils\Converter::format_in_bdt($customers->sum('total_due')) }}</em>
                                 @php 
@@ -126,7 +126,7 @@
                         </tr>
 
                         <tr>
-                            <td class="text-start"><em>Supplier Return Balance : </em></td>
+                            <td class="text-start"><em>@lang('menu.supplier_return_balance') : </em></td>
                             <td class="text-end">  
                                 <em class="supplier_return_due">{{ App\Utils\Converter::format_in_bdt($suppliers->sum('total_return_due')) }}</em>
                                 @php 
@@ -137,7 +137,7 @@
                         </tr>
 
                         <tr>
-                            <td class="text-start"><em>Current Stock Value : </em></td>
+                            <td class="text-start"><em>@lang('menu.current_stock_value') : </em></td>
                             <td class=" text-end">
                                 <em class="stock_value">{{ App\Utils\Converter::format_in_bdt($currentStockValue) }}</em>
                                 @php 
@@ -148,7 +148,7 @@
                         </tr>
 
                         <tr>
-                            <td class="text-start"><em>Investments : </em></td>
+                            <td class="text-start"><em>@lang('menu.investments') : </em></td>
                             <td class=" text-end">
                                 <em class="investment">{{ App\Utils\Converter::format_in_bdt($TotalInvestment->sum('total_investment')) }}</em>
                                 @php 
@@ -159,7 +159,7 @@
                         </tr>
 
                         <tr>
-                            <td class="text-start"><em>Receivable Loan&Advance : </em></td>
+                            <td class="text-start"><em>@lang('menu.receivable_loan_advance') : </em></td>
                             <td class=" text-end">
                                 <em class="receiveable_la">{{ App\Utils\Converter::format_in_bdt($loanCompanies->sum('total_la_receivable')) }}</em>
                                 @php 
@@ -170,7 +170,7 @@
                         </tr>
 
                         <tr class="bg-info">
-                            <td class="text-end text-white"><em>Total Current Asset : </em></td>
+                            <td class="text-end text-white"><em>@lang('menu.total_current_asset') : </em></td>
                             <td class=" text-end text-white">
                                 <em class="total_current_asset">{{ App\Utils\Converter::format_in_bdt($totalCurrnetAsset) }}</em>
                             </td>
@@ -182,7 +182,7 @@
                         </tr>
 
                         <tr class="bg-secondary">
-                            <th colspan="2" class="text-start text-white"><em>Fixed Assets List :</em></th>
+                            <th colspan="2" class="text-start text-white"><em>@lang('menu.fixed_assets_list') :</em></th>
                         </tr>
 
                         <tr class="account_balance_list_area">
@@ -222,7 +222,7 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <td class="text-start"><em>Total Liability : ({{ json_decode($generalSettings->business, true)['currency'] }}) </em> </td>
+                            <td class="text-start"><em>@lang('menu.total_liability') : ({{ json_decode($generalSettings->business, true)['currency'] }}) </em> </td>
                             <td class="text-end">
                                 <em class="total_liability">{{ App\Utils\Converter::format_in_bdt($totalLiability) }}</em>
                             </td>
@@ -234,7 +234,7 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <td class="text-start"><em>Total Asset : ({{ json_decode($generalSettings->business, true)['currency'] }})</em></td>
+                            <td class="text-start"><em>@lang('menu.total_asset') : ({{ json_decode($generalSettings->business, true)['currency'] }})</em></td>
                             <td class="text-end">
                                 <em class="total_asset">{{ App\Utils\Converter::format_in_bdt($totalAsset) }}</em>
                             </td>

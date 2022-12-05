@@ -38,7 +38,7 @@
 
                                             <div class="form-group row mt-1">
                                                 <div class="col-lg-4">
-                                                    <strong>Type :</strong> <span class="text-danger">*</span>
+                                                    <strong>@lang('menu.type') :</strong> <span class="text-danger">*</span>
                                                     <select name="type" class="form-control" id="type">
                                                         <option value="1">Warranty</option>
                                                         <option value="2">Guaranty</option>
@@ -75,7 +75,7 @@
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
                                                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                        <button type="reset" class="btn btn-sm btn-danger">Reset</button>
+                                                        <button type="reset" class="btn btn-sm btn-danger">@lang('menu.reset')</button>
                                                         <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                                     </div>
                                                 </div>
@@ -103,7 +103,7 @@
 
                                             <div class="row mt-1">
                                                 <div class="col-md-4">
-                                                    <strong>Type :</strong> <span class="text-danger">*</span>
+                                                    <strong>@lang('menu.type') :</strong> <span class="text-danger">*</span>
                                                     <select name="type" class="form-control" id="e_type">
                                                         <option value="1">Warranty</option>
                                                         <option value="2">Guaranty</option>
@@ -167,7 +167,7 @@
                                                 <thead>
                                                     <tr class="text-center">
                                                         <th>@lang('menu.sl')</th>
-                                                        <th>Name</th>
+                                                        <th>@lang('menu.name')</th>
                                                         <th>Duration</th>
                                                         <th>@lang('menu.description')</th>
                                                         <th>@lang('menu.action')</th>

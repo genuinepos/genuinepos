@@ -37,7 +37,7 @@
                             <thead>
                                 <tr>
                                     <th>@lang('menu.sl')</th>
-                                    <th>Name</th>
+                                    <th>@lang('menu.name')</th>
                                     <th>@lang('menu.date')</th>
                                     <th>Allowed Branch</th>
                                     <th>Note</th>

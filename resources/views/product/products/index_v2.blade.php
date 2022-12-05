@@ -42,7 +42,7 @@
                                         @endif
 
                                         <div class="col-md-2">
-                                            <label><b>Type :</b></label>
+                                            <label><b>@lang('menu.type') :</b></label>
                                             <select name="product_type" id="product_type"
                                                 class="form-control submit_able" autofocus>
                                                 <option value="">@lang('menu.all')</option>

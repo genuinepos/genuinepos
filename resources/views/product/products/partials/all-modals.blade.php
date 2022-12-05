@@ -166,7 +166,7 @@ aria-hidden="true">
 
                     <div class="row mt-1">
                         <div class="col-lg-4">
-                            <label><b>Type : </b> </label> <span class="text-danger">*</span>
+                            <label><b>@lang('menu.type') : </b> </label> <span class="text-danger">*</span>
                             <select name="type" class="form-control" id="type">
                                 <option value="1">Warranty</option>
                                 <option value="2">Guaranty</option>

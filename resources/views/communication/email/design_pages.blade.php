@@ -105,7 +105,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-end gap-2">
-                                        <button class="btn btn-sm btn-danger">Reset</button>
+                                        <button class="btn btn-sm btn-danger">@lang('menu.reset')</button>
                                         <button class="btn btn-sm btn-success">@lang('menu.save')</button>
                                     </div>
                                 </div>
@@ -187,7 +187,7 @@
                             <hr class="my-1">
                             <p><strong>Sub Total :</strong> @subtotal</p>
                             <p><strong>vat :</strong> @vat</p>
-                            <p><strong>Total Due :</strong> @due</p>
+                            <p><strong>@lang('menu.total_due') :</strong> @due</p>
                             <p><strong>Total Discount :</strong> @discount</p>
                             <p><strong>Total :</strong> @total_amount</p>
                             <br>
@@ -345,7 +345,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button class="btn btn-sm btn-danger">Reset</button>
+                                    <button class="btn btn-sm btn-danger">@lang('menu.reset')</button>
                                     <button class="btn btn-sm btn-success">@lang('menu.save')</button>
                                 </div>
                             </form>

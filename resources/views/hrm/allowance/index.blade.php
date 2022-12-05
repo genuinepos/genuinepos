@@ -38,7 +38,7 @@
                             <thead>
                                 <tr>
                                     <th>Serial</th>
-                                    <th>Type</th>
+                                    <th>@lang('menu.type')</th>
                                     <th>Max leave</th>
                                     <th>Leave Count Interval</th>
                                     <th>Actions</th>
@@ -78,7 +78,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>Type :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.type') :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="type" required="">
                                     <option value="Allowance">Allowance</option>
                                     <option value="Deduction">Deduction</option>
@@ -96,8 +96,8 @@
                             </div>
 
                             <div class="col-6">
-                                <label><b>Amount :</b>  <span class="text-danger">*</span></label>
-                                <input type="number" step="any" name="amount" class="form-control" placeholder="Amount"/>
+                                <label><b>@lang('menu.amount') :</b>  <span class="text-danger">*</span></label>
+                                <input type="number" step="any" name="amount" class="form-control" placeholder="@lang('menu.amount')"/>
                                 <span class="error error_amount"></span>
                             </div>
                         </div>

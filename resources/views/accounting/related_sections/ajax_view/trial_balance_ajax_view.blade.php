@@ -16,7 +16,7 @@
     </thead>
     <tbody>
         <tr>
-            <td class="text-start"><em>Supplier Balance :</em> </td>
+            <td class="text-start"><em>@lang('menu.supplier_balance') :</em> </td>
 
             <td class="text-end">
                 <em class="debit">0.00</em>
@@ -31,7 +31,7 @@
         </tr>
 
         <tr>
-            <td class="text-start"><em>Supplier Return Balance :</em> </td>
+            <td class="text-start"><em>@lang('menu.supplier_return_balance') :</em> </td>
 
             <td class="text-end">
                 <em class="debit">{{ App\Utils\Converter::format_in_bdt($suppliers->sum('return_balance')) }}</em>
@@ -46,7 +46,7 @@
         </tr>
 
         <tr>
-            <td class="text-start"><em>Customer Balance :</em></td>
+            <td class="text-start"><em>@lang('menu.customer_balance') :</em></td>
 
             <td class="text-end">
                 <em class="debit">{{ App\Utils\Converter::format_in_bdt($customers->sum('balance')) }}</em>
@@ -61,7 +61,7 @@
         </tr>
 
         <tr>
-            <td class="text-start"><em>Customer Return Balance :</em> </td>
+            <td class="text-start"><em>@lang('menu.customer_return_balance') :</em> </td>
 
             <td class="text-end">
                 <em class="debit">0.00</em>
@@ -123,7 +123,7 @@
         </tr>
 
         <tr>
-            <td class="text-start"><em>Difference In Opening Balance :</em> </td>
+            <td class="text-start"><em>@lang('menu.difference_in_opening_balance') :</em> </td>
 
             <td class="text-end">
                 <em class="debit">0.00</em>

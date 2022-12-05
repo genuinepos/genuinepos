@@ -138,7 +138,7 @@
                                                                 <th>Payment Status</th>
                                                                 <th>Total Amount</th>
                                                                 <th>Total Return</th>
-                                                                <th>Total Paid</th>
+                                                                <th>@lang('menu.total_paid')</th>
                                                                 <th>Total Remaining</th>
                                                             </tr>
                                                         </thead>
@@ -189,8 +189,8 @@
                                                                 <th>Expense For</th>
                                                                 <th>Payment Status</th>
                                                                 <th>Total Amount</th>
-                                                                <th>Total Paid</th>
-                                                                <th>Total Due</th>
+                                                                <th>@lang('menu.total_paid')</th>
+                                                                <th>@lang('menu.total_due')</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>

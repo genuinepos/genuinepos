@@ -142,9 +142,9 @@
                                         <tr class="bg-secondary text-white">
                                             <th>@lang('menu.date')</th>
                                             <th>@lang('menu.voucher_no')</th>
-                                            <th>Method</th>
-                                            <th>Type</th>
-                                            <th>Account</th>
+                                            <th>@lang('menu.method')</th>
+                                            <th>@lang('menu.type')</th>
+                                            <th>@lang('menu.account')</th>
                                             <th>
                                                 Amount({{ json_decode($generalSettings->business, true)['currency'] }})
                                             </th>
@@ -185,7 +185,7 @@
                                            @endforeach
                                        @else
                                            <tr>
-                                               <td colspan="7" class="text-center">No Data Found</td>
+                                               <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                                            </tr>
                                        @endif
                                     </tbody>
@@ -240,7 +240,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Due : </th>
+                                    <th class="text-start">@lang('menu.due') : </th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                                    </td>
@@ -489,7 +489,7 @@
                         </tr>
 
                         <tr>
-                            <th colspan="7" class="text-end">Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                             </td>
@@ -519,7 +519,7 @@
             @if (env('PRINT_SD_PURCHASE') == true)
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                        <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     </div>
                 </div>
             @endif

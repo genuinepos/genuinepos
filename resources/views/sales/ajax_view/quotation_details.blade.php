@@ -558,7 +558,7 @@
                     @if (env('PRINT_SD_SALE') == true)
                         <div class="col-4 text-center">
                             <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($quotation->invoice_id, $generator::TYPE_CODE_128)) }}">
-                            <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                            <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                         </div>
                     @endif
 
@@ -897,7 +897,7 @@
                     @if (env('PRINT_SD_SALE') == true)
                         <div class="col-4 text-center">
                             <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($quotation->invoice_id, $generator::TYPE_CODE_128)) }}">
-                            <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                            <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                         </div>
                     @endif
 

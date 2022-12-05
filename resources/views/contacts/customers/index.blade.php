@@ -79,14 +79,14 @@
                                 <tr class="text-start">
                                     <th>Actions</th>
                                     <th>Customer ID</th>
-                                    <th>Name</th>
+                                    <th>@lang('menu.name')</th>
                                     <th>Business</th>
                                     <th>Phone</th>
                                     <th>Group</th>
                                     <th>Credit Limit</th>
                                     <th>Opening Balance</th>
                                     <th>Total Sale</th>
-                                    <th>Total Paid</th>
+                                    <th>@lang('menu.total_paid')</th>
                                     <th>Sale Due</th>
                                     <th>Total Return</th>
                                     <th>Return Due</th>
@@ -246,7 +246,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Address :</strong> </label>
+                                <label><strong>@lang('menu.address') :</strong> </label>
                                 <input type="text" name="address" class="form-control" placeholder="Address">
                             </div>
                         </div>

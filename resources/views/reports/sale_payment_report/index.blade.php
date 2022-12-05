@@ -109,7 +109,7 @@
                                                 <th>Customer</th>
                                                 <th>@lang('menu.payment_method')</th>
                                                 <th>Sale Invoice ID</th>
-                                                <th>Amount({{json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.amount')({{json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

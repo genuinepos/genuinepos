@@ -38,7 +38,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Due :</th>
+                            <th width="50%" class="text-start">@lang('menu.due') :</th>
                             <td width="50%" class="text-start">
                                 {{ json_decode($generalSettings->business, true)['currency'] }} {{ $payment->due }}
                             </td>
@@ -85,12 +85,12 @@
             <tbody>
                 <tr>
                     <th width="50%">@lang('menu.signature_of_authority')</th>
-                    <th width="50%" class="text-end">Signature Of Receiver</th>
+                    <th width="50%" class="text-end">@lang('menu.signature_of_receiver')</th>
                 </tr>
 
                 @if (env('PRINT_SD_PAYMENT') == true)
                     <tr>
-                        <td colspan="2" class="text-navy-blue text-center">Software by <b>SpeedDigit Pvt. Ltd.</b></td>
+                        <td colspan="2" class="text-navy-blue text-center">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></td>
                     </tr>
                 @endif
             </tbody>

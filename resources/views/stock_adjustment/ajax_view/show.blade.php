@@ -51,7 +51,7 @@
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
                         <li><strong>@lang('menu.reference_no') : </strong> {{ $adjustment->invoice_id }}</li>
-                        <li><strong>Type : </strong>
+                        <li><strong>@lang('menu.type') : </strong>
                             {!! $adjustment->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>' !!}
                         </li>
                         <li><strong>@lang('menu.created_by') : </strong>
@@ -102,8 +102,8 @@
                                    <tr class="bg-secondary text-white">
                                        <th>@lang('menu.date')</th>
                                        <th>@lang('menu.voucher_no')</th>
-                                       <th>Method</th>
-                                       <th>Account</th>
+                                       <th>@lang('menu.method')</th>
+                                       <th>@lang('menu.account')</th>
                                        <th>
                                            Recovered Amount({{ json_decode($generalSettings->business, true)['currency'] }})
                                        </th>
@@ -122,7 +122,7 @@
                                     </tr>
                                   @else
                                       <tr>
-                                          <td colspan="7" class="text-center">No Data Found</td>
+                                          <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                                       </tr>
                                   @endif
                                </tbody>
@@ -233,7 +233,7 @@
                 <div class="col-4">
                     <ul class="list-unstyled float-right">
                         <li>
-                            <strong>Type : </strong>
+                            <strong>@lang('menu.type') : </strong>
                             {{ $adjustment->type == 1 ? 'Normal' : 'Abnormal' }}
                         </li>
                         <li>
@@ -314,7 +314,7 @@
         @if (env('PRINT_SD_OTHERS') == true)
             <div class="print_footer">
                 <div class="text-center">
-                    <small>Software by <b>SpeedDigit Pvt. Ltd.</b></small>
+                    <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 </div>
             </div>
         @endif

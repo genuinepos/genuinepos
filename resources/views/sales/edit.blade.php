@@ -499,7 +499,7 @@
                                             </div>
 
                                             <div class="row mb-2">
-                                                <label class="col-sm-5 col-form-label">Due :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.due') :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">
                                                 </div>

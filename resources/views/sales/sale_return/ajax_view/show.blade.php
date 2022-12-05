@@ -285,7 +285,7 @@
             <div class="note">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <small>Software by <strong>SpeedDigit Pvt. Ltd.</strong></small>
+                        <small>@lang('menu.software_by') <strong>@lang('menu.speedDigit_pvt_ltd').</strong></small>
                     </div>
                 </div>
             </div>

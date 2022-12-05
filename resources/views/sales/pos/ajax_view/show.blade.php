@@ -228,7 +228,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-startx">Total Due</th>
+                                    <th class="text-startx">@lang('menu.total_due')</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="total_due">
                                             {{ App\Utils\Converter::format_in_bdt($sale->due) }}

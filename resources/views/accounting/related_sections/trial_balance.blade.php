@@ -35,7 +35,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="text-start"><strong>Supplier Balance :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.supplier_balance') :</strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -47,7 +47,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>Supplier Return Balance :</strong> </td>
+                                            @lang('menu.supplier_return_balance')     <td class="text-start"><strong> :</strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -59,7 +59,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>Customer Balance :</strong></td>
+                                            <td class="text-start"><strong>@lang('menu.customer_balance') :</strong></td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -71,7 +71,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>Customer Return Balance :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.customer_return_balance') :</strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -119,7 +119,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>Difference In Opening Balance :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.difference_in_opening_balance') :</strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -149,7 +149,7 @@
 
                             <div class="print_footer d-hide">
                                 <div class="text-center">
-                                    <small>Software by <b>SpeedDigit Pvt. Ltd.</b></small>
+                                    <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                                 </div>
                             </div>
                         </div>

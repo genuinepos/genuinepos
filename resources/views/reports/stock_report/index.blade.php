@@ -285,7 +285,7 @@
                                                             <th>Warehouse</th>
                                                             <th>Unit Price</th>
                                                             <th>Current Stock</th>
-                                                            <th>Current Stock Value <b><small>(By Unit Cost)</small></b></th>
+                                                            <th>@lang('menu.current_stock_value') <b><small>(By Unit Cost)</small></b></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody></tbody>

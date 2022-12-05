@@ -56,7 +56,7 @@
             @endforeach
         @else
             <tr>
-                <th colspan="4" class="text-center">No Data Found.</th>
+                <th colspan="4" class="text-center">@lang('menu.no_data_found').</th>
             </tr>
         @endif
     </tbody>

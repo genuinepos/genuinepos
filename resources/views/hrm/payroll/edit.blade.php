@@ -129,7 +129,7 @@
                                                             </td>
 
                                                             <td>
-                                                                <input type="number" step="any" name="allowance_amounts[{{ $index }}]" class="form-control" id="allowance_amount" placeholder="Amount" value="{{ $allowance->allowance_amount }}">
+                                                                <input type="number" step="any" name="allowance_amounts[{{ $index }}]" class="form-control" id="allowance_amount" placeholder="@lang('menu.amount')" value="{{ $allowance->allowance_amount }}">
                                                             </td>
 
                                                             <td class="text-right">
@@ -163,7 +163,7 @@
                                                         </td>
 
                                                         <td>
-                                                            <input type="number" step="any" name="allowance_amounts[{{ $index }}]" class="form-control" id="allowance_amount" placeholder="Amount" value="0.00">
+                                                            <input type="number" step="any" name="allowance_amounts[{{ $index }}]" class="form-control" id="allowance_amount" placeholder="@lang('menu.amount')" value="0.00">
                                                         </td>
 
                                                         <td class="text-right">
@@ -247,7 +247,7 @@
                                                             </td>
 
                                                             <td>
-                                                                <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" id="deduction_amount" class="form-control" placeholder="Amount" value="{{ $deduction->deduction_amount }}">
+                                                                <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" id="deduction_amount" class="form-control" placeholder="@lang('menu.amount')" value="{{ $deduction->deduction_amount }}">
                                                             </td>
 
                                                             <td class="text-right">
@@ -282,7 +282,7 @@
                                                         </td>
 
                                                         <td>
-                                                            <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" class="form-control" id="deduction_amount" placeholder="Amount" value="0.00">
+                                                            <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" class="form-control" id="deduction_amount" placeholder="@lang('menu.amount')" value="0.00">
                                                         </td>
 
                                                         <td class="text-right">
@@ -443,7 +443,7 @@
         html += '</td>';
 
         html += '<td>';
-        html += '<input type="number" step="any" name="allowance_amounts['+(index+1)+']" class="form-control" id="allowance_amount" placeholder="Amount" value="0.00">';
+        html += '<input type="number" step="any" name="allowance_amounts['+(index+1)+']" class="form-control" id="allowance_amount" placeholder="@lang('menu.amount')" value="0.00">';
         html += '</td>';
 
         html += '<td class="text-right">';
@@ -485,7 +485,7 @@
         html += '</td>';
 
         html += '<td>';
-        html += '<input type="number" step="any" name="deduction_amounts['+(index2+1)+']" class="form-control" id="deduction_amount" placeholder="Amount" value="0.00">';
+        html += '<input type="number" step="any" name="deduction_amounts['+(index2+1)+']" class="form-control" id="deduction_amount" placeholder="@lang('menu.amount')" value="0.00">';
         html += '</td>';
 
         html += '<td class="text-right">';

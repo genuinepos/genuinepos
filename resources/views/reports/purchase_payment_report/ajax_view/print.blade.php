@@ -88,7 +88,7 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Paid Amount :</th>
+                    <th class="text-end">@lang('menu.total_paid') Amount :</th>
                     <td class="text-end">{{json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($totalPaid) }}</td>
                 </tr>
             </thead>
@@ -99,7 +99,7 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
 <div class="row">
     <div class="col-md-12 text-center">
-        <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+        <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
     </div>
 </div>
 @endif

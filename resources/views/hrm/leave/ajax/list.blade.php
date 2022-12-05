@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th class="text-start">@lang('menu.reference_no')</th>
-            <th class="text-start">Type</th>
+            <th class="text-start">@lang('menu.type')</th>
             <th class="text-start">Employee</th>
             <th class="text-start">@lang('menu.date')</th>
             <th class="text-start">Reason</th>

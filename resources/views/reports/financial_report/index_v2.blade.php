@@ -281,7 +281,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Payable Loan & Liabilities Due :</em>
+                                                        <em>@lang('menu.payable_loan_liabilities_due') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -297,7 +297,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Total Loan & Advance :</em>
+                                                        <em>@lang('menu.total_loan_advance') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -379,7 +379,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Bank A/C Balance :</em>
+                                                        <em>@lang('menu.bank_ac_balance'):</em>
                                                     </td>
 
                                                     <td class="text-start">

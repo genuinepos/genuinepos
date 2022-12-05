@@ -286,7 +286,7 @@
                 <p class="p-0 m-0">{{ $transfer->ref_id }}</b></small>
 
                 @if (env('PRINT_SD_OTHERS') == true)
-                    <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 @endif
             </div>
         </div>

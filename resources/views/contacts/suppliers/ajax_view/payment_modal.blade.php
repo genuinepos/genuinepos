@@ -48,14 +48,14 @@
                                     </span>
                                 </li>
 
-                                <li><strong>Total Paid : </strong>
+                                <li><strong>@lang('menu.total_paid') : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($amounts['total_paid']) }}</b>
                                     </span>
                                 </li>
 
-                                <li><strong>Total Due : </strong>
+                                <li><strong>@lang('menu.total_due') : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-danger">
                                         <b id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase_due']) }}</b>
@@ -182,7 +182,7 @@
                                                                                 <span class="text-primary"><b>Partial</b></span>
                                                                             @elseif ($payable == $row->due)
 
-                                                                                <span class="text-danger"><b>Due</b></span>
+                                                                                <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->total_purchase_amount) }}</td>
@@ -311,7 +311,7 @@
                                                                                 <span class="text-primary"><b>Partial</b></span>
                                                                             @elseif ($payable == $order->due)
 
-                                                                                <span class="text-danger"><b>Due</b></span>
+                                                                                <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($order->total_purchase_amount) }}</td>
@@ -348,7 +348,7 @@
                     <div class="col-md-7">
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <strong>Amount :</strong> <span class="text-danger">*</span>
+                                <strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_f"></i></span>
@@ -451,7 +451,7 @@
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                         <button name="action" type="submit" value="save" class="c-btn button-success float-end" id="add_supplier_payment">@lang('menu.save')</button>
-                        <button name="action" value="save_and_print" type="button" class="c-btn button-success float-end" id="add_supplier_payment">Save & Print</button>
+                        <button name="action" value="save_and_print" type="button" class="c-btn button-success float-end" id="add_supplier_payment">@lang('menu.save_print')</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
                 </div>

@@ -46,7 +46,7 @@
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
                                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                <button type="reset" class="btn btn-sm btn-danger">Reset</button>
+                                                <button type="reset" class="btn btn-sm btn-danger">@lang('menu.reset')</button>
                                                 <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                             </div>
                                         </div>
@@ -104,7 +104,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="text-start">Serial</th>
-                                                    <th class="text-start">Name</th>
+                                                    <th class="text-start">@lang('menu.name')</th>
                                                     <th class="text-start">Code</th>
                                                     <th class="text-start">@lang('menu.action')</th>
                                                 </tr>

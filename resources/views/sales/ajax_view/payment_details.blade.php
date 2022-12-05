@@ -112,7 +112,7 @@
             <tbody>
                 <tr>
                     <th width="50%">@lang('menu.signature_of_authority')</th>
-                    <th width="50%" class="text-end">Signature Of Receiver</th>
+                    <th width="50%" class="text-end">@lang('menu.signature_of_receiver')</th>
                 </tr>
 
                 <tr>

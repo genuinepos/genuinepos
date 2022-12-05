@@ -195,8 +195,8 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
-                                <button type="submit" value="save_and_print" class="btn btn-sm btn-success submit_button">Save & Print </button>
-                                <button type="submit" value="save" class="btn btn-sm btn-success submit_button">Save </button>
+                                <button type="submit" value="save_and_print" class="btn btn-sm btn-success submit_button">@lang('menu.save_print') </button>
+                                <button type="submit" value="save" class="btn btn-sm btn-success submit_button">@lang('menu.save') </button>
                             </div>
                         </div>
                     </div>

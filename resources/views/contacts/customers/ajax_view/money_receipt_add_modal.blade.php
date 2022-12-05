@@ -39,13 +39,13 @@
                             {{ $customer->total_sale }}
                         </span>
                     </li>
-                    <li><strong>Total Paid : </strong>
+                    <li><strong>@lang('menu.total_paid') : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_paid }}
                         </span>
                     </li>
-                    <li><strong>Total Due : </strong>
+                    <li><strong>@lang('menu.total_due') : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_sale_due }}

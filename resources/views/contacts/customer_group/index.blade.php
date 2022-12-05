@@ -47,7 +47,7 @@
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
                                                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><span> @lang('menu.loading')...</span></button>
-                                                        <button type="reset" class="btn btn-sm btn-danger">Reset</button>
+                                                        <button type="reset" class="btn btn-sm btn-danger">@lang('menu.reset')</button>
                                                         <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                                     </div>
                                                 </div>
@@ -111,7 +111,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Serial</th>
-                                                        <th>Name</th>
+                                                        <th>@lang('menu.name')</th>
                                                         <th>Calculation Percent</th>
                                                         <th>@lang('menu.action')</th>
                                                     </tr>

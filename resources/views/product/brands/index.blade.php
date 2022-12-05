@@ -85,7 +85,7 @@
                                                     <tr>
                                                         <th>Serial</th>
                                                         <th>Photo</th>
-                                                        <th>Name</th>
+                                                        <th>@lang('menu.name')</th>
                                                         <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>

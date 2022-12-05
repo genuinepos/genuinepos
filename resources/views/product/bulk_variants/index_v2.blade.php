@@ -134,7 +134,7 @@
                                             <table class="display data_tbl data__table">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-start">Name</th>
+                                                        <th class="text-start">@lang('menu.name')</th>
                                                         <th class="text-start">Childs</th>
                                                         <th class="text-start">@lang('menu.action')</th>
                                                     </tr>

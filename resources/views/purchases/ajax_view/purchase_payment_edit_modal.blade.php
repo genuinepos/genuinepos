@@ -50,7 +50,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                                <li><strong>@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                                     <span class="total_due">{{ $payment->purchase->due }}</span>
                                 </li>
                                 <li><strong>@lang('menu.date') : </strong>
@@ -76,7 +76,7 @@
                                     @elseif($payment->purchase->due > 0 && $payment->purchase->due < $payable) 
                                         <span class="text-primary"><b>Partial</b></span>
                                     @elseif($payable == $payment->purchase->due)
-                                        <span class="text-danger"><b>Due</b></span>
+                                        <span class="text-danger"><b>@lang('menu.due')</b></span>
                                     @endif
                                 </li>
                             </ul>
@@ -89,7 +89,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>

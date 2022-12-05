@@ -83,7 +83,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-9">
-            <b>Address :</b>
+            <b>@lang('menu.address') :</b>
             <input type="text" name="address" class="form-control" placeholder="Address" id="e_address" value="{{ $supplier->address }}">
         </div>
 
@@ -127,7 +127,7 @@
             <div class="btn-loading">
                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                <button type="submit" class="btn btn-sm btn-success">Save Change</button>
+                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_change')</button>
             </div>
         </div>
     </div>

@@ -283,7 +283,7 @@
                 <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($transfer->invoice_id, $generator::TYPE_CODE_128)) }}">
                 <p class="p-0 m-0"><b>{{ $transfer->invoice_id }}</b></p>
                 @if (env('PRINT_SD_OTHERS') == true)
-                    <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 @endif
             </div>
         </div>

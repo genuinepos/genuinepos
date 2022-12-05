@@ -23,7 +23,7 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Total Due : </strong>{{ $expense->due }}</li>
+                    <li><strong>@lang('menu.total_due') : </strong>{{ $expense->due }}</li>
                     <li><strong>@lang('menu.date') : </strong>{{ $expense->date }}</li>
                     <li><strong>Payment Status : </strong>
                         @php
@@ -35,7 +35,7 @@
                         @elseif ($expense->due > 0 && $expense->due < $payable)
                             <span class="badge bg-primary text-white">Partial</span>
                         @elseif ($payable == $expense->due)
-                            <span class="badge bg-danger text-white">Due</span>
+                            <span class="badge bg-danger text-white">@lang('menu.due')</span>
                         @endif
                     </li>
                 </ul>
@@ -54,9 +54,9 @@
                     <th class="text-start">@lang('menu.voucher_no')</th>
                     <th class="text-start">Note</th>
                     <th class="text-start">@lang('menu.amount')</th>
-                    <th class="text-start">Method</th>
-                    <th class="text-start">Type</th>
-                    <th class="text-start">Account</th>
+                    <th class="text-start">@lang('menu.method')</th>
+                    <th class="text-start">@lang('menu.type')</th>
+                    <th class="text-start">@lang('menu.account')</th>
                     <th class="text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -86,7 +86,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>

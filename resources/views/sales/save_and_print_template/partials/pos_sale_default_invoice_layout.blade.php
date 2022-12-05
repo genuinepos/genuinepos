@@ -351,7 +351,7 @@
                             @endif
 
                             <tr>
-                                <td class="text-end"><strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
+                                <td class="text-end"><strong> @lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></td>
                                 <td class="total_due text-end">
                                     {{ App\Utils\Converter::format_in_bdt($total_due > 0 ? $total_due : 0) }}
                                 </td>
@@ -409,7 +409,7 @@
 
                     <div class="col-4 text-center">
                         @if (env('PRINT_SD_SALE') == true)
-                            <small class="d-block">Software By <strong>SpeedDigit Pvt. Ltd.</strong></small>
+                            <small class="d-block">@lang('menu.software_by') <strong>@lang('menu.speedDigit_pvt_ltd').</strong></small>
                         @endif
                     </div>
 
@@ -679,7 +679,7 @@
                             @if (env('PRINT_SD_SALE') == true)
                                 <tr>
                                     <th class="text-center">
-                                        <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
+                                        <span>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b> </span>
                                     </th>
                                 </tr>
                             @endif

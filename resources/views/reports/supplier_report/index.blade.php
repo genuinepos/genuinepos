@@ -72,8 +72,8 @@
                                                             <th>Supplier</th>
                                                             <th>Opening Balance Due</th>
                                                             <th>Total Purchase</th>
-                                                            <th>Total Paid</th>
-                                                            <th>Total Due</th>
+                                                            <th>@lang('menu.total_paid')</th>
+                                                            <th>@lang('menu.total_due')</th>
                                                             <th>Total Return Due</th>
                                                         </tr>
                                                     </thead>

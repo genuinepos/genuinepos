@@ -273,7 +273,7 @@
                                     <div class="input-group">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" checked name="customer_name"> &nbsp;<b>Name</b></p>
+                                            <input type="checkbox" checked name="customer_name"> &nbsp;<b>@lang('menu.name')</b></p>
                                         </div>
                                     </div>
                                 </div>

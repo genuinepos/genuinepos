@@ -49,7 +49,7 @@
                 @endif
             @endforeach
         @else 
-            <td colspan="6" class="text-center"><b>No Data Found</b></td>        
+            <td colspan="6" class="text-center"><b>@lang('menu.no_data_found')</b></td>        
         @endif
         
     </tbody>

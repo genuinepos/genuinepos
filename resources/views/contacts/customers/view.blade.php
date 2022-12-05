@@ -226,7 +226,7 @@
                                     </li>
 
                                     <li>
-                                        <strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <strong> @lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                         <span class="total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</span>
                                     </li>
 
@@ -327,7 +327,7 @@
                                                     <th>@lang('menu.business_location')</th>
                                                     <th>Customer</th>
                                                     <th>Total Amount</th>
-                                                    <th>Total Paid</th>
+                                                    <th>@lang('menu.total_paid')</th>
                                                     <th>Sell Due</th>
                                                     <th>Return Amount</th>
                                                     <th>Return Due</th>
@@ -467,8 +467,8 @@
                                                         <th class="text-start">Against Invoice</th>
                                                         {{-- <th>Created By</th> --}}
                                                         <th class="text-start">Payment Status</th>
-                                                        <th class="text-start">Payment Type</th>
-                                                        <th class="text-start">Account</th>
+                                                        <th class="text-start">@lang('menu.payment_type')</th>
+                                                        <th class="text-start">@lang('menu.account')</th>
                                                         <th class="text-endx">Less Amount</th>
                                                         <th class="text-end">Paid Amount</th>
                                                         <th class="text-start">Actions</th>

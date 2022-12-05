@@ -7,5 +7,5 @@
         </li>
     @endforeach
 @else
-    <li class="list-group-item list-group-item-warning">No Data Found.</li>
+    <li class="list-group-item list-group-item-warning">@lang('menu.no_data_found').</li>
 @endif

@@ -219,7 +219,7 @@
                         </tr>
 
                         <tr>
-                            <th colspan="7" class="text-end">Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                             </td>
@@ -249,7 +249,7 @@
             @if (env('PRINT_SD_PURCHASE') == true)
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                        <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     </div>
                 </div>
             @endif

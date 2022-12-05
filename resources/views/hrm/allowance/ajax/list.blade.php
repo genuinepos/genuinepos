@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>@lang('menu.title')</th>
-            <th>Type</th>
+            <th>@lang('menu.type')</th>
             <th>@lang('menu.amount')</th>
             <th>@lang('menu.action')</th>
         </tr>

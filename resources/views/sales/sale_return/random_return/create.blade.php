@@ -370,7 +370,7 @@
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> </button>
-                            <button type="submit" id="save_and_print" class="btn btn-sm btn-success submit_button" value="save_and_print">Save & Print</button>
+                            <button type="submit" id="save_and_print" class="btn btn-sm btn-success submit_button" value="save_and_print">@lang('menu.save_print')</button>
                             <button type="submit" id="save" class="btn btn-sm btn-success submit_button" data-action="save">@lang('menu.save')</button>
                         </div>
                     </div>

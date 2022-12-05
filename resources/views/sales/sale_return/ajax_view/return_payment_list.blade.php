@@ -69,8 +69,8 @@
                 <tr class="bg-secondary">
                     <th class="text-white text-start">@lang('menu.date')</th>
                     <th class="text-white text-start">@lang('menu.voucher_no')</th>
-                    <th class="text-white text-start">Method</th>
-                    <th class="text-white text-start">Account</th>
+                    <th class="text-white text-start">@lang('menu.method')</th>
+                    <th class="text-white text-start">@lang('menu.account')</th>
                     <th class="text-white text-end">@lang('menu.amount')</th>
                     <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
@@ -109,7 +109,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>

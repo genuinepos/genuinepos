@@ -9,7 +9,7 @@
 <div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Loan Liability Payment</h6>
+            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.loan_liability_payment')</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                     class="fas fa-times"></span></a>
         </div>
@@ -30,20 +30,20 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Loan Get : </strong>
+                                <li><strong>@lang('menu.total_loan_get') : </strong>
                                     <span class="card_text invoice_no">
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                        <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}</b>
                                     </span>
                                 </li>
 
-                                <li><strong>Total Due Paid : </strong>
+                                <li><strong>@lang('menu.total_due_paid') : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->total_pay) }}</b>
                                     </span>
                                 </li>
-                                <li><strong>Total Payment Due : </strong>
+                                <li><strong>@lang('menu.total_payment_due') : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-danger">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}</b>
@@ -60,7 +60,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -145,7 +145,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                            <button name="action" value="save_and_print" type="submit" class="btn btn-sm btn-success" id="add_payment">Save & Print</button>
+                            <button name="action" value="save_and_print" type="submit" class="btn btn-sm btn-success" id="add_payment">@lang('menu.save_print')</button>
                             <button name="action" value="save" type="submit" class="btn btn-sm btn-success" id="add_payment">@lang('menu.save')</button>
                         </div>
                     </div>

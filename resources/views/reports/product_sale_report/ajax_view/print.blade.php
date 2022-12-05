@@ -122,7 +122,7 @@
     @if (env('PRINT_SD_OTHERS') == 'true')
         <div class="row">
             <div class="col-md-12 text-center">
-                <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
             </div>
         </div>
     @endif

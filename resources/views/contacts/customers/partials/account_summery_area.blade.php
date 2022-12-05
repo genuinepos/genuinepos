@@ -33,7 +33,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end total_paid">
                         {{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}
                     </td>

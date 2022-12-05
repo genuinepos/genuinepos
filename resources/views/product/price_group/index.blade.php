@@ -96,7 +96,7 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.sl')</th>
-                                                <th>Name</th>
+                                                <th>@lang('menu.name')</th>
                                                 <th>@lang('menu.description')</th>
                                                 <th>Status</th>
                                                 <th>@lang('menu.action')</th>

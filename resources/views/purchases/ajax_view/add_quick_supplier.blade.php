@@ -84,7 +84,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-12">
-            <label><strong>Address :</strong></label>
+            <label><strong>@lang('menu.address') :</strong></label>
             <input type="text" name="address" class="form-control"  placeholder="Address">
         </div>
     </div>

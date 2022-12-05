@@ -204,7 +204,7 @@
 
                 <div class="col-4 text-center">
                     @if (env('PRINT_SD_SALE') == true)
-                        <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                        <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     @endif
                 </div>
 

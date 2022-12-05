@@ -54,8 +54,8 @@
                     <th class="text-start">Against Invoice</th>
                     {{-- <th>@lang('menu.created_by')</th> --}}
                     <th class="text-start">Payment Status</th>
-                    <th class="text-start">Payment Type</th>
-                    <th class="text-start">Account</th>
+                    <th class="text-start">@lang('menu.payment_type')</th>
+                    <th class="text-start">@lang('menu.account')</th>
                     <th class="text-end">Less Amount</th>
                     <th class="text-end">Paid Amount</th>
                 </tr>
@@ -133,7 +133,7 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+            <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
         </div>
     </div>
 @endif

@@ -107,7 +107,7 @@
 
                                                                             <tr>
                                                                                 <td class="text-start">
-                                                                                    <strong>Payable Loan & Liabilities :</strong>
+                                                                                    <strong>@lang('menu.payable_loan_liabilities') :</strong>
                                                                                 </td>
 
                                                                                 <td class="text-end">
@@ -118,7 +118,7 @@
 
                                                                             <tr>
                                                                                 <td class="text-start">
-                                                                                    <strong>Capital A/C :</strong>
+                                                                                    <strong>@lang('menu.capital_ac') :</strong>
                                                                                 </td>
 
                                                                                 <td class="text-end">
@@ -150,7 +150,7 @@
                                                                             </tr>
 
                                                                             <tr>
-                                                                                <td class="text-start"><strong>Bank A/C Balance :</strong></td>
+                                                                                <td class="text-start"><strong>@lang('menu.bank_ac_balance'):</strong></td>
                                                                                 <td class="text-end">
                                                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                     <span class="bank_balance"></span>
@@ -174,7 +174,7 @@
                                                                             </tr>
 
                                                                             <tr>
-                                                                                <td class="text-start"><strong>Current Stock Value :</strong></td>
+                                                                                <td class="text-start"><strong>@lang('menu.current_stock_value') :</strong></td>
                                                                                 <td class=" text-end">
                                                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                     <span class="stock_value"></span>
@@ -182,7 +182,7 @@
                                                                             </tr>
 
                                                                             <tr>
-                                                                                <td class="text-start"><strong>Investments :</strong></td>
+                                                                                <td class="text-start"><strong>@lang('menu.investments') :</strong></td>
                                                                                 <td class=" text-end">
                                                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                     <span class="investment"></span>
@@ -190,7 +190,7 @@
                                                                             </tr>
 
                                                                             <tr>
-                                                                                <td class="text-start"><strong>Receivable Loan&Advance :</strong></td>
+                                                                                <td class="text-start"><strong>@lang('menu.receivable_loan_advance') :</strong></td>
                                                                                 <td class=" text-end">
                                                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                     <span class="receiveable_la"></span>
@@ -198,7 +198,7 @@
                                                                             </tr>
 
                                                                             <tr class="bg-info">
-                                                                                <td class="text-end text-white"><strong>Total Current Asset :</strong></td>
+                                                                                <td class="text-end text-white"><strong>@lang('menu.total_current_asset') :</strong></td>
                                                                                 <td class=" text-end">
                                                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                     <span class="total_physical_asset"></span>
@@ -244,7 +244,7 @@
                                                                     <table class="table table-sm">
                                                                         <tbody>
                                                                             <tr>
-                                                                                <td class="text-start"><strong>Total Liability :</strong> </td>
+                                                                                <td class="text-start"><strong>@lang('menu.total_liability') :</strong> </td>
                                                                                 <td class="text-end">
                                                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                     <span class="total_liability"></span>
@@ -257,7 +257,7 @@
                                                                     <table class="table table-sm">
                                                                         <tbody>
                                                                             <tr>
-                                                                                <td class="text-start"><strong>Total Asset :</strong></td>
+                                                                                <td class="text-start"><strong>@lang('menu.total_asset') :</strong></td>
                                                                                 <td class="text-end">
                                                                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                     <span class="total_asset"></span>

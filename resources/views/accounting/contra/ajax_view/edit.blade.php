@@ -57,9 +57,9 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+        <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
         <input type="number" step="any" name="amount" class="form-control add_input" data-name="Amount" id="amount"
-            placeholder="Amount" autocomplete="off" value="{{ $contra->amount }}"/>
+            placeholder="@lang('menu.amount')" autocomplete="off" value="{{ $contra->amount }}"/>
         <span class="error error_e_amount"></span>
     </div>
 

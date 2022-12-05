@@ -3,7 +3,7 @@
         <div class="card" id="add_loan_form">
             <div class="section-header">
                 <div class="col-md-6">
-                    <h6>Add Loan </h6>
+                    <h6>@lang('menu.add_loan') </h6>
                 </div>
             </div>
 
@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label><b>Type :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.type') :</b> <span class="text-danger">*</span></label>
                             <select name="type" class="form-control" id="type">
                                 <option value="">@lang('menu.select_type')</option>
                                 <option value="1">@lang('menu.loan_and_advance')</option>
@@ -88,7 +88,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Reset</button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.reset')</button>
                                 <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
         <div class="card d-hide" id="edit_loan_form">
             <div class="section-header">
                 <div class="col-md-12">
-                    <h6>Edit Loan </h6>
+                    <h6>@lang('menu.edit_loan')</h6>
                 </div>
             </div>
 
@@ -114,7 +114,7 @@
         <div class="card">
             <div class="section-header">
                 <div class="col-md-6">
-                    <h6>Loans</h6>
+                    <h6>@lang('menu.loans')</h6>
                 </div>
 
                 <div class="col-md-6">
@@ -134,7 +134,7 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label><strong>Loan Type :</strong></label>
+                            <label><strong>@lang('menu.loan_type') :</strong></label>
                             <select name="type_id" class="form-control submit_able" id="type_id">
                                 <option value="">@lang('menu.all')</option>
                                 <option value="1">@lang('menu.loan_and_advance')</option>
@@ -188,13 +188,13 @@
                                 <th>@lang('menu.action')</th>
                                 <th>@lang('menu.date')</th>
                                 <th>@lang('menu.b_location')</th>
-                                <th>Ref. No.</th>
+                                <th>@lang('menu.ref_no')</th>
                                 <th>@lang('menu.company')/@lang('menu.people')</th>
-                                <th>Type</th>
-                                <th>Loan By</th>
+                                <th>@lang('menu.type')</th>
+                                <th>@lang('menu.loan_by')</th>
                                 <th>@lang('menu.loan_amount')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                <th>Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                <th>Total Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                <th>@lang('menu.due')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                <th>@lang('menu.total_paid')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -214,7 +214,7 @@
     <div class="modal-dialog four-col-modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">Loan Details</h6>
+                <h6 class="modal-title" id="exampleModalLabel">@lang('menu.loan_details')</h6>
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                     class="fas fa-times"></span></a>
             </div>

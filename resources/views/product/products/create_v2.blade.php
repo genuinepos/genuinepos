@@ -441,7 +441,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Type :</b> </label>
+                                                <label class="col-4"><b>@lang('menu.type') :</b> </label>
                                                 <div class="col-8">
                                                     <select name="type" class="form-control" id="type">
                                                         <option value="1">General</option>

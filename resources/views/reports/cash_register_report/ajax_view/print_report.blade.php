@@ -75,8 +75,8 @@
                     <th class="text-start">User</th>
                     <th class="text-start">Status</th>
                     <th class="text-end">Total Sale</th>
-                    <th class="text-end">Total Paid</th>
-                    <th class="text-end">Total Due</th>
+                    <th class="text-end">@lang('menu.total_paid')</th>
+                    <th class="text-end">@lang('menu.total_due')</th>
                     <th class="text-end">Closing Amount</th>
                 </tr>
             </thead>
@@ -173,7 +173,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">All Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">All @lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalDueAmount) }}
                     </td>
@@ -194,7 +194,7 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+            <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
         </div>
     </div>
 @endif

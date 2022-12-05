@@ -5,8 +5,8 @@
             <th>Product</th>
             <th>Unit Price</th>
             <th>Current Stock</th>
-            <th>Current Stock Value <b><small>(By Unit Cost)</small></b></th>
-            <th>Current Stock Value <b><small>(By Unit Price)</small></b></th>
+            <th>@lang('menu.current_stock_value') <b><small>(By Unit Cost)</small></b></th>
+            <th>@lang('menu.current_stock_value') <b><small>(By Unit Price)</small></b></th>
             <th>Potential profit</th>
             <th>Total Unit Sold</th>
             <th>Total Adjusted</th>

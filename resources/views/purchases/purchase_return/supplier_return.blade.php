@@ -172,8 +172,8 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group mt-1">
-                                        <label for="inputEmail3" class="col-4"><b>Tax :</b>  <span class="text-danger">*</span></label>
-                                        <div class="col-8">
+                                        <label for="inputEmail3" class="col-6"><b>Tax :</b>  <span class="text-danger">*</span></label>
+                                        <div class="col-6">
                                             <select name="purchase_tax" class="form-control" id="purchase_tax">
                                             </select>
                                             <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00">
@@ -189,8 +189,8 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4 text-center"><b>Net Total Amount</b> : {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                        <div class="col-8">
+                                        <label for="inputEmail3" class="col-6"><b>Net Total Amount</b> : {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                        <div class="col-6">
                                             <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00" >
                                         </div>
                                     </div>

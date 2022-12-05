@@ -10,7 +10,7 @@
             <div class="row mb-3">
                 <div class="main__content">
                     <div class="welcome-user">
-                        <div class="alert mb-1 py-0 w-100 h-auto alert-primary">
+                        <div class="alert mb-1 py-0 w-100 h-auto alert-success">
                             <span>Welcome <strong>superadmin</strong></span>
                         </div>
                     </div>

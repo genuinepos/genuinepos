@@ -30,28 +30,24 @@
                                 <div class="col-md-12">
                                     <div class="form_element rounded mt-0 mb-3">
                                         <div class="element-body">
-                                            <div class="row">
-                                                <div class="col-md-8">
+                                            <div class="row justify-content-between align-items-end">
+                                                <div class="col-lg-4 col-md-6 col-9">
                                                     <form id="filter_tax_report_form" action="" method="get">
                                                         @csrf
-                                                        <div class="form-group row">
-                                                            <div class="col-md-4">
-                                                                <label><strong>@lang('menu.supplier') : </strong></label>
-                                                                <select name="supplier_id" class="form-control submit_able" id="supplier_id" autofocus>
-                                                                    <option value="">@lang('menu.all')</option>
-                                                                    @foreach ($suppliers as $supplier)
-                                                                        <option value="{{ $supplier->id }}">{{ $supplier->name.' ('.$supplier->phone.')' }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
+                                                        <label><strong>@lang('menu.supplier') : </strong></label>
+                                                        <select name="supplier_id" class="form-control submit_able" id="supplier_id" autofocus>
+                                                            <option value="">@lang('menu.all')</option>
+                                                            @foreach ($suppliers as $supplier)
+                                                                <option value="{{ $supplier->id }}">{{ $supplier->name.' ('.$supplier->phone.')' }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </form>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-6 col-3">
                                                     <div class="form-group">
                                                         <label></label>
-                                                        <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
+                                                        <a href="#" class="btn btn-sm btn-primary float-end mt-1" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                                     </div>
                                                 </div>
                                             </div>

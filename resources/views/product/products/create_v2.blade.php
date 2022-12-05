@@ -22,18 +22,18 @@
         </div>
         <form id="add_product_form" action="{{ route('products.add.store') }}" enctype="multipart/form-data" method="POST">
             @csrf
-            <section class="p-3">
+            <section class="p-lg-3 p-1">
                 <div class="row g-3">
-                    <div class="col-md-8">
+                    <div class="col-lg-8">
                         <div class="col-md-12">
-                            <div class="form_element rounded mt-0 mb-3">
+                            <div class="form_element rounded mt-0 mb-lg-3 mb-1">
 
                                 <div class="element-body">
-                                    <div class="row">
+                                    <div class="row gx-2 gy-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Product Name :</b> <span class="text-danger">*</span></label>
-                                                <div class="col-8">
+                                                <label class="col-5"><b>Product Name :</b> <span class="text-danger">*</span></label>
+                                                <div class="col-7">
                                                     <input type="text" name="name" class="form-control" id="name" placeholder="Product Name" autofocus>
                                                     <span class="error error_name"></span>
                                                 </div>
@@ -42,21 +42,19 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Product code
+                                                <label class="col-5"><b>Product code
                                                     <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique. If you leave this field empty, it will be generated automatically." class="fas fa-info-circle tp"></i> :</b> </label>
-                                                <div class="col-8">
+                                                <div class="col-7">
                                                     <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" value="" placeholder="Product Code">
                                                     <input type="hidden" name="auto_generated_code" id="auto_generated_code">
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Unit :</b> <span class="text-danger">*</span></label>
-                                                <div class="col-8">
+                                                <label class="col-5"><b>Unit :</b> <span class="text-danger">*</span></label>
+                                                <div class="col-7">
                                                     <div class="input-group">
                                                         <select class="form-control product_unit" name="unit_id" id="unit_id">
                                                             <option value="">Select Unit</option>
@@ -79,8 +77,8 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"> <b>Barcode Type  :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"> <b>Barcode Type  :</b> </label>
+                                                <div class="col-7">
                                                     <select class="form-control" name="barcode_type" id="barcode_type">
                                                         <option value="CODE128">Code 128 (C128)</option>
                                                         <option value="CODE39">Code 39 (C39)</option>
@@ -90,14 +88,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Category :</b> </label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>Category :</b> </label>
+                                                    <div class="col-7">
                                                         <div class="input-group">
                                                             <select class="form-control category" name="category_id"
                                                                 id="category_id">
@@ -120,8 +116,8 @@
                                         @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"> <b>Sub-category :</b> </label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"> <b>Sub-category :</b> </label>
+                                                    <div class="col-7">
                                                         <select class="form-control" name="child_category_id"
                                                             id="child_category_id">
                                                             <option value="">Select Category First</option>
@@ -130,14 +126,12 @@
                                                 </div>
                                             </div>
                                         @endif
-                                    </div>
 
-                                    <div class="row mt-1">
                                         @if (json_decode($generalSettings->product, true)['is_enable_brands'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Brand :</b> </label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>Brand :</b> </label>
+                                                    <div class="col-7">
                                                         <div class="input-group">
                                                             <select class="form-control" name="brand_id" id="brand_id">
                                                                 <option value="">Select Brand</option>
@@ -156,21 +150,19 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"> <b>Alert quentity  :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"> <b>Alert quentity  :</b> </label>
+                                                <div class="col-7">
                                                     <input type="number" step="any" name="alert_quantity" class="form-control " autocomplete="off" id="alert_quantity" value="0">
                                                     <span class="error error_alert_quantity"></span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Warranty :</b> </label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>Warranty :</b> </label>
+                                                    <div class="col-7">
                                                         <div class="input-group">
                                                             <select class="form-control" name="warranty_id" id="warranty_id">
                                                                 <option value="">Select Warranty</option>
@@ -192,8 +184,8 @@
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>@lang('menu.business_location') :</b> </label>
-                                                        <div class="col-8">
+                                                        <label class="col-5"><b>@lang('menu.business_location') :</b> </label>
+                                                        <div class="col-7">
                                                             <input type="hidden" name="branch_count" value="branch_count">
                                                             <select class="form-control select2" name="branch_ids[]" id="branch_ids" multiple>
                                                                 <option selected value="">
@@ -211,13 +203,11 @@
                                                 </div>
                                             @endif
                                         @endif
-                                    </div>
 
-                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"> <b>Condition  :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"> <b>Condition  :</b> </label>
+                                                <div class="col-7">
                                                     <select class="form-control" name="product_condition"
                                                         id="product_condition">
                                                         <option value="New">New</option>
@@ -258,14 +248,14 @@
                         </div>
 
                         <div class="col-md-12">
-                            <div class="form_element rounded mt-0 mb-3">
+                            <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                                 <div class="element-body">
                                     <div class="form_part">
-                                        <div class="row mt-1">
+                                        <div class="row gx-2 gy-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Unit Cost :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>Unit Cost :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
                                                         <input type="number" step="any" name="product_cost" class="form-control"
                                                         autocomplete="off" id="product_cost" placeholder="Unit cost" value="0.00">
                                                         <span class="error error_product_cost"></span>
@@ -275,20 +265,18 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
                                                         <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax">
                                                         <span class="error error_product_price"></span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
                                                         <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="Unit cost Inc.Tax" value="0.00">
                                                         <span class="error error_product_cost_with_tax"></span>
                                                     </div>
@@ -297,21 +285,19 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
                                                         <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
                                                         <span class="error error_profit"></span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
-                                            <div class="row mt-1">
+                                            @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>Tax :</b> </label>
-                                                        <div class="col-8">
+                                                        <label class="col-5"><b>Tax :</b> </label>
+                                                        <div class="col-7">
                                                             <select class="form-control" name="tax_id" id="tax_id">
                                                                 <option value="">@lang('menu.no_tax')</option>
                                                                 @foreach ($taxes as $tax)
@@ -324,8 +310,8 @@
 
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>Tax Type :</b> </label>
-                                                        <div class="col-8">
+                                                        <label class="col-5"><b>Tax Type :</b> </label>
+                                                        <div class="col-7">
                                                             <select name="tax_type" class="form-control" id="tax_type">
                                                                 <option value="1">Exclusive</option>
                                                                 <option value="2">Inclusive</option>
@@ -333,14 +319,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        @endif
+                                            @endif
 
-                                        <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Thumbnail Photo :</b> </label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>Thumbnail Photo :</b> </label>
+                                                    <div class="col-7">
                                                         <input type="file" name="photo" class="form-control" id="photo">
                                                         <span class="error error_photo"></span>
                                                     </div>
@@ -371,7 +355,7 @@
                                                         <div class="table-responsive mt-1">
                                                             <table class="table modal-table table-sm">
                                                                 <thead>
-                                                                    <tr class="text-center bg-primary variant_header">
+                                                                    <tr class="text-center bg-secondary variant_header">
                                                                         <th class="text-white text-start">Select Variant</th>
                                                                         <th class="text-white text-start">Varient code <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Variant code(SKU) must be unique." class="fas fa-info-circle tp"></i>
                                                                         </th>
@@ -436,13 +420,13 @@
                         </div>
 
                         <div class="col-md-12">
-                            <div class="form_element rounded mt-0 mb-3">
+                            <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                                 <div class="element-body">
-                                    <div class="row">
+                                    <div class="row gx-2 gy-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Type :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"><b>Type :</b> </label>
+                                                <div class="col-7">
                                                     <select name="type" class="form-control" id="type">
                                                         <option value="1">General</option>
                                                         <option value="2">Combo</option>
@@ -450,13 +434,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"> <b>Weight :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"> <b>Weight :</b> </label>
+                                                <div class="col-7">
                                                     <input type="text" name="weight" class="form-control" id="weight" placeholder="Weight">
                                                 </div>
                                             </div>
@@ -464,19 +446,17 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Custom Field1 :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"><b>Custom Field1 :</b> </label>
+                                                <div class="col-7">
                                                     <input type="text" name="custom_field_1" class="form-control" placeholder="Custom field1">
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Custom Field2 :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"><b>Custom Field2 :</b> </label>
+                                                <div class="col-7">
                                                     <input type="text" name="custom_field_2" class="form-control" placeholder="Custom field2">
                                                 </div>
                                             </div>
@@ -484,15 +464,13 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Custom Field3 :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"><b>Custom Field3 :</b> </label>
+                                                <div class="col-7">
                                                     <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3">
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <div class="col-12">
@@ -568,7 +546,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">

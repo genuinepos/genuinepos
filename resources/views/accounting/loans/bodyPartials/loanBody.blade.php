@@ -113,11 +113,11 @@
     <div class="col-md-8">
         <div class="card">
             <div class="section-header">
-                <div class="col-md-6">
+                <div class="col-6">
                     <h6>Loans</h6>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-6">
                     <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                 </div>
             </div>

@@ -17,7 +17,7 @@
             <form id="add_user_form" action="{{ route('users.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <section class="p-3">
-                    <div class="row g-3">
+                    <div class="row gx-3">
 
                         <div class="col-md-6">
                             <div class="form_element rounded mt-0 mb-3">
@@ -64,7 +64,7 @@
                         </div>
                     </div>
 
-                    <div class="row g-3">
+                    <div class="row gx-3">
                         <div class="col-md-6">
                             <div class="form_element rounded mt-0 mb-3">
                                 <div class="heading_area">
@@ -111,7 +111,7 @@
                         </div>
                     </div>
 
-                    <div class="row g-3">
+                    <div class="row gx-3">
                         <div class="col-md-6">
                             <div class="form_element rounded mt-0 mb-3">
                                 <div class="heading_area">

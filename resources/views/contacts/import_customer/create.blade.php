@@ -40,7 +40,7 @@
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div class="col-8">
-                                                <button class="btn btn-sm btn-primary float-start">Upload</button>
+                                                <button class="btn btn-sm btn-primary float-start m-0">Upload</button>
                                             </div>
                                         </div>
                                     </div>

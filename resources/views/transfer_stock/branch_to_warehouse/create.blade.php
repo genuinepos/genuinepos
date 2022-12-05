@@ -21,23 +21,21 @@
                     <h6>Add Transfer Stock (Business Location To Warehouse)</h6>
                 </div>
 
-                <div class="col-6">
-                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
-                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-lg-3 p-1">
             <form id="add_transfer_to_warehouse_form" action="{{ route('transfer.stock.to.warehouse.store') }}" method="POST">
                 @csrf
                 <input class="hidden_sp" type="hidden" name="action" id="action">
                 <section>
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-lg-3 mb-1">
 
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-3"><b>@lang('menu.b_location') :</b></label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.b_location') :</b></label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                             <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
@@ -64,7 +62,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-2"><b>@lang('menu.date') :</b></label>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.date') :</b></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control  changeable" autocomplete="off"
                                                 value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
@@ -74,7 +72,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-3"><b>Ref ID :</b>
+                                        <label for="inputEmail3" class=" col-4"><b>Ref ID :</b>
                                             <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i>
                                         </label>
 
@@ -145,49 +143,49 @@
                 </section>
 
                 <section>
-                        <div class="form_element rounded my-3">
+                    <div class="form_element rounded my-lg-3 my-1">
 
-                            <div class="element-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="input-group">
-                                            <label for="inputEmail3" class=" col-4"><b>Total Item :</b></label>
-                                            <div class="col-8">
-                                                <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
-                                                <input type="number" step="any" class="d-hide" name="total_send_quantity" id="total_send_quantity">
-                                            </div>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4"><b>Total Item :</b></label>
+                                        <div class="col-8">
+                                            <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
+                                            <input type="number" step="any" class="d-hide" name="total_send_quantity" id="total_send_quantity">
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="col-md-3">
-                                        <div class="input-group">
-                                            <label for="inputEmail3" class=" col-4"><b>Net Total : {{ json_decode($generalSettings->business, true)['currency'] }}</b> </label>
-                                            <div class="col-8">
-                                                <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4"><b>Net Total : {{ json_decode($generalSettings->business, true)['currency'] }}</b> </label>
+                                        <div class="col-8">
+                                            <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="col-md-3">
-                                        <div class="input-group">
-                                            <label for="inputEmail3" class=" col-4"><b>Ship Cost :</b> </label>
-                                            <div class="col-8">
-                                                <input name="shipping_charge" type="number" class="form-control" id="shipping_charge" value="0.00">
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4"><b>Ship Cost :</b> </label>
+                                        <div class="col-8">
+                                            <input name="shipping_charge" type="number" class="form-control" id="shipping_charge" value="0.00">
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="col-md-3">
-                                        <div class="input-group">
-                                            <label for="inputEmail3" class="col-2"><b>Note :</b></label>
-                                            <div class="col-10">
-                                                <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="Additional note">
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-2"><b>Note :</b></label>
+                                        <div class="col-10">
+                                            <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="Additional note">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </section>
 
                 <div class="submit_button_area">

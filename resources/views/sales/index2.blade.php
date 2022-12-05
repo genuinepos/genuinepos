@@ -103,12 +103,12 @@
 
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-10">
+                                <div class="col-6">
                                     <h6>All Sale</h6>
                                 </div>
 
                                 @if(auth()->user()->can('create_add_sale'))
-                                    <div class="col-md-2 d-flex justify-content-end">
+                                    <div class="col-6 d-flex justify-content-end">
                                         <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> @lang('menu.add') (Ctrl+Enter)</a>
                                     </div>
                                 @endif

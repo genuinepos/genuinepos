@@ -18,11 +18,11 @@
         <div class="p-3">
             <div class="form_element rounded m-0">
                 <div class="section-header">
-                    <div class="col-md-6">
+                    <div class="col-6">
                         <h6>All User Roles</h6>
                     </div>
 
-                    <div class="col-md-6 d-flex justify-content-end">
+                    <div class="col-6 d-flex justify-content-end">
                         <a href="{{ route('users.role.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                     </div>
                 </div>

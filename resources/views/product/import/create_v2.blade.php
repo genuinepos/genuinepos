@@ -18,8 +18,8 @@
         </div>
         <form id="add_user_form" action="{{ route('product.import.store') }}" enctype="multipart/form-data" method="POST">
             @csrf
-            <section class="p-3">
-                <div class="row g-3">
+            <section class="p-lg-3 p-1">
+                <div class="row g-lg-3 g-1">
                     <div class="col-12">
                         <div class="form_element rounded m-0">
 

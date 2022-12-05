@@ -20,7 +20,7 @@
                     <div class="p-3">
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-10">
+                                <div class="col-12">
                                     <h6>All Transferred Stocks From Branch</h6>
                                 </div>
                             </div>

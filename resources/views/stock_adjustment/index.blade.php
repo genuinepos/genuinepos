@@ -79,11 +79,11 @@
                 </div>
                 <div class="card">
                     <div class="section-header">
-                        <div class="col-md-10">
+                        <div class="col-6">
                             <h6>All Adjustment</h6>
                         </div>
 
-                        <div class="col-md-2 d-flex justify-content-end">
+                        <div class="col-6 d-flex justify-content-end">
                             <a href="{{ route('stock.adjustments.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                         </div>
                     </div>

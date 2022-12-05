@@ -1,5 +1,5 @@
-<div class="row g-3 sub-categories tab_contant">
-    <div class="col-md-4">
+<div class="row g-lg-3 g-1 sub-categories tab_contant">
+    <div class="col-lg-4">
         <div class="card" id="add_sub_cate_form">
             <div class="section-header">
                 <div class="col-md-12">
@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    <div class="col-md-8">
+    <div class="col-lg-8">
         <div class="card">
             <div class="section-header">
                 <div class="col-md-6">

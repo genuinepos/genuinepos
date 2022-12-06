@@ -552,7 +552,7 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-center">
-                        <small>Print Date : {{ date('d/m/Y') }}</small>
+                        <small>@lang('menu.print_date') : {{ date('d/m/Y') }}</small>
                     </div>
 
                     @if (env('PRINT_SD_SALE') == true)
@@ -891,7 +891,7 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-center">
-                        <small>Print Date : {{ date('d/m/Y') }}</small>
+                        <small>@lang('menu.print_date') : {{ date('d/m/Y') }}</small>
                     </div>
 
                     @if (env('PRINT_SD_SALE') == true)

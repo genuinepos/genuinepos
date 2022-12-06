@@ -41,7 +41,7 @@
                                     </span>
                                 </li>
 
-                                <li><strong>Total Sale/Order : </strong>
+                                <li><strong>@lang('menu.total_sale')/Order : </strong>
                                     <span class="card_text" id="customer_payment_total_sale">
                                         {{ App\Utils\Converter::format_in_bdt($amounts['total_sale']) }}
                                     </span>

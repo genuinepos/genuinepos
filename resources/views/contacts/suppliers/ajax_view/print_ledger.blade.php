@@ -25,7 +25,7 @@
 
             @if ($addons->branches == 1)
 
-                <p><strong>All Business Location</strong></p>
+                <p><strong>@lang('menu.all_business_location')</strong></p>
             @endif
 
         @elseif ($branch_id == 'NULL')
@@ -211,6 +211,6 @@
 
 <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer">
     <small style="font-size: 5px;float:right;" class="text-end">
-        Print Date: {{ date('d-m-Y , h:iA') }}
+        @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
     </small>
 </div>

@@ -560,7 +560,7 @@
 
                 <div class="row">
                     <div class="col-md-6 text-center">
-                        <small>Print Date : {{ date('d/m/Y') }}</h6>
+                        <small>@lang('menu.print_date') : {{ date('d/m/Y') }}</h6>
                     </div>
                     <div class="col-md-6 text-center">
                         <small>Print Time : {{ date('h:i:s') }}</h6>
@@ -916,7 +916,7 @@
 
                 <div class="row">
                     <div class="col-md-6 text-center">
-                        <small>Print Date : {{ date('d/m/Y') }}</small>
+                        <small>@lang('menu.print_date') : {{ date('d/m/Y') }}</small>
                     </div>
                     <div class="col-md-6 text-center">
                         <small>Print Time : {{ date('h:i:s') }}</small>

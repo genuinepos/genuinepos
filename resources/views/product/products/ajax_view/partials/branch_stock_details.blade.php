@@ -10,7 +10,7 @@
             <th class="text-white text-start">Total Opening Stock(+)</th>
             <th class="text-white text-start">Total Sale Return(+)</th>
             <th class="text-white text-start">@lang('menu.total_received')(+)</th>
-            <th class="text-white text-start">Total Sale(-)</th>
+            <th class="text-white text-start">@lang('menu.total_sale')(-)</th>
             <th class="text-white text-start">Total Adjusted(-)</th>
             <th class="text-white text-start">Total Transferred(-)</th>
             <th class="text-white text-start">Total Purchase Return(-)</th>

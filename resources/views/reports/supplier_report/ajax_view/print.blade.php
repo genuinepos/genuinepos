@@ -38,7 +38,7 @@
             <thead>
                 <tr>
                     <th class="text-start">Supplier</th>
-                    <th class="text-end">Total Purchase</th>
+                    <th class="text-end">@lang('menu.total_purchase')</th>
                     <th class="text-end">@lang('menu.total_paid')</th>
                     <th class="text-end">Opening Balance Due</th>
                     <th class="text-end">@lang('menu.total_due')</th>
@@ -79,7 +79,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Purchase : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_purchase') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalPurchase) }}</td>
                 </tr>
 
@@ -112,6 +112,6 @@
 
 <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
     <small style="font-size: 5px;" class="text-end">
-        Print Date: {{ date('d-m-Y , h:iA') }}
+        @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
     </small>
 </div>

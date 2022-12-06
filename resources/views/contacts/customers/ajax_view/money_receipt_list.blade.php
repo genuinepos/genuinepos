@@ -33,7 +33,7 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li class="text-navy-blue"><strong>Total Sale : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.total_sale') : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_sale }}

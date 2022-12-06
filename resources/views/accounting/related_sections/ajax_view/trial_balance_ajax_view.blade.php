@@ -78,7 +78,7 @@
 
             @foreach ($accounts as $account)
                 <tr>
-                    <td class="text-start"><em>Customer Balance :</em></td>
+                    <td class="text-start"><em>@lang('menu.customer_balance') :</em></td>
 
                     <td class="text-end">
                         <em class="debit">{{ App\Utils\Converter::format_in_bdt($customers->sum('balance')) }}</em>

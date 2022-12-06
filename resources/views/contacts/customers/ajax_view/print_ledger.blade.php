@@ -25,7 +25,7 @@
 
             @if ($addons->branches == 1)
 
-                <p><strong>All Business Location</strong></p>
+                <p><strong>@lang('menu.all_business_location')</strong></p>
             @endif
 
         @elseif ($branch_id == 'NULL')

@@ -26,7 +26,7 @@
 
                         <tr>
                             <td class="text-start">
-                               <em>Total Purchase :</em>
+                               <em>@lang('menu.total_purchase') :</em>
                             </td>
 
                             <td class="text-end">
@@ -72,7 +72,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Total Sale:</em>
+                                <em>@lang('menu.total_sale'):</em>
                             </td>
 
                             <td class="text-end">

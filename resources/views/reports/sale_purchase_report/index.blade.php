@@ -119,7 +119,7 @@
                                                         <table class="table modal-table table-sm">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th>Total Purchase :</th>
+                                                                    <th>@lang('menu.total_purchase') :</th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                 </tr>
 
@@ -148,7 +148,7 @@
                                                         <table class="table modal-table table-sm">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th>Total Sale :</th>
+                                                                    <th>@lang('menu.total_sale') :</th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                 </tr>
 

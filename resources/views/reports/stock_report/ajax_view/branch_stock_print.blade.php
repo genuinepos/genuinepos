@@ -22,7 +22,7 @@
 
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location</b></p>
+            <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
 
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
@@ -98,7 +98,7 @@
 <div id="footer">
     <div class="row mt-1">
         <div class="col-4 text-start">
-            <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+            <small>@lang('menu.print_date') : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
         </div>
 
         <div class="col-4 text-center">

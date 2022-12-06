@@ -6,7 +6,7 @@
             <th class="text-white text-start">@lang('menu.business_location')</th>
             <th class="text-white text-start">Current Stock</th>
             <th class="text-white text-start">Stock Value</th>
-            <th class="text-white text-start">Total Sale</th>
+            <th class="text-white text-start">@lang('menu.total_sale')</th>
         </tr>
     </thead>
     <tbody>

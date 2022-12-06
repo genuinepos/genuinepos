@@ -67,7 +67,7 @@
                                                         <tr class="text-start">
                                                             <th>Supplier</th>
                                                             <th>Opening Balance Due</th>
-                                                            <th>Total Purchase</th>
+                                                            <th>@lang('menu.total_purchase')</th>
                                                             <th>@lang('menu.total_paid')</th>
                                                             <th>@lang('menu.total_due')</th>
                                                             <th>Total Return Due</th>

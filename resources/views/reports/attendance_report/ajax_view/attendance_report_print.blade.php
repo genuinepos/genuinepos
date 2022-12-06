@@ -30,7 +30,7 @@
                         @endphp
                         <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b>(BL) </h5>
                     @elseif($branch_id == '')
-                        <h5><b>All Business Location</b></h5> 
+                        <h5><b>@lang('menu.all_business_location')</b></h5> 
                     @endif
                     <h6><b>Attendance Report</b></h6>
                     <h6>Attendance Of {{ $s_date .' To '. $e_date }}</h6>
@@ -91,6 +91,6 @@
 
 <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
     <small style="font-size: 5px;" class="text-end">
-        Print Date: {{ date('d-m-Y , h:iA') }}
+        @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
     </small>
 </div>

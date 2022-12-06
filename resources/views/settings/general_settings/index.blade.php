@@ -384,7 +384,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Purchase Return :</strong></label>
+                                            <label><strong>@lang('menu.purchase_return') :</strong></label>
                                             <input type="text" name="purchase_return" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['purchase_return'] }}">

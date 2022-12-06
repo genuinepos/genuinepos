@@ -197,7 +197,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-center">
-                    <small>Print Date :
+                    <small>@lang('menu.print_date') :
                         {{ date(json_decode($generalSettings->business, true)['date_format']) }}
                     </small>
                 </div>

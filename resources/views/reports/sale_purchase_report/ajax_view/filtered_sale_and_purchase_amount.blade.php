@@ -38,7 +38,7 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <th>Total Purchase :</th>
+                                <th>@lang('menu.total_purchase') :</th>
                                 <td>
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ App\Utils\Converter::format_in_bdt($total_purchase) }}
@@ -85,7 +85,7 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <th>Total Sale :</th>
+                                <th>@lang('menu.total_sale') :</th>
                                 <td>
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ App\Utils\Converter::format_in_bdt($total_sale) }}

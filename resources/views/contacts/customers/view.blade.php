@@ -206,7 +206,7 @@
                                     </li>
 
                                     <li>
-                                        <strong> Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <strong> @lang('menu.total_sale') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                         <span class="total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</span>
                                     </li>
 

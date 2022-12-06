@@ -22,7 +22,7 @@
         <div class="col-md-12 text-center">
             @if ($branch_id == '')
                 <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-                <p><b>All Business Location.</b></p> 
+                <p><b>@lang('menu.all_business_location').</b></p> 
                 <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
             @elseif ($branch_id == 'NULL')
                 <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
@@ -123,7 +123,7 @@
                         <tbody>
                             <tr>
                                 <th class="text-start">
-                                    Total Sales : <br>
+                                    @lang('menu.total_sale') : <br>
                                     <small>(Inc.Tax)</small>
                                 </th>
 

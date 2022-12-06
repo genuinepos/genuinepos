@@ -10,7 +10,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="far fa-money-bill-alt"></span>
-                    <h5>Cash Flow Statements</h5>
+                    <h5>@lang('menu.total_cash_statement')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -207,7 +207,7 @@
                                                 {{-- Cash Flow from financing --}}
                                                 <tr>
                                                     <th class="text-start" colspan="2">
-                                                        <strong>CASH FLOW FROM FINANCING :</strong>
+                                                        <strong>@lang('menu.cash_flow_form_financing') :</strong>
                                                     </th>
                                                 </tr>
 
@@ -220,14 +220,14 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Loan And Advance :</em>
+                                                        <em>@lang('menu.loan_and_advance') :</em>
                                                     </td>
                                                     <td class="text-start">0.00</td>
                                                 </tr>
 
                                                 <tr class="bg-info">
                                                     <td class="text-start text-white">
-                                                        <b><em>Total financing :</em>  </b>
+                                                        <b><em>@lang('menu.total_financing') :</em>  </b>
                                                     </td>
 
                                                     <td class="text-start text-white">

@@ -107,7 +107,7 @@
                                                 {{-- Cash Flow from operations --}}
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>Total Sale :</em>
+                                                    <em>@lang('menu.total_sale') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -117,7 +117,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>Purchase Return :</em>
+                                                    <em>@lang('menu.purchase_return') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -127,7 +127,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>Total Purchase : </em>
+                                                    <em>@lang('menu.total_purchase') : </em>
                                                     </td>
 
                                                     <td class="text-start">

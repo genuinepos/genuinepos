@@ -85,7 +85,7 @@
                                     <th>Group</th>
                                     <th>Credit Limit</th>
                                     <th>Opening Balance</th>
-                                    <th>Total Sale</th>
+                                    <th>@lang('menu.total_sale')</th>
                                     <th>@lang('menu.total_paid')</th>
                                     <th>Sale Due</th>
                                     <th>Total Return</th>

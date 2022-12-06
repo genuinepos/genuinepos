@@ -84,7 +84,7 @@
                         <tbody>
                             <tr>
                                 <th class="text-start">
-                                    Total Sales : <br>
+                                    @lang('menu.total_sale') : <br>
                                     <small>(Inc.Tax)</small>
                                 </th>
 

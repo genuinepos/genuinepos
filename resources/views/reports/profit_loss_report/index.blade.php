@@ -165,7 +165,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <th class="text-start">
-                                                            Total Sales : <br>
+                                                            @lang('menu.total_sale') : <br>
                                                             <small>((Exc. tax, Discount))</small>
                                                         </th>
                                                         <td class="text-start"> 0.0</td>

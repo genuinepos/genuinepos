@@ -41,7 +41,7 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Purchase : </strong>
+                                <li><strong>@lang('menu.total_purchase') : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text">
                                         <b>{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase']) }}</b>

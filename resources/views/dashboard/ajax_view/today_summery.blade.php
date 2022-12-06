@@ -7,7 +7,7 @@
         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
             <div class="col-md-6">
                 <select name="branch_id" id="today_branch_id" class="form-control">
-                    <option value="">All Business Locations</option>
+                    <option value="">@lang('menu.all_business_locations')</option>
                     <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ json_decode($generalSettings->business, true)['shop_name'] }}(@lang('menu.head_office'))</option>
                     @foreach ($branches as $br)
                         <option {{ $branch_id == $br->id ? 'SELECTED' : '' }} value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
@@ -50,7 +50,7 @@
                         @if ($branch_id == 'HF')
                             {{ json_decode($generalSettings->business, true)['shop_name'] }} <strong>(@lang('menu.head_office'))</strong>
                         @elseif($branch_id == '')
-                            All Business Locations.
+                        @lang('menu.all_business_locations').
                         @else
                             {{ $branch->name.'/'.$branch->branch_code }}
                         @endif
@@ -69,7 +69,7 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Total Purchase :</th>
+                            <th class="text-start">@lang('menu.total_purchase') :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchase) }}</td>
                         </tr>
 
@@ -139,7 +139,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total sale :</th>
+                            <th class="text-start">@lang('menu.total_sale') :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSales) }}</td>
                         </tr>
 

@@ -404,7 +404,7 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-start">
-                        <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+                        <small>@lang('menu.print_date') : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                     </div>
 
                     <div class="col-4 text-center">

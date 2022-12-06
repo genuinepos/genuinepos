@@ -6,7 +6,7 @@
         @if ($branch_id == '')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location</b></p>
+            <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
@@ -61,7 +61,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>Total Purchase :</em>
+                                       <em>@lang('menu.total_purchase') :</em>
                                     </td>
 
                                     <td class="text-end">
@@ -107,7 +107,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                        <em>Total Sale:</em>
+                                        <em>@lang('menu.total_sale'):</em>
                                     </td>
 
                                     <td class="text-end">

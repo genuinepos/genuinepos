@@ -12,7 +12,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Total Purchase : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_purchase') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end total_purchase" id="purchase_order_total_purchase"></td>
                 </tr>
 

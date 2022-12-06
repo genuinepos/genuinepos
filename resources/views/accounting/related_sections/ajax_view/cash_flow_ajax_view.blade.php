@@ -192,7 +192,7 @@
                         {{-- Cash Flow from financing --}}
                         <tr>
                             <th class="text-start" colspan="2">
-                                <strong>CASH FLOW FROM FINANCING :</strong>
+                                <strong>@lang('menu.cash_flow_form_financing') :</strong>
                             </th>
                         </tr>
 
@@ -205,7 +205,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Loan And Advance :</em>
+                                <em>@lang('menu.loan_and_advance') :</em>
                             </td>
                             <td class="text-start">({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</td>
                         </tr>
@@ -213,7 +213,7 @@
                         <tr>
                             <td class="text-end">
                                 <b>
-                                    <em>Total financing :
+                                    <em>@lang('menu.total_financing') :
                                         ({{ json_decode($generalSettings->business, true)['currency'] }})
                                     </em>
                                 </b>
@@ -231,7 +231,7 @@
 
                         {{-- <tr class="bg-info">
                             <td class="text-start text-white">
-                                <b><em>Total financing :</em>  </b>
+                                <b><em>@lang('menu.total_financing') :</em>  </b>
                             </td>
 
                             <td class="text-start text-white">

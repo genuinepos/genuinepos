@@ -80,7 +80,7 @@
                                     <th>Business</th>
                                     <th>Phone</th>
                                     <th>Opening Balance</th>
-                                    <th>Total Purchase</th>
+                                    <th>@lang('menu.total_purchase')</th>
                                     <th>@lang('menu.total_paid')</th>
                                     <th>Purchase Due</th>
                                     <th>Total Return</th>

@@ -11,7 +11,7 @@
                 <div class="main__content">
                     <div class="welcome-user">
                         <div class="alert mb-1 py-0 w-100 h-auto alert-success">
-                            <span>Welcome <strong>superadmin</strong></span>
+                            <span>@lang('menu.welcome') <strong>@lang('menu.superadmin')</strong></span>
                         </div>
                     </div>
                     <div class="d-flex flex-wrap mt-2 switch_bar_cards">
@@ -34,7 +34,7 @@
                             <a href="{{ route('short.menus.modal.form') }}" class="bar-link" id="addShortcutBtn">
                                 <span><i class="fas fa-plus-square text-white"></i></span>
                             </a>
-                            <p>Add Shortcut</p>
+                            <p>@lang('menu.add_shortcut')</p>
                         </div>
                     </div>
 
@@ -46,7 +46,7 @@
                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                         <div class="select-dropdown">
                                             <select name="branch_id" id="branch_id">
-                                                <option value="">All Business Locations</option>
+                                                <option value="">@lang('menu.all_business_locations')</option>
                                                 <option value="NULL">
                                                     {{ json_decode($generalSettings->business, true)['shop_name'] }}
                                                     (@lang('menu.head_office'))</option>
@@ -64,7 +64,7 @@
                                 {{-- <div class="button-group">
                                     <label class="button-group__btn" id="date" data-value="{{ $toDay }}">
                                         <input type="radio" name="group" />
-                                        <span class="button-group__label">Current Day</span>
+                                        <span class="button-group__label">@lang('menu.current_day')</span>
                                     </label>
 
                                     <label class="button-group__btn">
@@ -89,11 +89,11 @@
                                 </div> --}}
                                 <div class="select-dropdown">
                                     <select name="" id="">
-                                        <option value="">Current Day</option>
-                                        <option value="">This Week</option>
-                                        <option value="">This Month</option>
-                                        <option value="">This Year</option>
-                                        <option value="">All Time</option>
+                                        <option value="">@lang('menu.current_day')</option>
+                                        <option value="">@lang('menu.this_week')</option>
+                                        <option value="">@lang('menu.this_month')</option>
+                                        <option value="">@lang('menu.this_year')</option>
+                                        <option value="">@lang('menu.all_time')</option>
                                     </select>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                                             <i class="fas fa-receipt"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Total Purchase</h3>
+                                            <h3 class="sub-title">@lang('menu.total_purchase')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_purchase"></span>
@@ -123,7 +123,7 @@
                                             <i class="fas fa-money-check"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Total Sale</h3>
+                                            <h3 class="sub-title">@lang('menu.total_sale')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_sale"></span>

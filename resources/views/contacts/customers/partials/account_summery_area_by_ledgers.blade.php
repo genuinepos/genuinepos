@@ -16,7 +16,7 @@
 
                 <tr>
                     <td class="text-end">
-                        <strong>Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                        <strong>@lang('menu.total_sale') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                     </td>
 
                     <td class="text-end total_sale" id="ledger_total_sale">0.00</td>

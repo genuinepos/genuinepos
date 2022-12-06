@@ -23,7 +23,7 @@
         @if ($branch_id == '')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location</b></p>
+            <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
@@ -44,7 +44,7 @@
                 <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
-        <h6 style="margin-top: 10px;"><b>Cash Flow Statement </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.total_cash_statement') </b></h6>
     </div>
 </div>
 <br>
@@ -217,7 +217,7 @@
                                 {{-- Cash Flow from financing --}}
                                 <tr>
                                     <th class="text-start" colspan="2">
-                                        <strong>CASH FLOW FROM FINANCING :</strong>
+                                        <strong>@lang('menu.cash_flow_form_financing') :</strong>
                                     </th>
                                 </tr>
 
@@ -230,7 +230,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                        <em>Loan And Advance :</em>
+                                        <em>@lang('menu.loan_and_advance') :</em>
                                     </td>
                                     <td class="text-start">({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</td>
                                 </tr>
@@ -238,7 +238,7 @@
                                 <tr>
                                     <td class="text-end">
                                         <b>
-                                            <em>Total financing :
+                                            <em>@lang('menu.total_financing') :
                                                 ({{ json_decode($generalSettings->business, true)['currency'] }})
                                             </em>
                                         </b>
@@ -259,7 +259,7 @@
                                     <td class="text-end">
                                         <b>
                                             <em>
-                                                Total Cash Flow : ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                                @lang('menu.total_cash_flow') : ({{ json_decode($generalSettings->business, true)['currency'] }})
                                             </em>
                                         </b>
                                     </td>
@@ -291,6 +291,6 @@
 
 <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
     <small style="font-size: 5px;" class="text-end">
-        Print Date: {{ date('d-m-Y , h:iA') }}
+        @lang('menu.print_date') {{ date('d-m-Y , h:iA') }}
     </small>
 </div>

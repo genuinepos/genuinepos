@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-6">
-                        <h6>All Business Locations</h6>
+                        <h6>@lang('menu.all_business_locations')</h6>
                     </div>
 
                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)

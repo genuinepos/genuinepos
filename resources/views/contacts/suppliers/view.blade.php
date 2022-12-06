@@ -197,7 +197,7 @@
                         <div class="col-md-3">
                             <ul class="list-unstyled">
                                 <li>
-                                    <strong> Total Purchase : </strong>
+                                    <strong> @lang('menu.total_purchase') : </strong>
                                 </li>
 
                                 <li>

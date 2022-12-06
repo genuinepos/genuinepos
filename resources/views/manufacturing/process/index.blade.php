@@ -5,73 +5,67 @@
 @section('title', 'All Process - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-dumpster-fire"></span>
-                                <h6>Process</h6>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
-                            </a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-dumpster-fire"></span>
+                    <h6>Process</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
+                </a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="card">
+                <div class="section-header">
+                    <div class="col-6">
+                        <h6>Process</h6>
                     </div>
 
-                    <div class="p-3">
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-6">
-                                    <h6>Process</h6>
-                                </div>
-
-                                @if (auth()->user()->can('process_add'))
-                                    <div class="col-6 d-flex justify-content-end">
-                                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <form id="update_product_cost_form" action="">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr class="bg-navey-blue">
-                                                    <th data-bSortable="false">
-                                                        <input class="all" type="checkbox" name="all_checked"/>
-                                                    </th>
-                                                    <th class="text-black">@lang('menu.action')</th>
-                                                    <th class="text-black">Product Name</th>
-                                                    <th class="text-black">Category</th>
-                                                    <th class="text-black">SubCategory</th>
-                                                    <th class="text-black">Wastage</th>
-                                                    <th class="text-black">Output Quantity</th>
-                                                    <th class="text-black">Total Ingrediant Cost</th>
-                                                    <th class="text-black">Production Cost</th>
-                                                    <th class="text-black">Total Cost</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </form>
-                                </div>
-                            </div>
-
-                            @if (auth()->user()->can('process_delete'))
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
-                            @endif
+                    @if (auth()->user()->can('process_add'))
+                        <div class="col-6 d-flex justify-content-end">
+                            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                         </div>
+                    @endif
+                </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader">
+                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                    </div>
+                    <div class="table-responsive" id="data-list">
+                        <form id="update_product_cost_form" action="">
+                            <table class="display data_tbl data__table">
+                                <thead>
+                                    <tr class="bg-navey-blue">
+                                        <th data-bSortable="false">
+                                            <input class="all" type="checkbox" name="all_checked"/>
+                                        </th>
+                                        <th class="text-black">@lang('menu.action')</th>
+                                        <th class="text-black">Product Name</th>
+                                        <th class="text-black">Category</th>
+                                        <th class="text-black">SubCategory</th>
+                                        <th class="text-black">Wastage</th>
+                                        <th class="text-black">Output Quantity</th>
+                                        <th class="text-black">Total Ingrediant Cost</th>
+                                        <th class="text-black">Production Cost</th>
+                                        <th class="text-black">Total Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </form>
                     </div>
                 </div>
+
+                @if (auth()->user()->can('process_delete'))
+                    <form id="deleted_form" action="" method="post">
+                        @method('DELETE')
+                        @csrf
+                    </form>
+                @endif
             </div>
         </div>
     </div>

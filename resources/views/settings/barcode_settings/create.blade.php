@@ -27,9 +27,9 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Setting Name :</b> <span class="text-danger">*
+                                        <label class="col-5"><b>Setting Name :</b> <span class="text-danger">*
                                         </span></label>
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <input type="text" name="name" class="form-control" id="name"
                                                 placeholder="Sticker Sheet setting Name" autofocus>
                                                 <span class="error error_name"></span>
@@ -39,9 +39,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Setting Description :</b> </label>
+                                        <label class="col-5"><b>Setting Description :</b> </label>
 
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <textarea class="form-control" name="description" id="" cols="10" rows="3" placeholder="Sticker Sheet setting Description"></textarea>
                                         </div>
                                     </div>
@@ -64,9 +64,9 @@
                             <div class="row mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Top Margin (Inc) :  <span class="text-danger">*
+                                        <label class="col-5"> <b>Top Margin (Inc) :  <span class="text-danger">*
                                         </b></span></label>
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-arrow-up input_i"></i></span>
@@ -80,9 +80,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Left Margin (Inc) : <span class="text-danger">*
+                                        <label class="col-5"> <b>Left Margin (Inc) : <span class="text-danger">*
                                         </span> </b> </label>
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-arrow-left input_i"></i></span>
@@ -98,9 +98,9 @@
                             <div class="row mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Sticker Width (Inc) : <span class="text-danger">*
+                                        <label class="col-5"> <b>Sticker Width (Inc) : <span class="text-danger">*
                                         </span> </b> </label>
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-text-width input_i"></i></span>
@@ -114,9 +114,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Sticker Height (Inc) :<span class="text-danger">*
+                                        <label class="col-5"> <b>Sticker Height (Inc) :<span class="text-danger">*
                                         </span></b></label>
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-text-height input_i"></i></span>
@@ -132,9 +132,9 @@
                             <div class="row mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Paper Width (Inc) : <span class="text-danger">*
+                                        <label class="col-5"> <b>Paper Width (Inc) : <span class="text-danger">*
                                         </span> </b> </label>
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-text-width input_i"></i></span>
@@ -148,9 +148,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Paper Height (Inc) : <span class="text-danger">*
+                                        <label class="col-5"> <b>Paper Height (Inc) : <span class="text-danger">*
                                         </span></b></label>
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-text-height input_i"></i></span>
@@ -166,9 +166,9 @@
                             <div class="row mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Row Distance (Inc) :<span class="text-danger">*
+                                        <label class="col-5"> <b>Row Distance (Inc) :<span class="text-danger">*
                                         </span> </b> </label>
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-arrows-alt-v input_i"></i></span>
@@ -182,9 +182,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Col Distance (Inc) : <span class="text-danger">*
+                                        <label class="col-5"> <b>Col Distance (Inc) : <span class="text-danger">*
                                         </span></b></label>
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-arrows-alt-h input_i"></i></span>
@@ -200,9 +200,9 @@
                             <div class="row mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Stickers In a Row :<span class="text-danger">*
+                                        <label class="col-5"> <b>Stickers In a Row :<span class="text-danger">*
                                         </span> </b> </label>
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-th input_i"></i></span>
@@ -216,9 +216,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>No. of Stickers per sheet : <span class="text-danger">*
+                                        <label class="col-5"> <b>No. of Stickers per sheet : <span class="text-danger">*
                                         </span></b></label>
-                                        <div class="col-8">
+                                        <div class="col-7">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-braille input_i"></i></span>

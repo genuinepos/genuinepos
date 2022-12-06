@@ -138,7 +138,7 @@
                                                         <table class="display data__table table-striped">
                                                             <thead class="staky">
                                                                 <tr>
-                                                                    <th>Product</th>
+                                                                    <th>@lang('menu.product')</th>
                                                                     <th></th>
                                                                     <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th>Unit</th>

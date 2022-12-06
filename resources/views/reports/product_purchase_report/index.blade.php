@@ -132,7 +132,7 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Product</th>
+                                                <th>@lang('menu.product')</th>
                                                 <th>P.Code</th>
                                                 <th>Supplier</th>
                                                 <th>P.Invoice ID</th>

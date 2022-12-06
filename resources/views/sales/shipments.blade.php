@@ -114,9 +114,9 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Invoice ID</th>
+                                                <th>@lang('menu.invoice_id')</th>
                                                 <th>Sale From</th>
-                                                <th>Customer</th>
+                                                <th>@lang('menu.customer')</th>
                                                 <th>@lang('menu.created_by')</th>
                                                 <th>Shipment Status</th>
                                                 <th>Payment Status</th>

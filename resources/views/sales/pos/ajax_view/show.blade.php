@@ -210,7 +210,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-startx">Sale Return</th>
+                                    <th class="text-startx">@lang('menu.sale_return')</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="sale_return_amount">
                                             {{ App\Utils\Converter::format_in_bdt($sale->sale_return_amount) }}

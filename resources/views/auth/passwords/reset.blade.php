@@ -9,7 +9,7 @@
                         <div class="head">
                             <img src="{{ asset('assets/images/genuine_pos.png') }}" alt="" class="logo">
                             <span class="head-text">
-                                Genuine POS, Point of Sale Software By SpeedDigit
+                                {{ __('Genuine POS, Point of Sale software by SpeedDigit') }}
                             </span>
                         </div>
                     </div>
@@ -24,7 +24,7 @@
 
                     <div class="main-form">
                         <div class="form-title">
-                            <p>Reset Password</p>
+                            <p>@lang('menu.reset_password')</p>
                         </div>
                         <form action="{{ route('password.update') }}" method="POST">
                             @csrf

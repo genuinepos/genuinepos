@@ -60,7 +60,7 @@
                                     <div class="input-group">
                                         <label class=" col-4"><b>R. Invoice ID :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="@lang('menu.invoice_id')">
                                         </div>
                                     </div>
 
@@ -148,9 +148,9 @@
                                             <table class="display data__table table-striped">
                                                 <thead class="staky">
                                                     <tr>
-                                                        <th>Product</th>
+                                                        <th>@lang('menu.product')</th>
                                                         <th>Purchase Price</th>
-                                                        <th>Current Stock</th>
+                                                        <th>@lang('menu.current_stock')</th>
                                                         <th>Return Quantity</th>
                                                         <th>Return Subtotal</th>
                                                         <th><i class="fas fa-trash-alt"></i></th>

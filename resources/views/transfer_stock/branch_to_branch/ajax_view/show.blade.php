@@ -82,7 +82,7 @@
                             <thead>
                                 <tr class="bg-secondary text-white">
                                     <th class="text-start">@lang('menu.sl')</th>
-                                    <th class="text-start">Product</th>
+                                    <th class="text-start">@lang('menu.product')</th>
                                     <th class="text-start">Unit Cost Inc.Tax</th>
                                     <th class="text-start">@lang('menu.quantity')</th>
                                     <th class="text-start">Receive Qty</th>
@@ -231,7 +231,7 @@
                     <tr>
                         <tr>
                             <th class="text-start">@lang('menu.sl')</th>
-                            <th class="text-start">Product</th>
+                            <th class="text-start">@lang('menu.product')</th>
                             <th class="text-start">Unit Cost Inc.Tax</th>
                             <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">Receive Qty</th>
@@ -365,7 +365,7 @@
                     <tr>
                         <tr>
                             <th class="text-start">@lang('menu.sl')</th>
-                            <th class="text-start">Product</th>
+                            <th class="text-start">@lang('menu.product')</th>
                             <th class="text-start">Send Qty</th>
                             <th class="text-start">Unit</th>
                         </tr>

@@ -156,7 +156,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Total Stock Adjustment :</em>
+                                <em>@lang('menu.total_stock_adjustment') :</em>
                             </td>
 
                             <td class="text-end">
@@ -192,7 +192,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Gross Profit :</em>
+                                <em>@lang('menu.gross_profit') :</em>
                             </td>
 
                             <td class="text-end">
@@ -202,7 +202,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Net Profit :</em>
+                                <em>@lang('menu.net_profit') :</em>
                             </td>
 
                             <td class="text-end">

@@ -71,7 +71,7 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Invoice ID :</b></label>
+                                        <label class="col-4"><b>@lang('menu.invoice_id') :</b></label>
                                         <div class="col-8">
                                             <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control">
                                         </div>
@@ -144,7 +144,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Purchase A/C : <span
+                                        <label class="col-4"><b>@lang('menu.purchase_ac') : <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-8">
                                             <select name="purchase_account_id" class="form-control add_input"
@@ -196,7 +196,7 @@
                                             <table class="display data__table table-striped">
                                                 <thead class="staky">
                                                     <tr>
-                                                        <th>Product</th>
+                                                        <th>@lang('menu.product')</th>
                                                         <th>@lang('menu.quantity')</th>
                                                         <th>Unit Cost(BD <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Discount" class="fas fa-info-circle tp"></i>)</th>
                                                         <th>Discount</th>

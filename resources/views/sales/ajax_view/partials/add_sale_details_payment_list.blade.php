@@ -4,7 +4,7 @@
             <thead>
                 <tr class="bg-secondary text-white">
                     <th class="text-start">@lang('menu.date')</th>
-                    <th class="text-start">Invoice ID</th>
+                    <th class="text-start">@lang('menu.invoice_id')</th>
                     <th class="text-start">@lang('menu.amount')</th>
                     <th class="text-start">@lang('menu.account')</th>
                     <th class="text-start">@lang('menu.method')</th>

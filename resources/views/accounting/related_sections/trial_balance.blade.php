@@ -7,7 +7,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-balance-scale-left"></span>
-                    <h5>Trial Balance</h5>
+                    <h5>@lang('menu.trial_balance')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
@@ -20,7 +20,7 @@
                             <div class="print_header d-hide">
                                 <div class="text-center pb-3">
                                     <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-                                    <h6><strong>TRIAL BALANCE</h6>
+                                    <h6><strong>@lang('menu.trial_balance')</h6>
                                 </div>
                             </div>
 
@@ -28,7 +28,7 @@
                                 <table class="table modal-table table-sm table-bordered">
                                     <thead>
                                         <tr class="bg-secondary">
-                                            <th class="trial_balance text-start text-white">Accounts</th>
+                                            <th class="trial_balance text-start text-white">@lang('menu.accounts')</th>
                                             <th class="debit text-white">@lang('menu.debit')</th>
                                             <th class="credit text-white">@lang('menu.credit')</th>
                                         </tr>
@@ -83,7 +83,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>Purchase A/C :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.purchase_ac') :</strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -95,7 +95,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>Sale A/C :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.sale_ac') :</strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -107,7 +107,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>Opening Stock :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.opening_stock') :</strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>

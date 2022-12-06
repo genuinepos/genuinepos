@@ -150,11 +150,11 @@
                                                     </th>
                                                     <th>Image</th>
                                                     <th>@lang('menu.action')</th>
-                                                    <th>Product</th>
+                                                    <th>@lang('menu.product')</th>
                                                     <th>Access Locations</th>
                                                     <th>Purchase Cost</th>
                                                     <th>Selling Price</th>
-                                                    <th>Current Stock</th>
+                                                    <th>@lang('menu.current_stock')</th>
                                                     <th>Product Type</th>
                                                     <th>Category</th>
                                                     <th>Brand</th>

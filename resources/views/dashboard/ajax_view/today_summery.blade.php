@@ -84,7 +84,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Adjustment :</th>
+                            <th class="text-start">@lang('menu.total_adjustment') :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($total_adjustment) }}</td>
                         </tr>
 
@@ -134,7 +134,7 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Current Stock :</th>
+                            <th class="text-start">@lang('menu.current_stock') :</th>
                             <td class="text-start">{{ $currency }} 0.00</td>
                         </tr>
 

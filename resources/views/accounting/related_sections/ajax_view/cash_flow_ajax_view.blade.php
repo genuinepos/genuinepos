@@ -247,7 +247,7 @@
                         <tr class="bg-secondary">
                             <td class="text-end text-white">
                                 <b>
-                                    <em>Total Cash Flow : ({{ json_decode($generalSettings->business, true)['currency'] }})</em>
+                                    <em>@lang('menu.total_cash_flow') : ({{ json_decode($generalSettings->business, true)['currency'] }})</em>
                                 </b>
                             </td>
                             <td class="text-start text-white">

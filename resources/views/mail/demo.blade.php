@@ -36,7 +36,7 @@
                 @endif
             </p>
             <p style="font-size:14px;margin:0 0 6px 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:146px">Invoice ID :</span>
+                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.invoice_id') :</span>
                 {{ $sale->invoice_id }}
             </p>
             <p style="font-size:14px;margin:0 0 0 0;">

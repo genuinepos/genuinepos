@@ -39,7 +39,7 @@
                 {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
             @endif
         </p>
-        <p><b>Entered By :</b> {{ $contra->user ? $contra->user->prefix.' '.$contra->user->name.' '.$contra->user->last_name : '' }}</p>
+        <p><b>@lang('menu.entered_by')</b> {{ $contra->user ? $contra->user->prefix.' '.$contra->user->name.' '.$contra->user->last_name : '' }}</p>
     </div>
 
     <div class="total_amount_table_area">

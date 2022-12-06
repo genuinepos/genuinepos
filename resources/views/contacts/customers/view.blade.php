@@ -323,9 +323,9 @@
                                                 <tr>
                                                     <th>Actions</th>
                                                     <th>@lang('menu.date')</th>
-                                                    <th>Invoice ID</th>
+                                                    <th>@lang('menu.invoice_id')</th>
                                                     <th>@lang('menu.business_location')</th>
-                                                    <th>Customer</th>
+                                                    <th>@lang('menu.customer')</th>
                                                     <th>Total Amount</th>
                                                     <th>@lang('menu.total_paid')</th>
                                                     <th>Sell Due</th>

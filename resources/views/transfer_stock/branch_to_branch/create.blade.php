@@ -142,7 +142,7 @@
                                                         <table class="table modal-table table-sm">
                                                             <thead class="staky">
                                                                 <tr>
-                                                                    <th class="text-start">Product</th>
+                                                                    <th class="text-start">@lang('menu.product')</th>
                                                                     <th></th>
                                                                     <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th class="text-center">Unit</th>

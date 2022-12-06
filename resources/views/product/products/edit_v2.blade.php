@@ -40,10 +40,10 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Product code
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.product_code')
                                         <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique. If you leave this field empty, it will be generated automatically." class="fas fa-info-circle tp"></i> :</b></label>
                                     <div class="col-7">
-                                        <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" placeholder="Product Code" value="{{ $product->product_code }}">
+                                        <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" placeholder="@lang('menu.product_code')" value="{{ $product->product_code }}">
                                         <input type="hidden" name="auto_generated_code" id="auto_generated_code">
                                     </div>
                                 </div>
@@ -460,7 +460,7 @@
                                                             <table class="table modal-table table-sm">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Product</th>
+                                                                        <th>@lang('menu.product')</th>
                                                                         <th>@lang('menu.quantity')</th>
                                                                         <th>Unit price</th>
                                                                         <th>SubTotal</th>

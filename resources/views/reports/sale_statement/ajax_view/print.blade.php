@@ -71,9 +71,9 @@
             <thead>
                 <tr>
                     <th class="text-start">@lang('menu.date')</th>
-                    <th class="text-start">Invoice ID</th>
+                    <th class="text-start">@lang('menu.invoice_id')</th>
                     <th class="text-start">Stock Location</th>
-                    <th class="text-start">Customer</th>
+                    <th class="text-start">@lang('menu.customer')</th>
                     <th class="text-start">Entered By</th>
                     <th class="text-end">Total Item</th>
                     <th class="text-end">Net total Amt.</th>

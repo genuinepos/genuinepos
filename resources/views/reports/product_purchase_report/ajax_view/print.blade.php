@@ -58,7 +58,7 @@
             <thead>
                 <tr>
                     <th class="text-start">@lang('menu.date')</th>
-                    <th class="text-start">Product</th>
+                    <th class="text-start">@lang('menu.product')</th>
                     <th class="text-start">P.Code(SKU)</th>
                     <th class="text-start">Supplier</th>
                     <th class="text-start">P.Invoice ID</th>

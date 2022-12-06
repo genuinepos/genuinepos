@@ -67,7 +67,7 @@
                         <thead>
                             <tr class="bg-secondary text-white text-start">
                                 <th class="text-start">@lang('menu.sl')</th>
-                                <th class="text-start">Product</th>
+                                <th class="text-start">@lang('menu.product')</th>
                                 <th class="text-start">@lang('menu.quantity')</th>
                                 <th class="text-start">Unit Cost Inc.Tax</th>
                                 <th class="text-start">SubTotal</th>
@@ -251,7 +251,7 @@
                     <tr>
                         <tr>
                             <th scope="col" class="text-start">@lang('menu.sl')</th>
-                            <th scope="col" class="text-start">Product</th>
+                            <th scope="col" class="text-start">@lang('menu.product')</th>
                             <th scope="col" class="text-start">@lang('menu.quantity')</th>
                             <th scope="col" class="text-start">Unit Cost Inc.Tax</th>
                             <th scope="col" class="text-start">SubTotal</th>

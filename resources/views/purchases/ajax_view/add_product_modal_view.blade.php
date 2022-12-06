@@ -11,8 +11,8 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>Product Code (SKU) :</b> <span class="text-danger">*</span></label>
-            <input type="text" name="product_code" class="form-control" placeholder="Product code"/>
+            <label><b>@lang('menu.product_code') (SKU) :</b> <span class="text-danger">*</span></label>
+            <input type="text" name="product_code" class="form-control" placeholder="@lang('menu.product_code')"/>
             <span class="error error_add_product_code"></span>
         </div>
 

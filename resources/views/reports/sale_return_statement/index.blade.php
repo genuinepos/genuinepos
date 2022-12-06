@@ -121,7 +121,7 @@
                                                 <th>Return Invoice ID</th>
                                                 <th>Parent Sale</th>
                                                 <th>Stock Location</th>
-                                                <th>Customer</th>
+                                                <th>@lang('menu.customer')</th>
                                                 <th>Entered By</th>
                                                 <th>Total Item</th>
                                                 <th>Total Qty</th>

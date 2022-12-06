@@ -158,7 +158,7 @@
                                                     <tr>
                                                         <th class="text-start">@lang('menu.sl')</th>
                                                         <th class="text-start">Reference/InvoiceId</th>
-                                                        <th class="text-start">Customer</th>
+                                                        <th class="text-start">@lang('menu.customer')</th>
                                                         <th class="text-start">Total</th>
                                                         <th class="text-start">@lang('menu.action')</th>
                                                     </tr>

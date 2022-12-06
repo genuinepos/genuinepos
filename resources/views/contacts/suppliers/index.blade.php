@@ -82,7 +82,7 @@
                                     <th>Opening Balance</th>
                                     <th>@lang('menu.total_purchase')</th>
                                     <th>@lang('menu.total_paid')</th>
-                                    <th>Purchase Due</th>
+                                    <th>@lang('menu.purchase_due')</th>
                                     <th>Total Return</th>
                                     <th>Return Due</th>
                                     <th>Status</th>

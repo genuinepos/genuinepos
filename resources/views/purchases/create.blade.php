@@ -82,7 +82,7 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                        <label class=" col-4"><b>@lang('menu.invoice_id') :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Purchase Invoice ID" autocomplete="off">
                                             <span class="error error_invoice_id"></span>
@@ -153,7 +153,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Purchase A/C : <span
+                                        <label class="col-4"><b>@lang('menu.purchase_ac') : <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-8">
                                             <select name="purchase_account_id" class="form-control add_input"
@@ -204,7 +204,7 @@
                                         <table class="display data__table table-striped">
                                             <thead class="staky">
                                                 <tr>
-                                                    <th>Product</th>
+                                                    <th>@lang('menu.product')</th>
                                                     <th>@lang('menu.quantity')</th>
                                                     <th>Unit Cost(BD <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Discount" class="fas fa-info-circle tp"></i>)</th>
                                                     <th>Discount</th>

@@ -406,7 +406,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Sale Return :</strong></label>
+                                            <label><strong>@lang('menu.sale_return') :</strong></label>
                                             <input type="text" name="sale_return" class="form-control" autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['sale_return'] }}">
                                         </div>

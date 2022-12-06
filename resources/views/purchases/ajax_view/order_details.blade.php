@@ -95,7 +95,7 @@
                              <table id="" class="table modal-table table-sm table-striped">
                                  <thead>
                                      <tr class="bg-secondary">
-                                         <th class="text-white text-start">Product</th>
+                                         <th class="text-white text-start">@lang('menu.product')</th>
                                          <th class="text-white text-start">Ordered Quantity</th>
                                          <th class="text-white text-start">Unit Cost({{ json_decode($generalSettings->business, true)['currency']}}) (Before Discount)</th>
                                          <th class="text-white text-start">Unit Discount({{ json_decode($generalSettings->business, true)['currency']}})</th>
@@ -465,7 +465,7 @@
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">Product</th>
+                            <th scope="col">@lang('menu.product')</th>
                             <th scope="col">Ordered Quantity</th>
                             <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>

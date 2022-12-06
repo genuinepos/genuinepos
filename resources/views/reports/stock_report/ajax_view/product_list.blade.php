@@ -2,9 +2,9 @@
     <thead>
         <tr class="bg-navey-blue">
             <th>P.Code(SKU)</th>
-            <th>Product</th>
+            <th>@lang('menu.product')</th>
             <th>Unit Price</th>
-            <th>Current Stock</th>
+            <th>@lang('menu.current_stock')</th>
             <th>@lang('menu.current_stock_value') <b><small>(By Unit Cost)</small></b></th>
             <th>@lang('menu.current_stock_value') <b><small>(By Unit Price)</small></b></th>
             <th>Potential profit</th>

@@ -1996,4 +1996,11 @@ return [
   'edit_company' => 'Edit Company ',
   'bank_ac_balance' => 'Bank A/C Balance',
   'total_investing' => 'Total Investing',
+  'see_more' => 'See More',
+  'entered_by' => 'Entered By',
+  'customer_due' => 'Customer Due',
+  'fixed_asset' => 'Fixed Asset',
+  'vehicles' => 'Vehicles',
+  'purchase_ac' => 'Purchase A/C',
+  'sale_ac' => 'Sale A/C',
 ];

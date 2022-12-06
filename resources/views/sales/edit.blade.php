@@ -61,7 +61,7 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Invoice ID :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.invoice_id') :</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id" class="form-control" value="{{ $sale->invoice_id }}">
                                         </div>
@@ -120,7 +120,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"> <b>Sale A/C :</b> <span
+                                        <label class=" col-4"> <b>@lang('menu.sale_ac') :</b> <span
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select name="sale_account_id" class="form-control add_input"
@@ -189,7 +189,7 @@
                                                         <table class="display data__table table sale-product-table">
                                                             <thead class="staky">
                                                                 <tr>
-                                                                    <th class="text-start">Product</th>
+                                                                    <th class="text-start">@lang('menu.product')</th>
                                                                     <th class="text-start">Stock Location</th>
                                                                     <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th>Unit</th>

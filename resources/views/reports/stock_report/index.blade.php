@@ -133,10 +133,10 @@
                                         <thead>
                                             <tr class="text-start">
                                                 <th>P.Code</th>
-                                                <th>Product</th>
+                                                <th>@lang('menu.product')</th>
                                                 <th>@lang('menu.business_location')</th>
                                                 <th>Unit Price</th>
-                                                <th>Current Stock</th>
+                                                <th>@lang('menu.current_stock')</th>
                                                 <th>Stock Value <b><small>(By Unit Cost)</small></b></th>
                                                 <th>Total Sold</th>
                                             </tr>
@@ -277,11 +277,11 @@
                                         <thead>
                                             <tr class="text-start">
                                                 <th>P.Code</th>
-                                                <th>Product</th>
+                                                <th>@lang('menu.product')</th>
                                                 <th>@lang('menu.business_location')</th>
                                                 <th>Warehouse</th>
                                                 <th>Unit Price</th>
-                                                <th>Current Stock</th>
+                                                <th>@lang('menu.current_stock')</th>
                                                 <th>Current Stock Value <b><small>(By Unit Cost)</small></b></th>
                                             </tr>
                                         </thead>

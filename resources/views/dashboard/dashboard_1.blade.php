@@ -138,7 +138,7 @@
                                             <i class="fas fa-clipboard"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Purchase Due</h3>
+                                            <h3 class="sub-title">@lang('menu.purchase_due')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_purchase_due"></span>
@@ -153,7 +153,7 @@
                                             <i class="fas fa-file-invoice"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Invoice Due</h3>
+                                            <h3 class="sub-title">@lang('menu.invoice_due')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_sale_due"></span>
@@ -183,7 +183,7 @@
                                             <i class="fas fa-user"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Total User</h3>
+                                            <h3 class="sub-title">@lang('menu.total_user')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_user"></span>
@@ -198,7 +198,7 @@
                                             <i class="fas fa-list"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Total Products</h3>
+                                            <h3 class="sub-title">@lang('menu.total_products')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span id="total_product"></span>
@@ -213,7 +213,7 @@
                                             <i class="fas fa-balance-scale"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Total Adjustment</h3>
+                                            <h3 class="sub-title">@lang('menu.total_adjustment')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_adjustment"></span>
@@ -232,7 +232,7 @@
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6>
-                                    <span class="fas fa-table"></span>Stock Alert Of
+                                    <span class="fas fa-table"></span>@lang('menu.stock_alert_of')
                                     <b>
                                         @if (auth()->user()->branch_id)
                                             {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
@@ -241,7 +241,7 @@
                                         @endif
                                     </b>
                                 </h6>
-                                <a href="#">See More</a>
+                                <a href="#">@lang('menu.see_more')</a>
                             </div>
                             <div class="widget_content">
                                 <div class="table-responsive">
@@ -250,9 +250,9 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.sl')</th>
-                                                <th>Product</th>
-                                                <th>Product Code(SKU)</th>
-                                                <th>Current Stock</th>
+                                                <th>@lang('menu.product')</th>
+                                                <th>@lang('menu.product_code')(SKU)</th>
+                                                <th>@lang('menu.current_stock')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -267,8 +267,8 @@
                     <section>
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
-                                <h6><span class="fas fa-table"></span> Sales Order</h6>
-                                <a href="#">See More</a>
+                                <h6><span class="fas fa-table"></span> @lang('menu.sales_order')</h6>
+                                <a href="#">@lang('menu.see_more')</a>
                             </div>
                             <div class="widget_content">
                                 <div class="table-responsive">
@@ -277,9 +277,9 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Invoice ID</th>
-                                                <th>Branch</th>
-                                                <th>Customer</th>
+                                                <th>@lang('menu.invoice_id')</th>
+                                                <th>@lang('menu.branch')</th>
+                                                <th>@lang('menu.customer')</th>
                                                 <th>Shipment Status</th>
                                                 <th>@lang('menu.created_by')</th>
                                             </tr>
@@ -297,7 +297,7 @@
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6><span class="fas fa-table"></span> Sales Payment Due</h6>
-                                <a href="#">See More</a>
+                                <a href="#">@lang('menu.see_more')</a>
                             </div>
                             <div class="widget_content">
                                 <div class="table-responsive">
@@ -306,10 +306,10 @@
                                         class="display data__table data_tble due_table" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Customer</th>
-                                                <th>Invoice ID</th>
-                                                <th>Branch</th>
-                                                <th>Due Amount</th>
+                                                <th>@lang('menu.customer')</th>
+                                                <th>@lang('menu.invoice_id')</th>
+                                                <th>@lang('menu.branch')</th>
+                                                <th>@lang('menu.due_amount')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -325,7 +325,7 @@
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6><span class="fas fa-table"></span> Purchase Payment Due</h6>
-                                <a href="#">See More</a>
+                                <a href="#">@lang('menu.see_more')</a>
                             </div>
                             <div class="widget_content">
                                 <div class="table-responsive">
@@ -336,8 +336,8 @@
                                             <tr>
                                                 <th>Supplier</th>
                                                 <th>P.Invoice ID</th>
-                                                <th>Branch</th>
-                                                <th>Due Amount</th>
+                                                <th>@lang('menu.branch')</th>
+                                                <th>@lang('menu.due_amount')</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -357,7 +357,7 @@
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">Add Shortcut Menus</h6>
+                        <h6 class="modal-title" id="payment_heading">@lang('menu.add_shortcut_menus')</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                     </div>
@@ -376,7 +376,7 @@
             <br><br><br>
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h1 class="text-primary display-5">Welcome,
+                    <h1 class="text-primary display-5">@lang('menu.welcome'),
                         <strong>{{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}!</strong>
                     </h1>
                 </div>

@@ -5,7 +5,7 @@
       <div class="modal-content" >
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">
-              Transfer Details (Invoice ID : <strong>{{ $transfer->invoice_id }}</strong>)
+              Transfer Details (@lang('menu.invoice_id') : <strong>{{ $transfer->invoice_id }}</strong>)
           </h5>
           <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
             class="fas fa-times"></span></a>
@@ -62,7 +62,7 @@
                         <thead>
                             <tr class="bg-secondary text-white">
                                 <th class="text-start">@lang('menu.sl')</th>
-                                <th class="text-start">Product</th>
+                                <th class="text-start">@lang('menu.product')</th>
                                 <th class="text-start">Unit Price</th>
                                 <th class="text-start">@lang('menu.quantity')</th>
                                 <th class="text-start">Unit</th>
@@ -221,7 +221,7 @@
                     <tr>
                         <tr>
                             <th class="text-start">@lang('menu.sl')</th>
-                            <th class="text-start">Product</th>
+                            <th class="text-start">@lang('menu.product')</th>
                             <th class="text-start">Unit Price</th>
                             <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">Unit</th>

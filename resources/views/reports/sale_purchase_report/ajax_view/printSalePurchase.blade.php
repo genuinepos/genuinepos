@@ -107,7 +107,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start"> Purchase Due :</th>
+                            <th class="text-start"> @lang('menu.purchase_due') :</th>
                             <td class="text-end">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase_due) }}
@@ -181,7 +181,7 @@
                             {{ App\Utils\Converter::format_in_bdt($saleMinusPurchase) }}
                         </span>
                     </h5>
-                    <h5 class="text-muted">Due amount (Sale Due - Purchase Due) :
+                    <h5 class="text-muted">@lang('menu.due_amount') (Sale Due - @lang('menu.purchase_due')) :
                         <span class="{{ $saleDueMinusPurchaseDue < 0 ? 'text-danger' : '' }}">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($saleDueMinusPurchaseDue) }}

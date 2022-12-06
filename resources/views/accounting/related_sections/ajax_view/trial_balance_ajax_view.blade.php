@@ -10,7 +10,7 @@
     <table class="table modal-table table-sm table-bordered">
         <thead>
             <tr class="bg-secondary">
-                <th class="trial_balance text-start text-white">Accounts</th>
+                <th class="trial_balance text-start text-white">@lang('menu.accounts')</th>
                 <th class="text-white text-end">@lang('menu.debit')</th>
                 <th class="text-white text-end">@lang('menu.credit')</th>
             </tr>
@@ -94,7 +94,7 @@
             @endforeach
 
             <tr>
-                <td class="text-start"><em>Opening Stock :</em> </td>
+                <td class="text-start"><em>@lang('menu.opening_stock') :</em> </td>
 
                 <td class="text-end">
                     <em class="debit">{{ App\Utils\Converter::format_in_bdt($openingStock->sum('total_value')) }}</em>

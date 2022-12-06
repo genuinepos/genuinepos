@@ -28,7 +28,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start"> Total Stock Adjustment : </th>
+                                <th class="text-start"> @lang('menu.total_stock_adjustment') : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ App\Utils\Converter::format_in_bdt($totalStockAdjustmentAmount) }}
@@ -68,7 +68,7 @@
                             </tr>
     
                             <tr>
-                                <th class="text-start">Total Production Cost :</th>
+                                <th class="text-start">@lang('menu.total_production_cost') :</th>
                                 <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
                             </tr>
                         </tbody>
@@ -126,10 +126,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="gross_profit_area">
-                        <h6 class="text-muted m-0">Gross Profit : 
+                        <h6 class="text-muted m-0">@lang('menu.gross_profit') : 
                             {{ json_decode($generalSettings->business, true)['currency'] }} 
                             <span class="{{ $grossProfit < 0 ? 'text-danger' : '' }}">{{ App\Utils\Converter::format_in_bdt($grossProfit) }}</span></h6>
-                            <p class="text-muted m-0">Gross Profit : (Total Sale + Total Stock Adjustment Recovered)
+                            <p class="text-muted m-0">@lang('menu.gross_profit') : (Total Sale + Total Stock Adjustment Recovered)
                                 - <br>( Sold Product Total Unit Cost + Total Sale Return + Total Sale Order Tax + Total Stock Adjustment + Total Expense + Total transfer shipping charge + Total Payroll + Total Production Cost )</p>
                     </div>
                 </div>

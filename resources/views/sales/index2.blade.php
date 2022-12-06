@@ -126,9 +126,9 @@
                                             {{-- <tr>
                                                 <th>@lang('menu.action')</th>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Invoice ID</th>
+                                                <th>@lang('menu.invoice_id')</th>
                                                 <th>Stock Location</th>
-                                                <th>Customer</th>
+                                                <th>@lang('menu.customer')</th>
                                                 <th>Return Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Return Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Payment Status</th>
@@ -139,9 +139,9 @@
                                             <tr>
                                                 <th>@lang('menu.action')</th>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Invoice ID</th>
+                                                <th>@lang('menu.invoice_id')</th>
                                                 <th>Stock Location</th>
-                                                <th>Customer</th>
+                                                <th>@lang('menu.customer')</th>
                                                 <th>Payment Status</th>
                                                 <th>Total Payable</th>
                                                 <th>Paid</th>

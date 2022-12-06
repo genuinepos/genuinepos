@@ -127,9 +127,9 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Invoice ID</th>
+                                                <th>@lang('menu.invoice_id')</th>
                                                 <th>Stock Location</th>
-                                                <th>Customer</th>
+                                                <th>@lang('menu.customer')</th>
                                                 <th>Entered By</th>
                                                 <th>Total Item</th>
                                                 <th>Net total Amt.</th>

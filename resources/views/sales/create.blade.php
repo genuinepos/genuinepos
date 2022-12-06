@@ -93,9 +93,9 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                        <label class="col-4"><b>@lang('menu.invoice_id') :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
-                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID" autocomplete="off">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="@lang('menu.invoice_id')" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -242,7 +242,7 @@
                                                         <table class="display data__table table sale-product-table">
                                                             <thead class="staky">
                                                                 <tr>
-                                                                    <th class="text-start">Product</th>
+                                                                    <th class="text-start">@lang('menu.product')</th>
                                                                     <th class="text-start">Stock Location</th>
                                                                     <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th>Unit</th>
@@ -680,8 +680,8 @@
                                             <thead>
                                                 <tr>
                                                     <th class="text-start">@lang('menu.sl')</th>
-                                                    <th class="text-start">Invoice ID</th>
-                                                    <th class="text-start">Customer</th>
+                                                    <th class="text-start">@lang('menu.invoice_id')</th>
+                                                    <th class="text-start">@lang('menu.customer')</th>
                                                     <th class="text-start">Total</th>
                                                     <th class="text-start">@lang('menu.action')</th>
                                                 </tr>

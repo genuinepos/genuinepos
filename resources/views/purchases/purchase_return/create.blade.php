@@ -25,7 +25,7 @@
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="m-0"><strong>Invoice ID: </strong> {{ $purchase->invoice_id }} </p>
+                                    <p class="m-0"><strong>@lang('menu.invoice_id'): </strong> {{ $purchase->invoice_id }} </p>
                                     <p class="m-0"><strong>Date: </strong> {{ $purchase->date }}</p>
                                     </div>
                                     <div class="col-md-6">

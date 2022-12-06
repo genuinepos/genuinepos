@@ -27,7 +27,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong> Invoice ID : </strong><span>{{ $payment->sale->invoice_id }}</span> </li>
+                                <li><strong> @lang('menu.invoice_id') : </strong><span>{{ $payment->sale->invoice_id }}</span> </li>
                                 <li><strong>Branch/Business : </strong>
                                     <span>
                                         @if ($payment->sale->branch)

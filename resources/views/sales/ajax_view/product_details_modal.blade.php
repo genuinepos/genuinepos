@@ -139,7 +139,7 @@
                             <thead>
                                 <tr class="bg-secondary text-white">
                                     <th class="text-start">@lang('menu.sl')</th>
-                                    <th class="text-start">Product</th>
+                                    <th class="text-start">@lang('menu.product')</th>
                                     <th class="text-start">Stock Location</th>
                                     <th class="text-start">Warranty</th>
                                     <th class="text-end">@lang('menu.quantity')</th>
@@ -270,7 +270,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Sale Return : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.sale_return') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->sale_return_amount) }}
                                     </td>

@@ -11,7 +11,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-balance-scale"></span>
-                                <h5>Balance Sheet</h5>
+                                <h5>@lang('menu.balance_sheet')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
@@ -73,7 +73,7 @@
                                                                 {{ json_decode($generalSettings->business, true)['shop_name'] }}
                                                             @endif
                                                         </h5>
-                                                        <h6 class="mt-2"><strong>BALANCE SHEET</h6>
+                                                        <h6 class="mt-2"><strong>@lang('menu.balance_sheet')</h6>
                                                     </div>
                                                 </div>
                                                 <div id="data-list">
@@ -81,7 +81,7 @@
                                                         <table class="table modal-table table-sm table-bordered">
                                                             <thead>
                                                                 <tr class="bg-secondary">
-                                                                    <th class="liability text-white">Liability</th>
+                                                                    <th class="liability text-white">@lang('menu.liability')</th>
                                                                     <th class="assets text-white">@lang('menu.assets')</th>
                                                                 </tr>
                                                             </thead>
@@ -91,7 +91,7 @@
                                                                         <table class="table table-sm">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>Supplier Due :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.supplier_due') :</strong></td>
                                                                                     <td class=" text-end">
                                                                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                         <span class="supplier_due"></span>
@@ -99,7 +99,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>Customer Return Due :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.customer_return_due') :</strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                         <span class="customer_return_due"></span>
@@ -129,7 +129,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>Opening Stock :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.opening_stock') :</strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                         <span class="payable_ll"></span>
@@ -143,7 +143,7 @@
                                                                         <table class="table table-sm">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>Cash-In-Hand :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.cash_in_hand') :</strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                         <span class="cash_in_hand"></span>
@@ -159,7 +159,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>Customer Due :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.customer_due') :</strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                         <span class="customer_due"></span>
@@ -167,7 +167,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>Supplier Return Due :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.supplier_return_due') :</strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                         <span class="supplier_return_due"></span>
@@ -212,7 +212,7 @@
                                                                                 </tr>
 
                                                                                 <tr class="bg-secondary">
-                                                                                    <th colspan="2" class="text-start"><strong>Fixed Asset :</strong></th>
+                                                                                    <th colspan="2" class="text-start"><strong>@lang('menu.fixed_asset') :</strong></th>
                                                                                 </tr>
 
                                                                                 <tr class="account_balance_list_area">
@@ -221,13 +221,13 @@
                                                                                             <tbody class="account_balance_list">
                                                                                                 <tr>
                                                                                                     <td class="text-start" colspan="2">
-                                                                                                        Furniture :
+                                                                                                        @lang('menu.furniture') :
                                                                                                     </td>
                                                                                                 </tr>
 
                                                                                                 <tr>
                                                                                                     <td class="text-start" colspan="2">
-                                                                                                        Vechels :
+                                                                                                        @lang('menu.vehicles') :
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </tbody>
@@ -245,7 +245,7 @@
                                                                         <table class="table table-sm">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>Total Liability :</strong> </td>
+                                                                                    <td class="text-start"><strong>@lang('menu.total_liability') :</strong> </td>
                                                                                     <td class="text-end">
                                                                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                                                                         <span class="total_liability"></span>

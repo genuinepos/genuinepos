@@ -43,7 +43,7 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>Return Details : </strong> </li>
-                        <li><strong>Invoice ID : </strong>{{ $saleReturn->invoice_id }}</li>
+                        <li><strong>@lang('menu.invoice_id') : </strong>{{ $saleReturn->invoice_id }}</li>
                         <li><strong>Return Date : </strong>{{ $saleReturn->date }}</li>
                         <li><strong>Customer Name : </strong>{{ $saleReturn->customer ? $saleReturn->customer->name : 'Walk-In-Customer' }}</li>
                         <li><strong>Stock Location : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}</li>
@@ -73,7 +73,7 @@
                     <tr>
                         <tr>
                             <th class="text-start">@lang('menu.sl')</th>
-                            <th class="text-start">Product</th>
+                            <th class="text-start">@lang('menu.product')</th>
                             <th class="text-start">Unit Price</th>
                             <th class="text-start">Return Quantity</th>
                             <th class="text-start">SubTotal</th>

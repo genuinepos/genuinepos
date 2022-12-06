@@ -245,7 +245,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Total Production Cost :</b></label>
+                                                <label class="col-4"><b>@lang('menu.total_production_cost') :</b></label>
                                                 <div class="col-md-8">
                                                     <input readonly type="number" step="any" name="total_cost" class="form-control" id="total_cost" value="{{ $production->total_cost }}" tabindex="-1">
                                                 </div>

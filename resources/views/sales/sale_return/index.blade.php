@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-undo-alt"></span>
-                                <h5>Sale Returns</h5>
+                                <h5>@lang('menu.sale_return')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -38,7 +38,7 @@
                                             <tr>
                                                 <th class="text-start">@lang('menu.action')</th>
                                                 <th class="text-start">@lang('menu.date')</th>
-                                                <th class="text-start">Invoice ID</th>
+                                                <th class="text-start">@lang('menu.invoice_id')</th>
                                                 <th class="text-start">Parent Sale</th>
                                                 <th class="text-start">Customer Name</th>
                                                 <th class="text-start">From</th>

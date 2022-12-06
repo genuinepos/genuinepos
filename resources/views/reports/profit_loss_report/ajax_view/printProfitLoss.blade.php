@@ -70,7 +70,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start"> Total Stock Adjustment : </th>
+                                <th class="text-start"> @lang('menu.total_stock_adjustment') : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ App\Utils\Converter::format_in_bdt($totalStockAdjustmentAmount) }}
@@ -107,7 +107,7 @@
                             </tr>
     
                             <tr>
-                                <th class="text-start">Total Production Cost :</th>
+                                <th class="text-start">@lang('menu.total_production_cost') :</th>
                                 <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
                             </tr>
                         </tbody>

@@ -68,7 +68,7 @@
                                                 <table class="table modal-table table-sm">
                                                     <thead>
                                                         <tr class="bg-primary text-white text-start">
-                                                            <th class="text-start">Product</th>
+                                                            <th class="text-start">@lang('menu.product')</th>
                                                             <th class="text-start">Supplier</th>
                                                             <th class="text-start">@lang('menu.quantity')</th>
                                                             <th class="text-start">Packing Date</th>

@@ -2,11 +2,11 @@
     <table id="single_product_warehouse_stock_table" class="table table-sm custom-table">
         <thead>
             <tr class="bg-primary">
-                <th class="text-white" scope="col">Product Code(SKU)</th>
-                <th class="text-white" scope="col">Product</th>
+                <th class="text-white" scope="col">@lang('menu.product_code')(SKU)</th>
+                <th class="text-white" scope="col">@lang('menu.product')</th>
                 <th class="text-white" scope="col">Warehouse</th>
                 <th class="text-white" scope="col">Unit Price (Inc.Tax)</th>
-                <th class="text-white" scope="col">Current Stock</th>
+                <th class="text-white" scope="col">@lang('menu.current_stock')</th>
                 <th class="text-white" scope="col">Stock Value</th>
             </tr>
         </thead>
@@ -29,22 +29,22 @@
                         <td>{{ number_format($stockValue, 2)  }}</td>
                     </tr>
                 @endforeach
-            @else 
+            @else
                 <tr>
                     <td colspan="7" class="text-center">This product is not available in any warehouse.</td>
-                </tr>    
+                </tr>
             @endif
         </tbody>
     </table>
-@else 
+@else
     <table id="variant_product_warehouse_stock_table" class="table table-sm custom-table">
         <thead>
             <tr class="bg-primary">
-                <th class="text-white" scope="col">Product Code(SKU)</th>
-                <th class="text-white" scope="col">Product</th>
+                <th class="text-white" scope="col">@lang('menu.product_code')(SKU)</th>
+                <th class="text-white" scope="col">@lang('menu.product')</th>
                 <th class="text-white" scope="col">Warehouse</th>
                 <th class="text-white" scope="col">Unit Price (Inc.Tax)</th>
-                <th class="text-white" scope="col">Current Stock</th>
+                <th class="text-white" scope="col">@lang('menu.current_stock')</th>
                 <th class="text-white" scope="col">Stock Value</th>
             </tr>
         </thead>
@@ -69,10 +69,10 @@
                         </tr>
                     @endforeach
                 @endforeach
-            @else 
+            @else
                 <tr>
                     <td colspan="7" class="text-center">This product is not available in any warehouse.</td>
-                </tr>    
+                </tr>
             @endif
         </tbody>
     </table>

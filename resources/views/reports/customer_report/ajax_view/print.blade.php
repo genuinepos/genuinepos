@@ -37,7 +37,7 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Customer</th>
+                    <th class="text-start">@lang('menu.customer')</th>
                     <th class="text-end">@lang('menu.total_sale')</th>
                     <th class="text-end">@lang('menu.total_paid')</th>
                     <th class="text-end">Opening Balance Due</th>

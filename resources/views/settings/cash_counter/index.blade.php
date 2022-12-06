@@ -35,7 +35,7 @@
                                     <th class="text-black">Serial</th>
                                     <th class="text-black">Counter Name</th>
                                     <th class="text-black">Short Name</th>
-                                    <th class="text-black">Branch</th>
+                                    <th class="text-black">@lang('menu.branch')</th>
                                     <th class="text-black">@lang('menu.action')</th>
                                 </tr>
                             </thead>

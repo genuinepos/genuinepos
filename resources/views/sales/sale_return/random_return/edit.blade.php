@@ -70,7 +70,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Customer :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.customer') :</b> </label>
                                         <div class="col-8">
                                             <select name="customer_id" class="form-control" id="customer_id">
                                                 <option value="">Walk-In-Customer</option>
@@ -186,7 +186,7 @@
                                                 <table class="display data__table table sale-product-table">
                                                     <thead class="staky">
                                                         <tr>
-                                                            <th class="text-start">Product</th>
+                                                            <th class="text-start">@lang('menu.product')</th>
                                                             <th class="text-center">Unit Price</th>
                                                             <th class="text-center">Unit</th>
                                                             <th class="text-center">Return Quantity</th>
@@ -357,7 +357,7 @@
                                                     </div>
 
                                                     <div class="input-group invoice_due_field {{ $return->sale_id ? '' : 'd-hide' }}">
-                                                        <label class="col-4"><b>Invoice Due :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.invoice_due') :</b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="invoice_due" id="invoice_due" class="form-control text-danger" value="{{ $return->sale ? $return->sale->due : 0.00 }}" tabindex="-1">
                                                         </div>

@@ -48,10 +48,10 @@
             <thead>
                 <tr>
                     <th class="text-start">P.Code</th>
-                    <th class="text-start">Product</th>
+                    <th class="text-start">@lang('menu.product')</th>
                     <th class="text-start">@lang('menu.business_location')</th>
                     <th class="text-end">Unit Price</th>
-                    <th class="text-end">Current Stock</th>
+                    <th class="text-end">@lang('menu.current_stock')</th>
                     <th class="text-end">Stock Value <b><small>(By Unit Cost)</small></b></th>
                     <th class="text-end">Total Sold</th>
                 </tr>

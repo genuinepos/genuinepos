@@ -88,7 +88,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-10">
-                        <h6>All Cash Flow Statements</h6>
+                        <h6>{{ __('All Cash Flow Statements') }}</h6>
                     </div>
                 </div>
 
@@ -237,7 +237,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th class="text-start text-white"><strong>Total Cash Flow : ({{ json_decode($generalSettings->business, true)['currency'] }} )</strong> </th>
+                                                    <th class="text-start text-white"><strong>@lang('menu.total_cash_flow') : ({{ json_decode($generalSettings->business, true)['currency'] }} )</strong> </th>
                                                     <th class="text-start text-white">
                                                         <span class="total_cash_flow">0.00</span>
                                                     </th>

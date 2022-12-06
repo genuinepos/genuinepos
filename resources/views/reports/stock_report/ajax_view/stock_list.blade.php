@@ -2,11 +2,11 @@
     <thead>
         <tr class="bg-navey-blue">
             <th>P.Code(SKU)</th>
-            <th>Product</th>
+            <th>@lang('menu.product')</th>
             <th>Unit Price Exc.Tax</th>
             <th>@lang('menu.b_location')</th>
             <th>Warehouse</th>
-            <th>Current Stock</th>
+            <th>@lang('menu.current_stock')</th>
             <th>@lang('menu.current_stock_value') <b><small>(By Purchase Price)</small></b></th>
             <th>Total Unit Sold</th>
             <th>Total Adjusted</th>

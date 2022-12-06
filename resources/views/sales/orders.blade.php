@@ -126,7 +126,7 @@
                                                 <th>@lang('menu.date')</th>
                                                 <th>Order No</th>
                                                 <th>Stock Location</th>
-                                                <th>Customer</th>
+                                                <th>@lang('menu.customer')</th>
                                                 <th>Payment Status</th>
                                                 <th>Total Amount</th>
                                                 <th>@lang('menu.total_paid')</th>

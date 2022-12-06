@@ -87,8 +87,8 @@
 
                                             <tr>
                                                 <td class="text-start">2</td>
-                                                <td class="text-start"> Product code(SKU) (Optional)</td>
-                                                <td class="text-start">Product code(SKU). If blank an SKU will be automatically generated</td>
+                                                <td class="text-start"> @lang('menu.product_code')(SKU) (Optional)</td>
+                                                <td class="text-start">@lang('menu.product_code')(SKU). If blank an SKU will be automatically generated</td>
                                             </tr>
 
                                             <tr>

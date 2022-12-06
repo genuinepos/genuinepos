@@ -58,14 +58,14 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Product</th>
+                    <th class="text-start">@lang('menu.product')</th>
                     <th class="text-start">Sale</th>
                     <th class="text-start">Sale Date</th>
                     <th class="text-start">B. Location</th>
                     <th class="text-end">Sold/Out Qty</th>
                     <th class="text-end">Sold Price({{json_decode($generalSettings->business, true)['currency']}})</th>
                 
-                    <th class="text-start">Customer</th>
+                    <th class="text-start">@lang('menu.customer')</th>
                     <th class="text-start">Stock In By</th>
                     <th class="text-start">Stock In Date</th>
                     <th class="text-end">Unit Cost({{json_decode($generalSettings->business, true)['currency']}})</th>

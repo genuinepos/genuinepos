@@ -8,10 +8,10 @@
             @endif
             <th class="text-white">Image</th>
             <th class="text-white">@lang('menu.action')</th>
-            <th class="text-white">Product</th>
+            <th class="text-white">@lang('menu.product')</th>
             <th class="text-white">Purchase Cost</th>
             <th class="text-white">Salling Price</th>
-            <th class="text-white">Current Stock</th>
+            <th class="text-white">@lang('menu.current_stock')</th>
             <th class="text-white">Product Type</th>
             <th class="text-white">Category</th>
             <th class="text-white">Brand</th>

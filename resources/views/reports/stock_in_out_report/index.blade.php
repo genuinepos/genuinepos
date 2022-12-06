@@ -134,13 +134,13 @@
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
-                                            <th>Product</th>
+                                            <th>@lang('menu.product')</th>
                                             <th>Sale Date</th>
                                             <th>Sale</th>
                                             <th>B. Location</th>
                                             <th>Sold Qty</th>
                                             <th>Sold Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                            <th>Customer</th>
+                                            <th>@lang('menu.customer')</th>
                                             <th>Stock In By</th>
                                             <th>Stock In Date</th>
                                             <th>Lot No</th>

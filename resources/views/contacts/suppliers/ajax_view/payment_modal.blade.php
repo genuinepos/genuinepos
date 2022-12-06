@@ -139,11 +139,11 @@
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">@lang('menu.sl')</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
-                                                                    <th class="text-start text-white">Order/Invoice ID</th>
+                                                                    <th class="text-start text-white">Order/@lang('menu.invoice_id')</th>
                                                                     <th class="text-start text-white">Status</th>
                                                                     <th class="text-start text-white">Pay Status</th>
                                                                     <th class="text-start text-white">Purchased Amt.</th>
-                                                                    <th class="text-start text-white">Due Amount</th>
+                                                                    <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -217,10 +217,10 @@
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">Select</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
-                                                                    <th class="text-start text-white">Invoice ID</th>
+                                                                    <th class="text-start text-white">@lang('menu.invoice_id')</th>
                                                                     <th class="text-start text-white">Payment Status</th>
                                                                     <th class="text-start text-white">Purchased Amt.</th>
-                                                                    <th class="text-start text-white">Due Amount</th>
+                                                                    <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -285,7 +285,7 @@
                                                                     <th class="text-start text-white">Order ID</th>
                                                                     <th class="text-start text-white">Payment Status</th>
                                                                     <th class="text-start text-white">Purchased Amt.</th>
-                                                                    <th class="text-start text-white">Due Amount</th>
+                                                                    <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>

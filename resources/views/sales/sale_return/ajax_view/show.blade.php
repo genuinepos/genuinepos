@@ -4,7 +4,7 @@
           <div class="modal-content" >
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                  Sale return (Invoice ID : <strong>{{ $saleReturn->invoice_id }}</strong>)
+                  Sale return (@lang('menu.invoice_id') : <strong>{{ $saleReturn->invoice_id }}</strong>)
               </h5>
               <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                 class="fas fa-times"></span></a>
@@ -35,7 +35,7 @@
                                 <thead>
                                     <tr class="bg-secondary text-white">
                                         <th class="text-start">@lang('menu.sl')</th>
-                                        <th class="text-start">Product</th>
+                                        <th class="text-start">@lang('menu.product')</th>
                                         <th class="text-start">Unit Price</th>
                                         <th class="text-start">Return Quantity</th>
                                         <th class="text-start">SubTotal</th>
@@ -170,7 +170,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>Return Details : </strong> </li>
-                            <li><strong>Invoice ID : </strong>{{ $saleReturn->invoice }}</li>
+                            <li><strong>@lang('menu.invoice_id') : </strong>{{ $saleReturn->invoice }}</li>
                             <li><strong>Return Date : </strong>{{ $saleReturn->date }}</li>
                             <li><strong>Customer Name : </strong>{{ $saleReturn->customer ? $saleReturn->customer->name : 'Walk-In-Customer' }}</li>
                             <li><strong>Stock Location : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
@@ -200,7 +200,7 @@
                         <tr>
                             <tr>
                                 <th class="text-start">@lang('menu.sl')</th>
-                                <th class="text-start">Product</th>
+                                <th class="text-start">@lang('menu.product')</th>
                                 <th class="text-start">Unit Price</th>
                                 <th class="text-start">Return Quantity</th>
                                 <th class="text-start">SubTotal</th>

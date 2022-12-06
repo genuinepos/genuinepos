@@ -151,7 +151,7 @@
                                                 <table class="table modal-table table-sm">
                                                     <thead class="staky">
                                                         <tr>
-                                                            <th class="text-start">Product</th>
+                                                            <th class="text-start">@lang('menu.product')</th>
                                                             <th></th>
                                                             <th class="text-center">@lang('menu.quantity')</th>
                                                             <th class="text-center">Unit</th>
@@ -179,7 +179,7 @@
                                                                         <span class="product_variant"></span>
                                                                         <span class="product_code">{{ $transfer_product->product->product_code }}</span>
                                                                     </a><br/>
-                                                                    <small class="text-muted">Current Stock -{{ $qty_limits[$index].'/'.$transfer_product->product->unit->name }}<small>
+                                                                    <small class="text-muted">@lang('menu.current_stock') -{{ $qty_limits[$index].'/'.$transfer_product->product->unit->name }}<small>
 
                                                                     <input value="{{ $transfer_product->product_id }}" type="hidden" class="productId-{{ $transfer_product->product_id }}" id="product_id" name="product_ids[]">
 

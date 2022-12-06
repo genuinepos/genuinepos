@@ -52,7 +52,7 @@
                                                 <table class="display data__table table-striped">
                                                     <thead class="staky">
                                                         <tr>
-                                                            <th>Product</th>
+                                                            <th>@lang('menu.product')</th>
                                                             <th class="text-center">Send Quantity</th>
                                                             <th class="text-center">Unit</th>
                                                             <th class="text-center">Pending Qty</th>

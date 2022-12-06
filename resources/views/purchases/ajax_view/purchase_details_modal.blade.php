@@ -91,7 +91,7 @@
                              <table id="" class="table modal-table table-sm table-striped">
                                  <thead>
                                      <tr class="bg-secondary">
-                                         <th class="text-white text-start">Product</th>
+                                         <th class="text-white text-start">@lang('menu.product')</th>
                                          <th class="text-white text-start">@lang('menu.quantity')</th>
                                          <th class="text-white text-start">Unit Cost(Before Discount)</th>
                                          <th class="text-white text-start">Unit Discount</th>

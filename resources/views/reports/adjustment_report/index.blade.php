@@ -118,7 +118,7 @@
                                                         </tr>
 
                                                         <tr>
-                                                            <th class="text-start"> Total Stock Adjustment : </th>
+                                                            <th class="text-start"> @lang('menu.total_stock_adjustment') : </th>
                                                             <td class="text-start"> <span class="total_adjustment"></span></td>
                                                         </tr>
                                                     </tbody>

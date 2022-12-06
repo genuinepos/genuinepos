@@ -58,10 +58,10 @@
                 <thead>
                     <tr>
                         <th class="text-start">@lang('menu.date')</th>
-                        <th class="text-start">Product</th>
+                        <th class="text-start">@lang('menu.product')</th>
                         <th class="text-start">P.Code(SKU)</th>
-                        <th class="text-start">Customer</th>
-                        <th class="text-start">Invoice ID</th>
+                        <th class="text-start">@lang('menu.customer')</th>
+                        <th class="text-start">@lang('menu.invoice_id')</th>
                         <th class="text-start">Qty</th>
                         <th class="text-end">Unit Price({{json_decode($generalSettings->business, true)['currency']}})</th>
                         <th class="text-end">SubTotal({{json_decode($generalSettings->business, true)['currency']}})</th>

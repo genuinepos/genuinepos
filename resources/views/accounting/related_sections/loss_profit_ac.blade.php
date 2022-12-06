@@ -10,7 +10,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="far fa-money-bill-alt"></span>
-                    <h5>Profit Loss Account</h5>
+                    <h5>@lang('menu.profit_loss_account')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -89,7 +89,7 @@
 
                 <div class="section-header">
                     <div class="col-md-10">
-                        <h6>Profit Loss A/C Information</h6>
+                        <h6>@lang('menu.profit_loss_ac_information')</h6>
                     </div>
                 </div>
 
@@ -137,7 +137,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>Sale Retun : </em>
+                                                    <em>@lang('menu.sale_return') : </em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -147,7 +147,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>Direct Expense :</em>
+                                                    <em>@lang('menu.direct_expense') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -157,7 +157,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>Total Production Cost :</em>
+                                                    <em>@lang('menu.total_production_cost') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -167,7 +167,7 @@
 
                                                 {{-- <tr>
                                                     <td class="text-start">
-                                                    <em>Opening Stock :</em>
+                                                    <em>@lang('menu.opening_stock') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -187,7 +187,7 @@
 
                                                 <tr>
                                                     <th class="text-end">
-                                                        <em>Gross Profit :</em>
+                                                        <em>@lang('menu.gross_profit') :</em>
                                                     </th>
 
                                                     <td class="text-start">
@@ -198,20 +198,20 @@
                                                 {{-- Cash Flow from investing --}}
                                                 <tr>
                                                     <th class="text-start" colspan="2">
-                                                        <strong>NET PROFIT LOSS INFORNATION :</strong>
+                                                        <strong>@lang('menu.net_profit_loss_information') :</strong>
                                                     </th>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Gross Profit :</em>
+                                                        <em>@lang('menu.gross_profit') :</em>
                                                     </td>
                                                     <td class="text-start"><em>0.00</em> </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Total Stock Adjustment :</em>
+                                                        <em>@lang('menu.total_stock_adjustment') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -221,7 +221,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Total Adjustment Recovered :</em>
+                                                        <em>@lang('menu.total_adjustment_recovered') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -231,7 +231,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Total Sale Order Tax :</em>
+                                                        <em>@lang('menu.total_sale_order_tax') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -241,7 +241,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>Item Sold Indivitual Tax :</em>
+                                                    <em>@lang('menu.item_sold_individual_tax') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -251,7 +251,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Indirect Expense :</em>
+                                                        <em>@lang('menu.indirect_expense') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -261,7 +261,7 @@
 
                                                 <tr>
                                                     <th class="text-end">
-                                                        <em>Net Profit :</em>
+                                                        <em>@lang('menu.net_profit') :</em>
                                                     </th>
 
                                                     <td class="text-start">

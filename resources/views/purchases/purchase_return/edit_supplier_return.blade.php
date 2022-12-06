@@ -156,9 +156,9 @@
                                                         <table class="display data__table table-striped">
                                                             <thead class="staky">
                                                                 <tr>
-                                                                    <th>Product</th>
+                                                                    <th>@lang('menu.product')</th>
                                                                     <th>Unit Price</th>
-                                                                    <th>Current Stock</th>
+                                                                    <th>@lang('menu.current_stock')</th>
                                                                     <th>Return Quantity</th>
                                                                     <th>Return Subtotal</th>
                                                                     <th><i class="fas fa-trash-alt"></i></th>

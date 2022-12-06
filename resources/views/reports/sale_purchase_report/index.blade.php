@@ -129,7 +129,7 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <th> Purchase Due: </th>
+                                                                    <th> @lang('menu.purchase_due'): </th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                 </tr>
                                                             </tbody>

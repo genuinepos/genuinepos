@@ -131,9 +131,9 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>@lang('menu.date')</th>
-                                                                <th>Invoice ID</th>
-                                                                <th>Customer</th>
-                                                                <th>Branch</th>
+                                                                <th>@lang('menu.invoice_id')</th>
+                                                                <th>@lang('menu.customer')</th>
+                                                                <th>@lang('menu.branch')</th>
                                                                 <th>Payment Status</th>
                                                                 <th>Total Amount</th>
                                                                 <th>Total Return</th>
@@ -184,7 +184,7 @@
                                                             <tr>
                                                                 <th>@lang('menu.date')</th>
                                                                 <th>Reference No</th>
-                                                                <th>Branch</th>
+                                                                <th>@lang('menu.branch')</th>
                                                                 <th>Expense For</th>
                                                                 <th>Payment Status</th>
                                                                 <th>Total Amount</th>

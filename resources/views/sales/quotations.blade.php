@@ -106,7 +106,7 @@
                                                 <th>@lang('menu.date')</th>
                                                 <th>Quotation ID</th>
                                                 <th>@lang('menu.business_location')</th>
-                                                <th>Customer</th>
+                                                <th>@lang('menu.customer')</th>
                                                 <th>Total Amount</th>
                                                 <th>@lang('menu.created_by')</th>
                                                 <th>@lang('menu.action')</th>

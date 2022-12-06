@@ -114,7 +114,7 @@
                                             <table class="table modal-table table-sm">
                                                 <tbody>
                                                     <tr>
-                                                        <th class="text-start"> Total Stock Adjustment : </th>
+                                                        <th class="text-start"> @lang('menu.total_stock_adjustment') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
@@ -149,7 +149,7 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">Total Production Cost :</th>
+                                                        <th class="text-start">@lang('menu.total_production_cost') :</th>
                                                         <td class="text-start">0.00</td>
                                                     </tr>
                                                 </tbody>

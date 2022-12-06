@@ -187,7 +187,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                        <em>FIXED ASSET :</em>
+                                        <em>@lang('menu.fixed_asset') :</em>
                                     </td>
 
                                     <td class="text-start">
@@ -203,7 +203,7 @@
                                 <tr>
                                     <td class="text-end">
                                         <b>
-                                            <em>Total Investing :
+                                            <em>@lang('menu.total_investing') :
                                                 ({{ json_decode($generalSettings->business, true)['currency'] }})
                                             </em>
                                         </b>

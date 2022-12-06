@@ -114,7 +114,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Fixed Asset :</em>
+                                                        <em>@lang('menu.fixed_asset') :</em>
                                                     </td>
                                                     <td class="text-start"><b><em>0.00</em></b>  </td>
                                                 </tr>

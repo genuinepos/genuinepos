@@ -189,14 +189,14 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>FIXED ASSET :</em>
+                                                        <em>@lang('menu.fixed_asset') :</em>
                                                     </td>
                                                     <td class="text-start">0.00</td>
                                                 </tr>
 
                                                 <tr class="bg-info">
                                                     <td class="text-start text-white">
-                                                        <b><em>Total Investing :</em>  </b>
+                                                        <b><em>@lang('menu.total_investing') :</em>  </b>
                                                     </td>
 
                                                     <td class="text-start text-white">

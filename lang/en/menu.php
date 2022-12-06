@@ -1992,5 +1992,6 @@ return [
   'save_print' => 'Save & Print',
   'software_by' => 'Software by',
   'edit_company' => 'Edit Company ',
-  'bank_ac_balance' => 'Bank A/C Balance  ',
+  'bank_ac_balance' => 'Bank A/C Balance',
+  'total_investing' => 'Total Investing',
 ];

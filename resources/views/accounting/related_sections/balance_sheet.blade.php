@@ -211,7 +211,7 @@
                                                                             </tr>
 
                                                                             <tr class="bg-secondary">
-                                                                                <th colspan="2" class="text-start"><strong>Fixed Asset :</strong></th>
+                                                                                <th colspan="2" class="text-start"><strong>@lang('menu.fixed_asset') :</strong></th>
                                                                             </tr>
 
                                                                             <tr class="account_balance_list_area">

@@ -48,7 +48,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                        <em>Fixed Asset :</em>
+                                        <em>@lang('menu.fixed_asset') :</em>
                                     </td>
                                     <td class="text-end"><b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['fixed_asset_balance']) }}</em></b>  </td>
                                 </tr>

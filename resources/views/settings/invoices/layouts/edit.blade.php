@@ -27,8 +27,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-3"><span class="text-danger">*</span> <b>Name :</b> </label>
-                                        <div class="col-9">
+                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span> <b>Name :</b> </label>
+                                        <div class="col-8">
                                             <input type="text" name="name" class="form-control" placeholder="Layout Name" value="{{ $layout->name }}">
                                             <span class="error error_name"></span>
                                         </div>
@@ -37,9 +37,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-3"><b>Design :</b></label>
+                                        <label for="inputEmail3" class="col-4"><b>Design :</b></label>
 
-                                        <div class="col-9">
+                                        <div class="col-8">
                                             <select name="design" id="design" class="form-control">
                                                 <option {{ $layout->layout_design == 1 ? 'SELECTED' : '' }} value="1">Classic (For normal printer)</option>
                                                 <option {{ $layout->layout_design == 2 ? 'SELECTED' : '' }} value="2">Slim (For POS printer)</option>
@@ -135,8 +135,8 @@
                             <div class="row mt-1">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-2"><b>Header Text : </b> </label>
-                                        <div class="col-10">
+                                        <label for="inputEmail3" class="col-4"><b>Header Text : </b> </label>
+                                        <div class="col-8">
                                             <input type="text" name="header_text" class="form-control form-control-sm"  placeholder="Header text" {{ $layout->header_text }}>
                                         </div>
                                     </div>

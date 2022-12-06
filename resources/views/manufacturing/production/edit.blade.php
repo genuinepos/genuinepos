@@ -199,8 +199,8 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Output Qty :</b></label>
-                                                <div class="col-md-8">
+                                                <label class="col-5"><b>Output Qty :</b></label>
+                                                <div class="col-7">
                                                     <input required type="number" step="any" data-name="Quantity" class="form-control add_input" name="output_quantity" id="output_quantity" value="{{ $production->quantity }}">
                                                     <input type="text" name="parameter_quantity" class="d-hide" id="parameter_quantity" value="{{ $production->parameter_quantity }}">
                                                     <span class="error error_quantity"></span>
@@ -212,8 +212,8 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Wasted Qty :</b></label>
-                                                <div class="col-md-8">
+                                                <label class="col-5"><b>Wasted Qty :</b></label>
+                                                <div class="col-7">
                                                     <input type="number" step="any" name="wasted_quantity" class="form-control" id="wasted_quantity" value="{{ $production->wasted_quantity }}">
                                                 </div>
                                             </div>
@@ -223,8 +223,8 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Final Output Qty :</b></label>
-                                                <div class="col-md-8">
+                                                <label class="col-5"><b>Final Output Qty :</b></label>
+                                                <div class="col-7">
                                                     <input readonly type="text" step="any" class="form-control" name="final_output_quantity" id="final_output_quantity" value="{{ $production->total_final_quantity }}" tabindex="-1">
                                                 </div>
                                             </div>
@@ -234,8 +234,8 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Additional Cost :</b></label>
-                                                <div class="col-md-8">
+                                                <label class="col-5"><b>Additional Cost :</b></label>
+                                                <div class="col-7">
                                                     <input name="production_cost" type="number" class="form-control" id="production_cost" value="{{ $production->production_cost }}">
                                                 </div>
                                             </div>
@@ -245,8 +245,8 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-4"><b>@lang('menu.total_production_cost') :</b></label>
-                                                <div class="col-md-8">
+                                                <label class="col-5"><b>@lang('menu.total_production_cost') :</b></label>
+                                                <div class="col-7">
                                                     <input readonly type="number" step="any" name="total_cost" class="form-control" id="total_cost" value="{{ $production->total_cost }}" tabindex="-1">
                                                 </div>
                                             </div>
@@ -264,8 +264,8 @@
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
-                                                <div class="col-8">
+                                                <label for="inputEmail3" class="col-5"><b>Tax :</b> </label>
+                                                <div class="col-7">
                                                     <select class="form-control" name="tax_id" id="tax_id">
                                                         <option value="">@lang('menu.no_tax')</option>
                                                         @foreach ($taxes as $tax)
@@ -278,8 +278,8 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
-                                                <div class="col-8">
+                                                <label for="inputEmail3" class="col-5"><b>Tax Type :</b> </label>
+                                                <div class="col-7">
                                                     <select name="tax_type" class="form-control" id="tax_type">
                                                         <option {{ $production->tax_type == 1 ? 'SELECTED' : '' }} value="1">Exclusive</option>
                                                         <option {{ $production->tax_type == 2 ? 'SELECTED' : '' }}  value="2">Inclusive</option>
@@ -292,8 +292,8 @@
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Par Unit Cost :</b></label>
-                                                <div class="col-md-8">
+                                                <label class="col-5"><b>Par Unit Cost :</b></label>
+                                                <div class="col-7">
                                                     <input required type="text" name="per_unit_cost_exc_tax" id="per_unit_cost_exc_tax" class="form-control" placeholder="Par Unit Cost Exc.Tax" autocomplete="off" value="{{ $production->unit_cost_exc_tax }}">
                                                 </div>
                                             </div>
@@ -301,8 +301,8 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Cost(Inc.Tax) :</b></label>
-                                                <div class="col-md-8">
+                                                <label class="col-5"><b>Cost(Inc.Tax) :</b></label>
+                                                <div class="col-7">
                                                     <input readonly type="text" name="per_unit_cost_inc_tax" id="per_unit_cost_inc_tax" class="form-control" placeholder="Par Unit Cost Inc.Tax" autocomplete="off" value="{{ $production->unit_cost_inc_tax }}" tabindex="-1" tabindex="-1">
                                                 </div>
                                             </div>
@@ -312,8 +312,8 @@
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>xMargin(%) :</b></label>
-                                                <div class="col-md-8">
+                                                <label class="col-5"><b>xMargin(%) :</b></label>
+                                                <div class="col-7">
                                                     <input type="text" name="xMargin" id="xMargin" class="form-control" placeholder="xMargin" autocomplete="off" value="{{ $production->x_margin }}">
                                                 </div>
                                             </div>
@@ -321,8 +321,8 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Selling Price :</b></label>
-                                                <div class="col-md-8">
+                                                <label class="col-5"><b>Selling Price :</b></label>
+                                                <div class="col-7">
                                                     <input type="text" name="selling_price" id="selling_price" class="form-control" placeholder="Selling Price" autocomplete="off" value="{{ $production->price_exc_tax }}">
                                                 </div>
                                             </div>

@@ -27,7 +27,7 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-3"><span
+                                        <label for="inputEmail3" class="col-4"><span
                                             class="text-danger">*</span> <b>Role Name :</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="role_name" class="form-control add_input" id="role_name"
@@ -47,7 +47,7 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
                                             <input type="checkbox" id="select_all" data-target="users"
@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 offset-1">
+                                <div class="col-md-4">
 
                                     <div class="col-md-12">
                                         <p><strong>Users</strong></p>
@@ -132,14 +132,14 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
                                         <input type="checkbox" id="select_all" data-target="contacts" autocomplete="off"> &nbsp;  Select All </p>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 offset-1">
+                                <div class="col-md-4">
                                     <div class="col-md-12">
                                         <p><strong>Suppliers</strong></p>
                                     </div>
@@ -249,14 +249,14 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
                                         <input type="checkbox" id="select_all" data-target="product" autocomplete="off"> &nbsp;  Select All </p>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 offset-1">
+                                <div class="col-md-4">
                                     <div class="col-md-12">
                                         <p><strong>Products</strong></p>
                                     </div>
@@ -383,14 +383,14 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
                                         <input type="checkbox" id="select_all" data-target="purchase" autocomplete="off"> &nbsp; Select All </p>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 offset-1">
+                                <div class="col-md-4">
                                     <div class="col-md-12">
                                         <p><strong>Purchases</strong></p>
                                     </div>
@@ -496,14 +496,14 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
                                         <input type="checkbox" id="select_all" data-target="adjustment" autocomplete="off"> &nbsp; Select All </p>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 offset-1">
+                                <div class="col-md-6">
                                     <div class="col-md-12">
                                         <p><strong>Stock Adjustments</strong></p>
                                     </div>
@@ -554,14 +554,14 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
                                         <input type="checkbox" id="select_all" data-target="expense" autocomplete="off"> &nbsp; Select All </p>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 offset-1">
+                                <div class="col-md-6">
                                     <div class="col-md-12">
                                         <p><strong>Expenses</strong></p>
                                     </div>
@@ -626,14 +626,14 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
                                         <input type="checkbox" id="select_all" data-target="sale" autocomplete="off"> &nbsp; Select All </p>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 offset-1">
+                                <div class="col-md-4">
                                     <div class="col-md-12">
                                         <p><strong>Sales</strong></p>
                                     </div>
@@ -852,14 +852,14 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
                                         <input type="checkbox" id="select_all" data-target="cash_register" autocomplete="off"> &nbsp; Select All </p>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 offset-1">
+                                <div class="col-md-6">
                                     <div class="col-md-12">
                                         <p><strong>Cash Register</strong></p>
                                     </div>
@@ -896,14 +896,14 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
                                         <input type="checkbox" id="select_all" data-target="report"> &nbsp; Select All </p>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 offset-1">
+                                <div class="col-md-6">
 
                                     <div class="col-md-12">
                                         <p><strong>Reports</strong></p>
@@ -934,14 +934,14 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
                                         <input type="checkbox" id="select_all" data-target="settings"> &nbsp; Select All</p>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 offset-1">
+                                <div class="col-md-6">
                                     <div class="col-md-12">
                                         <p><strong>Setup</strong></p>
                                     </div>
@@ -1020,11 +1020,11 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
 
                                 </div>
 
-                                <div class="col-md-6 offset-1">
+                                <div class="col-md-6">
 
                                     <div class="col-md-12">
                                         <p><strong>Dashboard</strong></p>
@@ -1048,11 +1048,11 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
 
                                 </div>
 
-                                <div class="col-md-6 offset-1">
+                                <div class="col-md-6">
                                     <div class="col-md-12">
                                         <p><strong>Accounting</strong></p>
                                     </div>
@@ -1076,14 +1076,14 @@
 
                             <div class="element-body">
                                 <div class="row">
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
                                             <input type="checkbox" id="select_all"  data-target="HRMS"> &nbsp; Select All </p>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4 offset-1">
+                                    <div class="col-md-4">
 
                                         <div class="col-md-12">
                                             <p><strong>HRM</strong></p>
@@ -1199,14 +1199,14 @@
 
                             <div class="element-body">
                                 <div class="row">
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
                                             <input type="checkbox" id="select_all"  data-target="Essentials"> &nbsp; Select All </p>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 offset-1">
+                                    <div class="col-md-6">
                                         <div class="col-md-12">
                                             <p><strong>Manage Task</strong></p>
                                         </div>
@@ -1252,14 +1252,14 @@
 
                             <div class="element-body">
                                 <div class="row">
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
                                             <input type="checkbox" id="select_all" data-target="Manufacturing"> &nbsp; Select All </p>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 offset-1">
+                                    <div class="col-md-6">
 
                                         <div class="col-md-12">
                                             <p><strong>Manufacturing</strong></p>
@@ -1347,14 +1347,14 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
                                         <input type="checkbox" id="select_all" data-target="others"> &nbsp; Select All </p>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 offset-1">
+                                <div class="col-md-6">
 
                                     <div class="col-md-12">
                                         <p><strong>Others</strong></p>

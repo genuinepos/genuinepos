@@ -294,14 +294,14 @@
 
                                             <div class="col-lg-3 col-md-6">
                                                 <div class="row align-items-end">
-                                                    <div class="col-md-6">
+                                                    <div class="col-6">
                                                         <label><strong></strong></label>
                                                         <div class="input-group">
                                                             <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-6 mt-1">
+                                                    <div class="col-6">
                                                         <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_purchase_statements"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                                     </div>
                                                 </div>

@@ -121,11 +121,11 @@
 
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-10">
+                                <div class="col-9">
                                     <h6>Purchase Statement List</h6>
                                 </div>
                                 @if(auth()->user()->can('purchase_add'))
-                                    <div class="col-md-2 d-flex justify-content-end">
+                                    <div class="col-3 d-flex justify-content-end">
                                         <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                                     </div>
                                 @endif

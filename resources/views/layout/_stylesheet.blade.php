@@ -300,7 +300,7 @@
         }
 
         .double-col-modal {
-            max-width: 35% !important;
+            max-width: 400px !important;
             margin: 3.8rem auto;
         }
 
@@ -332,6 +332,12 @@
         .col-65-modal {
             max-width: 65% !important;
             margin: 3.8rem auto;
+        }
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 991px){
+        .col-60-modal {
+            max-width: 700px !important;
         }
     }
 

@@ -17,19 +17,19 @@
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-lg-3 p-1">
             <div class="card p-3">
 
                 <form id="product_settings_form" class="setting_form" action="{{ route('products.settings.store') }}" method="post">
                     @csrf
                     <div class="form-group row">
-                        <div class="col-md-3">
+                        <div class="col-lg-3 col-sm-6">
                             <label><strong>Product Code Prefix (SKU) :</strong></label>
                             <input type="text" name="product_code_prefix" class="form-control"
                                 autocomplete="off" value="{{ json_decode($generalSettings->product, true)['product_code_prefix'] }}">
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-lg-3 col-sm-6">
                             <label><strong>Default Unit :</strong></label>
                             <select name="default_unit_id" class="form-control" id="default_unit_id">
                                 <option value="null">None</option>
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <div class="col-md-3">
+                        <div class="col-lg-3 col-md-4">
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
@@ -53,7 +53,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-lg-3 col-md-4">
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
@@ -62,7 +62,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-lg-3 col-md-4">
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
@@ -70,10 +70,8 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <div class="col-md-3">
+                        <div class="col-lg-3 col-md-4">
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
@@ -83,7 +81,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-lg-3 col-md-4">
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"

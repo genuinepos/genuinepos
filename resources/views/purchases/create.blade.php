@@ -25,16 +25,16 @@
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-lg-3 p-1">
             <form id="add_purchase_form" action="{{ route('purchases.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action" value="">
                 <section>
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-lg-3 mb-1">
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class=" col-4"><span
                                             class="text-danger">*</span> <b>@lang('menu.supplier')</b></label>
@@ -80,7 +80,7 @@
                                     @endif
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
@@ -112,7 +112,7 @@
                                     @endif
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>PUR./PO. Date:</b></label>
                                         <div class="col-8">
@@ -144,7 +144,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class=" col-4"><b>Delivery Date :</b></label>
                                         <div class="col-8">

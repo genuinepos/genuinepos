@@ -17,14 +17,14 @@
                         </div>
                     </div>
 
-                    <div class="p-3">
-                        <div class="form_element rounded mt-0 mb-3">
+                    <div class="p-lg-3 p-1">
+                        <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                             <div class="element-body">
                                 <form action="" method="get" class="p-2">
                                     <div class="form-group row">
                                         @if ($addons->branches == 1)
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                <div class="col-md-2">
+                                                <div class="col-lg-2 col-md-3">
                                                     <label><b>@lang('menu.business_location') :</b> </label>
                                                     <select class="form-control submit_able" name="branch_id" id="branch_id">
                                                         <option value="">@lang('menu.all')</option>
@@ -41,8 +41,8 @@
                                             @endif
                                         @endif
 
-                                        <div class="col-md-2">
-                                            <label><b>@lang('menu.type') :</b></label>
+                                        <div class="col-lg-2 col-md-3">
+                                            <label><b>Type :</b></label>
                                             <select name="product_type" id="product_type"
                                                 class="form-control submit_able" autofocus>
                                                 <option value="">@lang('menu.all')</option>
@@ -52,7 +52,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-md-2">
+                                        <div class="col-lg-2 col-md-3">
                                             <label><b>Category :</b></label>
                                             <select id="category_id" name="category_id"
                                                 class="form-control submit_able">
@@ -63,7 +63,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-md-2">
+                                        <div class="col-lg-2 col-md-3">
                                             <label><b>Unit :</b></label>
                                             <select id="unit_id" name="unit_id"
                                                 class="form-control submit_able">
@@ -74,7 +74,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-md-2">
+                                        <div class="col-lg-2 col-md-3">
                                             <label><b>Tax :</b></label>
                                             <select id="tax_id" name="tax_id" class="form-control submit_able">
                                                 <option value="">@lang('menu.all')</option>
@@ -84,7 +84,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-md-2">
+                                        <div class="col-lg-2 col-md-3">
                                             <label><b>Status : </b></label>
                                             <select name="status" id="status" class="form-control submit_able">
                                                 <option value="">@lang('menu.all')</option>
@@ -93,7 +93,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-md-2">
+                                        <div class="col-lg-2 col-md-3">
                                             <label><b>Brand :</b></label>
                                             <select id="brand_id" name="brand_id"
                                                 class="form-control submit_able">
@@ -121,10 +121,10 @@
 
                                 @if(auth()->user()->can('product_add'))
 
-                                    <div class="col-md-8 d-flex justify-content-end gap-2">
+                                    <div class="col-md-8 d-flex flex-wrap justify-content-end gap-2">
                                         <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> Add Product (Ctrl+Enter)</a>
 
-                                        <a href="" class="btn btn-sm btn-warning multipla_deactive_btn">Deactivate Selected</a>
+                                        <a href="" class="btn btn-sm btn-secondary multipla_deactive_btn">Deactivate Selected</a>
 
                                         @if (auth()->user()->can('product_delete'))
 

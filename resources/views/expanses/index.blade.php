@@ -84,14 +84,14 @@
 
                                     <div class="col-md-2">
                                         <div class="row align-items-end">
-                                            <div class="col-md-6">
+                                            <div class="col-6">
                                                 <label><strong></strong></label>
                                                 <div class="input-group">
                                                     <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-6">
                                                 <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                             </div>
                                         </div>
@@ -104,11 +104,11 @@
             </div>
             <div class="card">
                 <div class="section-header">
-                    <div class="col-md-10">
+                    <div class="col-6">
                         <h6>All Expense</h6>
                     </div>
                     @if (auth()->user()->can('add_expense'))
-                        <div class="col-md-2 d-flex justify-content-end">
+                        <div class="col-6 d-flex justify-content-end">
                             <a href="{{ route('expanses.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                         </div>
                     @endif

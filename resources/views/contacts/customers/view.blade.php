@@ -51,11 +51,11 @@
 
                     <div class="tab_contant ledger">
                         <div class="row">
-                            <div class="col-md-3 col-sm-12 col-lg-3">
+                            <div class="col-sm-12 col-lg-3">
                                 @include('contacts.customers.partials.account_summery_area_by_ledgers')
                             </div>
 
-                            <div class="col-md-9 col-sm-12 col-lg-9">
+                            <div class="col-sm-12 col-lg-9">
                                 <div class="account_summary_area">
                                     <div class="heading py-1">
                                         <h5 class="py-1 pl-1 text-center">Filter Area</h5>
@@ -66,7 +66,7 @@
                                             <div class="form-group row align-items-end justify-content-end g-3">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
+                                                        <div class="col-lg-3 col-md-6">
                                                             <label><strong>@lang('menu.business_location') :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able"
                                                                 id="ledger_branch_id" autofocus>
@@ -86,7 +86,7 @@
                                                     <input type="hidden" name="branch_id" id="ledger_branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}">
                                                 @endif
 
-                                                <div class="col-md-3">
+                                                <div class="col-lg-3 col-md-6">
                                                     <label><strong>@lang('menu.voucher_type') :</strong></label>
                                                     <select name="voucher_type" class="form-control submit_able" id="ledger_voucher_type" autofocus>
                                                         <option value="">@lang('menu.all')</option>
@@ -96,7 +96,7 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-lg-3 col-md-6">
                                                     <label><strong>@lang('menu.from_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -106,7 +106,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-lg-3 col-md-6">
                                                     <label><strong>@lang('menu.to_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -117,15 +117,15 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-lg-3 col-md-6">
                                                     <div class="row align-items-end">
-                                                        <div class="col-md-6">
+                                                        <div class="col-6">
                                                             <div class="input-group">
                                                                 <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-6">
+                                                        <div class="col-6">
                                                             <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                                         </div>
                                                     </div>
@@ -241,11 +241,11 @@
 
                     <div class="tab_contant sale d-hide">
                         <div class="row">
-                            <div class="col-md-4 col-sm-12 col-lg-4">
+                            <div class="col-sm-12 col-lg-4">
                                 @include('contacts.customers.partials.account_summery_area_by_sales')
                             </div>
 
-                            <div class="col-md-8 col-sm-12 col-lg-8">
+                            <div class="col-sm-12 col-lg-8">
                                 <div class="account_summary_area">
                                     <div class="heading py-1">
                                         <h5 class="py-1 pl-1 text-center">Filter Area</h5>
@@ -256,7 +256,7 @@
                                             <div class="form-group row align-items-end justify-content-end g-3">
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
+                                                        <div class="col-lg-3 col-md-6">
                                                             <label><strong>@lang('menu.business_location') :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able" id="sale_branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
@@ -273,7 +273,7 @@
                                                     @endif
                                                 @endif
 
-                                                <div class="col-md-3">
+                                                <div class="col-lg-3 col-md-6">
                                                     <label><strong>@lang('menu.from_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -283,7 +283,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-lg-3 col-md-6">
                                                     <label><strong>@lang('menu.to_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -294,7 +294,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-lg-3 col-md-6">
                                                     <div class="row align-items-end">
                                                         <div class="col-md-7">
                                                             <div class="input-group">
@@ -356,11 +356,11 @@
                     @if(auth()->user()->can('sale_payment'))
                         <div class="tab_contant payments d-hide">
                             <div class="row">
-                                <div class="col-md-3 col-sm-12 col-lg-3">
+                                <div class="col-sm-12 col-lg-3">
                                     @include('contacts.customers.partials.account_summery_area_by_payments')
                                 </div>
 
-                                <div class="col-md-9 col-sm-12 col-lg-9">
+                                <div class="col-sm-12 col-lg-9">
                                     <div class="account_summary_area">
                                         <div class="heading py-1">
                                             <h5 class="py-1 pl-1 text-center">Filter Area</h5>
@@ -375,7 +375,7 @@
 
                                                                 @if ($addons->branches == 1)
                                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                                        <div class="col-md-3">
+                                                                        <div class="col-lg-3 col-md-6">
                                                                             <label><strong>@lang('menu.business_location') :</strong></label>
                                                                             <select name="branch_id" class="form-control submit_able" id="payment_branch_id" autofocus>
                                                                                 <option value="">@lang('menu.all')</option>
@@ -392,7 +392,7 @@
                                                                     @endif
                                                                 @endif
 
-                                                                <div class="col-md-3">
+                                                                <div class="col-lg-3 col-md-6">
                                                                     <label><strong>@lang('menu.from_date') :</strong></label>
                                                                     <div class="input-group">
                                                                         <div class="input-group-prepend">
@@ -402,7 +402,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-md-3">
+                                                                <div class="col-lg-3 col-md-6">
                                                                     <label><strong>@lang('menu.to_date') :</strong></label>
                                                                     <div class="input-group">
                                                                         <div class="input-group-prepend">
@@ -412,12 +412,12 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-md-3">
+                                                                <div class="col-lg-3 col-md-6">
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <label><strong></strong></label>
                                                                             <div class="input-group">
-                                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -427,21 +427,21 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                    <div class="col-md-12 col-sm-12 col-lg-12">
+                                                <div class="col-md-3 mt-md-0 mt-2">
+                                                    <div class="col-md-12 col-sm-12 col-lg-12 d-md-block d-flex gap-2">
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <a href="{{ route('customers.payment', $customer->id) }}" id="add_payment" class="btn btn-sm btn-success"><i class="far fa-money-bill-alt text-white"></i> Receive</a>
                                                             </div>
                                                         </div>
 
-                                                        <div class="row mt-2">
+                                                        <div class="row mt-md-2">
                                                             <div class="col-md-12">
                                                                 <a class="btn btn-sm btn-success return_payment_btn" id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund </a>
                                                             </div>
                                                         </div>
 
-                                                        <div class="row mt-2">
+                                                        <div class="row mt-md-2">
                                                             <div class="col-md-12">
                                                                 <a href="{{ route('customers.all.payment.print', $customer->id) }}" class="btn btn-sm btn-primary" id="print_payments"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                                             </div>

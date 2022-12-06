@@ -25,8 +25,8 @@
                         </div>
                     </div>
 
-                    <div class="p-3">
-                        <div class="row g-3">
+                    <div class="p-lg-3 p-1">
+                        <div class="row g-lg-3 g-1">
                             <div class="col-md-7">
                                 <div class="card ">
                                     <div class="card-header">

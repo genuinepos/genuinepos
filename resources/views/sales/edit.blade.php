@@ -33,7 +33,7 @@
 
                         <div class="element-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class=" col-4"><b>@lang('menu.customer') :</b> </label>
                                         <div class="col-8">
@@ -59,7 +59,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"><b>Invoice ID :</b> </label>
                                         <div class="col-8">
@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class="col-4">Status : <span
                                                 class="text-danger">*</span></label>
@@ -108,7 +108,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class="col-4"> <b>Sale Date :</b> <span
                                             class="text-danger">*</span></label>
@@ -141,7 +141,7 @@
                 <section>
                     <div class="sale-content">
                         <div class="row g-3">
-                            <div class="col-md-9">
+                            <div class="col-lg-9">
                                 <div class="card mb-3">
                                     <div class="card-body p-2">
                                         <div class="row">
@@ -307,8 +307,8 @@
 
                                 <div class="card payment_body">
                                     <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-4">
+                                        <div class="row gx-4 gy-1">
+                                            <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>Ship Details :</b></label>
                                                     <div class="col-8">
@@ -317,7 +317,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-4">
+                                            <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>Ship Address :</b></label>
                                                     <div class="col-8">
@@ -326,7 +326,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-4">
+                                            <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-4"><b>Ship Status :</b></label>
                                                     <div class="col-8">
@@ -340,10 +340,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-md-4">
+                                            <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>Delivered To :</b></label>
                                                     <div class="col-8">
@@ -352,19 +350,19 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-4">
+                                            <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-sm-4">Sale Note :</label>
-                                                    <div class="col-sm-8">
+                                                    <label class="col-4">Sale Note :</label>
+                                                    <div class="col-8">
                                                         <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note" value="{{ $sale->sale_note }}">
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-4">
+                                            <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-sm-4">@lang('menu.payment_note'):</label>
-                                                    <div class="col-sm-8">
+                                                    <label class="col-4">@lang('menu.payment_note'):</label>
+                                                    <div class="col-8">
                                                         <input name="payment_note" type="text" class="form-control" id="payment_note" placeholder="@lang('menu.payment_note')" value="">
                                                     </div>
                                                 </div>
@@ -374,7 +372,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3">
                                 <div class="card number-fields">
                                     <div class="card-body">
                                         <div class="row mb-2">

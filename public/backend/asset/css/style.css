@@ -30,7 +30,7 @@ body::-webkit-scrollbar {
   display: none;
 }
 .select2-container .select2-selection--single {
-    height: 31px !important;
+    height: 25px !important;
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered {
     line-height: 31px !important;
@@ -326,6 +326,7 @@ a.bar-link {
 @media (max-width: 767px) {
     .name-head h6,
     .name-head h5 {
+        width: calc(100% - 40px);
         font-size: 12px;
         color: var(--title-color);
     }
@@ -1349,7 +1350,7 @@ legend {
 
 @media (max-width: 999px) {
     .tab_list_area .btn-group {
-        width: 100%;
+        max-width: 100%;
         overflow-x: scroll;
     }
     .btn {
@@ -1479,6 +1480,8 @@ legend {
     padding: 0 0px;
     padding-top: 80px;
     padding-right: 142px;
+    padding-bottom: 30px;
+    overflow-y: scroll;
 }
 
 .main__nav_t ul li a:hover {
@@ -1721,7 +1724,7 @@ div.sale-item-sec::-webkit-scrollbar-thumb {
     }
     .name-head {
         /* display: block; */
-        text-align: center;
+        /* text-align: center; */
     }
     .search-input {
         display: block;

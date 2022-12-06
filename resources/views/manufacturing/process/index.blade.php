@@ -23,12 +23,12 @@
                     <div class="p-3">
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-6">
+                                <div class="col-6">
                                     <h6>Process</h6>
                                 </div>
 
                                 @if (auth()->user()->can('process_add'))
-                                    <div class="col-md-6 d-flex justify-content-end">
+                                    <div class="col-6 d-flex justify-content-end">
                                         <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                                     </div>
                                 @endif

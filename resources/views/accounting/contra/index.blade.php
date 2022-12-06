@@ -81,11 +81,11 @@
 
             <div class="card">
                 <div class="section-header">
-                    <div class="col-md-10">
+                    <div class="col-6">
                         <h6>@lang('menu.contra_list')</h6>
                     </div>
 
-                    <div class="col-md-2 d-flex justify-content-end">
+                    <div class="col-6 d-flex justify-content-end">
                         <a href="{{ route('accounting.contras.create') }}" class="btn btn-sm btn-primary" id="create">
                             <i class="fas fa-plus-square"></i> @lang('menu.add')
                         </a>

@@ -32,7 +32,7 @@
                                     <div class="form_element rounded mt-0 mb-3">
                                         <div class="element-body">
                                             <div class="row align-items-end">
-                                                <div class="col-md-8">
+                                                <div class="col-md-10">
                                                     <form id="sale_purchase_filter" action="{{ route('reports.profit.sales.filter.purchases.amounts') }}" method="get">
                                                         <div class="form-group row">
                                                             @if ($addons->branches == 1)
@@ -79,20 +79,24 @@
                                                             </div>
 
                                                             <div class="col-md-2">
-                                                                <label><strong></strong></label>
-                                                                <div class="input-group">
-                                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                                <div class="row justify-content-between align-items-end">
+                                                                    <div class="col-6">
+                                                                        <label><strong></strong></label>
+                                                                        <div class="input-group">
+                                                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-6">
+                                                                        <div class="form-group">
+                                                                            <label></label>
+                                                                            <a href="#" class="btn btn-sm btn-primary float-end mt-1" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </form>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label></label>
-                                                        <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

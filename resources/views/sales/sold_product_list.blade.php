@@ -146,11 +146,11 @@
 
                             <div class="card">
                                 <div class="section-header">
-                                    <div class="col-md-10">
+                                    <div class="col-6">
                                         <h6>Sold Product List</h6>
                                     </div>
                                     @if(auth()->user()->can('purchase_add'))
-                                        <div class="col-md-2 d-flex justify-content-end">
+                                        <div class="col-6 d-flex justify-content-end">
                                             <a href="#" class="btn btn-sm btn-primary" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                         </div>
                                     @endif

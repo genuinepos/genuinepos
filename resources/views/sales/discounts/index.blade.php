@@ -22,11 +22,11 @@
                     <div class="p-3">
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-6">
+                                <div class="col-6">
                                     <h6>Offer List</h6>
                                 </div>
 
-                                <div class="col-md-6 d-flex justify-content-end">
+                                <div class="col-6 d-flex justify-content-end">
                                     <a href="#" data-bs-toggle="modal" class="btn btn-sm btn-primary" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> @lang('menu.add') (Ctrl+Enter)</a>
                                 </div>
                             </div>

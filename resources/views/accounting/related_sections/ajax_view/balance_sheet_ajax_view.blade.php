@@ -1,4 +1,4 @@
-<?php 
+<?php
     $totalLiability = 0;
     $totalAsset = 0;
     $netProfitOrLoss = $netProfitLossAccount['net_profit'];
@@ -17,7 +17,7 @@
                     <tbody>
                         <tr>
                             <td class="text-start"><em>@lang('menu.supplier_balance') :</em>  </td>
-                            <td class=" text-end"> 
+                            <td class=" text-end">
                                 <span class="supplier_due"><em>{{ App\Utils\Converter::format_in_bdt($suppliers->sum('total_due')) }}</em> </span>
                                 @php $totalLiability += $suppliers->sum('total_due')  @endphp
                             </td>
@@ -46,8 +46,8 @@
                             <td class="text-start">
                                 <em>@lang('menu.capital_ac') : </em>
                             </td>
-                            
-                            <td class="text-end"> 
+
+                            <td class="text-end">
                                 <em class="capital_balance">{{ App\Utils\Converter::format_in_bdt($TotalCapital->sum('total_capital')) }}</em>
                                 @php $totalLiability += $TotalCapital->sum('total_capital') @endphp
                             </td>
@@ -57,8 +57,8 @@
                             <td class="text-start">
                                 <em>@lang('menu.profit_loss_ac') : </em>
                             </td>
-                            
-                            <td class="text-end"> 
+
+                            <td class="text-end">
                                 <em class="capital_balance">{{ App\Utils\Converter::format_in_bdt($netProfitOrLoss) }}</em>
                                 @php $totalLiability += $netProfitOrLoss @endphp
                             </td>
@@ -77,8 +77,8 @@
                             <td class="text-start">
                                 <em>@lang('menu.difference_in_opening_balance') </em>
                             </td>
-                            
-                            <td class="text-end"> 
+
+                            <td class="text-end">
                                 <em class="different"></em>
                             </td>
                         </tr>
@@ -94,9 +94,9 @@
                     <tbody>
                         <tr>
                             <td class="text-start"><em>@lang('menu.cash_in_hand') : </em></td>
-                            <td class="text-end"> 
+                            <td class="text-end">
                                 <em class="cash_in_hand">{{ App\Utils\Converter::format_in_bdt($totalCashInHand->sum('total_cash')) }}</em>
-                                @php 
+                                @php
                                     $totalAsset += $totalCashInHand->sum('total_cash');
                                     $totalCurrnetAsset += $totalCashInHand->sum('total_cash');
                                 @endphp
@@ -105,20 +105,20 @@
 
                         <tr>
                             <td class="text-start"><em>@lang('menu.bank_ac_balance') </em></td>
-                            <td class="text-end"> 
+                            <td class="text-end">
                                 <em class="bank_balance">{{ App\Utils\Converter::format_in_bdt($TotalBankBalance->sum('total_bank_balance')) }}</em>
-                                @php 
-                                    $totalAsset += $TotalBankBalance->sum('total_bank_balance'); 
-                                    $totalCurrnetAsset += $TotalBankBalance->sum('total_bank_balance'); 
+                                @php
+                                    $totalAsset += $TotalBankBalance->sum('total_bank_balance');
+                                    $totalCurrnetAsset += $TotalBankBalance->sum('total_bank_balance');
                                 @endphp
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start"><em>@lang('menu.customer_balance') : </em></td>
-                            <td class="text-end"> 
+                            <td class="text-end">
                                 <em class="customer_due">{{ App\Utils\Converter::format_in_bdt($customers->sum('total_due')) }}</em>
-                                @php 
+                                @php
                                     $totalAsset += $customers->sum('total_due');
                                     $totalCurrnetAsset += $customers->sum('total_due');
                                 @endphp
@@ -127,9 +127,9 @@
 
                         <tr>
                             <td class="text-start"><em>@lang('menu.supplier_return_balance') : </em></td>
-                            <td class="text-end">  
+                            <td class="text-end">
                                 <em class="supplier_return_due">{{ App\Utils\Converter::format_in_bdt($suppliers->sum('total_return_due')) }}</em>
-                                @php 
+                                @php
                                     $totalAsset += $suppliers->sum('total_return_due');
                                     $totalCurrnetAsset += $suppliers->sum('total_return_due');
                                 @endphp
@@ -140,7 +140,7 @@
                             <td class="text-start"><em>@lang('menu.current_stock_value') : </em></td>
                             <td class=" text-end">
                                 <em class="stock_value">{{ App\Utils\Converter::format_in_bdt($currentStockValue) }}</em>
-                                @php 
+                                @php
                                     $totalAsset += $currentStockValue;
                                     $totalCurrnetAsset += $currentStockValue;
                                  @endphp
@@ -151,9 +151,9 @@
                             <td class="text-start"><em>@lang('menu.investments') : </em></td>
                             <td class=" text-end">
                                 <em class="investment">{{ App\Utils\Converter::format_in_bdt($TotalInvestment->sum('total_investment')) }}</em>
-                                @php 
-                                    $totalAsset += $TotalInvestment->sum('total_investment'); 
-                                    $totalCurrnetAsset += $TotalInvestment->sum('total_investment'); 
+                                @php
+                                    $totalAsset += $TotalInvestment->sum('total_investment');
+                                    $totalCurrnetAsset += $TotalInvestment->sum('total_investment');
                                 @endphp
                             </td>
                         </tr>
@@ -162,9 +162,9 @@
                             <td class="text-start"><em>@lang('menu.receivable_loan_advance') : </em></td>
                             <td class=" text-end">
                                 <em class="receiveable_la">{{ App\Utils\Converter::format_in_bdt($loanCompanies->sum('total_la_receivable')) }}</em>
-                                @php 
-                                    $totalAsset += $loanCompanies->sum('total_la_receivable'); 
-                                    $totalCurrnetAsset += $loanCompanies->sum('total_la_receivable'); 
+                                @php
+                                    $totalAsset += $loanCompanies->sum('total_la_receivable');
+                                    $totalCurrnetAsset += $loanCompanies->sum('total_la_receivable');
                                 @endphp
                             </td>
                         </tr>
@@ -193,8 +193,8 @@
                                             <tr>
                                                 <td class="text-start" colspan="2">
                                                     <em>{{ $fixedAsset->name }} : </em>
-                                                    @php 
-                                                        $totalAsset += $fixedAsset->balance; 
+                                                    @php
+                                                        $totalAsset += $fixedAsset->balance;
                                                     @endphp
                                                 </td>
                                                 <td class="text-end">
@@ -216,9 +216,9 @@
             {{-- Calculate difference --}}
             @php
                 $differ = $totalAsset - $totalLiability;
-                $totalLiability += $differ;       
+                $totalLiability += $differ;
             @endphp
-            <td class="total_liability_area"> 
+            <td class="total_liability_area">
                 <table class="table table-sm">
                     <tbody>
                         <tr>

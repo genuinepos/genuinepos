@@ -114,7 +114,7 @@
                     </div>
                 </div><br>
                 <div class="row">
-                    <div class="col-md-6 offset-6">
+                    <div class="col-md-6">
                         <div class="table-responsive">
                             <table class="table modal-table table-sm">
                                 <tr>

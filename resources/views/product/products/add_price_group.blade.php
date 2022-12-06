@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-lg-3 p-1">
             <form id="add_product_price_group_form" action="{{ route('products.save.price.groups') }}" method="POST">
                 @csrf
                 <input type="hidden" name="action_type" id="action_type" value="">
@@ -35,7 +35,7 @@
                                     <div class="table-responsive mt-1">
                                         <table class="table modal-table table-sm">
                                             <thead>
-                                                <tr class="bg-primary">
+                                                <tr class="bg-secondary">
                                                     @if ($type == 1)
                                                         <th class="text-white text-start" scope="col">Variant</th>
                                                     @endif

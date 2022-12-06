@@ -20,7 +20,7 @@
 
                     <div class="p-3">
                         <div class="row g-3">
-                            <div class="col-md-4">
+                            <div class="col-lg-4">
                                 <div class="card" id="add_form">
                                     <div class="section-header">
                                         <div class="col-md-6">
@@ -94,7 +94,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-8">
+                            <div class="col-lg-8">
                                 <div class="card">
                                     <div class="section-header">
                                         <div class="col-md-6">

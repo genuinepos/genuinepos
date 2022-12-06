@@ -24,12 +24,12 @@
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-lg-3 p-1">
             <form id="add_transfer_form" action="{{ route('transfer.stock.branch.to.branch.store') }}" method="POST">
                 @csrf
                 <input class="hidden_sp" type="hidden" name="action" id="action">
                 <section>
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-lg-3 mb-1">
 
                         <div class="element-body">
                             <div class="row">
@@ -109,7 +109,7 @@
                 </section>
 
                 <section>
-                    <div class="sale-content mb-3">
+                    <div class="sale-content mb-lg-3 mb-1">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
@@ -165,9 +165,9 @@
                 </section>
 
                 <section>
-                    <div class="row g-3">
+                    <div class="row g-lg-3 g-1">
                         <div class="col-md-6">
-                            <div class="form_element rounded mt-0 mb-3">
+                            <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -216,7 +216,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="form_element rounded mt-0 mb-3">
+                            <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">

@@ -338,8 +338,8 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-12">
                                     <div class="input-group ">
-                                        <label class="col-2"><b>Permanent Address :</b> </label>
-                                        <div class="col-10">
+                                        <label class="col-4"><b>Permanent Address :</b> </label>
+                                        <div class="col-8">
                                             <input type="text" name="permanent_address" class="form-control form-control-sm" autocomplete="off" placeholder="Permanent address">
                                         </div>
                                     </div>
@@ -349,8 +349,8 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <label class="col-2"><b>Current Address :</b> </label>
-                                        <div class="col-10">
+                                        <label class="col-4"><b>Current Address :</b> </label>
+                                        <div class="col-8">
                                             <input type="text" name="current_address" class="form-control form-control-sm" placeholder="Current address">
                                         </div>
                                     </div>

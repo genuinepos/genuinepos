@@ -76,11 +76,11 @@
             </div>
             <div class="form_element rounded m-0">
                 <div class="section-header">
-                    <div class="col-md-6">
+                    <div class="col-6">
                         <h6>Attendances <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
                     </div>
 
-                    <div class="col-md-6 d-flex justify-content-end">
+                    <div class="col-6 d-flex justify-content-end">
                         <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                     </div>
                 </div>

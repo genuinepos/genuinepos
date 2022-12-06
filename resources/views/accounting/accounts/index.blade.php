@@ -63,11 +63,11 @@
             </div>
             <div class="card">
                 <div class="section-header">
-                    <div class="col-md-10">
+                    <div class="col-6">
                         <h6>@lang('menu.all_accounts')</h6>
                     </div>
 
-                    <div class="col-md-2 d-flex justify-content-end">
+                    <div class="col-6 d-flex justify-content-end">
                         <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" id="add" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.add') (Ctrl+Enter)</a>
                     </div>
                 </div>

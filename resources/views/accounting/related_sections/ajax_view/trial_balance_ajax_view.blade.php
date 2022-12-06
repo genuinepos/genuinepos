@@ -77,32 +77,17 @@
 
         @foreach ($accounts as $account)
             <tr>
-                <td class="text-start"><em>{{ App\Utils\Util::accountType($account->account_type) }}</em> </td>
+                <td class="text-start"><em>Customer Balance :</em></td>
 
                 <td class="text-end">
-                    <em class="debit">
-                        @if ($accountUtil->accountBalanceType($account->account_type) == 'debit')
-                            {{ App\Utils\Converter::format_in_bdt($account->total_balance)  }}
-                            @php
-                                $totalDebit += $account->total_balance;
-                            @endphp
-                        @else
-                            0.00
-                        @endif
-                    </em>
+                    <em class="debit">{{ App\Utils\Converter::format_in_bdt($customers->sum('balance')) }}</em>
+                    @php
+                        $totalDebit += $customers->sum('balance');
+                    @endphp
                 </td>
 
                 <td class="text-end">
-                    <em class="credit">
-                        @if ($accountUtil->accountBalanceType($account->account_type) == 'credit')
-                            {{ App\Utils\Converter::format_in_bdt($account->total_balance) }}
-                            @php
-                                $totalCredit += $account->total_balance;
-                            @endphp
-                        @else
-                            0.00
-                        @endif
-                    </em>
+                    <em class="credit">0.00</em>
                 </td>
             </tr>
         @endforeach

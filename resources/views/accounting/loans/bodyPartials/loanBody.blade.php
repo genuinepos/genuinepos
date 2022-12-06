@@ -117,7 +117,7 @@
                     <h6>@lang('menu.loans')</h6>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-6">
                     <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                 </div>
             </div>

@@ -144,35 +144,35 @@
                             <div class="row justify-content-between g-2 pt-3">
                                 <div class="col-md-3 col-sm-4">
                                     <div class="row g-2">
-                                        <label for="" class="col-6 text-end">Column</label>
-                                        <div class="col-6">
+                                        <label for="" class="col-sm-6 col-4 text-sm-end">Column</label>
+                                        <div class="col-sm-6 col-8">
                                             <input class="form-control" type="number" name="" id="">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-sm-4">
                                     <div class="row g-2">
-                                        <label for="" class="col-6 text-end">Row</label>
-                                        <div class="col-6">
+                                        <label for="" class="col-sm-6 col-4 text-sm-end">Row</label>
+                                        <div class="col-sm-6 col-8">
                                             <input class="form-control" type="number" name="" id="">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="row g-2">
-                                        <label for="" class="col-6">Total Print Qty</label>
-                                        <div class="col-6">
+                                        <label for="" class="col-sm-6 col-4">Total Print Qty</label>
+                                        <div class="col-sm-6 col-8">
                                             <input class="form-control" type="number" name="" id="">
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="d-flex justify-content-between pt-3">
-                                <button class="btn btn-sm btn-primary">Complete Print & Clear Data</button>
+                            <div class="d-sm-flex gap-1 justify-content-between pt-3">
+                                <button class="btn btn-sm btn-primary m-0">Complete Print & Clear Data</button>
                                 <div>
-                                    <button class="btn btn-sm btn-success">Print Preview</button>
-                                    <button class="btn btn-sm btn-success">Print</button>
+                                    <button class="btn btn-sm btn-success m-0">Print Preview</button>
+                                    <button class="btn btn-sm btn-success m-0">Print</button>
                                 </div>
                             </div>
                         </div>

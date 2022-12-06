@@ -3,37 +3,39 @@
     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
 </div>
 <div class="modal-body">
-    <table class="display data_tbl data__table">
-        <thead>
-            <tr class="bg-secondary">
-                <th class="text-start text-white">Ingredients</th>
-                <th class="text-start text-white">@lang('menu.quantity')</th>
-                <th class="text-start text-white">Cost Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                <th class="text-start text-white">Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($process->ingredients as $ingredient)
-                <tr>
-                    <td class="text-start">
-                        {{ $ingredient->product->name .' '.($ingredient->variant ? $ingredient->variant->variant_name : '') }}
-                    </td>
-                    <td class="text-start">{{ $ingredient->final_qty.' '.$ingredient->unit->name }}</td>
-                    <td class="text-start">{{ $ingredient->unit_cost_inc_tax }}</td>
-                    <td class="text-start">{{ $ingredient->subtotal }}</td>
+    <div class="table-responsive">
+        <table class="display data_tbl data__table">
+            <thead>
+                <tr class="bg-secondary">
+                    <th class="text-start text-white">Ingredients</th>
+                    <th class="text-start text-white">@lang('menu.quantity')</th>
+                    <th class="text-start text-white">Cost Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-start text-white">Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                 </tr>
-            @endforeach
-        </tbody>
-        <tfoot class="display data_tbl data__table">
-            <tr>
-                <th colspan="3" class="text-end">Total Ingredients : {{json_decode($generalSettings->business, true)['currency'] }}</th>
-                <th>{{ $process->total_ingredient_cost }}</th>
-            </tr>
-        </tfoot>
-   </table>
+            </thead>
+            <tbody>
+                @foreach ($process->ingredients as $ingredient)
+                    <tr>
+                        <td class="text-start">
+                            {{ $ingredient->product->name .' '.($ingredient->variant ? $ingredient->variant->variant_name : '') }}
+                        </td>
+                        <td class="text-start">{{ $ingredient->final_qty.' '.$ingredient->unit->name }}</td>
+                        <td class="text-start">{{ $ingredient->unit_cost_inc_tax }}</td>
+                        <td class="text-start">{{ $ingredient->subtotal }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+            <tfoot class="display data_tbl data__table">
+                <tr>
+                    <th colspan="3" class="text-end">Total Ingredients : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th>{{ $process->total_ingredient_cost }}</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
     <br>
    <div class="row">
-       <div class="col-6">
+       <div class="col-sm-6">
            <table class="">
                <tbody>
                     <tr>
@@ -52,7 +54,7 @@
            </table>
        </div>
 
-        <div class="col-6">
+        <div class="col-sm-6">
             <table class="display data_tbl data__table">
                 <tbody>
                     <tr>
@@ -72,8 +74,8 @@
 <div class="modal-footer">
     <div class="row">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-sm btn-success print_btn">@lang('menu.print')</button>
             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+            <button type="submit" class="btn btn-sm btn-success print_btn">@lang('menu.print')</button>
         </div>
     </div>
  </div>

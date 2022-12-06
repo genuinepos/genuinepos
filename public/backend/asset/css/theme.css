@@ -329,6 +329,10 @@ body.red-theme {
     background: var(--red-color-gradient) !important;
 }
 
+.modal-header {
+    border-top: 2px solid var(--blue-color-1);
+}
+
 .red-theme .modal-header {
     padding: 4px 12px;
     background: var(--red-color-gradient);

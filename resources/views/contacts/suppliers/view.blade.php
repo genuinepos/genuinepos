@@ -454,7 +454,7 @@
                                                 <th class="text-end">Pending Qty</th>
                                                 <th class="text-end">Grand Total</th>
                                                 <th class="text-end">Paid</th>
-                                                <th class="text-end">Due</th>
+                                                <th class="text-end">@lang('menu.due')</th>
                                                 <th class="text-end">Payment Status</th>
                                             </tr>
                                         </thead>
@@ -599,8 +599,8 @@
                                                     <th class="text-start">Against Invoice</th>
                                                     {{-- <th>@lang('menu.created_by')</th> --}}
                                                     <th class="text-start">Payment Status</th>
-                                                    <th class="text-start">Payment Type</th>
-                                                    <th class="text-start">Account</th>
+                                                    <th class="text-start">@lang('menu.payment_type')</th>
+                                                    <th class="text-start">@lang('menu.account')</th>
                                                     <th class="text-end">Less Amount</th>
                                                     <th class="text-end">Paid Amount</th>
                                                     <th class="text-start">@lang('menu.action')</th>

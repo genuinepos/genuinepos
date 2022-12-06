@@ -108,7 +108,7 @@
                                                         </td>
 
                                                         <td>
-                                                            <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="Amount">
+                                                            <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="@lang('menu.amount')">
                                                         </td>
 
                                                         <td>
@@ -184,7 +184,7 @@
                     <form id="add_quick_expense_category_form" action="{{ route('expanses.add.quick.expense.category') }}">
                         @csrf
                         <div class="form-group">
-                            <label><b>Name</b> : <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.name')</b> : <span class="text-danger">*</span></label>
                             <input required type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="Expense Category Name"/>
                             <span class="error error_ex_name"></span>
                         </div>
@@ -441,7 +441,7 @@
             html += '</td>';
 
             html += '<td>';
-            html += '<input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="Amount">';
+            html += '<input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="@lang('menu.amount')">';
             html += '</td>';
 
             html += '<td>';

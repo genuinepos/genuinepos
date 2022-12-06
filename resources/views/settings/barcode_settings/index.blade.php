@@ -88,6 +88,7 @@
                 e.preventDefault();
                 $('.data_preloader').show();
                 var url = $(this).attr('href');
+                console.log(url);
                 $.ajax({
                     url:url,
                     type:'get',

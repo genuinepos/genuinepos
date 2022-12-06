@@ -78,7 +78,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Method :</th>
+                            <th class="text-start">@lang('menu.method') :</th>
                             <td class="text-end">
                                 @if ($payment->payment_method)
                                       {{ $payment->payment_method->name }}
@@ -122,7 +122,7 @@
 
                 @if (env('PRINT_SD_PAYMENT') == true)
                     <tr>
-                        <td colspan="4" class="text-navy-blue text-center"><small>Software by <b>SpeedDigit Pvt. Ltd.</b></small> </td>
+                        <td colspan="4" class="text-navy-blue text-center"><small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small> </td>
                     </tr>
                 @endif
             </tbody>

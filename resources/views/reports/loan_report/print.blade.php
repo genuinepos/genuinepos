@@ -71,10 +71,10 @@
                     <th class="text-start">@lang('menu.b_location')</th>
                     <th class="text-start">@lang('menu.reference_no')</th>
                     <th class="text-start">@lang('menu.company')/@lang('menu.people')</th>
-                    <th class="text-start">Type</th>
+                    <th class="text-start">@lang('menu.type')</th>
                     <th class="text-start">Loan By</th>
                     <th class="text-end">@lang('menu.loan_amount')({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-end">Total Paid({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">@lang('menu.total_paid')({{json_decode($generalSettings->business, true)['currency']}})</th>
                     <th class="text-end">Laon Due({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
@@ -159,7 +159,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Due Paid : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_due_paid') : {{json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPaid) }}</td>
                 </tr>
 
@@ -196,7 +196,7 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+            <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
         </div>
     </div>
 @endif

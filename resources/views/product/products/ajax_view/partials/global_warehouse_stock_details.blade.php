@@ -7,7 +7,7 @@
             <th class="text-white text-start">Current Stock</th>
             <th class="text-white text-start">Stock Value({{ json_decode($generalSettings->business, true)['currency'] }})</th>
             <th class="text-white text-start">Total Purchased(+)</th>
-            <th class="text-white text-start">Total received(+)</th>
+            <th class="text-white text-start">@lang('menu.total_received')(+)</th>
             <th class="text-white text-start">Total Adjusted(-)</th>
             <th class="text-white text-start">Total Transferred(-)</th>
         </tr>

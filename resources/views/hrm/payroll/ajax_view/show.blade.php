@@ -155,7 +155,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Due :</th>
+                            <th width="50%" class="text-start">@lang('menu.due') :</th>
                             <td width="50%" class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->due }}</b> </td>
                         </tr>
                     </tbody>
@@ -168,7 +168,7 @@
             <table class="w-100 pt-5">
                 <tbody>
                     <tr>
-                        <th width="50%" class="text-dark"><h6 style="border-top:1px solid black;display:inline;">Signature Of Receiver</h6></th>
+                        <th width="50%" class="text-dark"><h6 style="border-top:1px solid black;display:inline;">@lang('menu.signature_of_receiver')</h6></th>
                         <th width="50%" class="text-dark text-end"><h6 style="border-top:1px solid black;display:inline;">@lang('menu.signature_of_authority')</h6>  </th>
                     </tr>
 

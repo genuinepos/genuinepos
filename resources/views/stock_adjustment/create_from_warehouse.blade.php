@@ -99,7 +99,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"> <b>Type :</b> <span class="text-danger">*</span>
+                                        <label class=" col-4"> <b>@lang('menu.type') :</b> <span class="text-danger">*</span>
                                             <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i>
                                         </label>
 

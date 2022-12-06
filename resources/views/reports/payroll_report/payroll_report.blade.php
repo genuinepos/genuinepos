@@ -117,7 +117,7 @@
                                     <th>Referance No</th>
                                     <th>Total Amount</th>
                                     <th>Paid</th>
-                                    <th>Due</th>
+                                    <th>@lang('menu.due')</th>
                                     <th>Payment Status</th>
                                     <th>@lang('menu.created_by')</th>
                                 </tr>

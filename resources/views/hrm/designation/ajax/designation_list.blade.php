@@ -2,7 +2,7 @@
     <thead>
         <tr class="text-center">
             <th class="text-start">@lang('menu.sl')</th>
-            <th class="text-start">Name</th>
+            <th class="text-start">@lang('menu.name')</th>
             <th class="text-start">@lang('menu.description')</th>
             <th class="text-start">@lang('menu.action')</th>
         </tr>

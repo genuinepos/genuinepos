@@ -9,7 +9,7 @@
     </div>
 
     <div class="form-group">
-        <label><b>Type :</b></label>
+        <label><b>@lang('menu.type') :</b></label>
         <select class="form-control form-control-sm" name="type">
             <option {{ $allowance->type == 'Allowance' ? 'SELECTED' : '' }} value="Allowance">Allowance</option>
             <option {{ $allowance->type == 'Deduction' ? 'SELECTED' : '' }} value="Deduction">Deduction</option>
@@ -25,8 +25,8 @@
             </select>
         </div>
         <div class="form-group col-6">
-            <label><b>Amount : </b> <span class="text-danger">*</span></label>
-            <input type="text" name="amount" class="form-control form-control-sm" placeholder="Amount"
+            <label><b>@lang('menu.amount') : </b> <span class="text-danger">*</span></label>
+            <input type="text" name="amount" class="form-control form-control-sm" placeholder="@lang('menu.amount')"
                 value="{{ $allowance->amount }}" />
             <span class="error error_e_amount"></span>
         </div>
@@ -39,7 +39,7 @@
                     <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
                 </button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                <button type="submit" class="btn btn-sm btn-success">Save Change</button>
+                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_change')</button>
             </div>
         </div>
     </div>

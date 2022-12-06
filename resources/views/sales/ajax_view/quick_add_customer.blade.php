@@ -100,7 +100,7 @@
         </div>
 
         <div class="col-md-9">
-            <label><strong>Address :</strong>  </label>
+            <label><strong>@lang('menu.address') :</strong>  </label>
             <input type="text" name="address" class="form-control"  placeholder="Address">
         </div>
     </div>

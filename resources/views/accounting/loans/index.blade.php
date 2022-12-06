@@ -10,7 +10,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-glass-whiskey"></span>
-                    <h5>Loans</h5>
+                    <h5>@lang('menu.loans')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -22,8 +22,8 @@
                     <div class="card-body">
                         <div class="tab_list_area">
                             <div class="btn-group">
-                                <a id="tab_btn" data-show="companies" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Companies/Peoples</a>
-                                <a id="tab_btn" data-show="loans" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i> Loans</a>
+                                <a id="tab_btn" data-show="companies" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> @lang('menu.companies')/@lang('menu.peoples')</a>
+                                <a id="tab_btn" data-show="loans" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i> @lang('menu.loans')</a>
                             </div>
                         </div>
                         @include('accounting.loans.bodyPartials.companyBody')

@@ -38,7 +38,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}
+                    <li><strong>@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ $payroll->due }} </li>
                     <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payroll->date))}} </li>
                 </ul>
@@ -58,8 +58,8 @@
                     <th class="text-white">@lang('menu.date')</th>
                     <th class="text-white">@lang('menu.voucher_no')</th>
                     <th class="text-white">@lang('menu.amount')</th>
-                    <th class="text-white">Method</th>
-                    <th class="text-white">Account</th>
+                    <th class="text-white">@lang('menu.method')</th>
+                    <th class="text-white">@lang('menu.account')</th>
                     <th class="text-white">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -90,7 +90,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="6" class="text-center">No Data Found</td>
+                        <td colspan="6" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>

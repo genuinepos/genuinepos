@@ -21,7 +21,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Total Due : </strong>{{ $payment->expense->due }}</li>
+                    <li><strong>@lang('menu.total_due') : </strong>{{ $payment->expense->due }}</li>
                 </ul>
             </div>
         </div>
@@ -32,7 +32,7 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-4">
-            <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">

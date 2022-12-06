@@ -367,7 +367,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label  class=" col-4"><b>Total Due :</b></label>
+                                                        <label  class=" col-4"><b>@lang('menu.total_due') :</b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" class="form-control text-danger bold_input_field" name="purchase_due" id="purchase_due" value="{{ $purchase->due }}">
                                                         </div>

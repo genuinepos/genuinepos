@@ -44,11 +44,11 @@
                 {{ json_decode($generalSettings->business, true)['currency'] }} {{ number_format($sale->total_payable_amount, 2) }}
             </p>
             <p style="font-size:14px;margin:0 0 0 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:146px">Total Paid : </span>
+                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.total_paid') : </span>
                 {{ json_decode($generalSettings->business, true)['currency'] }} {{ $sale->paid }}
             </p>
             <p style="font-size:14px;margin:0 0 0 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:146px">Due : </span>
+                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.due') : </span>
                 {{ json_decode($generalSettings->business, true)['currency'] }} {{ $sale->due }}
             </p>
         </td>
@@ -63,7 +63,7 @@
                 {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px;">Address :</span>
+                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') :</span>
                 {{ $sale->customer ? $sale->customer->address : '' }}</p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
                 <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $sale->customer ? $sale->customer->phone : '' }}

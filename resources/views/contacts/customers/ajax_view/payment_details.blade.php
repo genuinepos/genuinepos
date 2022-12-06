@@ -57,11 +57,11 @@
         <div class="col-6">
             <p><strong>@lang('menu.customer') :</strong> {{ $customerPayment->customer->name }}</p>
             <p><strong>@lang('menu.phone') :</strong> {{ $customerPayment->customer->phone }}</p>
-            <p><strong>Address :</strong> {{ $customerPayment->customer->address }}</p>
+            <p><strong>@lang('menu.address') :</strong> {{ $customerPayment->customer->address }}</p>
         </div>
 
         <div class="col-6">
-            <p><strong>Type :</strong>
+            <p><strong>@lang('menu.type') :</strong>
                 {{ $customerPayment->type == 1 ? 'Receive Payment' : 'Refund' }}
             </p>
         </div>

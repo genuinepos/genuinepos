@@ -62,10 +62,10 @@
                 <tr class="bg-primary">
                     <th class="text-white text-start">@lang('menu.date')</th>
                     <th class="text-white text-start">@lang('menu.voucher_no')</th>
-                    <th class="text-white text-start">Type</th>
-                    <th class="text-white text-start">Method</th>
-                    <th class="text-white text-start">Account</th>
-                    <th class="text-white text-end">Amount({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-white text-start">@lang('menu.type')</th>
+                    <th class="text-white text-start">@lang('menu.method')</th>
+                    <th class="text-white text-start">@lang('menu.account')</th>
+                    <th class="text-white text-end">@lang('menu.amount')({{ json_decode($generalSettings->business, true)['currency']}})</th>
                     <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -95,7 +95,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <th colspan="7" class="text-center"> No Data Found</th>
+                        <th colspan="7" class="text-center"> @lang('menu.no_data_found')</th>
                     </tr>
                 @endif
             </tbody>

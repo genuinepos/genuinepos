@@ -117,7 +117,7 @@
                                     <th class="text-start">Reference ID</th>
                                     <th class="text-start">@lang('menu.b_location')</th>
                                     <th class="text-start">Expanse For</th>
-                                    <th class="text-start">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                    <th class="text-start">@lang('menu.amount')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

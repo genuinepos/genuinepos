@@ -30,21 +30,21 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Loan & Advance : </strong>
+                                <li><strong>@lang('menu.total_loan_advance') : </strong>
                                     <span class="card_text invoice_no">
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                        <b>{{ App\Utils\Converter::format_in_bdt($company->pay_loan_amount) }}</b>
                                     </span>
                                 </li>
 
-                                <li><strong>Total Received : </strong>
+                                <li><strong>@lang('menu.total_received') : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->total_receive) }}</b>
                                     </span>
                                 </li>
 
-                                <li><strong>Total Due : </strong>
+                                <li><strong>@lang('menu.total_due') : </strong>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     <span class="card_text text-danger">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->pay_loan_due) }}</b>
@@ -61,7 +61,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i

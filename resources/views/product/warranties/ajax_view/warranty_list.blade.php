@@ -2,9 +2,9 @@
     <thead>
         <tr>
             <th>Serial</th>
-            <th>Name</th>
+            <th>@lang('menu.name')</th>
             <th>Duration</th>
-            <th>Type</th>
+            <th>@lang('menu.type')</th>
             <th>@lang('menu.description')</th>
             <th>@lang('menu.action')</th>
         </tr>

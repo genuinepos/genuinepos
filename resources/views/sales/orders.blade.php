@@ -59,7 +59,7 @@
                                                     <select name="payment_status" id="payment_status" class="form-control">
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="1">Paid</option>
-                                                        <option value="2">Due</option>
+                                                        <option value="2">@lang('menu.due')</option>
                                                     </select>
                                                 </div>
 
@@ -129,7 +129,7 @@
                                                 <th>Customer</th>
                                                 <th>Payment Status</th>
                                                 <th>Total Amount</th>
-                                                <th>Total Paid</th>
+                                                <th>@lang('menu.total_paid')</th>
                                                 <th>Payment Due</th>
                                             </tr>
                                         </thead>

@@ -39,7 +39,7 @@
                 @endif
             </p>
             <br>
-            <h6><b>Loan Details</b></h6>
+            <h6><b>@lang('menu.loan_details')</b></h6>
         </div>
     </div>
 
@@ -47,7 +47,7 @@
         <p><b>@lang('menu.title') :</b>
         {{ $loan->type == 1 ? 'Loan pay' : 'Loan Receive' }} </p>
         <p><b>@lang('menu.company')/@lang('menu.people') :</b> {{ $loan->company->name }}</p>
-        <p><b>Address :</b></p>
+        <p><b>@lang('menu.address') :</b></p>
         <p><b>@lang('menu.phone') :</b></p>
     </div>
 
@@ -89,7 +89,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Due :</th>
+                            <th width="50%" class="text-start">@lang('menu.due') :</th>
                             <td width="50%" class="text-start">
                                 {{ App\Utils\Converter::format_in_bdt($loan->due) }}
                             </td>
@@ -112,8 +112,8 @@
         <table class="w-100 pt-5">
             <tbody>
                 <tr>
-                    <th width="50%">Signature Of Receiver</th>
-                    <th width="50%" class="text-end">Signature Of Provider</th>
+                    <th width="50%">@lang('menu.signature_of_receiver')</th>
+                    <th width="50%" class="text-end">@lang('menu.signature_of_provider')</th>
                 </tr>
 
                 <tr>
@@ -125,7 +125,7 @@
 
                 @if (env('PRINT_SD_PAYMENT') == true)
                     <tr>
-                        <td colspan="2" class="text-center">Software by <b>SpeedDigit Pvt. Ltd.</b></td>
+                        <td colspan="2" class="text-center">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></td>
                     </tr>
                 @endif
             </tbody>

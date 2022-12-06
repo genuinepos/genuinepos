@@ -37,7 +37,7 @@
                             <thead>
                                 <tr>
                                     <th>@lang('menu.sl')</th>
-                                    <th>Name</th>
+                                    <th>@lang('menu.name')</th>
                                     <th>Description</th>
                                     <th>Action</th>
                                 </tr>
@@ -124,7 +124,7 @@
                                     <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
                                 </button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success">Save Change</button>
+                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_change')</button>
                             </div>
                         </div>
                     </form>

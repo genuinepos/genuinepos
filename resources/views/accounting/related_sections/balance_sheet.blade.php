@@ -106,10 +106,10 @@
                                                                                     </td>
                                                                                 </tr>
 
-                                                                                <tr>
-                                                                                    <td class="text-start">
-                                                                                        <strong>Payable Loan & Liabilities :</strong>
-                                                                                    </td>
+                                                                            <tr>
+                                                                                <td class="text-start">
+                                                                                    <strong>@lang('menu.payable_loan_liabilities') :</strong>
+                                                                                </td>
 
                                                                                     <td class="text-end">
                                                                                         {{ json_decode($generalSettings->business, true)['currency'] }}
@@ -117,10 +117,10 @@
                                                                                     </td>
                                                                                 </tr>
 
-                                                                                <tr>
-                                                                                    <td class="text-start">
-                                                                                        <strong>Capital A/C :</strong>
-                                                                                    </td>
+                                                                            <tr>
+                                                                                <td class="text-start">
+                                                                                    <strong>@lang('menu.capital_ac') :</strong>
+                                                                                </td>
 
                                                                                     <td class="text-end">
                                                                                         {{ json_decode($generalSettings->business, true)['currency'] }}
@@ -150,13 +150,13 @@
                                                                                     </td>
                                                                                 </tr>
 
-                                                                                <tr>
-                                                                                    <td class="text-start"><strong>Bank A/C Balance :</strong></td>
-                                                                                    <td class="text-end">
-                                                                                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                        <span class="bank_balance"></span>
-                                                                                    </td>
-                                                                                </tr>
+                                                                            <tr>
+                                                                                <td class="text-start"><strong>@lang('menu.bank_ac_balance'):</strong></td>
+                                                                                <td class="text-end">
+                                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                    <span class="bank_balance"></span>
+                                                                                </td>
+                                                                            </tr>
 
                                                                                 <tr>
                                                                                     <td class="text-start"><strong>Customer Due :</strong></td>
@@ -174,46 +174,46 @@
                                                                                     </td>
                                                                                 </tr>
 
-                                                                                <tr>
-                                                                                    <td class="text-start"><strong>Current Stock Value :</strong></td>
-                                                                                    <td class=" text-end">
-                                                                                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                        <span class="stock_value"></span>
-                                                                                    </td>
-                                                                                </tr>
+                                                                            <tr>
+                                                                                <td class="text-start"><strong>@lang('menu.current_stock_value') :</strong></td>
+                                                                                <td class=" text-end">
+                                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                    <span class="stock_value"></span>
+                                                                                </td>
+                                                                            </tr>
 
-                                                                                <tr>
-                                                                                    <td class="text-start"><strong>Investments :</strong></td>
-                                                                                    <td class=" text-end">
-                                                                                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                        <span class="investment"></span>
-                                                                                    </td>
-                                                                                </tr>
+                                                                            <tr>
+                                                                                <td class="text-start"><strong>@lang('menu.investments') :</strong></td>
+                                                                                <td class=" text-end">
+                                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                    <span class="investment"></span>
+                                                                                </td>
+                                                                            </tr>
 
-                                                                                <tr>
-                                                                                    <td class="text-start"><strong>Receivable Loan&Advance :</strong></td>
-                                                                                    <td class=" text-end">
-                                                                                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                        <span class="receiveable_la"></span>
-                                                                                    </td>
-                                                                                </tr>
+                                                                            <tr>
+                                                                                <td class="text-start"><strong>@lang('menu.receivable_loan_advance') :</strong></td>
+                                                                                <td class=" text-end">
+                                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                    <span class="receiveable_la"></span>
+                                                                                </td>
+                                                                            </tr>
 
-                                                                                <tr class="bg-info">
-                                                                                    <td class="text-end text-white"><strong>Total Current Asset :</strong></td>
-                                                                                    <td class=" text-end">
-                                                                                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                        <span class="total_physical_asset"></span>
-                                                                                    </td>
-                                                                                </tr>
+                                                                            <tr class="bg-info">
+                                                                                <td class="text-end text-white"><strong>@lang('menu.total_current_asset') :</strong></td>
+                                                                                <td class=" text-end">
+                                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                    <span class="total_physical_asset"></span>
+                                                                                </td>
+                                                                            </tr>
 
                                                                                 <tr>
                                                                                     <td class="text-end text-white"></td>
                                                                                     <td class="text-end"></td>
                                                                                 </tr>
 
-                                                                                <tr class="bg-secondary">
-                                                                                    <th colspan="2" class="text-start"><strong>Fixed Asset :</strong></th>
-                                                                                </tr>
+                                                                            <tr class="bg-secondary">
+                                                                                <th colspan="2" class="text-start"><strong>@lang('menu.fixed_asset') :</strong></th>
+                                                                            </tr>
 
                                                                                 <tr class="account_balance_list_area">
                                                                                     <td colspan="2">
@@ -225,52 +225,51 @@
                                                                                                     </td>
                                                                                                 </tr>
 
-                                                                                                <tr>
-                                                                                                    <td class="text-start" colspan="2">
-                                                                                                        Vechels :
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                            <tfoot>
-                                                                <tr class="bg-secondary">
-                                                                    <td class="total_liability_area">
-                                                                        <table class="table table-sm">
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td class="text-start"><strong>Total Liability :</strong> </td>
-                                                                                    <td class="text-end">
-                                                                                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                        <span class="total_liability"></span>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </th>
-                                                                    <td class="total_asset_area">
-                                                                        <table class="table table-sm">
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td class="text-start"><strong>Total Asset :</strong></td>
-                                                                                    <td class="text-end">
-                                                                                        {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                        <span class="total_asset"></span>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </th>
-                                                                </tr>
-                                                            </tfoot>
-                                                        </table>
-                                                    </div>
+                                                                                            <tr>
+                                                                                                <td class="text-start" colspan="2">
+                                                                                                    Vechels :
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr class="bg-secondary">
+                                                                <td class="total_liability_area">
+                                                                    <table class="table table-sm">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td class="text-start"><strong>@lang('menu.total_liability') :</strong> </td>
+                                                                                <td class="text-end">
+                                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                    <span class="total_liability"></span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </th>
+                                                                <td class="total_asset_area">
+                                                                    <table class="table table-sm">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td class="text-start"><strong>@lang('menu.total_asset') :</strong></td>
+                                                                                <td class="text-end">
+                                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                                    <span class="total_asset"></span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
                                                 </div>
                                             </div>
 

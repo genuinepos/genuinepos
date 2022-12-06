@@ -38,7 +38,7 @@
                                 <tr>
                                     <th>Serial</th>
                                     <th>Photo</th>
-                                    <th>Name</th>
+                                    <th>@lang('menu.name')</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -134,7 +134,7 @@
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success">Save Change</button>
+                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_change')</button>
                             </div>
                         </div>
                     </form>

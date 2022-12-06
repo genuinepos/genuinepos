@@ -60,7 +60,7 @@
 
                 <div class="col-md-6">
                     <div class="input-group">
-                        <label class="col-4"><b>Total Due :</b> </label>
+                        <label class="col-4"><b>@lang('menu.total_due') :</b> </label>
                         <div class="col-8">
                             <input readonly name="total_due" type="number" step="any" id="total_due" class="form-control text-danger" value="0.00">
                         </div>
@@ -93,7 +93,7 @@
             </button>
 
             <button data-action="sale_and_print" id="save_and_print" class="btn btn-sm btn-success submit_button">
-                Save & Print (Ctrl+Enter)
+                @lang('menu.save_print') (Ctrl+Enter)
             </button>
         </div>
     </div>

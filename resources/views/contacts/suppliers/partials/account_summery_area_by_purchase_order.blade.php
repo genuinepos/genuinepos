@@ -17,7 +17,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end text-success total_paid" id="purchase_order_total_paid"></td>
                 </tr>
 

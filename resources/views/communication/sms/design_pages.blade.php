@@ -71,7 +71,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-end gap-2">
-                                        <button type="reset" class="btn btn-sm btn-danger">Reset</button>
+                                        <button type="reset" class="btn btn-sm btn-danger">@lang('menu.reset')</button>
                                         <button class="btn btn-sm btn-success">@lang('menu.save')</button>
                                     </div>
                                 </div>
@@ -279,7 +279,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button class="btn btn-sm btn-danger">Reset</button>
+                                    <button class="btn btn-sm btn-danger">@lang('menu.reset')</button>
                                     <button class="btn btn-sm btn-success">@lang('menu.save')</button>
                                 </div>
                             </form>

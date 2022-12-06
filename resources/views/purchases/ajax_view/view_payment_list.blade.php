@@ -55,7 +55,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li>
-                        <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                        <strong>@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                         {{ $purchase->due }}
                     </li>
                     <li><strong>@lang('menu.date') : </strong>{{date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date))  . ' ' . date($timeFormat, strtotime($purchase->time)) }} </li>
@@ -77,7 +77,7 @@
                         @elseif($purchase->due > 0 && $purchase->due < $payable)
                             <span class="text-primary"><b>Partial</b></span>
                         @elseif($payable == $purchase->due)
-                            <span class="text-danger"><b>Due</b></span>
+                            <span class="text-danger"><b>@lang('menu.due')</b></span>
                         @endif
                     </li>
                 </ul>
@@ -96,10 +96,10 @@
                 <tr class="bg-secondary">
                     <th class="text-start text-white">@lang('menu.date')</th>
                     <th class="text-start text-white">@lang('menu.voucher_no')</th>
-                    <th class="text-start text-white">Method</th>
-                    <th class="text-start text-white">Type</th>
-                    <th class="text-start text-white">Account</th>
-                    <th class="text-end text-white">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-start text-white">@lang('menu.method')</th>
+                    <th class="text-start text-white">@lang('menu.type')</th>
+                    <th class="text-start text-white">@lang('menu.account')</th>
+                    <th class="text-end text-white">@lang('menu.amount')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                     <th class="text-start text-white">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -156,7 +156,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>

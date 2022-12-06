@@ -7,7 +7,7 @@
             <th>@lang('menu.b_location')</th>
             <th>Warehouse</th>
             <th>Current Stock</th>
-            <th>Current Stock Value <b><small>(By Purchase Price)</small></b></th>
+            <th>@lang('menu.current_stock_value') <b><small>(By Purchase Price)</small></b></th>
             <th>Total Unit Sold</th>
             <th>Total Adjusted</th>
         </tr>

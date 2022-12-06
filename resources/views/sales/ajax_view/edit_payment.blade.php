@@ -45,7 +45,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li class="sale_due">
-                                    <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                                    <strong>@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                                     <span>{{ $payment->sale->due }}</span>
                                 </li>
                             </ul>
@@ -58,7 +58,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">

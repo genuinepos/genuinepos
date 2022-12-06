@@ -569,7 +569,7 @@
 
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <small>Powered By <b>SpeedDigit Pvt. Ltd.</b></small>
+                        <small>Powered By <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     </div>
                 </div>
             </div>
@@ -925,7 +925,7 @@
 
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <small>Powered By <b>SpeedDigit Pvt. Ltd.</b></small>
+                        <small>Powered By <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     </div>
                 </div>
             </div>

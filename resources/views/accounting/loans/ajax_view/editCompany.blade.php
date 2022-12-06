@@ -17,8 +17,8 @@
     </div>
 
     <div class="col-md-12">
-        <label><b>Address :</b> </label>
-        <textarea name="address" class="form-control" id="e_address" cols="10" rows="3" placeholder="Address">{{ $company->address }}</textarea>
+        <label><b>@lang('menu.address') :</b> </label>
+        <textarea name="address" class="form-control" id="e_address" cols="10" rows="3" placeholder="@lang('menu.address')">{{ $company->address }}</textarea>
     </div>
 
     <div class="form-group row mt-2">

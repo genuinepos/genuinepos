@@ -39,7 +39,7 @@
                             <thead>
                                 <tr>
                                     <th>Serial</th>
-                                    <th>Type</th>
+                                    <th>@lang('menu.type')</th>
                                     <th>Max leave</th>
                                     <th>Leave Count Interval</th>
                                     <th>Actions</th>
@@ -214,7 +214,7 @@
                                 <button type="button" class="btn loading_button d-hide">
                                     <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success">Save Change</button>
+                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_change')</button>
                             </div>
                         </div>
                     </form>

@@ -230,6 +230,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-12">
+                                        <p class="checkbox_input_wrap">
+                                            <input type="checkbox" name="set_as_default" id="set_as_default" @if($bs->is_default == 1) checked @endif>
+                                            <b>Set As Default</b>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

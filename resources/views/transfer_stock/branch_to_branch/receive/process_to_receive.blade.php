@@ -194,7 +194,7 @@
                             <button type="button" class="btn loading_button d-hide">
                                 <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
                             </button>
-                            <button type="submit" id="save" class="btn btn-sm btn-success">Save (Ctrl + Enter)</button>
+                            <button type="submit" id="save" class="btn btn-sm btn-success">@lang('menu.save') (Ctrl + Enter)</button>
                         </div>
                     </div>
                 </div>

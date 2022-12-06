@@ -79,7 +79,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end">Due :</th>
+                            <th class="text-end">@lang('menu.due') :</th>
                             <th class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ $expense->due }}</b>
@@ -116,7 +116,7 @@
 
                 @if (env('PRINT_SD_PAYMENT') == true)
                     <tr>
-                        <td colspan="4" class="text-navy-blue text-center"><small>Software by <b>SpeedDigit Pvt. Ltd.</b></small> </td>
+                        <td colspan="4" class="text-navy-blue text-center"><small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small> </td>
                     </tr>
                 @endif
             </tbody>

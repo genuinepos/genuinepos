@@ -3,7 +3,7 @@
     <input type="hidden" name="id" value="{{ $customer->id }}">
     <div class="form-group row">
         <div class="col-md-3">
-            <label><b>Name</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.name')</b> <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control edit_input" data-name="Customer name" id="e_name" placeholder="Customer name" value="{{ $customer->name }}"/>
             <span class="error error_e_name"></span>
         </div>

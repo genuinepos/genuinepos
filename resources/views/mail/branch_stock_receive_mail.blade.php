@@ -54,7 +54,7 @@
                 {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px;">Address :</span>
+                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') :</span>
                  {{ $transfer->warehouse->address }}</p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
                 <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $transfer->warehouse->phone }}
@@ -70,7 +70,7 @@
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</p>
 
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-              <span style="display:block;font-weight:bold;font-size:13px;">Address :</span>
+              <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') :</span>
               @if ($transfer->branch)
                   {{ $transfer->branch->city }},
                   {{ $transfer->branch->state }},

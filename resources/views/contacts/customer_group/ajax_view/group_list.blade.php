@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>Serial</th>
-            <th>Name</th>
+            <th>@lang('menu.name')</th>
             <th>Calculation Percent</th>
             <th>@lang('menu.action')</th>
         </tr>

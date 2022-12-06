@@ -39,13 +39,13 @@
                             {{ $customer->total_sale }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>Total Paid : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.total_paid') : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_paid }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>Total Due : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.total_due') : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_sale_due }}
@@ -115,7 +115,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>

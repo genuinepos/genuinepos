@@ -30,7 +30,7 @@
         </p>
         <p><strong>@lang('menu.supplier') : </strong> {{ $supplierPayment->supplier->name }}</p>
         <p><strong>@lang('menu.phone') :</strong> {{ $supplierPayment->supplier->phone }}</p>
-        <p><strong>Address :</strong> {{ $supplierPayment->supplier->address }}</p>
+        <p><strong>@lang('menu.address') :</strong> {{ $supplierPayment->supplier->address }}</p>
     </div>
 
     <div class="total_amount_table_area">
@@ -146,7 +146,7 @@
             <tbody>
                 <tr>
                     <th width="50%">@lang('menu.signature_of_authority')</th>
-                    <th width="50%" class="text-end">Signature Of Receiver</th>
+                    <th width="50%" class="text-end">@lang('menu.signature_of_receiver')</th>
                 </tr>
 
                 <tr>

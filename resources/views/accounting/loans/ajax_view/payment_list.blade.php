@@ -23,21 +23,21 @@
                 <ul class="list-unstyled">
                     <li>
                         <p>
-                            <b >Total Loan & Advance : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b >@lang('menu.total_loan_advance') : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->pay_loan_amount) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-success">Total Received : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-success">@lang('menu.total_received') : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->total_receive) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-danger">Total Due : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-danger">@lang('menu.total_due') : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}
                              {{ App\Utils\Converter::format_in_bdt($company->pay_loan_due) }}
                         </p>
                     </li>
@@ -50,21 +50,21 @@
                 <ul class="list-unstyled">
                     <li>
                         <p>
-                            <b>Total Loan Liability  : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b>@lang('menu.total_loan_liability')  : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-success">Total Paid : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-success">@lang('menu.total_paid') : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->total_pay) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-danger">Total Due : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-danger">@lang('menu.total_due') : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
                              {{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}
                         </p>
                     </li>
@@ -86,10 +86,10 @@
                 <tr class="bg-secondary">
                     <th class="text-white text-start">@lang('menu.date')</th>
                     <th class="text-white text-start">@lang('menu.voucher_no')</th>
-                    <th class="text-white text-start">Payment Type</th>
-                    <th class="text-white text-start">Method</th>
-                    <th class="text-white text-start">Account</th>
-                    <th class="text-white text-end">Amount({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-white text-start">@lang('menu.payment_type')</th>
+                    <th class="text-white text-start">@lang('menu.method')</th>
+                    <th class="text-white text-start">@lang('menu.account')</th>
+                    <th class="text-white text-end">@lang('menu.amount')({{ json_decode($generalSettings->business, true)['currency']}})</th>
                     <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -104,9 +104,9 @@
                             <td class="text-start">{{ $payment->voucher_no }}</td>
                             <td class="text-start">
                                 @if ($payment->payment_type == 1)
-                                    <span class="text-success"><b>Loan & Advance Due Receive</b></span>
+                                    <span class="text-success"><b>{{ __('Loan & Advance Due Receive') }}</b></span>
                                 @else
-                                    <span class="text-danger"><b> Loan Liability Due Payment</b></span>
+                                    <span class="text-danger"><b>@lang('menu.loan_liability_due_payment')</b></span>
                                 @endif
                             </td>
                             <td class="text-start">{{ $payment->payment_method ? $payment->payment_method : $payment->pay_mode }}</td>
@@ -122,7 +122,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <th colspan="7" class="text-center"> No Data Found</th>
+                        <th colspan="7" class="text-center"> @lang('menu.no_data_found')</th>
                     </tr>
                 @endif
             </tbody>

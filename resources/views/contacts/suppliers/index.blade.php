@@ -76,12 +76,12 @@
                                     <th>Actions</th>
                                     <th>Supplier ID</th>
                                     <th>Prefix</th>
-                                    <th>Name</th>
+                                    <th>@lang('menu.name')</th>
                                     <th>Business</th>
                                     <th>Phone</th>
                                     <th>Opening Balance</th>
                                     <th>Total Purchase</th>
-                                    <th>Total Paid</th>
+                                    <th>@lang('menu.total_paid')</th>
                                     <th>Purchase Due</th>
                                     <th>Total Return</th>
                                     <th>Return Due</th>
@@ -209,7 +209,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-9">
-                                <b>Address :</b>
+                                <b>@lang('menu.address') :</b>
                                 <input type="text" name="address" class="form-control "  placeholder="Address">
                             </div>
                             <div class="col-md-3">

@@ -9,7 +9,7 @@
             <th class="text-white text-start">Total Purchased(+)</th>
             <th class="text-white text-start">Total Opening Stock(+)</th>
             <th class="text-white text-start">Total Sale Return(+)</th>
-            <th class="text-white text-start">Total received(+)</th>
+            <th class="text-white text-start">@lang('menu.total_received')(+)</th>
             <th class="text-white text-start">Total Sale(-)</th>
             <th class="text-white text-start">Total Adjusted(-)</th>
             <th class="text-white text-start">Total Transferred(-)</th>

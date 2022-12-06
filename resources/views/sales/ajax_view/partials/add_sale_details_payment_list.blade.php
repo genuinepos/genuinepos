@@ -6,9 +6,9 @@
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">Invoice ID</th>
                     <th class="text-start">@lang('menu.amount')</th>
-                    <th class="text-start">Account</th>
-                    <th class="text-start">Method</th>
-                    <th class="text-start">Type</th>
+                    <th class="text-start">@lang('menu.account')</th>
+                    <th class="text-start">@lang('menu.method')</th>
+                    <th class="text-start">@lang('menu.type')</th>
                     <th class="text-start action_hideable">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -25,7 +25,7 @@
                             <td class="text-start">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                             <td class="text-start">{{ $payment->payment_type == 1 ? 'Receive Payment' : 'Return Payment' }}
                             </td>
-                            
+
                             <td class="text-start action_hideable">
                                 @if (auth()->user()->branch_id == $sale->branch_id)
 
@@ -33,7 +33,7 @@
 
                                         <a href="{{ route('sales.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
                                     @else
-                                    
+
                                         <a href="{{ route('sales.return.payment.edit', $payment->id) }}" id="edit_return_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
                                     @endif
 
@@ -47,7 +47,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>

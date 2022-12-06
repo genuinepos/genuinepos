@@ -111,7 +111,7 @@
                             <thead>
                                 <tr>
                                     <th>Entry Date</th>
-                                    <th>Name</th>
+                                    <th>@lang('menu.name')</th>
                                     <th>Workspace ID</th>
                                     <th>Location</th>
                                     <th>Priority</th>

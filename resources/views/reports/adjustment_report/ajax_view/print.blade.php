@@ -58,7 +58,7 @@
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.reference_no').</th>
                     <th class="text-start">@lang('menu.b_location')</th>
-                    <th class="text-start">Type</th>
+                    <th class="text-start">@lang('menu.type')</th>
                     <th class="text-end">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                     <th class="text-end">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
@@ -145,7 +145,7 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+            <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
         </div>
     </div>
 @endif

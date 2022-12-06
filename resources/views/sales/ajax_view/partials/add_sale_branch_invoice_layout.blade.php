@@ -335,7 +335,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end"><strong> Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="total_paid text-end">
                                     {{ App\Utils\Converter::format_in_bdt($sale->due) }}
                                 </td>
@@ -393,7 +393,7 @@
                     <div class="col-4 text-center">
                         <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                         @if (env('PRINT_SD_SALE') == true)
-                            <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                            <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                         @endif
                     </div>
 
@@ -534,7 +534,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end">Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th class="text-end">@lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <th class="text-end">
                                 <span>
                                     {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
@@ -552,7 +552,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end">Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                            <th class="text-end">@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                             <th class="text-end">
                                 <span>
                                     {{ App\Utils\Converter::format_in_bdt($sale->due) }}
@@ -600,7 +600,7 @@
                             @if (env('PRINT_SD_SALE') == true)
                                 <tr>
                                     <th class="text-center">
-                                        <span>Software By <b>SpeedDigit Pvt. Ltd.</b> </span>
+                                        <span>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b> </span>
                                     </th>
                                 </tr>
                             @endif

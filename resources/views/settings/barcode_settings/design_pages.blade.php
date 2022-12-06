@@ -567,7 +567,7 @@
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <div class="row g-0">
-                                                        <label for="" class="col-6">Amount</label>
+                                                        <label for="" class="col-6">@lang('menu.amount')</label>
                                                         <div class="col-6">
                                                             <input type="number" class="form-control" placeholder="0.00">
                                                         </div>
@@ -603,7 +603,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between flex-wrap gap-2">
-                                <button class="btn btn-sm btn-danger">Reset</button>
+                                <button class="btn btn-sm btn-danger">@lang('menu.reset')</button>
                                 <button class="btn btn-sm btn-success">Preview</button>
                             </div>
                         </div>

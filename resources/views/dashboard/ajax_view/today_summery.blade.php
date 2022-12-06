@@ -144,7 +144,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Received :</th>
+                            <th class="text-start">@lang('menu.total_received') :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalReceive) }}</td>
                         </tr>
 

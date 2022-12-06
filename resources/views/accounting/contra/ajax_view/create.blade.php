@@ -58,7 +58,7 @@
     <div class="form-group mt-1">
         <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
         <input type="number" step="any" name="amount" class="form-control add_input" data-name="Amount" id="date"
-            placeholder="Amount" autocomplete="off"/>
+            placeholder="@lang('menu.amount')" autocomplete="off"/>
         <span class="error error_amount"></span>
     </div>
 

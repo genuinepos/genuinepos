@@ -49,7 +49,7 @@
                 <input type="hidden" name="sale_id" id="sale_id" value="">
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
@@ -136,7 +136,7 @@
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
                         <button type="submit" name="action" value="save" class="c-btn button-success float-end">@lang('menu.save')</button>
-                        <button type="submit" name="action" value="save_and_print" class="c-btn button-success float-end">Save & Print</button>
+                        <button type="submit" name="action" value="save_and_print" class="c-btn button-success float-end">@lang('menu.save_print')</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
                 </div>

@@ -53,13 +53,13 @@
                                     </span>
                                 </li>
 
-                                <li><strong>Total Paid : </strong>
+                                <li><strong>@lang('menu.total_paid') : </strong>
                                     <span class="card_text text-success" id="customer_payment_total_paid">
                                         {{ App\Utils\Converter::format_in_bdt($amounts['total_paid']) }}
                                     </span>
                                 </li>
 
-                                <li><strong>Total Due : </strong>
+                                <li><strong>@lang('menu.total_due') : </strong>
                                     <span class="card_text text-danger" >
                                         <span id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($amounts['total_sale_due']) }}</span>
                                         <input type="hidden" id="card_total_due" value="{{ $amounts['total_sale_due'] }}">
@@ -147,7 +147,7 @@
                                                                     <th class="text-start text-white">Status</th>
                                                                     <th class="text-start text-white">Pay Status</th>
                                                                     <th class="text-start text-white">Sold Amt.</th>
-                                                                    <th class="text-start text-white">Due</th>
+                                                                    <th class="text-start text-white">@lang('menu.due')</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -247,7 +247,7 @@
                                                                                 <span class="text-primary"><b>Partial</b></span>
                                                                             @elseif ($payable == $invoice->due)
 
-                                                                                <span class="text-danger"><b>Due</b></span>
+                                                                                <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->total_payable_amount) }}</td>
@@ -339,7 +339,7 @@
                     <div class="col-md-7">
                         <div class="form-group row">
                             <div class="col-md-4">
-                                <label><strong>Amount :</strong> <span class="text-danger">*</span> </label>
+                                <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_f"></i></span>

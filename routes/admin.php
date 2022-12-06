@@ -965,7 +965,7 @@ Route::group(['prefix' => 'settings'], function () {
         Route::get('edit/{id}', [BarcodeSettingController::class, 'edit'])->name('settings.barcode.edit');
         Route::post('update/{id}', [BarcodeSettingController::class, 'update'])->name('settings.barcode.update');
         Route::delete('delete/{id}', [BarcodeSettingController::class, 'delete'])->name('settings.barcode.delete');
-
+        Route::get('set-default/{id}', [BarcodeSettingController::class, 'setDefault'])->name('settings.barcode.set.default');
         Route::get('design/pages', [BarcodeSettingController::class, 'designPage'])->name('settings.barcode.design.pages');
     });
 

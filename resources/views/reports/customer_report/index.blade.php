@@ -68,8 +68,8 @@
                                                         <th>Customer</th>
                                                         <th>Opening Balance Due</th>
                                                         <th>Total Sale</th>
-                                                        <th>Total Paid</th>
-                                                        <th>Total Due</th>
+                                                        <th>@lang('menu.total_paid')</th>
+                                                        <th>@lang('menu.total_due')</th>
                                                         <th>Total Return Due</th>
                                                     </tr>
                                                 </thead>

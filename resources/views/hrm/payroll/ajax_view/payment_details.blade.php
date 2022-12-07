@@ -62,7 +62,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Paid On :</th>
+                            <th width="50%" class="text-start">@lang('menu.paid_on') :</th>
                             <td width="50%" class="text-start">
                                 {{date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
                             </td>

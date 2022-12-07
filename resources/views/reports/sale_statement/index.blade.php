@@ -56,11 +56,11 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Payment Status :</strong></label>
+                                                    <label><strong>@lang('menu.payment_status') :</strong></label>
                                                     <select name="payment_status" id="payment_status" class="form-control">
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="1">Paid</option>
-                                                        <option value="2">Due</option>
+                                                        <option value="1">@lang('menu.paid')</option>
+                                                        <option value="2">@lang('menu.due')</option>
                                                     </select>
                                                 </div>
 

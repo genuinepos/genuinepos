@@ -117,7 +117,7 @@
                                     @endif
                                 </span>
                             </li>
-                            <li><strong>Payment Status : </strong>
+                            <li><strong>@lang('menu.payment_status') : </strong>
                                @php
                                    $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                @endphp
@@ -212,7 +212,7 @@
                         </tr>
 
                         <tr>
-                            <th colspan="7" class="text-end">Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                             </td>

@@ -115,7 +115,7 @@
                                                 <th>Supplier Name</th>
                                                 <th>Location</th>
                                                 <th>Return From</th>
-                                                <th>Payment Status</th>
+                                                <th>@lang('menu.payment_status')</th>
                                                 <th>Return Amount</th>
                                                 <th>Payment Due</th>
                                             </tr>

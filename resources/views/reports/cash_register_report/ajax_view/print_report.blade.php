@@ -73,7 +73,7 @@
                     <th class="text-start">Closed Time</th>
                     <th class="text-start">@lang('menu.business_location')</th>
                     <th class="text-start">User</th>
-                    <th class="text-start">Status</th>
+                    <th class="text-start">@lang('menu.status')</th>
                     <th class="text-end">@lang('menu.total_sale')</th>
                     <th class="text-end">@lang('menu.total_paid')</th>
                     <th class="text-end">@lang('menu.total_due')</th>
@@ -166,7 +166,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">All Total Paid : {{json_decode($generalSettings->business, true)['currency']}}</th>
+                    <th class="text-end">@lang('menu.all_total_paid') : {{json_decode($generalSettings->business, true)['currency']}}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalReceivedAmount) }}
                     </td>

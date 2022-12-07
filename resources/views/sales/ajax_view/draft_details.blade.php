@@ -417,7 +417,7 @@
             <div class="row">
                 <div class="col-md-6">
                     @if ($draft->branch->add_sale_invoice_layout->show_total_in_word)
-                        <p><b>In Word : <span id="inword"></span></b></p>
+                        <p><b>@lang('menu.in_word'): <span id="inword"></span></b></p>
                     @endif
                     <br>
                 </div>
@@ -484,7 +484,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Customer's signature</b>  </p>
+                        <p class="borderTop"><b>@lang('menu.customers_signature')</b>  </p>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -775,7 +775,7 @@
             <div class="row">
                 <div class="col-md-6">
                     @if ($defaultLayout->show_total_in_word)
-                        <p><b>In Word : <span id="inword"></span></b></p>
+                        <p><b>@lang('menu.in_word'): <span id="inword"></span></b></p>
                     @endif
                 </div>
                 <div class="col-md-6">
@@ -842,7 +842,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Customer's signature</b>  </p>
+                        <p class="borderTop"><b>@lang('menu.customers_signature')</b>  </p>
                     </div>
                 </div>
                 <div class="col-md-3">

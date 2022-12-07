@@ -143,7 +143,7 @@
                                                             <th class="text-start">@lang('menu.business_location')</th>
                                                             <th class="text-start">User</th>
                                                             <th class="text-start">Closing Note</th>
-                                                            <th class="text-start">Status</th>
+                                                            <th class="text-start">@lang('menu.status')</th>
                                                             <th class="text-start">Closing Amount</th>
                                                             <th class="text-start">@lang('menu.action')</th>
                                                         </tr>

@@ -25,15 +25,15 @@
                 <ul class="list-unstyled">
                     <li><strong>@lang('menu.total_due') : </strong>{{ $expense->due }}</li>
                     <li><strong>@lang('menu.date') : </strong>{{ $expense->date }}</li>
-                    <li><strong>Payment Status : </strong>
+                    <li><strong>@lang('menu.payment_status') : </strong>
                         @php
                            $payable = $expense->net_total_amount;
                         @endphp
 
                         @if ($expense->due <= 0)
-                            <span class="badge bg-success">Paid</span>
+                            <span class="badge bg-success">@lang('menu.paid')</span>
                         @elseif ($expense->due > 0 && $expense->due < $payable)
-                            <span class="badge bg-primary text-white">Partial</span>
+                            <span class="badge bg-primary text-white">@lang('menu.partial')</span>
                         @elseif ($payable == $expense->due)
                             <span class="badge bg-danger text-white">@lang('menu.due')</span>
                         @endif

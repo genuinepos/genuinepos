@@ -331,7 +331,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Pay Method :</b> </label>
+                                                        <label class="col-4"><b>{{ __('Pay Method') }} :</b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                                 @foreach ($methods as $method)

@@ -142,7 +142,7 @@
                                         <th class="text-black">@lang('menu.voucher_no')</th>
                                         <th class="text-black">@lang('menu.business_location')</th>
                                         <th class="text-black">@lang('menu.product')</th>
-                                        <th class="text-black">Status</th>
+                                        <th class="text-black">@lang('menu.status')</th>
                                         <th class="text-black">Per Unit Cost(Inc.Tax)</th>
                                         <th class="text-black">Selling Price(Exc.Tax)</th>
                                         <th class="text-black">Final Qty</th>

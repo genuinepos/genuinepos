@@ -107,7 +107,7 @@
                                                 <th>Quotation ID</th>
                                                 <th>@lang('menu.business_location')</th>
                                                 <th>@lang('menu.customer')</th>
-                                                <th>Total Amount</th>
+                                                <th>@lang('menu.total_amount')</th>
                                                 <th>@lang('menu.created_by')</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>

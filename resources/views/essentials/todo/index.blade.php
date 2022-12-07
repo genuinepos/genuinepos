@@ -217,7 +217,7 @@
                                             <th>Task</th>
                                             <th>Location</th>
                                             <th>Priority</th>
-                                            <th>Status</th>
+                                            <th>@lang('menu.status')</th>
                                             <th>Due Date</th>
                                             <th>Assigned To</th>
                                             <th>@lang('menu.action')</th>

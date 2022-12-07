@@ -102,7 +102,7 @@
                                     <th>@lang('menu.date')</th>
                                     <th>Employee</th>
                                     <th>@lang('menu.payment_voucher_no')</th>
-                                    <th>Paid</th>
+                                    <th>@lang('menu.paid')</th>
                                     <th>Pay For(Payroll)</th>
                                     <th>Paid By</th>
                                 </tr>

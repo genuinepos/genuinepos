@@ -77,7 +77,7 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Paid On :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.paid_on') :</strong></td>
                             <td width="50%" class="text-start">
 
                                 @php
@@ -112,7 +112,7 @@
                     <tr>
                         <th class="text-start">Purchase Date</th>
                         <th class="text-start">Purchase Invoice ID</th>
-                        <th class="text-start">Paid Amount</th>
+                        <th class="text-start">@lang('menu.paid_amount')</th>
                     </tr>
                 </thead>
                 <tbody>

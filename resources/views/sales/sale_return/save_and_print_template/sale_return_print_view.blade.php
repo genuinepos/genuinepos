@@ -136,7 +136,7 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end" colspan="4">Total Paid/Refunded Amount :</th>
+                        <th class="text-end" colspan="4">@lang('menu.total_paid')/Refunded Amount :</th>
                         <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_due_pay) }}</td>
                     </tr>
                 </tfoot>

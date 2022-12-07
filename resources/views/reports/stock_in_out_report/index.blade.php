@@ -135,7 +135,7 @@
                                     <thead>
                                         <tr>
                                             <th>@lang('menu.product')</th>
-                                            <th>Sale Date</th>
+                                            <th>@lang('menu.sale_date')</th>
                                             <th>Sale</th>
                                             <th>B. Location</th>
                                             <th>Sold Qty</th>

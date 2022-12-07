@@ -103,7 +103,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Total Paid/Refunded Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                    <th class="text-start">@lang('menu.total_paid')/Refunded Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                                     <td class="text-start total_return_amount">
                                         {{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_due_pay) }}
                                     </td>
@@ -263,7 +263,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end" colspan="4">Total Paid/Refunded Amount :</th>
+                            <th class="text-end" colspan="4">@lang('menu.total_paid')/Refunded Amount :</th>
                             <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_due_pay) }}</td>
                         </tr>
                     </tfoot>

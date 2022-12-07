@@ -7,7 +7,7 @@
             <th class="text-white text-start">Default Selling Price (Exc.Tax)</th>
             <th class="text-white text-start">Default Selling Price (Inc.Tax)</th>
             <th class="text-white text-start">@lang('menu.quantity')</th>
-            <th class="text-white text-start">Total Amount</th>
+            <th class="text-white text-start">@lang('menu.total_amount')</th>
         </tr>
     </thead>
     <tbody class="single_product_pricing_table_body">

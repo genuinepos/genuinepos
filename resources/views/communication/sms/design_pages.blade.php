@@ -297,7 +297,7 @@
                                             <td>Module</td>
                                             <td>API Settings</td>
                                             <td>Format</td>
-                                            <td>Status</td>
+                                            <td>@lang('menu.status')</td>
                                         </tr>
                                     </thead>
                                     <tbody>

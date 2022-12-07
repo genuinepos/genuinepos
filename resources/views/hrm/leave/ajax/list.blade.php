@@ -6,7 +6,7 @@
             <th class="text-start">Employee</th>
             <th class="text-start">@lang('menu.date')</th>
             <th class="text-start">Reason</th>
-            <th class="text-start">Status</th>
+            <th class="text-start">@lang('menu.status')</th>
             <th class="text-start">@lang('menu.action')</th>
         </tr>
     </thead>

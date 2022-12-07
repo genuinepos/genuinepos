@@ -23,7 +23,7 @@
 
                     <div class="col-6">
                         <div class="heading text-end">
-                            <h4>Money Receipt</h4>
+                            <h4>@lang('menu.money_receipt')</h4>
                             @if ($receipt->branch_name)
                             <h6 class="company_name">
                                 <b>{{ $receipt->branch_name . '/' . $receipt->branch_code }}</b>
@@ -58,7 +58,7 @@
 
             <div class="col-4 text-center">
                 @if ($receipt->is_header_less == 1)
-                    <h6><b>Money Receipt</b></h6>
+                    <h6><b>@lang('menu.money_receipt')</b></h6>
                 @endif
             </div>
 
@@ -71,7 +71,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p> <b> Received With Thanks From </b> : {{ $receipt->is_customer_name ? $receipt->cus_name : ''}}</p>
+                        <p> <b> {{ __('Received With Thanks From') }} </b> : {{ $receipt->is_customer_name ? $receipt->cus_name : ''}}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -82,7 +82,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p><b>Amount Of Money</b> : {{ $receipt->amount > 0 ? json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($receipt->amount) : ''}}</p>
+                        <p><b>{{ __('Amount Of Money') }}</b> : {{ $receipt->amount > 0 ? json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($receipt->amount) : ''}}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -93,7 +93,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p><b>In Words</b> :
+                        <p><b>@lang('menu.in_word')</b> :
                             @if ($receipt->amount > 0)
                                 <span style="text-transform: uppercase;" id="inWord2"></span>.
                             @endif
@@ -108,7 +108,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p> <b>Paid To</b>  : {{ $receipt->receiver }}</p>
+                        <p> <b>{{ __('Paid To') }}</b>  : {{ $receipt->receiver }}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -119,7 +119,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p><b>On Account Of</b>  : {{ $receipt->ac_details }}</p>
+                        <p><b>{{ __('On Account Of') }}</b>  : {{ $receipt->ac_details }}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -130,7 +130,7 @@
 
         <div class="row">
             <div class="col-md-12 col-sm-12 col-lg-12">
-                <p><b>Pay Method </b> : Cash/Card/Bank-Transfer/Cheque/Advanced</p>
+                <p><b>{{ __('Pay Method') }} </b> : Cash/Card/Bank-Transfer/Cheque/Advanced</p>
             </div>
         </div><br>
 
@@ -144,7 +144,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="details_area">
-                    <h6 class="borderTop">Customer's signature </h6>
+                    <h6 class="borderTop">@lang('menu.customers_signature') </h6>
                 </div>
             </div>
             <div class="col-md-6">
@@ -186,7 +186,7 @@
 
                     <div class="col-6">
                         <div class="heading text-end">
-                            <h3>Money Receipt</h3>
+                            <h3>@lang('menu.money_receipt')</h3>
                             @if ($receipt->branch_name)
                                 <h6 class="company_name"><b>
                                     {{ $receipt->branch_name . '/' . $receipt->branch_code }}</b>
@@ -221,7 +221,7 @@
 
             <div class="col-4 text-center">
                 @if ($receipt->is_header_less == 1)
-                    <h6><b>Money Receipt</b></h6>
+                    <h6><b>@lang('menu.money_receipt')</b></h6>
                 @endif
             </div>
 
@@ -234,7 +234,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p> <b> Received With Thanks From </b> :
+                        <p> <b> {{ __('Received With Thanks From') }} </b> :
                             {{ $receipt->is_customer_name ? $receipt->cus_name : ''}}
                         </p>
                     </div>
@@ -247,7 +247,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p><b>Amount Of Money</b> : {{ $receipt->amount > 0 ? json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($receipt->amount) : ''}}</p>
+                        <p><b>{{ __('Amount Of Money') }}</b> : {{ $receipt->amount > 0 ? json_decode($generalSettings->business, true)['currency'].' '.App\Utils\Converter::format_in_bdt($receipt->amount) : ''}}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -258,7 +258,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p><b>In Words</b> :
+                        <p><b>@lang('menu.in_word')</b> :
                             @if ($receipt->amount > 0)
                                 <span style="text-transform: uppercase;" id="inWord1"></span>.
                             @endif
@@ -273,7 +273,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p><b>Paid To</b> : {{ $receipt->receiver }}</p>
+                        <p><b>{{ __('Paid To') }}</b> : {{ $receipt->receiver }}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -284,7 +284,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p><b>On Account Of</b>  : {{ $receipt->ac_details }}</p>
+                        <p><b>{{ __('On Account Of') }}</b>  : {{ $receipt->ac_details }}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -295,7 +295,7 @@
 
         <div class="row">
             <div class="col-md-12 col-sm-12 col-lg-12">
-                <p><b>Pay Method</b>  : Cash/Card/Bank-Transfer/Cheque/Advanced</p>
+                <p><b>{{ __('Pay Method') }}</b>  : Cash/Card/Bank-Transfer/Cheque/Advanced</p>
             </div>
         </div><br>
 
@@ -308,7 +308,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="details_area">
-                    <h6 class="borderTop">Customer's signature </h6>
+                    <h6 class="borderTop">@lang('menu.customers_signature') </h6>
                 </div>
             </div>
             <div class="col-md-6">

@@ -71,7 +71,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end">Paid :</th>
+                            <th class="text-end">@lang('menu.paid') :</th>
                             <th class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ $expense->paid }}</b>

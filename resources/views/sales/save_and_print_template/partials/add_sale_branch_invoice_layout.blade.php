@@ -231,7 +231,7 @@
             <div class="row">
                 <div class="col-md-6">
                     @if ($sale->branch->add_sale_invoice_layout->show_total_in_word == 1)
-                        <p style="text-transform: uppercase;"><strong>In Word : </strong> <span id="inword"></span> ONLY.</p>
+                        <p style="text-transform: uppercase;"><strong>@lang('menu.in_word'): </strong> <span id="inword"></span> ONLY.</p>
                     @endif
 
                     @if (
@@ -316,7 +316,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end"><strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="total_paid text-end">
                                     {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
                                 </td>
@@ -343,7 +343,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><strong>Customer's signature</strong>  </p>
+                        <p class="borderTop"><strong>@lang('menu.customers_signature')</strong>  </p>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -455,13 +455,13 @@
 
                             <tr>
                                 <th class="text-center">
-                                    <strong>INV NO: </strong> <span>{{ $sale->invoice_id }}</span>
+                                    <strong>@lang('menu.inv_no'): </strong> <span>{{ $sale->invoice_id }}</span>
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-center">
-                                    <strong>Customer:</strong> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
+                                    <strong>@lang('menu.customer'):</strong> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
                                 </th>
                             </tr>
                         </thead>

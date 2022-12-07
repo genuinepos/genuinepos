@@ -134,9 +134,9 @@
                                                 <th>Supplier</th>
                                                 <th>@lang('menu.created_by')</th>
                                                 <th>Receiving Status</th>
-                                                <th>Payment Status</th>
+                                                <th>@lang('menu.payment_status')</th>
                                                 <th>Grand Total({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.paid')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
                                         </thead>

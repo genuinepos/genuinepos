@@ -60,7 +60,7 @@
                 <tr>
                     <th class="text-start">@lang('menu.product')</th>
                     <th class="text-start">Sale</th>
-                    <th class="text-start">Sale Date</th>
+                    <th class="text-start">@lang('menu.sale_date')</th>
                     <th class="text-start">B. Location</th>
                     <th class="text-end">Sold/Out Qty</th>
                     <th class="text-end">Sold Price({{json_decode($generalSettings->business, true)['currency']}})</th>

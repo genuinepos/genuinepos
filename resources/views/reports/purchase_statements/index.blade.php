@@ -150,7 +150,7 @@
                                                 <th>Order Discount</th>
                                                 <th>Order Tax</th>
                                                 <th>Grand Total</th>
-                                                <th>Paid</th>
+                                                <th>@lang('menu.paid')</th>
                                                 <th>Return Amount</th>
                                                 <th>@lang('menu.due')</th>
                                             </tr>

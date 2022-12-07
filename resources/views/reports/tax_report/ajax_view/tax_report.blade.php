@@ -40,7 +40,7 @@
                                         <th>@lang('menu.invoice_id')</th>
                                         <th>Supplier</th>
                                         <th>@lang('menu.tax_number')</th>
-                                        <th>Total Amount</th>
+                                        <th>@lang('menu.total_amount')</th>
                                         <th>Discount</th>
                                         <th>Tax Percent</th>
                                         <th>Tax Amount</th>
@@ -103,7 +103,7 @@
                                         <th>@lang('menu.invoice_id')</th>
                                         <th>@lang('menu.customer')</th>
                                         <th>@lang('menu.tax_number')</th>
-                                        <th>Total Amount</th>
+                                        <th>@lang('menu.total_amount')</th>
                                         <th>Discount</th>
                                         <th>Tax Percent</th>
                                         <th>Tax Amount</th>
@@ -171,7 +171,7 @@
                                     <tr class="bg-navey-blue">
                                         <th>@lang('menu.date')</th>
                                         <th>@lang('menu.invoice_id')</th>
-                                        <th>Total Amount</th>
+                                        <th>@lang('menu.total_amount')</th>
                                         <th>Tax Percent</th>
                                         <th>Tax Amount</th>
                                     </tr>

@@ -61,9 +61,9 @@
                         <th class="text-start">Month/Year</th>
                         <th class="text-start">@lang('menu.reference_no')</th>
                         <th class="text-start">Gross Amount</th>
-                        <th class="text-start">Paid</th>
+                        <th class="text-start">@lang('menu.paid')</th>
                         <th class="text-start">@lang('menu.due')</th>
-                        <th class="text-start">Payment Status</th>
+                        <th class="text-start">@lang('menu.payment_status')</th>
                     </tr>
                 </thead>
                 <tbody>

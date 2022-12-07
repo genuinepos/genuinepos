@@ -1,6 +1,6 @@
 <div class="account_summary_area">
     <div class="heading">
-        <h5 class="py-1 pl-1 text-center">Account Summary</h5>
+        <h5 class="py-1 pl-1 text-center">@lang('menu.account_summary')</h5>
     </div>
 
     <div class="account_summary_table">
@@ -22,7 +22,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_return') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end total_return" id="purchase_order_total_return"></td>
                 </tr>
 

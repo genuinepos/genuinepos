@@ -155,7 +155,7 @@
                                         <th class="text-start">@lang('menu.reference_no')</th>
                                         <th class="text-start">Adjustment From</th>
                                         <th class="text-start">@lang('menu.type')</th>
-                                        <th class="text-start">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                        <th class="text-start">@lang('menu.total_amount')({{json_decode($generalSettings->business, true)['currency']}})</th>
                                         <th class="text-start">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                                         <th class="text-start">Reason</th>
                                         <th class="text-start">@lang('menu.created_by')</th>

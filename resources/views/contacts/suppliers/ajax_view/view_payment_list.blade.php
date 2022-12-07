@@ -26,7 +26,7 @@
                 <ul class="list-unstyled">
                     <li>
                         <h6>
-                            Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            @lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}
                             <b class="text-success">{{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}</b>
                         </h6>
                     </li>

@@ -159,7 +159,7 @@
                                                     <th>Category</th>
                                                     <th>Brand</th>
                                                     <th>Tax</th>
-                                                    <th>Status</th>
+                                                    <th>@lang('menu.status')</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>

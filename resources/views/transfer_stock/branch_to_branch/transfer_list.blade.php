@@ -49,12 +49,12 @@
                                         @endif
 
                                         <div class="col-md-2">
-                                            <label><strong>Payment Status :</strong></label>
+                                            <label><strong>@lang('menu.payment_status') :</strong></label>
                                             <select name="receive_status" id="receive_status" class="form-control">
                                                 <option value="">@lang('menu.all')</option>
                                                 <option value="1">@lang('menu.pending')</option>
-                                                <option value="2">Partial</option>
-                                                <option value="3">Completed</option>
+                                                <option value="2">@lang('menu.partial')</option>
+                                                <option value="3">@lang('menu.completed')</option>
                                             </select>
                                         </div>
 

@@ -39,7 +39,7 @@
                                                 <th class="text-start">Warehouse(To)</th>
                                                 <th class="text-start">Total Item</th>
                                                 <th class="text-start">Total Qty</th>
-                                                <th class="text-start">Status</th>
+                                                <th class="text-start">@lang('menu.status')</th>
                                                 <th class="text-center">@lang('menu.action')</th>
                                             </tr>
                                         </thead>

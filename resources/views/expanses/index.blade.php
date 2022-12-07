@@ -128,7 +128,7 @@
                                     <th class="text-start">@lang('menu.b_location')</th>
                                     <th class="text-start">@lang('menu.description')</th>
                                     <th class="text-start">Expanse For</th>
-                                    <th class="text-start">Payment Status</th>
+                                    <th class="text-start">@lang('menu.payment_status')</th>
                                     <th class="text-start">Tax</th>
                                     <th class="text-start">Net Total</th>
                                     <th class="text-start">Payment Due</th>

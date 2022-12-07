@@ -206,7 +206,7 @@
                                 </li>
 
                                 <li>
-                                    <strong> Total Paid : </strong>
+                                    <strong> @lang('menu.total_paid') : </strong>
                                 </li>
 
                                 <li>
@@ -326,9 +326,9 @@
                                                 <th>@lang('menu.purchase_from')</th>
                                                 <th>Supplier</th>
                                                 <th>Purchase Status</th>
-                                                <th>Payment Status</th>
+                                                <th>@lang('menu.payment_status')</th>
                                                 <th>Grand Total</th>
-                                                <th>Paid</th>
+                                                <th>@lang('menu.paid')</th>
                                                 <th>Payment Due</th>
                                                 <th>Return Amount</th>
                                                 <th>Return Due</th>
@@ -453,9 +453,9 @@
                                                 <th class="text-end">Received Qty</th>
                                                 <th class="text-end">Pending Qty</th>
                                                 <th class="text-end">Grand Total</th>
-                                                <th class="text-end">Paid</th>
+                                                <th class="text-end">@lang('menu.paid')</th>
                                                 <th class="text-end">@lang('menu.due')</th>
-                                                <th class="text-end">Payment Status</th>
+                                                <th class="text-end">@lang('menu.payment_status')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -596,13 +596,13 @@
                                                     <th class="text-start">@lang('menu.date')</th>
                                                     <th class="text-start">@lang('menu.voucher_no')</th>
                                                     <th class="text-start">@lang('menu.reference')</th>
-                                                    <th class="text-start">Against Invoice</th>
+                                                    <th class="text-start">@lang('menu.against_invoice')</th>
                                                     {{-- <th>@lang('menu.created_by')</th> --}}
-                                                    <th class="text-start">Payment Status</th>
+                                                    <th class="text-start">@lang('menu.payment_status')</th>
                                                     <th class="text-start">@lang('menu.payment_type')</th>
                                                     <th class="text-start">@lang('menu.account')</th>
-                                                    <th class="text-end">Less Amount</th>
-                                                    <th class="text-end">Paid Amount</th>
+                                                    <th class="text-end">@lang('menu.less_amount')</th>
+                                                    <th class="text-end">@lang('menu.paid_amount')</th>
                                                     <th class="text-start">@lang('menu.action')</th>
                                                 </tr>
                                             </thead>

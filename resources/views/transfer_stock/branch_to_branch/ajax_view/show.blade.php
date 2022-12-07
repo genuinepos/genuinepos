@@ -67,9 +67,9 @@
                                     <span class="text-danger">@lang('menu.pending')</span>
                                 @elseif($transfer->receive_status == 2)
 
-                                    <span class="text-primary">Partial</span>
+                                    <span class="text-primary">@lang('menu.partial')</span>
                                 @elseif($transfer->receive_status == 3)
-                                    <span class="text-success">Completed</span>
+                                    <span class="text-success">@lang('menu.completed')</span>
                                 @endif
                             </li>
                         </ul>
@@ -214,10 +214,10 @@
                                 <span class="text-danger">@lang('menu.pending')</span>
                             @elseif($transfer->receive_status == 2)
 
-                                <span class="text-primary">Partial</span>
+                                <span class="text-primary">@lang('menu.partial')</span>
                             @elseif($transfer->receive_status == 3)
 
-                                <span class="text-success">Completed</span>
+                                <span class="text-success">@lang('menu.completed')</span>
                             @endif
                         </li>
                     </ul>

@@ -221,7 +221,7 @@
                                     </li>
 
                                     <li>
-                                        <strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <strong> @lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                         <span class="total_paid">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</span>
                                     </li>
 
@@ -326,12 +326,12 @@
                                                     <th>@lang('menu.invoice_id')</th>
                                                     <th>@lang('menu.business_location')</th>
                                                     <th>@lang('menu.customer')</th>
-                                                    <th>Total Amount</th>
+                                                    <th>@lang('menu.total_amount')</th>
                                                     <th>@lang('menu.total_paid')</th>
                                                     <th>Sell Due</th>
                                                     <th>Return Amount</th>
                                                     <th>Return Due</th>
-                                                    <th>Payment Status</th>
+                                                    <th>@lang('menu.payment_status')</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
@@ -464,13 +464,13 @@
                                                         <th class="text-start">@lang('menu.date')</th>
                                                         <th class="text-start">@lang('menu.voucher_no')</th>
                                                         <th class="text-start">@lang('menu.reference')</th>
-                                                        <th class="text-start">Against Invoice</th>
+                                                        <th class="text-start">@lang('menu.against_invoice')</th>
                                                         {{-- <th>Created By</th> --}}
-                                                        <th class="text-start">Payment Status</th>
+                                                        <th class="text-start">@lang('menu.payment_status')</th>
                                                         <th class="text-start">@lang('menu.payment_type')</th>
                                                         <th class="text-start">@lang('menu.account')</th>
-                                                        <th class="text-endx">Less Amount</th>
-                                                        <th class="text-end">Paid Amount</th>
+                                                        <th class="text-endx">@lang('menu.less_amount')</th>
+                                                        <th class="text-end">@lang('menu.paid_amount')</th>
                                                         <th class="text-start">Actions</th>
                                                     </tr>
                                                 </thead>

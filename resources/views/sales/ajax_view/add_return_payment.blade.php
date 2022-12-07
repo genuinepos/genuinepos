@@ -47,7 +47,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li class="sale_due">
-                                    <strong>Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                                    <strong>@lang('menu.total_return_due') : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                                     <span class="text-end">{{ $sale->sale_return_due }}</span>
                                 </li>
                             </ul>
@@ -127,7 +127,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
+                        <label><strong>@lang('menu.attach_document') :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
                         <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
                     </div>
                 </div>

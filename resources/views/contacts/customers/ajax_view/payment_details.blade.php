@@ -113,7 +113,7 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Paid On :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.paid_on') :</strong></td>
                             <td width="50%" class="text-start">
                                 @php
                                     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
@@ -145,9 +145,9 @@
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-start">Sale Date</th>
-                            <th class="text-start">Sale Invoice ID</th>
-                            <th class="text-start">Paid Amount</th>
+                            <th class="text-start">@lang('menu.sale_date')</th>
+                            <th class="text-start">{{ __('Sale Invoice ID') }}</th>
+                            <th class="text-start">@lang('menu.paid_amount')</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -198,15 +198,15 @@
         <br><br>
         <div class="row">
             <div class="col-4 text-start">
-                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">RECEIVED BY</p>
+                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">@lang('menu.perceived_by')</p>
             </div>
 
             <div class="col-4 text-center">
-                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">PREPARED BY</p>
+                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;"> @lang('menu.prepared_by')</p>
             </div>
 
             <div class="col-4 text-end">
-                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">AUTHORIZED BY</p>
+                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">@lang('menu.authorized_by')</p>
             </div>
         </div>
 
@@ -230,7 +230,7 @@
                 </div>
 
                 <div class="col-4 text-end">
-                    <small>Print Time : {{ date($timeFormat) }}</small>
+                    <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
                 </div>
             </div>
         </div>

@@ -73,9 +73,9 @@
                                 @if ($sale->due <= 0)
                                     <span class="badge bg-success"> @lang('menu.paid') </span>
                                 @elseif ($sale->due > 0 && $sale->due < $payable)
-                                    <span class="badge bg-primary text-white">Partial</span>
+                                    <span class="badge bg-primary text-white">@lang('menu.partial')</span>
                                 @elseif ($payable == $sale->due)
-                                    <span class="badge bg-danger text-white">Due</span>
+                                    <span class="badge bg-danger text-white">@lang('menu.due')</span>
                                 @endif
                             </li>
 

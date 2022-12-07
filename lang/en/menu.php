@@ -1054,7 +1054,6 @@ return [
   'reference_id' => 'Reference ID',
   'due_sales_order_list' => 'Due Sales Order List',
   'less_amount' => 'Less Amount',
-  'attach_document' => 'Attach document',
   'in_word' => 'IN WORD',
   'customer_ledger' => 'Customer Ledger',
   'filtered_ac' => 'Filtered A/c',

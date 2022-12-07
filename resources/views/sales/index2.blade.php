@@ -56,10 +56,10 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Payment Status :</strong></label>
+                                                    <label><strong>@lang('menu.payment_status') :</strong></label>
                                                     <select name="payment_status" id="payment_status" class="form-control">
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="1">Paid</option>
+                                                        <option value="1">@lang('menu.paid')</option>
                                                         <option value="2">@lang('menu.due')</option>
                                                     </select>
                                                 </div>
@@ -131,10 +131,10 @@
                                                 <th>@lang('menu.customer')</th>
                                                 <th>Return Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Return Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Payment Status</th>
+                                                <th>@lang('menu.payment_status')</th>
                                                 <th>Sell Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Total Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Total Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.total_amount')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.total_paid')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr> --}}
                                             <tr>
                                                 <th>@lang('menu.action')</th>
@@ -142,9 +142,9 @@
                                                 <th>@lang('menu.invoice_id')</th>
                                                 <th>Stock Location</th>
                                                 <th>@lang('menu.customer')</th>
-                                                <th>Payment Status</th>
+                                                <th>@lang('menu.payment_status')</th>
                                                 <th>Total Payable</th>
-                                                <th>Paid</th>
+                                                <th>@lang('menu.paid')</th>
                                                 <th>@lang('menu.due')</th>
                                                 <th>Return</th>
                                                 <th>Return Due</th>

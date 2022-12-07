@@ -48,7 +48,7 @@
                                         <label class=" col-4"><b>Sale INV. ID :</b> </label>
                                         <div class="col-8">
                                             <div style="position: relative;">
-                                                <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control scanable" placeholder="Sale Invoice ID" autocomplete="off">
+                                                <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control scanable" placeholder="{{ __('Sale Invoice ID') }}" autocomplete="off">
                                                 <input type="hidden" name="sale_id" id="sale_id" class="resetable" value="">
 
                                                 <div class="invoice_search_result d-hide">

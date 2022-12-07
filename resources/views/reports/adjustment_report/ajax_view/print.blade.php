@@ -59,7 +59,7 @@
                     <th class="text-start">@lang('menu.reference_no').</th>
                     <th class="text-start">@lang('menu.b_location')</th>
                     <th class="text-start">@lang('menu.type')</th>
-                    <th class="text-end">Total Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">@lang('menu.total_amount')({{json_decode($generalSettings->business, true)['currency']}})</th>
                     <th class="text-end">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>

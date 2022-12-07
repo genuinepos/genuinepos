@@ -55,7 +55,7 @@
                         <th class="text-start">@lang('menu.date')</th>
                         <th class="text-start">Employee</th>
                         <th class="text-start">@lang('menu.payment_voucher_no')</th>
-                        <th class="text-start">Paid</th>
+                        <th class="text-start">@lang('menu.paid')</th>
                         <th class="text-start">Pay For(Payroll)</th>
                         <th class="text-start">Paid By</th>
                     </tr>

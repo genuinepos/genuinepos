@@ -103,7 +103,7 @@
                             <li><strong>Delivery Date : </strong>{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}</li>
                             <li><strong>Purchase Status : </strong>Ordered</li>
                             <li><strong>Receiving Status : </strong>{{ $purchase->po_receiving_status }}</li>
-                            <li><strong>Payment Status : </strong>
+                            <li><strong>@lang('menu.payment_status') : </strong>
                                @php
                                    $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                @endphp
@@ -210,7 +210,7 @@
                             </tr>
 
                             <tr>
-                                <th colspan="11" class="text-end">Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th colspan="11" class="text-end">@lang('menu.paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                                 </td>

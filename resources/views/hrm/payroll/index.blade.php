@@ -116,8 +116,8 @@
                                     <th>Designation</th>
                                     <th>Month/Year</th>
                                     <th>Referance No</th>
-                                    <th>Total Amount</th>
-                                    <th>Payment Status</th>
+                                    <th>@lang('menu.total_amount')</th>
+                                    <th>@lang('menu.payment_status')</th>
                                     <th>Created By</th>
                                     <th>Actions</th>
                                 </tr>

@@ -137,11 +137,11 @@
             <br>
             <div class="row">
                 <div class="col-md-6">
-                    <h6>RECEIVED BY : </h6>
+                    <h6>@lang('menu.perceived_by') : </h6>
                 </div>
 
                 <div class="col-md-6 text-end">
-                    <h6>AUTHORIZED BY : </h6>
+                    <h6>@lang('menu.authorized_by') : </h6>
                 </div>
             </div>
 

@@ -17,7 +17,7 @@
 <div class="modal-dialog modal-dialog five-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Receive Payment <span class="type_name"></span></h6>
+            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.receive_payment') <span class="type_name"></span></h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -41,13 +41,13 @@
                                     </span>
                                 </li>
 
-                                <li><strong>@lang('menu.total_sale')/Order : </strong>
+                                <li><strong>@lang('menu.total_sale')/@lang('menu.order') : </strong>
                                     <span class="card_text" id="customer_payment_total_sale">
                                         {{ App\Utils\Converter::format_in_bdt($amounts['total_sale']) }}
                                     </span>
                                 </li>
 
-                                <li><strong>Total Return : </strong>
+                                <li><strong>@lang('menu.total_return') : </strong>
                                     <span class="card_text" id="customer_payment_total_return">
                                         {{ App\Utils\Converter::format_in_bdt($amounts['total_return']) }}
                                     </span>
@@ -102,7 +102,7 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                            <input type="radio" name="payment_against" id="payment_against" class="payment_against"  data-show_table="due_invoice_table_area" value="sale_invoices"> &nbsp; <b>Receive Against Specific Invoices</b>
+                                                            <input type="radio" name="payment_against" id="payment_against" class="payment_against"  data-show_table="due_invoice_table_area" value="sale_invoices"> &nbsp; <b>@lang('menu.receive_against_specific_invoices')</b>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -114,7 +114,7 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                        <input type="radio" name="payment_against" id="payment_against" class="payment_against" data-show_table="due_orders_table_area"  value="sale_orders"> &nbsp; <b> Receive Against Specific Sales Orderes</b> </p>
+                                                        <input type="radio" name="payment_against" id="payment_against" class="payment_against" data-show_table="due_orders_table_area"  value="sale_orders"> &nbsp; <b>{{ __('Receive Against Specific Sales Orderes') }}</b> </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -128,12 +128,12 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="heading_area">
-                                                                <p><strong>All </strong></p>
+                                                                <p><strong>@lang('menu.all')</strong></p>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-md-6">
-                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">@lang('menu.unselect_all')</a>
                                                         </div>
                                                     </div>
 
@@ -141,12 +141,12 @@
                                                         <table class="table modal-table table-sm mt-1">
                                                             <thead>
                                                                 <tr class="bg-secondary">
-                                                                    <th class="text-start text-white">Select</th>
+                                                                    <th class="text-start text-white">@lang('menu.select')</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
-                                                                    <th class="text-start text-white">Order/Invoice</th>
-                                                                    <th class="text-start text-white">Status</th>
-                                                                    <th class="text-start text-white">Pay Status</th>
-                                                                    <th class="text-start text-white">Sold Amt.</th>
+                                                                    <th class="text-start text-white">@lang('menu.order')/@lang('menu.invoice')</th>
+                                                                    <th class="text-start text-white">@lang('menu.status')</th>
+                                                                    <th class="text-start text-white">@lang('menu.pay_status')</th>
+                                                                    <th class="text-start text-white">{{ __('Sold Amt') }}.</th>
                                                                     <th class="text-start text-white">@lang('menu.due')</th>
                                                                 </tr>
                                                             </thead>
@@ -167,9 +167,9 @@
                                                                         </td>
                                                                         <td class="text-start">
                                                                             @if ($row->status == 1)
-                                                                                Sale
+                                                                                @lang('menu.sale')
                                                                             @else
-                                                                                Order
+                                                                                @lang('menu.order')
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">
@@ -179,13 +179,13 @@
 
                                                                             @if ($row->due <= 0)
 
-                                                                                <span class="text-success"><b>Paid</b></span>
+                                                                                <span class="text-success"><b>@lang('menu.paid')</b></span>
                                                                             @elseif ($row->due > 0 && $row->due < $payable)
 
-                                                                                <span class="text-primary"><b>Partial</b></span>
+                                                                                <span class="text-primary"><b>@lang('menu.partial')</b></span>
                                                                             @elseif ($payable == $row->due)
 
-                                                                                <span class="text-danger"><b>Due</b></span>
+                                                                                <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->total_payable_amount) }}</td>
@@ -210,7 +210,7 @@
                                                         </div>
 
                                                         <div class="col-md-6">
-                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">@lang('menu.unselect_all')</a>
                                                         </div>
                                                     </div>
 
@@ -218,11 +218,11 @@
                                                         <table class="table modal-table table-sm mt-1 custom-tbl">
                                                             <thead>
                                                                 <tr class="bg-primary">
-                                                                    <th class="text-start text-white">Select</th>
+                                                                    <th class="text-start text-white">@lang('menu.select')</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">@lang('menu.invoice_id')</th>
-                                                                    <th class="text-start text-white">Pay Status</th>
-                                                                    <th class="text-start text-white">Sold Amt.</th>
+                                                                    <th class="text-start text-white">@lang('menu.pay_status')</th>
+                                                                    <th class="text-start text-white">{{ __('Sold Amt') }}.</th>
                                                                     <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
                                                             </thead>
@@ -241,10 +241,10 @@
 
                                                                             @if ($invoice->due <= 0)
 
-                                                                                <span class="text-success"><b>Paid</b></span>
+                                                                                <span class="text-success"><b>@lang('menu.paid')</b></span>
                                                                             @elseif ($invoice->due > 0 && $invoice->due < $payable)
 
-                                                                                <span class="text-primary"><b>Partial</b></span>
+                                                                                <span class="text-primary"><b>@lang('menu.partial')</b></span>
                                                                             @elseif ($payable == $invoice->due)
 
                                                                                 <span class="text-danger"><b>@lang('menu.due')</b></span>
@@ -267,12 +267,12 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="heading_area">
-                                                                <p><strong>Due Sales Order List</strong> </p>
+                                                                <p><strong>@lang('menu.due_sales_order_list')</strong> </p>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-md-6">
-                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">@lang('menu.unselect_all')</a>
                                                         </div>
                                                     </div>
 
@@ -280,11 +280,11 @@
                                                         <table class="table modal-table table-sm mt-1">
                                                             <thead>
                                                                 <tr class="bg-secondary">
-                                                                    <th class="text-start text-white">Select</th>
+                                                                    <th class="text-start text-white">@lang('menu.select')</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">Order ID</th>
-                                                                    <th class="text-start text-white">Pay Status</th>
-                                                                    <th class="text-start text-white">Sold Amt.</th>
+                                                                    <th class="text-start text-white">@lang('menu.pay_status')</th>
+                                                                    <th class="text-start text-white">{{ __('Sold Amt') }}.</th>
                                                                     <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
                                                             </thead>
@@ -303,13 +303,13 @@
 
                                                                             @if ($order->due <= 0)
 
-                                                                                <span class="text-success"><b>Paid</b></span>
+                                                                                <span class="text-success"><b>@lang('menu.paid')</b></span>
                                                                             @elseif ($order->due > 0 && $order->due < $payable)
 
-                                                                                 <span class="text-primary"><b>Partial</b></span>
+                                                                                 <span class="text-primary"><b>@lang('menu.partial')</b></span>
                                                                             @elseif ($payable == $order->due)
 
-                                                                                <span class="text-danger"><b>Due</b></span>
+                                                                                <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->total_payable_amount) }}</td>
@@ -326,7 +326,7 @@
                                         <div class="total_amount_area mt-1">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p><strong>Total Amount : </strong> <span id="total_amount">0.00</span></p>
+                                                    <p><strong>@lang('menu.total_amount') : </strong> <span id="total_amount">0.00</span></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -370,8 +370,8 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <label><strong>Less Amount :</strong> </label>
-                                <input type="number" step="any" name="less_amount" class="form-control" id="cp_less_amount" placeholder="Less Amount" autocomplete="off"/>
+                                <label><strong>@lang('menu.less_amount') :</strong> </label>
+                                <input type="number" step="any" name="less_amount" class="form-control" id="cp_less_amount" placeholder="@lang('menu.less_amount')" autocomplete="off"/>
                             </div>
 
                             <div class="col-md-4">
@@ -392,7 +392,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>Payment Account :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>{{ __('Payment Account') }} :</strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -416,7 +416,7 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
+                                <label><strong>@lang('menu.attach_document') :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
                                 <input type="file" name="attachment" class="form-control" id="attachment">
                             </div>
 
@@ -428,7 +428,7 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-12">
-                                <label><strong>IN WORD : </strong> <strong><span class="text-danger text-uppercase" id="in_word"></span></strong></label>
+                                <label><strong>@lang('menu.in_word') : </strong> <strong><span class="text-danger text-uppercase" id="in_word"></span></strong></label>
                             </div>
                         </div>
                     </div>

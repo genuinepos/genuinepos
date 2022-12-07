@@ -56,9 +56,9 @@
                     <th class="text-start">@lang('menu.description')</th>
                     <th class="text-start">@lang('menu.b_location')</th>
                     <th class="text-start">Expense For</th>
-                    <th class="text-start">Total Amount</th>
-                    <th class="text-start">Paid</th>
-                    <th class="text-start">Due</th>
+                    <th class="text-start">@lang('menu.total_amount')</th>
+                    <th class="text-start">@lang('menu.paid')</th>
+                    <th class="text-start">@lang('menu.due')</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">

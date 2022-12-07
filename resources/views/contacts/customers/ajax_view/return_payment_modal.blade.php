@@ -10,7 +10,7 @@
 <div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Return Payment <span class="type_name"></span></h6>
+            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.return_payment') <span class="type_name"></span></h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -31,7 +31,7 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Sale Return Due : </strong>
+                                <li><strong>{{ __('Total Sale Return Due') }} : </strong>
                                     <span class="card_text branch">
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                         {{ $returnDue }}
@@ -116,7 +116,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
+                        <label><strong>@lang('menu.attach_document') :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
                         <input type="file" name="attachment" class="form-control" id="attachment">
                     </div>
                 </div>

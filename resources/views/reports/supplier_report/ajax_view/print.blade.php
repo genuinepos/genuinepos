@@ -42,7 +42,7 @@
                     <th class="text-end">@lang('menu.total_paid')</th>
                     <th class="text-end">Opening Balance Due</th>
                     <th class="text-end">@lang('menu.total_due')</th>
-                    <th class="text-end">Total Return Due</th>
+                    <th class="text-end">@lang('menu.total_return_due')</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">

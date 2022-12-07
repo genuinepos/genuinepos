@@ -262,7 +262,7 @@
                 <div class="row" style="margin-top: -23px!important;">
                     <div class="col-md-6">
                         @if ($defaultLayout->show_total_in_word)
-                            <p style="text-transform: uppercase;"><b>In Word : </b> <span id="inword"></span> ONLY.</p>
+                            <p style="text-transform: uppercase;"><b>@lang('menu.in_word'): </b> <span id="inword"></span> ONLY.</p>
                         @endif
 
                         @if (
@@ -329,7 +329,7 @@
                                 </tr>
 
                                 <tr>
-                                    <td class="text-end"><strong> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                    <td class="text-end"><strong> @lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale->paid) }}</td>
                                 </tr>
 
@@ -346,7 +346,7 @@
 
                     <div class="col-md-3">
                         <div class="details_area text-center">
-                            <p class="borderTop"><b>Customer's signature</b></p>
+                            <p class="borderTop"><b>@lang('menu.customers_signature')</b></p>
                         </div>
                     </div>
 
@@ -491,13 +491,13 @@
 
                               <tr>
                                   <th class="text-center">
-                                      <b>INV NO: </b> <span>{{ $sale->invoice_id }}</span>
+                                      <b>@lang('menu.inv_no'): </b> <span>{{ $sale->invoice_id }}</span>
                                   </th>
                               </tr>
 
                               <tr>
                                   <th class="text-center">
-                                      <b>Customer:</b> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
+                                      <b>@lang('menu.customer'):</b> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
                                   </th>
                               </tr>
                           </thead>
@@ -574,7 +574,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end"> Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end"> @lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->paid) }}

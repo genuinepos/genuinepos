@@ -85,7 +85,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Paid On :</th>
+                            <th width="50%" class="text-start">@lang('menu.paid_on') :</th>
                             <td width="50%">
                                 @php
                                     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';

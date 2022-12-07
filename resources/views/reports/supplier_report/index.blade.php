@@ -70,7 +70,7 @@
                                                             <th>@lang('menu.total_purchase')</th>
                                                             <th>@lang('menu.total_paid')</th>
                                                             <th>@lang('menu.total_due')</th>
-                                                            <th>Total Return Due</th>
+                                                            <th>@lang('menu.total_return_due')</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

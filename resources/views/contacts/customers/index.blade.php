@@ -90,7 +90,7 @@
                                     <th>Sale Due</th>
                                     <th>Total Return</th>
                                     <th>Return Due</th>
-                                    <th>Status</th>
+                                    <th>@lang('menu.status')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

@@ -150,7 +150,7 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Paid :</th>
+                            <th width="50%" class="text-start">@lang('menu.paid') :</th>
                             <td width="50%" class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payroll->paid }}</b> </td>
                         </tr>
 

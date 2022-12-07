@@ -68,14 +68,14 @@
                             <span class="text-primary"><b>Ordered</b></span>
                         @endif
                     </li>
-                    <li><strong>Payment Status : </strong>
+                    <li><strong>@lang('menu.payment_status') : </strong>
                         @php
                             $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                         @endphp
                         @if ($purchase->due <= 0)
-                            <span class="text-success"><b>Paid</b></span>
+                            <span class="text-success"><b>@lang('menu.paid')</b></span>
                         @elseif($purchase->due > 0 && $purchase->due < $payable)
-                            <span class="text-primary"><b>Partial</b></span>
+                            <span class="text-primary"><b>@lang('menu.partial')</b></span>
                         @elseif($payable == $purchase->due)
                             <span class="text-danger"><b>@lang('menu.due')</b></span>
                         @endif

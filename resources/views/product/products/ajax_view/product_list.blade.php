@@ -17,7 +17,7 @@
             <th class="text-white">Brand</th>
             <th class="text-white">Tax</th>
             <th class="text-white">Expire Date</th>
-            <th class="text-white">Status</th>
+            <th class="text-white">@lang('menu.status')</th>
 
         </tr>
     </thead>

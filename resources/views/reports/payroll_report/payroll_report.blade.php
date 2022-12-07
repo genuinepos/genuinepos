@@ -115,10 +115,10 @@
                                     <th>Department</th>
                                     <th>Month/Year</th>
                                     <th>Referance No</th>
-                                    <th>Total Amount</th>
-                                    <th>Paid</th>
+                                    <th>@lang('menu.total_amount')</th>
+                                    <th>@lang('menu.paid')</th>
                                     <th>@lang('menu.due')</th>
-                                    <th>Payment Status</th>
+                                    <th>@lang('menu.payment_status')</th>
                                     <th>@lang('menu.created_by')</th>
                                 </tr>
                             </thead>

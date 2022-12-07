@@ -28,11 +28,11 @@
                     $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                 @endphp
                 @if ($sale->due <= 0)
-                    <b style="color:green;font-weight:normal;margin:0">Paid</b>
+                    <b style="color:green;font-weight:normal;margin:0">@lang('menu.paid')</b>
                 @elseif ($sale->due > 0 && $sale->due < $payable)
-                    <b style="color:orange;font-weight:normal;margin:0">Partial</b>
+                    <b style="color:orange;font-weight:normal;margin:0">@lang('menu.partial')</b>
                 @elseif($payable==$sale->due)
-                    <b style="color:red;font-weight:normal;margin:0">Due</b>
+                    <b style="color:red;font-weight:normal;margin:0">@lang('menu.due')</b>
                 @endif
             </p>
             <p style="font-size:14px;margin:0 0 6px 0;">

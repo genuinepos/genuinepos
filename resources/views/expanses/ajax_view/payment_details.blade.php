@@ -65,7 +65,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Paid:</th>
+                            <th class="text-start">@lang('menu.paid'):</th>
                             <td class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ $payment->paid_amount }}</b>
@@ -73,7 +73,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">In Word :</th>
+                            <th class="text-start">@lang('menu.in_word'):</th>
                             <td class="text-end"><span id="inword"></span></td>
                         </tr>
 

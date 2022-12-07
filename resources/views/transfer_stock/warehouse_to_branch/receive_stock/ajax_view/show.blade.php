@@ -44,9 +44,9 @@
                                 @if ($sendStock->status == 1)
                                 <span class="badge bg-danger">@lang('menu.pending')</span>
                                 @elseif($sendStock->status == 2)
-                                    <span class="badge bg-primary">Partial</span>
+                                    <span class="badge bg-primary">@lang('menu.partial')</span>
                                 @elseif($sendStock->status == 3)
-                                <span class="badge bg-success">Completed</span>
+                                <span class="badge bg-success">@lang('menu.completed')</span>
                                 @endif
                             </li>
                         </ul>

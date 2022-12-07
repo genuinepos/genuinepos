@@ -115,7 +115,7 @@
                                     <th>Workspace ID</th>
                                     <th>Location</th>
                                     <th>Priority</th>
-                                    <th>Status</th>
+                                    <th>@lang('menu.status')</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Estimated Hour</th>

@@ -54,10 +54,10 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Payment Status :</strong></label>
+                                                    <label><strong>@lang('menu.payment_status') :</strong></label>
                                                     <select name="payment_status" id="payment_status" class="form-control submit_able">
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="1">Paid</option>
+                                                        <option value="1">@lang('menu.paid')</option>
                                                         <option value="2">@lang('menu.due')</option>
                                                     </select>
                                                 </div>
@@ -119,7 +119,7 @@
                                                 <th>@lang('menu.customer')</th>
                                                 <th>@lang('menu.created_by')</th>
                                                 <th>Shipment Status</th>
-                                                <th>Payment Status</th>
+                                                <th>@lang('menu.payment_status')</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>

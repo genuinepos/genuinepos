@@ -188,7 +188,7 @@
                                                                         <th>Expense Category</th>
                                                                         <th>@lang('menu.branch')</th>
                                                                         <th>Tax Percent</th>
-                                                                        <th>Total Amount</th>
+                                                                        <th>@lang('menu.total_amount')</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>

@@ -124,12 +124,12 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="heading_area">
-                                                                <p><strong>All </strong></p>
+                                                                <p><strong>@lang('menu.all') </strong></p>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-md-6">
-                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">@lang('menu.unselect_all')</a>
                                                         </div>
                                                     </div>
 
@@ -140,8 +140,8 @@
                                                                     <th class="text-start text-white">@lang('menu.sl')</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">Order/@lang('menu.invoice_id')</th>
-                                                                    <th class="text-start text-white">Status</th>
-                                                                    <th class="text-start text-white">Pay Status</th>
+                                                                    <th class="text-start text-white">@lang('menu.status')</th>
+                                                                    <th class="text-start text-white">@lang('menu.pay_status')</th>
                                                                     <th class="text-start text-white">Purchased Amt.</th>
                                                                     <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
@@ -176,10 +176,10 @@
 
                                                                             @if ($row->due <= 0)
 
-                                                                                <span class="text-success"><b>Paid</b></span>
+                                                                                <span class="text-success"><b>@lang('menu.paid')</b></span>
                                                                             @elseif ($row->due > 0 && $row->due < $payable)
 
-                                                                                <span class="text-primary"><b>Partial</b></span>
+                                                                                <span class="text-primary"><b>@lang('menu.partial')</b></span>
                                                                             @elseif ($payable == $row->due)
 
                                                                                 <span class="text-danger"><b>@lang('menu.due')</b></span>
@@ -207,7 +207,7 @@
                                                         </div>
 
                                                         <div class="col-md-6">
-                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">@lang('menu.unselect_all')</a>
                                                         </div>
                                                     </div>
 
@@ -215,10 +215,10 @@
                                                         <table class="table modal-table table-sm mt-1">
                                                             <thead>
                                                                 <tr class="bg-primary">
-                                                                    <th class="text-start text-white">Select</th>
+                                                                    <th class="text-start text-white">@lang('menu.select')</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">@lang('menu.invoice_id')</th>
-                                                                    <th class="text-start text-white">Payment Status</th>
+                                                                    <th class="text-start text-white">@lang('menu.payment_status')</th>
                                                                     <th class="text-start text-white">Purchased Amt.</th>
                                                                     <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
@@ -241,13 +241,13 @@
 
                                                                             @if ($purchase->due <= 0)
 
-                                                                                <span class="text-success"><b>Paid</b></span>
+                                                                                <span class="text-success"><b>@lang('menu.paid')</b></span>
                                                                             @elseif ($purchase->due > 0 && $purchase->due < $payable)
 
-                                                                                <span class="text-primary"><b>Partial</b></span>
+                                                                                <span class="text-primary"><b>@lang('menu.partial')</b></span>
                                                                             @elseif ($payable == $purchase->due)
 
-                                                                                <span class="text-danger"><b>Due</b></span>
+                                                                                <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}</td>
@@ -272,7 +272,7 @@
                                                         </div>
 
                                                         <div class="col-md-6">
-                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">@lang('menu.unselect_all')</a>
                                                         </div>
                                                     </div>
 
@@ -280,10 +280,10 @@
                                                         <table class="table modal-table table-sm mt-1">
                                                             <thead>
                                                                 <tr class="bg-primary">
-                                                                    <th class="text-start text-white">Select</th>
+                                                                    <th class="text-start text-white">@lang('menu.select')</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">Order ID</th>
-                                                                    <th class="text-start text-white">Payment Status</th>
+                                                                    <th class="text-start text-white">@lang('menu.payment_status')</th>
                                                                     <th class="text-start text-white">Purchased Amt.</th>
                                                                     <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
@@ -305,10 +305,10 @@
 
                                                                             @if ($order->due <= 0)
 
-                                                                                <span class="text-success"><b>Paid</b></span>
+                                                                                <span class="text-success"><b>@lang('menu.paid')</b></span>
                                                                             @elseif ($order->due > 0 && $order->due < $payable)
 
-                                                                                <span class="text-primary"><b>Partial</b></span>
+                                                                                <span class="text-primary"><b>@lang('menu.partial')</b></span>
                                                                             @elseif ($payable == $order->due)
 
                                                                                 <span class="text-danger"><b>@lang('menu.due')</b></span>
@@ -335,7 +335,7 @@
 
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p><strong>Total Amount : </strong> <span id="total_amount">0.00</span></p>
+                                                    <p><strong>@lang('menu.total_amount') : </strong> <span id="total_amount">0.00</span></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -380,8 +380,8 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <label><strong>Less Amount :</strong> </label>
-                                <input type="number" step="any" name="less_amount" id="p_less_amount" class="form-control" placeholder="Less Amount" autocomplete="off"/>
+                                <label><strong>@lang('menu.less_amount') :</strong> </label>
+                                <input type="number" step="any" name="less_amount" id="p_less_amount" class="form-control" placeholder="@lang('menu.less_amount')" autocomplete="off"/>
                             </div>
 
                             <div class="col-md-4">
@@ -429,7 +429,7 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small>
+                                <strong>@lang('menu.attach_document') :</strong> <small class="text-danger">Note: Max Size 2MB. </small>
                                 <input type="file" name="attachment" class="form-control">
                             </div>
 
@@ -441,7 +441,7 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-12">
-                                <label><strong>IN WORD : </strong> <strong><span class="text-danger text-uppercase" id="in_word"></span></strong></label>
+                                <label><strong>@lang('menu.in_word'): </strong> <strong><span class="text-danger text-uppercase" id="in_word"></span></strong></label>
                             </div>
                         </div>
                     </div>

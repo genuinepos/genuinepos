@@ -49,7 +49,7 @@
             <p><b>@lang('menu.date') :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p>
         @endif
 
-        <p class="mt-2"><b>Customer Payments </b></p>
+        <p class="mt-2"><b>@lang('menu.customer_payments') </b></p>
     </div>
 </div>
 
@@ -73,13 +73,13 @@
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.voucher_no')</th>
                     <th class="text-start">@lang('menu.reference')</th>
-                    <th class="text-start">Against Invoice</th>
+                    <th class="text-start">@lang('menu.against_invoice')</th>
                     {{-- <th>@lang('menu.created_by')</th> --}}
-                    <th class="text-start">Payment Status</th>
+                    <th class="text-start">@lang('menu.payment_status')</th>
                     <th class="text-start">@lang('menu.payment_type')</th>
                     <th class="text-start">@lang('menu.account')</th>
-                    <th class="text-end">Less Amount</th>
-                    <th class="text-end">Paid Amount</th>
+                    <th class="text-end">@lang('menu.less_amount')</th>
+                    <th class="text-end">@lang('menu.paid_amount')</th>
                 </tr>
             </thead>
 

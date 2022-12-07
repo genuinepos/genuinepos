@@ -46,11 +46,11 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li>
-                        <strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>@lang('menu.total_return') : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                     </li>
                     <li>
-                        <strong>Total Paid/Refunded Amount : {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>@lang('menu.total_paid')/Refunded Amount : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ App\Utils\Converter::format_in_bdt($return->total_return_due_pay) }}
                     </li>
                 </ul>

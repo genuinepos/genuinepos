@@ -235,7 +235,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_return') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalReturnedAmount) }}
                     </td>

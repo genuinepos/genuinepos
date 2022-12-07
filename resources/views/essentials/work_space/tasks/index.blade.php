@@ -86,7 +86,7 @@
                                         <select name="task_status" id="task_status" class="form-control form-control-sm">
                                             <option value="In-Progress">In-Progress</option>
                                             <option value="Pending">@lang('menu.pending')</option>
-                                            <option value="Completed">Completed</option>
+                                            <option value="Completed">@lang('menu.completed')</option>
                                         </select>
                                     </div>
 
@@ -109,7 +109,7 @@
                                     <tr class="bg-secondary">
                                         <th class="task-name text-white text-start">Task</th>
                                         <th class="task-assign-to text-white text-start">Assigned To</th>
-                                        <th class="task-status text-white text-start">Status</th>
+                                        <th class="task-status text-white text-start">@lang('menu.status')</th>
                                     </tr>
                                 </thead> --}}
 

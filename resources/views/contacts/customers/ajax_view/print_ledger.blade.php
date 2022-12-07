@@ -49,7 +49,7 @@
             <p><strong>@lang('menu.date') :</strong> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <strong>@lang('menu.to')</strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p>
         @endif
 
-        <p><strong>Customer Ledger </strong></p>
+        <p><strong>@lang('menu.customer_ledger') </strong></p>
     </div>
 </div>
 

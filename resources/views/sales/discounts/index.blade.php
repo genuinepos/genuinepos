@@ -41,7 +41,7 @@
                                             <tr class="text-start">
                                                 <th>Offer Name</th>
                                                 <th>@lang('menu.business_location')</th>
-                                                <th>Status</th>
+                                                <th>@lang('menu.status')</th>
                                                 <th>Start At</th>
                                                 <th>End At</th>
                                                 <th>Discount Type</th>

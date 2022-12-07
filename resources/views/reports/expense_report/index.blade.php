@@ -104,10 +104,10 @@
                                     <th class="text-start">@lang('menu.reference_id')</th>
                                     <th class="text-start">@lang('menu.b_location')</th>
                                     <th class="text-start">Expanse For</th>
-                                    <th class="text-start">Payment Status</th>
+                                    <th class="text-start">@lang('menu.payment_status')</th>
                                     <th class="text-start">Tax</th>
                                     <th class="text-start">Net Total</th>
-                                    <th class="text-start">Paid</th>
+                                    <th class="text-start">@lang('menu.paid')</th>
                                     <th class="text-start">Payment Due</th>
                                 </tr>
                             </thead>

@@ -58,9 +58,9 @@
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.voucher_no')</th>
                     <th class="text-start">@lang('menu.customer')</th>
-                    <th class="text-start">Pay Method</th>
-                    <th class="text-start">Sale Invoice ID</th>
-                    <th class="text-end">Paid Amount({{json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-start">{{ __('Pay Method') }}</th>
+                    <th class="text-start">{{ __('Sale Invoice ID') }}</th>
+                    <th class="text-end">@lang('menu.paid_amount')({{json_decode($generalSettings->business, true)['currency'] }})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">

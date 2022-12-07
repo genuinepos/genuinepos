@@ -104,7 +104,7 @@
                                         <th class="text-start">Reason</th>
                                         <th class="text-start">@lang('menu.created_by')</th>
                                         <th class="text-start">@lang('menu.type')</th>
-                                        <th class="text-start">Total Amount</th>
+                                        <th class="text-start">@lang('menu.total_amount')</th>
                                         <th class="text-start">Total Recovered Amount</th>
                                     </tr>
                                 </thead>

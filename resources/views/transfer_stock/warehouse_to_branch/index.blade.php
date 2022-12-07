@@ -38,8 +38,8 @@
                                                 <th>Warehouse(From) </th>
                                                 <th>@lang('menu.b_location')(To)</th>
                                                 <th>Shipping Charge({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Total Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Status</th>
+                                                <th>@lang('menu.total_amount') ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.status')</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>

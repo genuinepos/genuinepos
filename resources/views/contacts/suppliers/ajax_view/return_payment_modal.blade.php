@@ -121,7 +121,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
+                        <label><strong>@lang('menu.attach_document') :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
                         <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date">
                     </div>
                 </div>
